@@ -29,8 +29,9 @@ export default function App() {
   [ ] Subscribe to newsletter
   [x] Receive security alerts
   [ ] Get product updates
+    button "Save Settings"
   
-  button "Save Settings"
+  [Go to Profile](Profile)
   
 screen Profile:
   ## Profile Settings
@@ -108,9 +109,11 @@ screen Profile:
             <div
                 dangerouslySetInnerHTML={{ __html: htmlString }}
                 onClick={(e) => {
-                    // Handle screen navigation button clicks
-                    if (e.target instanceof HTMLElement && e.target.getAttribute('data-action') === 'switch-screen') {
-                        const screenName = e.target.getAttribute('data-screen');
+                    // Handle link clicks for screen navigation
+                    if (e.target instanceof HTMLAnchorElement && e.target.hasAttribute('data-screen-link')) {
+                        e.preventDefault();
+
+                        const screenName = e.target.getAttribute('data-screen-link');
                         if (screenName) {
                             // Hide all screens
                             const screenElements = document.querySelectorAll('.screen');
@@ -119,20 +122,10 @@ screen Profile:
                             });
 
                             // Show the selected screen
-                            const targetScreen = document.getElementById(`${screenName}-screen`);
+                            const targetScreen = document.getElementById(`${screenName.toLowerCase()}-screen`);
                             if (targetScreen) {
                                 targetScreen.style.display = 'block';
                             }
-
-                            // Update active state on buttons
-                            const buttons = document.querySelectorAll('[data-action="switch-screen"]');
-                            buttons.forEach(button => {
-                                if (button.getAttribute('data-screen') === screenName) {
-                                    button.setAttribute('data-active', 'true');
-                                } else {
-                                    button.removeAttribute('data-active');
-                                }
-                            });
                         }
                     }
                 }}

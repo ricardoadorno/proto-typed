@@ -8,14 +8,6 @@ export function astToHtml(ast: AstNode | AstNode[]): string {
   
   if (screens.length === 0) return '';
   
-  // Generate navigation buttons with data attributes instead of onclick
-  const navButtons = screens
-    .map((screen, index) => {
-      const screenName = screen.name || `Screen ${index + 1}`;
-      return `<button data-screen="${screenName.toLowerCase()}" data-action="switch-screen">${screenName}</button>`;
-    })
-    .join('\n');
-  
   // Generate the HTML for all screens, with unique IDs and display:none (except first)
   const screensHtml = screens
     .filter(screen => screen && screen.type === 'Screen' && screen.name)
@@ -35,12 +27,7 @@ export function astToHtml(ast: AstNode | AstNode[]): string {
     })
     .join('\n\n');
   
-  return `
-  <div class="navigation-container" id="screen-navigation">
-    ${navButtons}
-  </div>
-  ${screensHtml}
-  `;
+  return `${screensHtml}`;
 }
 
 /**
@@ -49,10 +36,23 @@ export function astToHtml(ast: AstNode | AstNode[]): string {
 export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
   const screens = Array.isArray(ast) ? ast : [ast];
   
-  // Generate the HTML for all screens
+  // Generate the HTML for all screens with styles to hide all but the first
   const screensHtml = screens
     .filter(screen => screen && screen.type === 'Screen' && screen.name)
-    .map(screen => screenToHtml(screen))
+    .map((screen, index) => {
+      const screenName = screen.name?.toLowerCase() || '';
+      const style = index === 0 ? '' : 'style="display:none"';
+      
+      const elementsHtml = screen.elements
+        ?.filter(element => element != null)
+        .map(element => nodeToHtml(element))
+        .join('\n      ') || '';
+      
+      return `
+  <div class="screen ${screenName}" ${style}>
+      ${elementsHtml}
+  </div>`;
+    })
     .join('\n\n');
   
   // Create the full HTML document
@@ -69,7 +69,6 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
   <title>Exported Screens</title>
 </head>
 <body>
-  ${generateNavigationButtons(screens)}
   ${screensHtml}
     <script>
     function showScreen(screenName) {
@@ -83,11 +82,15 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
       });
     }
     
-    // Show the first screen by default
-    document.addEventListener('DOMContentLoaded', function() {
-      const firstScreenButton = document.querySelector('.nav-buttons button');
-      if (firstScreenButton) {
-        firstScreenButton.click();
+    // Handle link clicks for navigation
+    document.addEventListener('click', function(e) {
+      if (e.target && e.target.tagName === 'A') {
+        const href = e.target.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          e.preventDefault();
+          const screenName = href.substring(1);
+          showScreen(screenName);
+        }
       }
     });
   </script>
@@ -96,25 +99,7 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
   `.trim();
 }
 
-/**
- * Generate navigation buttons for screens
- */
-function generateNavigationButtons(screens: AstNode[]): string {
-  if (screens.length <= 1) return '';
-  
-  const buttons = screens
-    .map(screen => {
-      const screenName = screen.name || '';
-      return `<button onclick="showScreen('${screenName}')">${screenName}</button>`;
-    })
-    .join('\n      ');
-  
-  return `
-  <div class="nav-buttons">
-      ${buttons}
-  </div>
-  `;
-}
+// Navigation is now handled through Link elements
 
 /**
  * Convert a single screen to HTML
@@ -158,17 +143,24 @@ function nodeToHtml(node: AstNode): string {
     case 'Heading':
       const level = node.props?.level || 1;
       return `<h${level}>${node.props?.children || ''}</h${level}>`;
-      
-    case 'Link':
+        case 'Link':
       const href = node.props?.href || '#';
-      return `<a href="${href}" target="_blank" rel="noopener noreferrer">${node.props?.children || ''}</a>`;
+      // Check if this is an internal navigation link (a screen name) or an external link
+      const isInternalLink = !href.includes('://') && !href.startsWith('mailto:');
+      
+      if (isInternalLink) {
+        // For internal links, use the href as a screen identifier with a hash prefix
+        return `<a href="#${href}" data-screen-link="${href}">${node.props?.children || ''}</a>`;
+      } else {
+        // For external links, open in a new tab
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer">${node.props?.children || ''}</a>`;
+      }
       
     case 'Image':
       const src = node.props?.src || '';
       const alt = node.props?.alt || '';
       return `<img src="${src}" alt="${alt}" style="max-width: 100%;" />`;
-      
-    case 'OrderedList':
+        case 'OrderedList':
       const olItems = (node.props?.items || [])
         .map((item: string) => `<li>${item}</li>`)
         .join('\n');
@@ -183,11 +175,10 @@ function nodeToHtml(node: AstNode): string {
     case 'Paragraph':
       const variant = node.props?.variant || 'default';
       return `<p class="${variant}">${node.props?.children || ''}</p>`;
-      
-    case 'RadioGroup':
+        case 'RadioGroup':
       const radioName = `radio-group-${Math.random().toString(36).substring(7)}`;
       const radioOptions = (node.props?.options || [])
-        .map((option: { label: string, selected: boolean }, index: number) => `
+        .map((option: { label: string, selected: boolean }) => `
           <label>
             <input type="radio" name="${radioName}" ${option.selected ? 'checked' : ''} />
             <span>${option.label}</span>
@@ -201,10 +192,9 @@ function nodeToHtml(node: AstNode): string {
         .map((option: string) => `<option value="${option}">${option}</option>`)
         .join('\n');
       return `<select>${options}</select>`;
-      
-    case 'CheckboxGroup':
+        case 'CheckboxGroup':
       const checkboxOptions = (node.props?.options || [])
-        .map((option: { label: string, checked: boolean }, index: number) => `
+        .map((option: { label: string, checked: boolean }) => `
           <label>
             <input type="checkbox" ${option.checked ? 'checked' : ''} />
             <span>${option.label}</span>
