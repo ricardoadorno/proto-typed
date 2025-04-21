@@ -2,6 +2,8 @@ import { useState } from "react";
 import { parseInput } from "./dslParser";
 import { astBuilder } from "./astBuilder";
 import { astToReact } from "./astToReact";
+import { AstNode } from './types/astNode';
+
 
 export default function App() {
     const [input, setInput] = useState(`screen Settings:
@@ -53,18 +55,22 @@ screen Profile:
   
   button "Update Profile"
   `);
-    const [screens, setScreens] = useState<any[]>([]);
+    const [screens, setScreens] = useState<AstNode[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     const handleParse = () => {
         try {
             const screenInputs = input.split(/(?=screen\s)/);
+            console.log('screenInputs', screenInputs);
+
             const parsedScreens = screenInputs
                 .map(screenInput => screenInput.trim())
                 .filter(Boolean)
                 .map(screenInput => {
                     const cst = parseInput(screenInput);
-                    return astBuilder.visit(cst);
+                    const ast = astBuilder.visit(cst);
+
+                    return ast;
                 });
 
             setScreens(parsedScreens);
@@ -75,8 +81,10 @@ screen Profile:
         }
     };
 
-    const renderScreens = () => {
+    const renderScreen = () => {
         if (screens.length === 0) return null;
+        console.log(screens);
+
         return astToReact(screens);
     };
 
@@ -108,8 +116,8 @@ screen Profile:
                 </div>
             </div>
             <div>
-                <h3>Rendered Screens</h3>
-                {renderScreens()}
+                <h3>Rendered Screen</h3>
+                {renderScreen()}
             </div>
         </div>
     );

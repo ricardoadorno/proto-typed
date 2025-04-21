@@ -86,6 +86,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       }
     };
   }
+  
   inputElement(ctx: Context) {
     const attributes = ctx.attribute ? ctx.attribute.map((attr: CstNode) => this.visit(attr)) : [];
     const props = Object.fromEntries(attributes.map((attr: any) => [attr.name, attr.value]));
@@ -167,6 +168,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       }
     };
   }
+
   checkboxGroup(ctx: Context) {
     if (!ctx.CheckboxOption) {
       console.warn('No checkbox options found in context');
@@ -191,7 +193,9 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
         options
       }
     };
-  }  textElement(ctx: Context) {
+  }  
+  
+  textElement(ctx: Context) {
     let type = "Paragraph";
     let variant = "text";
     let content = "";
@@ -218,6 +222,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       }
     };
   }
+
   selectField(ctx: Context) {
     if (!ctx.SelectField) {
       return null;

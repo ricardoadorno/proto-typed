@@ -1,11 +1,5 @@
-import { createElement } from 'react';
-
-export interface AstNode {
-  type: string;
-  name?: string;
-  elements?: AstNode[];
-  props?: Record<string, any>;
-}
+import { createElement, useState } from 'react';
+import { AstNode } from './types/astNode';
 
 function transformToReactElement(node: AstNode): React.ReactElement | null {
   if (!node || !node.type) {
@@ -227,86 +221,60 @@ function createScreenComponent(node: AstNode): React.ReactElement {
   );
 }
 
-// Define a stack-based navigation system
-const navigationStack: string[] = [];
+// Screen management component
+function ScreenManager({ screens, initialScreen }: { screens: AstNode[], initialScreen: string }) {
+  const [currentScreen, setCurrentScreen] = useState(initialScreen);
 
-function pushToStack(screenName: string) {
-  console.log('Button clicked:', screenName);
-  navigationStack.push(screenName);
-  console.log('Updated Navigation Stack:', navigationStack);
-  renderCurrentScreen();
-}
+  const handleScreenChange = (screenName: string) => {
+    setCurrentScreen(screenName);
+  };
 
-function renderCurrentScreen() {
-  const currentScreen = navigationStack[navigationStack.length - 1];
-  const screenElement = document.getElementById(currentScreen);
-
-  console.log('Navigation Stack:', navigationStack);
-  console.log('Rendering Current Screen:', navigationStack[navigationStack.length - 1]);
-
-  // Hide all screens
-  document.querySelectorAll('.screen').forEach(screen => {
-    screen.classList.remove('active');
-  });
-
-  // Show the current screen
-  if (screenElement) {
-    screenElement.classList.add('active');
-  }
+  return createElement(
+    'div',
+    { key: 'screen-manager' },
+    [
+      createElement(
+        'div',
+        { key: 'nav-buttons', style: { marginBottom: 20 } },
+        screens.map(screen => 
+          createElement('button', {
+            key: screen.name,
+            onClick: () => handleScreenChange(screen.name || ''),
+            style: { marginRight: 10 }
+          }, screen.name)
+        )
+      ),
+      screens.map(screen =>
+        createElement(
+          'div',
+          {
+            key: screen.name,
+            style: { 
+              display: currentScreen === screen.name ? 'block' : 'none'
+            }
+          },
+          screen.elements?.filter(element => element != null)
+            .map(element => transformToReactElement(element))
+            .filter(Boolean)
+        )
+      )
+    ]
+  );
 }
 
 export function astToReact(ast: AstNode | AstNode[]): React.ReactElement {
   if (Array.isArray(ast)) {
-    // Filter out any invalid screens and create navigation buttons
     const validScreens = ast.filter(screen => screen && screen.type === 'Screen' && screen.name);
-    const navigationButtons = validScreens.map(screen =>
-      createElement(
-        'button',
-        {
-          key: screen.name,
-          onClick: () => pushToStack(screen.name || ''),
-          style: { marginRight: 10 }
-        },
-        screen.name
-      )
-    );    // Create screen elements
-    const screens = validScreens.map(screen =>
-      createElement(
-        'div',
-        {
-          id: screen.name?.toLowerCase(),
-          className: `screen ${navigationStack[0] === screen.name ? 'active' : ''}`,
-          style: { display: navigationStack[0] === screen.name ? 'block' : 'none' },
-          key: screen.name
-        },
-        screen.elements?.filter(element => element != null)
-          .map(element => transformToReactElement(element))
-          .filter(Boolean)
-      )
-    );
-
-    // Initialize the stack with the first screen
-    if (navigationStack.length === 0 && validScreens.length > 0) {
-      navigationStack.push(validScreens[0].name || '');
-      renderCurrentScreen();
+    
+    if (validScreens.length === 0) {
+      return createElement('div', null, 'No valid screens found');
     }
 
-    // Ensure the first screen is visible on initialization
-    if (navigationStack.length === 1) {
-      const firstScreenElement = document.getElementById(navigationStack[0]);
-      if (firstScreenElement) {
-        firstScreenElement.classList.add('active');
-      }
-    }    return createElement(
-      'div',
-      { key: 'root-container' },
-      [
-        createElement('div', { key: 'nav-container', style: { marginBottom: 20 } }, navigationButtons),
-        ...screens
-      ]
-    );
+    return createElement(ScreenManager, {
+      screens: validScreens,
+      initialScreen: validScreens[0].name || ''
+    });
   }
 
-  // If we receive a single screen
   return ast && ast.type === 'Screen' ? createScreenComponent(ast) : createElement('div', null, 'Invalid screen data');
 }
