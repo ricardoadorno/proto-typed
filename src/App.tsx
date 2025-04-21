@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { parseInput } from "./dslParser";
 import { astBuilder } from "./astBuilder";
-import { astToReact } from "./astToReact";
+import { astToHtml, astToHtmlDocument } from "./astToHtml";
 import { AstNode } from './types/astNode';
 
 
@@ -24,7 +24,6 @@ export default function App() {
   [x] Email notifications
   [ ] Push notifications
   [ ] Desktop alerts
-  
   ### Communication  quote Your privacy matters - customize how others can interact with you.
   
   [ ] Subscribe to newsletter
@@ -79,13 +78,66 @@ screen Profile:
             setScreens([]);
             setError(err.message);
         }
-    };
+    }; const exportAsHtml = () => {
+        if (screens.length === 0) {
+            alert("Please parse the input first to generate content.");
+            return;
+        }
 
-    const renderScreen = () => {
+        // Convert screens to HTML document using the astToHtmlDocument function
+        const serializedScreens = astToHtmlDocument(screens);
+
+        // Create a blob and download it
+        const blob = new Blob([serializedScreens], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "exported-screen.html";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }; const renderScreen = () => {
         if (screens.length === 0) return null;
-        console.log(screens);
 
-        return astToReact(screens);
+        // Convert AST to HTML string
+        const htmlString = astToHtml(screens);
+
+        // Return a div with the HTML content injected and add the click handler
+        return (
+            <div
+                dangerouslySetInnerHTML={{ __html: htmlString }}
+                onClick={(e) => {
+                    // Handle screen navigation button clicks
+                    if (e.target instanceof HTMLElement && e.target.getAttribute('data-action') === 'switch-screen') {
+                        const screenName = e.target.getAttribute('data-screen');
+                        if (screenName) {
+                            // Hide all screens
+                            const screenElements = document.querySelectorAll('.screen');
+                            screenElements.forEach(screen => {
+                                (screen as HTMLElement).style.display = 'none';
+                            });
+
+                            // Show the selected screen
+                            const targetScreen = document.getElementById(`${screenName}-screen`);
+                            if (targetScreen) {
+                                targetScreen.style.display = 'block';
+                            }
+
+                            // Update active state on buttons
+                            const buttons = document.querySelectorAll('[data-action="switch-screen"]');
+                            buttons.forEach(button => {
+                                if (button.getAttribute('data-screen') === screenName) {
+                                    button.setAttribute('data-active', 'true');
+                                } else {
+                                    button.removeAttribute('data-active');
+                                }
+                            });
+                        }
+                    }
+                }}
+            />
+        );
     };
 
     return (
@@ -102,6 +154,7 @@ screen Profile:
                     />
                     <div style={{ marginTop: 10 }}>
                         <button onClick={handleParse} style={{ marginRight: 10 }}>Parse</button>
+                        <button onClick={exportAsHtml} style={{ backgroundColor: "#28a745" }}>Export as HTML</button>
                     </div>
                     {error && <pre style={{ color: "red" }}>{error}</pre>}
                 </div>
