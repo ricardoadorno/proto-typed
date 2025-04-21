@@ -139,7 +139,31 @@ function transformToReactElement(node: AstNode): React.ReactElement | null {
             ]
           )
         )
-      );    case 'CheckboxGroup':
+      );    case 'Select':
+      if (!node.props?.options?.length) {
+        console.warn('No select options provided:', node);
+        return null;
+      }
+      return createElement(
+        'select',
+        {
+          key: `select-${Math.random()}`,
+          style: { 
+            width: '100%',
+            padding: '8px',
+            marginBottom: '16px',
+            borderRadius: '4px'
+          }
+        },
+        node.props.options.map((option: string, index: number) =>
+          createElement('option', {
+            key: `option-${index}`,
+            value: option
+          }, option)
+        )
+      );
+
+    case 'CheckboxGroup':
       if (!node.props?.options?.length) {
         console.warn('No checkbox options provided:', node);
         return null;

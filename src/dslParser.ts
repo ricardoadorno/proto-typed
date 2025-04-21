@@ -72,6 +72,11 @@ const Heading6 = createToken({
   pattern: /(?:\r\n|\r|\n|\s)*######\s+([^\n\r#\[\]"=:]+)/ 
 });
 
+const SelectField = createToken({
+  name: "SelectField",
+  pattern: /(?:\r\n|\r|\n|\s)*<\[([^\]]+)\]>(?:\r\n|\r|\n|\s)*/
+});
+
 const Text = createToken({ 
   name: "Text", 
   pattern: /(?:\r\n|\r|\n|\s)*text\s+([^\n\r]+)/ 
@@ -90,6 +95,7 @@ const allTokens = [
   WhiteSpace,  Screen,
   Input,
   Button,
+  SelectField,
   Text,
   Note,
   Quote,
@@ -142,7 +148,16 @@ class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.unorderedListElement) },
       { ALT: () => this.SUBRULE(this.radioButtonGroup) },
       { ALT: () => this.SUBRULE(this.checkboxGroup) },
+      { ALT: () => this.SUBRULE(this.selectField) },
     ]);
+  });
+  selectField = this.RULE("selectField", () => {
+    const options: { image: string; tokenType: { name: string } }[] = [];
+    this.AT_LEAST_ONE(() => {
+      const option = this.CONSUME(SelectField);
+      options.push(option);
+    });
+    return options;
   });
 
   headingElement = this.RULE("headingElement", () => {

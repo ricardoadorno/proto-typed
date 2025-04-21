@@ -20,8 +20,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       name,
       elements
     };
-  }
-  element(ctx: Context) {    if (ctx.inputElement) return this.visit(ctx.inputElement);
+  }  element(ctx: Context) {    if (ctx.inputElement) return this.visit(ctx.inputElement);
     if (ctx.buttonElement) return this.visit(ctx.buttonElement);
     if (ctx.headingElement) return this.visit(ctx.headingElement);
     if (ctx.textElement) return this.visit(ctx.textElement);
@@ -31,6 +30,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     if (ctx.unorderedListElement) return this.visit(ctx.unorderedListElement);
     if (ctx.radioButtonGroup) return this.visit(ctx.radioButtonGroup);
     if (ctx.checkboxGroup) return this.visit(ctx.checkboxGroup);
+    if (ctx.selectField) return this.visit(ctx.selectField);
     console.warn('Unknown element type:', ctx);
     return null;
   }
@@ -46,7 +46,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     else if (ctx.Heading2) level = 2;
     else if (ctx.Heading3) level = 3;
     else if (ctx.Heading4) level = 4;
-    else if (ctx.Heading5) level = 5;
+    else if (ctx.ading5) level = 5;
     else if (ctx.Heading6) level = 6;
 
     const match = heading.image.match(/#+\s+([^\n\r]+)/);
@@ -215,6 +215,23 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       props: {
         variant,
         children: content
+      }
+    };
+  }
+  selectField(ctx: Context) {
+    if (!ctx.SelectField) {
+      return null;
+    }
+    
+    const options = ctx.SelectField.map((option: any) => {
+      const match = option.image.match(/<\[([^\]]+)\]>/);
+      return match ? match[1].trim() : '';
+    }).filter(Boolean);
+
+    return {
+      type: "Select",
+      props: {
+        options
       }
     };
   }
