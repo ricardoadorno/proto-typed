@@ -61,7 +61,6 @@ screen Profile:
     const handleParse = () => {
         try {
             const screenInputs = input.split(/(?=screen\s)/);
-            console.log('screenInputs', screenInputs);
 
             const parsedScreens = screenInputs
                 .map(screenInput => screenInput.trim())
@@ -134,35 +133,40 @@ screen Profile:
     };
 
     return (
-        <div style={{ padding: 20 }}>
-            <h2>UI DSL Parser</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-                <div>
-                    <h3>Input</h3>
-                    <textarea
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        rows={10}
-                        style={{ width: "100%", fontFamily: "monospace" }}
-                    />
-                    <div style={{ marginTop: 10 }}>
-                        <button onClick={handleParse} style={{ marginRight: 10 }}>Parse</button>
-                        <button onClick={exportAsHtml} style={{ backgroundColor: "#28a745" }}>Export as HTML</button>
-                    </div>
-                    {error && <pre style={{ color: "red" }}>{error}</pre>}
-                </div>
+        <div style={{ padding: 20, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: "2rem" }}>
 
+            <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+                <h2>UI DSL Parser</h2>
                 <div>
+                    <button onClick={handleParse} style={{ marginRight: 10 }}>Parse</button>
+                    <button onClick={exportAsHtml} style={{ backgroundColor: "#28a745" }}>Export as HTML</button>
+                </div>
+                {error && <pre style={{ color: "red" }}>{error}</pre>}
+                <textarea
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    rows={10}
+                    style={{
+                        flex: 1,
+                        width: "100%",
+                        minHeight: "100rem",
+                        fontFamily: "monospace",
+                        marginTop: "1rem",
+                        resize: "none",
+                    }}
+                />
+            </div>
+
+            {/* <div>
                     <h3>Screens AST Output</h3>
                     {screens.length > 0 && (
                         <pre style={{ maxHeight: 300, overflow: 'auto' }}>
                             {JSON.stringify(screens, null, 2)}
                         </pre>
                     )}
-                </div>
-            </div>
+                </div> */}
             <div>
-                <h3>Rendered Screen</h3>
+                <h3 style={{ padding: "1rem 0" }}>Rendered Screen</h3>
                 {renderScreen()}
             </div>
         </div>

@@ -20,8 +20,11 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       name,
       elements
     };
-  }  element(ctx: Context) {    if (ctx.inputElement) return this.visit(ctx.inputElement);
+  }  
+    element(ctx: Context) {    
+    if (ctx.inputElement) return this.visit(ctx.inputElement);
     if (ctx.buttonElement) return this.visit(ctx.buttonElement);
+    if (ctx.gridElement) return this.visit(ctx.gridElement);
     if (ctx.headingElement) return this.visit(ctx.headingElement);
     if (ctx.textElement) return this.visit(ctx.textElement);
     if (ctx.linkElement) return this.visit(ctx.linkElement);
@@ -238,6 +241,29 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       props: {
         options
       }
+    };
+  }
+
+  gridElement(ctx: Context) {
+    // Extract all child elements from context
+    const elements = [];
+    
+    // Get all child elements that were parsed between the "grid" keyword and blank line
+    if (ctx.element) {
+      for (const el of ctx.element) {
+        const elementAst = this.visit(el);
+        if (elementAst) {
+          elements.push(elementAst);
+        }
+      }
+    }
+    
+    return {
+      type: "Grid",
+      props: {
+        className: "grid"
+      },
+      elements
     };
   }
 }

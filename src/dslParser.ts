@@ -19,6 +19,8 @@ const NewLine = createToken({
 const Screen = createToken({ name: "Screen", pattern: /screen/ });
 const Input = createToken({ name: "Input", pattern: /input/ });
 const Button = createToken({ name: "Button", pattern: /button/ });
+const Grid = createToken({ name: "Grid", pattern: /grid/ });
+const BlankLine = createToken({ name: "BlankLine", pattern: /\r?\n\s*\r?\n/ });
 const Equals = createToken({ name: "Equals", pattern: /=/ });
 const Colon = createToken({ name: "Colon", pattern: /:/ });
 const Link = createToken({ name: "Link", pattern: /\[([^\]]+)\]\(([^)]+)\)/ });
@@ -92,9 +94,12 @@ const Quote = createToken({
 
 const allTokens = [
   NewLine,
-  WhiteSpace,  Screen,
+  WhiteSpace,  
+  Screen,
   Input,
   Button,
+  Grid,
+  BlankLine,
   SelectField,
   Text,
   Note,
@@ -140,6 +145,7 @@ class UiDslParser extends CstParser {
     this.OR([
       { ALT: () => this.SUBRULE(this.inputElement) },
       { ALT: () => this.SUBRULE(this.buttonElement) },
+      { ALT: () => this.SUBRULE(this.gridElement) },
       { ALT: () => this.SUBRULE(this.headingElement) },
       { ALT: () => this.SUBRULE(this.textElement) },
       { ALT: () => this.SUBRULE(this.linkElement) },
@@ -228,6 +234,15 @@ class UiDslParser extends CstParser {
       { ALT: () => this.CONSUME(Note) },
       { ALT: () => this.CONSUME(Quote) }
     ]);
+  });
+    gridElement = this.RULE("gridElement", () => {
+    this.CONSUME(Grid);
+    this.MANY(() => {
+      this.SUBRULE(this.element);
+    });
+    this.OPTION(() => {
+      this.CONSUME(BlankLine);
+    });
   });
 }
 

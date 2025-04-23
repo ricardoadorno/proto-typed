@@ -21,7 +21,7 @@ export function astToHtml(ast: AstNode | AstNode[]): string {
         .join('\n      ') || '';
       
       return `
-  <div id="${screenName}-screen" class="screen ${screenName}" ${style}>
+  <div id="${screenName}-screen" class="screen container ${screenName}" ${style}>
       ${elementsHtml}
   </div>`;
     })
@@ -49,7 +49,7 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
         .join('\n      ') || '';
       
       return `
-  <div class="screen ${screenName}" ${style}>
+  <div class="screen container ${screenName}" ${style}>
       ${elementsHtml}
   </div>`;
     })
@@ -113,7 +113,7 @@ function screenToHtml(screen: AstNode): string {
     .join('\n      ') || '';
   
   return `
-  <div class="screen ${screenName.toLowerCase()}">
+  <div class="screen container ${screenName.toLowerCase()}">
       ${elementsHtml}
   </div>
   `.trim();
@@ -138,7 +138,7 @@ function nodeToHtml(node: AstNode): string {
       
     case 'Button':
       const buttonProps = node.props || {};
-      return `<button ${attributesToHtml(buttonProps)}>${buttonProps?.children || ''}</button>`;
+      return `<button style="margin: 1rem 1rem 1rem 0" ${attributesToHtml(buttonProps)}>${buttonProps?.children || ''}</button>`;
       
     case 'Heading':
       const level = node.props?.level || 1;
