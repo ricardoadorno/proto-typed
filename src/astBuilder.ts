@@ -25,6 +25,10 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     if (ctx.inputElement) return this.visit(ctx.inputElement);
     if (ctx.buttonElement) return this.visit(ctx.buttonElement);
     if (ctx.gridElement) return this.visit(ctx.gridElement);
+    if (ctx.rowElement) return this.visit(ctx.rowElement);
+    if (ctx.columnElement) return this.visit(ctx.columnElement);
+    if (ctx.cardElement) return this.visit(ctx.cardElement);
+    if (ctx.separatorElement) return this.visit(ctx.separatorElement);
     if (ctx.headingElement) return this.visit(ctx.headingElement);
     if (ctx.textElement) return this.visit(ctx.textElement);
     if (ctx.linkElement) return this.visit(ctx.linkElement);
@@ -62,11 +66,21 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
         children: content
       }
     };
-  }
-
-  linkElement(ctx: Context) {
-    const linkMatch = ctx.Link[0].image.match(/\[([^\]]+)\]\(([^)]+)\)/);
-    const [_, text, url] = linkMatch || ['', '', ''];
+  }  linkElement(ctx: Context) {
+    const linkText = ctx.Link[0].image;
+    let text = '', url = '';
+    
+    // Check if it's the markdown-style link [text](url) or the DSL style link ["url"] text
+    const markdownMatch = linkText.match(/\[([^\]]+)\]\(([^)]+)\)/);
+    const dslMatch = linkText.match(/link\s+\[\"([^\"]*)\"\]\s+([^\n\r]+)/);
+    
+    if (markdownMatch) {
+      text = markdownMatch[1];
+      url = markdownMatch[2];
+    } else if (dslMatch) {
+      url = dslMatch[1];
+      text = dslMatch[2];
+    }
 
     return {
       type: "Link",
@@ -76,10 +90,9 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       }
     };
   }
-
   imageElement(ctx: Context) {
-    const imageMatch = ctx.Image[0].image.match(/!\[([^\]]*)\]\(([^)]+)\)/);
-    const [_, alt, src] = imageMatch || ['', '', ''];
+    const imageMatch = ctx.Image[0].image.match(/image\s+\[\"([^\"]*)\"\]\s+([^\n\r]+)/);
+    const [_, src, alt] = imageMatch || ['', '', ''];
 
     return {
       type: "Image",
@@ -264,6 +277,84 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
         className: "grid"
       },
       elements
+    };
+  }
+
+  rowElement(ctx: Context) {
+    const elements = [];
+    
+    if (ctx.element) {
+      for (const el of ctx.element) {
+        const elementAst = this.visit(el);
+        if (elementAst) {
+          elements.push(elementAst);
+        }
+      }
+    }
+    
+    // Extract attributes if present
+    const attributesToken = ctx.attributes?.[0];
+    const attributes = attributesToken ? attributesToken.image.slice(1, -1) : '';
+    
+    return {
+      type: "Row",
+      props: {
+        className: "row" + (attributes ? ` ${attributes}` : '')
+      },
+      elements
+    };
+  }
+  
+  columnElement(ctx: Context) {
+    const elements = [];
+    
+    if (ctx.element) {
+      for (const el of ctx.element) {
+        const elementAst = this.visit(el);
+        if (elementAst) {
+          elements.push(elementAst);
+        }
+      }
+    }
+    
+    // Extract attributes if present
+    const attributesToken = ctx.attributes?.[0];
+    const attributes = attributesToken ? attributesToken.image.slice(1, -1) : '';
+    
+    return {
+      type: "Column",
+      props: {
+        className: "column" + (attributes ? ` ${attributes}` : '')
+      },
+      elements
+    };
+  }
+  
+  cardElement(ctx: Context) {
+    const elements = [];
+    
+    if (ctx.element) {
+      for (const el of ctx.element) {
+        const elementAst = this.visit(el);
+        if (elementAst) {
+          elements.push(elementAst);
+        }
+      }
+    }
+    
+    return {
+      type: "Card",
+      props: {
+        className: "card"
+      },
+      elements
+    };
+  }
+  
+  separatorElement(ctx: Context) {
+    return {
+      type: "Separator",
+      props: {}
     };
   }
 }

@@ -16,15 +16,22 @@ const NewLine = createToken({
   pattern: /\r\n|\r|\n/,
   group: Lexer.SKIPPED
 });
-const Screen = createToken({ name: "Screen", pattern: /screen/ });
+const Screen = createToken({ name: "Screen", pattern: /@?screen/ });
 const Input = createToken({ name: "Input", pattern: /input/ });
 const Button = createToken({ name: "Button", pattern: /button/ });
 const Grid = createToken({ name: "Grid", pattern: /grid/ });
+const Row = createToken({ name: "Row", pattern: /row/ });
+const Column = createToken({ name: "Column", pattern: /col/ });
+const Card = createToken({ name: "Card", pattern: /card/ });
+const Separator = createToken({ name: "Separator", pattern: /---/ });
 const BlankLine = createToken({ name: "BlankLine", pattern: /\r?\n\s*\r?\n/ });
 const Equals = createToken({ name: "Equals", pattern: /=/ });
 const Colon = createToken({ name: "Colon", pattern: /:/ });
-const Link = createToken({ name: "Link", pattern: /\[([^\]]+)\]\(([^)]+)\)/ });
-const Image = createToken({ name: "Image", pattern: /!\[([^\]]*)\]\(([^)]+)\)/ });
+const Link = createToken({ 
+  name: "Link", 
+  pattern: /(?:\r\n|\r|\n|\s)*(?:\[([^\]]+)\]\(([^)]+)\)|link\s+\[\"([^\"]*)\"\]\s+([^\n\r]+))/ 
+});
+const Image = createToken({ name: "Image", pattern: /image\s+\[\"([^\"]*)\"\]\s+([^\n\r]+)/ });
 const Identifier = createToken({ name: "Identifier", pattern: /[a-zA-Z_][a-zA-Z0-9_]*/ });
 const StringLiteral = createToken({ name: "StringLiteral", pattern: /"[^"]*"/ });
 
@@ -99,6 +106,10 @@ const allTokens = [
   Input,
   Button,
   Grid,
+  Row,
+  Column,
+  Card,
+  Separator,
   BlankLine,
   SelectField,
   Text,
@@ -146,6 +157,10 @@ class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.inputElement) },
       { ALT: () => this.SUBRULE(this.buttonElement) },
       { ALT: () => this.SUBRULE(this.gridElement) },
+      { ALT: () => this.SUBRULE(this.rowElement) },
+      { ALT: () => this.SUBRULE(this.columnElement) },
+      { ALT: () => this.SUBRULE(this.cardElement) },
+      { ALT: () => this.SUBRULE(this.separatorElement) },
       { ALT: () => this.SUBRULE(this.headingElement) },
       { ALT: () => this.SUBRULE(this.textElement) },
       { ALT: () => this.SUBRULE(this.linkElement) },
@@ -243,6 +258,46 @@ class UiDslParser extends CstParser {
     this.OPTION(() => {
       this.CONSUME(BlankLine);
     });
+  });
+  
+  rowElement = this.RULE("rowElement", () => {
+    this.CONSUME(Row);
+    this.OPTION(() => {
+      this.CONSUME(StringLiteral, { LABEL: "attributes" });
+    });
+    this.MANY(() => {
+      this.SUBRULE(this.element);
+    });
+    this.OPTION2(() => {
+      this.CONSUME2(BlankLine);
+    });
+  });
+  
+  columnElement = this.RULE("columnElement", () => {
+    this.CONSUME(Column);
+    this.OPTION(() => {
+      this.CONSUME(StringLiteral, { LABEL: "attributes" });
+    });
+    this.MANY(() => {
+      this.SUBRULE(this.element);
+    });
+    this.OPTION2(() => {
+      this.CONSUME2(BlankLine);
+    });
+  });
+  
+  cardElement = this.RULE("cardElement", () => {
+    this.CONSUME(Card);
+    this.MANY(() => {
+      this.SUBRULE(this.element);
+    });
+    this.OPTION(() => {
+      this.CONSUME(BlankLine);
+    });
+  });
+  
+  separatorElement = this.RULE("separatorElement", () => {
+    this.CONSUME(Separator);
   });
 }
 

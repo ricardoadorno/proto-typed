@@ -6,54 +6,81 @@ import { AstNode } from './types/astNode';
 
 
 export default function App() {
-    const [input, setInput] = useState(`screen Settings:
-  # User Preferences
-    text Welcome to the settings panel. Here you can customize your application preferences.
+    const [input, setInput] = useState(`@screen SyntaxDemo:
+  # Syntax Demonstration
+  text This screen demonstrates all syntax elements available in our DSL.
   
-  ### Privacy Settings
-  text Configure your privacy and security options below to ensure your account remains secure.
+  ## Typography
+  # Heading 1
+  ## Heading 2
+  ### Heading 3
+  text This is a paragraph of text that demonstrates the text element.
   
-  [x] Enable two-factor authentication
-  [x] Backup data automatically
-  [ ] Share usage statistics
-    note Two-factor authentication adds an extra layer of security to your account.
+  ---
   
-  ### Notifications
-  text Choose how you want to receive updates and alerts from the application.
+  ## Media Elements
+  image ["https://picsum.photos/200/100"] Sample Image
   
-  [x] Email notifications
-  [ ] Push notifications
-  [ ] Desktop alerts
-  ### Communication  quote Your privacy matters - customize how others can interact with you.
+  ## Interactive Elements
+  link ["https://github.com"] GitHub Link
+  button Submit Form
   
-  [ ] Subscribe to newsletter
-  [x] Receive security alerts
-  [ ] Get product updates
-    button "Save Settings"
+  ## Form Elements
+  input text Username
+  input password Password
   
-  [Go to Profile](Profile)
+  radio
+    () Option 1
+    (X) Option 2
+    () Option 3
   
-screen Profile:
-  ## Profile Settings
+  checkbox
+    [X] Remember me
+    [ ] Subscribe to newsletter
+    [X] Accept terms
   
-  text Manage your profile settings and visibility options here.
+  select
+    <[Option 1]>
+    <[Option 2]>
+    <[Option 3]>
   
-  ### Account Options
-  text Control what information is visible to other users.
+  range 0 100
   
-  [x] Make profile public
-  [ ] Show email address
-  [ ] Allow messages from non-contacts
-    note Making your profile public allows other users to find and connect with you.
+  ## Layout Elements
+  row []
+    col []
+      text Column 1 content
+    col []
+      text Column 2 content
   
-  ### Data Sharing
-  quote Choose what data you want to share with the community.
+  ## Complex Components
+  card
+    row []
+      # Card Title
+    row full
+      text Card content goes here
+      input text Card input
+    row []
+      button Submit
+      button Cancel
+      
+  ## Navigation
+  link ["SecondScreen"] Go to Second Screen
   
-  [ ] Share activity status
-  [x] Allow friend requests
-  [ ] Show online status
+@screen SecondScreen:
+  # Second Screen
+  text This is another screen to demonstrate navigation.  ## Cards with Grid Layout
+  card
+    grid
+      text "First grid item"
+      text "Second grid item"
+      text "Third grid item"
   
-  button "Update Profile"
+  quote This is a special quote element that can be used to highlight important information.
+  
+  note This is a note element for showing additional context or hints.
+  
+  [Go back to first screen](SyntaxDemo)
   `);
     const [screens, setScreens] = useState<AstNode[]>([]);
     const [error, setError] = useState<string | null>(null);

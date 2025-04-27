@@ -143,7 +143,8 @@ function nodeToHtml(node: AstNode): string {
     case 'Heading':
       const level = node.props?.level || 1;
       return `<h${level}>${node.props?.children || ''}</h${level}>`;
-        case 'Link':
+        
+    case 'Link':
       const href = node.props?.href || '#';
       // Check if this is an internal navigation link (a screen name) or an external link
       const isInternalLink = !href.includes('://') && !href.startsWith('mailto:');
@@ -160,7 +161,8 @@ function nodeToHtml(node: AstNode): string {
       const src = node.props?.src || '';
       const alt = node.props?.alt || '';
       return `<img src="${src}" alt="${alt}" style="max-width: 100%;" />`;
-        case 'OrderedList':
+        
+    case 'OrderedList':
       const olItems = (node.props?.items || [])
         .map((item: string) => `<li>${item}</li>`)
         .join('\n');
@@ -175,7 +177,8 @@ function nodeToHtml(node: AstNode): string {
     case 'Paragraph':
       const variant = node.props?.variant || 'default';
       return `<p class="${variant}">${node.props?.children || ''}</p>`;
-        case 'RadioGroup':
+        
+    case 'RadioGroup':
       const radioName = `radio-group-${Math.random().toString(36).substring(7)}`;
       const radioOptions = (node.props?.options || [])
         .map((option: { label: string, selected: boolean }) => `
@@ -192,7 +195,8 @@ function nodeToHtml(node: AstNode): string {
         .map((option: string) => `<option value="${option}">${option}</option>`)
         .join('\n');
       return `<select>${options}</select>`;
-        case 'CheckboxGroup':
+        
+    case 'CheckboxGroup':
       const checkboxOptions = (node.props?.options || [])
         .map((option: { label: string, checked: boolean }) => `
           <label>
@@ -202,6 +206,27 @@ function nodeToHtml(node: AstNode): string {
         `)
         .join('\n');
       return `<div class="checkbox-group">${checkboxOptions}</div>`;
+      
+    case 'Grid':
+      const gridElements = node.elements?.map(element => nodeToHtml(element)).join('\n') || '';
+      return `<div class="grid">${gridElements}</div>`;
+      
+    case 'Row':
+      const rowElements = node.elements?.map(element => nodeToHtml(element)).join('\n') || '';
+      const rowClass = node.props?.className || 'row';
+      return `<div class="${rowClass}">${rowElements}</div>`;
+      
+    case 'Column':
+      const colElements = node.elements?.map(element => nodeToHtml(element)).join('\n') || '';
+      const colClass = node.props?.className || 'column';
+      return `<div class="${colClass}">${colElements}</div>`;
+      
+    case 'Card':
+      const cardElements = node.elements?.map(element => nodeToHtml(element)).join('\n') || '';
+      return `<article class="card">${cardElements}</article>`;
+      
+    case 'Separator':
+      return `<hr>`;
       
     default:
       console.warn(`Unknown node type: ${node.type}`);
