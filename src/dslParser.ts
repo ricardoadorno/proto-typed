@@ -27,22 +27,22 @@ const Separator = createToken({ name: "Separator", pattern: /---/ });
 const BlankLine = createToken({ name: "BlankLine", pattern: /\r?\n\s*\r?\n/ });
 const Equals = createToken({ name: "Equals", pattern: /=/ });
 const Colon = createToken({ name: "Colon", pattern: /:/ });
-const Link = createToken({ 
-  name: "Link", 
-  pattern: /(?:\r\n|\r|\n|\s)*(?:\[([^\]]+)\]\(([^)]+)\)|link\s+\[\"([^\"]*)\"\]\s+([^\n\r]+))/ 
+const Link = createToken({
+  name: "Link",
+  pattern: /(?:\r\n|\r|\n|\s)*(?:\[([^\]]+)\]\(([^)]+)\)|link\s+\[\"([^\"]*)\"\]\s+([^\n\r]+))/
 });
 const Image = createToken({ name: "Image", pattern: /image\s+\[\"([^\"]*)\"\]\s+([^\n\r]+)/ });
 const Identifier = createToken({ name: "Identifier", pattern: /[a-zA-Z_][a-zA-Z0-9_]*/ });
 const StringLiteral = createToken({ name: "StringLiteral", pattern: /"[^"]*"/ });
 
 // List tokens
-const OrderedListItem = createToken({ 
-  name: "OrderedListItem", 
-  pattern: /(?:\r\n|\r|\n|\s)*\d+\.\s+([^\n\r]+)/ 
+const OrderedListItem = createToken({
+  name: "OrderedListItem",
+  pattern: /(?:\r\n|\r|\n|\s)*\d+\.\s+([^\n\r]+)/
 });
-const UnorderedListItem = createToken({ 
-  name: "UnorderedListItem", 
-  pattern: /(?:\r\n|\r|\n|\s)*-\s+([^\n\r]+)/ 
+const UnorderedListItem = createToken({
+  name: "UnorderedListItem",
+  pattern: /(?:\r\n|\r|\n|\s)*-\s+([^\n\r]+)/
 });
 
 const RadioOption = createToken({
@@ -56,29 +56,29 @@ const CheckboxOption = createToken({
 });
 
 // Define heading patterns that include the content
-const Heading1 = createToken({ 
-  name: "Heading1", 
-  pattern: /(?:\r\n|\r|\n|\s)*#(?!#)\s+([^\n\r#\[\]"=:]+)/ 
+const Heading1 = createToken({
+  name: "Heading1",
+  pattern: /(?:\r\n|\r|\n|\s)*#(?!#)\s+([^\n\r#\[\]"=:]+)/
 });
-const Heading2 = createToken({ 
-  name: "Heading2", 
-  pattern: /(?:\r\n|\r|\n|\s)*##(?!#)\s+([^\n\r#\[\]"=:]+)/ 
+const Heading2 = createToken({
+  name: "Heading2",
+  pattern: /(?:\r\n|\r|\n|\s)*##(?!#)\s+([^\n\r#\[\]"=:]+)/
 });
-const Heading3 = createToken({ 
-  name: "Heading3", 
-  pattern: /(?:\r\n|\r|\n|\s)*###(?!#)\s+([^\n\r#\[\]"=:]+)/ 
+const Heading3 = createToken({
+  name: "Heading3",
+  pattern: /(?:\r\n|\r|\n|\s)*###(?!#)\s+([^\n\r#\[\]"=:]+)/
 });
-const Heading4 = createToken({ 
-  name: "Heading4", 
-  pattern: /(?:\r\n|\r|\n|\s)*####(?!#)\s+([^\n\r#\[\]"=:]+)/ 
+const Heading4 = createToken({
+  name: "Heading4",
+  pattern: /(?:\r\n|\r|\n|\s)*####(?!#)\s+([^\n\r#\[\]"=:]+)/
 });
-const Heading5 = createToken({ 
-  name: "Heading5", 
-  pattern: /(?:\r\n|\r|\n|\s)*#####(?!#)\s+([^\n\r#\[\]"=:]+)/ 
+const Heading5 = createToken({
+  name: "Heading5",
+  pattern: /(?:\r\n|\r|\n|\s)*#####(?!#)\s+([^\n\r#\[\]"=:]+)/
 });
-const Heading6 = createToken({ 
-  name: "Heading6", 
-  pattern: /(?:\r\n|\r|\n|\s)*######\s+([^\n\r#\[\]"=:]+)/ 
+const Heading6 = createToken({
+  name: "Heading6",
+  pattern: /(?:\r\n|\r|\n|\s)*######\s+([^\n\r#\[\]"=:]+)/
 });
 
 const SelectField = createToken({
@@ -86,22 +86,22 @@ const SelectField = createToken({
   pattern: /(?:\r\n|\r|\n|\s)*<\[([^\]]+)\]>(?:\r\n|\r|\n|\s)*/
 });
 
-const Text = createToken({ 
-  name: "Text", 
-  pattern: /(?:\r\n|\r|\n|\s)*text\s+([^\n\r]+)/ 
+const Text = createToken({
+  name: "Text",
+  pattern: /(?:\r\n|\r|\n|\s)*text\s+([^\n\r]+)/
 });
-const Note = createToken({ 
-  name: "Note", 
-  pattern: /(?:\r\n|\r|\n|\s)*note\s+([^\n\r]+)/ 
+const Note = createToken({
+  name: "Note",
+  pattern: /(?:\r\n|\r|\n|\s)*note\s+([^\n\r]+)/
 });
-const Quote = createToken({ 
-  name: "Quote", 
-  pattern: /(?:\r\n|\r|\n|\s)*quote\s+([^\n\r]+)/ 
+const Quote = createToken({
+  name: "Quote",
+  pattern: /(?:\r\n|\r|\n|\s)*quote\s+([^\n\r]+)/
 });
 
 const allTokens = [
   NewLine,
-  WhiteSpace,  
+  WhiteSpace,
   Screen,
   Input,
   Button,
@@ -152,7 +152,7 @@ class UiDslParser extends CstParser {
     this.MANY(() => {
       this.SUBRULE(this.element);
     });
-  });  element = this.RULE("element", () => {
+  }); element = this.RULE("element", () => {
     this.OR([
       { ALT: () => this.SUBRULE(this.inputElement) },
       { ALT: () => this.SUBRULE(this.buttonElement) },
@@ -243,14 +243,16 @@ class UiDslParser extends CstParser {
     this.AT_LEAST_ONE(() => {
       this.CONSUME(CheckboxOption);
     });
-  });  textElement = this.RULE("textElement", () => {
+  });
+  textElement = this.RULE("textElement", () => {
     this.OR([
       { ALT: () => this.CONSUME(Text) },
       { ALT: () => this.CONSUME(Note) },
       { ALT: () => this.CONSUME(Quote) }
     ]);
   });
-    gridElement = this.RULE("gridElement", () => {
+
+  gridElement = this.RULE("gridElement", () => {
     this.CONSUME(Grid);
     this.MANY(() => {
       this.SUBRULE(this.element);
@@ -259,7 +261,7 @@ class UiDslParser extends CstParser {
       this.CONSUME(BlankLine);
     });
   });
-  
+
   rowElement = this.RULE("rowElement", () => {
     this.CONSUME(Row);
     this.OPTION(() => {
@@ -272,7 +274,7 @@ class UiDslParser extends CstParser {
       this.CONSUME2(BlankLine);
     });
   });
-  
+
   columnElement = this.RULE("columnElement", () => {
     this.CONSUME(Column);
     this.OPTION(() => {
@@ -285,7 +287,7 @@ class UiDslParser extends CstParser {
       this.CONSUME2(BlankLine);
     });
   });
-  
+
   cardElement = this.RULE("cardElement", () => {
     this.CONSUME(Card);
     this.MANY(() => {
@@ -295,7 +297,7 @@ class UiDslParser extends CstParser {
       this.CONSUME(BlankLine);
     });
   });
-  
+
   separatorElement = this.RULE("separatorElement", () => {
     this.CONSUME(Separator);
   });
@@ -311,7 +313,7 @@ export function parseInput(text: string): CstNode {
   if (parser.errors.length > 0) {
     throw new Error("Parsing error: " + parser.errors[0].message);
   }
-  
+
   return cst;
 }
 

@@ -56,17 +56,17 @@ range 0 100
 ---
 
 ### row & column
-row []
-    col []
+row 
+    col 
 
-col []
+col 
 
 ## Complex Components
 ### card
 card
     row
         # lorem 
-    row full
+    row
         input text Foo
         inout password Bar
     row

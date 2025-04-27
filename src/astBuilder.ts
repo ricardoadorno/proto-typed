@@ -67,7 +67,6 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       }
     };
   }
-
   linkElement(ctx: Context) {
     const linkText = ctx.Link[0].image;
     let text = '', url = '';
