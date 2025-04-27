@@ -83,11 +83,9 @@ export default function App() {
   [Go back to first screen](SyntaxDemo)
   `);
     const [screens, setScreens] = useState<AstNode[]>([]);
-    const [error, setError] = useState<string | null>(null);
-
-    const handleParse = () => {
+    const [error, setError] = useState<string | null>(null); const handleParse = () => {
         try {
-            const screenInputs = input.split(/(?=screen\s)/);
+            const screenInputs = input.split(/(?=@screen\s)/);
 
             const parsedScreens = screenInputs
                 .map(screenInput => screenInput.trim())
