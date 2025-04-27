@@ -14,14 +14,14 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
   screen(ctx: Context) {
     const name = ctx.name[0].image;
     const elements = ctx.element ? ctx.element.map((el: CstNode) => this.visit(el)) : [];
-    
+
     return {
       type: "Screen",
       name,
       elements
     };
-  }  
-    element(ctx: Context) {    
+  }
+  element(ctx: Context) {
     if (ctx.inputElement) return this.visit(ctx.inputElement);
     if (ctx.buttonElement) return this.visit(ctx.buttonElement);
     if (ctx.gridElement) return this.visit(ctx.gridElement);
@@ -46,8 +46,8 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     let level = 1;
     let content = '';
 
-    const heading = ctx.Heading1?.[0] || ctx.Heading2?.[0] || ctx.Heading3?.[0] || 
-                   ctx.Heading4?.[0] || ctx.Heading5?.[0] || ctx.Heading6?.[0];
+    const heading = ctx.Heading1?.[0] || ctx.Heading2?.[0] || ctx.Heading3?.[0] ||
+      ctx.Heading4?.[0] || ctx.Heading5?.[0] || ctx.Heading6?.[0];
 
     if (ctx.Heading1) level = 1;
     else if (ctx.Heading2) level = 2;
@@ -66,14 +66,16 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
         children: content
       }
     };
-  }  linkElement(ctx: Context) {
+  }
+
+  linkElement(ctx: Context) {
     const linkText = ctx.Link[0].image;
     let text = '', url = '';
-    
+
     // Check if it's the markdown-style link [text](url) or the DSL style link ["url"] text
     const markdownMatch = linkText.match(/\[([^\]]+)\]\(([^)]+)\)/);
     const dslMatch = linkText.match(/link\s+\[\"([^\"]*)\"\]\s+([^\n\r]+)/);
-    
+
     if (markdownMatch) {
       text = markdownMatch[1];
       url = markdownMatch[2];
@@ -102,11 +104,11 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       }
     };
   }
-  
+
   inputElement(ctx: Context) {
     const attributes = ctx.attribute ? ctx.attribute.map((attr: CstNode) => this.visit(attr)) : [];
     const props = Object.fromEntries(attributes.map((attr: any) => [attr.name, attr.value]));
-    
+
     return {
       type: "Input",
       props
@@ -115,7 +117,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
 
   buttonElement(ctx: Context) {
     const text = ctx.text[0].image.slice(1, -1);
-    
+
     return {
       type: "Button",
       props: {
@@ -127,13 +129,13 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
   attribute(ctx: Context) {
     const name = ctx.name[0].image;
     let value;
-    
+
     if (ctx.value[0].tokenType.name === "StringLiteral") {
       value = ctx.value[0].image.slice(1, -1);
     } else {
       value = ctx.value[0].image;
     }
-    
+
     return {
       name,
       value
@@ -190,7 +192,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       console.warn('No checkbox options found in context');
       return null;
     }
-    
+
     const options = ctx.CheckboxOption.map((option: any) => {
       const match = option.image.match(/\[([xX ])?\]\s*([^\n\r]+)/);
       if (!match) {
@@ -209,8 +211,8 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
         options
       }
     };
-  }  
-  
+  }
+
   textElement(ctx: Context) {
     let type = "Paragraph";
     let variant = "text";
@@ -243,7 +245,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     if (!ctx.SelectField) {
       return null;
     }
-    
+
     const options = ctx.SelectField.map((option: any) => {
       const match = option.image.match(/<\[([^\]]+)\]>/);
       return match ? match[1].trim() : '';
@@ -260,7 +262,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
   gridElement(ctx: Context) {
     // Extract all child elements from context
     const elements = [];
-    
+
     // Get all child elements that were parsed between the "grid" keyword and blank line
     if (ctx.element) {
       for (const el of ctx.element) {
@@ -270,7 +272,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
         }
       }
     }
-    
+
     return {
       type: "Grid",
       props: {
@@ -282,7 +284,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
 
   rowElement(ctx: Context) {
     const elements = [];
-    
+
     if (ctx.element) {
       for (const el of ctx.element) {
         const elementAst = this.visit(el);
@@ -291,11 +293,11 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
         }
       }
     }
-    
+
     // Extract attributes if present
     const attributesToken = ctx.attributes?.[0];
     const attributes = attributesToken ? attributesToken.image.slice(1, -1) : '';
-    
+
     return {
       type: "Row",
       props: {
@@ -304,10 +306,10 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       elements
     };
   }
-  
+
   columnElement(ctx: Context) {
     const elements = [];
-    
+
     if (ctx.element) {
       for (const el of ctx.element) {
         const elementAst = this.visit(el);
@@ -316,11 +318,11 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
         }
       }
     }
-    
+
     // Extract attributes if present
     const attributesToken = ctx.attributes?.[0];
     const attributes = attributesToken ? attributesToken.image.slice(1, -1) : '';
-    
+
     return {
       type: "Column",
       props: {
@@ -329,10 +331,10 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       elements
     };
   }
-  
+
   cardElement(ctx: Context) {
     const elements = [];
-    
+
     if (ctx.element) {
       for (const el of ctx.element) {
         const elementAst = this.visit(el);
@@ -341,7 +343,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
         }
       }
     }
-    
+
     return {
       type: "Card",
       props: {
@@ -350,7 +352,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       elements
     };
   }
-  
+
   separatorElement(ctx: Context) {
     return {
       type: "Separator",
