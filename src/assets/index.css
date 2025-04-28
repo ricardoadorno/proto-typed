@@ -1,4 +1,6 @@
-
+.card {
+    background-color: #282e3d;
+}
 
 .code-editor{
     /*height : 100%;*/
@@ -20,6 +22,7 @@
     /*background-image: linear-gradient(60deg, #ebf1fa 1%, #ebf1fa 100%);*/
     border-radius: 40px;
     box-shadow: 0px 0px 0px 11px #1f1f1f, 0px 0px 0px 13px #191919, 0px 0px 0px 20px #111;
+    z-index: 99999;
 }
 .iphone-x:before, .iphone-x:after {
     content: '';

@@ -1,17 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { parseInput } from "./dslParser";
 import { astBuilder } from "./astBuilder";
 import { astToHtml, astToHtmlDocument } from "./astToHtml";
 import { AstNode } from './types/astNode';
 import login from './examples/login';
 import AceEditor from "react-ace";
+import { RenderOptions } from './types/renderOptions';
 
 
 export default function App() {
     const [input, setInput] = useState(login);
     const [uiStyle, setUiStyle] = useState("iphone-x");
     const [screens, setScreens] = useState<AstNode[]>([]);
-    const [error, setError] = useState<string | null>(null); const handleParse = () => {
+    const [currentScreen, setCurrentScreen] = useState<string>();
+
+    const [error, setError] = useState<string | null>(null);
+
+    const handleParse = () => {
         try {
             const screenInputs = input.split(/(?=@screen\s)/);
 
@@ -27,11 +32,14 @@ export default function App() {
 
             setScreens(parsedScreens);
             setError(null);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             setScreens([]);
             setError(err.message);
         }
-    }; const exportAsHtml = () => {
+    };
+
+    const exportAsHtml = () => {
         if (screens.length === 0) {
             alert("Please parse the input first to generate content.");
             return;
@@ -50,11 +58,13 @@ export default function App() {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-    }; const renderScreen = () => {
+    };
+
+    const renderScreen = (renderOptions: RenderOptions) => {
         if (screens.length === 0) return null;
 
         // Convert AST to HTML string
-        const htmlString = astToHtml(screens);
+        const htmlString = astToHtml(screens, renderOptions);
 
         // Return a div with the HTML content injected and add the click handler
         return (
@@ -62,12 +72,12 @@ export default function App() {
                 style={{ padding: "2rem 1rem 1rem 1rem", overflow: "auto", height: "100%", width: "100%" }}
                 dangerouslySetInnerHTML={{ __html: htmlString }}
                 onClick={(e) => {
-                    // Handle link clicks for screen navigation
                     if (e.target instanceof HTMLAnchorElement && e.target.hasAttribute('data-screen-link')) {
                         e.preventDefault();
 
                         const screenName = e.target.getAttribute('data-screen-link');
                         if (screenName) {
+                            setCurrentScreen(screenName);
                             // Hide all screens
                             const screenElements = document.querySelectorAll('.screen');
                             screenElements.forEach(screen => {
@@ -86,39 +96,34 @@ export default function App() {
         );
     };
 
+    useEffect(() => {
+        handleParse();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [input]);
+
     return (
         <div style={{ padding: 20, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: "2rem" }}>
 
             <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
                 <h2>UI DSL Parser</h2>
-                <div
-                    style={{
-                        display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem", paddingBottom: "1rem"
-                    }} >
-                    <button onClick={handleParse}>Parse</button>
-                    <button onClick={exportAsHtml} style={{ backgroundColor: "#28a745" }}>Export as HTML</button>
+                <div>
+                    <div style={{ display: "flex", gap: "1rem" }}>
+                        <button onClick={handleParse}>Parse</button>
+                        <button onClick={exportAsHtml} style={{ backgroundColor: "#28a745" }}>Export as HTML</button>
+                    </div>
                     <select
                         value={uiStyle}
                         onChange={(e) => setUiStyle(e.target.value)}
+                        style={{
+                            marginTop: "1rem",
+                        }}
                     >
                         <option value="iphone-x">iPhone X</option>
                         <option value="browser-mockup with-url">Browser</option>
                     </select>
                 </div>
+                {currentScreen}
                 {error && <pre style={{ color: "red" }}>{error}</pre>}
-                {/* <textarea
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    rows={10}
-                    style={{
-                        flex: 1,
-                        width: "100%",
-                        minHeight: "100rem",
-                        fontFamily: "monospace",
-                        marginTop: "1rem",
-                        resize: "none",
-                    }}
-                /> */}
                 <AceEditor
                     placeholder=""
                     mode="markdown"
@@ -161,7 +166,7 @@ export default function App() {
             <div>
                 <h3 style={{ padding: "1rem 0" }}>Rendered Screen</h3>
                 <div className={uiStyle}>
-                    {renderScreen()}
+                    {renderScreen({ currentScreen })}
                 </div>
             </div>
         </div>
