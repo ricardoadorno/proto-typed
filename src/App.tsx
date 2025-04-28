@@ -108,7 +108,6 @@ export default function App() {
                 <h2>UI DSL Parser</h2>
                 <div>
                     <div style={{ display: "flex", gap: "1rem" }}>
-                        <button onClick={handleParse}>Parse</button>
                         <button onClick={exportAsHtml} style={{ backgroundColor: "#28a745" }}>Export as HTML</button>
                     </div>
                     <select
@@ -122,7 +121,6 @@ export default function App() {
                         <option value="browser-mockup with-url">Browser</option>
                     </select>
                 </div>
-                {currentScreen}
                 {error && <pre style={{ color: "red" }}>{error}</pre>}
                 <AceEditor
                     placeholder=""

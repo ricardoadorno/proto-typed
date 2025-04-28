@@ -17,7 +17,7 @@ const NewLine = createToken({
   group: Lexer.SKIPPED
 });
 const Screen = createToken({ name: "Screen", pattern: /@?screen/ });
-const Input = createToken({ name: "Input", pattern: /input/ });
+const Input = createToken({ name: "Input", pattern: /___/ });
 const Button = createToken({ name: "Button", pattern: /button/ });
 const Grid = createToken({ name: "Grid", pattern: /grid/ });
 const Row = createToken({ name: "Row", pattern: /row/ });
