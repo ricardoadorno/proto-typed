@@ -2,6 +2,24 @@
     background-color: #282e3d;
 }
 
+.note {
+    background-color: red;
+    color: #fff;
+    padding: 0.5em 1em 0.5em 1em;
+    border-radius: 0.5em;
+    margin: 0.5em 0.5em 0.5em 0.5em;
+    box-shadow: 0 0.1em 1em 0 rgba(0, 0, 0, 0.4);
+}
+
+.quote {
+    background-color: #282e3d;
+    color: #fff;
+    padding: 0.5em 1em 0.5em 1em;
+    border-radius: 0.5em;
+    margin: 0.5em 0.5em 0.5em 0.5em;
+    box-shadow: 0 0.1em 1em 0 rgba(0, 0, 0, 0.4);
+}
+
 .code-editor{
     /*height : 100%;*/
     box-shadow: 0 0.1em 1em 0 rgba(0, 0, 0, 0.4);

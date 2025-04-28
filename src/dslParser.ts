@@ -17,7 +17,7 @@ const NewLine = createToken({
   group: Lexer.SKIPPED
 });
 const Screen = createToken({ name: "Screen", pattern: /@?screen/ });
-const Input = createToken({ name: "Input", pattern: /___/ });
+const Input = createToken({ name: "Input", pattern: /__/ });
 const Button = createToken({ name: "Button", pattern: /button/ });
 const Grid = createToken({ name: "Grid", pattern: /grid/ });
 const Row = createToken({ name: "Row", pattern: /row/ });
@@ -88,15 +88,15 @@ const SelectField = createToken({
 
 const Text = createToken({
   name: "Text",
-  pattern: /(?:\r\n|\r|\n|\s)*text\s+([^\n\r]+)/
+  pattern: /(?:\r\n|\r|\n|\s)*>\s+([^\n\r]+)/
 });
 const Note = createToken({
   name: "Note",
-  pattern: /(?:\r\n|\r|\n|\s)*note\s+([^\n\r]+)/
+  pattern: /\*>\s+([^\n\r]+)/
 });
 const Quote = createToken({
   name: "Quote",
-  pattern: /(?:\r\n|\r|\n|\s)*quote\s+([^\n\r]+)/
+  pattern: /">\s+([^\n\r]+)/
 });
 
 const allTokens = [

@@ -218,15 +218,15 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     let content = "";
 
     if (ctx.Text) {
-      const match = ctx.Text[0].image.match(/text\s+([^\n\r]+)/);
+      const match = ctx.Text[0].image.match(/\>\s+([^\n\r]+)/);
       content = match ? match[1].trim() : '';
       variant = "text";
     } else if (ctx.Note) {
-      const match = ctx.Note[0].image.match(/note\s+([^\n\r]+)/);
+      const match = ctx.Note[0].image.match(/\*>\s+([^\n\r]+)/);
       content = match ? match[1].trim() : '';
       variant = "note";
     } else if (ctx.Quote) {
-      const match = ctx.Quote[0].image.match(/quote\s+([^\n\r]+)/);
+      const match = ctx.Quote[0].image.match(/\">\s+([^\n\r]+)/);
       content = match ? match[1].trim() : '';
       variant = "quote";
     }
