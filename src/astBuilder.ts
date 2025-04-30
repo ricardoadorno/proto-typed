@@ -39,6 +39,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     if (ctx.radioButtonGroup) return this.visit(ctx.radioButtonGroup);
     if (ctx.checkboxGroup) return this.visit(ctx.checkboxGroup);
     if (ctx.selectField) return this.visit(ctx.selectField);
+    if (ctx.checkboxElement) return this.visit(ctx.checkboxElement);
     console.warn('Unknown element type:', ctx);
     return null;
   }
@@ -121,13 +122,13 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     const linkText = ctx.Link[0].image;
     let text = '', url = '';
 
-    // Check if it's the markdown-style link [text](url) or the DSL style link ["url"] text
-    const markdownMatch = linkText.match(/\[([^\]]+)\]\(([^)]+)\)/);
+    // Updated regex to match the new #[text](url) syntax
+    const markdownMatch = linkText.match(/#\[([^\]]+)\](?:\(([^)]+)\))?/);
     const dslMatch = linkText.match(/link\s+\["([^"]*)"\]\s+([^\n\r]+)/);
 
     if (markdownMatch) {
       text = markdownMatch[1];
-      url = markdownMatch[2];
+      url = markdownMatch[2] || ''; // URL is now optional, default to empty string
     } else if (dslMatch) {
       url = dslMatch[1];
       text = dslMatch[2];
@@ -142,40 +143,40 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     };
   }
 
-    buttonElement(ctx: Context) {
-      const buttonText = ctx.Button[0].image;
-      let text = '', url = '';
-  
-      const markdownMatch = buttonText.match(/\[([^\]]+)\]\(([^)]+)\)/);
-      const dslMatch = buttonText.match(/button\s+\["([^"]*)"\]\s+([^\n\r]+)/);
-  
-      if (markdownMatch) {
-        text = markdownMatch[1];
-        url = markdownMatch[2];
-      } else if (dslMatch) {
-        url = dslMatch[1];
-        text = dslMatch[2];
-      }
-  
-      return {
-        type: "Button",
-        props: {
-          href: url,
-          children: text
-        }
-      };
+  buttonElement(ctx: Context) {
+    const buttonText = ctx.Button[0].image;
+    let text = '', url = '';
+
+    const markdownMatch = buttonText.match(/@\[([^\]]+)\](?:\(([^)]+)\))?/);
+    const dslMatch = buttonText.match(/button\s+\["([^"]*)"\]\s+([^\n\r]+)/);
+
+    if (markdownMatch) {
+      text = markdownMatch[1];
+      url = markdownMatch[2] || ''; // URL is now optional, default to empty string
+    } else if (dslMatch) {
+      url = dslMatch[1];
+      text = dslMatch[2];
     }
+
+    return {
+      type: "Button",
+      props: {
+        href: url,
+        children: text
+      }
+    };
+  }
 
   imageElement(ctx: Context) {
     const imageText = ctx.Image[0].image;
     let text = '', url = '';
 
-    const markdownMatch = imageText.match(/\[([^\]]+)\]\(([^)]+)\)/);
+    const markdownMatch = imageText.match(/!\[([^\]]+)\](?:\(([^)]+)\))?/);
     const dslMatch = imageText.match(/image\s+\["([^"]*)"\]\s+([^\n\r]+)/);
 
     if (markdownMatch) {
       text = markdownMatch[1];
-      url = markdownMatch[2];
+      url = markdownMatch[2] || ''; // URL is now optional, default to empty string
     } else if (dslMatch) {
       url = dslMatch[1];
       text = dslMatch[2];
@@ -285,6 +286,31 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       type: "CheckboxGroup",
       props: {
         options
+      }
+    };
+  }
+
+  checkboxElement(ctx: Context) {
+    if (!ctx.Checkbox || !ctx.Checkbox[0]) {
+      return null;
+    }
+
+    const checkboxText = ctx.Checkbox[0].image;
+    const match = checkboxText.match(/\[([ xX]?)\](?:\s+([^\n\r]+))/);
+    
+    if (!match) {
+      console.warn('Failed to parse checkbox:', checkboxText);
+      return null;
+    }
+
+    const isChecked = match[1]?.toLowerCase() === 'x';
+    const label = match[2] ? match[2].trim() : '';
+
+    return {
+      type: "Checkbox",
+      props: {
+        checked: isChecked,
+        label: label
       }
     };
   }

@@ -9,26 +9,27 @@ const login = `
 
     __ type="text" placeholder="Username"
     __ type="password" placeholder="Password"
+    
     [X] Remember me
     
-    @[Login]("")
+    @[Login]
     row
-      [Forgot Password](ForgotPassword)
+      #[Forgot Password](ForgotPassword)
     > Don't have an account?
-    [Signup](Signup)
+    #[Signup](Signup)
 
 @screen Signup:
   # Create a New Account
     > Join us today! Fill out the form below to create your account.
 
   card
-    __ type=">" placeholder="Username"
+    __ type="text" placeholder="Username"
     __ type="email" placeholder="Email Address"
     __ type="password" placeholder="Password"
     __ type="password" placeholder="Confirm Password"
     
-    @[Sign Up]("")
-    [Login](Login)
+    @[Sign Up]
+    #[Login](Login)
 
 @screen ForgotPassword:
   # Reset Your Password
@@ -38,8 +39,8 @@ const login = `
     # Password Recovery
     > Enter your email address below to receive a password reset link.
     __ type="email" placeholder="Email Address"
-    @[Send Reset Link]("")
-    [Back to Login](Login)
+    @[Send Reset Link]
+    #[Back to Login](Login)
 `
 
 

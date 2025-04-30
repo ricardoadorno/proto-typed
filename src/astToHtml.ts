@@ -209,6 +209,16 @@ function nodeToHtml(node: AstNode): string {
         .join('\n');
       return `<div class="checkbox-group">${checkboxOptions}</div>`;
       
+    case 'Checkbox':
+      const checked = node.props?.checked || false;
+      const label = node.props?.label || '';
+      return `
+        <label>
+          <input type="checkbox" ${checked ? 'checked' : ''} />
+          <span>${label}</span>
+        </label>
+      `;
+      
     case 'Grid':
       const gridElements = node.elements?.map(element => nodeToHtml(element)).join('\n') || '';
       return `<div class="grid">${gridElements}</div>`;

@@ -48,12 +48,12 @@ const SelectField = createToken({
 });
 
 // Interactive Element Tokens
-const Button = createToken({ name: "Button", pattern: /@\[([^\]]+)\]\(([^)]+)\)/ });
+const Button = createToken({ name: "Button", pattern: /@\[([^\]]+)\](?:\(([^)]+)\))?/ });
 const Link = createToken({
   name: "Link",
-  pattern: /\[([^\]]+)\]\(([^)]+)\)/
+  pattern: /#\[([^\]]+)\](?:\(([^)]+)\))?/
 });
-const Image = createToken({ name: "Image", pattern: /!\[([^\]]+)\]\(([^)]+)\)/ });
+const Image = createToken({ name: "Image", pattern: /!\[([^\]]+)\](?:\(([^)]+)\))?/ });
 
 // Content Element Tokens
 const Heading = createToken({
@@ -79,6 +79,12 @@ const OrderedListItem = createToken({
 const UnorderedListItem = createToken({
   name: "UnorderedListItem",
   pattern: /(?:\r\n|\r|\n|\s)*-\s+([^\n\r]+)/
+});
+
+// New standalone Checkbox token
+const Checkbox = createToken({ 
+  name: "Checkbox", 
+  pattern: /\[([ xX]?)\](?:\s+([^\n\r]+))/ 
 });
 
 const allTokens = [
@@ -108,6 +114,7 @@ const allTokens = [
   UnorderedListItem,
   RadioOption,
   CheckboxOption,
+  Checkbox,
 ];
 
 const lexer = new Lexer(allTokens);
@@ -146,6 +153,7 @@ class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.unorderedListElement) },
       { ALT: () => this.SUBRULE(this.radioButtonGroup) },
       { ALT: () => this.SUBRULE(this.checkboxGroup) },
+      { ALT: () => this.SUBRULE(this.checkboxElement) },
       { ALT: () => this.SUBRULE(this.selectField) },
     ]);
   });
@@ -271,6 +279,10 @@ class UiDslParser extends CstParser {
 
   separatorElement = this.RULE("separatorElement", () => {
     this.CONSUME(Separator);
+  });
+
+  checkboxElement = this.RULE("checkboxElement", () => {
+    this.CONSUME(Checkbox);
   });
 }
 
