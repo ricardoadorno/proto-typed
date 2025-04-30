@@ -5,7 +5,7 @@ import {
   CstNode,
 } from "chevrotain";
 
-// Tokens
+// Whitespace & Formatting Tokens
 const WhiteSpace = createToken({
   name: "WhiteSpace",
   pattern: /[ \t]+/,
@@ -16,76 +16,50 @@ const NewLine = createToken({
   pattern: /\r\n|\r|\n/,
   group: Lexer.SKIPPED
 });
+const BlankLine = createToken({ name: "BlankLine", pattern: /\r?\n\s*\r?\n/ });
+
+// Configuration & Structural Tokens
 const Screen = createToken({ name: "Screen", pattern: /@?screen/ });
-const Input = createToken({ name: "Input", pattern: /__/ });
-const Button = createToken({ name: "Button", pattern: /button/ });
+const Equals = createToken({ name: "Equals", pattern: /=/ });
+const Colon = createToken({ name: "Colon", pattern: /:/ });
+const Identifier = createToken({ name: "Identifier", pattern: /[a-zA-Z_][a-zA-Z0-9_]*/ });
+const StringLiteral = createToken({ name: "StringLiteral", pattern: /"[^"]*"/ });
+
+// Layout Family Tokens
 const Grid = createToken({ name: "Grid", pattern: /grid/ });
 const Row = createToken({ name: "Row", pattern: /row/ });
 const Column = createToken({ name: "Column", pattern: /col/ });
 const Card = createToken({ name: "Card", pattern: /card/ });
 const Separator = createToken({ name: "Separator", pattern: /---/ });
-const BlankLine = createToken({ name: "BlankLine", pattern: /\r?\n\s*\r?\n/ });
-const Equals = createToken({ name: "Equals", pattern: /=/ });
-const Colon = createToken({ name: "Colon", pattern: /:/ });
-const Link = createToken({
-  name: "Link",
-  pattern: /(?:\r\n|\r|\n|\s)*(?:\[([^\]]+)\]\(([^)]+)\)|link\s+\[\"([^\"]*)\"\]\s+([^\n\r]+))/
-});
-const Image = createToken({ name: "Image", pattern: /image\s+\[\"([^\"]*)\"\]\s+([^\n\r]+)/ });
-const Identifier = createToken({ name: "Identifier", pattern: /[a-zA-Z_][a-zA-Z0-9_]*/ });
-const StringLiteral = createToken({ name: "StringLiteral", pattern: /"[^"]*"/ });
 
-// List tokens
-const OrderedListItem = createToken({
-  name: "OrderedListItem",
-  pattern: /(?:\r\n|\r|\n|\s)*\d+\.\s+([^\n\r]+)/
-});
-const UnorderedListItem = createToken({
-  name: "UnorderedListItem",
-  pattern: /(?:\r\n|\r|\n|\s)*-\s+([^\n\r]+)/
-});
-
+// Input Family Tokens
+const Input = createToken({ name: "Input", pattern: /__/ });
 const RadioOption = createToken({
   name: "RadioOption",
   pattern: /(?:\r\n|\r|\n|\s)*\([xX ]?\)\s+([^\n\r]+)/
 });
-
 const CheckboxOption = createToken({
   name: "CheckboxOption",
   pattern: /(?:\r\n|\r|\n|\s)*\[([xX ])?]\s+([^\n\r]+)/
 });
-
-// Define heading patterns that include the content
-const Heading1 = createToken({
-  name: "Heading1",
-  pattern: /(?:\r\n|\r|\n|\s)*#(?!#)\s+([^\n\r#\[\]"=:]+)/
-});
-const Heading2 = createToken({
-  name: "Heading2",
-  pattern: /(?:\r\n|\r|\n|\s)*##(?!#)\s+([^\n\r#\[\]"=:]+)/
-});
-const Heading3 = createToken({
-  name: "Heading3",
-  pattern: /(?:\r\n|\r|\n|\s)*###(?!#)\s+([^\n\r#\[\]"=:]+)/
-});
-const Heading4 = createToken({
-  name: "Heading4",
-  pattern: /(?:\r\n|\r|\n|\s)*####(?!#)\s+([^\n\r#\[\]"=:]+)/
-});
-const Heading5 = createToken({
-  name: "Heading5",
-  pattern: /(?:\r\n|\r|\n|\s)*#####(?!#)\s+([^\n\r#\[\]"=:]+)/
-});
-const Heading6 = createToken({
-  name: "Heading6",
-  pattern: /(?:\r\n|\r|\n|\s)*######\s+([^\n\r#\[\]"=:]+)/
-});
-
 const SelectField = createToken({
   name: "SelectField",
   pattern: /(?:\r\n|\r|\n|\s)*<\[([^\]]+)\]>(?:\r\n|\r|\n|\s)*/
 });
 
+// Interactive Element Tokens
+const Button = createToken({ name: "Button", pattern: /@\[([^\]]+)\]\(([^)]+)\)/ });
+const Link = createToken({
+  name: "Link",
+  pattern: /\[([^\]]+)\]\(([^)]+)\)/
+});
+const Image = createToken({ name: "Image", pattern: /!\[([^\]]+)\]\(([^)]+)\)/ });
+
+// Content Element Tokens
+const Heading = createToken({
+  name: "Heading",
+  pattern: /(?:\r\n|\r|\n|\s)*#{1,6}(?!#)\s+([^\n\r#[\]"=:]+)/
+});
 const Text = createToken({
   name: "Text",
   pattern: /(?:\r\n|\r|\n|\s)*>\s+([^\n\r]+)/
@@ -97,6 +71,14 @@ const Note = createToken({
 const Quote = createToken({
   name: "Quote",
   pattern: /">\s+([^\n\r]+)/
+});
+const OrderedListItem = createToken({
+  name: "OrderedListItem",
+  pattern: /(?:\r\n|\r|\n|\s)*\d+\.\s+([^\n\r]+)/
+});
+const UnorderedListItem = createToken({
+  name: "UnorderedListItem",
+  pattern: /(?:\r\n|\r|\n|\s)*-\s+([^\n\r]+)/
 });
 
 const allTokens = [
@@ -115,12 +97,7 @@ const allTokens = [
   Text,
   Note,
   Quote,
-  Heading1,
-  Heading2,
-  Heading3,
-  Heading4,
-  Heading5,
-  Heading6,
+  Heading,
   Link,
   Image,
   Equals,
@@ -182,18 +159,15 @@ class UiDslParser extends CstParser {
   });
 
   headingElement = this.RULE("headingElement", () => {
-    this.OR([
-      { ALT: () => this.CONSUME(Heading1) },
-      { ALT: () => this.CONSUME(Heading2) },
-      { ALT: () => this.CONSUME(Heading3) },
-      { ALT: () => this.CONSUME(Heading4) },
-      { ALT: () => this.CONSUME(Heading5) },
-      { ALT: () => this.CONSUME(Heading6) },
-    ]);
+    this.CONSUME(Heading);
   });
 
   linkElement = this.RULE("linkElement", () => {
     this.CONSUME(Link);
+  });
+
+  buttonElement = this.RULE("buttonElement", () => {
+    this.CONSUME(Button);
   });
 
   imageElement = this.RULE("imageElement", () => {
@@ -207,10 +181,7 @@ class UiDslParser extends CstParser {
     });
   });
 
-  buttonElement = this.RULE("buttonElement", () => {
-    this.CONSUME(Button);
-    this.CONSUME(StringLiteral, { LABEL: "text" });
-  });
+
 
   attribute = this.RULE("attribute", () => {
     this.CONSUME(Identifier, { LABEL: "name" });

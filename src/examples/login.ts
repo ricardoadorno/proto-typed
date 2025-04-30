@@ -11,11 +11,11 @@ const login = `
     __ type="password" placeholder="Password"
     [X] Remember me
     
-    button "Login"
+    @[Login]("")
     row
-      link ["ForgotPassword"] Forgot your password?
+      [Forgot Password](ForgotPassword)
     > Don't have an account?
-    link ["Signup"] Sign up here
+    [Signup](Signup)
 
 @screen Signup:
   # Create a New Account
@@ -27,8 +27,8 @@ const login = `
     __ type="password" placeholder="Password"
     __ type="password" placeholder="Confirm Password"
     
-    button "Sign Up"
-    link ["Login"] Already have an account? Log in here 
+    @[Sign Up]("")
+    [Login](Login)
 
 @screen ForgotPassword:
   # Reset Your Password
@@ -38,8 +38,8 @@ const login = `
     # Password Recovery
     > Enter your email address below to receive a password reset link.
     __ type="email" placeholder="Email Address"
-    button "Send Reset Link"
-    link ["Login"] Back to Login
+    @[Send Reset Link]("")
+    [Back to Login](Login)
 `
 
 

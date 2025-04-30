@@ -22,6 +22,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     };
   }
   element(ctx: Context) {
+    if (ctx.indentedElement) return this.visit(ctx.indentedElement);
     if (ctx.inputElement) return this.visit(ctx.inputElement);
     if (ctx.buttonElement) return this.visit(ctx.buttonElement);
     if (ctx.gridElement) return this.visit(ctx.gridElement);
@@ -42,22 +43,71 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     return null;
   }
 
+  // New method to handle indented elements
+  indentedElement(ctx: Context) {
+    let elementType;
+    // Determine the type of container element
+    if (ctx.Grid) elementType = "Grid";
+    else if (ctx.Row) elementType = "Row";
+    else if (ctx.Column) elementType = "Column";
+    else if (ctx.Card) elementType = "Card";
+    else return null;
+    
+    // Process child elements that are indented
+    const elements = [];
+    if (ctx.element) {
+      for (const el of ctx.element) {
+        const elementAst = this.visit(el);
+        if (elementAst) {
+          elements.push(elementAst);
+        }
+      }
+    }
+    
+    // Extract attributes if present (for Row and Column)
+    const attributesToken = ctx.attributes?.[0];
+    const attributes = attributesToken ? attributesToken.image.slice(1, -1) : '';
+    
+    let props = {};
+    
+    // Set appropriate className based on element type
+    switch (elementType) {
+      case "Grid":
+        props = { className: "grid" };
+        break;
+      case "Row":
+        props = { className: "row" + (attributes ? ` ${attributes}` : '') };
+        break;
+      case "Column":
+        props = { className: "column" + (attributes ? ` ${attributes}` : '') };
+        break;
+      case "Card":
+        props = { className: "card" };
+        break;
+    }
+    
+    return {
+      type: elementType,
+      props,
+      elements
+    };
+  }
+
   headingElement(ctx: Context) {
-    let level = 1;
-    let content = '';
+    if (!ctx.Heading || !ctx.Heading[0]) {
+      return null;
+    }
 
-    const heading = ctx.Heading1?.[0] || ctx.Heading2?.[0] || ctx.Heading3?.[0] ||
-      ctx.Heading4?.[0] || ctx.Heading5?.[0] || ctx.Heading6?.[0];
-
-    if (ctx.Heading1) level = 1;
-    else if (ctx.Heading2) level = 2;
-    else if (ctx.Heading3) level = 3;
-    else if (ctx.Heading4) level = 4;
-    else if (ctx.ading5) level = 5;
-    else if (ctx.Heading6) level = 6;
-
-    const match = heading.image.match(/#+\s+([^\n\r]+)/);
-    content = match ? match[1].trim() : '';
+    const headingToken = ctx.Heading[0];
+    const headingText = headingToken.image;
+    
+    // Extract the level by counting the # characters
+    const hashMatch = headingText.match(/^(?:\r\n|\r|\n|\s)*(#+)(?!#)\s+/);
+    const level = hashMatch ? hashMatch[1].length : 1;
+    
+    // Extract the content by matching everything after the # and whitespace
+    const contentMatch = headingText.match(/#+\s+([^\n\r#[\]"=:]+)/);
+    const content = contentMatch ? contentMatch[1].trim() : '';
 
     return {
       type: "Heading",
@@ -73,7 +123,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
 
     // Check if it's the markdown-style link [text](url) or the DSL style link ["url"] text
     const markdownMatch = linkText.match(/\[([^\]]+)\]\(([^)]+)\)/);
-    const dslMatch = linkText.match(/link\s+\[\"([^\"]*)\"\]\s+([^\n\r]+)/);
+    const dslMatch = linkText.match(/link\s+\["([^"]*)"\]\s+([^\n\r]+)/);
 
     if (markdownMatch) {
       text = markdownMatch[1];
@@ -91,15 +141,51 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       }
     };
   }
+
+    buttonElement(ctx: Context) {
+      const buttonText = ctx.Button[0].image;
+      let text = '', url = '';
+  
+      const markdownMatch = buttonText.match(/\[([^\]]+)\]\(([^)]+)\)/);
+      const dslMatch = buttonText.match(/button\s+\["([^"]*)"\]\s+([^\n\r]+)/);
+  
+      if (markdownMatch) {
+        text = markdownMatch[1];
+        url = markdownMatch[2];
+      } else if (dslMatch) {
+        url = dslMatch[1];
+        text = dslMatch[2];
+      }
+  
+      return {
+        type: "Button",
+        props: {
+          href: url,
+          children: text
+        }
+      };
+    }
+
   imageElement(ctx: Context) {
-    const imageMatch = ctx.Image[0].image.match(/image\s+\[\"([^\"]*)\"\]\s+([^\n\r]+)/);
-    const [_, src, alt] = imageMatch || ['', '', ''];
+    const imageText = ctx.Image[0].image;
+    let text = '', url = '';
+
+    const markdownMatch = imageText.match(/\[([^\]]+)\]\(([^)]+)\)/);
+    const dslMatch = imageText.match(/image\s+\["([^"]*)"\]\s+([^\n\r]+)/);
+
+    if (markdownMatch) {
+      text = markdownMatch[1];
+      url = markdownMatch[2];
+    } else if (dslMatch) {
+      url = dslMatch[1];
+      text = dslMatch[2];
+    }
 
     return {
       type: "Image",
       props: {
-        src,
-        alt
+        src: url,
+        alt: text
       }
     };
   }
@@ -114,16 +200,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     };
   }
 
-  buttonElement(ctx: Context) {
-    const text = ctx.text[0].image.slice(1, -1);
 
-    return {
-      type: "Button",
-      props: {
-        children: text
-      }
-    };
-  }
 
   attribute(ctx: Context) {
     const name = ctx.name[0].image;
@@ -213,12 +290,11 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
   }
 
   textElement(ctx: Context) {
-    let type = "Paragraph";
     let variant = "text";
     let content = "";
 
     if (ctx.Text) {
-      const match = ctx.Text[0].image.match(/\>\s+([^\n\r]+)/);
+      const match = ctx.Text[0].image.match(/>\s+([^\n\r]+)/);
       content = match ? match[1].trim() : '';
       variant = "text";
     } else if (ctx.Note) {
@@ -226,13 +302,13 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       content = match ? match[1].trim() : '';
       variant = "note";
     } else if (ctx.Quote) {
-      const match = ctx.Quote[0].image.match(/\">\s+([^\n\r]+)/);
+      const match = ctx.Quote[0].image.match(/">\s+([^\n\r]+)/);
       content = match ? match[1].trim() : '';
       variant = "quote";
     }
 
     return {
-      type,
+      type: "Paragraph",
       props: {
         variant,
         children: content
