@@ -52,17 +52,17 @@ export const Grid = createToken({
 
 export const Row = createToken({ 
   name: "Row", 
-  pattern: /row/ 
+  pattern: /row:/ 
 });
 
 export const Column = createToken({ 
   name: "Column", 
-  pattern: /col/ 
+  pattern: /col:/ 
 });
 
 export const Card = createToken({ 
   name: "Card", 
-  pattern: /card/ 
+  pattern: /card:/ 
 });
 
 export const Separator = createToken({ 

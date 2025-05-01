@@ -3,7 +3,7 @@ const login = `
   # Login to Your Account
     > Please enter your credentials to access your account.
 
-  card
+  card:
     ## Welcome Back
       > Enter your login information below to access your account.
 
@@ -13,7 +13,7 @@ const login = `
     [X] Remember me
     
     @[Login]
-    row
+    row:
       #[Forgot Password](ForgotPassword)
     > Don't have an account?
     #[Signup](Signup)
@@ -22,7 +22,7 @@ const login = `
   # Create a New Account
     > Join us today! Fill out the form below to create your account.
 
-  card
+  card:
     __ type="text" placeholder="Username"
     __ type="email" placeholder="Email Address"
     __ type="password" placeholder="Password"
@@ -35,7 +35,7 @@ const login = `
   # Reset Your Password
     > Please enter your email address to reset your password.
   
-  card
+  card:
     # Password Recovery
     > Enter your email address below to receive a password reset link.
     __ type="email" placeholder="Email Address"

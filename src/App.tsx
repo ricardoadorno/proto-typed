@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { parseInput } from "./core/parser";
 import { astBuilder } from "./core/parser/astBuilder";
-// import { astToHtml, astToHtmlDocument } from "./astToHtml";
 import { AstNode } from './types/astNode';
 import login from './examples/login';
-import AceEditor from "react-ace";
+import dashboard from './examples/dashboard';
 import { RenderOptions } from './types/renderOptions';
 import { astToHtmlDocument } from './core/renderer/documentRenderer';
 import { astToHtml } from './core/renderer/astToHtml';
+import AceEditor from "react-ace";
+import ace from 'ace-builds/src-noconflict/ace';
 
+ace.config.set('basePath', '/node_modules/ace-builds/src-noconflict');
 
 export default function App() {
-    const [input, setInput] = useState(login);
+    const [input, setInput] = useState(dashboard);
     const [uiStyle, setUiStyle] = useState("iphone-x");
     const [screens, setScreens] = useState<AstNode[]>([]);
     const [currentScreen, setCurrentScreen] = useState<string>();
@@ -112,6 +114,10 @@ export default function App() {
                     <div style={{ display: "flex", gap: "1rem" }}>
                         <button onClick={exportAsHtml} style={{ backgroundColor: "#28a745" }}>Export as HTML</button>
                     </div>
+                    <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
+                        <button onClick={() => setInput(login)}>Login Example</button>
+                        <button onClick={() => setInput(dashboard)}>Dashboard Example</button>
+                    </div>
                     <select
                         value={uiStyle}
                         onChange={(e) => setUiStyle(e.target.value)}
@@ -126,7 +132,7 @@ export default function App() {
                 {error && <pre style={{ color: "red", height: "5rem", padding: "1rem" }}>{error}</pre>}
                 <AceEditor
                     placeholder=""
-                    mode="markdown"
+                    mode="html"
                     theme="github"
                     className="code-editor"
                     name="codeeditor"
@@ -145,9 +151,7 @@ export default function App() {
                     highlightActiveLine={true}
                     value={input}
                     setOptions={{
-                        enableBasicAutocompletion: true,
-                        enableLiveAutocompletion: false,
-                        enableSnippets: false,
+                        useWorker: false,
                         showLineNumbers: true,
                         tabSize: 2,
                     }} />
