@@ -1,126 +1,13 @@
-import {
-  createToken,
-  Lexer,
-  CstParser,
-  CstNode,
-} from "chevrotain";
+import { CstParser } from "chevrotain";
+import { 
+  allTokens, Screen, Identifier, Colon, Button, Grid, BlankLine, 
+  Row, StringLiteral, Column, Card, Separator, Heading, Link, 
+  Image, Input, OrderedListItem, UnorderedListItem, RadioOption, 
+  CheckboxOption, Checkbox, Text, Note, Quote, SelectField, Equals
+} from "../lexer/tokens";
 
-// Whitespace & Formatting Tokens
-const WhiteSpace = createToken({
-  name: "WhiteSpace",
-  pattern: /[ \t]+/,
-  group: Lexer.SKIPPED,
-});
-const NewLine = createToken({
-  name: "NewLine",
-  pattern: /\r\n|\r|\n/,
-  group: Lexer.SKIPPED
-});
-const BlankLine = createToken({ name: "BlankLine", pattern: /\r?\n\s*\r?\n/ });
-
-// Configuration & Structural Tokens
-const Screen = createToken({ name: "Screen", pattern: /@?screen/ });
-const Equals = createToken({ name: "Equals", pattern: /=/ });
-const Colon = createToken({ name: "Colon", pattern: /:/ });
-const Identifier = createToken({ name: "Identifier", pattern: /[a-zA-Z_][a-zA-Z0-9_]*/ });
-const StringLiteral = createToken({ name: "StringLiteral", pattern: /"[^"]*"/ });
-
-// Layout Family Tokens
-const Grid = createToken({ name: "Grid", pattern: /grid/ });
-const Row = createToken({ name: "Row", pattern: /row/ });
-const Column = createToken({ name: "Column", pattern: /col/ });
-const Card = createToken({ name: "Card", pattern: /card/ });
-const Separator = createToken({ name: "Separator", pattern: /---/ });
-
-// Input Family Tokens
-const Input = createToken({ name: "Input", pattern: /__/ });
-const RadioOption = createToken({
-  name: "RadioOption",
-  pattern: /(?:\r\n|\r|\n|\s)*\([xX ]?\)\s+([^\n\r]+)/
-});
-const CheckboxOption = createToken({
-  name: "CheckboxOption",
-  pattern: /(?:\r\n|\r|\n|\s)*\[([xX ])?]\s+([^\n\r]+)/
-});
-const SelectField = createToken({
-  name: "SelectField",
-  pattern: /(?:\r\n|\r|\n|\s)*<\[([^\]]+)\]>(?:\r\n|\r|\n|\s)*/
-});
-
-// Interactive Element Tokens
-const Button = createToken({ name: "Button", pattern: /@\[([^\]]+)\](?:\(([^)]+)\))?/ });
-const Link = createToken({
-  name: "Link",
-  pattern: /#\[([^\]]+)\](?:\(([^)]+)\))?/
-});
-const Image = createToken({ name: "Image", pattern: /!\[([^\]]+)\](?:\(([^)]+)\))?/ });
-
-// Content Element Tokens
-const Heading = createToken({
-  name: "Heading",
-  pattern: /(?:\r\n|\r|\n|\s)*#{1,6}(?!#)\s+([^\n\r#[\]"=:]+)/
-});
-const Text = createToken({
-  name: "Text",
-  pattern: /(?:\r\n|\r|\n|\s)*>\s+([^\n\r]+)/
-});
-const Note = createToken({
-  name: "Note",
-  pattern: /\*>\s+([^\n\r]+)/
-});
-const Quote = createToken({
-  name: "Quote",
-  pattern: /">\s+([^\n\r]+)/
-});
-const OrderedListItem = createToken({
-  name: "OrderedListItem",
-  pattern: /(?:\r\n|\r|\n|\s)*\d+\.\s+([^\n\r]+)/
-});
-const UnorderedListItem = createToken({
-  name: "UnorderedListItem",
-  pattern: /(?:\r\n|\r|\n|\s)*-\s+([^\n\r]+)/
-});
-
-// New standalone Checkbox token
-const Checkbox = createToken({ 
-  name: "Checkbox", 
-  pattern: /\[([ xX]?)\](?:\s+([^\n\r]+))/ 
-});
-
-const allTokens = [
-  NewLine,
-  WhiteSpace,
-  Screen,
-  Input,
-  Button,
-  Grid,
-  Row,
-  Column,
-  Card,
-  Separator,
-  BlankLine,
-  SelectField,
-  Text,
-  Note,
-  Quote,
-  Heading,
-  Link,
-  Image,
-  Equals,
-  Colon,
-  StringLiteral,
-  Identifier,
-  OrderedListItem,
-  UnorderedListItem,
-  RadioOption,
-  CheckboxOption,
-  Checkbox,
-];
-
-const lexer = new Lexer(allTokens);
-
-// Parser
-class UiDslParser extends CstParser {
+// Parser class that defines the grammar rules
+export class UiDslParser extends CstParser {
   constructor() {
     super(allTokens, {
       nodeLocationTracking: "full",
@@ -136,7 +23,9 @@ class UiDslParser extends CstParser {
     this.MANY(() => {
       this.SUBRULE(this.element);
     });
-  }); element = this.RULE("element", () => {
+  }); 
+  
+  element = this.RULE("element", () => {
     this.OR([
       { ALT: () => this.SUBRULE(this.inputElement) },
       { ALT: () => this.SUBRULE(this.buttonElement) },
@@ -157,6 +46,7 @@ class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.selectField) },
     ]);
   });
+  
   selectField = this.RULE("selectField", () => {
     const options: { image: string; tokenType: { name: string } }[] = [];
     this.AT_LEAST_ONE(() => {
@@ -188,8 +78,6 @@ class UiDslParser extends CstParser {
       this.SUBRULE(this.attribute);
     });
   });
-
-
 
   attribute = this.RULE("attribute", () => {
     this.CONSUME(Identifier, { LABEL: "name" });
@@ -223,6 +111,7 @@ class UiDslParser extends CstParser {
       this.CONSUME(CheckboxOption);
     });
   });
+  
   textElement = this.RULE("textElement", () => {
     this.OR([
       { ALT: () => this.CONSUME(Text) },
@@ -286,18 +175,5 @@ class UiDslParser extends CstParser {
   });
 }
 
-const parser = new UiDslParser();
-
-export function parseInput(text: string): CstNode {
-  const lexResult = lexer.tokenize(text);
-  parser.input = lexResult.tokens;
-  const cst = parser.screen();
-
-  if (parser.errors.length > 0) {
-    throw new Error("Parsing error: " + parser.errors[0].message);
-  }
-
-  return cst;
-}
-
-export { parser };
+// Create a singleton instance of the parser
+export const parser = new UiDslParser();

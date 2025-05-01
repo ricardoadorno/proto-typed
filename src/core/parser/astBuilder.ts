@@ -1,5 +1,5 @@
-import { parser } from "./dslParser";
 import { CstNode } from "chevrotain";
+import { parser } from './parser';
 
 type Context = {
   [key: string]: any;

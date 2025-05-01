@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { parseInput } from "./dslParser";
-import { astBuilder } from "./astBuilder";
-import { astToHtml, astToHtmlDocument } from "./astToHtml";
+import { parseInput } from "./core/parser";
+import { astBuilder } from "./core/parser/astBuilder";
+// import { astToHtml, astToHtmlDocument } from "./astToHtml";
 import { AstNode } from './types/astNode';
 import login from './examples/login';
 import AceEditor from "react-ace";
 import { RenderOptions } from './types/renderOptions';
+import { astToHtmlDocument } from './core/renderer/documentRenderer';
+import { astToHtml } from './core/renderer/astToHtml';
 
 
 export default function App() {
