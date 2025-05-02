@@ -9,6 +9,7 @@ import { astToHtmlDocument } from './core/renderer/documentRenderer';
 import { astToHtml } from './core/renderer/astToHtml';
 import AceEditor from "react-ace";
 import ace from 'ace-builds/src-noconflict/ace';
+import ExampleModal from './components/example-modal';
 
 ace.config.set('basePath', '/node_modules/ace-builds/src-noconflict');
 
@@ -105,6 +106,7 @@ export default function App() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [input]);
 
+
     return (
         <div style={{ padding: 20, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: "2rem" }}>
 
@@ -113,6 +115,7 @@ export default function App() {
                 <div>
                     <div style={{ display: "flex", gap: "1rem" }}>
                         <button onClick={exportAsHtml} style={{ backgroundColor: "#28a745" }}>Export as HTML</button>
+                        <ExampleModal />
                     </div>
                     <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
                         <button onClick={() => setInput(login)}>Login Example</button>
