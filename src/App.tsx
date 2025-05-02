@@ -10,6 +10,7 @@ import { astToHtml } from './core/renderer/astToHtml';
 import AceEditor from "react-ace";
 import ace from 'ace-builds/src-noconflict/ace';
 import ExampleModal from './components/example-modal';
+import AstModal from './components/ast-modal';
 
 ace.config.set('basePath', '/node_modules/ace-builds/src-noconflict');
 
@@ -17,6 +18,7 @@ export default function App() {
     const [input, setInput] = useState(dashboard);
     const [uiStyle, setUiStyle] = useState("iphone-x");
     const [screens, setScreens] = useState<AstNode[]>([]);
+    const [astResult, setAstResult] = useState<string>('');
     const [currentScreen, setCurrentScreen] = useState<string>();
 
     const [error, setError] = useState<string | null>(null);
@@ -32,6 +34,7 @@ export default function App() {
                     const cst = parseInput(screenInput);
                     const ast = astBuilder.visit(cst);
 
+                    setAstResult(astResult + JSON.stringify(ast, null, 2));
                     return ast;
                 });
 
@@ -116,6 +119,7 @@ export default function App() {
                     <div style={{ display: "flex", gap: "1rem" }}>
                         <button onClick={exportAsHtml} style={{ backgroundColor: "#28a745" }}>Export as HTML</button>
                         <ExampleModal />
+                        <AstModal ast={astResult} html={astToHtml(screens)} />
                     </div>
                     <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
                         <button onClick={() => setInput(login)}>Login Example</button>
