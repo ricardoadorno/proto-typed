@@ -2,15 +2,15 @@ import { createToken, Lexer } from "chevrotain";
 
 // Whitespace & Formatting Tokens
 export const WhiteSpace = createToken({
-  name: "WhiteSpace",
-  pattern: /[ \t]+/,
+  name: "Spaces",
+  pattern: / +/,
   group: Lexer.SKIPPED,
 });
 
 export const NewLine = createToken({
-  name: "NewLine",
-  pattern: /\r\n|\r|\n/,
-  group: Lexer.SKIPPED
+  name: "Newline",
+  pattern: /\n|\r\n?/,
+  group: "nl",
 });
 
 export const BlankLine = createToken({ 
@@ -45,11 +45,6 @@ export const StringLiteral = createToken({
 });
 
 // Layout Family Tokens
-export const Grid = createToken({ 
-  name: "Grid", 
-  pattern: /grid/ 
-});
-
 export const Row = createToken({ 
   name: "Row", 
   pattern: /row:/ 
@@ -151,7 +146,6 @@ export const allTokens = [
   Screen,
   Input,
   Button,
-  Grid,
   Row,
   Column,
   Card,

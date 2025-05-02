@@ -1,6 +1,6 @@
 import { CstParser } from "chevrotain";
 import { 
-  allTokens, Screen, Identifier, Colon, Button, Grid, BlankLine, 
+  allTokens, Screen, Identifier, Colon, Button, BlankLine, 
   Row, StringLiteral, Column, Card, Separator, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, RadioOption, 
   CheckboxOption, Checkbox, Text, Note, Quote, SelectField, Equals
@@ -29,7 +29,6 @@ export class UiDslParser extends CstParser {
     this.OR([
       { ALT: () => this.SUBRULE(this.inputElement) },
       { ALT: () => this.SUBRULE(this.buttonElement) },
-      { ALT: () => this.SUBRULE(this.gridElement) },
       { ALT: () => this.SUBRULE(this.rowElement) },
       { ALT: () => this.SUBRULE(this.columnElement) },
       { ALT: () => this.SUBRULE(this.cardElement) },
@@ -111,6 +110,14 @@ export class UiDslParser extends CstParser {
       this.CONSUME(CheckboxOption);
     });
   });
+
+  checkboxElement = this.RULE("checkboxElement", () => {
+    this.CONSUME(Checkbox);
+  });
+
+  separatorElement = this.RULE("separatorElement", () => {
+    this.CONSUME(Separator);
+  });
   
   textElement = this.RULE("textElement", () => {
     this.OR([
@@ -120,21 +127,8 @@ export class UiDslParser extends CstParser {
     ]);
   });
 
-  gridElement = this.RULE("gridElement", () => {
-    this.CONSUME(Grid);
-    this.MANY(() => {
-      this.SUBRULE(this.element);
-    });
-    this.OPTION(() => {
-      this.CONSUME(BlankLine);
-    });
-  });
-
   rowElement = this.RULE("rowElement", () => {
     this.CONSUME(Row);
-    this.OPTION(() => {
-      this.CONSUME(StringLiteral, { LABEL: "attributes" });
-    });
     this.MANY(() => {
       this.SUBRULE(this.element);
     });
@@ -145,9 +139,6 @@ export class UiDslParser extends CstParser {
 
   columnElement = this.RULE("columnElement", () => {
     this.CONSUME(Column);
-    this.OPTION(() => {
-      this.CONSUME(StringLiteral, { LABEL: "attributes" });
-    });
     this.MANY(() => {
       this.SUBRULE(this.element);
     });
@@ -166,13 +157,6 @@ export class UiDslParser extends CstParser {
     });
   });
 
-  separatorElement = this.RULE("separatorElement", () => {
-    this.CONSUME(Separator);
-  });
-
-  checkboxElement = this.RULE("checkboxElement", () => {
-    this.CONSUME(Checkbox);
-  });
 }
 
 // Create a singleton instance of the parser

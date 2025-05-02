@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from './modal';
 import { parseInput } from '../core/parser';
 import { astBuilder } from '../core/parser/astBuilder';
@@ -11,14 +11,13 @@ export default function ExampleModal() {
     const [activeTab, setActiveTab] = useState('layout');
     const [compiledOutput, setCompiledOutput] = useState('');
 
-    const intialSyntaxExamples = {
+    const syntaxExamples = {
         layout: {
             title: "Layout Elements",
             examples: [
                 {
-                    name: "Grid Layout",
+                    name: "Layout",
                     code: `@screen GridExample:
-  grid
     row:
       col:
         # First Column
@@ -26,7 +25,7 @@ export default function ExampleModal() {
       col:
         # Second Column
         > Content in second column`,
-                    description: "Create responsive grid layouts with rows and columns"
+                    description: "Create responsive layouts with rows and columns"
                 },
                 {
                     name: "Card Component",
@@ -133,8 +132,6 @@ export default function ExampleModal() {
             ]
         }
     };
-
-    const [syntaxExamples, setSyntaxExamples] = useState(intialSyntaxExamples);
 
     const tabs = [
         { id: 'layout', label: 'Layout Elements' },
@@ -249,7 +246,6 @@ export default function ExampleModal() {
                         <h3>Syntax Tips</h3>
                         {activeTab === 'layout' && (
                             <ul>
-                                <li><strong>Grid Layout:</strong> Use indentation to define the nesting of elements</li>
                                 <li><strong>Nested Elements:</strong> All layout elements can contain other elements</li>
                             </ul>
                         )}

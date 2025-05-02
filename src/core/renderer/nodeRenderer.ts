@@ -100,10 +100,6 @@ export function nodeToHtml(node: AstNode): string {
         </label>
       `;
       
-    case 'Grid':
-      const gridElements = node.elements?.map(element => nodeToHtml(element)).join('\n') || '';
-      return `<div class="grid">${gridElements}</div>`;
-      
     case 'Row':
       const rowElements = node.elements?.map(element => nodeToHtml(element)).join('\n') || '';
       const rowClass = node.props?.className || 'row';

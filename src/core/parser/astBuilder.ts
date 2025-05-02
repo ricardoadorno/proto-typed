@@ -25,7 +25,6 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     if (ctx.indentedElement) return this.visit(ctx.indentedElement);
     if (ctx.inputElement) return this.visit(ctx.inputElement);
     if (ctx.buttonElement) return this.visit(ctx.buttonElement);
-    if (ctx.gridElement) return this.visit(ctx.gridElement);
     if (ctx.rowElement) return this.visit(ctx.rowElement);
     if (ctx.columnElement) return this.visit(ctx.columnElement);
     if (ctx.cardElement) return this.visit(ctx.cardElement);
@@ -42,56 +41,6 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     if (ctx.checkboxElement) return this.visit(ctx.checkboxElement);
     console.warn('Unknown element type:', ctx);
     return null;
-  }
-
-  // New method to handle indented elements
-  indentedElement(ctx: Context) {
-    let elementType;
-    // Determine the type of container element
-    if (ctx.Grid) elementType = "Grid";
-    else if (ctx.Row) elementType = "Row";
-    else if (ctx.Column) elementType = "Column";
-    else if (ctx.Card) elementType = "Card";
-    else return null;
-    
-    // Process child elements that are indented
-    const elements = [];
-    if (ctx.element) {
-      for (const el of ctx.element) {
-        const elementAst = this.visit(el);
-        if (elementAst) {
-          elements.push(elementAst);
-        }
-      }
-    }
-    
-    // Extract attributes if present (for Row and Column)
-    const attributesToken = ctx.attributes?.[0];
-    const attributes = attributesToken ? attributesToken.image.slice(1, -1) : '';
-    
-    let props = {};
-    
-    // Set appropriate className based on element type
-    switch (elementType) {
-      case "Grid":
-        props = { className: "grid" };
-        break;
-      case "Row":
-        props = { className: "row" + (attributes ? ` ${attributes}` : '') };
-        break;
-      case "Column":
-        props = { className: "column" + (attributes ? ` ${attributes}` : '') };
-        break;
-      case "Card":
-        props = { className: "card" };
-        break;
-    }
-    
-    return {
-      type: elementType,
-      props,
-      elements
-    };
   }
 
   headingElement(ctx: Context) {
@@ -200,8 +149,6 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       props
     };
   }
-
-
 
   attribute(ctx: Context) {
     const name = ctx.name[0].image;
@@ -357,29 +304,6 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       props: {
         options
       }
-    };
-  }
-
-  gridElement(ctx: Context) {
-    // Extract all child elements from context
-    const elements = [];
-
-    // Get all child elements that were parsed between the "grid" keyword and blank line
-    if (ctx.element) {
-      for (const el of ctx.element) {
-        const elementAst = this.visit(el);
-        if (elementAst) {
-          elements.push(elementAst);
-        }
-      }
-    }
-
-    return {
-      type: "Grid",
-      props: {
-        className: "grid"
-      },
-      elements
     };
   }
 
