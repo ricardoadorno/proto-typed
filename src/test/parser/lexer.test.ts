@@ -55,9 +55,6 @@ describe('Lexer Tests', () => {
     const result = tokenize(input);
     expect(result.errors).toHaveLength(0);
     
-    // Print all token types to debug
-    console.log('Token types:', result.tokens.map(t => t.tokenType.name));
-    
     // Checkbox is captured by CheckboxOption token in the lexer
     const checkboxTokens = result.tokens.filter(token => token.tokenType.name === 'CheckboxOption');
     expect(checkboxTokens).toHaveLength(2);

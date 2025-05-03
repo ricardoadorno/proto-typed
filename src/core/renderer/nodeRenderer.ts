@@ -6,6 +6,7 @@ import { screenToHtml } from './screenRenderer';
  * Convert an AST node to HTML
  */
 export function nodeToHtml(node: AstNode): string {
+  
   if (!node || !node.type) {
     console.warn('Invalid node received:', node);
     return '';
@@ -101,17 +102,15 @@ export function nodeToHtml(node: AstNode): string {
       `;
       
     case 'Row':
-      const rowElements = node.elements?.map(element => nodeToHtml(element)).join('\n') || '';
-      const rowClass = node.props?.className || 'row';
-      return `<div class="${rowClass}">${rowElements}</div>`;
+      const rowElements = node.elements?.flat().map(element => nodeToHtml(element)).join('\n') || '';
+      return `<div class="grid">${rowElements}</div>`;
       
-    case 'Column':
-      const colElements = node.elements?.map(element => nodeToHtml(element)).join('\n') || '';
-      const colClass = node.props?.className || 'column';
-      return `<div class="${colClass}">${colElements}</div>`;
+    case 'Col':
+      const colElements = node.elements?.flat().map(element => nodeToHtml(element)).join('\n') || '';
+      return `<div>${colElements}</div>`;
       
     case 'Card':
-      const cardElements = node.elements?.map(element => nodeToHtml(element)).join('\n') || '';
+      const cardElements = node.elements?.flat().map(element => nodeToHtml(element)).join('\n') || '';
       return `<article class="card">${cardElements}</article>`;
       
     case 'Separator':

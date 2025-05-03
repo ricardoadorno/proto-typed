@@ -25,24 +25,15 @@ export default function App() {
 
     const handleParse = () => {
         try {
-            const screenInputs = input.split(/(?=@screen\s)/);
+            // Now we can parse multiple screens at once with the program rule
+            const cst = parseInput(input);
+            const ast = astBuilder.visit(cst);
 
-            const parsedScreens = screenInputs
-                .map(screenInput => screenInput.trim())
-                .filter(Boolean)
-                .map(screenInput => {
-                    const cst = parseInput(screenInput);
-                    const ast = astBuilder.visit(cst);
-
-                    console.log('ast', ast); // Log the AST for debugging
-
-
-                    setAstResult(astResult + JSON.stringify(ast, null, 2));
-                    return ast;
-                });
-
-            setScreens(parsedScreens);
+            // ast is now an array of screens
+            setScreens(ast);
+            setAstResult(JSON.stringify(ast, null, 2));
             setError(null);
+
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             setScreens([]);
@@ -121,7 +112,7 @@ export default function App() {
                 <div>
                     <div style={{ display: "flex", gap: "1rem" }}>
                         <button onClick={exportAsHtml} style={{ backgroundColor: "#28a745" }}>Export as HTML</button>
-                        <ExampleModal />
+                        {/* <ExampleModal /> */}
                         {/* <AstModal ast={astResult} html={astToHtml(screens)} /> */}
                     </div>
                     <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>

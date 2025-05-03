@@ -1,11 +1,9 @@
 import { CstParser } from "chevrotain";
 import { 
-  allTokens, Screen, Identifier, Colon, Button, BlankLine, 
+  allTokens, Screen, Identifier, Colon, Button, 
   Row, StringLiteral, Card, Separator, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, RadioOption, 
-  CheckboxOption, Checkbox, Text, Note, Quote, SelectField, Equals,
-  NewLine,
-  Col
+  CheckboxOption, Checkbox, Text, Note, Quote, SelectField, Equals,Col
 } from "../lexer/tokens";
 import { Indent, Outdent } from "../lexer/lexer";
 import { CstNode } from "chevrotain";
@@ -20,13 +18,26 @@ export class UiDslParser extends CstParser {
     this.performSelfAnalysis();
   }
 
-  // Root rule
+  // Top-level rule that can parse multiple screens
+  program = this.RULE("program", () => {
+    this.MANY(() => {
+      this.SUBRULE(this.screen);
+    });
+  });
+
+  // Root rule for a single screen
   screen = this.RULE("screen", () => {
     this.CONSUME(Screen);
     this.CONSUME(Identifier, { LABEL: "name" });
     this.CONSUME(Colon);
-    this.MANY(() => {
-      this.SUBRULE(this.element);
+    this.OPTION(() => {
+      this.CONSUME(Indent);
+      this.MANY(() => {
+        this.SUBRULE(this.element);
+      });
+      this.OPTION2(() => {
+        this.CONSUME(Outdent);
+      });
     });
   }); 
   
@@ -137,15 +148,15 @@ export class UiDslParser extends CstParser {
     this.AT_LEAST_ONE(() => {
       this.SUBRULE(this.element);
     });
-    this.CONSUME(Outdent);
+    this.OPTION(() => {
+      this.CONSUME(Outdent);
+    });
   })
 
   cardElement = this.RULE("cardElement", () => {
     this.CONSUME(Card);
     this.CONSUME(Colon);
-    const block = this.SUBRULE(this.blockElement);
-
-    return block;
+    this.SUBRULE(this.blockElement);
   });
   
   rowElement = this.RULE("rowElement", () => {
@@ -180,7 +191,7 @@ export function parseInput(text: string): CstNode {
   parser.input = lexResult.tokens;
   
   // Parse the tokens according to the grammar rules
-  const cst = parser.screen();
+  const cst = parser.program();
   
   // If there are parsing errors, throw an error
   if (parser.errors.length > 0) {

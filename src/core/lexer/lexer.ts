@@ -114,5 +114,6 @@ export function tokenize(text: string) {
     if (lexResult.errors.length > 0) {
       throw new Error("Lexer errors detected: " + lexResult.errors.join(", "));
     }
+
     return lexResult;
 }

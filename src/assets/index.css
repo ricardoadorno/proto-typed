@@ -2,16 +2,6 @@
     background-color: #282e3d;
 }
 
-.row {
-    display: flex;
-    flex-direction: row;
-}
-
-.column {
-    display: flex;
-    flex-direction: column;
-}
-
 .note {
     background-color: red;
     color: #fff;

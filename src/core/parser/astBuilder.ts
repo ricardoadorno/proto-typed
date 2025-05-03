@@ -11,6 +11,12 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     this.validateVisitor();
   }
 
+  program(ctx: Context) {
+    // Process multiple screens
+    const screens = ctx.screen ? ctx.screen.map((screen: CstNode) => this.visit(screen)) : [];
+    return screens;
+  }
+
   screen(ctx: Context) {
     const name = ctx.name[0].image;
     const elements = ctx.element ? ctx.element.map((el: CstNode) => this.visit(el)) : [];
@@ -23,6 +29,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
   }
   
   element(ctx: Context) {
+    
     if (ctx.inputElement) return this.visit(ctx.inputElement);
     if (ctx.buttonElement) return this.visit(ctx.buttonElement);
     if (ctx.rowElement) return this.visit(ctx.rowElement);
@@ -41,6 +48,25 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     if (ctx.checkboxElement) return this.visit(ctx.checkboxElement);
     console.warn('Unknown element type:', ctx);
     return null;
+  }
+
+  blockElement(ctx: Context) {
+    const elements = [];
+
+    if (ctx.element) {
+      for (const el of ctx.element) {
+        const elementAst = this.visit(el);
+        if (elementAst) {
+          elements.push(elementAst);
+        }
+      }
+    }
+
+    return {
+      type: "Block",
+      props: {},
+      elements
+    };
   }
 
   headingElement(ctx: Context) {
@@ -68,6 +94,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       }
     };
   }
+  
   linkElement(ctx: Context) {
     const linkText = ctx.Link[0].image;
     let text = '', url = '';
@@ -311,24 +338,19 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
   rowElement(ctx: Context) {
     const elements = [];
 
-    if (ctx.element) {
-      for (const el of ctx.element) {
+    // Get elements from blockElement which is returned by the parser
+    if (ctx.blockElement.length > 0) {
+      for (const el of ctx.blockElement) {
         const elementAst = this.visit(el);
+        
         if (elementAst) {
-          elements.push(elementAst);
+          elements.push(elementAst.elements); // Push the elements from the blockElement
         }
       }
     }
 
-    // Extract attributes if present
-    const attributesToken = ctx.attributes?.[0];
-    const attributes = attributesToken ? attributesToken.image.slice(1, -1) : '';
-
     return {
       type: "Row",
-      props: {
-        className: "row" + (attributes ? ` ${attributes}` : '')
-      },
       elements
     };
   }
@@ -336,24 +358,19 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
   columnElement(ctx: Context) {
     const elements = [];
 
-    if (ctx.element) {
-      for (const el of ctx.element) {
+    // Get elements from blockElement which is returned by the parser
+    if (ctx.blockElement.length > 0) {
+      for (const el of ctx.blockElement) {
         const elementAst = this.visit(el);
+        
         if (elementAst) {
-          elements.push(elementAst);
+          elements.push(elementAst.elements); // Push the elements from the blockElement
         }
       }
     }
 
-    // Extract attributes if present
-    const attributesToken = ctx.attributes?.[0];
-    const attributes = attributesToken ? attributesToken.image.slice(1, -1) : '';
-
     return {
-      type: "Column",
-      props: {
-        className: "column" + (attributes ? ` ${attributes}` : '')
-      },
+      type: "Col",
       elements
     };
   }
@@ -361,24 +378,16 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
   cardElement(ctx: Context) {
     const elements = [];
 
-    console.log('Card context:', ctx); // Log the context for debugging
-    
-    
     // Get elements from blockElement which is returned by the parser
-    if (ctx.blockElement && ctx.blockElement[0]) {
-      const blockContext = ctx.blockElement[0];
-      if (blockContext.element) {
-        for (const el of blockContext.element) {
-          const elementAst = this.visit(el);
-          if (elementAst) {
-            elements.push(elementAst);
-          }
+    if (ctx.blockElement.length > 0) {
+      for (const el of ctx.blockElement) {
+        const elementAst = this.visit(el);
+        
+        if (elementAst) {
+          elements.push(elementAst.elements); // Push the elements from the blockElement
         }
       }
     }
-
-    console.log('Card elements:', elements); // Log the card elements for debugging
-    
 
     return {
       type: "Card",
