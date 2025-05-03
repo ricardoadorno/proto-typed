@@ -47,17 +47,17 @@ export const StringLiteral = createToken({
 // Layout Family Tokens
 export const Row = createToken({ 
   name: "Row", 
-  pattern: /row:/ 
+  pattern: /row/ 
 });
 
-export const Column = createToken({ 
-  name: "Column", 
-  pattern: /col:/ 
+export const Col = createToken({ 
+  name: "Col", 
+  pattern: /col/ 
 });
 
 export const Card = createToken({ 
   name: "Card", 
-  pattern: /card:/ 
+  pattern: /card/ 
 });
 
 export const Separator = createToken({ 
@@ -147,7 +147,7 @@ export const allTokens = [
   Input,
   Button,
   Row,
-  Column,
+  Col,
   Card,
   Separator,
   BlankLine,
