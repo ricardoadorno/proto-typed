@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { parseInput } from "./core/parser";
+import { parseInput } from "./core/parser/parser";
 import { astBuilder } from "./core/parser/astBuilder";
 import { AstNode } from './types/astNode';
 import login from './examples/login';
@@ -33,6 +33,9 @@ export default function App() {
                 .map(screenInput => {
                     const cst = parseInput(screenInput);
                     const ast = astBuilder.visit(cst);
+
+                    console.log('ast', ast); // Log the AST for debugging
+
 
                     setAstResult(astResult + JSON.stringify(ast, null, 2));
                     return ast;
@@ -119,7 +122,7 @@ export default function App() {
                     <div style={{ display: "flex", gap: "1rem" }}>
                         <button onClick={exportAsHtml} style={{ backgroundColor: "#28a745" }}>Export as HTML</button>
                         <ExampleModal />
-                        <AstModal ast={astResult} html={astToHtml(screens)} />
+                        {/* <AstModal ast={astResult} html={astToHtml(screens)} /> */}
                     </div>
                     <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
                         <button onClick={() => setInput(login)}>Login Example</button>

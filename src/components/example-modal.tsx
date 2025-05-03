@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Modal from './modal';
-import { parseInput } from '../core/parser';
+import { parseInput } from '../core/parser/parser';
 import { astBuilder } from '../core/parser/astBuilder';
 import { astToHtml } from '../core/renderer/astToHtml';
 
