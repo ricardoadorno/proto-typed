@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { parseInput } from '../../core/parser';
+import { parseInput } from '../../core/parser/parser';
 import { astBuilder } from '../../core/parser/astBuilder';
 import { astToHtml } from '../../core/renderer/astToHtml';
 import { astToHtmlDocument } from '../../core/renderer/documentRenderer';

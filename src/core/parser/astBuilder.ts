@@ -21,8 +21,8 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       elements
     };
   }
+  
   element(ctx: Context) {
-    if (ctx.indentedElement) return this.visit(ctx.indentedElement);
     if (ctx.inputElement) return this.visit(ctx.inputElement);
     if (ctx.buttonElement) return this.visit(ctx.buttonElement);
     if (ctx.rowElement) return this.visit(ctx.rowElement);
@@ -44,6 +44,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
   }
 
   headingElement(ctx: Context) {
+    
     if (!ctx.Heading || !ctx.Heading[0]) {
       return null;
     }
@@ -360,14 +361,24 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
   cardElement(ctx: Context) {
     const elements = [];
 
-    if (ctx.element) {
-      for (const el of ctx.element) {
-        const elementAst = this.visit(el);
-        if (elementAst) {
-          elements.push(elementAst);
+    console.log('Card context:', ctx); // Log the context for debugging
+    
+    
+    // Get elements from blockElement which is returned by the parser
+    if (ctx.blockElement && ctx.blockElement[0]) {
+      const blockContext = ctx.blockElement[0];
+      if (blockContext.element) {
+        for (const el of blockContext.element) {
+          const elementAst = this.visit(el);
+          if (elementAst) {
+            elements.push(elementAst);
+          }
         }
       }
     }
+
+    console.log('Card elements:', elements); // Log the card elements for debugging
+    
 
     return {
       type: "Card",

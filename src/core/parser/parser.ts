@@ -1,15 +1,20 @@
 import { CstParser } from "chevrotain";
 import { 
   allTokens, Screen, Identifier, Colon, Button, BlankLine, 
-  Row, StringLiteral, Column, Card, Separator, Heading, Link, 
+  Row, StringLiteral, Card, Separator, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, RadioOption, 
-  CheckboxOption, Checkbox, Text, Note, Quote, SelectField, Equals
+  CheckboxOption, Checkbox, Text, Note, Quote, SelectField, Equals,
+  NewLine,
+  Col
 } from "../lexer/tokens";
+import { Indent, Outdent } from "../lexer/lexer";
+import { CstNode } from "chevrotain";
+import { tokenize } from "../lexer/lexer";
 
 // Parser class that defines the grammar rules
 export class UiDslParser extends CstParser {
   constructor() {
-    super(allTokens, {
+    super([Indent, Outdent, ...allTokens], {
       nodeLocationTracking: "full",
     });
     this.performSelfAnalysis();
@@ -127,37 +132,61 @@ export class UiDslParser extends CstParser {
     ]);
   });
 
-  rowElement = this.RULE("rowElement", () => {
-    this.CONSUME(Row);
-    this.MANY(() => {
+  blockElement = this.RULE("blockElement", () => {
+    this.CONSUME(Indent);
+    this.AT_LEAST_ONE(() => {
       this.SUBRULE(this.element);
     });
-    this.OPTION2(() => {
-      this.CONSUME2(BlankLine);
-    });
-  });
-
-  columnElement = this.RULE("columnElement", () => {
-    this.CONSUME(Column);
-    this.MANY(() => {
-      this.SUBRULE(this.element);
-    });
-    this.OPTION2(() => {
-      this.CONSUME2(BlankLine);
-    });
-  });
+    this.CONSUME(Outdent);
+  })
 
   cardElement = this.RULE("cardElement", () => {
     this.CONSUME(Card);
-    this.MANY(() => {
-      this.SUBRULE(this.element);
-    });
-    this.OPTION(() => {
-      this.CONSUME(BlankLine);
-    });
+    this.CONSUME(Colon);
+    const block = this.SUBRULE(this.blockElement);
+
+    return block;
+  });
+  
+  rowElement = this.RULE("rowElement", () => {
+    this.CONSUME(Row);
+    this.CONSUME(Colon);
+    this.SUBRULE(this.blockElement);
+  });
+  
+  columnElement = this.RULE("columnElement", () => {
+    this.CONSUME(Col);
+    this.CONSUME(Colon);
+    this.SUBRULE(this.blockElement);
   });
 
 }
 
 // Create a singleton instance of the parser
 export const parser = new UiDslParser();
+
+/**
+ * Parse input text into a Concrete Syntax Tree (CST)
+ * 
+ * @param text The DSL text to parse
+ * @returns The Concrete Syntax Tree representing the parsed input
+ * @throws Error if parsing fails
+ */
+export function parseInput(text: string): CstNode {
+  // First tokenize the text using the lexer
+  const lexResult = tokenize(text);
+  
+  // Set the tokens as input to the parser
+  parser.input = lexResult.tokens;
+  
+  // Parse the tokens according to the grammar rules
+  const cst = parser.screen();
+  
+  // If there are parsing errors, throw an error
+  if (parser.errors.length > 0) {
+    console.error('parser.errors', parser.errors); 
+    throw new Error("Parsing error: " + parser.errors[0].message);
+  }
+
+  return cst;
+}
