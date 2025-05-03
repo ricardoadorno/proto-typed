@@ -5,7 +5,7 @@ import { RenderOptions } from '../../types/renderOptions';
 /**
  * Convert AST to HTML string representation with pagination for in-app preview
  */
-export function astToHtml(ast: AstNode | AstNode[], { currentScreen }: RenderOptions): string {
+export function astToHtml(ast: AstNode | AstNode[], { currentScreen }: RenderOptions = {}): string {
   const screens = Array.isArray(ast) ? ast : [ast];
   
   if (screens.length === 0) return '';
