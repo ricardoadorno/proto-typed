@@ -1,21 +1,46 @@
 const dashboardExample = `
-
 @screen Dashboard:
   # My Dashboard
-  > This is a simple dashboard example.
+  > Welcome to your personal dashboard
   
-  card:
-    > element 1
-    > element 2
-    > element 3
   row:
-    > element 1
-    > element 2
-    > element 3
-  col:
-    > element 1
-    > element 2
-    > element 3
+    col:
+      card:
+        ## Analytics
+        > This widget shows analytics data
+        1. Total Users: 1,245
+        2. Active Sessions: 423
+        3. Conversion Rate: 8.5%
+        @[View Details]
+    
+    col:
+      card:
+        ## Reports
+        > View and download reports
+        - Monthly Summary
+        - User Activity
+        - Performance Metrics
+        @[Generate Report]
+  card:
+    ## Recent Activity
+    1. Updated profile information
+    2. Changed account settings
+    3. Added new dashboard widget
+    4. Completed onboarding process
+  row:
+    col:
+      card:
+        ## Quick Actions
+        @[New Post]
+        @[Settings]
+        @[Help]
+    
+    col:
+      card:
+        ## Notifications
+        [X] Enable email alerts
+        [X] Enable browser notifications
+        [ ] Enable SMS alerts
 `;
 
 export default dashboardExample;

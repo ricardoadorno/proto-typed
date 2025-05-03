@@ -2,6 +2,12 @@
     background-color: #282e3d;
 }
 
+@container (max-width: 768px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
 .note {
     background-color: red;
     color: #fff;

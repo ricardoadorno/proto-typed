@@ -10,6 +10,7 @@ import { astToHtml } from '../core/renderer/astToHtml';
 export default function ExampleModal() {
     const [activeTab, setActiveTab] = useState('layout');
     const [compiledOutput, setCompiledOutput] = useState('');
+    const [currentScreen, setCurrentScreen] = useState<string>();
 
     const syntaxExamples = {
         layout: {
@@ -148,13 +149,13 @@ export default function ExampleModal() {
             const example = currentExamples[selectedExample];
             const cst = parseInput(example.code);
             const ast = astBuilder.visit(cst);
-            const html = astToHtml([ast], {});
+            const html = astToHtml([ast], { currentScreen });
             setCompiledOutput(html);
         } catch (error) {
             console.error("Error compiling example:", error);
             setCompiledOutput('<div class="error">Error compiling example</div>');
         }
-    }, [activeTab, selectedExample]);
+    }, [activeTab, selectedExample, currentScreen]);
 
     return (
         <Modal
@@ -236,7 +237,28 @@ export default function ExampleModal() {
                                 height: '300px',
                                 overflowY: 'auto',
                                 padding: '15px',
-                            }}>
+                            }}
+                                onClick={(e) => {
+                                    if (e.target instanceof HTMLAnchorElement && e.target.hasAttribute('data-screen-link')) {
+                                        e.preventDefault();
+
+                                        const screenName = e.target.getAttribute('data-screen-link');
+                                        if (screenName) {
+                                            setCurrentScreen(screenName);
+                                            // Hide all screens
+                                            const screenElements = document.querySelectorAll('.screen');
+                                            screenElements.forEach(screen => {
+                                                (screen as HTMLElement).style.display = 'none';
+                                            });
+
+                                            // Show the selected screen
+                                            const targetScreen = document.getElementById(`${screenName.toLowerCase()}-screen`);
+                                            if (targetScreen) {
+                                                targetScreen.style.display = 'block';
+                                            }
+                                        }
+                                    }
+                                }}>
                                 <div dangerouslySetInnerHTML={{ __html: compiledOutput }} />
                             </div>
                         </div>

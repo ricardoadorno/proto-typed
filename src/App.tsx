@@ -15,7 +15,7 @@ import AstModal from './components/ast-modal';
 ace.config.set('basePath', '/node_modules/ace-builds/src-noconflict');
 
 export default function App() {
-    const [input, setInput] = useState(dashboard);
+    const [input, setInput] = useState(login);
     const [uiStyle, setUiStyle] = useState("iphone-x");
     const [screens, setScreens] = useState<AstNode[]>([]);
     const [astResult, setAstResult] = useState<string>('');
@@ -71,7 +71,7 @@ export default function App() {
         // Return a div with the HTML content injected and add the click handler
         return (
             <div
-                style={{ padding: "2rem 1rem 1rem 1rem", overflow: "auto", height: "100%", width: "100%" }}
+                style={{ padding: "2rem 1rem 1rem 1rem", overflow: "auto", height: "100%", width: "100%", containerType: 'inline-size' }}
                 dangerouslySetInnerHTML={{ __html: htmlString }}
                 onClick={(e) => {
                     if (e.target instanceof HTMLAnchorElement && e.target.hasAttribute('data-screen-link')) {
@@ -112,8 +112,8 @@ export default function App() {
                 <div>
                     <div style={{ display: "flex", gap: "1rem" }}>
                         <button onClick={exportAsHtml} style={{ backgroundColor: "#28a745" }}>Export as HTML</button>
-                        {/* <ExampleModal /> */}
-                        {/* <AstModal ast={astResult} html={astToHtml(screens)} /> */}
+                        <ExampleModal />
+                        <AstModal ast={astResult} html={astToHtml(screens)} />
                     </div>
                     <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
                         <button onClick={() => setInput(login)}>Login Example</button>
