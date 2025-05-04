@@ -21,7 +21,7 @@ export const BlankLine = createToken({
 // Configuration & Structural Tokens
 export const Screen = createToken({ 
   name: "Screen", 
-  pattern: /@?screen/ 
+  pattern: /@screen/ 
 });
 
 export const Equals = createToken({ 
