@@ -7,12 +7,10 @@ import dashboard from './examples/dashboard';
 import { RenderOptions } from './types/renderOptions';
 import { astToHtmlDocument } from './core/renderer/documentRenderer';
 import { astToHtml } from './core/renderer/astToHtml';
-import AceEditor from "react-ace";
-import ace from 'ace-builds/src-noconflict/ace';
 import ExampleModal from './components/example-modal';
 import AstModal from './components/ast-modal';
+import { Editor } from '@monaco-editor/react';
 
-ace.config.set('basePath', '/node_modules/ace-builds/src-noconflict');
 
 export default function App() {
     const [input, setInput] = useState(login);
@@ -131,31 +129,19 @@ export default function App() {
                     </select>
                 </div>
                 {error && <pre style={{ color: "red", height: "5rem", padding: "1rem" }}>{error}</pre>}
-                <AceEditor
-                    placeholder=""
-                    mode="html"
-                    theme="github"
-                    className="code-editor"
-                    name="codeeditor"
-                    style={{
-                        width: "100%",
-                        height: "100%",
+                <Editor
+                    height="100%"
+                    width="100%"
+                    defaultValue={input}
+                    onChange={(value) => setInput(value || "")}
+                    options={{
+                        fontSize: 13,
+                        minimap: { enabled: false },
+                        wordWrap: "on",
+                        wrappingIndent: "same",
+                        lineNumbers: "on",
                     }}
-                    onChange={
-                        (newValue) => {
-                            setInput(newValue);
-                        }
-                    }
-                    fontSize={13}
-                    showPrintMargin={true}
-                    showGutter={true}
-                    highlightActiveLine={true}
-                    value={input}
-                    setOptions={{
-                        useWorker: false,
-                        showLineNumbers: true,
-                        tabSize: 2,
-                    }} />
+                />
             </div>
 
             {/* <div>

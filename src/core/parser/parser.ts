@@ -3,7 +3,7 @@ import {
   allTokens, Screen, Identifier, Colon, Button, 
   Row, StringLiteral, Card, Separator, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, RadioOption, 
-  CheckboxOption, Checkbox, Text, Note, Quote, SelectField, Equals,Col
+  Checkbox, Text, Note, Quote, SelectField, Equals,Col
 } from "../lexer/tokens";
 import { Indent, Outdent } from "../lexer/lexer";
 import { CstNode } from "chevrotain";
@@ -56,7 +56,6 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.orderedListElement) },
       { ALT: () => this.SUBRULE(this.unorderedListElement) },
       { ALT: () => this.SUBRULE(this.radioButtonGroup) },
-      { ALT: () => this.SUBRULE(this.checkboxGroup) },
       { ALT: () => this.SUBRULE(this.checkboxElement) },
       { ALT: () => this.SUBRULE(this.selectField) },
     ]);
@@ -118,12 +117,6 @@ export class UiDslParser extends CstParser {
   radioButtonGroup = this.RULE("radioButtonGroup", () => {
     this.AT_LEAST_ONE(() => {
       this.CONSUME(RadioOption);
-    });
-  });
-
-  checkboxGroup = this.RULE("checkboxGroup", () => {
-    this.AT_LEAST_ONE(() => {
-      this.CONSUME(CheckboxOption);
     });
   });
 

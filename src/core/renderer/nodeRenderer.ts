@@ -79,17 +79,6 @@ export function nodeToHtml(node: AstNode): string {
         .map((option: string) => `<option value="${option}">${option}</option>`)
         .join('\n');
       return `<select>${options}</select>`;
-        
-    case 'CheckboxGroup':
-      const checkboxOptions = (node.props?.options || [])
-        .map((option: { label: string, checked: boolean }) => `
-          <label>
-            <input type="checkbox" ${option.checked ? 'checked' : ''} />
-            <span>${option.label}</span>
-          </label>
-        `)
-        .join('\n');
-      return `<div class="checkbox-group">${checkboxOptions}</div>`;
       
     case 'Checkbox':
       const checked = node.props?.checked || false;

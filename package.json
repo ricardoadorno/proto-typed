@@ -13,12 +13,11 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
     "@types/lodash": "^4.17.16",
-    "ace-builds": "^1.40.1",
     "chevrotain": "^11.0.3",
     "lodash": "^4.17.21",
     "react": "^19.0.0",
-    "react-ace": "^14.0.1",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {

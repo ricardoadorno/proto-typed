@@ -76,11 +76,6 @@ export const RadioOption = createToken({
   pattern: /(?:\r\n|\r|\n|\s)*\([xX ]?\)\s+([^\n\r]+)/
 });
 
-export const CheckboxOption = createToken({
-  name: "CheckboxOption",
-  pattern: /(?:\r\n|\r|\n|\s)*\[([xX ])?]\s+([^\n\r]+)/
-});
-
 export const SelectField = createToken({
   name: "SelectField",
   pattern: /(?:\r\n|\r|\n|\s)*<\[([^\]]+)\]>(?:\r\n|\r|\n|\s)*/
@@ -165,6 +160,5 @@ export const allTokens = [
   OrderedListItem,
   UnorderedListItem,
   RadioOption,
-  CheckboxOption,
   Checkbox,
 ];

@@ -43,7 +43,6 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     if (ctx.orderedListElement) return this.visit(ctx.orderedListElement);
     if (ctx.unorderedListElement) return this.visit(ctx.unorderedListElement);
     if (ctx.radioButtonGroup) return this.visit(ctx.radioButtonGroup);
-    if (ctx.checkboxGroup) return this.visit(ctx.checkboxGroup);
     if (ctx.selectField) return this.visit(ctx.selectField);
     if (ctx.checkboxElement) return this.visit(ctx.checkboxElement);
     console.warn('Unknown element type:', ctx);
@@ -233,32 +232,6 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
 
     return {
       type: "RadioGroup",
-      props: {
-        options
-      }
-    };
-  }
-
-  checkboxGroup(ctx: Context) {
-    if (!ctx.CheckboxOption) {
-      console.warn('No checkbox options found in context');
-      return null;
-    }
-
-    const options = ctx.CheckboxOption.map((option: any) => {
-      const match = option.image.match(/\[([xX ])?\]\s*([^\n\r]+)/);
-      if (!match) {
-        console.warn('Failed to parse checkbox option:', option.image);
-        return null;
-      }
-      return {
-        checked: match[1]?.toLowerCase() === 'x',
-        label: match[2].trim()
-      };
-    }).filter(Boolean);
-
-    return {
-      type: "CheckboxGroup",
       props: {
         options
       }

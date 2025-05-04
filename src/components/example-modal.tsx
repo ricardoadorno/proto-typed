@@ -125,8 +125,8 @@ export default function ExampleModal() {
                     name: "Interactive Elements",
                     code: `@screen InteractiveExample:
   # Interactive Elements
-  @[Button Text](action)
-  #[Link Text](destination)
+  @[Button Text]
+  #[Link Text](screen destination)
   ![Image Alt Text](https://picsum.photos/200/100)`,
                     description: "Add buttons, links, and images to your interface"
                 }
@@ -149,7 +149,8 @@ export default function ExampleModal() {
             const example = currentExamples[selectedExample];
             const cst = parseInput(example.code);
             const ast = astBuilder.visit(cst);
-            const html = astToHtml([ast], { currentScreen });
+            const html = astToHtml(ast, { currentScreen });
+
             setCompiledOutput(html);
         } catch (error) {
             console.error("Error compiling example:", error);
