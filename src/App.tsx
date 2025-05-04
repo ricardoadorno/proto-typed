@@ -128,7 +128,7 @@ export default function App() {
                         <option value="browser-mockup with-url">Browser</option>
                     </select>
                 </div>
-                {error && <pre style={{ color: "red", height: "5rem", padding: "1rem" }}>{error}</pre>}
+                {error && <pre style={{ color: "red", maxHeight: "5rem", padding: "1rem", width: '100%' }}>{error}</pre>}
                 <Editor
                     height="100%"
                     width="100%"
