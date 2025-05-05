@@ -19,11 +19,11 @@ export default function ExampleModal() {
                 {
                     name: "Layout",
                     code: `@screen GridExample:
-    row:
-      col:
+    col:
+      row:
         # First Column
         > Content in first column
-      col:
+      row:
         # Second Column
         > Content in second column`,
                     description: "Create responsive layouts with rows and columns"

@@ -128,20 +128,25 @@ export default function App() {
                         <option value="browser-mockup with-url">Browser</option>
                     </select>
                 </div>
-                {error && <pre style={{ color: "red", maxHeight: "5rem", padding: "1rem", width: '100%' }}>{error}</pre>}
-                <Editor
-                    height="100%"
-                    width="100%"
-                    defaultValue={input}
-                    onChange={(value) => setInput(value || "")}
-                    options={{
-                        fontSize: 13,
-                        minimap: { enabled: false },
-                        wordWrap: "on",
-                        wrappingIndent: "same",
-                        lineNumbers: "on",
+                <div
+                    style={{
+                        maxWidth: "800px",
                     }}
-                />
+                >
+                    {error && <pre style={{ color: "red", maxHeight: "5rem", padding: "1rem" }}>{error}</pre>}
+                    <Editor
+                        height="90vh"
+                        value={input}
+                        onChange={(value) => setInput(value || "")}
+                        options={{
+                            fontSize: 13,
+                            minimap: { enabled: false },
+                            wordWrap: "on",
+                            wrappingIndent: "same",
+                            lineNumbers: "on",
+                        }}
+                    />
+                </div>
             </div>
 
             {/* <div>

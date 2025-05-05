@@ -92,11 +92,11 @@ export function nodeToHtml(node: AstNode): string {
       
     case 'Row':
       const rowElements = node.elements?.flat().map(element => nodeToHtml(element)).join('\n') || '';
-      return `<div class="grid">${rowElements}</div>`;
+      return `<div >${rowElements}</div>`;
       
     case 'Col':
       const colElements = node.elements?.flat().map(element => nodeToHtml(element)).join('\n') || '';
-      return `<div>${colElements}</div>`;
+      return `<div class="grid">${colElements}</div>`;
       
     case 'Card':
       const cardElements = node.elements?.flat().map(element => nodeToHtml(element)).join('\n') || '';
