@@ -1,0 +1,5 @@
+
+___:label(placeholder)[type]
+___:label(placeholder)[option | option | option] // to select field
+___*:label(placeholder)[] // to required input
+___-:label(placeholder)[] // to disabled input mode

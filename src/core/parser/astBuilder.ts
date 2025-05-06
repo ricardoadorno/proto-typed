@@ -29,7 +29,6 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
   }
   
   element(ctx: Context) {
-    
     if (ctx.inputElement) return this.visit(ctx.inputElement);
     if (ctx.buttonElement) return this.visit(ctx.buttonElement);
     if (ctx.rowElement) return this.visit(ctx.rowElement);
@@ -168,29 +167,62 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
   }
 
   inputElement(ctx: Context) {
-    const attributes = ctx.attribute ? ctx.attribute.map((attr: CstNode) => this.visit(attr)) : [];
-    const props = Object.fromEntries(attributes.map((attr: any) => [attr.name, attr.value]));
-
-    return {
-      type: "Input",
-      props
-    };
-  }
-
-  attribute(ctx: Context) {
-    const name = ctx.name[0].image;
-    let value;
-
-    if (ctx.value[0].tokenType.name === "StringLiteral") {
-      value = ctx.value[0].image.slice(1, -1);
-    } else {
-      value = ctx.value[0].image;
+    // Handle new input format
+    if (ctx.Input) {
+      const inputText = ctx.Input[0].image;
+      
+      // Parse out the components
+      const isRequired = inputText.includes('___*');
+      const isDisabled = inputText.includes('___-');
+      
+      // Extract optional label if present
+      const labelMatch = inputText.match(/:([^(]+)(?:\(|\[|$)/);
+      
+      // Extract optional placeholder if present
+      const placeholderMatch = inputText.match(/\(([^)]+)\)/);
+      
+      // Extract optional type or options if present
+      const contentMatch = inputText.match(/\[([^\]]*)\]/);
+      const content = contentMatch ? contentMatch[1].trim() : '';
+      
+      // Default props that will always be included
+      const props: Record<string, any> = {
+        type: content || 'text',
+        required: isRequired,
+        disabled: isDisabled
+      };
+      
+      // Only add label if it exists
+      if (labelMatch && labelMatch[1].trim()) {
+        props.label = labelMatch[1].trim();
+      }
+      
+      // Only add placeholder if it exists
+      if (placeholderMatch && placeholderMatch[1].trim()) {
+        props.placeholder = placeholderMatch[1].trim();
+      }
+      
+      // Check if this is a select field (has pipe-separated options)
+      if (content.includes('|')) {
+        const options = content.split('|').map((opt: string) => opt.trim());
+        return {
+          type: "Select",
+          props: {
+            ...props,
+            options,
+            type: undefined // Remove type for select fields
+          }
+        };
+      } else {
+        // Regular input field
+        return {
+          type: "Input",
+          props
+        };
+      }
     }
-
-    return {
-      name,
-      value
-    };
+    
+    return null;
   }
 
   orderedListElement(ctx: Context) {

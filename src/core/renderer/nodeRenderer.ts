@@ -18,7 +18,29 @@ export function nodeToHtml(node: AstNode): string {
       
     case 'Input':
       const inputProps = node.props || {};
-      return `<input ${attributesToHtml(inputProps)} />`;
+      let inputHtml = '';
+      
+      // Only create label if it exists
+      if (inputProps.label) {
+        inputHtml += `<label>${inputProps.label}:${inputProps.required ? ' *' : ''}\n`;
+      }
+      
+      // Create the input element with all attributes
+      const inputAttributes = {
+        ...inputProps,
+        // Remove properties that aren't HTML attributes
+        label: undefined,
+        children: undefined
+      };
+      
+      inputHtml += `  <input ${attributesToHtml(inputAttributes)} />`;
+      
+      // Close the label if it was opened
+      if (inputProps.label) {
+        inputHtml += '\n</label>';
+      }
+      
+      return inputHtml;
       
     case 'Button':
       const buttonProps = node.props || {};
@@ -75,10 +97,42 @@ export function nodeToHtml(node: AstNode): string {
       return `<div class="radio-group">${radioOptions}</div>`;
       
     case 'Select':
-      const options = (node.props?.options || [])
-        .map((option: string) => `<option value="${option}">${option}</option>`)
+      const selectProps = node.props || {};
+      let selectHtml = '';
+      
+      // Only create label if it exists
+      if (selectProps.label) {
+        selectHtml += `<label>${selectProps.label}:${selectProps.required ? ' *' : ''}\n`;
+      }
+      
+      // Create the select element with proper attributes
+      const selectAttributes = {
+        ...selectProps,
+        // Remove properties that are handled separately
+        label: undefined,
+        options: undefined,
+        children: undefined
+      };
+      
+      // Create options from array
+      const optionsHtml = (selectProps.options || [])
+        .map((option: string) => {
+          if (selectProps.placeholder && option === selectProps.options[0]) {
+            return `<option value="" disabled selected>${selectProps.placeholder}</option>
+<option value="${option}">${option}</option>`;
+          }
+          return `<option value="${option}">${option}</option>`;
+        })
         .join('\n');
-      return `<select>${options}</select>`;
+      
+      selectHtml += `  <select ${attributesToHtml(selectAttributes)}>${optionsHtml}</select>`;
+      
+      // Only close the label if it was opened
+      if (selectProps.label) {
+        selectHtml += '\n</label>';
+      }
+      
+      return selectHtml;
       
     case 'Checkbox':
       const checked = node.props?.checked || false;

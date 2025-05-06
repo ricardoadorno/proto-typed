@@ -5,8 +5,8 @@ const login = `
   card:
     ## Welcome Back
     > Enter your login information below to access your account.
-    __ type="text" placeholder="Username"
-    __ type="password" placeholder="Password"
+    ___:Username(Enter your username)[text]
+    ___*:Password(Enter your password)[password]
     
     [X] Remember me
     
@@ -20,10 +20,10 @@ const login = `
   # Create a New Account
   > Join us today! Fill out the form below to create your account.
   card:
-    __ type="text" placeholder="Username"
-    __ type="email" placeholder="Email Address"
-    __ type="password" placeholder="Password"
-    __ type="password" placeholder="Confirm Password"
+    ___:Username(Choose a username)[text]
+    ___*:Email(Your email address)[email]
+    ___*:Password(Create a password)[password]
+    ___*:Confirm Password(Confirm your password)[password]
     
     @[Sign Up]
     #[Login](Login)
@@ -35,7 +35,7 @@ const login = `
   card:
     # Password Recovery
     > Enter your email address below to receive a password reset link.
-    __ type="email" placeholder="Email Address"
+    ___*:Email(Your registered email address)[email]
     @[Send Reset Link]
     #[Back to Login](Login)
 `

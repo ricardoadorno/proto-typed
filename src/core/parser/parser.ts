@@ -3,7 +3,8 @@ import {
   allTokens, Screen, Identifier, Colon, Button, 
   Row, StringLiteral, Card, Separator, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, RadioOption, 
-  Checkbox, Text, Note, Quote, SelectField, Equals,Col
+  Checkbox, Text, Note, Quote, SelectField, Equals,Col,
+  NewLine
 } from "../lexer/tokens";
 import { Indent, Outdent } from "../lexer/lexer";
 import { CstNode } from "chevrotain";
@@ -88,18 +89,6 @@ export class UiDslParser extends CstParser {
 
   inputElement = this.RULE("inputElement", () => {
     this.CONSUME(Input);
-    this.MANY(() => {
-      this.SUBRULE(this.attribute);
-    });
-  });
-
-  attribute = this.RULE("attribute", () => {
-    this.CONSUME(Identifier, { LABEL: "name" });
-    this.CONSUME(Equals);
-    this.OR([
-      { ALT: () => this.CONSUME(StringLiteral, { LABEL: "value" }) },
-      { ALT: () => this.CONSUME2(Identifier, { LABEL: "value" }) },
-    ]);
   });
 
   orderedListElement = this.RULE("orderedListElement", () => {

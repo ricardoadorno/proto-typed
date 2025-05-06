@@ -20,6 +20,7 @@ const dashboardExample = `
         - Monthly Summary
         - User Activity
         - Performance Metrics
+        ___:Report Type(Select report type)[Monthly | Weekly | Daily | Custom]
         @[Generate Report]
   card:
     ## Recent Activity
@@ -27,6 +28,7 @@ const dashboardExample = `
     2. Changed account settings
     3. Added new dashboard widget
     4. Completed onboarding process
+  
   row:
     col:
       card:
@@ -41,6 +43,7 @@ const dashboardExample = `
         [X] Enable email alerts
         [X] Enable browser notifications
         [ ] Enable SMS alerts
+        ___:Notification Frequency(Set frequency)[Immediate | Hourly | Daily | Weekly]
 `;
 
 export default dashboardExample;

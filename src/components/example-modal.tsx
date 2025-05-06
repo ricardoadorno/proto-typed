@@ -56,10 +56,11 @@ export default function ExampleModal() {
                     name: "Text Inputs",
                     code: `@screen InputExample:
   # Form Fields
-  __ type="text" placeholder="Username"
-  __ type="password" placeholder="Password"
-  __ type="email" placeholder="Email Address"`,
-                    description: "Create various types of input fields"
+  ___:Username(Enter your username)[text]
+  ___:Password(Enter your password)[password]
+  ___*:Email(Enter your email)[email]
+  ___-:Disabled Field(This field is disabled)[text]`,
+                    description: "Create various types of input fields with labels, placeholders, required and disabled states"
                 },
                 {
                     name: "Checkboxes",
@@ -82,11 +83,15 @@ export default function ExampleModal() {
                     name: "Select Fields",
                     code: `@screen SelectExample:
   # Select Menu
-  <[Option 1]>
-  <[Option 2]>
-  <[Option 3]>`,
-                    description: "Create dropdown select menus with options"
-                }
+  ___:Country(Select your country)[USA | Canada | Mexico | Brazil]
+  ___*:Language(Choose language)[English | Spanish | French | Portuguese]
+  ___-:Disabled Select(Can't change this)[Option 1 | Option 2 | Option 3]
+  
+  # Legacy Select Syntax
+  <[Legacy Option 1]>
+  <[Legacy Option 2]>`,
+                    description: "Create dropdown select menus with options, labels, required fields, and disabled state"
+                },
             ]
         },
         content: {
