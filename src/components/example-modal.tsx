@@ -15,10 +15,9 @@ export default function ExampleModal() {
     const syntaxExamples = {
         layout: {
             title: "Layout Elements",
-            examples: [
-                {
-                    name: "Layout",
-                    code: `@screen GridExample:
+            examples: [{
+                name: "Layout",
+                code: `@screen GridExample:
     col:
       row:
         # First Column
@@ -26,27 +25,35 @@ export default function ExampleModal() {
       row:
         # Second Column
         > Content in second column`,
-                    description: "Create responsive layouts with rows and columns"
-                },
-                {
-                    name: "Card Component",
-                    code: `@screen CardExample:
+                description: "Create responsive layouts with rows and columns"
+            }, {
+                name: "List View",
+                code: `@screen ListExample:
+  list:
+    - [https://via.placeholder.com/50]User Profile{John Doe - Software Engineer}[https://via.placeholder.com/50]
+    - [https://via.placeholder.com/50]Task Status{Complete - Review pending}[https://via.placeholder.com/50]
+    - [https://via.placeholder.com/50]Project Update{New features added}[https://via.placeholder.com/50]`,
+                description: "Create structured list items with images, main text, and subtexts"
+            },
+            {
+                name: "Card Component",
+                code: `@screen CardExample:
   card:
     # Card Title
     > Card content goes here
     @[Action Button]`,
-                    description: "Group related content in a container with optional header and actions"
-                },
-                {
-                    name: "Separator",
-                    code: `@screen SeparatorExample:
+                description: "Group related content in a container with optional header and actions"
+            },
+            {
+                name: "Separator",
+                code: `@screen SeparatorExample:
   # Section 1
   > Content above separator
   ---
   # Section 2
   > Content below separator`,
-                    description: "Add a horizontal line to separate content sections"
-                }
+                description: "Add a horizontal line to separate content sections"
+            }
             ]
         },
         input: {

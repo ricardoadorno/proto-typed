@@ -2,8 +2,8 @@ import { CstParser } from "chevrotain";
 import { 
   allTokens, Screen, Identifier, Colon, Button, 
   Row, StringLiteral, Card, Separator, Heading, Link, 
-  Image, Input, OrderedListItem, UnorderedListItem, RadioOption, 
-  Checkbox, Text, Note, Quote, SelectField, Equals,Col,
+  Image, Input, OrderedListItem, UnorderedListItem, ListItem, RadioOption, 
+  Checkbox, Text, Note, Quote, SelectField, Equals,Col, List,
   NewLine
 } from "../lexer/tokens";
 import { Indent, Outdent } from "../lexer/lexer";
@@ -45,9 +45,9 @@ export class UiDslParser extends CstParser {
   element = this.RULE("element", () => {
     this.OR([
       { ALT: () => this.SUBRULE(this.inputElement) },
-      { ALT: () => this.SUBRULE(this.buttonElement) },
-      { ALT: () => this.SUBRULE(this.rowElement) },
+      { ALT: () => this.SUBRULE(this.buttonElement) },      { ALT: () => this.SUBRULE(this.rowElement) },
       { ALT: () => this.SUBRULE(this.columnElement) },
+      { ALT: () => this.SUBRULE(this.listElement) },
       { ALT: () => this.SUBRULE(this.cardElement) },
       { ALT: () => this.SUBRULE(this.separatorElement) },
       { ALT: () => this.SUBRULE(this.headingElement) },
@@ -146,11 +146,23 @@ export class UiDslParser extends CstParser {
     this.CONSUME(Colon);
     this.SUBRULE(this.blockElement);
   });
-  
-  columnElement = this.RULE("columnElement", () => {
+    columnElement = this.RULE("columnElement", () => {
     this.CONSUME(Col);
     this.CONSUME(Colon);
     this.SUBRULE(this.blockElement);
+  });
+  listElement = this.RULE("listElement", () => {
+    this.CONSUME(List);
+    this.CONSUME(Colon);
+    this.OPTION(() => {
+      this.CONSUME(Indent);
+      this.AT_LEAST_ONE(() => {
+        this.CONSUME(ListItem);
+      });
+      this.OPTION2(() => {
+        this.CONSUME(Outdent);
+      });
+    });
   });
 
 }

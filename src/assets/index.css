@@ -6,7 +6,44 @@
     .grid {
       grid-template-columns: 1fr;
     }
-  }
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.list-item-image {
+    width: 30px;
+    height: 30px;
+    object-fit: cover;
+}
+
+.list-item-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin: 0 1rem;
+}
+
+.list-item-main-text {
+    font-weight: bold;
+}
+
+.list-item-sub-text {
+    color: #666;
+    font-size: 0.7rem;
+}
 
 .note {
     background-color: red;

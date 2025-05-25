@@ -28,11 +28,11 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     };
   }
   
-  element(ctx: Context) {
-    if (ctx.inputElement) return this.visit(ctx.inputElement);
+  element(ctx: Context) {    if (ctx.inputElement) return this.visit(ctx.inputElement);
     if (ctx.buttonElement) return this.visit(ctx.buttonElement);
     if (ctx.rowElement) return this.visit(ctx.rowElement);
     if (ctx.columnElement) return this.visit(ctx.columnElement);
+    if (ctx.listElement) return this.visit(ctx.listElement);
     if (ctx.cardElement) return this.visit(ctx.cardElement);
     if (ctx.separatorElement) return this.visit(ctx.separatorElement);
     if (ctx.headingElement) return this.visit(ctx.headingElement);
@@ -359,7 +359,6 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       elements
     };
   }
-
   columnElement(ctx: Context) {
     const elements = [];
 
@@ -377,6 +376,51 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     return {
       type: "Col",
       elements
+    };
+  }
+  listElement(ctx: Context) {
+    if (!ctx.ListItem || ctx.ListItem.length === 0) {
+      return {
+        type: "List",
+        elements: []
+      };
+    }
+
+    const items = ctx.ListItem.map((item: any) => {
+      const itemText = item.image;
+      
+      // Parse the format: - [image]text{subtext}[image]
+      const match = itemText.match(/-\s+\[([^\]]+)\]([^{]+)\{([^}]+)\}\[([^\]]+)\]/);
+      
+      if (match) {
+        const [, leadingImage, mainText, subText, trailingImage] = match;
+        
+        return {
+          type: "ListItem",
+          props: {
+            leadingImage: leadingImage.trim(),
+            mainText: mainText.trim(),
+            subText: subText.trim(),
+            trailingImage: trailingImage.trim()
+          }
+        };
+      }
+      
+      // Fallback if pattern doesn't match
+      return {
+        type: "ListItem",
+        props: {
+          leadingImage: '',
+          mainText: itemText,
+          subText: '',
+          trailingImage: ''
+        }
+      };
+    });
+
+    return {
+      type: "List",
+      elements: [items]
     };
   }
 

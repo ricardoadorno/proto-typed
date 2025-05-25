@@ -55,6 +55,11 @@ export const Col = createToken({
   pattern: /col/ 
 });
 
+export const List = createToken({ 
+  name: "List", 
+  pattern: /list/ 
+});
+
 export const Card = createToken({ 
   name: "Card", 
   pattern: /card/ 
@@ -128,6 +133,11 @@ export const UnorderedListItem = createToken({
   pattern: /(?:\r\n|\r|\n|\s)*-\s+([^\n\r]+)/
 });
 
+export const ListItem = createToken({
+  name: "ListItem",
+  pattern: /(?:\r\n|\r|\n|\s)*-\s+\[([^\]]+)\]([^{]+)\{([^}]+)\}\[([^\]]+)\]/
+});
+
 // Standalone Checkbox token
 export const Checkbox = createToken({ 
   name: "Checkbox", 
@@ -143,6 +153,7 @@ export const allTokens = [
   Button,
   Row,
   Col,
+  List,
   Card,
   Separator,
   BlankLine,
@@ -158,6 +169,7 @@ export const allTokens = [
   StringLiteral,
   Identifier,
   OrderedListItem,
+  ListItem, // More specific pattern must come before UnorderedListItem
   UnorderedListItem,
   RadioOption,
   Checkbox,

@@ -147,10 +147,25 @@ export function nodeToHtml(node: AstNode): string {
     case 'Row':
       const rowElements = node.elements?.flat().map(element => nodeToHtml(element)).join('\n') || '';
       return `<div >${rowElements}</div>`;
-      
-    case 'Col':
+        case 'Col':
       const colElements = node.elements?.flat().map(element => nodeToHtml(element)).join('\n') || '';
       return `<div class="grid">${colElements}</div>`;
+        case 'List':
+      const listItems = node.elements?.flat().map(item => nodeToHtml(item)).join('\n') || '';
+      return `<div class="list">${listItems}</div>`;
+      
+    case 'ListItem':
+      const { leadingImage, mainText, subText, trailingImage } = node.props || {};
+      return `
+        <div class="list-item">
+          <img src="${leadingImage || ''}" alt="Leading image" class="list-item-image" />
+          <div class="list-item-content">
+            <div class="list-item-main-text">${mainText || ''}</div>
+            <div class="list-item-sub-text">${subText || ''}</div>
+          </div>
+          <img src="${trailingImage || ''}" alt="Trailing image" class="list-item-image" />
+        </div>
+      `;
       
     case 'Card':
       const cardElements = node.elements?.flat().map(element => nodeToHtml(element)).join('\n') || '';
