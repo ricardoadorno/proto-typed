@@ -5,8 +5,8 @@ const login = `
   card:
     ## Welcome Back
     > Enter your login information below to access your account.
-    ___:Username(Enter your username)[text]
-    ___*:Password(Enter your password)[password]
+    ___:Username(Enter your username)
+    ___*:Password(Enter your password)
     
     [X] Remember me
     
@@ -20,10 +20,10 @@ const login = `
   # Create a New Account
   > Join us today! Fill out the form below to create your account.
   card:
-    ___:Username(Choose a username)[text]
-    ___*:Email(Your email address)[email]
-    ___*:Password(Create a password)[password]
-    ___*:Confirm Password(Confirm your password)[password]
+    ___:Username(Choose a username)
+    ___:Email(Your email address)
+    ___*:Password(Create a password)
+    ___*:Confirm Password(Confirm your password)
     
     @[Sign Up]
     #[Login](Login)

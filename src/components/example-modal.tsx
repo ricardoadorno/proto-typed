@@ -58,47 +58,45 @@ export default function ExampleModal() {
         },
         input: {
             title: "Input Elements",
-            examples: [
-                {
-                    name: "Text Inputs",
-                    code: `@screen InputExample:
+            examples: [{
+                name: "Text Inputs",
+                code: `@screen InputExample:
   # Form Fields
-  ___:Username(Enter your username)[text]
-  ___:Password(Enter your password)[password]
-  ___*:Email(Enter your email)[email]
-  ___-:Disabled Field(This field is disabled)[text]`,
-                    description: "Create various types of input fields with labels, placeholders, required and disabled states"
-                },
-                {
-                    name: "Checkboxes",
-                    code: `@screen CheckboxExample:
+  ___:Username(Enter your username)
+  ___*:Password(Enter your password)
+  ___:Email(Enter your email)
+  ___-:Disabled Field(This field is disabled)`,
+                description: "Create input fields with labels and placeholders. Use ___* for password fields and ___- for disabled fields"
+            },
+            {
+                name: "Checkboxes",
+                code: `@screen CheckboxExample:
   # Checkbox Options
   [X] Option 1 (checked)
   [ ] Option 2 (unchecked)`,
-                    description: "Create checkboxes with checked or unchecked state"
-                },
-                {
-                    name: "Radio Buttons",
-                    code: `@screen RadioExample:
+                description: "Create checkboxes with checked or unchecked state"
+            },
+            {
+                name: "Radio Buttons",
+                code: `@screen RadioExample:
   # Radio Options
   (X) Option A (selected)
   ( ) Option B (unselected)
   ( ) Option C (unselected)`,
-                    description: "Create radio button groups where only one option can be selected"
-                },
-                {
-                    name: "Select Fields",
-                    code: `@screen SelectExample:
+                description: "Create radio button groups where only one option can be selected"
+            }, {
+                name: "Select Fields",
+                code: `@screen SelectExample:
   # Select Menu
   ___:Country(Select your country)[USA | Canada | Mexico | Brazil]
-  ___*:Language(Choose language)[English | Spanish | French | Portuguese]
+  ___:Language(Choose language)[English | Spanish | French | Portuguese]
   ___-:Disabled Select(Can't change this)[Option 1 | Option 2 | Option 3]
   
   # Legacy Select Syntax
   <[Legacy Option 1]>
   <[Legacy Option 2]>`,
-                    description: "Create dropdown select menus with options, labels, required fields, and disabled state"
-                },
+                description: "Create dropdown select menus with options using pipe-separated values in brackets. Use ___- for disabled fields"
+            },
             ]
         },
         content: {

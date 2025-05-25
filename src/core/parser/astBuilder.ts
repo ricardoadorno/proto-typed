@@ -164,15 +164,13 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
         alt: text
       }
     };
-  }
-
-  inputElement(ctx: Context) {
+  }  inputElement(ctx: Context) {
     // Handle new input format
     if (ctx.Input) {
       const inputText = ctx.Input[0].image;
       
       // Parse out the components
-      const isRequired = inputText.includes('___*');
+      const isPassword = inputText.includes('___*');
       const isDisabled = inputText.includes('___-');
       
       // Extract optional label if present
@@ -187,8 +185,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       
       // Default props that will always be included
       const props: Record<string, any> = {
-        type: content || 'text',
-        required: isRequired,
+        type: isPassword ? 'password' : 'text',
         disabled: isDisabled
       };
       
@@ -214,7 +211,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
           }
         };
       } else {
-        // Regular input field
+        // Regular input field - ignore single types like [text], [email], etc.
         return {
           type: "Input",
           props

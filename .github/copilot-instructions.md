@@ -41,13 +41,12 @@ This is a React-based UI prototyping tool that allows users to create interactiv
 - `![Alt Text](image-url)` - Images
 
 ### Form Elements
-- `___:Label(Placeholder)[type]` - Input fields
-  - Types: text, password, email, etc.
-  - Use `___*` for required fields
-  - Use `___-` for disabled fields
+- `___:Label(Placeholder)` - Input fields (default type: text)
+- `___*:Label(Placeholder)` - Password input fields  
+- `___-:Label(Placeholder)` - Disabled input fields
+- `___:Label(Placeholder)[Option1 | Option2 | Option3]` - Select fields with options
 - `[X]` / `[ ]` - Checkboxes (checked/unchecked)
 - `(X)` / `( )` - Radio buttons (selected/unselected)
-- `<[Option 1]>` - Select dropdown options
 
 ### Layout Components
 - `card:` - Card containers
