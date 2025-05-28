@@ -4,6 +4,7 @@ import { astBuilder } from "./core/parser/astBuilder";
 import { AstNode } from './types/astNode';
 import login from './examples/login';
 import dashboard from './examples/dashboard';
+import mobileComplete from './examples/mobile-complete';
 import { RenderOptions } from './types/renderOptions';
 import { astToHtmlDocument } from './core/renderer/documentRenderer';
 import { astToHtml } from './core/renderer/astToHtml';
@@ -70,8 +71,52 @@ export default function App() {
         return (
             <div
                 style={{ padding: "2rem 1rem 1rem 1rem", overflow: "auto", height: "100%", width: "100%", containerType: 'inline-size' }}
-                dangerouslySetInnerHTML={{ __html: htmlString }}
-                onClick={(e) => {
+                dangerouslySetInnerHTML={{ __html: htmlString }} onClick={(e) => {
+                    // Handle navigation with data-nav attributes
+                    const target = (e.target as Element).closest('[data-nav]');
+                    if (target) {
+                        e.preventDefault();
+
+                        const navValue = target.getAttribute('data-nav');
+                        const navType = target.getAttribute('data-nav-type'); if (navValue && navType === 'internal') {
+                            setCurrentScreen(navValue);
+                            // Hide all screens
+                            const screenElements = document.querySelectorAll('.screen');
+                            screenElements.forEach(screen => {
+                                (screen as HTMLElement).style.display = 'none';
+                            });
+
+                            // Show the selected screen
+                            const targetScreen = document.getElementById(`${navValue.toLowerCase()}-screen`);
+                            if (targetScreen) {
+                                targetScreen.style.display = 'block';
+                            }
+                        } else if (navType === 'drawer-toggle') {
+                            // Handle drawer toggle
+                            const drawer = document.querySelector('.drawer');
+                            const overlay = document.querySelector('.drawer-overlay');
+
+                            if (drawer) {
+                                drawer.classList.toggle('open');
+                            }
+
+                            if (overlay) {
+                                overlay.classList.toggle('open');
+                            }
+                        } else if (navType === 'external') {
+                            window.open(navValue, '_blank', 'noopener,noreferrer');
+                        } else if (navType === 'action') {
+                            try {
+                                // Execute the action in the global scope
+                                new Function(navValue)();
+                            } catch (error) {
+                                console.error('Error executing navigation action:', error);
+                            }
+                        }
+                        return;
+                    }
+
+                    // Legacy support for data-screen-link
                     if (e.target instanceof HTMLAnchorElement && e.target.hasAttribute('data-screen-link')) {
                         e.preventDefault();
 
@@ -94,12 +139,34 @@ export default function App() {
                 }}
             />
         );
-    };
-
-    useEffect(() => {
+    }; useEffect(() => {
         handleParse();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [input]);
+
+    useEffect(() => {
+        // Handle overlay clicks to close drawer
+        const handleOverlayClick = (e: Event) => {
+            if (e.target instanceof HTMLElement && e.target.classList.contains('drawer-overlay')) {
+                const drawer = document.querySelector('.drawer');
+                const overlay = document.querySelector('.drawer-overlay');
+
+                if (drawer) {
+                    drawer.classList.remove('open');
+                }
+
+                if (overlay) {
+                    overlay.classList.remove('open');
+                }
+            }
+        };
+
+        document.addEventListener('click', handleOverlayClick);
+
+        return () => {
+            document.removeEventListener('click', handleOverlayClick);
+        };
+    }, []);
 
 
     return (
@@ -116,6 +183,7 @@ export default function App() {
                     <div style={{ display: "flex", gap: "1rem", marginTop: "1rem" }}>
                         <button onClick={() => setInput(login)}>Login Example</button>
                         <button onClick={() => setInput(dashboard)}>Dashboard Example</button>
+                        <button onClick={() => setInput(mobileComplete)}>Mobile Complete Example</button>
                     </div>
                     <select
                         value={uiStyle}
@@ -148,16 +216,6 @@ export default function App() {
                     />
                 </div>
             </div>
-
-            {/* <div>
-                <h3>Screens AST Output</h3>
-                {screens.length > 0 && (
-                    <pre style={{ maxHeight: 300, overflow: 'auto' }}>
-                        {JSON.stringify(screens, null, 2)}
-                    </pre>
-                )}
-            </div> */}
-
 
             <div>
                 <h3 style={{ padding: "1rem 0" }}>Rendered Screen</h3>

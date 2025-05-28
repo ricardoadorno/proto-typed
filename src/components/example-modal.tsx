@@ -98,8 +98,7 @@ export default function ExampleModal() {
                 description: "Create dropdown select menus with options using pipe-separated values in brackets. Use ___- for disabled fields"
             },
             ]
-        },
-        content: {
+        }, content: {
             title: "Content Elements",
             examples: [
                 {
@@ -141,13 +140,81 @@ export default function ExampleModal() {
                     description: "Add buttons, links, and images to your interface"
                 }
             ]
+        },
+        mobile: {
+            title: "Mobile Components",
+            examples: [
+                {
+                    name: "Header Component",
+                    code: `@screen HeaderExample:
+  header:
+    # App Title
+    @[Menu](toggle-drawer)
+    @[Profile](profile-screen)
+    
+  > Content goes here`,
+                    description: "Create a fixed header with title and action buttons"
+                },
+                {
+                    name: "Bottom Navigation",
+                    code: `@screen BottomNavExample:
+  # Main Content
+  > App content here
+  
+  bottom_nav:
+    nav_item [Home]{🏠}(home-screen)
+    nav_item [Search]{🔍}(search-screen)
+    nav_item [Messages]{💬}(messages-screen)
+    nav_item [Profile]{👤}(profile-screen)
+    nav_item [More]{⋯}(more-screen)`,
+                    description: "Create a fixed bottom navigation bar with icons and labels"
+                },
+                {
+                    name: "Drawer/Sidebar",
+                    code: `@screen DrawerExample:
+  # App Content
+  > Main content area
+  
+  drawer:
+    drawer_item [Dashboard]{📊}(dashboard-screen)
+    drawer_item [Messages]{💬}(messages-screen)
+    drawer_item [Settings]{⚙️}(settings-screen)
+    drawer_item [Help]{❓}(help-screen)
+    drawer_item [Logout]{🚪}(logout)`,
+                    description: "Create a slide-out drawer menu with navigation items"
+                },
+                {
+                    name: "Complete Mobile App",
+                    code: `@screen MobileDemo:
+  header:
+    # My App
+    @[Menu](toggle-drawer)
+    
+  card:
+    ## Welcome
+    > Complete mobile interface example
+    
+  list:
+    - [👤]{John Doe}{Online now}[💬]
+    - [👤]{Jane Smith}{2 min ago}[📞]
+    
+  bottom_nav:
+    nav_item [Home]{🏠}(home)
+    nav_item [Messages]{💬}(messages)
+    nav_item [Profile]{👤}(profile)
+    
+  drawer:
+    drawer_item [Settings]{⚙️}(settings)
+    drawer_item [Help]{❓}(help)`,
+                    description: "A complete mobile app layout with header, content, navigation and drawer"
+                }
+            ]
         }
-    };
-
-    const tabs = [
+    }; const tabs = [
         { id: 'layout', label: 'Layout Elements' },
         { id: 'input', label: 'Input Elements' },
-        { id: 'content', label: 'Content Elements' }
+        { id: 'content', label: 'Content Elements' },
+        { id: 'mobile', label: 'Mobile Components' }
     ];
 
     const [selectedExample, setSelectedExample] = useState(0);
@@ -248,28 +315,53 @@ export default function ExampleModal() {
                                 height: '300px',
                                 overflowY: 'auto',
                                 padding: '15px',
-                            }}
-                                onClick={(e) => {
-                                    if (e.target instanceof HTMLAnchorElement && e.target.hasAttribute('data-screen-link')) {
-                                        e.preventDefault();
+                            }} onClick={(e) => {
+                                // Handle navigation with data-nav attributes
+                                const target = (e.target as Element).closest('[data-nav]');
+                                if (target) {
+                                    e.preventDefault();
 
-                                        const screenName = e.target.getAttribute('data-screen-link');
-                                        if (screenName) {
-                                            setCurrentScreen(screenName);
-                                            // Hide all screens
-                                            const screenElements = document.querySelectorAll('.screen');
-                                            screenElements.forEach(screen => {
-                                                (screen as HTMLElement).style.display = 'none';
-                                            });
+                                    const navValue = target.getAttribute('data-nav');
+                                    const navType = target.getAttribute('data-nav-type');
 
-                                            // Show the selected screen
-                                            const targetScreen = document.getElementById(`${screenName.toLowerCase()}-screen`);
-                                            if (targetScreen) {
-                                                targetScreen.style.display = 'block';
-                                            }
+                                    if (navValue && navType === 'internal') {
+                                        setCurrentScreen(navValue);
+                                        // Hide all screens
+                                        const screenElements = document.querySelectorAll('.screen');
+                                        screenElements.forEach(screen => {
+                                            (screen as HTMLElement).style.display = 'none';
+                                        });
+
+                                        // Show the selected screen
+                                        const targetScreen = document.getElementById(`${navValue.toLowerCase()}-screen`);
+                                        if (targetScreen) {
+                                            targetScreen.style.display = 'block';
                                         }
                                     }
-                                }}>
+                                    return;
+                                }
+
+                                // Legacy support for data-screen-link
+                                if (e.target instanceof HTMLAnchorElement && e.target.hasAttribute('data-screen-link')) {
+                                    e.preventDefault();
+
+                                    const screenName = e.target.getAttribute('data-screen-link');
+                                    if (screenName) {
+                                        setCurrentScreen(screenName);
+                                        // Hide all screens
+                                        const screenElements = document.querySelectorAll('.screen');
+                                        screenElements.forEach(screen => {
+                                            (screen as HTMLElement).style.display = 'none';
+                                        });
+
+                                        // Show the selected screen
+                                        const targetScreen = document.getElementById(`${screenName.toLowerCase()}-screen`);
+                                        if (targetScreen) {
+                                            targetScreen.style.display = 'block';
+                                        }
+                                    }
+                                }
+                            }}>
                                 <div dangerouslySetInnerHTML={{ __html: compiledOutput }} />
                             </div>
                         </div>

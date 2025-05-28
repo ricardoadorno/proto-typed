@@ -65,6 +65,32 @@ export const Card = createToken({
   pattern: /card/ 
 });
 
+// Mobile Layout Tokens
+export const Header = createToken({
+  name: "Header",
+  pattern: /header/
+});
+
+export const BottomNav = createToken({
+  name: "BottomNav",
+  pattern: /bottom_nav/
+});
+
+export const Drawer = createToken({
+  name: "Drawer",
+  pattern: /drawer/
+});
+
+export const NavItem = createToken({
+  name: "NavItem",
+  pattern: /nav_item\s+\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/
+});
+
+export const DrawerItem = createToken({
+  name: "DrawerItem", 
+  pattern: /drawer_item\s+\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/
+});
+
 export const Separator = createToken({ 
   name: "Separator", 
   pattern: /---/ 
@@ -89,7 +115,7 @@ export const SelectField = createToken({
 // Interactive Element Tokens
 export const Button = createToken({ 
   name: "Button", 
-  pattern: /@\[([^\]]+)\](?:\(([^)]+)\))?/ 
+  pattern: /@\[([^\]]+)\](?:\{([^}]+)\})?(?:\(([^)]+)\))?/ 
 });
 
 export const Link = createToken({
@@ -149,12 +175,17 @@ export const allTokens = [
   NewLine,
   WhiteSpace,
   Screen,
+  NavItem,
+  DrawerItem,
   Input,
   Button,
   Row,
   Col,
   List,
   Card,
+  Header,
+  BottomNav,
+  Drawer,
   Separator,
   BlankLine,
   SelectField,
@@ -172,5 +203,5 @@ export const allTokens = [
   ListItem, // More specific pattern must come before UnorderedListItem
   UnorderedListItem,
   RadioOption,
-  Checkbox,
+  Checkbox
 ];

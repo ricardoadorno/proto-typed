@@ -112,7 +112,8 @@ export function tokenize(text: string) {
     }
   
     if (lexResult.errors.length > 0) {
-      throw new Error("Lexer errors detected: " + lexResult.errors.join(", "));
+      throw new Error("Lexer errors detected: " + 
+        JSON.stringify(lexResult.errors, null, 2));
     }
 
     return lexResult;

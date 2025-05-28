@@ -52,7 +52,16 @@ This is a React-based UI prototyping tool that allows users to create interactiv
 - `card:` - Card containers
 - `row:` - Horizontal layout
 - `col:` - Column layout (inside rows)
+- `list:` - List containers
+  - `- [url]text{subtext}[url]` - List items with optional links and subtext
 - `---` - Horizontal separator
+
+### Mobile Components
+- `header:` - Fixed header component for mobile apps
+- `bottom_nav:` - Fixed bottom navigation bar
+- `drawer:` - Slide-out drawer/sidebar menu
+- `nav_item [label]{icon}(action)` - Navigation items for bottom nav
+- `drawer_item [label]{icon}(action)` - Menu items for drawer
 
 ### Lists
 - `1. Item` - Ordered lists

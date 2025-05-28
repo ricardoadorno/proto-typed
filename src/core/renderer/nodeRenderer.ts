@@ -1,11 +1,12 @@
 import { AstNode } from '../../types/astNode';
 import { attributesToHtml } from './utils';
 import { screenToHtml } from './screenRenderer';
+import { generateNavigationAttributes, generateOnClickHandler, generateHrefAttribute } from './navigationHelper';
 
 /**
  * Convert an AST node to HTML
  */
-export function nodeToHtml(node: AstNode): string {
+export function nodeToHtml(node: AstNode, context?: string): string {
   
   if (!node || !node.type) {
     console.warn('Invalid node received:', node);
@@ -40,28 +41,33 @@ export function nodeToHtml(node: AstNode): string {
         inputHtml += '\n</label>';
       }
       
-      return inputHtml;
-      
-    case 'Button':
+      return inputHtml;    case 'Button':
       const buttonProps = node.props || {};
-      return `<button style="margin: 1rem 1rem 1rem 0" ${attributesToHtml(buttonProps)}>${buttonProps?.children || ''}</button>`;
+      const { children, icon, href: buttonHref, ...otherProps } = buttonProps;
+      const buttonText = children || '';
+      const buttonIcon = icon ? `<span class="button-icon">${icon}</span> ` : '';
+      
+      // Use navigation helper for button actions
+      const buttonNavAttrs = generateNavigationAttributes(buttonHref);
+      const buttonOnClick = generateOnClickHandler(buttonHref);
+      
+      // Remove default margin if button is in header context
+      const buttonStyle = context === 'header' ? '' : 'style="margin: 1rem 1rem 1rem 0"';
+      
+      return `<button ${buttonStyle} ${attributesToHtml(otherProps)} ${buttonNavAttrs}${buttonOnClick}>${buttonIcon}${buttonText}</button>`;
       
     case 'Heading':
       const level = node.props?.level || 1;
       return `<h${level}>${node.props?.children || ''}</h${level}>`;
-        
-    case 'Link':
+          case 'Link':
       const href = node.props?.href || '#';
-      // Check if this is an internal navigation link (a screen name) or an external link
-      const isInternalLink = !href.includes('://') && !href.startsWith('mailto:');
+      const linkText = node.props?.children || '';
       
-      if (isInternalLink) {
-        // For internal links, use the href as a screen identifier with a hash prefix
-        return `<a href="#${href}" data-screen-link="${href}">${node.props?.children || ''}</a>`;
-      } else {
-        // For external links, open in a new tab
-        return `<a href="${href}" target="_blank" rel="noopener noreferrer">${node.props?.children || ''}</a>`;
-      }
+      // Use navigation helper for links
+      const linkNavAttrs = generateNavigationAttributes(href);
+      const linkHref = generateHrefAttribute(href);
+      
+      return `<a ${linkHref} ${linkNavAttrs}>${linkText}</a>`;
       
     case 'Image':
       const src = node.props?.src || '';
@@ -143,15 +149,14 @@ export function nodeToHtml(node: AstNode): string {
           <span>${label}</span>
         </label>
       `;
-      
-    case 'Row':
-      const rowElements = node.elements?.flat().map(element => nodeToHtml(element)).join('\n') || '';
+        case 'Row':
+      const rowElements = node.elements?.flat().map(element => nodeToHtml(element, context)).join('\n') || '';
       return `<div >${rowElements}</div>`;
         case 'Col':
-      const colElements = node.elements?.flat().map(element => nodeToHtml(element)).join('\n') || '';
+      const colElements = node.elements?.flat().map(element => nodeToHtml(element, context)).join('\n') || '';
       return `<div class="grid">${colElements}</div>`;
         case 'List':
-      const listItems = node.elements?.flat().map(item => nodeToHtml(item)).join('\n') || '';
+      const listItems = node.elements?.flat().map(item => nodeToHtml(item, context)).join('\n') || '';
       return `<div class="list">${listItems}</div>`;
       
     case 'ListItem':
@@ -165,14 +170,79 @@ export function nodeToHtml(node: AstNode): string {
           </div>
           <img src="${trailingImage || ''}" alt="Trailing image" class="list-item-image" />
         </div>
-      `;
-      
-    case 'Card':
-      const cardElements = node.elements?.flat().map(element => nodeToHtml(element)).join('\n') || '';
+      `;        case 'Card':
+      const cardElements = node.elements?.flat().map(element => nodeToHtml(element, context)).join('\n') || '';
       return `<article class="card">${cardElements}</article>`;
       
     case 'Separator':
-      return `<hr>`;
+      return `<hr>`;    // Mobile Layout Components
+    case 'Header':
+      const headerElements = node.elements?.flat().map(element => nodeToHtml(element, 'header')).join('\n') || '';
+      return `<header class="header">${headerElements}</header>`;    case 'BottomNav':
+      const navItems = node.elements?.map(item => {
+        if (item.type === 'NavItem') {
+          const { label, icon, action } = item.props || {};
+          
+          // Use navigation helper for nav items
+          const navAttrs = generateNavigationAttributes(action);
+          const onClick = generateOnClickHandler(action);
+          
+          return `
+            <button class="nav-item" ${navAttrs}${onClick}>
+              <span class="nav-icon">${icon || ''}</span>
+              <span class="nav-label">${label || ''}</span>
+            </button>
+          `;
+        }
+        return '';
+      }).join('') || '';
+      return `<nav class="bottom-nav">${navItems}</nav>`;    
+      
+      case 'Drawer':
+      const drawerItems = node.elements?.map(item => {
+        if (item.type === 'DrawerItem') {
+          const { label, icon, action } = item.props || {};
+          
+          // Use navigation helper for drawer items
+          const navAttrs = generateNavigationAttributes(action);
+          const onClick = generateOnClickHandler(action);
+          
+          return `
+            <button class="drawer-item" ${navAttrs}${onClick}>
+              <span class="drawer-icon">${icon || ''}</span>
+              <span class="drawer-label">${label || ''}</span>
+            </button>
+          `;
+        }
+        return '';
+      }).join('') || '';
+      return `<aside class="drawer">${drawerItems}</aside>`;case 'NavItem':
+      const { label: navLabel, icon: navIcon, action: navAction } = node.props || {};
+      
+      // Use navigation helper for nav items
+      const navItemAttrs = generateNavigationAttributes(navAction);
+      const navItemOnClick = generateOnClickHandler(navAction);
+      
+      return `
+        <button class="nav-item" ${navItemAttrs}${navItemOnClick}>
+          <span class="nav-icon">${navIcon || ''}</span>
+          <span class="nav-label">${navLabel || ''}</span>
+        </button>
+      `;
+
+    case 'DrawerItem':
+      const { label: drawerLabel, icon: drawerIcon, action: drawerAction } = node.props || {};
+      
+      // Use navigation helper for drawer items
+      const drawerItemAttrs = generateNavigationAttributes(drawerAction);
+      const drawerItemOnClick = generateOnClickHandler(drawerAction);
+      
+      return `
+        <button class="drawer-item" ${drawerItemAttrs}${drawerItemOnClick}>
+          <span class="drawer-icon">${drawerIcon || ''}</span>
+          <span class="drawer-label">${drawerLabel || ''}</span>
+        </button>
+      `;
       
     default:
       console.warn(`Unknown node type: ${node.type}`);

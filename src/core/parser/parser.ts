@@ -4,7 +4,7 @@ import {
   Row, StringLiteral, Card, Separator, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, ListItem, RadioOption, 
   Checkbox, Text, Note, Quote, SelectField, Equals,Col, List,
-  NewLine
+  Header, BottomNav, Drawer, NavItem, DrawerItem
 } from "../lexer/tokens";
 import { Indent, Outdent } from "../lexer/lexer";
 import { CstNode } from "chevrotain";
@@ -17,38 +17,43 @@ export class UiDslParser extends CstParser {
       nodeLocationTracking: "full",
     });
     this.performSelfAnalysis();
-  }
-
-  // Top-level rule that can parse multiple screens
+  }  // Top-level rule that can parse multiple screens
   program = this.RULE("program", () => {
     this.MANY(() => {
       this.SUBRULE(this.screen);
     });
-  });
-
-  // Root rule for a single screen
+    // Consume any remaining indent/outdent tokens at the end
+    this.MANY2(() => {
+      this.OR([
+        { ALT: () => this.CONSUME(Indent) },
+        { ALT: () => this.CONSUME(Outdent) }
+      ]);
+    });
+  });  // Root rule for a single screen
   screen = this.RULE("screen", () => {
     this.CONSUME(Screen);
     this.CONSUME(Identifier, { LABEL: "name" });
     this.CONSUME(Colon);
-    this.OPTION(() => {
-      this.CONSUME(Indent);
-      this.MANY(() => {
-        this.SUBRULE(this.element);
-      });
-      this.OPTION2(() => {
-        this.CONSUME(Outdent);
-      });
+    this.MANY(() => {
+      this.OR([
+        { ALT: () => this.CONSUME(Indent) },
+        { ALT: () => this.CONSUME(Outdent) },
+        { ALT: () => this.SUBRULE(this.element) }
+      ]);
     });
-  }); 
-  
-  element = this.RULE("element", () => {
+  });    element = this.RULE("element", () => {
     this.OR([
       { ALT: () => this.SUBRULE(this.inputElement) },
-      { ALT: () => this.SUBRULE(this.buttonElement) },      { ALT: () => this.SUBRULE(this.rowElement) },
+      { ALT: () => this.SUBRULE(this.buttonElement) },
+      { ALT: () => this.SUBRULE(this.rowElement) },
       { ALT: () => this.SUBRULE(this.columnElement) },
       { ALT: () => this.SUBRULE(this.listElement) },
       { ALT: () => this.SUBRULE(this.cardElement) },
+      { ALT: () => this.SUBRULE(this.headerElement) },
+      { ALT: () => this.SUBRULE(this.bottomNavElement) },
+      { ALT: () => this.SUBRULE(this.drawerElement) },
+      { ALT: () => this.SUBRULE(this.navItemElement) },
+      { ALT: () => this.SUBRULE(this.drawerItemElement) },
       { ALT: () => this.SUBRULE(this.separatorElement) },
       { ALT: () => this.SUBRULE(this.headingElement) },
       { ALT: () => this.SUBRULE(this.textElement) },
@@ -116,42 +121,53 @@ export class UiDslParser extends CstParser {
   separatorElement = this.RULE("separatorElement", () => {
     this.CONSUME(Separator);
   });
-  
-  textElement = this.RULE("textElement", () => {
+    textElement = this.RULE("textElement", () => {
     this.OR([
       { ALT: () => this.CONSUME(Text) },
       { ALT: () => this.CONSUME(Note) },
       { ALT: () => this.CONSUME(Quote) }
     ]);
   });
-
-  blockElement = this.RULE("blockElement", () => {
-    this.CONSUME(Indent);
-    this.AT_LEAST_ONE(() => {
-      this.SUBRULE(this.element);
-    });
-    this.OPTION(() => {
-      this.CONSUME(Outdent);
-    });
-  })
-
   cardElement = this.RULE("cardElement", () => {
     this.CONSUME(Card);
     this.CONSUME(Colon);
-    this.SUBRULE(this.blockElement);
+    this.OPTION(() => {
+      this.CONSUME(Indent);
+      this.AT_LEAST_ONE(() => {
+        this.SUBRULE(this.element);
+      });
+      this.OPTION2(() => {
+        this.CONSUME(Outdent);
+      });
+    });
   });
   
   rowElement = this.RULE("rowElement", () => {
     this.CONSUME(Row);
     this.CONSUME(Colon);
-    this.SUBRULE(this.blockElement);
+    this.OPTION(() => {
+      this.CONSUME(Indent);
+      this.AT_LEAST_ONE(() => {
+        this.SUBRULE(this.element);
+      });
+      this.OPTION2(() => {
+        this.CONSUME(Outdent);
+      });
+    });
   });
     columnElement = this.RULE("columnElement", () => {
     this.CONSUME(Col);
     this.CONSUME(Colon);
-    this.SUBRULE(this.blockElement);
-  });
-  listElement = this.RULE("listElement", () => {
+    this.OPTION(() => {
+      this.CONSUME(Indent);
+      this.AT_LEAST_ONE(() => {
+        this.SUBRULE(this.element);
+      });
+      this.OPTION2(() => {
+        this.CONSUME(Outdent);
+      });
+    });
+  });listElement = this.RULE("listElement", () => {
     this.CONSUME(List);
     this.CONSUME(Colon);
     this.OPTION(() => {
@@ -163,6 +179,55 @@ export class UiDslParser extends CstParser {
         this.CONSUME(Outdent);
       });
     });
+  });
+  // Mobile Layout Elements
+  headerElement = this.RULE("headerElement", () => {
+    this.CONSUME(Header);
+    this.CONSUME(Colon);
+    this.OPTION(() => {
+      this.CONSUME(Indent);
+      this.AT_LEAST_ONE(() => {
+        this.SUBRULE(this.element);
+      });
+      this.OPTION2(() => {
+        this.CONSUME(Outdent);
+      });
+    });
+  });
+
+  bottomNavElement = this.RULE("bottomNavElement", () => {
+    this.CONSUME(BottomNav);
+    this.CONSUME(Colon);
+    this.OPTION(() => {
+      this.CONSUME(Indent);
+      this.AT_LEAST_ONE(() => {
+        this.CONSUME(NavItem);
+      });
+      this.OPTION2(() => {
+        this.CONSUME(Outdent);
+      });
+    });
+  });
+  drawerElement = this.RULE("drawerElement", () => {
+    this.CONSUME(Drawer);
+    this.CONSUME(Colon);
+    this.OPTION(() => {
+      this.CONSUME(Indent);
+      this.AT_LEAST_ONE(() => {
+        this.CONSUME(DrawerItem);
+      });
+      this.OPTION2(() => {
+        this.CONSUME(Outdent);
+      });
+    });
+  });
+
+  navItemElement = this.RULE("navItemElement", () => {
+    this.CONSUME(NavItem);
+  });
+
+  drawerItemElement = this.RULE("drawerItemElement", () => {
+    this.CONSUME(DrawerItem);
   });
 
 }

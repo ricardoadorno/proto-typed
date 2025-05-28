@@ -1,0 +1,521 @@
+/* Mobile Components Styles */
+
+/* Ensure mockup containers have relative positioning for mobile components */
+.iphone-x,
+.browser-mockup {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Header Component */
+.iphone-x .header,
+.browser-mockup .header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #007bff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  gap: 0.5rem;
+}
+
+/* Fallback for non-mockup containers */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #007bff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  gap: 0.5rem;
+}
+
+/* Header content styling */
+.header h1,
+.header h2,
+.header h3,
+.header h4,
+.header h5,
+.header h6 {
+  margin: 0;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  flex: 1;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+/* Header buttons */
+.header button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-height: 32px;
+  min-width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+.header button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.header button:active {
+  transform: translateY(0);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Header layout management */
+.header > *:first-child:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
+  order: -1;
+}
+
+.header > *:last-child:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) {
+  order: 1;
+}
+
+/* Bottom Navigation */
+.iphone-x .bottom-nav,
+.browser-mockup .bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 0.5rem;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+/* Fallback for non-mockup containers */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background-color: #ffffff;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 0.5rem;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 60px;
+  color: #666;
+}
+
+.nav-item:hover {
+  color: #007bff;
+  background-color: rgba(0, 123, 255, 0.1);
+  border-radius: 8px;
+}
+
+.nav-item.active {
+  color: #007bff;
+}
+
+.nav-icon {
+  font-size: 1.2rem;
+  margin-bottom: 0.25rem;
+}
+
+.nav-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+/* Drawer/Sidebar */
+.iphone-x .drawer,
+.browser-mockup .drawer {
+  position: absolute;
+  top: 0;
+  left: -280px;
+  width: 280px;
+  height: 100%;
+  background-color: #ffffff;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  transition: left 0.3s ease;
+  z-index: 1001;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.iphone-x .drawer.open,
+.browser-mockup .drawer.open {
+  left: 0;
+}
+
+/* Fallback for non-mockup containers */
+.drawer {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 280px;
+  height: 100vh;
+  background-color: #ffffff;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  transition: left 0.3s ease;
+  z-index: 1001;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.drawer.open {
+  left: 0;
+}
+
+.drawer-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-align: left;
+  width: 100%;
+  color: #333;
+}
+
+.drawer-item:hover {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.drawer-icon {
+  font-size: 1.2rem;
+  margin-right: 1rem;
+  width: 24px;
+  text-align: center;
+}
+
+.drawer-label {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Drawer Overlay */
+.iphone-x .drawer-overlay,
+.browser-mockup .drawer-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.iphone-x .drawer-overlay.open,
+.browser-mockup .drawer-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Fallback for non-mockup containers */
+.drawer-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.drawer-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Mobile Layout Adjustments */
+.iphone-x .mobile-layout,
+.browser-mockup .mobile-layout {
+  padding-top: 60px;
+  padding-bottom: 70px;
+  min-height: 100%;
+}
+
+.iphone-x .screen-content,
+.browser-mockup .screen-content {
+  padding: 1rem;
+  margin-top: 60px;
+  margin-bottom: 70px;
+}
+
+/* Automatic padding for screens with header and/or bottom nav */
+.iphone-x .screen:has(.header),
+.browser-mockup .screen:has(.header) {
+  padding-top: 60px;
+}
+
+.iphone-x .screen:has(.bottom-nav),
+.browser-mockup .screen:has(.bottom-nav) {
+  padding-bottom: 70px;
+}
+
+/* Alternative approach using container padding */
+.iphone-x .container:has(.header),
+.browser-mockup .container:has(.header) {
+  padding-top: 60px;
+}
+
+.iphone-x .container:has(.bottom-nav),
+.browser-mockup .container:has(.bottom-nav) {
+  padding-bottom: 70px;
+}
+
+/* Fallback approach using classes for broader browser support */
+.iphone-x .screen.has-header,
+.browser-mockup .screen.has-header {
+  padding-top: 60px;
+}
+
+.iphone-x .screen.has-bottom-nav,
+.browser-mockup .screen.has-bottom-nav {
+  padding-bottom: 70px;
+}
+
+/* Ensure content inside screens doesn't get cut off */
+.iphone-x .screen > *:not(.header):not(.bottom-nav):not(.drawer),
+.browser-mockup .screen > *:not(.header):not(.bottom-nav):not(.drawer) {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fallback for regular container */
+@media (max-width: 768px) {
+  /* Adjust main content for fixed header and bottom nav */
+  .mobile-layout {
+    padding-top: 60px;
+    padding-bottom: 70px;
+    min-height: 100vh;
+  }
+
+  /* Ensure content doesn't go under fixed elements */
+  .screen-content {
+    padding: 1rem;
+    margin-top: 60px;
+    margin-bottom: 70px;
+  }
+  
+  /* Add padding for screens with mobile components */
+  .screen.has-header {
+    padding-top: 60px;
+  }
+  
+  .screen.has-bottom-nav {
+    padding-bottom: 70px;
+  }
+}
+
+/* Mobile-specific card adjustments */
+@media (max-width: 768px) {
+  .card {
+    margin: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
+/* Touch-friendly buttons */
+.mobile-button {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 0.25rem;
+}
+
+.mobile-button:hover {
+  background-color: #0056b3;
+}
+
+.mobile-button:active {
+  transform: scale(0.98);
+}
+
+/* Status bar simulation for iPhone mockup */
+.status-bar {
+  height: 30px;
+  background-color: #000;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status-left {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.status-right {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Responsive navigation */
+@media (max-width: 480px) {
+  .nav-label {
+    font-size: 0.6rem;
+  }
+  
+  .nav-icon {
+    font-size: 1rem;
+  }
+  
+  .drawer {
+    width: 250px;
+    left: -250px;
+  }
+  
+  .drawer-item {
+    padding: 0.75rem 1rem;
+  }
+  
+  /* Header responsive adjustments */
+  .header {
+    padding: 0 0.5rem;
+    gap: 0.25rem;
+  }
+  
+  .header h1,
+  .header h2,
+  .header h3,
+  .header h4,
+  .header h5,
+  .header h6 {
+    font-size: 1rem;
+    max-width: 50%;
+  }
+  
+  .header button {
+    padding: 0.3rem 0.4rem;
+    font-size: 0.75rem;
+    min-width: 28px;
+    min-height: 28px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 360px) {
+  .header {
+    padding: 0 0.25rem;
+  }
+  
+  .header h1,
+  .header h2,
+  .header h3,
+  .header h4,
+  .header h5,
+  .header h6 {
+    font-size: 0.9rem;
+    max-width: 40%;
+  }
+  
+  .header button {
+    padding: 0.25rem 0.3rem;
+    font-size: 0.7rem;
+    min-width: 24px;
+    min-height: 24px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .bottom-nav {
+    background-color: #1a1a1a;
+    border-top: 1px solid #333;
+  }
+  
+  .nav-item {
+    color: #ccc;
+  }
+  
+  .nav-item:hover,
+  .nav-item.active {
+    color: #007bff;
+  }
+  
+  .drawer {
+    background-color: #1a1a1a;
+  }
+  
+  .drawer-item {
+    color: #ccc;
+  }
+  
+  .drawer-item:hover {
+    background-color: rgba(0, 123, 255, 0.2);
+  }
+}

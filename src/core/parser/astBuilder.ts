@@ -27,13 +27,16 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       elements
     };
   }
-  
-  element(ctx: Context) {    if (ctx.inputElement) return this.visit(ctx.inputElement);
+    element(ctx: Context) {
+    if (ctx.inputElement) return this.visit(ctx.inputElement);
     if (ctx.buttonElement) return this.visit(ctx.buttonElement);
     if (ctx.rowElement) return this.visit(ctx.rowElement);
     if (ctx.columnElement) return this.visit(ctx.columnElement);
     if (ctx.listElement) return this.visit(ctx.listElement);
     if (ctx.cardElement) return this.visit(ctx.cardElement);
+    if (ctx.headerElement) return this.visit(ctx.headerElement);
+    if (ctx.bottomNavElement) return this.visit(ctx.bottomNavElement);
+    if (ctx.drawerElement) return this.visit(ctx.drawerElement);
     if (ctx.separatorElement) return this.visit(ctx.separatorElement);
     if (ctx.headingElement) return this.visit(ctx.headingElement);
     if (ctx.textElement) return this.visit(ctx.textElement);
@@ -44,27 +47,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     if (ctx.radioButtonGroup) return this.visit(ctx.radioButtonGroup);
     if (ctx.selectField) return this.visit(ctx.selectField);
     if (ctx.checkboxElement) return this.visit(ctx.checkboxElement);
-    console.warn('Unknown element type:', ctx);
-    return null;
-  }
-
-  blockElement(ctx: Context) {
-    const elements = [];
-
-    if (ctx.element) {
-      for (const el of ctx.element) {
-        const elementAst = this.visit(el);
-        if (elementAst) {
-          elements.push(elementAst);
-        }
-      }
-    }
-
-    return {
-      type: "Block",
-      props: {},
-      elements
-    };
+    console.warn('Unknown element type:', ctx);    return null;
   }
 
   headingElement(ctx: Context) {
@@ -117,27 +100,29 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       }
     };
   }
-
   buttonElement(ctx: Context) {
     const buttonText = ctx.Button[0].image;
-    let text = '', url = '';
+    let text = '', icon = '', action = '';
 
-    const markdownMatch = buttonText.match(/@\[([^\]]+)\](?:\(([^)]+)\))?/);
+    // Updated pattern to match @[text]{icon}(action) - all parts are optional except text
+    const markdownMatch = buttonText.match(/@\[([^\]]+)\](?:\{([^}]+)\})?(?:\(([^)]+)\))?/);
     const dslMatch = buttonText.match(/button\s+\["([^"]*)"\]\s+([^\n\r]+)/);
 
     if (markdownMatch) {
       text = markdownMatch[1];
-      url = markdownMatch[2] || ''; // URL is now optional, default to empty string
+      icon = markdownMatch[2] || ''; // Icon is optional
+      action = markdownMatch[3] || ''; // Action is optional
     } else if (dslMatch) {
-      url = dslMatch[1];
+      action = dslMatch[1];
       text = dslMatch[2];
     }
 
     return {
       type: "Button",
       props: {
-        href: url,
-        children: text
+        href: action,
+        children: text,
+        icon: icon
       }
     };
   }
@@ -336,17 +321,16 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       }
     };
   }
-
   rowElement(ctx: Context) {
     const elements = [];
 
-    // Get elements from blockElement which is returned by the parser
-    if (ctx.blockElement.length > 0) {
-      for (const el of ctx.blockElement) {
+    // Get elements directly from element subrules
+    if (ctx.element && ctx.element.length > 0) {
+      for (const el of ctx.element) {
         const elementAst = this.visit(el);
         
         if (elementAst) {
-          elements.push(elementAst.elements); // Push the elements from the blockElement
+          elements.push(elementAst);
         }
       }
     }
@@ -355,17 +339,16 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       type: "Row",
       elements
     };
-  }
-  columnElement(ctx: Context) {
+  }  columnElement(ctx: Context) {
     const elements = [];
 
-    // Get elements from blockElement which is returned by the parser
-    if (ctx.blockElement.length > 0) {
-      for (const el of ctx.blockElement) {
+    // Get elements directly from element subrules
+    if (ctx.element && ctx.element.length > 0) {
+      for (const el of ctx.element) {
         const elementAst = this.visit(el);
         
         if (elementAst) {
-          elements.push(elementAst.elements); // Push the elements from the blockElement
+          elements.push(elementAst);
         }
       }
     }
@@ -420,17 +403,16 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       elements: [items]
     };
   }
-
   cardElement(ctx: Context) {
     const elements = [];
 
-    // Get elements from blockElement which is returned by the parser
-    if (ctx.blockElement.length > 0) {
-      for (const el of ctx.blockElement) {
+    // Get elements directly from element subrules
+    if (ctx.element && ctx.element.length > 0) {
+      for (const el of ctx.element) {
         const elementAst = this.visit(el);
         
         if (elementAst) {
-          elements.push(elementAst.elements); // Push the elements from the blockElement
+          elements.push(elementAst);
         }
       }
     }
@@ -443,11 +425,97 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       elements
     };
   }
-
   separatorElement(ctx: Context) {
     return {
       type: "Separator",
       props: {}
+    };
+  }
+  // Mobile Layout Elements
+  headerElement(ctx: Context) {
+    const elements = [];
+
+    // Get elements directly from element subrules
+    if (ctx.element && ctx.element.length > 0) {
+      for (const el of ctx.element) {
+        const elementAst = this.visit(el);
+        
+        if (elementAst) {
+          elements.push(elementAst);
+        }
+      }
+    }
+
+    return {
+      type: "Header",
+      props: {
+        className: "header"
+      },
+      elements
+    };
+  }
+
+  bottomNavElement(ctx: Context) {
+    const items = [];
+
+    if (ctx.NavItem) {
+      for (const item of ctx.NavItem) {
+        const itemText = item.image;
+        // Pattern: nav_item [label]{icon}(action)
+        const match = itemText.match(/nav_item\s+\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/);
+        
+        if (match) {
+          const [, label, icon, action] = match;
+          items.push({
+            type: "NavItem",
+            props: {
+              label: label.trim(),
+              icon: icon.trim(),
+              action: action ? action.trim() : ''
+            }
+          });
+        }
+      }
+    }
+
+    return {
+      type: "BottomNav",
+      props: {
+        className: "bottom-nav"
+      },
+      elements: items
+    };
+  }
+
+  drawerElement(ctx: Context) {
+    const items = [];
+
+    if (ctx.DrawerItem) {
+      for (const item of ctx.DrawerItem) {
+        const itemText = item.image;
+        // Pattern: drawer_item [label]{icon}(action)
+        const match = itemText.match(/drawer_item\s+\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/);
+        
+        if (match) {
+          const [, label, icon, action] = match;
+          items.push({
+            type: "DrawerItem",
+            props: {
+              label: label.trim(),
+              icon: icon.trim(),
+              action: action ? action.trim() : ''
+            }
+          });
+        }
+      }
+    }
+
+    return {
+      type: "Drawer",
+      props: {
+        className: "drawer"
+      },
+      elements: items
     };
   }
 }
