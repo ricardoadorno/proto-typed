@@ -30,9 +30,9 @@ export default function ExampleModal() {
                 name: "List View",
                 code: `@screen ListExample:
   list:
-    - [https://via.placeholder.com/50]User Profile{John Doe - Software Engineer}[https://via.placeholder.com/50]
-    - [https://via.placeholder.com/50]Task Status{Complete - Review pending}[https://via.placeholder.com/50]
-    - [https://via.placeholder.com/50]Project Update{New features added}[https://via.placeholder.com/50]`,
+    - [https://placehold.co/50]User Profile{John Doe - Software Engineer}[https://placehold.co/50]
+    - [https://placehold.co/50]Task Status{Complete - Review pending}[https://placehold.co/50]
+    - [https://placehold.co/50]Project Update{New features added}[https://placehold.co/50]`,
                 description: "Create structured list items with images, main text, and subtexts"
             },
             {
