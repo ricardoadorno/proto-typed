@@ -39,10 +39,7 @@ export const Identifier = createToken({
   pattern: /[a-zA-Z_][a-zA-Z0-9_]*/ 
 });
 
-export const StringLiteral = createToken({ 
-  name: "StringLiteral", 
-  pattern: /"[^"]*"/ 
-});
+
 
 // Layout Family Tokens
 export const Row = createToken({ 
@@ -159,6 +156,7 @@ export const UnorderedListItem = createToken({
   pattern: /(?:\r\n|\r|\n|\s)*-\s+([^\n\r]+)/
 });
 
+// Complex list item with images and subtexts (legacy support)
 export const ListItem = createToken({
   name: "ListItem",
   pattern: /(?:\r\n|\r|\n|\s)*-\s+\[([^\]]+)\]([^{]+)\{([^}]+)\}\[([^\]]+)\]/
@@ -194,12 +192,9 @@ export const allTokens = [
   Quote,
   Heading,
   Link,
-  Image,
-  Equals,
+  Image,  Equals,
   Colon,
-  StringLiteral,
-  Identifier,
-  OrderedListItem,
+  Identifier,OrderedListItem,
   ListItem, // More specific pattern must come before UnorderedListItem
   UnorderedListItem,
   RadioOption,

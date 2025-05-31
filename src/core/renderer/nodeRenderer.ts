@@ -158,11 +158,22 @@ export function nodeToHtml(node: AstNode, context?: string): string {
         case 'List':
       const listItems = node.elements?.flat().map(item => nodeToHtml(item, context)).join('\n') || '';
       return `<div class="list">${listItems}</div>`;
-      
     case 'ListItem':
-      const { leadingImage, mainText, subText, trailingImage } = node.props || {};
+      const { text } = node.props || {};
+      
+      // Handle simple text-based list items
       return `
-        <div class="list-item">
+        <div class="list-item simple">
+          <span class="list-item-text">${text || ''}</span>
+        </div>
+      `;
+
+    case 'ComplexListItem':
+      const { leadingImage, mainText, subText, trailingImage } = node.props || {};
+      
+      // Handle complex list items with images and subtexts
+      return `
+        <div class="list-item complex">
           <img src="${leadingImage || ''}" alt="Leading image" class="list-item-image" />
           <div class="list-item-content">
             <div class="list-item-main-text">${mainText || ''}</div>
@@ -170,7 +181,7 @@ export function nodeToHtml(node: AstNode, context?: string): string {
           </div>
           <img src="${trailingImage || ''}" alt="Trailing image" class="list-item-image" />
         </div>
-      `;        case 'Card':
+      `;case 'Card':
       const cardElements = node.elements?.flat().map(element => nodeToHtml(element, context)).join('\n') || '';
       return `<article class="card">${cardElements}</article>`;
       

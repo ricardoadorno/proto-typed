@@ -1,9 +1,9 @@
 import { CstParser } from "chevrotain";
 import { 
   allTokens, Screen, Identifier, Colon, Button, 
-  Row, StringLiteral, Card, Separator, Heading, Link, 
+  Row, Card, Separator, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, ListItem, RadioOption, 
-  Checkbox, Text, Note, Quote, SelectField, Equals,Col, List,
+  Checkbox, Text, Note, Quote, SelectField, Col, List,
   Header, BottomNav, Drawer, NavItem, DrawerItem
 } from "../lexer/tokens";
 import { Indent, Outdent } from "../lexer/lexer";
@@ -167,13 +167,16 @@ export class UiDslParser extends CstParser {
         this.CONSUME(Outdent);
       });
     });
-  });listElement = this.RULE("listElement", () => {
+  });  listElement = this.RULE("listElement", () => {
     this.CONSUME(List);
     this.CONSUME(Colon);
     this.OPTION(() => {
       this.CONSUME(Indent);
       this.AT_LEAST_ONE(() => {
-        this.CONSUME(ListItem);
+        this.OR([
+          { ALT: () => this.CONSUME(UnorderedListItem) },
+          { ALT: () => this.CONSUME(ListItem) }
+        ]);
       });
       this.OPTION2(() => {
         this.CONSUME(Outdent);

@@ -30,10 +30,18 @@ export default function ExampleModal() {
                 name: "List View",
                 code: `@screen ListExample:
   list:
+    - User Profile
+    - Task Status
+    - Project Update`,
+                description: "Create simple list items using dash-based syntax"
+            }, {
+                name: "Complex List View",
+                code: `@screen ComplexListExample:
+  list:
     - [https://placehold.co/50]User Profile{John Doe - Software Engineer}[https://placehold.co/50]
     - [https://placehold.co/50]Task Status{Complete - Review pending}[https://placehold.co/50]
     - [https://placehold.co/50]Project Update{New features added}[https://placehold.co/50]`,
-                description: "Create structured list items with images, main text, and subtexts"
+                description: "Create complex list items with images, main text, and subtexts (legacy support)"
             },
             {
                 name: "Card Component",
@@ -184,8 +192,7 @@ export default function ExampleModal() {
                     description: "Create a slide-out drawer menu with navigation items"
                 },
                 {
-                    name: "Complete Mobile App",
-                    code: `@screen MobileDemo:
+                    name: "Complete Mobile App", code: `@screen MobileDemo:
   header:
     # My App
     @[Menu](toggle-drawer)
@@ -193,10 +200,10 @@ export default function ExampleModal() {
   card:
     ## Welcome
     > Complete mobile interface example
-    
-  list:
-    - [👤]{John Doe}{Online now}[💬]
-    - [👤]{Jane Smith}{2 min ago}[📞]
+      list:
+    - John Doe - Online now
+    - Jane Smith - 2 min ago
+    - Mike Johnson - 5 min ago
     
   bottom_nav:
     nav_item [Home]{🏠}(home)

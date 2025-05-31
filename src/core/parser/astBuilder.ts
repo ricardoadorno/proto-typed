@@ -357,50 +357,53 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       type: "Col",
       elements
     };
-  }
-  listElement(ctx: Context) {
-    if (!ctx.ListItem || ctx.ListItem.length === 0) {
-      return {
-        type: "List",
-        elements: []
-      };
+  }  listElement(ctx: Context) {    const items: any[] = [];
+
+    // Handle simple unordered list items using UnorderedListItem
+    if (ctx.UnorderedListItem) {
+      ctx.UnorderedListItem.forEach((item: any) => {
+        const itemText = item.image;
+        // Extract text after the dash and space: "- text" -> "text"
+        const match = itemText.match(/-\s+(.+)/);
+        if (match) {
+          const text = match[1].trim();
+          items.push({
+            type: "ListItem",
+            props: {
+              text: text
+            }
+          });
+        }
+      });
     }
 
-    const items = ctx.ListItem.map((item: any) => {
-      const itemText = item.image;
-      
-      // Parse the format: - [image]text{subtext}[image]
-      const match = itemText.match(/-\s+\[([^\]]+)\]([^{]+)\{([^}]+)\}\[([^\]]+)\]/);
-      
-      if (match) {
-        const [, leadingImage, mainText, subText, trailingImage] = match;
+    // Handle complex list items (legacy support)
+    if (ctx.ListItem) {
+      ctx.ListItem.forEach((item: any) => {
+        const itemText = item.image;
         
-        return {
-          type: "ListItem",
-          props: {
-            leadingImage: leadingImage.trim(),
-            mainText: mainText.trim(),
-            subText: subText.trim(),
-            trailingImage: trailingImage.trim()
-          }
-        };
-      }
-      
-      // Fallback if pattern doesn't match
-      return {
-        type: "ListItem",
-        props: {
-          leadingImage: '',
-          mainText: itemText,
-          subText: '',
-          trailingImage: ''
+        // Parse the format: - [image]text{subtext}[image]
+        const match = itemText.match(/-\s+\[([^\]]+)\]([^{]+)\{([^}]+)\}\[([^\]]+)\]/);
+        
+        if (match) {
+          const [, leadingImage, mainText, subText, trailingImage] = match;
+          
+          items.push({
+            type: "ComplexListItem",
+            props: {
+              leadingImage: leadingImage.trim(),
+              mainText: mainText.trim(),
+              subText: subText.trim(),
+              trailingImage: trailingImage.trim()
+            }
+          });
         }
-      };
-    });
+      });
+    }
 
     return {
       type: "List",
-      elements: [items]
+      elements: items
     };
   }
   cardElement(ctx: Context) {
