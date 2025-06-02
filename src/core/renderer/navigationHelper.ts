@@ -144,6 +144,40 @@ export function generateNavigationScript(): string {
       }
     }
     
+    function openModal(modalName) {
+      const modal = document.getElementById(\`modal-\${modalName}\`);
+      if (modal) {
+        modal.classList.remove('hidden');
+      }
+    }
+    
+    function closeModal(modalName) {
+      const modal = document.getElementById(\`modal-\${modalName}\`);
+      if (modal) {
+        modal.classList.add('hidden');
+      }
+    }
+    
+    function openSidebar(sidebarName) {
+      const sidebar = document.getElementById(\`sidebar-\${sidebarName}\`);
+      if (sidebar) {
+        sidebar.classList.remove('hidden');
+        sidebar.querySelector('.sidebar-content').classList.add('translate-x-0');
+        sidebar.querySelector('.sidebar-content').classList.remove('-translate-x-full');
+      }
+    }
+    
+    function closeSidebar(sidebarName) {
+      const sidebar = document.getElementById(\`sidebar-\${sidebarName}\`);
+      if (sidebar) {
+        sidebar.querySelector('.sidebar-content').classList.remove('translate-x-0');
+        sidebar.querySelector('.sidebar-content').classList.add('-translate-x-full');
+        setTimeout(() => {
+          sidebar.classList.add('hidden');
+        }, 300);
+      }
+    }
+    
     // Handle navigation clicks with data-nav attributes
     document.addEventListener('click', function(e) {
       const target = e.target.closest('[data-nav]');
@@ -157,7 +191,17 @@ export function generateNavigationScript(): string {
       switch (navType) {
         case 'internal':
           e.preventDefault();
-          navigateToScreen(navValue);
+          // Check if it's a modal or sidebar first
+          const modal = document.getElementById(\`modal-\${navValue}\`);
+          const sidebar = document.getElementById(\`sidebar-\${navValue}\`);
+          
+          if (modal) {
+            openModal(navValue);
+          } else if (sidebar) {
+            openSidebar(navValue);
+          } else {
+            navigateToScreen(navValue);
+          }
           break;
         case 'external':
           e.preventDefault();

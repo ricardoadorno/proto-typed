@@ -41,9 +41,7 @@ export function astToHtml(ast: AstNode | AstNode[], { currentScreen }: RenderOpt
       const layoutClasses = [];
       if (hasHeader) layoutClasses.push('has-header');
       if (hasBottomNav) layoutClasses.push('has-bottom-nav');
-      if (globalDrawer) layoutClasses.push('has-drawer');
-      
-      // Filter out drawer elements from individual screens since we'll render it globally
+      if (globalDrawer) layoutClasses.push('has-drawer');      // Filter out drawer elements from individual screens since we'll render it globally
       const elementsHtml = screen.elements
         ?.filter(element => element != null && element.type !== 'Drawer')
         .map(element => nodeToHtml(element))
@@ -55,7 +53,6 @@ export function astToHtml(ast: AstNode | AstNode[], { currentScreen }: RenderOpt
   </div>`;
     })
     .join('\n\n');
-  
   // Add global drawer if it exists
   const globalDrawerHtml = globalDrawer ? `\n\n${nodeToHtml(globalDrawer)}\n<div class="drawer-overlay"></div>` : '';
   

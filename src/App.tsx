@@ -5,6 +5,7 @@ import { AstNode } from './types/astNode';
 import login from './examples/login';
 import dashboard from './examples/dashboard';
 import mobileComplete from './examples/mobile-complete';
+import namedElementsExample from './examples/named-elements';
 import { RenderOptions } from './types/renderOptions';
 import { astToHtmlDocument } from './core/renderer/documentRenderer';
 import { astToHtml } from './core/renderer/astToHtml';
@@ -21,8 +22,7 @@ export default function App() {
     const [screens, setScreens] = useState<AstNode[]>([]);
     const [astResult, setAstResult] = useState<string>('');
     const [currentScreen, setCurrentScreen] = useState<string>();
-    const [error, setError] = useState<string | null>(null);
-    const [monacoInitialized, setMonacoInitialized] = useState(false); const handleParse = () => {
+    const [error, setError] = useState<string | null>(null); const [monacoInitialized, setMonacoInitialized] = useState(false); const handleParse = () => {
         try {
             // Now we can parse multiple screens at once with the program rule
             const cst = parseInput(input);
@@ -72,13 +72,12 @@ export default function App() {
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-    };
-
-    const renderScreen = (renderOptions: RenderOptions) => {
+    }; const renderScreen = (renderOptions: RenderOptions) => {
         if (screens.length === 0) return null;
 
-        // Convert AST to HTML string
+        // Convert AST to HTML string without React state
         const htmlString = astToHtml(screens, renderOptions);
+
         // Return a div with the HTML content injected and add the click handler
         return (
             <div
@@ -90,18 +89,24 @@ export default function App() {
                     handleNavigationClick(e, {
                         onInternalNavigate: (screenName: string) => {
                             console.log('[App] Navigation to screen:', screenName);
-                            setCurrentScreen(screenName.toLowerCase());
-                            // Hide all screens
-                            const screenElements = document.querySelectorAll('.screen');
-                            screenElements.forEach(screen => {
-                                (screen as HTMLElement).style.display = 'none';
-                            });
-                            // Show the selected screen
-                            const targetScreen = document.getElementById(`${screenName.toLowerCase()}-screen`);
-                            console.log('[App] Target screen element:', targetScreen);
-                            if (targetScreen) {
-                                (targetScreen as HTMLElement).style.display = 'block';
+
+                            // Check if it's a modal first
+                            const allNodes = screens.flatMap(screen => screen.elements || []);
+                            const isModal = allNodes.some(node => node.type === 'modal' && node.name === screenName);
+                            const isSidebar = allNodes.some(node => node.type === 'sidebar' && node.name === screenName);
+
+                            if (isModal || isSidebar) {
+                                // For modals and sidebars, let the navigation helper handle it
+                                // and DON'T trigger a React re-render
+                                return;
                             }
+
+                            // It's a regular screen - set it as current (this will trigger re-render)
+                            setCurrentScreen(screenName.toLowerCase());
+                        },
+                        onDrawerToggle: () => {
+                            // For drawer toggle, let the navigation helper handle it
+                            // and DON'T trigger a React re-render
                         }
                     });
                 }}
@@ -220,7 +225,13 @@ export default function App() {
                                 >
                                     Mobile Example
                                 </button>
-                            </div>                            {/* Device Selector */}
+                                <button
+                                    onClick={() => setInput(namedElementsExample)}
+                                    className="px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors duration-200 text-sm font-medium"
+                                >
+                                    Named Elements
+                                </button>
+                            </div>{/* Device Selector */}
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                                     Preview Device

@@ -83,8 +83,10 @@ These elements can be activated by calling their names in navigation actions.
 - `$ComponentName` - Component instantiation/usage
 
 ### Named UI Elements  
-- `@modal ModalName:` - Modal declaration
-- `@sidebar SidebarName:` - Sidebar declaration
+- `modal ModalName:` - Modal declaration
+- `sidebar SidebarName:` - Sidebar declaration
+
+These named elements have special behavior - they are shown or hidden based on navigation. When a button references their name in its action parameter (e.g., `@[Open Modal](ModalName)`), they will be activated. Otherwise, they remain hidden/inactive by default.
 
 ### Advanced Form Elements
 - `___:Label(Placeholder)`

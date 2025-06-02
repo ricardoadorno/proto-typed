@@ -44,31 +44,28 @@ export function nodeToHtml(node: AstNode, context?: string): string {
       if (!componentDef) {
         console.warn(`Component not found: ${componentName}`);
         return `<div class="component-instance error" data-component="${componentName}">Component not found: ${componentName}</div>`;
-      }
-      
-      // Render all elements from the component definition
+      }      // Render all elements from the component definition
       const componentElements = componentDef.elements || [];
       return componentElements
         .map(element => nodeToHtml(element, context))
         .join('\n');
-    
-    case 'modal':
+      case 'modal':
       const modalElements = node.elements ? node.elements.map(el => nodeToHtml(el, context)).join('\n') : '';
-      return `<div class="modal" id="modal-${node.name}" data-modal="${node.name}">
+      
+      return `<div class="modal hidden" id="modal-${node.name}" data-modal="${node.name}">
         <div class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
-            <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="closeModal('${node.name}')">&times;</button>
+            <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" data-nav="${node.name}" data-nav-type="internal">&times;</button>
             ${modalElements}
           </div>
         </div>
-      </div>`;
-    
-    case 'sidebar':
+      </div>`;      case 'sidebar':
       const sidebarElements = node.elements ? node.elements.map(el => nodeToHtml(el, context)).join('\n') : '';
-      return `<div class="sidebar" id="sidebar-${node.name}" data-sidebar="${node.name}">
-        <div class="sidebar-overlay fixed inset-0 bg-black bg-opacity-30 z-40"></div>
+      
+      return `<div class="sidebar hidden" id="sidebar-${node.name}" data-sidebar="${node.name}">
+        <div class="sidebar-overlay fixed inset-0 bg-black bg-opacity-30 z-40" data-nav="${node.name}" data-nav-type="internal"></div>
         <div class="sidebar-content fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-800 shadow-lg transform -translate-x-full transition-transform duration-300 z-50">
-          <button class="sidebar-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="closeSidebar('${node.name}')">&times;</button>
+          <button class="sidebar-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" data-nav="${node.name}" data-nav-type="internal">&times;</button>
           <div class="sidebar-body p-6">
             ${sidebarElements}
           </div>
@@ -224,8 +221,7 @@ export function nodeToHtml(node: AstNode, context?: string): string {
           <input type="checkbox" ${checked ? 'checked' : ''} class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
           <span class="text-gray-700 dark:text-gray-300">${label}</span>
         </label>
-      `;
-    case 'Row':
+      `;    case 'Row':
       const rowElements = node.elements?.flat().map(element => nodeToHtml(element, context)).join('\n') || '';
       return `<div class="flex flex-wrap gap-4 mb-4">${rowElements}</div>`;
     case 'Col':
@@ -233,7 +229,7 @@ export function nodeToHtml(node: AstNode, context?: string): string {
       return `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${colElements}</div>`;
     case 'List':
       const listItems = node.elements?.flat().map(item => nodeToHtml(item, context)).join('\n') || '';
-      return `<div class="space-y-3">${listItems}</div>`;    case 'ListItem':
+      return `<div class="space-y-3">${listItems}</div>`;case 'ListItem':
       const { text } = node.props || {};
       
       // Handle simple text-based list items
@@ -295,9 +291,8 @@ export function nodeToHtml(node: AstNode, context?: string): string {
             </button>
           `;
         }
-        return '';
-      }).join('') || '';
-      return `<aside class="drawer fixed top-0 left-0 z-40 w-64 h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out">${drawerItems}</aside>`;    case 'NavItem':
+        return '';      }).join('') || '';
+      return `<aside class="drawer fixed top-0 left-0 z-40 w-64 h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out">${drawerItems}</aside>`;case 'NavItem':
       const { label: navLabel, icon: navIcon, action: navAction } = node.props || {};
       
       // Use navigation helper for nav items

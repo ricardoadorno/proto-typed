@@ -15,8 +15,7 @@ export function screenToHtml(screen: AstNode): string {
   const layoutClasses = [];
   if (hasHeader) layoutClasses.push('has-header');
   if (hasBottomNav) layoutClasses.push('has-bottom-nav');
-  
-  const elementsHtml = screen.elements
+    const elementsHtml = screen.elements
     ?.filter(element => element != null)
     .map(element => nodeToHtml(element))
     .join('\n      ') || '';
