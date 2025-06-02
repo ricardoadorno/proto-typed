@@ -12,6 +12,8 @@ import ExampleModal from './components/example-modal';
 import AstModal from './components/ast-modal';
 import { Editor } from '@monaco-editor/react';
 import { handleNavigationClick } from './core/renderer/navigationHelper';
+import { initializeMonacoDSL } from './core/editor';
+import { DSL_LANGUAGE_ID } from './core/editor/constants'
 
 export default function App() {
     const [input, setInput] = useState(login);
@@ -20,8 +22,7 @@ export default function App() {
     const [astResult, setAstResult] = useState<string>('');
     const [currentScreen, setCurrentScreen] = useState<string>();
     const [error, setError] = useState<string | null>(null);
-
-    const handleParse = () => {
+    const [monacoInitialized, setMonacoInitialized] = useState(false); const handleParse = () => {
         try {
             // Now we can parse multiple screens at once with the program rule
             const cst = parseInput(input);
@@ -37,7 +38,20 @@ export default function App() {
             setScreens([]);
             setError(err.message);
         }
-    };
+    };    // Initialize Monaco DSL when component mounts
+    useEffect(() => {
+        const initMonaco = async () => {
+            try {
+                await initializeMonacoDSL();
+                setMonacoInitialized(true);
+            } catch (error) {
+                console.error('Failed to initialize Monaco DSL:', error);
+                setMonacoInitialized(true); // Still allow editor to load with default language
+            }
+        };
+
+        initMonaco();
+    }, []);
 
     const exportAsHtml = () => {
         if (screens.length === 0) {
@@ -206,9 +220,7 @@ export default function App() {
                                 >
                                     Mobile Example
                                 </button>
-                            </div>
-
-                            {/* Device Selector */}
+                            </div>                            {/* Device Selector */}
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                                     Preview Device
@@ -219,8 +231,7 @@ export default function App() {
                                     className="w-full px-3 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
                                 >
                                     <option value="iphone-x">📱 iPhone X</option>
-                                    <option value="browser-mockup with-url">🖥️ Desktop Browser</option>
-                                </select>
+                                    <option value="browser-mockup with-url">🖥️ Desktop Browser</option>                                </select>
                             </div>
                         </div>
 
@@ -244,13 +255,11 @@ export default function App() {
                                         </div>
                                     </div>
                                 </div>
-                            )}
-
-                            <div className="h-full">
-                                <Editor
+                            )}                            <div className="h-full">
+                                {monacoInitialized ? (<Editor
                                     height="100%"
-                                    language="text"
-                                    theme="vs-dark"
+                                    language={DSL_LANGUAGE_ID}
+                                    theme="proto-type-dark"
                                     value={input}
                                     onChange={(value) => setInput(value || "")}
                                     options={{
@@ -264,10 +273,47 @@ export default function App() {
                                         lineHeight: 1.6,
                                         cursorBlinking: "smooth",
                                         smoothScrolling: true,
-                                        contextmenu: false,
+                                        contextmenu: true,
                                         scrollBeyondLastLine: false,
+                                        bracketPairColorization: { enabled: true },
+                                        autoIndent: "full",
+                                        formatOnPaste: true,
+                                        formatOnType: true,
+                                        suggest: {
+                                            showKeywords: true,
+                                            showSnippets: true,
+                                            showFunctions: true,
+                                            showConstructors: true,
+                                            showFields: true,
+                                            showVariables: true,
+                                            showClasses: true,
+                                            showStructs: true,
+                                            showInterfaces: true,
+                                            showModules: true,
+                                            showProperties: true,
+                                            showEvents: true,
+                                            showOperators: true,
+                                            showUnits: true,
+                                            showValues: true,
+                                            showConstants: true,
+                                            showEnums: true,
+                                            showEnumMembers: true,
+                                            showColors: true,
+                                            showFiles: true,
+                                            showReferences: true,
+                                            showFolders: true,
+                                            showTypeParameters: true,
+                                            showUsers: true,
+                                            showIssues: true,
+                                        },
                                     }}
                                 />
+                                ) : (
+                                    <div className="flex items-center justify-center h-full">
+                                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                                        <span className="ml-2 text-slate-600 dark:text-slate-300">Loading editor...</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
