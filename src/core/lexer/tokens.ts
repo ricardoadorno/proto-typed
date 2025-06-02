@@ -24,6 +24,26 @@ export const Screen = createToken({
   pattern: /@screen/ 
 });
 
+export const Component = createToken({
+  name: "Component",
+  pattern: /@component/
+});
+
+export const Modal = createToken({
+  name: "Modal", 
+  pattern: /modal/
+});
+
+export const Sidebar = createToken({
+  name: "Sidebar",
+  pattern: /sidebar/
+});
+
+export const ComponentInstance = createToken({
+  name: "ComponentInstance",
+  pattern: /\$([a-zA-Z_][a-zA-Z0-9_]*)/
+});
+
 export const Equals = createToken({ 
   name: "Equals", 
   pattern: /=/ 
@@ -173,6 +193,10 @@ export const allTokens = [
   NewLine,
   WhiteSpace,
   Screen,
+  Component,
+  Modal,
+  Sidebar,
+  ComponentInstance,
   NavItem,
   DrawerItem,
   Input,

@@ -1,14 +1,21 @@
 import { AstNode } from '../../types/astNode';
-import { nodeToHtml } from './nodeRenderer';
+import { nodeToHtml, setComponentDefinitions } from './nodeRenderer';
 import { RenderOptions } from '../../types/renderOptions';
 
 /**
  * Convert AST to HTML string representation with pagination for in-app preview
  */
 export function astToHtml(ast: AstNode | AstNode[], { currentScreen }: RenderOptions = {}): string {
-  const screens = Array.isArray(ast) ? ast : [ast];
+  const nodes = Array.isArray(ast) ? ast : [ast];
   
-  if (screens.length === 0) return '';
+  if (nodes.length === 0) return '';
+  
+  // Separate screens and components
+  const screens = nodes.filter(node => node.type === 'Screen' || node.type === 'screen');
+  const components = nodes.filter(node => node.type === 'component');
+  
+  // Register components with the renderer
+  setComponentDefinitions(components);
   
   // Check if any screen has a drawer - if so, extract it and make it global
   let globalDrawer: AstNode | null = null;
@@ -19,10 +26,9 @@ export function astToHtml(ast: AstNode | AstNode[], { currentScreen }: RenderOpt
       globalDrawer = drawerElement;
     }
   });
-  
   // Generate the HTML for all screens, with unique IDs and display:none (except currentScreen or first screen)
   const screensHtml = screens
-    .filter(screen => screen && screen.type === 'Screen' && screen.name)
+    .filter(screen => screen && screen.name)
     .map((screen, index) => {
       const screenName = screen.name?.toLowerCase() || '';
       const style = currentScreen ? (screenName === currentScreen.toLowerCase() ? '' : 'style="display:none"')

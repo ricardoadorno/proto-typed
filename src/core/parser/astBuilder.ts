@@ -10,24 +10,36 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     super();
     this.validateVisitor();
   }
-
   program(ctx: Context) {
-    // Process multiple screens
+    // Process multiple screens and components
     const screens = ctx.screen ? ctx.screen.map((screen: CstNode) => this.visit(screen)) : [];
-    return screens;
+    const components = ctx.component ? ctx.component.map((component: CstNode) => this.visit(component)) : [];
+    return [...screens, ...components];
   }
-
   screen(ctx: Context) {
     const name = ctx.name[0].image;
     const elements = ctx.element ? ctx.element.map((el: CstNode) => this.visit(el)) : [];
 
     return {
-      type: "Screen",
+      type: "screen",
       name,
       elements
     };
   }
-    element(ctx: Context) {
+
+  component(ctx: Context) {
+    const name = ctx.name[0].image;
+    const elements = ctx.element ? ctx.element.map((el: CstNode) => this.visit(el)) : [];
+
+    return {
+      type: "component",
+      name,
+      elements
+    };
+  }    element(ctx: Context) {
+    if (ctx.componentInstanceElement) return this.visit(ctx.componentInstanceElement);
+    if (ctx.modalElement) return this.visit(ctx.modalElement);
+    if (ctx.sidebarElement) return this.visit(ctx.sidebarElement);
     if (ctx.inputElement) return this.visit(ctx.inputElement);
     if (ctx.buttonElement) return this.visit(ctx.buttonElement);
     if (ctx.rowElement) return this.visit(ctx.rowElement);
@@ -519,6 +531,39 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
         className: "drawer"
       },
       elements: items
+    };
+  }
+
+  componentInstanceElement(ctx: Context) {
+    const token = ctx.ComponentInstance[0];
+    const match = token.image.match(/\$([a-zA-Z_][a-zA-Z0-9_]*)/);
+    const componentName = match ? match[1] : '';
+
+    return {
+      type: "component_instance",
+      name: componentName
+    };
+  }
+
+  modalElement(ctx: Context) {
+    const name = ctx.name[0].image;
+    const elements = ctx.element ? ctx.element.map((el: CstNode) => this.visit(el)) : [];
+
+    return {
+      type: "modal",
+      name,
+      elements
+    };
+  }
+
+  sidebarElement(ctx: Context) {
+    const name = ctx.name[0].image;
+    const elements = ctx.element ? ctx.element.map((el: CstNode) => this.visit(el)) : [];
+
+    return {
+      type: "sidebar",
+      name,
+      elements
     };
   }
 }

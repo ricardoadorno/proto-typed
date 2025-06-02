@@ -1,15 +1,23 @@
 import { AstNode } from '../../types/astNode';
-import { nodeToHtml } from './nodeRenderer';
+import { nodeToHtml, setComponentDefinitions } from './nodeRenderer';
 import { generateCompleteNavigationScript } from './navigationHelper';
 
 /**
  * Generate a complete HTML document with all screens
  */
 export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
-  const screens = Array.isArray(ast) ? ast : [ast];
+  const nodes = Array.isArray(ast) ? ast : [ast];  
+  
+  // Separate screens and components
+  const screens = nodes.filter(node => node.type === 'Screen' || node.type === 'screen');
+  const components = nodes.filter(node => node.type === 'component');
+  
+  // Register components with the renderer
+  setComponentDefinitions(components);
+
   // Generate the HTML for all screens with styles to hide all but the first
   const screensHtml = screens
-    .filter(screen => screen && screen.type === 'Screen' && screen.name)
+    .filter(screen => screen && screen.name)
     .map((screen, index) => {
       const screenName = screen.name?.toLowerCase() || '';
       const style = index === 0 ? '' : 'style="display:none"';

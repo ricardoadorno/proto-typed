@@ -34,15 +34,37 @@ This is a React-based UI prototyping tool that allows users to create interactiv
 
 ### Screen Declaration
 ```
-@screen ScreenName {theme?: dark|light, responsive?: true|false}:
+@screen ScreenName:
   // Screen content
 ```
 
-### Variables and State
+### Component Declaration
+Components allow you to create reusable UI blocks that can be instantiated throughout your prototype:
 ```
-// Variables and state management are planned features
-// Currently not implemented in the parser
+@component ComponentName:
+  // Component content
+  > This is reusable content
+  @[Button](action)
 ```
+
+To use a declared component, reference it with the `$` prefix:
+```
+$ComponentName
+```
+
+### Modal and Sidebar Elements
+Named elements that can be toggled active/inactive through navigation:
+```
+modal ModalName:
+  // Modal content
+  > This is a modal dialog
+
+sidebar SidebarName:
+  // Sidebar content
+  > This is a sidebar panel
+```
+
+These elements can be activated by calling their names in navigation actions.
 
 ### Typography Elements
 - `# Heading 1` to `###### Heading 6`
@@ -54,6 +76,15 @@ This is a React-based UI prototyping tool that allows users to create interactiv
 - `@[Button Text](action)`
 - `#[Link Text](destination)`
 - `![Alt Text](image-url)`
+- `$ComponentName` - Component instantiation
+
+### Component System
+- `@component ComponentName:` - Component declaration
+- `$ComponentName` - Component instantiation/usage
+
+### Named UI Elements  
+- `@modal ModalName:` - Modal declaration
+- `@sidebar SidebarName:` - Sidebar declaration
 
 ### Advanced Form Elements
 - `___:Label(Placeholder)`

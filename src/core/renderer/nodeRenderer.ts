@@ -2,20 +2,80 @@ import { AstNode } from '../../types/astNode';
 import { screenToHtml } from './screenRenderer';
 import { generateNavigationAttributes, generateOnClickHandler, generateHrefAttribute } from './navigationHelper';
 
+// Global variable to store component definitions
+let globalComponentDefinitions: AstNode[] = [];
+
+/**
+ * Set the available component definitions
+ */
+export function setComponentDefinitions(components: AstNode[]) {
+  globalComponentDefinitions = components;
+}
+
+/**
+ * Find all component definitions that are available in the current context
+ */
+function findComponentDefinitions(): AstNode[] {
+  return globalComponentDefinitions;
+}
+
 /**
  * Convert an AST node to HTML
  */
 export function nodeToHtml(node: AstNode, context?: string): string {
-  
-  if (!node || !node.type) {
+    if (!node || !node.type) {
     console.warn('Invalid node received:', node);
     return '';
   }
-  
-  switch (node.type) {
+    switch (node.type) {
     case 'Screen':
+    case 'screen':
       return screenToHtml(node);
-        case 'Input':
+    
+    case 'component':
+      // Components are stored but not directly rendered - they're instantiated
+      return '';
+      case 'component_instance':
+      // Lookup the component definition from all available components
+      const componentName = node.name;
+      const components = findComponentDefinitions();
+      const componentDef = components.find(comp => comp.name === componentName);
+      
+      if (!componentDef) {
+        console.warn(`Component not found: ${componentName}`);
+        return `<div class="component-instance error" data-component="${componentName}">Component not found: ${componentName}</div>`;
+      }
+      
+      // Render all elements from the component definition
+      const componentElements = componentDef.elements || [];
+      return componentElements
+        .map(element => nodeToHtml(element, context))
+        .join('\n');
+    
+    case 'modal':
+      const modalElements = node.elements ? node.elements.map(el => nodeToHtml(el, context)).join('\n') : '';
+      return `<div class="modal" id="modal-${node.name}" data-modal="${node.name}">
+        <div class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
+            <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="closeModal('${node.name}')">&times;</button>
+            ${modalElements}
+          </div>
+        </div>
+      </div>`;
+    
+    case 'sidebar':
+      const sidebarElements = node.elements ? node.elements.map(el => nodeToHtml(el, context)).join('\n') : '';
+      return `<div class="sidebar" id="sidebar-${node.name}" data-sidebar="${node.name}">
+        <div class="sidebar-overlay fixed inset-0 bg-black bg-opacity-30 z-40"></div>
+        <div class="sidebar-content fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-800 shadow-lg transform -translate-x-full transition-transform duration-300 z-50">
+          <button class="sidebar-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" onclick="closeSidebar('${node.name}')">&times;</button>
+          <div class="sidebar-body p-6">
+            ${sidebarElements}
+          </div>
+        </div>
+      </div>`;
+        
+    case 'Input':
       const inputProps = node.props || {};
       let inputHtml = '';
       
@@ -23,15 +83,7 @@ export function nodeToHtml(node: AstNode, context?: string): string {
       if (inputProps.label) {
         inputHtml += `<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">${inputProps.label}:${inputProps.required ? ' <span class="text-red-500">*</span>' : ''}\n`;
       }
-      
-      // Create the input element with all attributes
-      const inputAttributes = {
-        ...inputProps,
-        // Remove properties that aren't HTML attributes
-        label: undefined,
-        children: undefined
-      };
-      
+        // Create the input element with all attributes
       const inputClasses = 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400';
       
       inputHtml += `  <input class="${inputClasses}"  />`;
@@ -41,9 +93,8 @@ export function nodeToHtml(node: AstNode, context?: string): string {
         inputHtml += '\n</label>';
       }
       
-      return inputHtml;case 'Button':
-      const buttonProps = node.props || {};
-      const { children, icon, href: buttonHref, variant = 'primary', size = 'md', ...otherProps } = buttonProps;
+      return inputHtml;case 'Button':      const buttonProps = node.props || {};
+      const { children, icon, href: buttonHref, variant = 'primary', size = 'md' } = buttonProps;
       const buttonText = children || '';
       const buttonIcon = icon ? `<span class="inline-flex items-center mr-2">${icon}</span>` : '';
       
@@ -143,15 +194,6 @@ export function nodeToHtml(node: AstNode, context?: string): string {
       if (selectProps.label) {
         selectHtml += `<label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">${selectProps.label}:${selectProps.required ? ' <span class="text-red-500">*</span>' : ''}\n`;
       }
-      
-      // Create the select element with proper attributes
-      const selectAttributes = {
-        ...selectProps,
-        // Remove properties that are handled separately
-        label: undefined,
-        options: undefined,
-        children: undefined
-      };
       
       const selectClasses = 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400';
       

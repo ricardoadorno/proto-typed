@@ -1,19 +1,22 @@
 const login = `
+@component LoginForm:
+  ___:Username(Enter your username)
+  ___*:Password(Enter your password)
+  
+  row:
+    [X] Remember me
+  col:
+    @[Login]
+  row:
+    #[Forgot Password](ForgotPassword)
+
 @screen Login:
   # Login to Your Account
   > Please enter your credentials to access your account.
   card:
     ## Welcome Back
     > Enter your login information below to access your account.
-    ___:Username(Enter your username)
-    ___*:Password(Enter your password)
-    
-    row:
-      [X] Remember me
-    col:
-      @[Login]
-    row:
-      #[Forgot Password](ForgotPassword)
+    $LoginForm
     > Don't have an account?
     #[Signup](Signup)
 
