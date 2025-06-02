@@ -72,6 +72,8 @@ export function generateNavigationAttributes(target: string | undefined): string
  * Generate onclick handler for navigation based on target type
  * Returns empty string to rely on React event handling in App.tsx
  */
+// Deprecated: No longer used, kept for compatibility
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function generateOnClickHandler(target: string | undefined): string {
   // Return empty string to rely on React event handling through data-nav attributes
   // This prevents "function not defined" errors in React context
@@ -212,4 +214,82 @@ export function generateLegacyNavigationScript(): string {
  */
 export function generateCompleteNavigationScript(): string {
   return generateNavigationScript() + generateLegacyNavigationScript();
+}
+
+/**
+ * Centralized navigation click handler for React and HTML export
+ * Handles all navigation types and updates UI accordingly
+ * Accepts optional callbacks for internal navigation and drawer toggling
+ */
+export function handleNavigationClick(
+  e: React.MouseEvent<Element, MouseEvent> | MouseEvent,
+  options?: {
+    onInternalNavigate?: (screenName: string) => void;
+    onDrawerToggle?: () => void;
+  }
+) {
+  const target = (e.target as Element).closest('[data-nav]');
+  if (!target) return;
+
+  const navValue = target.getAttribute('data-nav');
+  const navType = target.getAttribute('data-nav-type');
+
+  if (!navValue) return;
+
+  // Always lowercase navValue for internal navigation to match screen IDs and rendering logic
+  const normalizedNavValue = navType === 'internal' && navValue ? navValue.toLowerCase() : navValue;
+
+  // Debug: log navigation event
+  // eslint-disable-next-line no-console
+  console.log('[Navigation] navType:', navType, 'navValue:', navValue, 'normalizedNavValue:', normalizedNavValue, 'target:', target);
+
+  if (target.tagName === 'A' || navType === 'internal' || navType === 'drawer-toggle' || navType === 'action') {
+    if (typeof e.preventDefault === 'function') {
+      e.preventDefault();
+    }
+  }
+
+  switch (navType) {
+    case 'internal':
+      // Debug: log callback
+      if (options && options.onInternalNavigate) {
+        // eslint-disable-next-line no-console
+        console.log('[Navigation] Calling onInternalNavigate with', normalizedNavValue);
+        options.onInternalNavigate(normalizedNavValue);
+      } else {
+        // Fallback: show/hide screens by DOM manipulation
+        const screenElements = document.querySelectorAll('.screen');
+        screenElements.forEach(screen => {
+          (screen as HTMLElement).style.display = 'none';
+        });
+        const targetScreen = document.getElementById(`${normalizedNavValue}-screen`);
+        // eslint-disable-next-line no-console
+        console.log('[Navigation] Fallback DOM navigation to', `${normalizedNavValue}-screen`, 'found:', !!targetScreen);
+        if (targetScreen) {
+          targetScreen.style.display = 'block';
+        }
+      }
+      break;
+    case 'drawer-toggle':
+      if (options && options.onDrawerToggle) {
+        options.onDrawerToggle();
+      } else {
+        const drawer = document.querySelector('.drawer');
+        const overlay = document.querySelector('.drawer-overlay');
+        if (drawer) drawer.classList.toggle('open');
+        if (overlay) overlay.classList.toggle('open');
+      }
+      break;
+    case 'external':
+      window.open(navValue, '_blank', 'noopener,noreferrer');
+      break;
+    case 'action':
+      try {
+        new Function(navValue)();
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Error executing navigation action:', error);
+      }
+      break;
+  }
 }

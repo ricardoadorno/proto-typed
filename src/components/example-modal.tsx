@@ -12,6 +12,16 @@ export default function ExampleModal() {
     const [compiledOutput, setCompiledOutput] = useState('');
     const [currentScreen, setCurrentScreen] = useState<string>();
 
+    const tabs = [
+        { id: 'layout', name: 'Layout', icon: '📐' },
+        { id: 'input', name: 'Forms', icon: '📝' },
+        { id: 'interactive', name: 'Interactive', icon: '🔘' },
+        { id: 'display', name: 'Display', icon: '📊' },
+        { id: 'mobile', name: 'Mobile', icon: '📱' },
+        { id: 'navigation', name: 'Navigation', icon: '🧭' },
+        { id: 'styling', name: 'Styling', icon: '🎨' }
+    ];
+
     const syntaxExamples = {
         layout: {
             title: "Layout Elements",
@@ -212,17 +222,11 @@ export default function ExampleModal() {
     
   drawer:
     drawer_item [Settings]{⚙️}(settings)
-    drawer_item [Help]{❓}(help)`,
-                    description: "A complete mobile app layout with header, content, navigation and drawer"
+    drawer_item [Help]{❓}(help)`, description: "A complete mobile app layout with header, content, navigation and drawer"
                 }
             ]
         }
-    }; const tabs = [
-        { id: 'layout', label: 'Layout Elements' },
-        { id: 'input', label: 'Input Elements' },
-        { id: 'content', label: 'Content Elements' },
-        { id: 'mobile', label: 'Mobile Components' }
-    ];
+    };
 
     const [selectedExample, setSelectedExample] = useState(0);
 
@@ -240,20 +244,24 @@ export default function ExampleModal() {
             console.error("Error compiling example:", error);
             setCompiledOutput('<div class="error">Error compiling example</div>');
         }
-    }, [activeTab, selectedExample, currentScreen]);
-
-    return (
+    }, [activeTab, selectedExample, currentScreen]); return (
         <Modal
-            buttonText="Syntax Examples"
+            buttonText="📚 Syntax Guide"
+            buttonVariant="primary"
             header={
-                <div>
-                    <h2>DSL Syntax Reference</h2>
-                    <p>Interactive examples of the UI DSL syntax with live preview</p>
+                <div className="space-y-2">
+                    <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
+                        DSL Syntax Reference
+                    </h2>
+                    <p className="text-slate-600 dark:text-slate-300">
+                        Interactive examples of the UI DSL syntax with live preview
+                    </p>
                 </div>
             }
             content={
-                <div>
-                    <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+                <div className="space-y-6">
+                    {/* Tab Navigation */}
+                    <div className="flex flex-wrap gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
                         {tabs.map(tab => (
                             <button
                                 key={tab.id}
@@ -261,36 +269,36 @@ export default function ExampleModal() {
                                     setActiveTab(tab.id);
                                     setSelectedExample(0);
                                 }}
-                                style={{
-                                    backgroundColor: activeTab === tab.id ? '#4a6cf7' : '#e0e0e0',
-                                    color: activeTab === tab.id ? 'white' : 'black',
-                                    border: 'none',
-                                    padding: '8px 16px',
-                                    borderRadius: '4px',
-                                    cursor: 'pointer'
-                                }}
+                                className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 font-medium ${activeTab === tab.id
+                                        ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-md'
+                                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
+                                    }`}
                             >
-                                {tab.label}
+                                <span className="text-lg">{tab.icon}</span>
+                                <span>{tab.name}</span>
                             </button>
                         ))}
                     </div>
 
-                    <div style={{ marginBottom: '20px' }}>
-                        <h3>{syntaxExamples[activeTab as keyof typeof syntaxExamples].title}</h3>
-                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '15px' }}>
+                    {/* Section Title and Examples */}
+                    <div className="space-y-4">
+                        <div className="flex items-center space-x-3">
+                            <div className="w-1 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
+                            <h3 className="text-xl font-semibold text-slate-800 dark:text-white">
+                                {syntaxExamples[activeTab as keyof typeof syntaxExamples].title}
+                            </h3>
+                        </div>
+
+                        {/* Example Selection Chips */}
+                        <div className="flex flex-wrap gap-2">
                             {syntaxExamples[activeTab as keyof typeof syntaxExamples].examples.map((example, index) => (
                                 <button
                                     key={index}
                                     onClick={() => setSelectedExample(index)}
-                                    style={{
-                                        backgroundColor: selectedExample === index ? '#4a6cf7' : '#e0e0e0',
-                                        color: selectedExample === index ? 'white' : 'black',
-                                        border: 'none',
-                                        padding: '6px 12px',
-                                        borderRadius: '4px',
-                                        cursor: 'pointer',
-                                        fontSize: '0.9rem'
-                                    }}
+                                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${selectedExample === index
+                                            ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
+                                            : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
+                                        }`}
                                 >
                                     {example.name}
                                 </button>

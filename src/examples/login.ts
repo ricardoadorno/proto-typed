@@ -8,9 +8,10 @@ const login = `
     ___:Username(Enter your username)
     ___*:Password(Enter your password)
     
-    [X] Remember me
-    
-    @[Login]
+    row:
+      [X] Remember me
+    col:
+      @[Login]
     row:
       #[Forgot Password](ForgotPassword)
     > Don't have an account?
