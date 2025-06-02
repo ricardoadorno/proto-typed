@@ -216,9 +216,10 @@ export function nodeToHtml(node: AstNode, context?: string): string {
       const cardElements = node.elements?.flat().map(element => nodeToHtml(element, context)).join('\n') || '';
       return `<article class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg p-6 mb-6">${cardElements}</article>`;
         case 'Separator':
-      return `<hr class="my-6 border-gray-200 dark:border-gray-700">`;// Mobile Layout Components    case 'Header':
+      return `<hr class="my-6 border-gray-200 dark:border-gray-700">`;
+      case 'Header':
       const headerElements = node.elements?.flat().map(element => nodeToHtml(element, 'header')).join('\n') || '';
-      return `<header class="header fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between">${headerElements}</header>`;case 'BottomNav':
+      return `<header class="header fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 shadow-sm  border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between">${headerElements}</header>`;case 'BottomNav':
       const navItems = node.elements?.map(item => {
         if (item.type === 'NavItem') {
           const { label, icon, action } = item.props || {};

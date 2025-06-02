@@ -29,16 +29,9 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background: #ffffff !important;
-  border-bottom: 1px solid #e5e7eb;
 }
 
-/* Dark mode header */
-.dark .iphone-x .header,
-.dark .browser-mockup .header {
-  background: #1f2937 !important;
-  border-bottom-color: #374151;
-}
+/* Header background and border are handled by Tailwind classes in nodeRenderer.ts */
 
 .iphone-x nav[class*="bottom"],
 .browser-mockup nav[class*="bottom"],
@@ -49,22 +42,13 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  background: #ffffff !important;
-  border-top: 1px solid #e5e7eb !important;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   margin-top: auto;
   order: 999; /* Force to bottom of flex container */
 }
 
-/* Dark mode bottom nav */
-.dark .iphone-x nav[class*="bottom"],
-.dark .browser-mockup nav[class*="bottom"],
-.dark .iphone-x .bottom-nav,
-.dark .browser-mockup .bottom-nav {
-  background: #1f2937 !important;
-  border-top-color: #374151 !important;
-}
+/* Background and border colors are handled by Tailwind classes in nodeRenderer.ts */
 
 .iphone-x .drawer,
 .browser-mockup .drawer {
