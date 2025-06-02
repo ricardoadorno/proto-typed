@@ -26,10 +26,8 @@ export default function Modal({ buttonText, content, header, actions, buttonVari
                     <div
                         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
                         onClick={() => setIsOpen(false)}
-                    ></div>
-
-                    {/* Modal */}
-                    <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden">
+                    ></div>                    {/* Modal */}
+                    <div className="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-7xl w-full mx-4 max-h-[95vh] overflow-hidden">
                         {/* Header */}
                         <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
                             <div className="flex-1">
@@ -44,10 +42,8 @@ export default function Modal({ buttonText, content, header, actions, buttonVari
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </button>
-                        </div>
-
-                        {/* Content */}
-                        <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">
+                        </div>                        {/* Content */}
+                        <div className="p-6 overflow-y-auto max-h-[calc(95vh-200px)]">
                             {content}
                         </div>
 

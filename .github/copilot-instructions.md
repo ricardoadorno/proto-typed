@@ -9,10 +9,8 @@ This is a React-based UI prototyping tool that allows users to create interactiv
 - **Frontend**: React 19 + TypeScript + Vite
 - **Testing**: Vitest + React Testing Library
 - **Parsing**: Chevrotain (lexer & parser)
-- **Styling**: Pico.css for minimal CSS framework + Custom CSS Variables
 - **Code Editor**: Monaco Editor with custom syntax highlighting
 - **State Management**: React Context for prototype state
-- **Validation**: Zod for runtime type checking
 
 ### Project Structure
 - `src/core/lexer/` - Tokenization and lexical analysis

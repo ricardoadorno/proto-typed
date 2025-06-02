@@ -218,7 +218,7 @@ export function nodeToHtml(node: AstNode, context?: string): string {
         case 'Separator':
       return `<hr class="my-6 border-gray-200 dark:border-gray-700">`;// Mobile Layout Components    case 'Header':
       const headerElements = node.elements?.flat().map(element => nodeToHtml(element, 'header')).join('\n') || '';
-      return `<header class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between">${headerElements}</header>`;    case 'BottomNav':
+      return `<header class="header fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex items-center justify-between">${headerElements}</header>`;case 'BottomNav':
       const navItems = node.elements?.map(item => {
         if (item.type === 'NavItem') {
           const { label, icon, action } = item.props || {};
@@ -234,9 +234,8 @@ export function nodeToHtml(node: AstNode, context?: string): string {
             </button>
           `;
         }
-        return '';
-      }).join('') || '';
-      return `<nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around py-1">${navItems}</nav>`;
+        return '';      }).join('') || '';
+      return `<nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around py-1 z-50">${navItems}</nav>`;
           case 'Drawer':
       const drawerItems = node.elements?.map(item => {
         if (item.type === 'DrawerItem') {
@@ -255,7 +254,7 @@ export function nodeToHtml(node: AstNode, context?: string): string {
         }
         return '';
       }).join('') || '';
-      return `<aside class="fixed top-0 left-0 z-40 w-64 h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg">${drawerItems}</aside>`;    case 'NavItem':
+      return `<aside class="drawer fixed top-0 left-0 z-40 w-64 h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out">${drawerItems}</aside>`;    case 'NavItem':
       const { label: navLabel, icon: navIcon, action: navAction } = node.props || {};
       
       // Use navigation helper for nav items

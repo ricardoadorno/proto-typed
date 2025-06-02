@@ -9,7 +9,18 @@ export function astToHtml(ast: AstNode | AstNode[], { currentScreen }: RenderOpt
   const screens = Array.isArray(ast) ? ast : [ast];
   
   if (screens.length === 0) return '';
-    // Generate the HTML for all screens, with unique IDs and display:none (except currentScreen or first screen)
+  
+  // Check if any screen has a drawer - if so, extract it and make it global
+  let globalDrawer: AstNode | null = null;
+  
+  screens.forEach(screen => {
+    const drawerElement = screen.elements?.find(element => element.type === 'Drawer');
+    if (drawerElement && !globalDrawer) {
+      globalDrawer = drawerElement;
+    }
+  });
+  
+  // Generate the HTML for all screens, with unique IDs and display:none (except currentScreen or first screen)
   const screensHtml = screens
     .filter(screen => screen && screen.type === 'Screen' && screen.name)
     .map((screen, index) => {
@@ -24,9 +35,11 @@ export function astToHtml(ast: AstNode | AstNode[], { currentScreen }: RenderOpt
       const layoutClasses = [];
       if (hasHeader) layoutClasses.push('has-header');
       if (hasBottomNav) layoutClasses.push('has-bottom-nav');
+      if (globalDrawer) layoutClasses.push('has-drawer');
       
+      // Filter out drawer elements from individual screens since we'll render it globally
       const elementsHtml = screen.elements
-        ?.filter(element => element != null)
+        ?.filter(element => element != null && element.type !== 'Drawer')
         .map(element => nodeToHtml(element))
         .join('\n      ') || '';
       
@@ -37,7 +50,10 @@ export function astToHtml(ast: AstNode | AstNode[], { currentScreen }: RenderOpt
     })
     .join('\n\n');
   
-  return `${screensHtml}`;
+  // Add global drawer if it exists
+  const globalDrawerHtml = globalDrawer ? `\n\n${nodeToHtml(globalDrawer)}\n<div class="drawer-overlay"></div>` : '';
+  
+  return `${screensHtml}${globalDrawerHtml}`;
 }
 
 // Export the document renderer function

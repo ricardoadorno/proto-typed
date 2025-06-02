@@ -11,6 +11,7 @@ export default function ExampleModal() {
     const [activeTab, setActiveTab] = useState('layout');
     const [compiledOutput, setCompiledOutput] = useState('');
     const [currentScreen, setCurrentScreen] = useState<string>();
+    const [copiedCode, setCopiedCode] = useState(false);
 
     const tabs = [
         { id: 'layout', name: 'Layout', icon: '📐' },
@@ -18,8 +19,6 @@ export default function ExampleModal() {
         { id: 'interactive', name: 'Interactive', icon: '🔘' },
         { id: 'display', name: 'Display', icon: '📊' },
         { id: 'mobile', name: 'Mobile', icon: '📱' },
-        { id: 'navigation', name: 'Navigation', icon: '🧭' },
-        { id: 'styling', name: 'Styling', icon: '🎨' }
     ];
 
     const syntaxExamples = {
@@ -108,54 +107,89 @@ export default function ExampleModal() {
   # Select Menu
   ___:Country(Select your country)[USA | Canada | Mexico | Brazil]
   ___:Language(Choose language)[English | Spanish | French | Portuguese]
-  ___-:Disabled Select(Can't change this)[Option 1 | Option 2 | Option 3]
-  
-  # Legacy Select Syntax
-  <[Legacy Option 1]>
-  <[Legacy Option 2]>`,
+  ___-:Disabled Select(Can't change this)[Option 1 | Option 2 | Option 3]`,
                 description: "Create dropdown select menus with options using pipe-separated values in brackets. Use ___- for disabled fields"
-            },
+            }
             ]
-        }, content: {
-            title: "Content Elements",
+        },
+        interactive: {
+            title: "Interactive Elements",
             examples: [
                 {
-                    name: "Headings",
-                    code: `@screen HeadingExample:
+                    name: "Buttons",
+                    code: `@screen ButtonExample:
+  # Button Examples
+  @[Primary Button]
+  @[Secondary Button](action)
+  @[Disabled Button]`,
+                    description: "Create interactive buttons with optional actions"
+                },
+                {
+                    name: "Links",
+                    code: `@screen LinkExample:
+  # Link Examples
+  #[Internal Link](dashboard-screen)
+  #[External Link](https://example.com)
+  #[Simple Link Text]`,
+                    description: "Create navigational links to screens or external URLs"
+                },
+                {
+                    name: "Images",
+                    code: `@screen ImageExample:
+  # Image Examples
+  ![Profile Picture](https://picsum.photos/200/200)
+  ![Banner Image](https://picsum.photos/400/150)
+  ![Icon](https://picsum.photos/50/50)`,
+                    description: "Add images with alt text and various sizes"
+                }
+            ]
+        },
+        display: {
+            title: "Display Elements",
+            examples: [
+                {
+                    name: "Typography",
+                    code: `@screen TypographyExample:
   # Heading 1
   ## Heading 2
   ### Heading 3
-  #### Heading 4`,
-                    description: "Create headings of different levels using # symbols"
-                },
-                {
-                    name: "Text Styles",
-                    code: `@screen TextExample:
+  #### Heading 4
+  ##### Heading 5
+  ###### Heading 6
+  
   > Regular paragraph text
   *> Note styled text with emphasis
   "> Quote styled text for citations`,
-                    description: "Apply different text styles using prefix symbols"
+                    description: "Display various text styles and heading levels"
+                },
+                {
+                    name: "Progress & Badges",
+                    code: `@screen ProgressExample:
+  # Progress Indicators
+  progress {value: 25}
+  progress {value: 50}
+  progress {value: 75}
+  progress {value: 100}
+  
+  # Badges
+  badge "New"
+  badge "Popular"
+  badge "Sale"`,
+                    description: "Show progress bars and status badges"
                 },
                 {
                     name: "Lists",
-                    code: `@screen ListExample:
+                    code: `@screen ListDisplayExample:
   # Ordered List
   1. First ordered item
   2. Second ordered item
+  3. Third ordered item
   
   # Unordered List
   - First unordered item
-  - Second unordered item`,
-                    description: "Create ordered (numbered) and unordered (bullet) lists"
-                },
-                {
-                    name: "Interactive Elements",
-                    code: `@screen InteractiveExample:
-  # Interactive Elements
-  @[Button Text]
-  #[Link Text](screen destination)
-  ![Image Alt Text](https://picsum.photos/200/100)`,
-                    description: "Add buttons, links, and images to your interface"
+  - Second unordered item
+  - Third unordered item`,
+                    description: "Display ordered and unordered lists"
                 }
             ]
         },
@@ -200,9 +234,9 @@ export default function ExampleModal() {
     drawer_item [Help]{❓}(help-screen)
     drawer_item [Logout]{🚪}(logout)`,
                     description: "Create a slide-out drawer menu with navigation items"
-                },
-                {
-                    name: "Complete Mobile App", code: `@screen MobileDemo:
+                }, {
+                    name: "Complete Mobile App",
+                    code: `@screen MobileDemo:
   header:
     # My App
     @[Menu](toggle-drawer)
@@ -210,10 +244,11 @@ export default function ExampleModal() {
   card:
     ## Welcome
     > Complete mobile interface example
-      list:
-    - John Doe - Online now
-    - Jane Smith - 2 min ago
-    - Mike Johnson - 5 min ago
+    
+    list:
+      - John Doe - Online now
+      - Jane Smith - 2 min ago
+      - Mike Johnson - 5 min ago
     
   bottom_nav:
     nav_item [Home]{🏠}(home)
@@ -222,13 +257,26 @@ export default function ExampleModal() {
     
   drawer:
     drawer_item [Settings]{⚙️}(settings)
-    drawer_item [Help]{❓}(help)`, description: "A complete mobile app layout with header, content, navigation and drawer"
+    drawer_item [Help]{❓}(help)`,
+                    description: "A complete mobile app layout with header, content, navigation and drawer"
                 }
             ]
-        }
+        },
+
     };
 
     const [selectedExample, setSelectedExample] = useState(0);
+
+    // Copy to clipboard function
+    const copyToClipboard = async (text: string) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopiedCode(true);
+            setTimeout(() => setCopiedCode(false), 2000);
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        }
+    };
 
     // Compile the selected example
     useEffect(() => {
@@ -270,8 +318,8 @@ export default function ExampleModal() {
                                     setSelectedExample(0);
                                 }}
                                 className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 font-medium ${activeTab === tab.id
-                                        ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-md'
-                                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
+                                    ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-md'
+                                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
                                     }`}
                             >
                                 <span className="text-lg">{tab.icon}</span>
@@ -296,116 +344,181 @@ export default function ExampleModal() {
                                     key={index}
                                     onClick={() => setSelectedExample(index)}
                                     className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${selectedExample === index
-                                            ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
-                                            : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
+                                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
+                                        : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
                                         }`}
                                 >
                                     {example.name}
                                 </button>
                             ))}
                         </div>
-                    </div>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                        <div>
-                            <h3>DSL Code</h3>
-                            <pre style={{
-                                padding: '15px',
-                                borderRadius: '5px',
-                                height: '300px',
-                                overflowY: 'auto',
-                                whiteSpace: 'pre-wrap'
-                            }}>
-                                {syntaxExamples[activeTab as keyof typeof syntaxExamples].examples[selectedExample].code}
-                            </pre>
-                            <div>
-                                <p><strong>Description:</strong> {syntaxExamples[activeTab as keyof typeof syntaxExamples].examples[selectedExample].description}</p>
+                    </div>                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">                        {/* DSL Code Section */}
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center space-x-2">
+                                    <span className="text-lg">⚡</span>
+                                    <h4 className="text-lg font-semibold text-slate-800 dark:text-white">DSL Code</h4>
+                                </div>
+                                <button
+                                    onClick={() => copyToClipboard(syntaxExamples[activeTab as keyof typeof syntaxExamples].examples[selectedExample].code)}
+                                    className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${copiedCode
+                                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-700'
+                                        : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600'
+                                        }`}
+                                >
+                                    {copiedCode ? (
+                                        <>
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                            <span>Copied!</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                            </svg>
+                                            <span>Copy</span>
+                                        </>
+                                    )}
+                                </button>
+                            </div>                            <div className="relative">
+                                <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-auto h-96 text-sm font-mono leading-relaxed border border-slate-300 dark:border-slate-600">
+                                    <code>{syntaxExamples[activeTab as keyof typeof syntaxExamples].examples[selectedExample].code}</code>
+                                </pre>
+                                <div className="absolute top-2 right-2">
+                                    <span className="bg-slate-700 text-slate-300 px-2 py-1 rounded text-xs font-medium">
+                                        DSL
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
+                                <div className="flex items-start space-x-2">
+                                    <span className="text-blue-500 mt-0.5">💡</span>
+                                    <div>
+                                        <p className="text-sm text-blue-800 dark:text-blue-200 font-medium">Description</p>
+                                        <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
+                                            {syntaxExamples[activeTab as keyof typeof syntaxExamples].examples[selectedExample].description}
+                                        </p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <h3>Compiled Result</h3>
-                            <div style={{
-                                border: '1px solid #ccc',
-                                borderRadius: '5px',
-                                height: '300px',
-                                overflowY: 'auto',
-                                padding: '15px',
-                            }} onClick={(e) => {
-                                // Handle navigation with data-nav attributes
-                                const target = (e.target as Element).closest('[data-nav]');
-                                if (target) {
-                                    e.preventDefault();
 
-                                    const navValue = target.getAttribute('data-nav');
-                                    const navType = target.getAttribute('data-nav-type');
+                        {/* Compiled Result Section */}
+                        <div className="space-y-3">
+                            <div className="flex items-center space-x-2">
+                                <span className="text-lg">👁️</span>
+                                <h4 className="text-lg font-semibold text-slate-800 dark:text-white">Live Preview</h4>
+                            </div>                            <div
+                                className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg p-4 h-96 overflow-auto shadow-inner"
+                                onClick={(e) => {
+                                    // Handle navigation with data-nav attributes
+                                    const target = (e.target as Element).closest('[data-nav]');
+                                    if (target) {
+                                        e.preventDefault();
 
-                                    if (navValue && navType === 'internal') {
-                                        setCurrentScreen(navValue);
-                                        // Hide all screens
-                                        const screenElements = document.querySelectorAll('.screen');
-                                        screenElements.forEach(screen => {
-                                            (screen as HTMLElement).style.display = 'none';
-                                        });
+                                        const navValue = target.getAttribute('data-nav');
+                                        const navType = target.getAttribute('data-nav-type');
 
-                                        // Show the selected screen
-                                        const targetScreen = document.getElementById(`${navValue.toLowerCase()}-screen`);
-                                        if (targetScreen) {
-                                            targetScreen.style.display = 'block';
+                                        if (navValue && navType === 'internal') {
+                                            setCurrentScreen(navValue);
+                                            // Hide all screens
+                                            const screenElements = document.querySelectorAll('.screen');
+                                            screenElements.forEach(screen => {
+                                                (screen as HTMLElement).style.display = 'none';
+                                            });
+
+                                            // Show the selected screen
+                                            const targetScreen = document.getElementById(`${navValue.toLowerCase()}-screen`);
+                                            if (targetScreen) {
+                                                targetScreen.style.display = 'block';
+                                            }
+                                        }
+                                        return;
+                                    }
+
+                                    // Legacy support for data-screen-link
+                                    if (e.target instanceof HTMLAnchorElement && e.target.hasAttribute('data-screen-link')) {
+                                        e.preventDefault();
+
+                                        const screenName = e.target.getAttribute('data-screen-link');
+                                        if (screenName) {
+                                            setCurrentScreen(screenName);
+                                            // Hide all screens
+                                            const screenElements = document.querySelectorAll('.screen');
+                                            screenElements.forEach(screen => {
+                                                (screen as HTMLElement).style.display = 'none';
+                                            });
+
+                                            // Show the selected screen
+                                            const targetScreen = document.getElementById(`${screenName.toLowerCase()}-screen`);
+                                            if (targetScreen) {
+                                                targetScreen.style.display = 'block';
+                                            }
                                         }
                                     }
-                                    return;
-                                }
-
-                                // Legacy support for data-screen-link
-                                if (e.target instanceof HTMLAnchorElement && e.target.hasAttribute('data-screen-link')) {
-                                    e.preventDefault();
-
-                                    const screenName = e.target.getAttribute('data-screen-link');
-                                    if (screenName) {
-                                        setCurrentScreen(screenName);
-                                        // Hide all screens
-                                        const screenElements = document.querySelectorAll('.screen');
-                                        screenElements.forEach(screen => {
-                                            (screen as HTMLElement).style.display = 'none';
-                                        });
-
-                                        // Show the selected screen
-                                        const targetScreen = document.getElementById(`${screenName.toLowerCase()}-screen`);
-                                        if (targetScreen) {
-                                            targetScreen.style.display = 'block';
-                                        }
-                                    }
-                                }
-                            }}>
-                                <div dangerouslySetInnerHTML={{ __html: compiledOutput }} />
+                                }}>                                <div dangerouslySetInnerHTML={{ __html: compiledOutput }} />
                             </div>
                         </div>
-                    </div>
-
-                    <div style={{ marginTop: '30px' }}>
-                        <h3>Syntax Tips</h3>
-                        {activeTab === 'layout' && (
-                            <ul>
-                                <li><strong>Nested Elements:</strong> All layout elements can contain other elements</li>
+                    </div>                    {/* Syntax Tips Section */}
+                    <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl p-6">
+                        <div className="flex items-center space-x-3 mb-4">
+                            <div className="w-1 h-6 bg-gradient-to-b from-green-500 to-emerald-500 rounded-full"></div>
+                            <h3 className="text-xl font-semibold text-slate-800 dark:text-white">Syntax Tips</h3>
+                        </div>                        {activeTab === 'layout' && (
+                            <ul className="space-y-2 text-slate-700 dark:text-slate-300">
+                                <li className="flex items-start space-x-2">
+                                    <span className="text-blue-500 mt-1">•</span>
+                                    <div><strong>Nested Elements:</strong> All layout elements can contain other elements</div>
+                                </li>
+                                <li className="flex items-start space-x-2">
+                                    <span className="text-blue-500 mt-1">•</span>
+                                    <div><strong>Containers:</strong> Use <code className="bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded text-sm">container:</code>, <code className="bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded text-sm">card:</code>, <code className="bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded text-sm">section:</code> for grouping</div>
+                                </li>
+                                <li className="flex items-start space-x-2">
+                                    <span className="text-blue-500 mt-1">•</span>
+                                    <div><strong>Grid System:</strong> Use <code className="bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded text-sm">row:</code> and <code className="bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded text-sm">col:</code> for responsive layouts</div>
+                                </li>
+                                <li className="flex items-start space-x-2">
+                                    <span className="text-blue-500 mt-1">•</span>
+                                    <div><strong>Lists:</strong> Use <code className="bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded text-sm">list:</code> with <code className="bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded text-sm">- item</code> syntax for simple lists</div>
+                                </li>
                             </ul>
                         )}
                         {activeTab === 'input' && (
                             <ul>
-                                <li><strong>Input Attributes:</strong> Add HTML attributes like <code>type</code>, <code>placeholder</code>, etc.</li>
+                                <li><strong>Input Types:</strong> Use <code>___*:</code> for password, <code>___-:</code> for disabled fields</li>
                                 <li><strong>Checkbox Syntax:</strong> Use <code>[X]</code> for checked and <code>[ ]</code> for unchecked state</li>
                                 <li><strong>Radio Syntax:</strong> Use <code>(X)</code> for selected and <code>( )</code> for unselected state</li>
-                                <li><strong>Select Options:</strong> Each option is defined with <code>&lt;[Option Text]&gt;</code> syntax</li>
+                                <li><strong>Select Options:</strong> Use pipe-separated values: <code>[Option1 | Option2 | Option3]</code></li>
                             </ul>
                         )}
-                        {activeTab === 'content' && (
+                        {activeTab === 'interactive' && (
                             <ul>
-                                <li><strong>Heading Levels:</strong> Use <code>#</code> for h1, <code>##</code> for h2, etc.</li>
-                                <li><strong>Text Styles:</strong> Use <code>&gt;</code> for paragraphs, <code>*&gt;</code> for notes, <code>"&gt;</code> for quotes</li>
-                                <li><strong>Button Syntax:</strong> <code>@[Text](action)</code> where action is the function or screen name</li>
-                                <li><strong>Link Syntax:</strong> <code>#[Text](destination)</code> where destination is a URL or screen name</li>
+                                <li><strong>Button Syntax:</strong> <code>@[Text](action)</code> where action is optional</li>
+                                <li><strong>Link Syntax:</strong> <code>#[Text](destination)</code> for navigation</li>
                                 <li><strong>Image Syntax:</strong> <code>![Alt Text](image-url)</code> similar to Markdown</li>
+                                <li><strong>Actions:</strong> Use screen names for internal navigation</li>
                             </ul>
                         )}
+                        {activeTab === 'display' && (
+                            <ul>
+                                <li><strong>Heading Levels:</strong> Use <code>#</code> to <code>######</code> for h1-h6</li>
+                                <li><strong>Text Styles:</strong> <code>&gt;</code> for paragraphs, <code>*&gt;</code> for notes, <code>"&gt;</code> for quotes</li>
+                                <li><strong>Progress:</strong> Use <code>progress {"{value: 75}"}</code> for progress bars</li>
+                                <li><strong>Badges:</strong> Use <code>badge "Text"</code> for status indicators</li>
+                            </ul>
+                        )}
+                        {activeTab === 'mobile' && (
+                            <ul>
+                                <li><strong>Header:</strong> Use <code>header:</code> for fixed top navigation</li>
+                                <li><strong>Bottom Nav:</strong> Use <code>bottom_nav:</code> with <code>nav_item</code> elements</li>
+                                <li><strong>Drawer:</strong> Use <code>drawer:</code> with <code>drawer_item</code> elements</li>
+                                <li><strong>Icons:</strong> Use emoji or text within curly braces: <code>{"{🏠}"}</code></li>
+                            </ul>
+                        )}
+
                     </div>
                 </div>
             }
