@@ -1,6 +1,160 @@
 import { AstNode } from '../../types/astNode';
 import { nodeToHtml, setComponentDefinitions } from './nodeRenderer';
 import { RenderOptions } from '../../types/renderOptions';
+import { generateNavigationScript } from './navigationHelper';
+
+/**
+ * Processed AST data structure for rendering
+ */
+interface ProcessedAstData {
+  screens: AstNode[];
+  components: AstNode[];
+  globalDrawer: AstNode | null;
+}
+
+/**
+ * Screen rendering configuration
+ */
+interface ScreenRenderConfig {
+  screen: AstNode;
+  index: number;
+  currentScreen?: string;
+  globalDrawer: AstNode | null;
+}
+
+/**
+ * Parse and separate AST nodes into screens and components
+ */
+function processAstNodes(ast: AstNode | AstNode[]): ProcessedAstData {
+  const nodes = Array.isArray(ast) ? ast : [ast];
+  
+  const screens = nodes.filter(node => node.type === 'Screen' || node.type === 'screen');
+  const components = nodes.filter(node => node.type === 'component');
+  
+  return { screens, components, globalDrawer: null };
+}
+
+/**
+ * Extract global drawer from screens
+ */
+function extractGlobalDrawer(screens: AstNode[]): AstNode | null {
+  let globalDrawer: AstNode | null = null;
+  
+  screens.forEach(screen => {
+    const drawerElement = screen.elements?.find(element => element.type === 'Drawer');
+    if (drawerElement && !globalDrawer) {
+      globalDrawer = drawerElement;
+    }
+  });
+  
+  return globalDrawer;
+}
+
+/**
+ * Determine screen visibility style
+ */
+function getScreenVisibilityStyle(screenName: string, index: number, currentScreen?: string): string {
+  if (currentScreen) {
+    return screenName === currentScreen.toLowerCase() ? '' : 'style="display:none"';
+  }
+  return index === 0 ? '' : 'style="display:none"';
+}
+
+/**
+ * Generate layout classes for a screen
+ */
+function generateLayoutClasses(screen: AstNode, globalDrawer: AstNode | null): string[] {
+  const layoutClasses: string[] = [];
+  
+  const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
+  const hasBottomNav = screen.elements?.some(element => element.type === 'BottomNav') || false;
+  
+  if (hasHeader) layoutClasses.push('has-header');
+  if (hasBottomNav) layoutClasses.push('has-bottom-nav');
+  if (globalDrawer) layoutClasses.push('has-drawer');
+  
+  return layoutClasses;
+}
+
+/**
+ * Render screen elements HTML
+ */
+function renderScreenElements(screen: AstNode): string {
+  return screen.elements
+    ?.filter(element => element != null && element.type !== 'Drawer')
+    .map(element => nodeToHtml(element))
+    .join('\n      ') || '';
+}
+
+/**
+ * Render a single screen to HTML with full configuration
+ */
+function renderScreen(config: ScreenRenderConfig): string {
+  const { screen, index, currentScreen, globalDrawer } = config;
+  
+  const screenName = screen.name?.toLowerCase() || '';
+  const style = getScreenVisibilityStyle(screenName, index, currentScreen);
+  const layoutClasses = generateLayoutClasses(screen, globalDrawer);
+  const elementsHtml = renderScreenElements(screen);
+  
+  return `
+  <div id="${screenName}-screen" class="screen container ${screenName} ${layoutClasses.join(' ')}" ${style}>
+      ${elementsHtml}
+  </div>`;
+}
+
+/**
+ * Convert a single screen to HTML (simplified version for component usage)
+ * This is used by nodeRenderer for individual screen rendering
+ */
+export function screenToHtml(screen: AstNode): string {
+  const screenName = screen.name || '';
+  
+  // Check if screen has header, bottom nav, or drawer to add appropriate classes
+  const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
+  const hasBottomNav = screen.elements?.some(element => element.type === 'BottomNav') || false;
+  const hasDrawer = screen.elements?.some(element => element.type === 'Drawer') || false;
+  
+  const layoutClasses = [];
+  if (hasHeader) layoutClasses.push('has-header');
+  if (hasBottomNav) layoutClasses.push('has-bottom-nav');
+  
+  const elementsHtml = screen.elements
+    ?.filter(element => element != null)
+    .map(element => nodeToHtml(element))
+    .join('\n      ') || '';
+  
+  // Add drawer overlay if drawer is present
+  const drawerOverlay = hasDrawer ? '\n      <div class="drawer-overlay"></div>' : '';
+  
+  return `
+  <div class="screen container ${screenName.toLowerCase()} ${layoutClasses.join(' ')}">
+      ${elementsHtml}${drawerOverlay}
+  </div>
+  `.trim();
+}
+
+/**
+ * Render all screens to HTML
+ */
+function renderAllScreens(screens: AstNode[], currentScreen?: string, globalDrawer?: AstNode | null): string {
+  return screens
+    .filter(screen => screen && screen.name)
+    .map((screen, index) => renderScreen({
+      screen,
+      index,
+      currentScreen,
+      globalDrawer: globalDrawer || null
+    }))
+    .join('\n\n');
+}
+
+/**
+ * Render global drawer HTML
+ */
+function renderGlobalDrawer(globalDrawer: AstNode | null): string {
+  return globalDrawer ? `\n\n${nodeToHtml(globalDrawer)}\n<div class="drawer-overlay"></div>` : '';
+}
 
 /**
  * Convert AST to HTML string representation with pagination for in-app preview
@@ -10,54 +164,100 @@ export function astToHtml(ast: AstNode | AstNode[], { currentScreen }: RenderOpt
   
   if (nodes.length === 0) return '';
   
-  // Separate screens and components
-  const screens = nodes.filter(node => node.type === 'Screen' || node.type === 'screen');
-  const components = nodes.filter(node => node.type === 'component');
+  // Process AST nodes
+  const processedData = processAstNodes(nodes);
+  const { screens, components } = processedData;
   
   // Register components with the renderer
   setComponentDefinitions(components);
   
-  // Check if any screen has a drawer - if so, extract it and make it global
-  let globalDrawer: AstNode | null = null;
+  // Extract global drawer
+  const globalDrawer = extractGlobalDrawer(screens);
   
-  screens.forEach(screen => {
-    const drawerElement = screen.elements?.find(element => element.type === 'Drawer');
-    if (drawerElement && !globalDrawer) {
-      globalDrawer = drawerElement;
-    }
-  });
-  // Generate the HTML for all screens, with unique IDs and display:none (except currentScreen or first screen)
-  const screensHtml = screens
-    .filter(screen => screen && screen.name)
-    .map((screen, index) => {
-      const screenName = screen.name?.toLowerCase() || '';
-      const style = currentScreen ? (screenName === currentScreen.toLowerCase() ? '' : 'style="display:none"')
-      : (index === 0 ? '' : 'style="display:none"') 
-      
-      // Check if screen has header or bottom nav to add appropriate classes
-      const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
-      const hasBottomNav = screen.elements?.some(element => element.type === 'BottomNav') || false;
-      
-      const layoutClasses = [];
-      if (hasHeader) layoutClasses.push('has-header');
-      if (hasBottomNav) layoutClasses.push('has-bottom-nav');
-      if (globalDrawer) layoutClasses.push('has-drawer');      // Filter out drawer elements from individual screens since we'll render it globally
-      const elementsHtml = screen.elements
-        ?.filter(element => element != null && element.type !== 'Drawer')
-        .map(element => nodeToHtml(element))
-        .join('\n      ') || '';
-      
-      return `
-  <div id="${screenName}-screen" class="screen container ${screenName} ${layoutClasses.join(' ')}" ${style}>
-      ${elementsHtml}
-  </div>`;
-    })
-    .join('\n\n');
-  // Add global drawer if it exists
-  const globalDrawerHtml = globalDrawer ? `\n\n${nodeToHtml(globalDrawer)}\n<div class="drawer-overlay"></div>` : '';
+  // Render screens and global drawer
+  const screensHtml = renderAllScreens(screens, currentScreen, globalDrawer);
+  const globalDrawerHtml = renderGlobalDrawer(globalDrawer);
   
   return `${screensHtml}${globalDrawerHtml}`;
 }
 
-// Export the document renderer function
-export { astToHtmlDocument } from './documentRenderer';
+/**
+ * Render a single screen to HTML for document export with enhanced styling
+ */
+function renderScreenForDocument(screen: AstNode, index: number): string {
+  const screenName = screen.name?.toLowerCase() || '';
+  const style = index === 0 ? '' : 'style="display:none"';
+  
+  // Check if screen has header or bottom nav to add appropriate classes
+  const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
+  const hasBottomNav = screen.elements?.some(element => element.type === 'BottomNav') || false;
+
+  const layoutClasses = [];
+  if (hasHeader) layoutClasses.push('has-header');
+  if (hasBottomNav) layoutClasses.push('has-bottom-nav');
+  
+  const elementsHtml = screen.elements
+    ?.filter(element => element != null)
+    .map(element => nodeToHtml(element))
+    .join('\n      ') || '';
+
+  // Add Tailwind container and screen classes, and id for navigation
+  return `
+  <div id="${screenName}-screen" class="screen container mx-auto px-4 py-8 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 ${screenName} ${layoutClasses.join(' ')}" ${style}>
+      ${elementsHtml}
+  </div>`;
+}
+
+/**
+ * Generate a complete HTML document with all screens
+ */
+export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
+  const nodes = Array.isArray(ast) ? ast : [ast];  
+  
+  if (nodes.length === 0) return '';
+  
+  // Process AST nodes using existing helper
+  const processedData = processAstNodes(nodes);
+  const { screens, components } = processedData;
+  
+  // Register components with the renderer
+  setComponentDefinitions(components);
+
+  // Generate the HTML for all screens with styles to hide all but the first
+  const screensHtml = screens
+    .filter(screen => screen && screen.name)
+    .map((screen, index) => renderScreenForDocument(screen, index))
+    .join('\n\n');
+
+  // Tailwind CDN and dark mode script for export
+  const tailwindCdn = `<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>`;
+  const tailwindConfig = `<script>tailwind.config = { darkMode: 'class', theme: { extend: {} } };</script>`;
+  const darkModeScript = `<script>(function(){try{var e=window.matchMedia('(prefers-color-scheme: dark)').matches;var d=document.documentElement;d.classList[e?'add':'remove']('dark');}catch(_){}})();</script>`;
+
+  // Create the full HTML document
+  return `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  ${tailwindCdn}
+  ${tailwindConfig}
+  <title>Exported Screens</title>
+  <style>
+    html, body { min-height: 100%; background: linear-gradient(to bottom right, #f8fafc, #e0e7ff); }
+    @media (prefers-color-scheme: dark) {
+      html, body { background: linear-gradient(to bottom right, #0f172a, #1e293b); }
+    }
+    .screen { transition: background 0.3s; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 pb-8">
+  ${screensHtml}
+  ${darkModeScript}
+  <script>
+    ${generateNavigationScript()}
+  </script>
+</body>
+</html>  `.trim();
+}

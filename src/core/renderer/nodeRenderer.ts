@@ -1,6 +1,5 @@
 import { AstNode } from '../../types/astNode';
-import { screenToHtml } from './screenRenderer';
-import { generateNavigationAttributes, generateOnClickHandler, generateHrefAttribute } from './navigationHelper';
+import { generateNavigationAttributes, generateHrefAttribute } from './navigationHelper';
 
 // Global variable to store component definitions
 let globalComponentDefinitions: AstNode[] = [];
@@ -20,17 +19,46 @@ function findComponentDefinitions(): AstNode[] {
 }
 
 /**
+ * Helper function to render screen directly without circular dependency
+ */
+function renderScreenDirect(screen: AstNode): string {
+  const screenName = screen.name || '';
+  
+  // Check if screen has header, bottom nav, or drawer to add appropriate classes
+  const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
+  const hasBottomNav = screen.elements?.some(element => element.type === 'BottomNav') || false;
+  const hasDrawer = screen.elements?.some(element => element.type === 'Drawer') || false;
+  
+  const layoutClasses = [];
+  if (hasHeader) layoutClasses.push('has-header');
+  if (hasBottomNav) layoutClasses.push('has-bottom-nav');
+  
+  const elementsHtml = screen.elements
+    ?.filter(element => element != null)
+    .map(element => nodeToHtml(element))
+    .join('\n      ') || '';
+  
+  // Add drawer overlay if drawer is present
+  const drawerOverlay = hasDrawer ? '\n      <div class="drawer-overlay"></div>' : '';
+  
+  return `
+  <div class="screen container ${screenName.toLowerCase()} ${layoutClasses.join(' ')}">
+      ${elementsHtml}${drawerOverlay}
+  </div>
+  `.trim();
+}
+
+/**
  * Convert an AST node to HTML
  */
 export function nodeToHtml(node: AstNode, context?: string): string {
     if (!node || !node.type) {
     console.warn('Invalid node received:', node);
     return '';
-  }
-    switch (node.type) {
+  }    switch (node.type) {
     case 'Screen':
     case 'screen':
-      return screenToHtml(node);
+      return renderScreenDirect(node);
     
     case 'component':
       // Components are stored but not directly rendered - they're instantiated
@@ -58,19 +86,7 @@ export function nodeToHtml(node: AstNode, context?: string): string {
             <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" data-nav="${node.name}" data-nav-type="internal">&times;</button>
             ${modalElements}
           </div>
-        </div>
-      </div>`;      case 'sidebar':
-      const sidebarElements = node.elements ? node.elements.map(el => nodeToHtml(el, context)).join('\n') : '';
-      
-      return `<div class="sidebar hidden" id="sidebar-${node.name}" data-sidebar="${node.name}">
-        <div class="sidebar-overlay fixed inset-0 bg-black bg-opacity-30 z-40" data-nav="${node.name}" data-nav-type="internal"></div>
-        <div class="sidebar-content fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-800 shadow-lg transform -translate-x-full transition-transform duration-300 z-50">
-          <button class="sidebar-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" data-nav="${node.name}" data-nav-type="internal">&times;</button>
-          <div class="sidebar-body p-6">
-            ${sidebarElements}
-          </div>
-        </div>
-      </div>`;
+        </div>      </div>`;
         
     case 'Input':
       const inputProps = node.props || {};
@@ -94,10 +110,8 @@ export function nodeToHtml(node: AstNode, context?: string): string {
       const { children, icon, href: buttonHref, variant = 'primary', size = 'md' } = buttonProps;
       const buttonText = children || '';
       const buttonIcon = icon ? `<span class="inline-flex items-center mr-2">${icon}</span>` : '';
-      
-      // Use navigation helper for button actions
+        // Use navigation helper for button actions
       const buttonNavAttrs = generateNavigationAttributes(buttonHref);
-      const buttonOnClick = generateOnClickHandler(buttonHref);
       
       // Tailwind classes based on variant and size
       const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors duration-200';
@@ -123,7 +137,7 @@ export function nodeToHtml(node: AstNode, context?: string): string {
       
       const buttonClasses = `${baseClasses} ${variantClasses} ${sizeClasses} ${marginClasses}`;
       
-      return `<button class="${buttonClasses}"  ${buttonNavAttrs}${buttonOnClick}>${buttonIcon}${buttonText}</button>`;
+      return `<button class="${buttonClasses}" ${buttonNavAttrs}>${buttonIcon}${buttonText}</button>`;
     case 'Heading':
       const level = node.props?.level || 1;
       const headingClassMap: Record<number, string> = {
@@ -164,12 +178,21 @@ export function nodeToHtml(node: AstNode, context?: string): string {
         .join('\n');
       return `<ul class="list-disc list-inside space-y-2 mb-4 text-gray-700 dark:text-gray-300">${ulItems}</ul>`;
         case 'Paragraph':
-      const paragraphVariant = node.props?.variant || 'default';
-      const paragraphClasses = {
+      const paragraphClassMap = {
         default: 'text-gray-700 dark:text-gray-300 mb-4 leading-relaxed',
         note: 'text-sm text-gray-600 dark:text-gray-400 mb-3 italic',
         quote: 'border-l-4 border-blue-500 pl-4 text-gray-600 dark:text-gray-400 italic mb-4'
-      }[paragraphVariant] || 'text-gray-700 dark:text-gray-300 mb-4 leading-relaxed';
+      };
+      type ParagraphVariantKey = keyof typeof paragraphClassMap;
+
+      const rawVariant = node.props?.variant;
+      // Determine the key to use for classMap, defaulting to 'default'
+      const effectiveVariant: ParagraphVariantKey = 
+        typeof rawVariant === 'string' && (rawVariant in paragraphClassMap) 
+        ? rawVariant as ParagraphVariantKey // Cast is safe due to the check
+        : 'default';
+      
+      const paragraphClasses = paragraphClassMap[effectiveVariant];
       
       return `<p class="${paragraphClasses}">${node.props?.children || ''}</p>`;
           case 'RadioGroup':
@@ -261,80 +284,77 @@ export function nodeToHtml(node: AstNode, context?: string): string {
       const navItems = node.elements?.map(item => {
         if (item.type === 'NavItem') {
           const { label, icon, action } = item.props || {};
-          
-          // Use navigation helper for nav items
+            // Use navigation helper for nav items
           const navAttrs = generateNavigationAttributes(action);
-          const onClick = generateOnClickHandler(action);
           
           return `
-            <button class="flex flex-col items-center justify-center py-2 px-1 text-xs font-medium text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-500 transition-colors duration-200" ${navAttrs}${onClick}>
+            <button class="flex flex-col items-center justify-center py-2 px-1 text-xs font-medium text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-500 transition-colors duration-200" ${navAttrs}>
               <span class="mb-1">${icon || ''}</span>
               <span>${label || ''}</span>
             </button>
           `;
         }
         return '';      }).join('') || '';
-      return `<nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around py-1 z-50">${navItems}</nav>`;
-          case 'Drawer':
-      const drawerItems = node.elements?.map(item => {
-        if (item.type === 'DrawerItem') {
-          const { label, icon, action } = item.props || {};
-          
-          // Use navigation helper for drawer items
-          const navAttrs = generateNavigationAttributes(action);
-          const onClick = generateOnClickHandler(action);
-          
-          return `
-            <button class="flex items-center w-full px-4 py-3 text-left text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200" ${navAttrs}${onClick}>
-              <span class="mr-3 text-lg">${icon || ''}</span>
-              <span>${label || ''}</span>
-            </button>
-          `;
-        }
-        return '';      }).join('') || '';
-      return `<aside class="drawer fixed top-0 left-0 z-40 w-64 h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out">${drawerItems}</aside>`;case 'NavItem':
+      return `<nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around py-1 z-50">${navItems}</nav>`;      case 'Drawer':
+      case 'drawer':
+        // Handle named drawers (new pattern) like modals
+        if (node.name) {
+          const drawerElements = node.elements ? node.elements.map(el => nodeToHtml(el, context)).join('\n') : '';          return `<div class="drawer-container hidden" id="drawer-${node.name}" data-drawer="${node.name}">
+            <div class="drawer-overlay fixed inset-0 bg-black bg-opacity-50 z-[1050]"></div>
+            <aside class="drawer-content fixed top-0 left-0 z-[1100] w-64 h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out">
+              <div class="p-4">
+                <button class="drawer-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" data-nav="${node.name}" data-nav-type="internal">&times;</button>
+                ${drawerElements}
+              </div>
+            </aside>
+          </div>`;
+        } else {
+          // Handle legacy drawer items pattern
+          const drawerItems = node.elements?.map(item => {
+            if (item.type === 'DrawerItem') {
+              const { label, icon, action } = item.props || {};
+                // Use navigation helper for drawer items
+              const navAttrs = generateNavigationAttributes(action);
+              
+              return `
+                <button class="flex items-center w-full px-4 py-3 text-left text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200" ${navAttrs}>
+                  <span class="mr-3 text-lg">${icon || ''}</span>
+                  <span>${label || ''}</span>
+                </button>
+              `;
+            }
+            return '';      }).join('') || '';
+          return `<aside class="drawer fixed top-0 left-0 z-40 w-64 h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out">${drawerItems}</aside>`;
+        }case 'NavItem':
       const { label: navLabel, icon: navIcon, action: navAction } = node.props || {};
-      
-      // Use navigation helper for nav items
+        // Use navigation helper for nav items
       const navItemAttrs = generateNavigationAttributes(navAction);
-      const navItemOnClick = generateOnClickHandler(navAction);
       
       return `
-        <button class="flex flex-col items-center justify-center py-2 px-1 text-xs font-medium text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-500 transition-colors duration-200" ${navItemAttrs}${navItemOnClick}>
+        <button class="flex flex-col items-center justify-center py-2 px-1 text-xs font-medium text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-500 transition-colors duration-200" ${navItemAttrs}>
           <span class="mb-1">${navIcon || ''}</span>
           <span>${navLabel || ''}</span>
         </button>
-      `;
-
-    case 'DrawerItem':
+      `;    case 'DrawerItem':
       const { label: drawerLabel, icon: drawerIcon, action: drawerAction } = node.props || {};
       
       // Use navigation helper for drawer items
       const drawerItemAttrs = generateNavigationAttributes(drawerAction);
-      const drawerItemOnClick = generateOnClickHandler(drawerAction);
       
       return `
-        <button class="flex items-center w-full px-4 py-3 text-left text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200" ${drawerItemAttrs}${drawerItemOnClick}>
+        <button class="flex items-center w-full px-4 py-3 text-left text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-200" ${drawerItemAttrs}>
           <span class="mr-3 text-lg">${drawerIcon || ''}</span>
-          <span>${drawerLabel || ''}</span>        </button>
+          <span>${drawerLabel || ''}</span>
+        </button>
       `;
       
     case 'FAB':
-      const { icon: fabIcon, action: fabAction, variant: fabVariant = 'primary' } = node.props || {};
+      const { icon: fabIcon, action: fabAction } = node.props || {};
       
       // Use navigation helper for FAB actions
-      const fabAttrs = generateNavigationAttributes(fabAction);
-      const fabOnClick = generateOnClickHandler(fabAction);
-      
-      const fabVariantClasses = {
-        primary: 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl',
-        secondary: 'bg-gray-600 hover:bg-gray-700 text-white shadow-lg hover:shadow-xl',
-        success: 'bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl',
-        danger: 'bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-xl'
-      }[fabVariant] || 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl';
-      
+      const fabAttrs = generateNavigationAttributes(fabAction);      
       return `
-        <button class="fab w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold transition-all duration-200 transform hover:scale-110 ${fabVariantClasses}" ${fabAttrs}${fabOnClick}>
+        <button class="fab w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold transition-all duration-200 transform hover:scale-110" ${fabAttrs}>
           ${fabIcon || '+'}
         </button>
       `;

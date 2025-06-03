@@ -1,6 +1,6 @@
 import { CstParser } from "chevrotain";
 import { 
-  allTokens, Screen, Component, Modal, Sidebar, ComponentInstance, 
+  allTokens, Screen, Component, Modal, ComponentInstance, 
   Identifier, Colon, Button, 
   Row, Card, Separator, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, ListItem, RadioOption, 
@@ -65,9 +65,7 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.buttonElement) },
       { ALT: () => this.SUBRULE(this.rowElement) },      { ALT: () => this.SUBRULE(this.columnElement) },
       { ALT: () => this.SUBRULE(this.listElement) },
-      { ALT: () => this.SUBRULE(this.cardElement) },
-      { ALT: () => this.SUBRULE(this.modalElement) },
-      { ALT: () => this.SUBRULE(this.sidebarElement) },
+      { ALT: () => this.SUBRULE(this.cardElement) },      { ALT: () => this.SUBRULE(this.modalElement) },
       { ALT: () => this.SUBRULE(this.headerElement) },
       { ALT: () => this.SUBRULE(this.bottomNavElement) },
       { ALT: () => this.SUBRULE(this.drawerElement) },
@@ -229,14 +227,14 @@ export class UiDslParser extends CstParser {
         this.CONSUME(Outdent);
       });
     });
-  });
-  drawerElement = this.RULE("drawerElement", () => {
+  });  drawerElement = this.RULE("drawerElement", () => {
     this.CONSUME(Drawer);
+    this.CONSUME(Identifier, { LABEL: "name" });
     this.CONSUME(Colon);
     this.OPTION(() => {
       this.CONSUME(Indent);
       this.AT_LEAST_ONE(() => {
-        this.CONSUME(DrawerItem);
+        this.SUBRULE(this.element);
       });
       this.OPTION2(() => {
         this.CONSUME(Outdent);
@@ -270,23 +268,6 @@ export class UiDslParser extends CstParser {
       });
     });
   });
-
-  // Sidebar element rule - container with identifier
-  sidebarElement = this.RULE("sidebarElement", () => {
-    this.CONSUME(Sidebar);
-    this.CONSUME(Identifier, { LABEL: "name" });
-    this.CONSUME(Colon);
-    this.OPTION(() => {
-      this.CONSUME(Indent);
-      this.AT_LEAST_ONE(() => {
-        this.SUBRULE(this.element);
-      });
-      this.OPTION2(() => {
-        this.CONSUME(Outdent);
-      });
-    });
-  });
-
 }
 
 // Create a singleton instance of the parser

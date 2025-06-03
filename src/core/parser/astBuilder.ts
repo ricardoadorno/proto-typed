@@ -36,19 +36,19 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       name,
       elements
     };
-  }    element(ctx: Context) {
+  }  element(ctx: Context) {
     if (ctx.componentInstanceElement) return this.visit(ctx.componentInstanceElement);
     if (ctx.modalElement) return this.visit(ctx.modalElement);
-    if (ctx.sidebarElement) return this.visit(ctx.sidebarElement);
     if (ctx.inputElement) return this.visit(ctx.inputElement);
     if (ctx.buttonElement) return this.visit(ctx.buttonElement);
     if (ctx.rowElement) return this.visit(ctx.rowElement);
     if (ctx.columnElement) return this.visit(ctx.columnElement);
     if (ctx.listElement) return this.visit(ctx.listElement);
     if (ctx.cardElement) return this.visit(ctx.cardElement);
-    if (ctx.headerElement) return this.visit(ctx.headerElement);
-    if (ctx.bottomNavElement) return this.visit(ctx.bottomNavElement);
+    if (ctx.headerElement) return this.visit(ctx.headerElement);    if (ctx.bottomNavElement) return this.visit(ctx.bottomNavElement);
     if (ctx.drawerElement) return this.visit(ctx.drawerElement);
+    if (ctx.navItemElement) return this.visit(ctx.navItemElement);
+    if (ctx.drawerItemElement) return this.visit(ctx.drawerItemElement);
     if (ctx.separatorElement) return this.visit(ctx.separatorElement);
     if (ctx.headingElement) return this.visit(ctx.headingElement);
     if (ctx.textElement) return this.visit(ctx.textElement);
@@ -500,38 +500,55 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       },
       elements: items
     };
-  }
-
-  drawerElement(ctx: Context) {
-    const items = [];
-
-    if (ctx.DrawerItem) {
-      for (const item of ctx.DrawerItem) {
-        const itemText = item.image;
-        // Pattern: drawer_item [label]{icon}(action)
-        const match = itemText.match(/drawer_item\s+\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/);
-        
-        if (match) {
-          const [, label, icon, action] = match;
-          items.push({
-            type: "DrawerItem",
-            props: {
-              label: label.trim(),
-              icon: icon.trim(),
-              action: action ? action.trim() : ''
-            }
-          });
-        }
-      }
-    }
+  }  drawerElement(ctx: Context) {
+    const name = ctx.name[0].image;
+    const elements = ctx.element ? ctx.element.map((el: CstNode) => this.visit(el)) : [];
 
     return {
-      type: "Drawer",
-      props: {
-        className: "drawer"
-      },
-      elements: items
+      type: "drawer",
+      name,
+      elements
     };
+  }
+
+  navItemElement(ctx: Context) {
+    const itemText = ctx.NavItem[0].image;
+    // Pattern: nav_item [label]{icon}(action)
+    const match = itemText.match(/nav_item\s+\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/);
+    
+    if (match) {
+      const [, label, icon, action] = match;
+      return {
+        type: "NavItem",
+        props: {
+          label: label.trim(),
+          icon: icon.trim(),
+          action: action ? action.trim() : ''
+        }
+      };
+    }
+    
+    return null;
+  }
+
+  drawerItemElement(ctx: Context) {
+    const itemText = ctx.DrawerItem[0].image;
+    // Pattern: drawer_item [label]{icon}(action)
+    const match = itemText.match(/drawer_item\s+\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/);
+    
+    if (match) {
+      const [, label, icon, action] = match;
+      return {
+        type: "DrawerItem",
+        props: {
+          label: label.trim(),
+          icon: icon.trim(),
+          action: action ? action.trim() : ''
+        }
+      };
+    }
+    
+    return null;
   }
 
   componentInstanceElement(ctx: Context) {
@@ -551,17 +568,6 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
 
     return {
       type: "modal",
-      name,
-      elements
-    };
-  }
-
-  sidebarElement(ctx: Context) {
-    const name = ctx.name[0].image;
-    const elements = ctx.element ? ctx.element.map((el: CstNode) => this.visit(el)) : [];
-
-    return {
-      type: "sidebar",
       name,
       elements
     };

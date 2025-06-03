@@ -34,11 +34,6 @@ export const Modal = createToken({
   pattern: /modal/
 });
 
-export const Sidebar = createToken({
-  name: "Sidebar",
-  pattern: /sidebar/
-});
-
 export const ComponentInstance = createToken({
   name: "ComponentInstance",
   pattern: /\$([a-zA-Z_][a-zA-Z0-9_]*)/
@@ -195,7 +190,6 @@ export const allTokens = [
   Screen,
   Component,
   Modal,
-  Sidebar,
   ComponentInstance,
   NavItem,
   DrawerItem,

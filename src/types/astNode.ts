@@ -22,12 +22,11 @@ export interface ComponentInstanceNode extends BaseAstNode {
 }
 
 export interface ModalNode extends BaseAstNode {
-  type: 'modal';
-  name: string;
+  type: 'modal';  name: string;
 }
 
-export interface SidebarNode extends BaseAstNode {
-  type: 'sidebar';
+export interface DrawerNode extends BaseAstNode {
+  type: 'drawer';
   name: string;
 }
 
@@ -78,11 +77,10 @@ export interface MobileNode extends BaseAstNode {
 
 export type AstNode = 
   | ScreenNode 
-  | ComponentNode 
-  | ComponentInstanceNode
+  | ComponentNode   | ComponentInstanceNode
   | ModalNode 
-  | SidebarNode 
-  | ContainerNode 
+  | DrawerNode
+  | ContainerNode
   | TextNode 
   | InteractiveNode 
   | FormNode 

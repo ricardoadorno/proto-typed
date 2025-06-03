@@ -1,5 +1,5 @@
 /**
- * Example demonstrating the Named UI Elements (modal and sidebar) 
+ * Example demonstrating the Named UI Elements (modal and drawer) 
  * functionality in Proto-type DSL
  */
 
@@ -7,15 +7,15 @@ const namedElementsExample = `
 @screen Home:
   # Named UI Elements Demo
   
-  > This screen demonstrates how modals and sidebars work.
+  > This screen demonstrates how modals and drawers work.
   > They are hidden by default and activated when referenced by a button.
   
   @[Open Welcome Modal](WelcomeModal)
-  @[Toggle Left Sidebar](LeftSidebar)
+  @[Toggle Left Drawer](LeftDrawer)
   @[Open Settings Modal](SettingsModal)
   
   card:
-    > Try clicking the buttons above to see the modals and sidebar in action.
+    > Try clicking the buttons above to see the modals and drawer in action.
     > Note that these elements are defined below but are hidden until activated.
       modal WelcomeModal:
     # Welcome to Proto-type!
@@ -37,13 +37,12 @@ const namedElementsExample = `
       [X] Email
       [ ] Push
       [ ] SMS
-      
-    @[Save Settings]
+        @[Save Settings]
     @[Cancel]
     
-  sidebar LeftSidebar:
+  drawer LeftDrawer:
     # Navigation
-    > This is a sidebar that was hidden until you clicked the button.
+    > This is a drawer that was hidden until you clicked the button.
     
     list:
       - Dashboard
@@ -51,7 +50,7 @@ const namedElementsExample = `
       - Messages
       - Settings
       
-    @[Close Sidebar]
+    @[Close Drawer]
 `;
 
 export default namedElementsExample;

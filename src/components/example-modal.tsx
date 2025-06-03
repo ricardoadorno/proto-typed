@@ -195,21 +195,19 @@ export default function ExampleModal() {
         },
         mobile: {
             title: "Mobile Components",
-            examples: [
-                {
-                    name: "Header Component",
-                    code: `@screen HeaderExample:
+            examples: [{
+                name: "Header Component", code: `@screen HeaderExample:
   header:
     # App Title
-    @[Menu](toggle-drawer)
+    @[Menu](MyDrawer)
     @[Profile](profile-screen)
     
   > Content goes here`,
-                    description: "Create a fixed header with title and action buttons"
-                },
-                {
-                    name: "Bottom Navigation",
-                    code: `@screen BottomNavExample:
+                description: "Create a fixed header with title and action buttons"
+            },
+            {
+                name: "Bottom Navigation",
+                code: `@screen BottomNavExample:
   # Main Content
   > App content here
   
@@ -219,27 +217,27 @@ export default function ExampleModal() {
     nav_item [Messages]{💬}(messages-screen)
     nav_item [Profile]{👤}(profile-screen)
     nav_item [More]{⋯}(more-screen)`,
-                    description: "Create a fixed bottom navigation bar with icons and labels"
-                },
-                {
-                    name: "Drawer/Sidebar",
-                    code: `@screen DrawerExample:
+                description: "Create a fixed bottom navigation bar with icons and labels"
+            },
+            {
+                name: "Drawer",
+                code: `@screen DrawerExample:
   # App Content
   > Main content area
   
-  drawer:
+  drawer MyDrawer:
     drawer_item [Dashboard]{📊}(dashboard-screen)
     drawer_item [Messages]{💬}(messages-screen)
     drawer_item [Settings]{⚙️}(settings-screen)
     drawer_item [Help]{❓}(help-screen)
     drawer_item [Logout]{🚪}(logout)`,
-                    description: "Create a slide-out drawer menu with navigation items"
-                }, {
-                    name: "Complete Mobile App",
-                    code: `@screen MobileDemo:
+                description: "Create a slide-out drawer menu with navigation items"
+            }, {
+                name: "Complete Mobile App",
+                code: `@screen MobileDemo:
   header:
     # My App
-    @[Menu](toggle-drawer)
+    @[Menu](MyDrawer)
     
   card:
     ## Welcome
@@ -249,17 +247,16 @@ export default function ExampleModal() {
       - John Doe - Online now
       - Jane Smith - 2 min ago
       - Mike Johnson - 5 min ago
-    
-  bottom_nav:
+      bottom_nav:
     nav_item [Home]{🏠}(home)
     nav_item [Messages]{💬}(messages)
     nav_item [Profile]{👤}(profile)
     
-  drawer:
+  drawer MyDrawer:
     drawer_item [Settings]{⚙️}(settings)
     drawer_item [Help]{❓}(help)`,
-                    description: "A complete mobile app layout with header, content, navigation and drawer"
-                }
+                description: "A complete mobile app layout with header, content, navigation and drawer"
+            }
             ]
         },
 
@@ -510,13 +507,12 @@ export default function ExampleModal() {
                                 <li><strong>Badges:</strong> Use <code>badge "Text"</code> for status indicators</li>
                             </ul>
                         )}
-                        {activeTab === 'mobile' && (
-                            <ul>
-                                <li><strong>Header:</strong> Use <code>header:</code> for fixed top navigation</li>
-                                <li><strong>Bottom Nav:</strong> Use <code>bottom_nav:</code> with <code>nav_item</code> elements</li>
-                                <li><strong>Drawer:</strong> Use <code>drawer:</code> with <code>drawer_item</code> elements</li>
-                                <li><strong>Icons:</strong> Use emoji or text within curly braces: <code>{"{🏠}"}</code></li>
-                            </ul>
+                        {activeTab === 'mobile' && (<ul>
+                            <li><strong>Header:</strong> Use <code>header:</code> for fixed top navigation</li>
+                            <li><strong>Bottom Nav:</strong> Use <code>bottom_nav:</code> with <code>nav_item</code> elements</li>
+                            <li><strong>Drawer:</strong> Use <code>drawer DrawerName:</code> with <code>drawer_item</code> elements</li>
+                            <li><strong>Icons:</strong> Use emoji or text within curly braces: <code>{"{🏠}"}</code></li>
+                        </ul>
                         )}
 
                     </div>

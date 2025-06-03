@@ -67,21 +67,12 @@ export function registerDSLCompletionProvider() {
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation: 'List container element',
           range: range,
-        },
-        {
+        },        {
           label: 'section',
           kind: monaco.languages.CompletionItemKind.Constructor,
           insertText: 'section:\n\t$0',
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation: 'Section container element',
-          range: range,
-        },
-        {
-          label: 'sidebar',
-          kind: monaco.languages.CompletionItemKind.Constructor,
-          insertText: 'sidebar:\n\t$0',
-          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-          documentation: 'Sidebar layout element',
           range: range,
         },
         {
@@ -267,13 +258,12 @@ export function registerDSLCompletionProvider() {
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation: 'Mobile bottom navigation',
           range: range,
-        },
-        {
+        },        {
           label: 'drawer',
           kind: monaco.languages.CompletionItemKind.Module,
-          insertText: 'drawer:\n\t${1:drawer_item [Settings]{⚙️}(settings)}',
+          insertText: 'drawer ${1:MyDrawer}:\n\t${2:drawer_item [Settings]{⚙️}(settings)}',
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-          documentation: 'Mobile drawer menu',
+          documentation: 'Named mobile drawer menu',
           range: range,
         },
         {

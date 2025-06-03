@@ -7,8 +7,7 @@ import dashboard from './examples/dashboard';
 import mobileComplete from './examples/mobile-complete';
 import namedElementsExample from './examples/named-elements';
 import { RenderOptions } from './types/renderOptions';
-import { astToHtmlDocument } from './core/renderer/documentRenderer';
-import { astToHtml } from './core/renderer/astToHtml';
+import { astToHtmlDocument, astToHtml } from './core/renderer/astToHtml';
 import ExampleModal from './components/example-modal';
 import AstModal from './components/ast-modal';
 import { Editor } from '@monaco-editor/react';
@@ -88,25 +87,59 @@ export default function App() {
                     // Centralized navigation handler
                     handleNavigationClick(e, {
                         onInternalNavigate: (screenName: string) => {
-                            console.log('[App] Navigation to screen:', screenName);
-
-                            // Check if it's a modal first
+                            console.log('[App] Navigation to screen:', screenName);                            // Check if it's a modal or drawer first
                             const allNodes = screens.flatMap(screen => screen.elements || []);
-                            const isModal = allNodes.some(node => node.type === 'modal' && node.name === screenName);
-                            const isSidebar = allNodes.some(node => node.type === 'sidebar' && node.name === screenName);
+                            const isModal = allNodes.some(node => node.type === 'modal' && node.name?.toLowerCase() === screenName.toLowerCase());
+                            const isDrawer = allNodes.some(node => node.type === 'drawer' && node.name?.toLowerCase() === screenName.toLowerCase()); if (isModal || isDrawer) {
+                                // For modals and drawers, trigger toggle action instead of navigation
+                                console.log('[App] Detected modal/drawer navigation, calling onToggle for:', screenName);
+                                // Find the actual drawer/modal name with original case
+                                const drawerNode = allNodes.find(node => node.type === 'drawer' && node.name?.toLowerCase() === screenName.toLowerCase());
+                                const modalNode = allNodes.find(node => node.type === 'modal' && node.name?.toLowerCase() === screenName.toLowerCase());
+                                const actualName = drawerNode?.name || modalNode?.name || screenName;
 
-                            if (isModal || isSidebar) {
-                                // For modals and sidebars, let the navigation helper handle it
-                                // and DON'T trigger a React re-render
+                                // Use DOM manipulation directly since we don't have access to onToggle callback here
+                                const drawerContainer = document.getElementById(`drawer-${actualName}`);
+                                const modal = document.getElementById(`modal-${actualName}`);
+                                if (drawerContainer) {
+                                    const isHidden = drawerContainer.classList.contains('hidden');
+                                    const drawerContent = drawerContainer.querySelector('.drawer-content');
+
+                                    if (isHidden) {
+                                        // Show drawer
+                                        drawerContainer.classList.remove('hidden');
+                                        if (drawerContent) {
+                                            setTimeout(() => {
+                                                drawerContent.classList.remove('-translate-x-full');
+                                                drawerContent.classList.add('translate-x-0');
+                                            }, 50);
+                                        }
+                                    } else {
+                                        // Hide drawer
+                                        if (drawerContent) {
+                                            drawerContent.classList.remove('translate-x-0');
+                                            drawerContent.classList.add('-translate-x-full');
+                                        }
+                                        setTimeout(() => {
+                                            drawerContainer.classList.add('hidden');
+                                        }, 300);
+                                    }
+                                } else if (modal) {
+                                    modal.classList.toggle('hidden');
+                                }
                                 return;
                             }
 
-                            // It's a regular screen - set it as current (this will trigger re-render)
-                            setCurrentScreen(screenName.toLowerCase());
-                        },
-                        onDrawerToggle: () => {
-                            // For drawer toggle, let the navigation helper handle it
+                            // It's a regular screen - find the actual screen name with case-insensitive match
+                            const screenNode = screens.find(screen => screen.name?.toLowerCase() === screenName.toLowerCase());
+                            const actualScreenName = screenNode?.name || screenName;
+
+                            // Set it as current (this will trigger re-render)
+                            setCurrentScreen(actualScreenName.toLowerCase());
+                        }, onToggle: (elementName: string) => {
+                            // For toggle actions (drawer, modal), let the navigation helper handle it
                             // and DON'T trigger a React re-render
+                            console.log('[App] Toggle requested for:', elementName);
                         }
                     });
                 }}
@@ -141,21 +174,23 @@ export default function App() {
                 setCurrentScreen(undefined);
             }
         }
-    }, [screens, currentScreen]);
-
-    useEffect(() => {
+    }, [screens, currentScreen]); useEffect(() => {
         // Handle overlay clicks to close drawer
         const handleOverlayClick = (e: Event) => {
             if (e.target instanceof HTMLElement && e.target.classList.contains('drawer-overlay')) {
-                const drawer = document.querySelector('.drawer');
-                const overlay = document.querySelector('.drawer-overlay');
+                // Find the parent drawer container
+                const drawerContainer = e.target.closest('.drawer-container');
+                if (drawerContainer) {
+                    const drawerContent = drawerContainer.querySelector('.drawer-content');
 
-                if (drawer) {
-                    drawer.classList.remove('open');
-                }
-
-                if (overlay) {
-                    overlay.classList.remove('open');
+                    // Hide drawer
+                    if (drawerContent) {
+                        drawerContent.classList.remove('translate-x-0');
+                        drawerContent.classList.add('-translate-x-full');
+                    }
+                    setTimeout(() => {
+                        drawerContainer.classList.add('hidden');
+                    }, 300);
                 }
             }
         };

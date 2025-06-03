@@ -4,7 +4,7 @@
  */
 
 export interface NavigationTarget {
-  type: 'internal' | 'external' | 'action' | 'drawer-toggle';
+  type: 'internal' | 'external' | 'action' | 'toggle';
   value: string;
   isValid: boolean;
 }
@@ -16,12 +16,11 @@ export function analyzeNavigationTarget(target: string | undefined): NavigationT
   if (!target || target.trim() === '') {
     return { type: 'internal', value: '', isValid: false };
   }
-
   const trimmedTarget = target.trim();
 
-  // Check for drawer toggle action
-  if (trimmedTarget === 'toggleDrawer()' || trimmedTarget === 'toggle-drawer') {
-    return { type: 'drawer-toggle', value: 'toggleDrawer()', isValid: true };
+  // Check for toggle actions (drawer, modal, etc.)
+  if (trimmedTarget.match(/^toggle\w*\(\)$/) || trimmedTarget.match(/^toggle-\w+$/)) {
+    return { type: 'toggle', value: trimmedTarget, isValid: true };
   }
 
   // Check if it's an external URL
@@ -56,28 +55,15 @@ export function generateNavigationAttributes(target: string | undefined): string
       break;
     case 'external':
       attributes.push(`data-nav-type="external"`);
-      break;
-    case 'action':
+      break;    case 'action':
       attributes.push(`data-nav-type="action"`);
       break;
-    case 'drawer-toggle':
-      attributes.push(`data-nav-type="drawer-toggle"`);
+    case 'toggle':
+      attributes.push(`data-nav-type="toggle"`);
       break;
   }
 
   return attributes.join(' ');
-}
-
-/**
- * Generate onclick handler for navigation based on target type
- * Returns empty string to rely on React event handling in App.tsx
- */
-// Deprecated: No longer used, kept for compatibility
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function generateOnClickHandler(target: string | undefined): string {
-  // Return empty string to rely on React event handling through data-nav attributes
-  // This prevents "function not defined" errors in React context
-  return '';
 }
 
 /**
@@ -116,65 +102,55 @@ export function generateNavigationScript(): string {
           screen.style.display = 'none';
         }
       });
-    }
-    
-    function toggleDrawer() {
+    }    function toggleElement(elementName) {
+      // Try to find element by ID patterns: drawer (unified), modal
       const drawer = document.querySelector('.drawer');
-      const overlay = document.querySelector('.drawer-overlay');
+      const drawerElement = document.getElementById(\`drawer-\${elementName}\`);
+      const modal = document.getElementById(\`modal-\${elementName}\`);
       
-      if (drawer) {
-        drawer.classList.toggle('open');
+      // Handle drawer (unified concept)
+      if (elementName === 'drawer' || elementName === 'Drawer' || !elementName) {
+        // Try legacy drawer first (mobile-style)
+        if (drawer) {
+          const overlay = document.querySelector('.drawer-overlay');
+          drawer.classList.toggle('open');
+          if (overlay) overlay.classList.toggle('open');
+          return;
+        }      }
+      
+      // Handle named drawer elements
+      if (drawerElement) {
+        const isHidden = drawerElement.classList.contains('hidden');
+        const content = drawerElement.querySelector('.drawer-content');
+        
+        if (isHidden) {
+          drawerElement.classList.remove('hidden');
+          if (content) {
+            content.classList.add('translate-x-0');
+            content.classList.remove('-translate-x-full');
+          }
+        } else {
+          if (content) {
+            content.classList.remove('translate-x-0');
+            content.classList.add('-translate-x-full');
+          }
+          setTimeout(() => {
+            drawerElement.classList.add('hidden');
+          }, 300);
+        }
+        return;
       }
       
-      if (overlay) {
-        overlay.classList.toggle('open');
-      }
-    }
-    
-    function closeDrawer() {
-      const drawer = document.querySelector('.drawer');
-      const overlay = document.querySelector('.drawer-overlay');
-      
-      if (drawer) {
-        drawer.classList.remove('open');
-      }
-      
-      if (overlay) {
-        overlay.classList.remove('open');
-      }
-    }
-    
-    function openModal(modalName) {
-      const modal = document.getElementById(\`modal-\${modalName}\`);
+      // Handle modal
       if (modal) {
-        modal.classList.remove('hidden');
+        modal.classList.toggle('hidden');
+        return;
       }
-    }
-    
-    function closeModal(modalName) {
-      const modal = document.getElementById(\`modal-\${modalName}\`);
-      if (modal) {
-        modal.classList.add('hidden');
-      }
-    }
-    
-    function openSidebar(sidebarName) {
-      const sidebar = document.getElementById(\`sidebar-\${sidebarName}\`);
-      if (sidebar) {
-        sidebar.classList.remove('hidden');
-        sidebar.querySelector('.sidebar-content').classList.add('translate-x-0');
-        sidebar.querySelector('.sidebar-content').classList.remove('-translate-x-full');
-      }
-    }
-    
-    function closeSidebar(sidebarName) {
-      const sidebar = document.getElementById(\`sidebar-\${sidebarName}\`);
-      if (sidebar) {
-        sidebar.querySelector('.sidebar-content').classList.remove('translate-x-0');
-        sidebar.querySelector('.sidebar-content').classList.add('-translate-x-full');
-        setTimeout(() => {
-          sidebar.classList.add('hidden');
-        }, 300);
+      
+      // Fallback: try generic element toggle
+      const element = document.getElementById(elementName) || document.querySelector(\`.\${elementName}\`);
+      if (element) {
+        element.classList.toggle('hidden');
       }
     }
     
@@ -188,17 +164,16 @@ export function generateNavigationScript(): string {
       
       if (!navValue) return;
       
-      switch (navType) {
-        case 'internal':
+      switch (navType) {        case 'internal':
           e.preventDefault();
-          // Check if it's a modal or sidebar first
+          // Check if it's a modal or drawer first
           const modal = document.getElementById(\`modal-\${navValue}\`);
-          const sidebar = document.getElementById(\`sidebar-\${navValue}\`);
+          const drawer = document.getElementById(\`drawer-\${navValue}\`);
           
           if (modal) {
-            openModal(navValue);
-          } else if (sidebar) {
-            openSidebar(navValue);
+            toggleElement(navValue);
+          } else if (drawer) {
+            toggleElement(navValue);
           } else {
             navigateToScreen(navValue);
           }
@@ -210,66 +185,50 @@ export function generateNavigationScript(): string {
         case 'action':
           e.preventDefault();
           try {
-            // Execute the action in the global scope
             new Function(navValue)();
           } catch (error) {
             console.error('Error executing navigation action:', error);
           }
           break;
-        case 'drawer-toggle':
+        case 'toggle':
           e.preventDefault();
-          toggleDrawer();
+          // Extract element name from toggle commands          let elementName = '';
+          if (navValue.includes('(')) {            // Handle toggleDrawer(), etc.
+            const match = navValue.match(/toggle(\\w+)\\(\\)/);
+            elementName = match ? match[1].toLowerCase() : 'drawer';
+          } else if (navValue.includes('-')) {
+            // Handle toggle-drawer, etc.
+            elementName = navValue.split('-')[1] || 'drawer';
+          } else {
+            elementName = 'drawer'; // Default fallback
+          }
+          toggleElement(elementName);
           break;
       }
     });
     
-    // Legacy support for existing data-screen-link attributes
-    document.addEventListener('click', function(e) {
-      if (e.target && e.target.tagName === 'A' && e.target.hasAttribute('data-screen-link')) {
-        e.preventDefault();
-        const screenName = e.target.getAttribute('data-screen-link');
-        if (screenName) {
-          navigateToScreen(screenName);
-        }
-      }    });
-    
     // Handle overlay clicks to close drawer
     document.addEventListener('click', function(e) {
       if (e.target && e.target.classList.contains('drawer-overlay')) {
-        closeDrawer();
+        const drawer = document.querySelector('.drawer');
+        const overlay = document.querySelector('.drawer-overlay');
+        if (drawer) drawer.classList.remove('open');
+        if (overlay) overlay.classList.remove('open');
       }
     });
   `;
-}
-
-/**
- * Generate the showScreen function for backward compatibility
- */
-export function generateLegacyNavigationScript(): string {
-  return `
-    function showScreen(screenName) {
-      navigateToScreen(screenName);
-    }
-  `;
-}
-
-/**
- * Generate complete navigation script including both new and legacy support
- */
-export function generateCompleteNavigationScript(): string {
-  return generateNavigationScript() + generateLegacyNavigationScript();
 }
 
 /**
  * Centralized navigation click handler for React and HTML export
  * Handles all navigation types and updates UI accordingly
- * Accepts optional callbacks for internal navigation and drawer toggling
+ * Accepts optional callbacks for internal navigation and toggle actions
  */
 export function handleNavigationClick(
   e: React.MouseEvent<Element, MouseEvent> | MouseEvent,
   options?: {
     onInternalNavigate?: (screenName: string) => void;
-    onDrawerToggle?: () => void;
+    onToggle?: (elementName: string) => void;
   }
 ) {
   const target = (e.target as Element).closest('[data-nav]');
@@ -287,7 +246,7 @@ export function handleNavigationClick(
   // eslint-disable-next-line no-console
   console.log('[Navigation] navType:', navType, 'navValue:', navValue, 'normalizedNavValue:', normalizedNavValue, 'target:', target);
 
-  if (target.tagName === 'A' || navType === 'internal' || navType === 'drawer-toggle' || navType === 'action') {
+  if (target.tagName === 'A' || navType === 'internal' || navType === 'toggle' || navType === 'action') {
     if (typeof e.preventDefault === 'function') {
       e.preventDefault();
     }
@@ -313,15 +272,53 @@ export function handleNavigationClick(
           targetScreen.style.display = 'block';
         }
       }
-      break;
-    case 'drawer-toggle':
-      if (options && options.onDrawerToggle) {
-        options.onDrawerToggle();
+      break;    case 'toggle':
+      // Extract element name from toggle commands
+      let elementName = '';
+      if (navValue.includes('(')) {
+        // Handle toggleDrawer(), etc.
+        const match = navValue.match(/toggle(\w+)\(\)/);
+        elementName = match ? match[1].toLowerCase() : 'drawer';
+      } else if (navValue.includes('-')) {
+        // Handle toggle-drawer, etc.
+        elementName = navValue.split('-')[1] || 'drawer';
       } else {
+        elementName = 'drawer'; // Default fallback
+      }
+      
+      if (options && options.onToggle) {
+        options.onToggle(elementName);      } else {
+        // Fallback: DOM manipulation for toggle
         const drawer = document.querySelector('.drawer');
-        const overlay = document.querySelector('.drawer-overlay');
-        if (drawer) drawer.classList.toggle('open');
-        if (overlay) overlay.classList.toggle('open');
+        const drawerElement = document.getElementById(`drawer-${elementName}`);
+        const modal = document.getElementById(`modal-${elementName}`);
+        
+        if (elementName === 'drawer' && drawer) {
+          const overlay = document.querySelector('.drawer-overlay');
+          drawer.classList.toggle('open');
+          if (overlay) overlay.classList.toggle('open');
+        } else if (drawerElement) {
+          const isHidden = drawerElement.classList.contains('hidden');
+          const content = drawerElement.querySelector('.drawer-content');
+          
+          if (isHidden) {
+            drawerElement.classList.remove('hidden');
+            if (content) {
+              content.classList.add('translate-x-0');
+              content.classList.remove('-translate-x-full');
+            }
+          } else {
+            if (content) {
+              content.classList.remove('translate-x-0');
+              content.classList.add('-translate-x-full');
+            }
+            setTimeout(() => {
+              drawerElement.classList.add('hidden');
+            }, 300);
+          }
+        } else if (modal) {
+          modal.classList.toggle('hidden');
+        }
       }
       break;
     case 'external':

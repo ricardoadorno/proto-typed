@@ -44,7 +44,7 @@ Components allow you to create reusable UI blocks that can be instantiated throu
 @component ComponentName:
   // Component content
   > This is reusable content
-  @[Button](action)
+  @[Button]()
 ```
 
 To use a declared component, reference it with the `$` prefix:
@@ -52,16 +52,16 @@ To use a declared component, reference it with the `$` prefix:
 $ComponentName
 ```
 
-### Modal and Sidebar Elements
+### Modal and Drawer Elements
 Named elements that can be toggled active/inactive through navigation:
 ```
 modal ModalName:
   // Modal content
   > This is a modal dialog
 
-sidebar SidebarName:
-  // Sidebar content
-  > This is a sidebar panel
+drawer DrawerName:
+  // Drawer content
+  > This is a drawer panel
 ```
 
 These elements can be activated by calling their names in navigation actions.
@@ -73,8 +73,8 @@ These elements can be activated by calling their names in navigation actions.
 - `"> Quote text`
 
 ### Interactive Elements
-- `@[Button Text](action)`
-- `#[Link Text](destination)`
+- `@[Button Text]()`
+- `#[Link Text]()`
 - `![Alt Text](image-url)`
 - `$ComponentName` - Component instantiation
 
@@ -84,9 +84,9 @@ These elements can be activated by calling their names in navigation actions.
 
 ### Named UI Elements  
 - `modal ModalName:` - Modal declaration
-- `sidebar SidebarName:` - Sidebar declaration
+- `drawer DrawerName:` - Drawer declaration
 
-These named elements have special behavior - they are shown or hidden based on navigation. When a button references their name in its action parameter (e.g., `@[Open Modal](ModalName)`), they will be activated. Otherwise, they remain hidden/inactive by default.
+These named elements have special behavior - they are shown or hidden based on navigation. When a button references their name in its action parameter (e.g., `@[Open Modal]()`), they will be activated. Otherwise, they remain hidden/inactive by default.
 
 ### Advanced Form Elements
 - `___:Label(Placeholder)`
@@ -108,7 +108,6 @@ These named elements have special behavior - they are shown or hidden based on n
 - `row:`
 - `col:`
 - `section:`
-- `sidebar:`
 
 ### Data Display Components
 - `list:`
@@ -121,7 +120,6 @@ These named elements have special behavior - they are shown or hidden based on n
 ### Mobile Components
 - `header:`
 - `bottom_nav:`
-- `drawer:`
 - `fab {icon: "plus"}`
 - `nav_item [label]{icon}`
 - `drawer_item [label]{icon}`

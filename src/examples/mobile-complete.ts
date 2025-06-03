@@ -2,7 +2,7 @@ const mobileAppExample = `
 @screen MobileApp:
   header:
     # My App
-    @[Menu](toggle-drawer)
+    @[Menu](MyDrawer)
     @[Profile](ProfileScreen)
 
   # Welcome to Mobile App
@@ -28,14 +28,13 @@ const mobileAppExample = `
         @[⚙️ Settings](SettingsScreen)
       col:
         @[❓ Help](SettingsScreen)
-
   bottom_nav:
     nav_item [Home]{🏠}(MobileApp)
     nav_item [Search]{🔍}(SettingsScreen)
     nav_item [Messages]{💬}(MessagesScreen)
     nav_item [Profile]{👤}(ProfileScreen)
     nav_item [More]{⋯}(SettingsScreen)
-  drawer:
+  drawer MyDrawer:
     drawer_item [Dashboard]{📊}(MobileApp)
     drawer_item [Messages]{💬}(MessagesScreen)
     drawer_item [Calendar]{📅}(SettingsScreen)

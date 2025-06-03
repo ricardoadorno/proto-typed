@@ -39,9 +39,8 @@ export function registerDSLLanguage() {
         
         // Mobile elements with parameters
         [/(nav_item|drawer_item)\s+\[[^\]]+\]\{[^}]*\}(\([^)]*\))?/, DSL_TOKEN_TYPES.mobile],
-        
-        // Layout elements (before generic identifiers)
-        [/\b(container|card|row|col|section|sidebar|grid|flex|list)(?=\s*:)/, DSL_TOKEN_TYPES.layout],
+          // Layout elements (before generic identifiers)
+        [/\b(container|card|row|col|section|grid|flex|list)(?=\s*:)/, DSL_TOKEN_TYPES.layout],
         
         // Mobile container elements
         [/\b(header|bottom_nav|drawer|fab)(?=\s*:)/, DSL_TOKEN_TYPES.mobile],
