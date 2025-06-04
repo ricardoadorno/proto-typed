@@ -89,10 +89,10 @@ These elements can be activated by calling their names in navigation actions.
 These named elements have special behavior - they are shown or hidden based on navigation. When a button references their name in its action parameter (e.g., `@[Open Modal]()`), they will be activated. Otherwise, they remain hidden/inactive by default.
 
 ### Advanced Form Elements
-- `___:Label(Placeholder)`
-- `___*:Label(Placeholder)` - Password fields
-- `___-:Label(Placeholder)` - Disabled fields
-- `___:Label(Placeholder)[Option1 | Option2]` - Select fields
+- `___:Label{Placeholder}`
+- `___*:Label{Placeholder}` - Password fields
+- `___-:Label{Placeholder}` - Disabled fields
+- `___:Label{Placeholder}[Option1 | Option2]` - Select fields
 
 ### Checkbox and Radio Groups
 - `[X] Label` - Checked checkboxes

@@ -176,11 +176,11 @@ export function registerDSLCompletionProvider(monaco: Monaco) {
           range: range,
         },
         
-        // Form elements
-        {
+        // Form elements       
+         {
           label: 'input',
           kind: monaco.languages.CompletionItemKind.Field,
-          insertText: '___:${1:Label}(${2:Placeholder})',
+          insertText: '___:${1:Label}{${2:Placeholder}}',
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation: 'Text input field',
           range: range,
@@ -188,7 +188,7 @@ export function registerDSLCompletionProvider(monaco: Monaco) {
         {
           label: 'password',
           kind: monaco.languages.CompletionItemKind.Field,
-          insertText: '___*:${1:Label}(${2:Placeholder})',
+          insertText: '___*:${1:Label}{${2:Placeholder}}',
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation: 'Password input field',
           range: range,
@@ -196,7 +196,7 @@ export function registerDSLCompletionProvider(monaco: Monaco) {
         {
           label: 'disabled-input',
           kind: monaco.languages.CompletionItemKind.Field,
-          insertText: '___-:${1:Label}(${2:Placeholder})',
+          insertText: '___-:${1:Label}{${2:Placeholder}}',
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation: 'Disabled input field',
           range: range,
@@ -204,7 +204,7 @@ export function registerDSLCompletionProvider(monaco: Monaco) {
         {
           label: 'select',
           kind: monaco.languages.CompletionItemKind.Field,
-          insertText: '___:${1:Label}(${2:Placeholder})[${3:Option1} | ${4:Option2}]',
+          insertText: '___:${1:Label}{${2:Placeholder}}[${3:Option1} | ${4:Option2}]',
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation: 'Select dropdown field',
           range: range,

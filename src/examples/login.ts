@@ -1,7 +1,7 @@
 const login = `
 @component LoginForm:
-  ___:Username(Enter your username)
-  ___*:Password(Enter your password)
+  ___:Username{Enter your username}
+  ___*:Password{Enter your password}
   
   row:
     [X] Remember me
@@ -24,10 +24,10 @@ const login = `
   # Create a New Account
   > Join us today! Fill out the form below to create your account.
   card:
-    ___:Username(Choose a username)
-    ___:Email(Your email address)
-    ___*:Password(Create a password)
-    ___*:Confirm Password(Confirm your password)
+    ___:Username{Choose a username}
+    ___:Email{Your email address}
+    ___*:Password{Create a password}
+    ___*:Confirm Password{Confirm your password}
     
     @[Sign Up]
     #[Login](Login)
@@ -39,7 +39,7 @@ const login = `
   card:
     # Password Recovery
     > Enter your email address below to receive a password reset link.
-    ___*:Email(Your registered email address)
+    ___*:Email{Your registered email address}
     @[Send Reset Link]
     #[Back to Login](Login)
 `

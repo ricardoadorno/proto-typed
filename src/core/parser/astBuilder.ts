@@ -172,10 +172,9 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       const isDisabled = inputText.includes('___-');
       
       // Extract optional label if present
-      const labelMatch = inputText.match(/:([^(]+)(?:\(|\[|$)/);
-      
-      // Extract optional placeholder if present
-      const placeholderMatch = inputText.match(/\(([^)]+)\)/);
+      const labelMatch = inputText.match(/:([^{(\[]+)(?=\{|\(|\[|$)/);
+        // Extract optional placeholder if present
+      const placeholderMatch = inputText.match(/\{([^}]+)\}/);
       
       // Extract optional type or options if present
       const contentMatch = inputText.match(/\[([^\]]*)\]/);

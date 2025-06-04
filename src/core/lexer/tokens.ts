@@ -121,7 +121,7 @@ export const Separator = createToken({
 // Input Family Tokens
 export const Input = createToken({ 
   name: "Input", 
-  pattern: /___[\*\-]?(?::([a-zA-Z0-9_\s]+))?(?:\(([^\)]+)\))?(?:\[([^\]]*)\])?/
+  pattern: /___[\*\-]?(?::([a-zA-Z0-9_\s]+))?(?:\{([^}]+)\})?(?:\[([^\]]*)\])?/
 });
 
 export const RadioOption = createToken({

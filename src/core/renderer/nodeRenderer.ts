@@ -111,9 +111,9 @@ export function nodeToHtml(node: AstNode, context?: string): string {
       }
         // Create the input element with all attributes
       const inputClasses = 'w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-400';
-      
-      inputHtml += `  <input class="${inputClasses}"  />`;
-      
+
+      inputHtml += `  <input class="${inputClasses}" placeholder="${inputProps.placeholder || ''}" />`;
+
       // Close the label if it was opened
       if (inputProps.label) {
         inputHtml += '\n</label>';

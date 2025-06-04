@@ -23,18 +23,17 @@ export function registerDSLLanguage(monaco: Monaco) {
         
         // Named UI elements (modal, drawer)
         [/\b(modal|drawer)\s+\w+:\s*$/, 'tag'],
-          // Basic patterns using only standard Monaco tokens
+          // Basic patterns using only standard Monaco tokens        
         [/@(screen)\s/, 'keyword.screen'],
         [/@(component)\s/, 'keyword.component'],
         [/@\[.*?\]/, 'type'],          // buttons
         [/#\[.*?\]/, 'type'],        // links  
-        [/\(([^)]+)\)/, 'variable.name'],        
+        [/\(([^}]+)\)/, 'variable.name'],        
         [/\$\w+/, 'variable.name'],    // variables like $LoginForm
         [/!\[.*?\]/, 'variable'],      // images
         [/___[*-]?:/, 'number'],       // inputs
         [/\[[X ]\]/, 'constructor'],   // checkboxes
         [/\([X ]\)/, 'constructor'],   // radio buttons
-        [/\{.*?\}/, 'attribute'],      // attributes
         [/---+/, 'delimiter'],         // separators
         [/>/, 'string'],               // text content
         [/\*>/, 'comment'],            // note text

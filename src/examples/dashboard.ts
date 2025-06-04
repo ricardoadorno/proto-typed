@@ -20,7 +20,7 @@ const dashboardExample = `
         - Monthly Summary
         - User Activity
         - Performance Metrics
-        ___:Report Type(Select report type)[Monthly | Weekly | Daily | Custom]
+        ___:Report Type{Select report type}[Monthly | Weekly | Daily | Custom]
         @[Generate Report]
   card:
     ## Recent Activity
@@ -43,7 +43,7 @@ const dashboardExample = `
         [X] Enable email alerts
         [X] Enable browser notifications
         [ ] Enable SMS alerts
-        ___:Notification Frequency(Set frequency)[Immediate | Hourly | Daily | Weekly]
+        ___:Notification Frequency{Set frequency}[Immediate | Hourly | Daily | Weekly]
 `;
 
 export default dashboardExample;

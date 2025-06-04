@@ -76,13 +76,12 @@ export default function ExampleModal() {
         input: {
             title: "Input Elements",
             examples: [{
-                name: "Text Inputs",
-                code: `@screen InputExample:
+                name: "Text Inputs", code: `@screen InputExample:
   # Form Fields
-  ___:Username(Enter your username)
-  ___*:Password(Enter your password)
-  ___:Email(Enter your email)
-  ___-:Disabled Field(This field is disabled)`,
+  ___:Username{Enter your username}
+  ___*:Password{Enter your password}
+  ___:Email{Enter your email}
+  ___-:Disabled Field{This field is disabled}`,
                 description: "Create input fields with labels and placeholders. Use ___* for password fields and ___- for disabled fields"
             },
             {
@@ -102,12 +101,11 @@ export default function ExampleModal() {
   ( ) Option C (unselected)`,
                 description: "Create radio button groups where only one option can be selected"
             }, {
-                name: "Select Fields",
-                code: `@screen SelectExample:
+                name: "Select Fields", code: `@screen SelectExample:
   # Select Menu
-  ___:Country(Select your country)[USA | Canada | Mexico | Brazil]
-  ___:Language(Choose language)[English | Spanish | French | Portuguese]
-  ___-:Disabled Select(Can't change this)[Option 1 | Option 2 | Option 3]`,
+  ___:Country{Select your country}[USA | Canada | Mexico | Brazil]
+  ___:Language{Choose language}[English | Spanish | French | Portuguese]
+  ___-:Disabled Select{Can't change this}[Option 1 | Option 2 | Option 3]`,
                 description: "Create dropdown select menus with options using pipe-separated values in brackets. Use ___- for disabled fields"
             }
             ]

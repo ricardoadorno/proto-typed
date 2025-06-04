@@ -90,7 +90,7 @@ const mobileAppExample = `
     [X] Push notifications
     [X] Email updates
     [ ] SMS alerts
-    ___:Theme(Choose theme)[Light | Dark | Auto]
+    ___:Theme{Choose theme}[Light | Dark | Auto]
     
     @[Save Changes]
 
@@ -116,9 +116,8 @@ const mobileAppExample = `
     ## Preferences
     [X] Dark mode
     [X] Push notifications
-    [ ] Location services
-    ___:Language(Select language)[English | Spanish | French | German]
-    ___:Timezone(Select timezone)[UTC | EST | PST | CET]
+    [ ] Location services    ___:Language{Select language}[English | Spanish | French | German]
+    ___:Timezone{Select timezone}[UTC | EST | PST | CET]
     
   card:
     ## Support

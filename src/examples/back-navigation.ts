@@ -81,7 +81,7 @@ export const advancedBackNavigationExample = `
         ## Geral
         [X] Notificações push
         [ ] Auto-sync
-        ___:Nome do usuário(Digite seu nome)
+        ___:Nome do usuário{Digite seu nome}
       
       card:
         ## Aparência
@@ -99,27 +99,25 @@ export const advancedBackNavigationExample = `
     # Meu Perfil
     > Informações do usuário
     
-    card:
-      avatar {src: https://via.placeholder.com/100}
+    card:      avatar {src: https://via.placeholder.com/100}
       ## João Silva
       > Desenvolvedor Frontend
       
-      ___:Email(joao@email.com)
-      ___:Telefone(+55 11 99999-9999)
+      ___:Email{joao@email.com}
+      ___:Telefone{+55 11 99999-9999}
     
     row:
       @[Editar Perfil](EditProfile)
       @[Voltar](-1)
 
 @screen EditProfile:
-  col:
-    # Editar Perfil
+  col:    # Editar Perfil
     > Altere suas informações pessoais
     
-    ___:Nome completo(João Silva)
-    ___:Email(joao@email.com)
-    ___:Telefone(+55 11 99999-9999)
-    ___:Bio(Desenvolvedor Frontend apaixonado por tecnologia)
+    ___:Nome completo{João Silva}
+    ___:Email{joao@email.com}
+    ___:Telefone{+55 11 99999-9999}
+    ___:Bio{Desenvolvedor Frontend apaixonado por tecnologia}
     
     row:
       @[Salvar Alterações](SaveProfile)
