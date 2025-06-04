@@ -1,55 +1,30 @@
-import { DSL_LANGUAGE_ID, DSL_TOKEN_TYPES } from '../constants';
-import * as monaco from 'monaco-editor';
+import { Monaco } from '@monaco-editor/react';
 
 /**
  * Define custom dark theme for the DSL
  */
-export function registerDSLTheme() {
-  // Define only the dark theme
+export function registerDSLTheme(monaco: Monaco) {// Define only the dark theme
   monaco.editor.defineTheme('proto-type-dark', {
     base: 'vs-dark',
     inherit: true,
     rules: [
-      // Structural elements
-      { token: DSL_TOKEN_TYPES.screen, foreground: 'ff6b6b', fontStyle: 'bold' },
-      { token: DSL_TOKEN_TYPES.identifier, foreground: '4ecdc4' },
-      { token: DSL_TOKEN_TYPES.colon, foreground: 'ffe66d' },
-      
-      // Typography
-      { token: DSL_TOKEN_TYPES.heading, foreground: '95e1d3', fontStyle: 'bold' },
-      { token: DSL_TOKEN_TYPES.text, foreground: 'd1d5db' },
-      { token: DSL_TOKEN_TYPES.note, foreground: 'fbbf24', fontStyle: 'italic' },
-      { token: DSL_TOKEN_TYPES.quote, foreground: 'a78bfa', fontStyle: 'italic' },
-      
-      // Interactive elements
-      { token: DSL_TOKEN_TYPES.button, foreground: '60a5fa', fontStyle: 'bold' },
-      { token: DSL_TOKEN_TYPES.link, foreground: '34d399', fontStyle: 'underline' },
-      { token: DSL_TOKEN_TYPES.image, foreground: 'f472b6' },
-      
-      // Form elements
-      { token: DSL_TOKEN_TYPES.input, foreground: 'a855f7' },
-      { token: DSL_TOKEN_TYPES.checkbox, foreground: '10b981' },
-      { token: DSL_TOKEN_TYPES.radio, foreground: '10b981' },
-      { token: DSL_TOKEN_TYPES.select, foreground: 'a855f7' },
-      
-      // Layout elements
-      { token: DSL_TOKEN_TYPES.layout, foreground: 'f59e0b', fontStyle: 'bold' },
-      { token: DSL_TOKEN_TYPES.mobile, foreground: 'ec4899', fontStyle: 'bold' },
-      
-      // Attributes and values
-      { token: DSL_TOKEN_TYPES.attribute, foreground: '8b5cf6' },
-      { token: DSL_TOKEN_TYPES.attributeValue, foreground: 'fb7185' },
-      { token: DSL_TOKEN_TYPES.url, foreground: '06b6d4', fontStyle: 'underline' },
-      { token: DSL_TOKEN_TYPES.action, foreground: 'fbbf24' },
-      
-      // Delimiters
-      { token: DSL_TOKEN_TYPES.brackets, foreground: 'ffe66d' },
-      { token: DSL_TOKEN_TYPES.parentheses, foreground: 'ffe66d' },
-      { token: DSL_TOKEN_TYPES.braces, foreground: 'ffe66d' },
-      { token: DSL_TOKEN_TYPES.separator, foreground: '6b7280', fontStyle: 'bold' },
-      
-      // Comments
-      { token: DSL_TOKEN_TYPES.comment, foreground: '6b7280', fontStyle: 'italic' },
+      // DSL specific tokens using standard Monaco token types
+      { token: 'keyword', foreground: 'ff6b6b', fontStyle: 'bold' },        // @screen and layout
+      { token: 'type', foreground: '60a5fa', fontStyle: 'bold' },           // buttons
+      { token: 'string', foreground: '34d399' },                            // links and text
+      { token: 'variable', foreground: 'f472b6' },                          // images
+      { token: 'number', foreground: 'a855f7' },                            // inputs
+      { token: 'tag', foreground: 'ec4899', fontStyle: 'bold' },            // mobile elements
+      { token: 'attribute', foreground: '8b5cf6' },                         // attributes
+      { token: 'metatag', foreground: '95e1d3', fontStyle: 'bold' },        // headings
+      { token: 'comment', foreground: 'fbbf24', fontStyle: 'italic' },      // notes
+      { token: 'string.quote', foreground: 'a78bfa', fontStyle: 'italic' }, // quotes
+      { token: 'constructor', foreground: '10b981' },                       // checkboxes/radio
+      { token: 'delimiter', foreground: 'ffe66d' },                         // separators and colons
+      { token: 'delimiter.bracket', foreground: 'ffe66d' },                 // brackets
+      { token: 'delimiter.curly', foreground: 'ffe66d' },                   // braces
+      { token: 'string.uri', foreground: '06b6d4', fontStyle: 'underline' }, // URLs
+      { token: 'identifier', foreground: '4ecdc4' },                        // identifiers
     ],
     colors: {
       'editor.background': '#0f172a',

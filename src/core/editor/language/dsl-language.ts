@@ -1,10 +1,10 @@
-import { DSL_LANGUAGE_ID, DSL_TOKEN_TYPES } from '../constants';
-import * as monaco from 'monaco-editor';
+import { DSL_LANGUAGE_ID } from '../constants';
+import { Monaco } from '@monaco-editor/react';
 
 /**
  * Register the Proto-type DSL language with Monaco Editor
  */
-export function registerDSLLanguage() {
+export function registerDSLLanguage(monaco: Monaco) {
   // Register the language
   monaco.languages.register({
     id: DSL_LANGUAGE_ID,
@@ -12,88 +12,39 @@ export function registerDSLLanguage() {
     aliases: ['Proto-type DSL', 'dsl', 'proto-type'],
   });
 
-  // Set the monarch tokenizer with corrected rules
+  // Set a very basic monarch tokenizer to avoid any reference issues
   monaco.languages.setMonarchTokensProvider(DSL_LANGUAGE_ID, {
     tokenizer: {
       root: [
-        // Complex patterns first (most specific to least specific)
-        
-        // Screen declarations - complete pattern
-        [/@screen\s+([A-Za-z_]\w*)\s*(\{[^}]*\})?\s*:/, [
-          DSL_TOKEN_TYPES.screen,
-          DSL_TOKEN_TYPES.identifier,
-          DSL_TOKEN_TYPES.attribute
-        ]],
-        
-        // Buttons @[text]{icon}(action) - handle all parts as one token for now
-        [/@\[[^\]]+\](\{[^}]*\})?(\([^)]*\))?/, DSL_TOKEN_TYPES.button],
-        
-        // Links #[text](destination)
-        [/#\[[^\]]+\](\([^)]*\))?/, DSL_TOKEN_TYPES.link],
-        
-        // Images ![alt](url)
-        [/!\[[^\]]*\](\([^)]*\))?/, DSL_TOKEN_TYPES.image],
-          // Input fields with all variants
-        [/___[\*\-]?:[^(]+(\([^)]*\))(\[.*\])?/, DSL_TOKEN_TYPES.input],
-        
-        // Mobile elements with parameters
-        [/(nav_item|drawer_item|fab_item)\s+\[[^\]]+\]\{[^}]*\}(\([^)]*\))?/, DSL_TOKEN_TYPES.mobile],
-          // Layout elements (before generic identifiers)
-        [/\b(container|card|row|col|section|grid|flex|list)(?=\s*:)/, DSL_TOKEN_TYPES.layout],
-        
-        // Mobile container elements
-        [/\b(header|bottom_nav|drawer|fab)(?=\s*:)/, DSL_TOKEN_TYPES.mobile],
-        
-        // Display elements with attributes
-        [/\b(progress|badge|avatar)\s+(\{[^}]*\}|"[^"]*")/, DSL_TOKEN_TYPES.attribute],
-        
-        // Headings (# to ######)
-        [/#{1,6}\s+.*$/, DSL_TOKEN_TYPES.heading],
-        
-        // Text content types
-        [/>\s+.*$/, DSL_TOKEN_TYPES.text],
-        [/\*>\s+.*$/, DSL_TOKEN_TYPES.note],
-        [/\">\s+.*$/, DSL_TOKEN_TYPES.quote],
-        
-        // Checkboxes and radio buttons
-        [/\[[X\s]\]\s+.*$/, DSL_TOKEN_TYPES.checkbox],
-        [/\([X\s]\)\s+.*$/, DSL_TOKEN_TYPES.radio],
+        // Basic patterns using only standard Monaco tokens
+        [/@\w+/, 'keyword'],           // @screen, @component, etc.
+        [/#\w*/, 'metatag'],           // headings
+        [/@\[.*?\]/, 'type'],          // buttons
+        [/#\[.*?\]/, 'string'],        // links  
+        [/!\[.*?\]/, 'variable'],      // images
+        [/___[*-]?:/, 'number'],       // inputs
+        [/\[[X ]\]/, 'constructor'],   // checkboxes
+        [/\([X ]\)/, 'constructor'],   // radio buttons
+        [/\{.*?\}/, 'attribute'],      // attributes
+        [/---+/, 'delimiter'],         // separators
+        [/>/, 'string'],               // text content
+        [/\*>/, 'comment'],            // note text
+        [/\">/, 'string.quote'],       // quote text
+        [/:/, 'delimiter'],            // colons
+        [/[\[\]()]/, 'delimiter.bracket'], // brackets and parentheses
+        [/\[[X\s]\]/, 'constructor'],
+        [/\([X\s]\)/, 'constructor'],
         
         // List items
-        [/^\s*-\s+.*$/, DSL_TOKEN_TYPES.text],
-        [/^\s*\d+\.\s+.*$/, DSL_TOKEN_TYPES.text],
-        
-        // Separators
-        [/---+/, DSL_TOKEN_TYPES.separator],
-        
-        // Attributes (after more specific rules)
-        [/\{[^}]*\}/, DSL_TOKEN_TYPES.attribute],
-        
-        // URLs
-        [/(https?:\/\/[^\s\)]+)/, DSL_TOKEN_TYPES.url],
-        
-        // Generic identifiers (before delimiters)
-        [/[A-Za-z_]\w*(?=\s*:)/, DSL_TOKEN_TYPES.identifier],
-        
-        // Delimiters (most generic - should be last)
-        [/:/, DSL_TOKEN_TYPES.colon],
-        [/\[/, DSL_TOKEN_TYPES.brackets],
-        [/\]/, DSL_TOKEN_TYPES.brackets],
-        [/\(/, DSL_TOKEN_TYPES.parentheses],
-        [/\)/, DSL_TOKEN_TYPES.parentheses],
-        [/\{/, DSL_TOKEN_TYPES.braces],
-        [/\}/, DSL_TOKEN_TYPES.braces],
-        
-        // Whitespace
-        [/[ \t\r\n]+/, DSL_TOKEN_TYPES.whitespace],
-        
-        // Fallback identifier
-        [/[a-zA-Z_]\w*/, DSL_TOKEN_TYPES.identifier],
+        [/^\s*-/, 'string'],
+        [/^\s*\d+\./, 'string'],
+          [/\w+/, 'identifier'],           // any word
+        [/[ \t\r\n]+/, 'white'],         // whitespace
       ],
     },
   });
 
-  // Configure language settings (no comments since DSL doesn't use them)
+  // Configure language settings
   monaco.languages.setLanguageConfiguration(DSL_LANGUAGE_ID, {
     brackets: [
       ['{', '}'],
@@ -117,12 +68,6 @@ export function registerDSLLanguage() {
     indentationRules: {
       increaseIndentPattern: /.*:$/,
       decreaseIndentPattern: /^\s*$/,
-    },
-    folding: {
-      markers: {
-        start: /^\s*.*:$/,
-        end: /^\s*\S/, // End when we find a line with content at same or less indentation
-      },
     },
   });
 }

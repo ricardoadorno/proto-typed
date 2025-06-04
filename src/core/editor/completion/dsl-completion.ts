@@ -1,10 +1,10 @@
 import { DSL_LANGUAGE_ID } from '../constants';
-import * as monaco from 'monaco-editor';
+import { Monaco } from '@monaco-editor/react';
 
 /**
  * Provide completions/IntelliSense for the DSL
  */
-export function registerDSLCompletionProvider() {
+export function registerDSLCompletionProvider(monaco: Monaco) {
   monaco.languages.registerCompletionItemProvider(DSL_LANGUAGE_ID, {
     provideCompletionItems: (model, position) => {
       // Get the word at the current position for context
@@ -16,7 +16,7 @@ export function registerDSLCompletionProvider() {
         endColumn: word.endColumn
       };
 
-      const suggestions: monaco.languages.CompletionItem[] = [
+      const suggestions: any[] = [
         // Screen declaration
         {
           label: '@screen',
