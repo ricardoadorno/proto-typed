@@ -10,6 +10,51 @@ export interface NavigationTarget {
 }
 
 /**
+ * Scroll Management Functions
+ * Disable and enable body scroll when modals/drawers are open
+ */
+let scrollPosition = 0;
+let scrollLockCount = 0;
+
+function disableBodyScroll() {
+  if (scrollLockCount === 0) {
+    scrollPosition = window.pageYOffset;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollPosition}px`;
+    document.body.style.width = '100%';
+    document.body.style.overflow = 'hidden';
+    document.body.classList.add('scroll-locked');
+    
+    // Also lock mobile containers if they exist
+    const mobileContainers = document.querySelectorAll('.iphone-x, .browser-mockup');
+    mobileContainers.forEach(container => {
+      container.classList.add('scroll-locked');
+    });
+  }
+  scrollLockCount++;
+}
+
+function enableBodyScroll() {
+  scrollLockCount = Math.max(0, scrollLockCount - 1);
+  
+  if (scrollLockCount === 0) {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    document.body.style.overflow = '';
+    document.body.classList.remove('scroll-locked');
+    
+    // Remove lock from mobile containers
+    const mobileContainers = document.querySelectorAll('.iphone-x, .browser-mockup');
+    mobileContainers.forEach(container => {
+      container.classList.remove('scroll-locked');
+    });
+    
+    window.scrollTo(0, scrollPosition);
+  }
+}
+
+/**
  * Analyze a navigation target to determine its type
  */
 export function analyzeNavigationTarget(target: string | undefined): NavigationTarget {
@@ -113,8 +158,17 @@ export function generateNavigationScript(): string {
         // Try legacy drawer first (mobile-style)
         if (drawer) {
           const overlay = document.querySelector('.drawer-overlay');
+          const isOpening = !drawer.classList.contains('open');
+          
           drawer.classList.toggle('open');
           if (overlay) overlay.classList.toggle('open');
+          
+          // Manage scroll
+          if (isOpening) {
+            disableBodyScroll();
+          } else {
+            enableBodyScroll();
+          }
           return;
         }      }
       
@@ -129,6 +183,7 @@ export function generateNavigationScript(): string {
             content.classList.add('translate-x-0');
             content.classList.remove('-translate-x-full');
           }
+          disableBodyScroll();
         } else {
           if (content) {
             content.classList.remove('translate-x-0');
@@ -136,6 +191,7 @@ export function generateNavigationScript(): string {
           }
           setTimeout(() => {
             drawerElement.classList.add('hidden');
+            enableBodyScroll();
           }, 300);
         }
         return;
@@ -143,7 +199,15 @@ export function generateNavigationScript(): string {
       
       // Handle modal
       if (modal) {
+        const isOpening = modal.classList.contains('hidden');
         modal.classList.toggle('hidden');
+        
+        // Manage scroll
+        if (isOpening) {
+          disableBodyScroll();
+        } else {
+          enableBodyScroll();
+        }
         return;
       }
       
@@ -206,14 +270,23 @@ export function generateNavigationScript(): string {
           break;
       }
     });
-    
-    // Handle overlay clicks to close drawer
+      // Handle overlay clicks to close drawer/modal
     document.addEventListener('click', function(e) {
       if (e.target && e.target.classList.contains('drawer-overlay')) {
         const drawer = document.querySelector('.drawer');
         const overlay = document.querySelector('.drawer-overlay');
         if (drawer) drawer.classList.remove('open');
         if (overlay) overlay.classList.remove('open');
+        enableBodyScroll();
+      }
+      
+      // Handle modal backdrop clicks to close modal
+      if (e.target && e.target.classList.contains('modal-backdrop')) {
+        const modal = e.target.closest('.modal');
+        if (modal) {
+          modal.classList.add('hidden');
+          enableBodyScroll();
+        }
       }
     });
   `;
@@ -295,8 +368,17 @@ export function handleNavigationClick(
         
         if (elementName === 'drawer' && drawer) {
           const overlay = document.querySelector('.drawer-overlay');
+          const isOpening = !drawer.classList.contains('open');
+          
           drawer.classList.toggle('open');
           if (overlay) overlay.classList.toggle('open');
+          
+          // Manage scroll
+          if (isOpening) {
+            disableBodyScroll();
+          } else {
+            enableBodyScroll();
+          }
         } else if (drawerElement) {
           const isHidden = drawerElement.classList.contains('hidden');
           const content = drawerElement.querySelector('.drawer-content');
@@ -307,6 +389,7 @@ export function handleNavigationClick(
               content.classList.add('translate-x-0');
               content.classList.remove('-translate-x-full');
             }
+            disableBodyScroll();
           } else {
             if (content) {
               content.classList.remove('translate-x-0');
@@ -314,10 +397,19 @@ export function handleNavigationClick(
             }
             setTimeout(() => {
               drawerElement.classList.add('hidden');
+              enableBodyScroll();
             }, 300);
           }
         } else if (modal) {
+          const isOpening = modal.classList.contains('hidden');
           modal.classList.toggle('hidden');
+          
+          // Manage scroll
+          if (isOpening) {
+            disableBodyScroll();
+          } else {
+            enableBodyScroll();
+          }
         }
       }
       break;

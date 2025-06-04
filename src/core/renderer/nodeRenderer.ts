@@ -76,17 +76,17 @@ export function nodeToHtml(node: AstNode, context?: string): string {
       const componentElements = componentDef.elements || [];
       return componentElements
         .map(element => nodeToHtml(element, context))
-        .join('\n');
-      case 'modal':
+        .join('\n');    case 'modal':
       const modalElements = node.elements ? node.elements.map(el => nodeToHtml(el, context)).join('\n') : '';
       
       return `<div class="modal hidden" id="modal-${node.name}" data-modal="${node.name}">
-        <div class="modal-backdrop fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6">
-            <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" data-nav="${node.name}" data-nav-type="internal">&times;</button>
+        <div class="modal-backdrop fixed inset-0 bg-black/60  flex items-center justify-center z-50">
+          <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6 relative" onclick="event.stopPropagation()">
+            <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="toggleElement('${node.name}')">&times;</button>
             ${modalElements}
           </div>
-        </div>      </div>`;
+        </div>
+      </div>`;
         
     case 'Input':
       const inputProps = node.props || {};
@@ -292,15 +292,18 @@ export function nodeToHtml(node: AstNode, context?: string): string {
               <span class="mb-1">${icon || ''}</span>
               <span>${label || ''}</span>
             </button>
-          `;
-        }
-        return '';      }).join('') || '';
-      return `<nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around py-1 z-50">${navItems}</nav>`;      case 'Drawer':
-      case 'drawer':
+          `;        }
+        return '';
+      }).join('') || '';
+      return `<nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around py-1 z-50">${navItems}</nav>`;
+      
+    case 'Drawer':
+    case 'drawer':
         // Handle named drawers (new pattern) like modals
         if (node.name) {
-          const drawerElements = node.elements ? node.elements.map(el => nodeToHtml(el, context)).join('\n') : '';          return `<div class="drawer-container hidden" id="drawer-${node.name}" data-drawer="${node.name}">
-            <div class="drawer-overlay fixed inset-0 bg-black bg-opacity-50 z-[1050]"></div>
+          const drawerElements = node.elements ? node.elements.map(el => nodeToHtml(el, context)).join('\n') : '';
+          return `<div class="drawer-container hidden" id="drawer-${node.name}" data-drawer="${node.name}">
+            <div class="drawer-overlay fixed inset-0 bg-black bg-opacity-30 z-[1050]"></div>
             <aside class="drawer-content fixed top-0 left-0 z-[1100] w-64 h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out">
               <div class="p-4">
                 <button class="drawer-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" data-nav="${node.name}" data-nav-type="internal">&times;</button>
@@ -313,7 +316,7 @@ export function nodeToHtml(node: AstNode, context?: string): string {
           const drawerItems = node.elements?.map(item => {
             if (item.type === 'DrawerItem') {
               const { label, icon, action } = item.props || {};
-                // Use navigation helper for drawer items
+              // Use navigation helper for drawer items
               const navAttrs = generateNavigationAttributes(action);
               
               return `
@@ -323,11 +326,14 @@ export function nodeToHtml(node: AstNode, context?: string): string {
                 </button>
               `;
             }
-            return '';      }).join('') || '';
+            return '';
+          }).join('') || '';
           return `<aside class="drawer fixed top-0 left-0 z-40 w-64 h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out">${drawerItems}</aside>`;
-        }case 'NavItem':
+        }
+
+    case 'NavItem':
       const { label: navLabel, icon: navIcon, action: navAction } = node.props || {};
-        // Use navigation helper for nav items
+      // Use navigation helper for nav items
       const navItemAttrs = generateNavigationAttributes(navAction);
       
       return `
@@ -335,7 +341,9 @@ export function nodeToHtml(node: AstNode, context?: string): string {
           <span class="mb-1">${navIcon || ''}</span>
           <span>${navLabel || ''}</span>
         </button>
-      `;    case 'DrawerItem':
+      `;
+    
+    case 'DrawerItem':
       const { label: drawerLabel, icon: drawerIcon, action: drawerAction } = node.props || {};
       
       // Use navigation helper for drawer items
