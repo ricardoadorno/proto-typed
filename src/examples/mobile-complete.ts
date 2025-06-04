@@ -27,13 +27,20 @@ const mobileAppExample = `
       col:
         @[⚙️ Settings](SettingsScreen)
       col:
-        @[❓ Help](SettingsScreen)
+        @[❓ Help](SettingsScreen)  
+        
   bottom_nav:
     nav_item [Home]{🏠}(MobileApp)
     nav_item [Search]{🔍}(SettingsScreen)
     nav_item [Messages]{💬}(MessagesScreen)
     nav_item [Profile]{👤}(ProfileScreen)
     nav_item [More]{⋯}(SettingsScreen)
+
+  fab {+}:
+    fab_item [New Message]{✉️}(MessagesScreen)
+    fab_item [New Contact]{👤}(ProfileScreen)
+    fab_item [Camera]{📷}(SettingsScreen)
+
   drawer MyDrawer:
     drawer_item [Dashboard]{📊}(MobileApp)
     drawer_item [Messages]{💬}(MessagesScreen)

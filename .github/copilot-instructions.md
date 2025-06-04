@@ -120,7 +120,7 @@ These named elements have special behavior - they are shown or hidden based on n
 ### Mobile Components
 - `header:`
 - `bottom_nav:`
-- `fab {icon: "plus"}`
+- `fab {icon}`
 - `nav_item [label]{icon}`
 - `drawer_item [label]{icon}`
 

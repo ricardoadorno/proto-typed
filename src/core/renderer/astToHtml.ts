@@ -286,10 +286,73 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 pb-8">
-  ${screensHtml}${globalDrawerHtml}${globalModalsHtml}
-  ${darkModeScript}
+  ${screensHtml}${globalDrawerHtml}${globalModalsHtml}  ${darkModeScript}
   <script>
     ${generateNavigationScript()}
+    
+    // FAB toggle functionality
+    function toggleFAB(fabButton) {
+      const fabContainer = fabButton.closest('.fab-container');
+      const fabItemsList = fabContainer.querySelector('.fab-items-list');
+      const fabItems = fabItemsList.querySelectorAll('.fab-item');
+      const isOpen = fabItemsList.classList.contains('show');
+      
+      if (isOpen) {
+        // Close FAB
+        fabItems.forEach((item, index) => {
+          setTimeout(() => {
+            item.classList.remove('show');
+          }, index * 50);
+        });
+        
+        setTimeout(() => {
+          fabItemsList.classList.remove('show');
+        }, fabItems.length * 50);
+        
+        // Rotate FAB icon
+        fabButton.style.transform = 'rotate(0deg)';
+      } else {
+        // Open FAB
+        fabItemsList.classList.add('show');
+        
+        fabItems.forEach((item, index) => {
+          setTimeout(() => {
+            item.classList.add('show');
+          }, index * 50);
+        });
+        
+        // Rotate FAB icon
+        fabButton.style.transform = 'rotate(45deg)';
+      }
+    }
+    
+    // Close FAB when clicking outside
+    document.addEventListener('click', function(event) {
+      const fabContainers = document.querySelectorAll('.fab-container');
+      fabContainers.forEach(container => {
+        if (!container.contains(event.target)) {
+          const fabItemsList = container.querySelector('.fab-items-list');
+          const fabItems = container.querySelectorAll('.fab-item');
+          const fabButton = container.querySelector('.fab');
+          
+          if (fabItemsList && fabItemsList.classList.contains('show')) {
+            fabItems.forEach((item, index) => {
+              setTimeout(() => {
+                item.classList.remove('show');
+              }, index * 50);
+            });
+            
+            setTimeout(() => {
+              fabItemsList.classList.remove('show');
+            }, fabItems.length * 50);
+            
+            if (fabButton) {
+              fabButton.style.transform = 'rotate(0deg)';
+            }
+          }
+        }
+      });
+    });
   </script>
 </body>
 </html>  `.trim();

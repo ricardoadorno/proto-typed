@@ -265,13 +265,12 @@ export function registerDSLCompletionProvider() {
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation: 'Named mobile drawer menu',
           range: range,
-        },
-        {
+        },        {
           label: 'fab',
           kind: monaco.languages.CompletionItemKind.Module,
-          insertText: 'fab {icon: "${1:plus}"}',
+          insertText: 'fab {${1:+}}:\n\t${2:fab_item [Action]{🔔}(action)}',
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-          documentation: 'Floating action button',
+          documentation: 'Floating action button with expandable items',
           range: range,
         },
         {
@@ -281,13 +280,20 @@ export function registerDSLCompletionProvider() {
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation: 'Navigation item',
           range: range,
-        },
-        {
+        },        {
           label: 'drawer_item',
           kind: monaco.languages.CompletionItemKind.Field,
           insertText: 'drawer_item [${1:Label}]{${2:Icon}}(${3:action})',
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation: 'Drawer menu item',
+          range: range,
+        },
+        {
+          label: 'fab_item',
+          kind: monaco.languages.CompletionItemKind.Field,
+          insertText: 'fab_item [${1:Label}]{${2:Icon}}(${3:action})',
+          insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          documentation: 'FAB menu item',
           range: range,
         },
         

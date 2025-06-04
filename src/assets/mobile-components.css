@@ -229,19 +229,106 @@ body.scroll-locked {
   padding: 1rem;
 }
 
-/* FAB positioning */
+/* FAB positioning - Made sticky to follow scroll like header */
 .fab {
-  position: fixed;
-  bottom: 80px;
+  position: sticky;
+  bottom: 2rem;
   right: 1rem;
+  margin-left: auto;
+  margin-top: auto;
   z-index: 50;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease-out;
+}
+
+.fab:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  transform: scale(1.05);
 }
 
 .iphone-x .fab,
 .browser-mockup .fab {
-  position: absolute !important;
-  bottom: 80px;
+  position: sticky !important;
+  bottom: 1rem;
   right: 1rem;
+}
+
+/* FAB Container for expandable FAB - Made sticky to follow scroll */
+.fab-container {
+  position: sticky !important;
+  bottom: 1rem;
+  right: 1rem;
+  margin-left: auto;
+  margin-top: auto;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.iphone-x .fab-container,
+.browser-mockup .fab-container {
+  position: sticky !important;
+  bottom: 5rem;
+  right: 2rem;
+}
+
+/* FAB Items */
+.fab-items-list {
+  display: none;
+  flex-direction: column-reverse;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.fab-items-list.show {
+  display: flex;
+}
+
+.fab-item {
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.2s ease-out;
+}
+
+.fab-item.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fab-item-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease-out;
+}
+
+.fab-item-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.fab-item-label {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+  margin-left: 0.5rem;
+}
+
+.fab-item:hover .fab-item-label {
+  opacity: 1;
 }
 
 /* Content padding for header and bottom nav */
@@ -251,6 +338,15 @@ body.scroll-locked {
 
 .has-bottom-nav .container {
   padding-bottom: 4rem; /* Account for fixed bottom nav */
+}
+
+/* FAB layout positioning */
+.has-fab {
+  padding-right: 1rem; /* Account for FAB positioning */
+}
+
+.screen.has-fab {
+  padding-bottom: 1rem; /* Ensure space for FAB at bottom */
 }
 
 .iphone-x .has-header .container,

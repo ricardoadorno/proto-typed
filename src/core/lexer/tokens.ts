@@ -103,7 +103,17 @@ export const DrawerItem = createToken({
   pattern: /drawer_item\s+\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/
 });
 
-export const Separator = createToken({ 
+export const FAB = createToken({
+  name: "FAB",
+  pattern: /fab\s+\{([^}]+)\}/
+});
+
+export const FABItem = createToken({
+  name: "FABItem", 
+  pattern: /fab_item\s+\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/
+});
+
+export const Separator = createToken({
   name: "Separator", 
   pattern: /---/ 
 });
@@ -190,9 +200,10 @@ export const allTokens = [
   Screen,
   Component,
   Modal,
-  ComponentInstance,
-  NavItem,
+  ComponentInstance,  NavItem,
   DrawerItem,
+  FABItem,
+  FAB,
   Input,
   Button,
   Row,

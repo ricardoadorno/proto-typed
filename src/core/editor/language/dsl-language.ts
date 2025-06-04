@@ -33,12 +33,11 @@ export function registerDSLLanguage() {
         
         // Images ![alt](url)
         [/!\[[^\]]*\](\([^)]*\))?/, DSL_TOKEN_TYPES.image],
-        
-        // Input fields with all variants
+          // Input fields with all variants
         [/___[\*\-]?:[^(]+(\([^)]*\))(\[.*\])?/, DSL_TOKEN_TYPES.input],
         
         // Mobile elements with parameters
-        [/(nav_item|drawer_item)\s+\[[^\]]+\]\{[^}]*\}(\([^)]*\))?/, DSL_TOKEN_TYPES.mobile],
+        [/(nav_item|drawer_item|fab_item)\s+\[[^\]]+\]\{[^}]*\}(\([^)]*\))?/, DSL_TOKEN_TYPES.mobile],
           // Layout elements (before generic identifiers)
         [/\b(container|card|row|col|section|grid|flex|list)(?=\s*:)/, DSL_TOKEN_TYPES.layout],
         

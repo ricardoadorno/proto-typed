@@ -24,26 +24,39 @@ function findComponentDefinitions(): AstNode[] {
 function renderScreenDirect(screen: AstNode): string {
   const screenName = screen.name || '';
   
-  // Check if screen has header, bottom nav, or drawer to add appropriate classes
+  // Check if screen has header, bottom nav, drawer, or FAB to add appropriate classes
   const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
   const hasBottomNav = screen.elements?.some(element => element.type === 'BottomNav') || false;
   const hasDrawer = screen.elements?.some(element => element.type === 'Drawer') || false;
+  const hasFAB = screen.elements?.some(element => element.type === 'FAB') || false;
   
   const layoutClasses = [];
   if (hasHeader) layoutClasses.push('has-header');
   if (hasBottomNav) layoutClasses.push('has-bottom-nav');
+  if (hasFAB) layoutClasses.push('has-fab');
   
-  const elementsHtml = screen.elements
+  // Separate FAB elements from other elements for proper positioning
+  const fabElements = screen.elements?.filter(element => element.type === 'FAB') || [];
+  const otherElements = screen.elements?.filter(element => element.type !== 'FAB') || [];
+  
+  const elementsHtml = otherElements
     ?.filter(element => element != null)
     .map(element => nodeToHtml(element))
+    .join('\n      ') || '';
+    
+  const fabHtml = fabElements
+    ?.map(element => nodeToHtml(element))
     .join('\n      ') || '';
   
   // Add drawer overlay if drawer is present
   const drawerOverlay = hasDrawer ? '\n      <div class="drawer-overlay"></div>' : '';
   
   return `
-  <div class="screen container ${screenName.toLowerCase()} ${layoutClasses.join(' ')}">
-      ${elementsHtml}${drawerOverlay}
+  <div class="screen container ${screenName.toLowerCase()} ${layoutClasses.join(' ')}" style="display: flex; flex-direction: column; min-height: 100vh;">
+      <div style="flex: 1;">
+        ${elementsHtml}
+      </div>
+      ${fabHtml}${drawerOverlay}
   </div>
   `.trim();
 }
@@ -293,9 +306,8 @@ export function nodeToHtml(node: AstNode, context?: string): string {
               <span>${label || ''}</span>
             </button>
           `;        }
-        return '';
-      }).join('') || '';
-      return `<nav class="bottom-nav fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex justify-around py-1 z-50">${navItems}</nav>`;
+        return '';      }).join('') || '';
+      return `<nav class="bottom bottom-nav bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex flex-row justify-around py-1 z-50" style="margin-top: auto; order: 999;">${navItems}</nav>`;
       
     case 'Drawer':
     case 'drawer':
@@ -354,17 +366,62 @@ export function nodeToHtml(node: AstNode, context?: string): string {
           <span class="mr-3 text-lg">${drawerIcon || ''}</span>
           <span>${drawerLabel || ''}</span>
         </button>
-      `;
-      
-    case 'FAB':
+      `;        case 'FAB':
       const { icon: fabIcon, action: fabAction } = node.props || {};
       
       // Use navigation helper for FAB actions
-      const fabAttrs = generateNavigationAttributes(fabAction);      
+      const fabAttrs = generateNavigationAttributes(fabAction);
+      
+      // Check if FAB has fab_items
+      const fabItems = node.elements?.filter(el => el.type === 'FABItem') || [];
+      
+      if (fabItems.length > 0) {
+        // Generate fab items HTML
+        const fabItemsHtml = fabItems.map(item => {
+          const itemProps = item.props as any; // Cast to any to access dynamic properties
+          const { icon: itemIcon, label: itemLabel, action: itemAction } = itemProps || {};
+          const itemAttrs = generateNavigationAttributes(itemAction);
+          
+          return `
+            <div class="fab-item">
+              <button class="fab-item-btn w-12 h-12 rounded-full flex items-center justify-center text-lg" ${itemAttrs}>
+                ${itemIcon || ''}
+              </button>
+              ${itemLabel ? `<span class="fab-item-label">${itemLabel}</span>` : ''}
+            </div>
+          `;
+        }).join('');
+        
+        return `
+          <div class="fab-container">
+            <div class="fab-items-list">
+              ${fabItemsHtml}
+            </div>
+            <button class="fab w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold" onclick="toggleFAB(this)" ${fabAttrs}>
+              ${fabIcon || '+'}
+            </button>
+          </div>
+        `;
+      } else {
+        // Simple FAB without items
+        return `
+          <button class="fab w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold" ${fabAttrs}>
+            ${fabIcon || '+'}
+          </button>
+        `;
+      }
+        case 'FABItem':
+      const fabItemProps = node.props as any; // Cast to any for dynamic properties
+      const { icon: fabItemIcon, label: fabItemLabel, action: fabItemAction } = fabItemProps || {};
+      const fabItemAttrs = generateNavigationAttributes(fabItemAction);
+      
       return `
-        <button class="fab w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold transition-all duration-200 transform hover:scale-110" ${fabAttrs}>
-          ${fabIcon || '+'}
-        </button>
+        <div class="fab-item flex items-center">
+          <button class="fab-item-btn w-10 h-10 rounded-full flex items-center justify-center text-sm transition-all duration-200 transform hover:scale-110" ${fabItemAttrs}>
+            ${fabItemIcon || ''}
+          </button>
+          <span class="fab-item-label ml-2 text-sm font-medium">${fabItemLabel || ''}</span>
+        </div>
       `;
       
     default:

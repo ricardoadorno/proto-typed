@@ -47,8 +47,9 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
     if (ctx.cardElement) return this.visit(ctx.cardElement);
     if (ctx.headerElement) return this.visit(ctx.headerElement);    if (ctx.bottomNavElement) return this.visit(ctx.bottomNavElement);
     if (ctx.drawerElement) return this.visit(ctx.drawerElement);
-    if (ctx.navItemElement) return this.visit(ctx.navItemElement);
-    if (ctx.drawerItemElement) return this.visit(ctx.drawerItemElement);
+    if (ctx.navItemElement) return this.visit(ctx.navItemElement);    if (ctx.drawerItemElement) return this.visit(ctx.drawerItemElement);
+    if (ctx.fabItemElement) return this.visit(ctx.fabItemElement);
+    if (ctx.fabElement) return this.visit(ctx.fabElement);
     if (ctx.separatorElement) return this.visit(ctx.separatorElement);
     if (ctx.headingElement) return this.visit(ctx.headingElement);
     if (ctx.textElement) return this.visit(ctx.textElement);
@@ -439,8 +440,7 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       },
       elements
     };
-  }
-  separatorElement(ctx: Context) {
+  }  separatorElement(_ctx: Context) {
     return {
       type: "Separator",
       props: {}
@@ -540,6 +540,55 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
       const [, label, icon, action] = match;
       return {
         type: "DrawerItem",
+        props: {
+          label: label.trim(),
+          icon: icon.trim(),
+          action: action ? action.trim() : ''
+        }
+      };
+    }
+      return null;
+  }
+  fabElement(ctx: Context) {
+    const fabText = ctx.FAB[0].image;
+    // Pattern: fab {icon}
+    const match = fabText.match(/fab\s+\{([^}]+)\}/);
+    
+    const elements = [];
+    
+    // Get fab_items if they exist
+    if (ctx.fabItemElement && ctx.fabItemElement.length > 0) {
+      for (const item of ctx.fabItemElement) {
+        const itemAst = this.visit(item);
+        if (itemAst) {
+          elements.push(itemAst);
+        }
+      }
+    }
+    
+    if (match) {
+      const [, icon] = match;
+      return {
+        type: "FAB",
+        props: {
+          icon: icon.trim()
+        },
+        elements: elements.length > 0 ? elements : undefined
+      };
+    }
+    
+    return null;
+  }
+
+  fabItemElement(ctx: Context) {
+    const itemText = ctx.FABItem[0].image;
+    // Pattern: fab_item [label]{icon}(action)
+    const match = itemText.match(/fab_item\s+\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/);
+    
+    if (match) {
+      const [, label, icon, action] = match;
+      return {
+        type: "FABItem",
         props: {
           label: label.trim(),
           icon: icon.trim(),
