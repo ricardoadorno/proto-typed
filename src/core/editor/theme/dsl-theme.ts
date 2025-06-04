@@ -9,17 +9,19 @@ export function registerDSLTheme(monaco: Monaco) {// Define only the dark theme
     inherit: true,
     rules: [
       // DSL specific tokens using standard Monaco token types
-      { token: 'keyword', foreground: 'ff6b6b', fontStyle: 'bold' },        // @screen and layout
+      { token: 'keyword.screen', foreground: 'ff6b6b', fontStyle: 'bold' },        // @screen and layout
+      { token: 'keyword.component', foreground: '60a5fa', fontStyle: 'bold' },     // @component
       { token: 'type', foreground: '60a5fa', fontStyle: 'bold' },           // buttons
       { token: 'string', foreground: '34d399' },                            // links and text
       { token: 'variable', foreground: 'f472b6' },                          // images
+      { token: 'variable.name', foreground: 'f59e0b', fontStyle: 'italic' }, // variables like $LoginForm
       { token: 'number', foreground: 'a855f7' },                            // inputs
       { token: 'tag', foreground: 'ec4899', fontStyle: 'bold' },            // mobile elements
       { token: 'attribute', foreground: '8b5cf6' },                         // attributes
       { token: 'metatag', foreground: '95e1d3', fontStyle: 'bold' },        // headings
       { token: 'comment', foreground: 'fbbf24', fontStyle: 'italic' },      // notes
       { token: 'string.quote', foreground: 'a78bfa', fontStyle: 'italic' }, // quotes
-      { token: 'constructor', foreground: '10b981' },                       // checkboxes/radio
+      { token: 'constructor', foreground: 'a855f7', fontStyle: 'bold' },    // checkboxes/radio - enhanced visibility
       { token: 'delimiter', foreground: 'ffe66d' },                         // separators and colons
       { token: 'delimiter.bracket', foreground: 'ffe66d' },                 // brackets
       { token: 'delimiter.curly', foreground: 'ffe66d' },                   // braces

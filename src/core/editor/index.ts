@@ -4,8 +4,8 @@ import { registerDSLLanguage } from './language/dsl-language';
 import { registerDSLTheme } from './theme/dsl-theme';
 
 // Re-export components and hooks
-export { DSLEditor } from './components/DSLEditor';
-export { useMonacoDSL } from './hooks/useMonacoDSL';
+export { DSLEditor } from './components/dsl-editor';
+export { useMonacoDSL } from './hooks/use-monaco-dsl';
 
 /**
  * Initialize Monaco DSL language and features
