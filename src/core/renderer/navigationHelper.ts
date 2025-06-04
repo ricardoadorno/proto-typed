@@ -4,7 +4,7 @@
  */
 
 export interface NavigationTarget {
-  type: 'internal' | 'external' | 'action' | 'toggle';
+  type: 'internal' | 'external' | 'action' | 'toggle' | 'back';
   value: string;
   isValid: boolean;
 }
@@ -55,6 +55,65 @@ function enableBodyScroll() {
 }
 
 /**
+ * Navigation History Management
+ * Track navigation history to enable back navigation
+ */
+let navigationHistory: string[] = [];
+let currentScreenIndex = -1;
+
+/**
+ * Add a screen to navigation history
+ */
+export function addToHistory(screenName: string) {
+  // Remove any screens after current position (when navigating after going back)
+  navigationHistory = navigationHistory.slice(0, currentScreenIndex + 1);
+  
+  // Don't add the same screen consecutively
+  if (navigationHistory[currentScreenIndex] !== screenName) {
+    navigationHistory.push(screenName);
+    currentScreenIndex++;
+  }
+}
+
+/**
+ * Navigate back to previous screen
+ * Returns the previous screen name or null if no history
+ */
+export function navigateBack(): string | null {
+  if (currentScreenIndex > 0) {
+    currentScreenIndex--;
+    return navigationHistory[currentScreenIndex];
+  }
+  return null;
+}
+
+/**
+ * Get current screen from history
+ */
+function getCurrentScreen(): string | null {
+  return currentScreenIndex >= 0 ? navigationHistory[currentScreenIndex] : null;
+}
+
+/**
+ * Reset navigation history
+ */
+export function resetNavigationHistory() {
+  navigationHistory = [];
+  currentScreenIndex = -1;
+}
+
+/**
+ * Get navigation history for debugging
+ */
+export function getNavigationHistory() {
+  return {
+    history: [...navigationHistory],
+    currentIndex: currentScreenIndex,
+    currentScreen: getCurrentScreen()
+  };
+}
+
+/**
  * Analyze a navigation target to determine its type
  */
 export function analyzeNavigationTarget(target: string | undefined): NavigationTarget {
@@ -62,6 +121,11 @@ export function analyzeNavigationTarget(target: string | undefined): NavigationT
     return { type: 'internal', value: '', isValid: false };
   }
   const trimmedTarget = target.trim();
+
+  // Check for back navigation
+  if (trimmedTarget === '-1') {
+    return { type: 'back', value: trimmedTarget, isValid: true };
+  }
 
   // Check for toggle actions (drawer, modal, etc.)
   if (trimmedTarget.match(/^toggle\w*\(\)$/) || trimmedTarget.match(/^toggle-\w+$/)) {
@@ -100,11 +164,15 @@ export function generateNavigationAttributes(target: string | undefined): string
       break;
     case 'external':
       attributes.push(`data-nav-type="external"`);
-      break;    case 'action':
+      break;
+    case 'action':
       attributes.push(`data-nav-type="action"`);
       break;
     case 'toggle':
       attributes.push(`data-nav-type="toggle"`);
+      break;
+    case 'back':
+      attributes.push(`data-nav-type="back"`);
       break;
   }
 
@@ -138,6 +206,31 @@ export function generateHrefAttribute(target: string | undefined): string {
  */
 export function generateNavigationScript(): string {
   return `
+    // Navigation History Management
+    let navigationHistory = [];
+    let currentScreenIndex = -1;
+    
+    function addToHistory(screenName) {
+      // Remove any screens after current position (when navigating after going back)
+      navigationHistory = navigationHistory.slice(0, currentScreenIndex + 1);
+      
+      // Don't add the same screen consecutively
+      if (navigationHistory[currentScreenIndex] !== screenName) {
+        navigationHistory.push(screenName);
+        currentScreenIndex++;
+      }
+    }
+    
+    function navigateBack() {
+      if (currentScreenIndex > 0) {
+        currentScreenIndex--;
+        const previousScreen = navigationHistory[currentScreenIndex];
+        navigateToScreen(previousScreen);
+        return previousScreen;
+      }
+      return null;
+    }
+    
     function navigateToScreen(screenName) {
       const screens = document.querySelectorAll('.screen');
       screens.forEach(screen => {
@@ -147,7 +240,12 @@ export function generateNavigationScript(): string {
           screen.style.display = 'none';
         }
       });
-    }    function toggleElement(elementName) {
+      
+      // Add to history only if not coming from back navigation
+      if (screenName !== navigationHistory[currentScreenIndex]) {
+        addToHistory(screenName);
+      }
+    }function toggleElement(elementName) {
       // Try to find element by ID patterns: drawer (unified), modal
       const drawer = document.querySelector('.drawer');
       const drawerElement = document.getElementById(\`drawer-\${elementName}\`);
@@ -227,8 +325,7 @@ export function generateNavigationScript(): string {
       const navType = target.getAttribute('data-nav-type');
       
       if (!navValue) return;
-      
-      switch (navType) {        case 'internal':
+        switch (navType) {        case 'internal':
           e.preventDefault();
           // Check if it's a modal or drawer first
           const modal = document.getElementById(\`modal-\${navValue}\`);
@@ -241,6 +338,10 @@ export function generateNavigationScript(): string {
           } else {
             navigateToScreen(navValue);
           }
+          break;
+        case 'back':
+          e.preventDefault();
+          navigateBack();
           break;
         case 'external':
           e.preventDefault();
@@ -302,6 +403,7 @@ export function handleNavigationClick(
   options?: {
     onInternalNavigate?: (screenName: string) => void;
     onToggle?: (elementName: string) => void;
+    onBack?: () => void;
   }
 ) {
   const target = (e.target as Element).closest('[data-nav]');
@@ -314,23 +416,19 @@ export function handleNavigationClick(
 
   // Always lowercase navValue for internal navigation to match screen IDs and rendering logic
   const normalizedNavValue = navType === 'internal' && navValue ? navValue.toLowerCase() : navValue;
-
-  // Debug: log navigation event
-  // eslint-disable-next-line no-console
-  console.log('[Navigation] navType:', navType, 'navValue:', navValue, 'normalizedNavValue:', normalizedNavValue, 'target:', target);
-
-  if (target.tagName === 'A' || navType === 'internal' || navType === 'toggle' || navType === 'action') {
+  if (target.tagName === 'A' || navType === 'internal' || navType === 'toggle' || navType === 'action' || navType === 'back') {
     if (typeof e.preventDefault === 'function') {
       e.preventDefault();
     }
   }
-
   switch (navType) {
     case 'internal':
+      // Add to history before navigating
+      addToHistory(normalizedNavValue);
+      
       // Debug: log callback
       if (options && options.onInternalNavigate) {
-        // eslint-disable-next-line no-console
-        console.log('[Navigation] Calling onInternalNavigate with', normalizedNavValue);
+        
         options.onInternalNavigate(normalizedNavValue);
       } else {
         // Fallback: show/hide screens by DOM manipulation
@@ -339,13 +437,31 @@ export function handleNavigationClick(
           (screen as HTMLElement).style.display = 'none';
         });
         const targetScreen = document.getElementById(`${normalizedNavValue}-screen`);
-        // eslint-disable-next-line no-console
-        console.log('[Navigation] Fallback DOM navigation to', `${normalizedNavValue}-screen`, 'found:', !!targetScreen);
         if (targetScreen) {
           targetScreen.style.display = 'block';
         }
       }
-      break;    case 'toggle':
+      break;
+    case 'back':
+      const previousScreen = navigateBack();
+      if (previousScreen) {
+        if (options && options.onBack) {
+          options.onBack();
+        } else if (options && options.onInternalNavigate) {
+          options.onInternalNavigate(previousScreen);
+        } else {
+          // Fallback: DOM manipulation
+          const screenElements = document.querySelectorAll('.screen');
+          screenElements.forEach(screen => {
+            (screen as HTMLElement).style.display = 'none';
+          });
+          const targetScreen = document.getElementById(`${previousScreen}-screen`);
+          if (targetScreen) {
+            targetScreen.style.display = 'block';
+          }
+        }
+      }
+      break;case 'toggle':
       // Extract element name from toggle commands
       let elementName = '';
       if (navValue.includes('(')) {

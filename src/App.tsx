@@ -11,9 +11,11 @@ import { astToHtmlDocument, astToHtml } from './core/renderer/astToHtml';
 import ExampleModal from './components/example-modal';
 import AstModal from './components/ast-modal';
 import { Editor } from '@monaco-editor/react';
-import { handleNavigationClick } from './core/renderer/navigationHelper';
+import { handleNavigationClick, resetNavigationHistory, getNavigationHistory } from './core/renderer/navigationHelper';
 import { initializeMonacoDSL } from './core/editor';
 import { DSL_LANGUAGE_ID } from './core/editor/constants'
+import { backNavigationExample } from './examples/back-navigation';
+import backNavigationTest from './examples/back-navigation-test';
 
 export default function App() {
     const [input, setInput] = useState(login);
@@ -21,7 +23,10 @@ export default function App() {
     const [screens, setScreens] = useState<AstNode[]>([]);
     const [astResult, setAstResult] = useState<string>('');
     const [currentScreen, setCurrentScreen] = useState<string>();
-    const [error, setError] = useState<string | null>(null); const [monacoInitialized, setMonacoInitialized] = useState(false); const handleParse = () => {
+    const [error, setError] = useState<string | null>(null);
+    const [monacoInitialized, setMonacoInitialized] = useState(false);
+
+    const handleParse = () => {
         try {
             // Now we can parse multiple screens at once with the program rule
             const cst = parseInput(input);
@@ -66,12 +71,13 @@ export default function App() {
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = "exported-screen.html";
-        document.body.appendChild(a);
+        a.download = "exported-screen.html"; document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
-    }; const renderScreen = (renderOptions: RenderOptions) => {
+    };
+
+    const renderScreen = (renderOptions: RenderOptions) => {
         if (screens.length === 0) return null;
 
         // Convert AST to HTML string without React state
@@ -80,19 +86,19 @@ export default function App() {
         // Return a div with the HTML content injected and add the click handler
         return (
             <div
-                className="p-4 overflow-auto h-full w-full"
-                style={{ containerType: 'inline-size' }}
+                className="p-4 overflow-auto h-full w-full" style={{ containerType: 'inline-size' }}
                 dangerouslySetInnerHTML={{ __html: htmlString }}
                 onClick={(e) => {
                     // Centralized navigation handler
                     handleNavigationClick(e, {
                         onInternalNavigate: (screenName: string) => {
-                            console.log('[App] Navigation to screen:', screenName);                            // Check if it's a modal or drawer first
+                            // Check if it's a modal or drawer first
                             const allNodes = screens.flatMap(screen => screen.elements || []);
                             const isModal = allNodes.some(node => node.type === 'modal' && node.name?.toLowerCase() === screenName.toLowerCase());
-                            const isDrawer = allNodes.some(node => node.type === 'drawer' && node.name?.toLowerCase() === screenName.toLowerCase()); if (isModal || isDrawer) {
-                                // For modals and drawers, trigger toggle action instead of navigation
-                                console.log('[App] Detected modal/drawer navigation, calling onToggle for:', screenName);
+                            const isDrawer = allNodes.some(node => node.type === 'drawer' && node.name?.toLowerCase() === screenName.toLowerCase());
+
+                            if (isModal || isDrawer) {
+
                                 // Find the actual drawer/modal name with original case
                                 const drawerNode = allNodes.find(node => node.type === 'drawer' && node.name?.toLowerCase() === screenName.toLowerCase());
                                 const modalNode = allNodes.find(node => node.type === 'modal' && node.name?.toLowerCase() === screenName.toLowerCase());
@@ -136,6 +142,15 @@ export default function App() {
 
                             // Set it as current (this will trigger re-render)
                             setCurrentScreen(actualScreenName.toLowerCase());
+                        }, onBack: () => {
+                            // Get the navigation history to find the previous screen
+                            const history = getNavigationHistory();
+
+                            // The navigation helper already handles the history navigation,
+                            // we just need to update the React state to match
+                            if (history.currentScreen) {
+                                setCurrentScreen(history.currentScreen.toLowerCase());
+                            }
                         }, onToggle: (elementName: string) => {
                             // For toggle actions (drawer, modal), let the navigation helper handle it
                             // and DON'T trigger a React re-render
@@ -143,8 +158,7 @@ export default function App() {
                         }
                     });
                 }}
-            />
-        );
+            />);
     };
 
     useEffect(() => {
@@ -174,7 +188,9 @@ export default function App() {
                 setCurrentScreen(undefined);
             }
         }
-    }, [screens, currentScreen]); useEffect(() => {
+    }, [screens, currentScreen]);
+
+    useEffect(() => {
         // Handle overlay clicks to close drawer
         const handleOverlayClick = (e: Event) => {
             if (e.target instanceof HTMLElement && e.target.classList.contains('drawer-overlay')) {
@@ -243,30 +259,28 @@ export default function App() {
 
                             {/* Example Buttons */}
                             <div className="flex flex-wrap gap-2 mb-4">
-                                <button
-                                    onClick={() => setInput(login)}
-                                    className="px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors duration-200 text-sm font-medium"
-                                >
-                                    Login Example
-                                </button>
-                                <button
-                                    onClick={() => setInput(dashboard)}
-                                    className="px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors duration-200 text-sm font-medium"
-                                >
-                                    Dashboard Example
-                                </button>                                <button
-                                    onClick={() => setInput(mobileComplete)}
-                                    className="px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors duration-200 text-sm font-medium"
-                                >
-                                    Mobile Example
-                                </button>
-                                <button
-                                    onClick={() => setInput(namedElementsExample)}
-                                    className="px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors duration-200 text-sm font-medium"
-                                >
-                                    Named Elements
-                                </button>
-                            </div>{/* Device Selector */}
+                                {[
+                                    { label: "Login Example", code: login },
+                                    { label: "Dashboard Example", code: dashboard },
+                                    { label: "Mobile Example", code: mobileComplete },
+                                    { label: "Named Elements", code: namedElementsExample },
+                                    { label: "Back Navigation Test", code: backNavigationExample }
+                                ].map((example, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => {
+                                            setInput(example.code);
+                                            resetNavigationHistory(); // Reset history when loading new example
+                                            setCurrentScreen(undefined); // Clear current screen to allow default selection
+                                        }}
+                                        className="px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors duration-200 text-sm font-medium"
+                                    >
+                                        {example.label}
+                                    </button>
+                                ))}
+                            </div>
+
+                            {/* Device Selector */}
                             <div className="mb-4">
                                 <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                                     Preview Device
@@ -274,10 +288,10 @@ export default function App() {
                                 <select
                                     value={uiStyle}
                                     onChange={(e) => setUiStyle(e.target.value)}
-                                    className="w-full px-3 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
-                                >
+                                    className="w-full px-3 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"                            >
                                     <option value="iphone-x">📱 iPhone X</option>
-                                    <option value="browser-mockup with-url">🖥️ Desktop Browser</option>                                </select>
+                                    <option value="browser-mockup with-url">🖥️ Desktop Browser</option>
+                                </select>
                             </div>
                         </div>
 
@@ -298,62 +312,63 @@ export default function App() {
                                             <div className="mt-2 text-sm text-red-700 dark:text-red-300">
                                                 <pre className="whitespace-pre-wrap font-mono text-xs">{error}</pre>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </div>                                </div>
                                 </div>
-                            )}                            <div className="h-full">
-                                {monacoInitialized ? (<Editor
-                                    height="100%"
-                                    language={DSL_LANGUAGE_ID}
-                                    theme="proto-type-dark"
-                                    value={input}
-                                    onChange={(value) => setInput(value || "")}
-                                    options={{
-                                        fontSize: 14,
-                                        minimap: { enabled: false },
-                                        wordWrap: "on",
-                                        wrappingIndent: "same",
-                                        lineNumbers: "on",
-                                        padding: { top: 16, bottom: 16 },
-                                        fontFamily: "'JetBrains Mono', 'Fira Code', Monaco, 'Cascadia Code', monospace",
-                                        lineHeight: 1.6,
-                                        cursorBlinking: "smooth",
-                                        smoothScrolling: true,
-                                        contextmenu: true,
-                                        scrollBeyondLastLine: false,
-                                        bracketPairColorization: { enabled: true },
-                                        autoIndent: "full",
-                                        formatOnPaste: true,
-                                        formatOnType: true,
-                                        suggest: {
-                                            showKeywords: true,
-                                            showSnippets: true,
-                                            showFunctions: true,
-                                            showConstructors: true,
-                                            showFields: true,
-                                            showVariables: true,
-                                            showClasses: true,
-                                            showStructs: true,
-                                            showInterfaces: true,
-                                            showModules: true,
-                                            showProperties: true,
-                                            showEvents: true,
-                                            showOperators: true,
-                                            showUnits: true,
-                                            showValues: true,
-                                            showConstants: true,
-                                            showEnums: true,
-                                            showEnumMembers: true,
-                                            showColors: true,
-                                            showFiles: true,
-                                            showReferences: true,
-                                            showFolders: true,
-                                            showTypeParameters: true,
-                                            showUsers: true,
-                                            showIssues: true,
-                                        },
-                                    }}
-                                />
+                            )}
+                            <div className="h-full">
+                                {monacoInitialized ? (
+                                    <Editor
+                                        height="100%"
+                                        language={DSL_LANGUAGE_ID}
+                                        theme="proto-type-dark"
+                                        value={input}
+                                        onChange={(value) => setInput(value || "")}
+                                        options={{
+                                            fontSize: 14,
+                                            minimap: { enabled: false },
+                                            wordWrap: "on",
+                                            wrappingIndent: "same",
+                                            lineNumbers: "on",
+                                            padding: { top: 16, bottom: 16 },
+                                            fontFamily: "'JetBrains Mono', 'Fira Code', Monaco, 'Cascadia Code', monospace",
+                                            lineHeight: 1.6,
+                                            cursorBlinking: "smooth",
+                                            smoothScrolling: true,
+                                            contextmenu: true,
+                                            scrollBeyondLastLine: false,
+                                            bracketPairColorization: { enabled: true },
+                                            autoIndent: "full",
+                                            formatOnPaste: true,
+                                            formatOnType: true,
+                                            suggest: {
+                                                showKeywords: true,
+                                                showSnippets: true,
+                                                showFunctions: true,
+                                                showConstructors: true,
+                                                showFields: true,
+                                                showVariables: true,
+                                                showClasses: true,
+                                                showStructs: true,
+                                                showInterfaces: true,
+                                                showModules: true,
+                                                showProperties: true,
+                                                showEvents: true,
+                                                showOperators: true,
+                                                showUnits: true,
+                                                showValues: true,
+                                                showConstants: true,
+                                                showEnums: true,
+                                                showEnumMembers: true,
+                                                showColors: true,
+                                                showFiles: true,
+                                                showReferences: true,
+                                                showFolders: true,
+                                                showTypeParameters: true,
+                                                showUsers: true,
+                                                showIssues: true,
+                                            },
+                                        }}
+                                    />
                                 ) : (
                                     <div className="flex items-center justify-center h-full">
                                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
