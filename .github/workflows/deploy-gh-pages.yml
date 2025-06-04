@@ -1,0 +1,58 @@
+# Nome do Workflow
+name: Deploy Vite React App to GitHub Pages
+
+# Gatilhos: Executa o workflow em pushes para o branch main
+on:
+  push:
+    branches:
+      - main # Ou 'master', dependendo do nome do seu branch principal
+
+# Permissões: Necessário para permitir que a action publique no GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Jobs: Define uma sequência de tarefas que serão executadas
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest # Executa as tarefas em uma máquina virtual Ubuntu
+
+    steps:
+      # Passo 1: Checkout do código do repositório
+      - name: Checkout code
+        uses: actions/checkout@v4 # Ação oficial para checkout
+
+      # Passo 2: Configurar o Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4 # Ação oficial para configurar o Node.js
+        with:
+          node-version: '20' # Especifique a versão do Node.js que seu projeto usa
+          cache: 'npm' # Habilita o cache para o npm para acelerar builds futuros
+
+      # Passo 3: Instalar as dependências do projeto
+      - name: Install dependencies
+        run: npm install # Ou 'yarn install' se você usa Yarn
+
+      # Passo 4: Fazer o build do projeto Vite
+      # Certifique-se de que o 'base' no seu vite.config.js ou vite.config.ts está configurado corretamente
+      # para o nome do seu repositório se não for um domínio customizado.
+      # Exemplo: base: '/<NOME_DO_REPOSITORIO>/'
+      - name: Build project
+        run: npm run build # Ou 'yarn build'
+
+      # Passo 5: Configurar o GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v5 # Ação oficial para configurar o GitHub Pages
+
+      # Passo 6: Fazer o upload do artefato (arquivos do build) para o GitHub Pages
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3 # Ação oficial para fazer upload do artefato
+        with:
+          # Pasta que contém os arquivos estáticos do build (geralmente 'dist' para Vite)
+          path: './dist'
+
+      # Passo 7: Deploy no GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 # Ação oficial para deploy no GitHub Pages

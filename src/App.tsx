@@ -6,6 +6,7 @@ import login from './examples/login';
 import dashboard from './examples/dashboard';
 import mobileComplete from './examples/mobile-complete';
 import namedElementsExample from './examples/named-elements';
+import { contactsAppExample } from './examples/contacts-app';
 import { RenderOptions } from './types/renderOptions';
 import { astToHtmlDocument, astToHtml } from './core/renderer/astToHtml';
 import ExampleModal from './components/example-modal';
@@ -230,7 +231,8 @@ export default function App() {
                                     { label: "Dashboard Example", code: dashboard },
                                     { label: "Mobile Example", code: mobileComplete },
                                     { label: "Named Elements", code: namedElementsExample },
-                                    { label: "Back Navigation Test", code: backNavigationExample }
+                                    { label: "Back Navigation Test", code: backNavigationExample },
+                                    { label: "Contacts App", code: contactsAppExample }
                                 ]}
                                 onExampleSelect={(code: string) => {
                                     setInput(code);
