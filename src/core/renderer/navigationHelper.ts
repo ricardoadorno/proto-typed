@@ -90,7 +90,7 @@ export function navigateBack(): string | null {
 /**
  * Get current screen from history
  */
-function getCurrentScreen(): string | null {
+export function getCurrentScreen(): string | null {
   return currentScreenIndex >= 0 ? navigationHistory[currentScreenIndex] : null;
 }
 

@@ -1,4 +1,4 @@
-export const contactsAppExample = `@screen ContactsList:
+const contactsAppExample = `@screen ContactsList:
   header:
     > Lista de Contatos
     @[☰](MainDrawer)
@@ -173,3 +173,5 @@ drawer MainDrawer:
       > ## Organizar em grupos
       > Acesse a seção Grupos no menu lateral
 `;
+
+export default contactsAppExample;

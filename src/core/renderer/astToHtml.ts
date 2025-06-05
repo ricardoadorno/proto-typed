@@ -19,7 +19,7 @@ interface ProcessedAstData {
 interface ScreenRenderConfig {
   screen: AstNode;
   index: number;
-  currentScreen?: string;
+  currentScreen?: string | null;
   globalDrawer: AstNode | null;
 }
 
@@ -68,7 +68,7 @@ function extractGlobalModals(screens: AstNode[]): AstNode[] {
 /**
  * Determine screen visibility style
  */
-function getScreenVisibilityStyle(screenName: string, index: number, currentScreen?: string): string {
+function getScreenVisibilityStyle(screenName: string, index: number, currentScreen?: string | null): string {
   if (currentScreen) {
     return screenName === currentScreen.toLowerCase() ? '' : 'style="display:none"';
   }
@@ -151,7 +151,7 @@ export function screenToHtml(screen: AstNode): string {
 /**
  * Render all screens to HTML
  */
-function renderAllScreens(screens: AstNode[], currentScreen?: string, globalDrawer?: AstNode | null): string {
+function renderAllScreens(screens: AstNode[], currentScreen?: string | null, globalDrawer?: AstNode | null): string {
   return screens
     .filter(screen => screen && screen.name)
     .map((screen, index) => renderScreen({

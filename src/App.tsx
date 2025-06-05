@@ -1,17 +1,10 @@
 import { useEffect, useState } from "react";
-import { parseAndBuildAst } from "./core/parser/parse-and-build-ast";
-import { AstNode } from './types/astNode';
-import login from './examples/login';
-import dashboard from './examples/dashboard';
-import mobileComplete from './examples/mobile-complete';
-import namedElementsExample from './examples/named-elements';
-import { contactsAppExample } from './examples/contacts-app';
 import { astToHtmlDocument, astToHtmlString } from './core/renderer/astToHtml';
 import ExampleModal from './components/example-modal';
 import AstModal from './components/ast-modal';
 import { resetNavigationHistory, handleNavigationClick } from './core/renderer/navigationHelper';
 import { DSLEditor } from './core/editor';
-import { backNavigationExample } from './examples/back-navigation';
+import { useParse } from './hooks';
 import {
     AppHeader,
     ActionButtons,
@@ -22,13 +15,17 @@ import {
     PreviewPanel
 } from './components/ui';
 import { exportDocument } from './utils';
+import { exampleConfigs } from './examples';
 
 export default function App() {
-    const [input, setInput] = useState(login);
+    const [input, setInput] = useState(exampleConfigs[0].code || "");
     const [uiStyle, setUiStyle] = useState("iphone-x");
-    const [ast, setAst] = useState<AstNode[]>([]);
-    const [astResultJson, setAstResultJson] = useState<string>('');
-    const [error, setError] = useState<string | null>(null);
+    const {
+        ast,
+        astResultJson,
+        error,
+        currentScreen,
+        handleParse } = useParse();
 
     const exportAsHtml = () => {
         if (ast.length === 0) {
@@ -37,14 +34,16 @@ export default function App() {
         }
 
         const documentResult = astToHtmlDocument(ast);
-
         exportDocument(documentResult, "exported-ast.html");
     };
 
     const renderScreen = () => {
-        if (ast.length === 0) return null;
+        if (ast.length === 0) {
+            alert("Please parse the input first to generate content.");
+            return;
+        }
 
-        const htmlString = astToHtmlString(ast);
+        const htmlString = astToHtmlString(ast, { currentScreen });
 
         return (
             <div
@@ -56,24 +55,9 @@ export default function App() {
         );
     };
 
-    const handleParse = async () => {
-        try {
-            const ast = await parseAndBuildAst(input);
-
-            setAst(ast);
-            setAstResultJson(JSON.stringify(ast, null, 2));
-            setError(null);
-
-        } catch (err: any) {
-            setAst([]);
-            setAstResultJson('');
-            setError(err.message);
-        }
-    };
-
     useEffect(() => {
-        handleParse();
-    }, [input]);
+        handleParse(input);
+    }, [input, handleParse]);
 
     return (
         <div className="min-h-full bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 pb-8">
@@ -82,20 +66,12 @@ export default function App() {
                     {/* Editor Panel */}
                     <div className="flex flex-col space-y-6">
                         <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6">
-                            <AppHeader />
-
-                            <ActionButtons onExportHtml={exportAsHtml}>
+                            <AppHeader />                            <ActionButtons onExportHtml={exportAsHtml}>
                                 <ExampleModal />
-                                <AstModal ast={astResultJson} html={astToHtmlString(ast)} />
-                            </ActionButtons>                            <ExampleButtons
-                                examples={[
-                                    { label: "Login Example", code: login },
-                                    { label: "Dashboard Example", code: dashboard },
-                                    { label: "Mobile Example", code: mobileComplete },
-                                    { label: "Named Elements", code: namedElementsExample },
-                                    { label: "Back Navigation Test", code: backNavigationExample },
-                                    { label: "Contacts App", code: contactsAppExample }
-                                ]}
+                                <AstModal ast={astResultJson} html={astToHtmlString(ast, { currentScreen: currentScreen || undefined })} />                            </ActionButtons>
+
+                            <ExampleButtons
+                                examples={exampleConfigs}
                                 onExampleSelect={(code: string) => {
                                     setInput(code);
                                     resetNavigationHistory();
@@ -113,7 +89,7 @@ export default function App() {
                                 onChange={(value) => setInput(value || "")}
                             />
                         </EditorPanel>
-                    </div>                    {/* Preview Panel */}
+                    </div>
                     <div className="flex flex-col">
                         <PreviewPanel />
 

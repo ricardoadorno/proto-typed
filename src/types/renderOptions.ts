@@ -1,3 +1,3 @@
 export interface RenderOptions {
-    currentScreen?: string;
+    currentScreen?: string | null;
 }
