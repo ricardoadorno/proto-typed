@@ -8,8 +8,6 @@ import {
   Header, BottomNav, Drawer, NavItem, DrawerItem, FAB, FABItem
 } from "../lexer/tokens";
 import { Indent, Outdent } from "../lexer/lexer";
-import { CstNode } from "chevrotain";
-import { tokenize } from "../lexer/lexer";
 
 // Parser class that defines the grammar rules
 export class UiDslParser extends CstParser {
@@ -290,29 +288,3 @@ export class UiDslParser extends CstParser {
 
 // Create a singleton instance of the parser
 export const parser = new UiDslParser();
-
-/**
- * Parse input text into a Concrete Syntax Tree (CST)
- * 
- * @param text The DSL text to parse
- * @returns The Concrete Syntax Tree representing the parsed input
- * @throws Error if parsing fails
- */
-export function parseInput(text: string): CstNode {
-  // First tokenize the text using the lexer
-  const lexResult = tokenize(text);
-  
-  // Set the tokens as input to the parser
-  parser.input = lexResult.tokens;
-  
-  // Parse the tokens according to the grammar rules
-  const cst = parser.program();
-  
-  // If there are parsing errors, throw an error
-  if (parser.errors.length > 0) {
-    console.error('parser.errors', parser.errors); 
-    throw new Error("Parsing error: " + parser.errors[0].message);
-  }
-
-  return cst;
-}

@@ -113,9 +113,6 @@ These named elements have special behavior - they are shown or hidden based on n
 - `list:`
   - `- List Item 1`
   - `- List Item 2`
-- `progress {value: 75}`
-- `badge "Text"`
-- `avatar {src: url}`
 
 ### Mobile Components
 - `header:`
@@ -145,13 +142,11 @@ These named elements have special behavior - they are shown or hidden based on n
 ### When working with the AST builder (`src/core/parser/astBuilder.ts`):
 - Convert CST nodes to clean AST nodes with type, props, and optional elements
 - Extract data from token patterns using regex matching with optional group support
-- Always return consistent AST node structure: `{ type, props, elements?, attributes? }`
 - Handle edge cases and provide fallback values for optional elements
 - Support dynamic content resolution with variable substitution
 
 ### When working with renderers (`src/core/renderer/`):
 - `nodeRenderer.ts` - Convert individual AST nodes to HTML with attribute support
-- `screenRenderer.ts` - Render complete screens with basic theming
 - `documentRenderer.ts` - Generate full HTML documents
 - `astToHtml.ts` - Main rendering function with screen management
 - Use proper HTML attributes and semantic elements
@@ -212,21 +207,10 @@ These named elements have special behavior - they are shown or hidden based on n
 ### AST Node Structure:
 - Always include `type` field for discriminated unions
 - Use `props` for core element properties
-- Use `attributes` for styling and configuration
 - Use `elements` array for nested content
 - Keep structure flat and consistent across all element types
 - Support optional element indicators
 
-### Attribute System:
-- Parse `{key: value}` syntax into structured objects
-- Support nested attribute objects for complex styling
-- Validate attribute combinations at parse time
-- Provide intelligent defaults for optional attributes
-
-### Variable and State Management:
-- Support variable declaration with `$variable = value`
-- Support variable interpolation in text and attributes
-- Validate variable types and usage
 
 ## Performance Considerations
 - Parser state should be reset between inputs to prevent memory leaks

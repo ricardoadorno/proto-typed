@@ -466,7 +466,7 @@ export function handleNavigationClick(
       let elementName = '';
       if (navValue.includes('(')) {
         // Handle toggleDrawer(), etc.
-        const match = navValue.match(/toggle(\w+)\(\)/);
+        const match = navValue.match(/toggle(\\w+)\\(\\)/);
         elementName = match ? match[1].toLowerCase() : 'drawer';
       } else if (navValue.includes('-')) {
         // Handle toggle-drawer, etc.
@@ -540,5 +540,150 @@ export function handleNavigationClick(
         console.error('Error executing navigation action:', error);
       }
       break;
+  }
+}
+
+/**
+ * Check if an element is a modal or drawer by searching through AST nodes
+ */
+export function findElementType(elementName: string, allNodes: any[]): 'modal' | 'drawer' | 'screen' | null {
+  const lowerName = elementName.toLowerCase();
+  
+  // Search for modal
+  const isModal = allNodes.some(node => 
+    node.type === 'modal' && node.name?.toLowerCase() === lowerName
+  );
+  
+  if (isModal) return 'modal';
+  
+  // Search for drawer
+  const isDrawer = allNodes.some(node => 
+    node.type === 'drawer' && node.name?.toLowerCase() === lowerName
+  );
+  
+  if (isDrawer) return 'drawer';
+  
+  // Search for screen
+  const isScreen = allNodes.some(node => 
+    node.type === 'screen' && node.name?.toLowerCase() === lowerName
+  );
+  
+  if (isScreen) return 'screen';
+  
+  return null;
+}
+
+/**
+ * Get the actual element name with original case
+ */
+export function getActualElementName(elementName: string, allNodes: any[]): string {
+  const lowerName = elementName.toLowerCase();
+  
+  // Find the node with matching name (case-insensitive)
+  const foundNode = allNodes.find(node => 
+    (node.type === 'modal' || node.type === 'drawer' || node.type === 'screen') && 
+    node.name?.toLowerCase() === lowerName
+  );
+  
+  return foundNode?.name || elementName;
+}
+
+/**
+ * Toggle a drawer element
+ */
+export function toggleDrawer(drawerName: string): boolean {
+  const drawerContainer = document.getElementById(`drawer-${drawerName}`);
+  
+  if (!drawerContainer) {
+    console.warn(`Drawer ${drawerName} not found`);
+    return false;
+  }
+  
+  const isHidden = drawerContainer.classList.contains('hidden');
+  const drawerContent = drawerContainer.querySelector('.drawer-content');
+  
+  if (isHidden) {
+    // Show drawer
+    drawerContainer.classList.remove('hidden');
+    disableBodyScroll();
+    
+    if (drawerContent) {
+      setTimeout(() => {
+        drawerContent.classList.remove('-translate-x-full');
+        drawerContent.classList.add('translate-x-0');
+      }, 50);
+    }
+  } else {
+    // Hide drawer
+    enableBodyScroll();
+    
+    if (drawerContent) {
+      drawerContent.classList.remove('translate-x-0');
+      drawerContent.classList.add('-translate-x-full');
+    }
+    
+    setTimeout(() => {
+      drawerContainer.classList.add('hidden');
+    }, 300);
+  }
+  
+  return true;
+}
+
+/**
+ * Toggle a modal element
+ */
+export function toggleModal(modalName: string): boolean {
+  const modal = document.getElementById(`modal-${modalName}`);
+  
+  if (!modal) {
+    console.warn(`Modal ${modalName} not found`);
+    return false;
+  }
+  
+  const isHidden = modal.classList.contains('hidden');
+  
+  if (isHidden) {
+    modal.classList.remove('hidden');
+    disableBodyScroll();
+  } else {
+    modal.classList.add('hidden');
+    enableBodyScroll();
+  }
+  
+  return true;
+}
+
+/**
+ * Handle navigation to different types of elements (screen, modal, drawer)
+ * Returns true if navigation was handled, false if it should be passed to external handler
+ */
+export function handleElementNavigation(
+  elementName: string, 
+  allNodes: any[]
+): { handled: boolean; elementType: string | null; actualName: string } {
+  const elementType = findElementType(elementName, allNodes);
+  const actualName = getActualElementName(elementName, allNodes);
+  
+  if (!elementType) {
+    return { handled: false, elementType: null, actualName };
+  }
+  
+  switch (elementType) {
+    case 'modal':
+      addToHistory(actualName);
+      toggleModal(actualName);
+      return { handled: true, elementType: 'modal', actualName };
+      
+    case 'drawer':
+      toggleDrawer(actualName);
+      return { handled: true, elementType: 'drawer', actualName };
+      
+    case 'screen':
+      addToHistory(actualName);
+      return { handled: false, elementType: 'screen', actualName };
+      
+    default:
+      return { handled: false, elementType: null, actualName };
   }
 }

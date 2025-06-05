@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import Modal from './modal';
-import { parseInput } from '../core/parser/parser';
-import { astBuilder } from '../core/parser/astBuilder';
-import { astToHtml } from '../core/renderer/astToHtml';
+import { parseAndBuildAst } from '../core/parser/parse-and-build-ast';
+import { astToHtmlString } from '../core/renderer/astToHtml';
 
 /**
  * Example modal component that shows all the syntax supported by the DSL with live previews
@@ -273,21 +272,25 @@ export default function ExampleModal() {
         }
     };
 
-    // Compile the selected example
-    useEffect(() => {
+    const handleExamples = async () => {
         try {
             const currentExamples = syntaxExamples[activeTab as keyof typeof syntaxExamples].examples;
             const example = currentExamples[selectedExample];
-            const cst = parseInput(example.code);
-            const ast = astBuilder.visit(cst);
-            const html = astToHtml(ast, { currentScreen });
+            const ast = await parseAndBuildAst(example.code);
+            const html = astToHtmlString(ast, { currentScreen });
 
             setCompiledOutput(html);
         } catch (error) {
             console.error("Error compiling example:", error);
             setCompiledOutput('<div class="error">Error compiling example</div>');
         }
-    }, [activeTab, selectedExample, currentScreen]); return (
+    }
+
+    useEffect(() => {
+        handleExamples()
+    }, [activeTab, selectedExample, currentScreen]);
+
+    return (
         <Modal
             buttonText="📚 Syntax Guide"
             buttonVariant="primary"

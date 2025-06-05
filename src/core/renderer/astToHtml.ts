@@ -184,7 +184,7 @@ function renderGlobalModals(globalModals: AstNode[]): string {
 /**
  * Convert AST to HTML string representation with pagination for in-app preview
  */
-export function astToHtml(ast: AstNode | AstNode[], { currentScreen }: RenderOptions = {}): string {
+export function astToHtmlString(ast: AstNode | AstNode[], { currentScreen }: RenderOptions = {}): string {
   const nodes = Array.isArray(ast) ? ast : [ast];
   
   if (nodes.length === 0) return '';

@@ -1,11 +1,14 @@
 import { CstNode } from "chevrotain";
-import { parser } from './parser';
+import { UiDslParser } from './parser';
 
 type Context = {
   [key: string]: any;
 };
 
-class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
+// Create a parser instance to get the visitor constructor
+const parserInstance = new UiDslParser();
+
+export default class AstBuilder extends parserInstance.getBaseCstVisitorConstructorWithDefaults() {
   constructor() {
     super();
     this.validateVisitor();
@@ -622,4 +625,3 @@ class AstBuilder extends parser.getBaseCstVisitorConstructorWithDefaults() {
   }
 }
 
-export const astBuilder = new AstBuilder();
