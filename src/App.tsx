@@ -38,10 +38,7 @@ export default function App() {
     };
 
     const renderScreen = () => {
-        if (ast.length === 0) {
-            alert("Please parse the input first to generate content.");
-            return;
-        }
+        if (ast.length === 0) return null;
 
         const htmlString = astToHtmlString(ast, { currentScreen });
 

@@ -1,7 +1,6 @@
 import { createToken, createTokenInstance, Lexer } from "chevrotain";
 import { allTokens } from "./tokens";
 import { IToken, CustomPatternMatcherReturn } from 'chevrotain';
-import _ from 'lodash';
 
 // State required for matching the indentations
 let indentStack = [0];
@@ -18,13 +17,13 @@ let indentStack = [0];
  * @returns {CustomPatternMatcherReturn | RegExpExecArray | null}
  */
 function matchIndentBase(text: string, offset: number, matchedTokens: IToken[], groups: { nl?: IToken[] }, type: string): CustomPatternMatcherReturn | RegExpExecArray | null {
-  const noTokensMatchedYet = _.isEmpty(matchedTokens);
+  const noTokensMatchedYet = matchedTokens.length === 0;
   const newLines = groups.nl || [];
-  const noNewLinesMatchedYet = _.isEmpty(newLines);
+  const noNewLinesMatchedYet = newLines.length === 0;
   const isFirstLine = noTokensMatchedYet && noNewLinesMatchedYet;
   const isStartOfLine =
     (noTokensMatchedYet && !noNewLinesMatchedYet) ||
-    (!noTokensMatchedYet && !noNewLinesMatchedYet && newLines.length > 0 && offset === _.last(newLines)!.startOffset + 1);
+    (!noTokensMatchedYet && !noNewLinesMatchedYet && newLines.length > 0 && offset === newLines[newLines.length - 1]!.startOffset + 1);
 
   if (isFirstLine || isStartOfLine) {
       let match;
@@ -37,21 +36,20 @@ function matchIndentBase(text: string, offset: number, matchedTokens: IToken[], 
           currIndentLevel = match[0].length;
       }
 
-      const prevIndentLevel = _.last(indentStack) || 0;
+      const prevIndentLevel = indentStack[indentStack.length - 1] || 0;
       if (currIndentLevel > prevIndentLevel && type === "indent") {
           indentStack.push(currIndentLevel);
           return match;
-      } else if (currIndentLevel < prevIndentLevel && type === "outdent") {
-          const matchIndentIndex = _.findLastIndex(
-              indentStack,
+      } else if (currIndentLevel < prevIndentLevel && type === "outdent") {          const matchIndentIndex = [...indentStack].reverse().findIndex(
               (stackIndentDepth) => stackIndentDepth === currIndentLevel,
           );
+          const finalMatchIndex = matchIndentIndex === -1 ? -1 : indentStack.length - 1 - matchIndentIndex;
 
-          if (matchIndentIndex === -1) {
+          if (finalMatchIndex === -1) {
               throw Error(`invalid outdent at offset: ${offset}`);
           }
 
-          const numberOfDedents = indentStack.length - matchIndentIndex - 1;
+          const numberOfDedents = indentStack.length - finalMatchIndex - 1;
           let iStart = match !== null ? 1 : 0;
           for (let i = iStart; i < numberOfDedents; i++) {
               indentStack.pop();
@@ -71,8 +69,10 @@ function matchIndentBase(text: string, offset: number, matchedTokens: IToken[], 
 }
 
 
-export const matchIndent = _.partialRight(matchIndentBase, "indent");
-export const matchOutdent = _.partialRight(matchIndentBase, "outdent");
+export const matchIndent = (text: string, offset: number, matchedTokens: IToken[], groups: { nl?: IToken[] }) => 
+  matchIndentBase(text, offset, matchedTokens, groups, "indent");
+export const matchOutdent = (text: string, offset: number, matchedTokens: IToken[], groups: { nl?: IToken[] }) => 
+  matchIndentBase(text, offset, matchedTokens, groups, "outdent");
 
 // define the indentation tokens using custom token patterns
 export const Indent = createToken({

@@ -3,7 +3,7 @@
  * Exemplo básico para demonstrar a funcionalidade -1 
  */
 
-export const simpleBackTest = `
+const simpleBackTest = `
 @screen Inicio:
   container:
     # 🏠 Página Inicial

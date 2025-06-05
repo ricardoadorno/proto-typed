@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import Modal from './modal';
+import Modal from './ui/modal';
 import { parseAndBuildAst } from '../core/parser/parse-and-build-ast';
 import { astToHtmlString } from '../core/renderer/astToHtml';
 
