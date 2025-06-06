@@ -39,7 +39,9 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       name,
       elements
     };
-  }  element(ctx: Context) {
+  } 
+  
+  element(ctx: Context) {
     if (ctx.componentInstanceElement) return this.visit(ctx.componentInstanceElement);
     if (ctx.modalElement) return this.visit(ctx.modalElement);
     if (ctx.inputElement) return this.visit(ctx.inputElement);
@@ -61,7 +63,6 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     if (ctx.orderedListElement) return this.visit(ctx.orderedListElement);
     if (ctx.unorderedListElement) return this.visit(ctx.unorderedListElement);
     if (ctx.radioButtonGroup) return this.visit(ctx.radioButtonGroup);
-    if (ctx.selectField) return this.visit(ctx.selectField);
     if (ctx.checkboxElement) return this.visit(ctx.checkboxElement);
     console.warn('Unknown element type:', ctx);    return null;
   }
@@ -116,6 +117,7 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       }
     };
   }
+
   buttonElement(ctx: Context) {
     const buttonText = ctx.Button[0].image;
     let text = '', icon = '', action = '';
@@ -165,7 +167,9 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
         alt: text
       }
     };
-  }  inputElement(ctx: Context) {
+  }  
+  
+  inputElement(ctx: Context) {
     // Handle new input format
     if (ctx.Input) {
       const inputText = ctx.Input[0].image;
@@ -319,23 +323,6 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     };
   }
 
-  selectField(ctx: Context) {
-    if (!ctx.SelectField) {
-      return null;
-    }
-
-    const options = ctx.SelectField.map((option: any) => {
-      const match = option.image.match(/<\[([^\]]+)\]>/);
-      return match ? match[1].trim() : '';
-    }).filter(Boolean);
-
-    return {
-      type: "Select",
-      props: {
-        options
-      }
-    };
-  }
   rowElement(ctx: Context) {
     const elements = [];
 
@@ -354,7 +341,9 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       type: "Row",
       elements
     };
-  }  columnElement(ctx: Context) {
+  }  
+  
+  columnElement(ctx: Context) {
     const elements = [];
 
     // Get elements directly from element subrules
@@ -372,7 +361,10 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       type: "Col",
       elements
     };
-  }  listElement(ctx: Context) {    const items: any[] = [];
+  }  
+  
+  listElement(ctx: Context) {    
+    const items: any[] = [];
 
     // Handle simple unordered list items using UnorderedListItem
     if (ctx.UnorderedListItem) {
@@ -421,6 +413,7 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       elements: items
     };
   }
+
   cardElement(ctx: Context) {
     const elements = [];
 
@@ -442,7 +435,9 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       },
       elements
     };
-  }  separatorElement(_ctx: Context) {
+  }  
+  
+  separatorElement(_ctx: Context) {
     return {
       type: "Separator",
       props: {}
@@ -502,7 +497,9 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       },
       elements: items
     };
-  }  drawerElement(ctx: Context) {
+  }  
+  
+  drawerElement(ctx: Context) {
     const name = ctx.name[0].image;
     const elements = ctx.element ? ctx.element.map((el: CstNode) => this.visit(el)) : [];
 
@@ -551,6 +548,7 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     }
       return null;
   }
+  
   fabElement(ctx: Context) {
     const fabText = ctx.FAB[0].image;
     // Pattern: fab {icon}

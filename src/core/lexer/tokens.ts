@@ -129,11 +129,6 @@ export const RadioOption = createToken({
   pattern: /(?:\r\n|\r|\n|\s)*\([xX ]?\)\s+([^\n\r]+)/
 });
 
-export const SelectField = createToken({
-  name: "SelectField",
-  pattern: /(?:\r\n|\r|\n|\s)*<\[([^\]]+)\]>(?:\r\n|\r|\n|\s)*/
-});
-
 // Interactive Element Tokens
 export const Button = createToken({ 
   name: "Button", 
@@ -215,7 +210,6 @@ export const allTokens = [
   Drawer,
   Separator,
   BlankLine,
-  SelectField,
   Text,
   Note,
   Quote,

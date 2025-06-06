@@ -4,7 +4,7 @@ import {
   Identifier, Colon, Button, 
   Row, Card, Separator, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, ListItem, RadioOption, 
-  Checkbox, Text, Note, Quote, SelectField, Col, List,
+  Checkbox, Text, Note, Quote, Col, List,
   Header, BottomNav, Drawer, NavItem, DrawerItem, FAB, FABItem
 } from "../lexer/tokens";
 import { Indent, Outdent } from "../lexer/lexer";
@@ -16,7 +16,9 @@ export class UiDslParser extends CstParser {
       nodeLocationTracking: "full",
     });
     this.performSelfAnalysis();
-  }  // Top-level rule that can parse multiple screens and components
+  }  
+  
+  // Top-level rule that can parse multiple screens and components
   program = this.RULE("program", () => {
     this.MANY(() => {
       this.OR([
@@ -31,7 +33,9 @@ export class UiDslParser extends CstParser {
         { ALT: () => this.CONSUME(Outdent) }
       ]);
     });
-  });// Root rule for a single screen
+  });
+  
+  // Root rule for a single screen
   screen = this.RULE("screen", () => {
     this.CONSUME(Screen);
     this.CONSUME(Identifier, { LABEL: "name" });
@@ -44,6 +48,7 @@ export class UiDslParser extends CstParser {
       ]);
     });
   });
+
   // Component declaration rule
   component = this.RULE("component", () => {
     this.CONSUME(Component);
@@ -56,16 +61,22 @@ export class UiDslParser extends CstParser {
         { ALT: () => this.SUBRULE(this.element) }
       ]);
     });
-  });element = this.RULE("element", () => {
+  
+  });
+  
+  element = this.RULE("element", () => {
     this.OR([
       { ALT: () => this.SUBRULE(this.componentInstanceElement) },
       { ALT: () => this.SUBRULE(this.inputElement) },
       { ALT: () => this.SUBRULE(this.buttonElement) },
-      { ALT: () => this.SUBRULE(this.rowElement) },      { ALT: () => this.SUBRULE(this.columnElement) },
+      { ALT: () => this.SUBRULE(this.rowElement) },
+      { ALT: () => this.SUBRULE(this.columnElement) },
       { ALT: () => this.SUBRULE(this.listElement) },
-      { ALT: () => this.SUBRULE(this.cardElement) },      { ALT: () => this.SUBRULE(this.modalElement) },
+      { ALT: () => this.SUBRULE(this.cardElement) },
+      { ALT: () => this.SUBRULE(this.modalElement) },
       { ALT: () => this.SUBRULE(this.headerElement) },
-      { ALT: () => this.SUBRULE(this.bottomNavElement) },      { ALT: () => this.SUBRULE(this.drawerElement) },
+      { ALT: () => this.SUBRULE(this.bottomNavElement) },
+      { ALT: () => this.SUBRULE(this.drawerElement) },
       { ALT: () => this.SUBRULE(this.navItemElement) },
       { ALT: () => this.SUBRULE(this.drawerItemElement) },
       { ALT: () => this.SUBRULE(this.fabItemElement) },
@@ -79,19 +90,10 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.unorderedListElement) },
       { ALT: () => this.SUBRULE(this.radioButtonGroup) },
       { ALT: () => this.SUBRULE(this.checkboxElement) },
-      { ALT: () => this.SUBRULE(this.selectField) },
     ]);
   });
   
-  selectField = this.RULE("selectField", () => {
-    const options: { image: string; tokenType: { name: string } }[] = [];
-    this.AT_LEAST_ONE(() => {
-      const option = this.CONSUME(SelectField);
-      options.push(option);
-    });
-    return options;
-  });
-
+  // Element rules for different UI components
   headingElement = this.RULE("headingElement", () => {
     this.CONSUME(Heading);
   });
@@ -144,6 +146,7 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.CONSUME(Quote) }
     ]);
   });
+
   cardElement = this.RULE("cardElement", () => {
     this.CONSUME(Card);
     this.CONSUME(Colon);
@@ -171,7 +174,8 @@ export class UiDslParser extends CstParser {
       });
     });
   });
-    columnElement = this.RULE("columnElement", () => {
+
+  columnElement = this.RULE("columnElement", () => {
     this.CONSUME(Col);
     this.CONSUME(Colon);
     this.OPTION(() => {
@@ -183,7 +187,9 @@ export class UiDslParser extends CstParser {
         this.CONSUME(Outdent);
       });
     });
-  });  listElement = this.RULE("listElement", () => {
+  });  
+  
+  listElement = this.RULE("listElement", () => {
     this.CONSUME(List);
     this.CONSUME(Colon);
     this.OPTION(() => {
@@ -199,6 +205,7 @@ export class UiDslParser extends CstParser {
       });
     });
   });
+
   // Mobile Layout Elements
   headerElement = this.RULE("headerElement", () => {
     this.CONSUME(Header);
@@ -226,7 +233,9 @@ export class UiDslParser extends CstParser {
         this.CONSUME(Outdent);
       });
     });
-  });  drawerElement = this.RULE("drawerElement", () => {
+  });  
+  
+  drawerElement = this.RULE("drawerElement", () => {
     this.CONSUME(Drawer);
     this.CONSUME(Identifier, { LABEL: "name" });
     this.CONSUME(Colon);
@@ -243,9 +252,12 @@ export class UiDslParser extends CstParser {
 
   navItemElement = this.RULE("navItemElement", () => {
     this.CONSUME(NavItem);
-  });  drawerItemElement = this.RULE("drawerItemElement", () => {
+  });  
+  
+  drawerItemElement = this.RULE("drawerItemElement", () => {
     this.CONSUME(DrawerItem);
   });
+  
   fabElement = this.RULE("fabElement", () => {
     this.CONSUME(FAB);
     this.CONSUME(Colon);
