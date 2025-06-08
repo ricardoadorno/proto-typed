@@ -1,7 +1,8 @@
 import { AstNode } from '../../types/astNode';
-import { nodeToHtml, setComponentDefinitions } from './nodeRenderer';
 import { RenderOptions } from '../../types/renderOptions';
 import { generateNavigationScript } from './navigationHelper';
+import { renderNode } from './node-renderer';
+import { setComponentDefinitions } from './nodes/component-nodes';
 
 /**
  * Processed AST data structure for rendering
@@ -100,7 +101,7 @@ function renderScreenElements(screen: AstNode): string {
       }
       return element != null;
     })
-    .map(element => nodeToHtml(element))
+    .map(element => renderNode(element))
     .join('\n      ') || '';
 }
 
@@ -144,7 +145,7 @@ export function screenToHtml(screen: AstNode): string {
       }
       return element != null;
     })
-    .map(element => nodeToHtml(element))
+    .map(element => renderNode(element))
     .join('\n      ') || '';
   
   return `
@@ -176,7 +177,7 @@ function renderGlobalElements(modals: AstNode[], drawers: AstNode[]): string {
   
   const modalsHtml = modals.length > 0 
     ? modals.map(modal => {
-        const html = nodeToHtml(modal);
+        const html = renderNode(modal);
         console.log('Rendered modal HTML:', html.slice(0, 100) + '...');
         return html;
       }).join('\n') 
@@ -184,7 +185,7 @@ function renderGlobalElements(modals: AstNode[], drawers: AstNode[]): string {
   
   const drawersHtml = drawers.length > 0 
     ? drawers.map(drawer => {
-        const html = nodeToHtml(drawer);
+        const html = renderNode(drawer);
         console.log('Rendered drawer HTML:', html.slice(0, 100) + '...');
         return html;
       }).join('\n') 
@@ -249,7 +250,7 @@ function renderScreenForDocument(screen: AstNode, index: number): string {
       }
       return element != null;
     })
-    .map(element => nodeToHtml(element))
+    .map(element => renderNode(element))
     .join('\n      ') || '';
 
   // Add Tailwind container and screen classes, and id for navigation
