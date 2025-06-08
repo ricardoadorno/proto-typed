@@ -192,8 +192,8 @@ function renderModal(node: AstNode, context?: string): string {
   
   return `<div class="modal hidden" id="modal-${node.name}" data-modal="${node.name}">
     <div class="modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-50">
-      <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6 relative" onclick="event.stopPropagation()">
-        <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors" onclick="toggleElement('${node.name}')">&times;</button>
+      <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6 relative" >
+        <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" data-nav="${node.name}" data-nav-type="internal">&times;</button>
         ${modalElements}
       </div>
     </div>

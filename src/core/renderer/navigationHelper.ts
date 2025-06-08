@@ -9,50 +9,7 @@ export interface NavigationTarget {
   isValid: boolean;
 }
 
-/**
- * Scroll Management Functions
- * Disable and enable body scroll when modals/drawers are open
- */
-let scrollPosition = 0;
-let scrollLockCount = 0;
 
-function disableBodyScroll() {
-  if (scrollLockCount === 0) {
-    scrollPosition = window.pageYOffset;
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollPosition}px`;
-    document.body.style.width = '100%';
-    document.body.style.overflow = 'hidden';
-    document.body.classList.add('scroll-locked');
-    
-    // Also lock mobile containers if they exist
-    const mobileContainers = document.querySelectorAll('.iphone-x, .browser-mockup');
-    mobileContainers.forEach(container => {
-      container.classList.add('scroll-locked');
-    });
-  }
-  scrollLockCount++;
-}
-
-function enableBodyScroll() {
-  scrollLockCount = Math.max(0, scrollLockCount - 1);
-  
-  if (scrollLockCount === 0) {
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.width = '';
-    document.body.style.overflow = '';
-    document.body.classList.remove('scroll-locked');
-    
-    // Remove lock from mobile containers
-    const mobileContainers = document.querySelectorAll('.iphone-x, .browser-mockup');
-    mobileContainers.forEach(container => {
-      container.classList.remove('scroll-locked');
-    });
-    
-    window.scrollTo(0, scrollPosition);
-  }
-}
 
 /**
  * Navigation History Management
@@ -257,20 +214,13 @@ export function generateNavigationScript(): string {
         if (drawer) {
           const overlay = document.querySelector('.drawer-overlay');
           const isOpening = !drawer.classList.contains('open');
-          
-          drawer.classList.toggle('open');
+            drawer.classList.toggle('open');
           if (overlay) overlay.classList.toggle('open');
           
-          // Manage scroll
-          if (isOpening) {
-            disableBodyScroll();
-          } else {
-            enableBodyScroll();
-          }
+          // Scroll management removed
           return;
         }      }
-      
-      // Handle named drawer elements
+        // Handle named drawer elements
       if (drawerElement) {
         const isHidden = drawerElement.classList.contains('hidden');
         const content = drawerElement.querySelector('.drawer-content');
@@ -281,7 +231,7 @@ export function generateNavigationScript(): string {
             content.classList.add('translate-x-0');
             content.classList.remove('-translate-x-full');
           }
-          disableBodyScroll();
+          // Scroll management removed
         } else {
           if (content) {
             content.classList.remove('translate-x-0');
@@ -289,23 +239,17 @@ export function generateNavigationScript(): string {
           }
           setTimeout(() => {
             drawerElement.classList.add('hidden');
-            enableBodyScroll();
+            // Scroll management removed
           }, 300);
         }
         return;
       }
-      
-      // Handle modal
+        // Handle modal
       if (modal) {
         const isOpening = modal.classList.contains('hidden');
         modal.classList.toggle('hidden');
         
-        // Manage scroll
-        if (isOpening) {
-          disableBodyScroll();
-        } else {
-          enableBodyScroll();
-        }
+        // Scroll management removed
         return;
       }
       
@@ -370,15 +314,14 @@ export function generateNavigationScript(): string {
           toggleElement(elementName);
           break;
       }
-    });
-      // Handle overlay clicks to close drawer/modal
+    });      // Handle overlay clicks to close drawer/modal
     document.addEventListener('click', function(e) {
       if (e.target && e.target.classList.contains('drawer-overlay')) {
         const drawer = document.querySelector('.drawer');
         const overlay = document.querySelector('.drawer-overlay');
         if (drawer) drawer.classList.remove('open');
         if (overlay) overlay.classList.remove('open');
-        enableBodyScroll();
+        // Scroll management removed
       }
       
       // Handle modal backdrop clicks to close modal
@@ -386,7 +329,7 @@ export function generateNavigationScript(): string {
         const modal = e.target.closest('.modal');
         if (modal) {
           modal.classList.add('hidden');
-          enableBodyScroll();
+          // Scroll management removed
         }
       }
     });
@@ -414,31 +357,54 @@ export function handleNavigationClick(
 
   if (!navValue) return;
 
-  // Always lowercase navValue for internal navigation to match screen IDs and rendering logic
-  const normalizedNavValue = navType === 'internal' && navValue ? navValue.toLowerCase() : navValue;
-  if (target.tagName === 'A' || navType === 'internal' || navType === 'toggle' || navType === 'action' || navType === 'back') {
+  // Prevent default behavior for all navigation clicks except external links
+  if (navType !== 'external') {
     if (typeof e.preventDefault === 'function') {
       e.preventDefault();
     }
   }
+
+  // Always lowercase navValue for internal navigation to match screen IDs and rendering logic
+  const normalizedNavValue = navType === 'internal' && navValue ? navValue.toLowerCase() : navValue;
+
   switch (navType) {
     case 'internal':
-      // Add to history before navigating
-      addToHistory(normalizedNavValue);
+      // Check if the target is actually a modal or drawer before treating as screen navigation
+      const modalElement = document.getElementById(`modal-${normalizedNavValue}`);
+      const drawerElement = document.getElementById(`drawer-${normalizedNavValue}`);
       
-      // Debug: log callback
-      if (options && options.onInternalNavigate) {
-        
-        options.onInternalNavigate(normalizedNavValue);
+      // Also check without the prefix in case of direct element names
+      const directModalElement = document.getElementById(`modal-${navValue}`);
+      const directDrawerElement = document.getElementById(`drawer-${navValue}`);
+      
+      if (modalElement || directModalElement) {
+        // Handle modal toggle
+        const modalName = modalElement ? normalizedNavValue : navValue;
+        console.log(`Opening modal: ${modalName}`);
+        toggleModal(modalName);
+      } else if (drawerElement || directDrawerElement) {
+        // Handle drawer toggle
+        const drawerName = drawerElement ? normalizedNavValue : navValue;
+        console.log(`Opening drawer: ${drawerName}`);
+        toggleDrawer(drawerName);
       } else {
-        // Fallback: show/hide screens by DOM manipulation
-        const screenElements = document.querySelectorAll('.screen');
-        screenElements.forEach(screen => {
-          (screen as HTMLElement).style.display = 'none';
-        });
-        const targetScreen = document.getElementById(`${normalizedNavValue}-screen`);
-        if (targetScreen) {
-          targetScreen.style.display = 'block';
+        // Regular screen navigation
+        // Add to history before navigating
+        addToHistory(normalizedNavValue);
+        
+        console.log(`Navigating to screen: ${normalizedNavValue}`);
+        if (options && options.onInternalNavigate) {
+          options.onInternalNavigate(normalizedNavValue);
+        } else {
+          // Fallback: show/hide screens by DOM manipulation
+          const screenElements = document.querySelectorAll('.screen');
+          screenElements.forEach(screen => {
+            (screen as HTMLElement).style.display = 'none';
+          });
+          const targetScreen = document.getElementById(`${normalizedNavValue}-screen`);
+          if (targetScreen) {
+            targetScreen.style.display = 'block';
+          }
         }
       }
       break;
@@ -481,31 +447,23 @@ export function handleNavigationClick(
         const drawer = document.querySelector('.drawer');
         const drawerElement = document.getElementById(`drawer-${elementName}`);
         const modal = document.getElementById(`modal-${elementName}`);
-        
-        if (elementName === 'drawer' && drawer) {
+          if (elementName === 'drawer' && drawer) {
           const overlay = document.querySelector('.drawer-overlay');
-          const isOpening = !drawer.classList.contains('open');
           
           drawer.classList.toggle('open');
           if (overlay) overlay.classList.toggle('open');
           
-          // Manage scroll
-          if (isOpening) {
-            disableBodyScroll();
-          } else {
-            enableBodyScroll();
-          }
+          // Scroll management removed
         } else if (drawerElement) {
           const isHidden = drawerElement.classList.contains('hidden');
           const content = drawerElement.querySelector('.drawer-content');
-          
-          if (isHidden) {
+            if (isHidden) {
             drawerElement.classList.remove('hidden');
             if (content) {
               content.classList.add('translate-x-0');
               content.classList.remove('-translate-x-full');
             }
-            disableBodyScroll();
+            // Scroll management removed
           } else {
             if (content) {
               content.classList.remove('translate-x-0');
@@ -513,19 +471,12 @@ export function handleNavigationClick(
             }
             setTimeout(() => {
               drawerElement.classList.add('hidden');
-              enableBodyScroll();
+              // Scroll management removed
             }, 300);
-          }
-        } else if (modal) {
-          const isOpening = modal.classList.contains('hidden');
+          }        } else if (modal) {
           modal.classList.toggle('hidden');
           
-          // Manage scroll
-          if (isOpening) {
-            disableBodyScroll();
-          } else {
-            enableBodyScroll();
-          }
+          // Scroll management removed
         }
       }
       break;
@@ -601,11 +552,10 @@ export function toggleDrawer(drawerName: string): boolean {
   
   const isHidden = drawerContainer.classList.contains('hidden');
   const drawerContent = drawerContainer.querySelector('.drawer-content');
-  
-  if (isHidden) {
+    if (isHidden) {
     // Show drawer
     drawerContainer.classList.remove('hidden');
-    disableBodyScroll();
+    // Scroll management removed
     
     if (drawerContent) {
       setTimeout(() => {
@@ -615,7 +565,7 @@ export function toggleDrawer(drawerName: string): boolean {
     }
   } else {
     // Hide drawer
-    enableBodyScroll();
+    // Scroll management removed
     
     if (drawerContent) {
       drawerContent.classList.remove('translate-x-0');
@@ -634,21 +584,33 @@ export function toggleDrawer(drawerName: string): boolean {
  * Toggle a modal element
  */
 export function toggleModal(modalName: string): boolean {
-  const modal = document.getElementById(`modal-${modalName}`);
+  console.log(`Attempting to toggle modal: ${modalName}`);
+  
+  // Try both with and without the modal- prefix
+  let modal = document.getElementById(`modal-${modalName}`);
+  if (!modal) {
+    modal = document.getElementById(modalName);
+  }
   
   if (!modal) {
-    console.warn(`Modal ${modalName} not found`);
+    console.warn(`Modal ${modalName} not found. Available elements:`, 
+      Array.from(document.querySelectorAll('[id*="modal"]')).map(el => el.id)
+    );
     return false;
   }
   
-  const isHidden = modal.classList.contains('hidden');
+  console.log(`Found modal element:`, modal);
   
-  if (isHidden) {
+  const isHidden = modal.classList.contains('hidden');
+  console.log(`Modal is currently hidden: ${isHidden}`);
+    if (isHidden) {
     modal.classList.remove('hidden');
-    disableBodyScroll();
+    // Scroll management removed
+    console.log(`Modal ${modalName} opened`);
   } else {
     modal.classList.add('hidden');
-    enableBodyScroll();
+    // Scroll management removed
+    console.log(`Modal ${modalName} closed`);
   }
   
   return true;

@@ -10,6 +10,7 @@ interface ProcessedAstData {
   screens: AstNode[];
   components: AstNode[];
   globalModals: AstNode[];
+  globalDrawers: AstNode[];
 }
 
 /**
@@ -30,21 +31,34 @@ function processAstNodes(ast: AstNode | AstNode[]): ProcessedAstData {
   const screens = nodes.filter(node => node.type === 'Screen' || node.type === 'screen');
   const components = nodes.filter(node => node.type === 'component');
   
-  return { screens, components, globalModals: [] };
+  return { screens, components, globalModals: [], globalDrawers: [] };
 }
 
 /**
- * Extract global modals from screens
+ * Extract global modals and drawers from screens
  */
-function extractGlobalModals(screens: AstNode[]): AstNode[] {
+function extractGlobalElements(screens: AstNode[]): { modals: AstNode[], drawers: AstNode[] } {
   const modals: AstNode[] = [];
+  const drawers: AstNode[] = [];
   
   screens.forEach(screen => {
-    const modalElements = screen.elements?.filter(element => element.type === 'modal') || [];
+    const modalElements = screen.elements?.filter(element => 
+      element.type?.toLowerCase() === 'modal'
+    ) || [];
+    const drawerElements = screen.elements?.filter(element => 
+      element.type?.toLowerCase() === 'drawer'
+    ) || [];
+    
+    console.log('Screen:', screen.name, 'Modals found:', modalElements.length, 'Drawers found:', drawerElements.length);
+    modalElements.forEach(modal => console.log('Modal:', modal.name, modal));
+    drawerElements.forEach(drawer => console.log('Drawer:', drawer.name, drawer));
+    
     modals.push(...modalElements);
+    drawers.push(...drawerElements);
   });
   
-  return modals;
+  console.log('Total extracted - Modals:', modals.length, 'Drawers:', drawers.length);
+  return { modals, drawers };
 }
 
 /**
@@ -77,7 +91,15 @@ function generateLayoutClasses(screen: AstNode): string[] {
  */
 function renderScreenElements(screen: AstNode): string {
   return screen.elements
-    ?.filter(element => element != null && element.type !== 'Drawer' && element.type !== 'modal')
+    ?.filter(element => {
+      // Keep all elements except named modals and drawers (they'll be rendered globally)
+      const elementType = element.type?.toLowerCase();
+      if (elementType === 'modal' || elementType === 'drawer') {
+        // Only filter out elements that have names (global elements)
+        return !element.name;
+      }
+      return element != null;
+    })
     .map(element => nodeToHtml(element))
     .join('\n      ') || '';
 }
@@ -113,9 +135,15 @@ export function screenToHtml(screen: AstNode): string {
   const layoutClasses = [];
   if (hasHeader) layoutClasses.push('has-header');
   if (hasBottomNav) layoutClasses.push('has-bottom-nav');
-  
-  const elementsHtml = screen.elements
-    ?.filter(element => element != null && element.type !== 'modal')
+    const elementsHtml = screen.elements
+    ?.filter(element => {
+      // Keep all elements except named modals and drawers (they'll be rendered globally)
+      if (element.type === 'modal' || element.type === 'drawer') {
+        // Only filter out elements that have names (global elements)
+        return !element.name;
+      }
+      return element != null;
+    })
     .map(element => nodeToHtml(element))
     .join('\n      ') || '';
   
@@ -141,14 +169,35 @@ function renderAllScreens(screens: AstNode[], currentScreen?: string | null): st
 }
 
 /**
- * Render global modals HTML
+ * Render global modals and drawers HTML
  */
-function renderGlobalModals(globalModals: AstNode[]): string {
-  if (globalModals.length === 0) return '';
+function renderGlobalElements(modals: AstNode[], drawers: AstNode[]): string {
+  console.log('Rendering global elements - Modals:', modals.length, 'Drawers:', drawers.length);
   
-  return '\n\n' + globalModals
-    .map(modal => nodeToHtml(modal))
-    .join('\n') + '\n';
+  const modalsHtml = modals.length > 0 
+    ? modals.map(modal => {
+        const html = nodeToHtml(modal);
+        console.log('Rendered modal HTML:', html.slice(0, 100) + '...');
+        return html;
+      }).join('\n') 
+    : '';
+  
+  const drawersHtml = drawers.length > 0 
+    ? drawers.map(drawer => {
+        const html = nodeToHtml(drawer);
+        console.log('Rendered drawer HTML:', html.slice(0, 100) + '...');
+        return html;
+      }).join('\n') 
+    : '';
+  
+  if (modalsHtml || drawersHtml) {
+    const result = '\n\n' + [modalsHtml, drawersHtml].filter(Boolean).join('\n') + '\n';
+    console.log('Final global elements HTML length:', result.length);
+    return result;
+  }
+  
+  console.log('No global elements to render');
+  return '';
 }
 
 /**
@@ -166,14 +215,16 @@ export function astToHtmlString(ast: AstNode | AstNode[], { currentScreen }: Ren
   // Register components with the renderer
   setComponentDefinitions(components);
   
-  // Extract global modals
-  const globalModals = extractGlobalModals(screens);
-  
-  // Render screens and global modals
+  // Extract global modals and drawers
+  const globalElements = extractGlobalElements(screens);
+    // Render screens and global elements
   const screensHtml = renderAllScreens(screens, currentScreen);
-  const globalModalsHtml = renderGlobalModals(globalModals);
+  const globalElementsHtml = renderGlobalElements(globalElements.modals, globalElements.drawers);
   
-  return `${screensHtml}${globalModalsHtml}`;
+  const result = `${screensHtml}${globalElementsHtml}`;
+  console.log('Final HTML output length:', result);
+  
+  return result;
 }
 
 /**
@@ -189,9 +240,15 @@ function renderScreenForDocument(screen: AstNode, index: number): string {
   const layoutClasses = [];
   if (hasHeader) layoutClasses.push('has-header');
   if (hasBottomNav) layoutClasses.push('has-bottom-nav');
-  
-  const elementsHtml = screen.elements
-    ?.filter(element => element != null && element.type !== 'Drawer' && element.type !== 'modal')
+    const elementsHtml = screen.elements
+    ?.filter(element => {
+      // Keep all elements except named modals and drawers (they'll be rendered globally)
+      if (element.type === 'modal' || element.type === 'drawer') {
+        // Only filter out elements that have names (global elements)
+        return !element.name;
+      }
+      return element != null;
+    })
     .map(element => nodeToHtml(element))
     .join('\n      ') || '';
 
@@ -217,8 +274,8 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
   // Register components with the renderer
   setComponentDefinitions(components);
 
-  // Extract global modals
-  const globalModals = extractGlobalModals(screens);
+  // Extract global modals and drawers
+  const globalElements = extractGlobalElements(screens);
 
   // Generate the HTML for all screens with styles to hide all but the first
   const screensHtml = screens
@@ -226,8 +283,8 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
     .map((screen, index) => renderScreenForDocument(screen, index))
     .join('\n\n');
 
-  // Render global modals
-  const globalModalsHtml = renderGlobalModals(globalModals);
+  // Render global modals and drawers
+  const globalElementsHtml = renderGlobalElements(globalElements.modals, globalElements.drawers);
 
   // Tailwind CDN and dark mode script for export
   const tailwindCdn = `<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>`;
@@ -251,7 +308,7 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
   </style>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 pb-8">
-  ${screensHtml}${globalModalsHtml}  ${darkModeScript}
+  ${screensHtml}${globalElementsHtml}  ${darkModeScript}
   <script>
     ${generateNavigationScript()}
     
