@@ -4,7 +4,7 @@
  */
 
 const namedElementsExample = `
-@screen Home:
+screen Home:
   # Named UI Elements Demo
   
   > This screen demonstrates how modals and drawers work.

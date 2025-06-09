@@ -1,5 +1,5 @@
 const dashboardExample = `
-@screen Dashboard:
+screen Dashboard:
   # My Dashboard
   > Welcome to your personal dashboard
   

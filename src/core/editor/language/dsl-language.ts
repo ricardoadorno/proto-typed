@@ -22,10 +22,10 @@ export function registerDSLLanguage(monaco: Monaco) {
         [/\b(header|bottom_nav|fab|nav_item|drawer_item):\s*$/, 'tag'],
         
         // Named UI elements (modal, drawer)
-        [/\b(modal|drawer)\s+\w+:\s*$/, 'tag'],
+        [/\b(modal|drawer)\s+\w+:\s*$/, 'keyword.named-ui-element'],
           // Basic patterns using only standard Monaco tokens        
-        [/@(screen)\s/, 'keyword.screen'],
-        [/@(component)\s/, 'keyword.component'],
+        [/(screen)\s/, 'keyword.screen'],
+        [/(component)\s/, 'keyword.component'],
         [/@\[.*?\]/, 'type'],          // buttons
         [/#\[.*?\]/, 'type'],        // links  
         [/\(([^}]+)\)/, 'variable.name'],        

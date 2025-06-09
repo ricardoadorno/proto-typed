@@ -9,8 +9,9 @@ export function registerDSLTheme(monaco: Monaco) {// Define only the dark theme
     inherit: true,
     rules: [
       // DSL specific tokens using standard Monaco token types
-      { token: 'keyword.screen', foreground: 'ff6b6b', fontStyle: 'bold' },        // @screen and layout
-      { token: 'keyword.component', foreground: '60a5fa', fontStyle: 'bold' },     // @component
+      { token: 'keyword.screen', foreground: 'ff6b6b', fontStyle: 'bold' },        // screen and layout
+      { token: 'keyword.component', foreground: '4ade80', fontStyle: 'bold' },     // component
+      { token: 'keyword.named-ui-element', foreground: '4ade80', fontStyle: 'bold' },   // named UI elements
       { token: 'type', foreground: '60a5fa', fontStyle: 'bold' },           // buttons
       { token: 'string', foreground: '34d399' },                            // links and text
       { token: 'variable', foreground: 'f472b6' },                          // images

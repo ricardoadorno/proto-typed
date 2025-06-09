@@ -1,5 +1,5 @@
 const login = `
-@component LoginForm:
+component LoginForm:
   ___:Username{Enter your username}
   ___*:Password{Enter your password}
   
@@ -10,7 +10,7 @@ const login = `
   row:
     #[Forgot Password](ForgotPassword)
 
-@screen Login:
+screen Login:
   # Login to Your Account
   > Please enter your credentials to access your account.
   card:
@@ -20,7 +20,7 @@ const login = `
     > Don't have an account?
     #[Signup](Signup)
 
-@screen Signup:
+screen Signup:
   # Create a New Account
   > Join us today! Fill out the form below to create your account.
   card:
@@ -32,7 +32,7 @@ const login = `
     @[Sign Up]
     #[Login](Login)
 
-@screen ForgotPassword:
+screen ForgotPassword:
   # Reset Your Password
   > Please enter your email address to reset your password.
   

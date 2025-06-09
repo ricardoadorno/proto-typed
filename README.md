@@ -48,7 +48,7 @@ The app uses a simple descriptive syntax to define UI components. Below is an ex
 
 #### Screens
 ```
-@screen Foo
+screen Foo
 ```
 
 ### Typography

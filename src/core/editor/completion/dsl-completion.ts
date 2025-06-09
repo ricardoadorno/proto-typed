@@ -19,9 +19,9 @@ export function registerDSLCompletionProvider(monaco: Monaco) {
       const suggestions: any[] = [
         // Screen declaration
         {
-          label: '@screen',
+          label: 'screen',
           kind: monaco.languages.CompletionItemKind.Keyword,
-          insertText: '@screen ${1:ScreenName}:\n\t$0',
+          insertText: 'screen ${1:ScreenName}:\n\t$0',
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation: 'Create a new screen',
           range: range,

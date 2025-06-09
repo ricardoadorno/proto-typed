@@ -1,5 +1,5 @@
 const mobileAppExample = `
-@screen MobileApp:
+screen MobileApp:
   header:
     # My App
     @[Menu](MyDrawer)
@@ -50,7 +50,7 @@ const mobileAppExample = `
     drawer_item [Help]{❓}(SettingsScreen)
     drawer_item [Logout]{🚪}(MobileApp)
 
-@screen MessagesScreen:
+screen MessagesScreen:
   header:
     #[< Back](MobileApp)
     # Messages
@@ -66,7 +66,7 @@ const mobileAppExample = `
     nav_item [Profile]{👤}(ProfileScreen)
     nav_item [More]{⋯}(SettingsScreen)
 
-@screen ProfileScreen:
+screen ProfileScreen:
   header:
     #[< Back](MobileApp)
     # Profile
@@ -101,7 +101,7 @@ const mobileAppExample = `
     nav_item [Profile]{👤}(ProfileScreen)
     nav_item [More]{⋯}(SettingsScreen)
 
-@screen SettingsScreen:
+screen SettingsScreen:
   header:
     #[< Back](MobileApp)
     # Settings

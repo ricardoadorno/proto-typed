@@ -21,12 +21,12 @@ export const BlankLine = createToken({
 // Configuration & Structural Tokens
 export const Screen = createToken({ 
   name: "Screen", 
-  pattern: /@screen/ 
+  pattern: /screen/ 
 });
 
 export const Component = createToken({
   name: "Component",
-  pattern: /@component/
+  pattern: /component/
 });
 
 export const Modal = createToken({

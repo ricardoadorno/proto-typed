@@ -25,7 +25,7 @@ export default function ExampleModal() {
             title: "Layout Elements",
             examples: [{
                 name: "Layout",
-                code: `@screen GridExample:
+                code: `screen GridExample:
     col:
       row:
         # First Column
@@ -36,7 +36,7 @@ export default function ExampleModal() {
                 description: "Create responsive layouts with rows and columns"
             }, {
                 name: "List View",
-                code: `@screen ListExample:
+                code: `screen ListExample:
   list:
     - User Profile
     - Task Status
@@ -44,7 +44,7 @@ export default function ExampleModal() {
                 description: "Create simple list items using dash-based syntax"
             }, {
                 name: "Complex List View",
-                code: `@screen ComplexListExample:
+                code: `screen ComplexListExample:
   list:
     - [https://placehold.co/50]User Profile{John Doe - Software Engineer}[https://placehold.co/50]
     - [https://placehold.co/50]Task Status{Complete - Review pending}[https://placehold.co/50]
@@ -53,7 +53,7 @@ export default function ExampleModal() {
             },
             {
                 name: "Card Component",
-                code: `@screen CardExample:
+                code: `screen CardExample:
   card:
     # Card Title
     > Card content goes here
@@ -62,7 +62,7 @@ export default function ExampleModal() {
             },
             {
                 name: "Separator",
-                code: `@screen SeparatorExample:
+                code: `screen SeparatorExample:
   # Section 1
   > Content above separator
   ---
@@ -75,7 +75,7 @@ export default function ExampleModal() {
         input: {
             title: "Input Elements",
             examples: [{
-                name: "Text Inputs", code: `@screen InputExample:
+                name: "Text Inputs", code: `screen InputExample:
   # Form Fields
   ___:Username{Enter your username}
   ___*:Password{Enter your password}
@@ -85,7 +85,7 @@ export default function ExampleModal() {
             },
             {
                 name: "Checkboxes",
-                code: `@screen CheckboxExample:
+                code: `screen CheckboxExample:
   # Checkbox Options
   [X] Option 1 (checked)
   [ ] Option 2 (unchecked)`,
@@ -93,14 +93,14 @@ export default function ExampleModal() {
             },
             {
                 name: "Radio Buttons",
-                code: `@screen RadioExample:
+                code: `screen RadioExample:
   # Radio Options
   (X) Option A (selected)
   ( ) Option B (unselected)
   ( ) Option C (unselected)`,
                 description: "Create radio button groups where only one option can be selected"
             }, {
-                name: "Select Fields", code: `@screen SelectExample:
+                name: "Select Fields", code: `screen SelectExample:
   # Select Menu
   ___:Country{Select your country}[USA | Canada | Mexico | Brazil]
   ___:Language{Choose language}[English | Spanish | French | Portuguese]
@@ -114,7 +114,7 @@ export default function ExampleModal() {
             examples: [
                 {
                     name: "Buttons",
-                    code: `@screen ButtonExample:
+                    code: `screen ButtonExample:
   # Button Examples
   @[Primary Button]
   @[Secondary Button](action)
@@ -123,7 +123,7 @@ export default function ExampleModal() {
                 },
                 {
                     name: "Links",
-                    code: `@screen LinkExample:
+                    code: `screen LinkExample:
   # Link Examples
   #[Internal Link](dashboard-screen)
   #[External Link](https://example.com)
@@ -132,7 +132,7 @@ export default function ExampleModal() {
                 },
                 {
                     name: "Images",
-                    code: `@screen ImageExample:
+                    code: `screen ImageExample:
   # Image Examples
   ![Profile Picture](https://picsum.photos/200/200)
   ![Banner Image](https://picsum.photos/400/150)
@@ -146,7 +146,7 @@ export default function ExampleModal() {
             examples: [
                 {
                     name: "Typography",
-                    code: `@screen TypographyExample:
+                    code: `screen TypographyExample:
   # Heading 1
   ## Heading 2
   ### Heading 3
@@ -161,7 +161,7 @@ export default function ExampleModal() {
                 },
                 {
                     name: "Progress & Badges",
-                    code: `@screen ProgressExample:
+                    code: `screen ProgressExample:
   # Progress Indicators
   progress {value: 25}
   progress {value: 50}
@@ -176,7 +176,7 @@ export default function ExampleModal() {
                 },
                 {
                     name: "Lists",
-                    code: `@screen ListDisplayExample:
+                    code: `screen ListDisplayExample:
   # Ordered List
   1. First ordered item
   2. Second ordered item
@@ -193,7 +193,7 @@ export default function ExampleModal() {
         mobile: {
             title: "Mobile Components",
             examples: [{
-                name: "Header Component", code: `@screen HeaderExample:
+                name: "Header Component", code: `screen HeaderExample:
   header:
     # App Title
     @[Menu](MyDrawer)
@@ -204,7 +204,7 @@ export default function ExampleModal() {
             },
             {
                 name: "Bottom Navigation",
-                code: `@screen BottomNavExample:
+                code: `screen BottomNavExample:
   # Main Content
   > App content here
   
@@ -218,7 +218,7 @@ export default function ExampleModal() {
             },
             {
                 name: "Drawer",
-                code: `@screen DrawerExample:
+                code: `screen DrawerExample:
   # App Content
   > Main content area
   
@@ -231,7 +231,7 @@ export default function ExampleModal() {
                 description: "Create a slide-out drawer menu with navigation items"
             }, {
                 name: "Complete Mobile App",
-                code: `@screen MobileDemo:
+                code: `screen MobileDemo:
   header:
     # My App
     @[Menu](MyDrawer)

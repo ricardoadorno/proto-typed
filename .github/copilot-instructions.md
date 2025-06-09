@@ -34,14 +34,14 @@ This is a React-based UI prototyping tool that allows users to create interactiv
 
 ### Screen Declaration
 ```
-@screen ScreenName:
+screen ScreenName:
   // Screen content
 ```
 
 ### Component Declaration
 Components allow you to create reusable UI blocks that can be instantiated throughout your prototype:
 ```
-@component ComponentName:
+component ComponentName:
   // Component content
   > This is reusable content
   @[Button]()
@@ -79,7 +79,7 @@ These elements can be activated by calling their names in navigation actions.
 - `$ComponentName` - Component instantiation
 
 ### Component System
-- `@component ComponentName:` - Component declaration
+- `component ComponentName:` - Component declaration
 - `$ComponentName` - Component instantiation/usage
 
 ### Named UI Elements  

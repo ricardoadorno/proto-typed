@@ -3,7 +3,7 @@
  * Demonstrates how to use the -1 navigation feature to go back to previous screens
  */
 const backNavigationExample = `
-@screen Home:
+screen Home:
   col:
     # Tela Principal
     > Bem-vindo ao sistema de navegação com histórico!
@@ -12,7 +12,7 @@ const backNavigationExample = `
     @[Ir para Página 2](Page2)
     @[Ir para Configurações](Settings)
 
-@screen Page1:
+screen Page1:
   col:
     # Página 1
     > Esta é a primeira página do exemplo.
@@ -22,7 +22,7 @@ const backNavigationExample = `
     @[Voltar](-1)
     @[Ir para Home](Home)
 
-@screen Page2:
+screen Page2:
   col:
     # Página 2
     > Esta é a segunda página do exemplo.
@@ -32,7 +32,7 @@ const backNavigationExample = `
     @[Voltar](-1)
     @[Ir para Home](Home)
 
-@screen Settings:
+screen Settings:
   col:
     # Configurações
     > Página de configurações do sistema.

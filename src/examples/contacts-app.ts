@@ -1,4 +1,4 @@
-const contactsAppExample = `@screen ContactsList:
+const contactsAppExample = `screen ContactsList:
   header:
     > Lista de Contatos
     @[☰](MainDrawer)
@@ -84,7 +84,7 @@ drawer MainDrawer:
   drawer_item [Sobre]{ℹ️}(About)
   drawer_item [Ajuda]{❓}(Help)
 
-@screen Favorites:
+screen Favorites:
   header:
     > Favoritos
     @[☰](MainDrawer)
@@ -94,7 +94,7 @@ drawer MainDrawer:
     
     > Adicione contatos aos favoritos tocando na estrela ao lado do nome.
 
-@screen Groups:
+screen Groups:
   header:
     > Grupos
     @[☰](MainDrawer)
@@ -114,7 +114,7 @@ drawer MainDrawer:
       > Amigos
       > "8 contatos"
 
-@screen Settings:
+screen Settings:
   header:
     > Configurações
     @[☰](MainDrawer)
@@ -135,7 +135,7 @@ drawer MainDrawer:
       - Tamanho da fonte
       - Idioma
 
-@screen About:
+screen About:
   header:
     > Sobre
     @[☰](MainDrawer)
@@ -149,7 +149,7 @@ drawer MainDrawer:
     
     *> © 2025 Todos os direitos reservados
 
-@screen Help:
+screen Help:
   header:
     > Ajuda
     @[☰](MainDrawer)
