@@ -286,14 +286,13 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
 
   // Render global modals and drawers
   const globalElementsHtml = renderGlobalElements(globalElements.modals, globalElements.drawers);
-
-  // Tailwind CDN and dark mode script for export
+  // Tailwind CDN and dark mode configuration for export
   const tailwindCdn = `<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>`;
   const tailwindConfig = `<script>tailwind.config = { darkMode: 'class', theme: { extend: {} } };</script>`;
-  const darkModeScript = `<script>(function(){try{var e=window.matchMedia('(prefers-color-scheme: dark)').matches;var d=document.documentElement;d.classList[e?'add':'remove']('dark');}catch(_){}})();</script>`;  // Create the full HTML document
+  const darkModeScript = `<script>document.documentElement.classList.add('dark');</script>`;  // Create the full HTML document
   return `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -301,14 +300,14 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
   ${tailwindConfig}
   <title>Exported Screens</title>
   <style>
-    html, body { min-height: 100%; background: linear-gradient(to bottom right, #f8fafc, #e0e7ff); }
-    @media (prefers-color-scheme: dark) {
-      html, body { background: linear-gradient(to bottom right, #0f172a, #1e293b); }
+    html, body { 
+      min-height: 100%; 
+      background: linear-gradient(to bottom right, #0f172a, #1e293b);
     }
     .screen { transition: background 0.3s; }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 pb-8">
+<body class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 pb-8">
   ${screensHtml}${globalElementsHtml}  ${darkModeScript}
   <script>
     ${generateNavigationScript()}

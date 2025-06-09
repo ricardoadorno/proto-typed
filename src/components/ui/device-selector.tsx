@@ -18,11 +18,10 @@ export function DeviceSelector({
         <div className="mb-4">
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 Preview Device
-            </label>
-            <select
+            </label>            <select
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                className="w-full px-3 py-2 bg-white dark:bg-slate-700 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white"
             >
                 {options.map((option) => (
                     <option key={option.value} value={option.value}>

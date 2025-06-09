@@ -11,38 +11,22 @@ button {
     @apply cursor-pointer;
 }
 
-/* Custom scrollbar styles for webkit browsers */
+/* Custom scrollbar styles for webkit browsers - dark mode only */
 ::-webkit-scrollbar {
     width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #f3f4f6;
-}
-
-@media (prefers-color-scheme: dark) {
-    ::-webkit-scrollbar-track {
-        background-color: #1f2937;
-    }
+    background-color: #1f2937;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #9ca3af;
+    background-color: #4b5563;
     border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
     background-color: #6b7280;
-}
-
-@media (prefers-color-scheme: dark) {
-    ::-webkit-scrollbar-thumb {
-        background-color: #4b5563;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-        background-color: #6b7280;
-    }
 }
 
 .list-item-content {
@@ -54,24 +38,12 @@ button {
 
 .list-item-main-text {
     font-weight: 600;
-    color: rgb(17 24 39); /* text-gray-900 */
-}
-
-@media (prefers-color-scheme: dark) {
-    .list-item-main-text {
-        color: white;
-    }
+    color: white;
 }
 
 .list-item-sub-text {
-    color: rgb(75 85 99); /* text-gray-600 */
+    color: rgb(156 163 175); /* text-gray-400 */
     font-size: 0.875rem;
-}
-
-@media (prefers-color-scheme: dark) {
-    .list-item-sub-text {
-        color: rgb(156 163 175); /* dark:text-gray-400 */
-    }
 }
 
 /* Simple list item styles */
@@ -319,15 +291,13 @@ button {
     pointer-events: none;
 }
 
-/* Dark theme support */
-@media (prefers-color-scheme: dark) {
-    .browser-mockup {
-        background: rgb(15 23 42); /* slate-900 */
-        border-top-color: rgb(30 41 59); /* slate-800 */
-    }
-    
-    .browser-mockup.with-url:after {
-        background: rgb(30 41 59); /* slate-800 */
-        border-color: rgb(51 65 85); /* slate-700 */
-    }
+/* Default dark theme styles */
+.browser-mockup {
+    background: rgb(15 23 42); /* slate-900 */
+    border-top-color: rgb(30 41 59); /* slate-800 */
+}
+
+.browser-mockup.with-url:after {
+    background: rgb(30 41 59); /* slate-800 */
+    border-color: rgb(51 65 85); /* slate-700 */
 }

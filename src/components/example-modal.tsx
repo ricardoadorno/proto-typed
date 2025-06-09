@@ -314,10 +314,9 @@ export default function ExampleModal() {
                                 onClick={() => {
                                     setActiveTab(tab.id);
                                     setSelectedExample(0);
-                                }}
-                                className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 font-medium ${activeTab === tab.id
-                                    ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-md'
-                                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
+                                }} className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 font-medium ${activeTab === tab.id
+                                    ? 'bg-slate-700 text-blue-400 shadow-md'
+                                    : 'text-slate-400 hover:text-slate-200'
                                     }`}
                             >
                                 <span className="text-lg">{tab.icon}</span>
@@ -409,7 +408,7 @@ export default function ExampleModal() {
                                 <span className="text-lg">👁️</span>
                                 <h4 className="text-lg font-semibold text-slate-800 dark:text-white">Live Preview</h4>
                             </div>                            <div
-                                className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg p-4 h-96 overflow-auto shadow-inner"
+                                className="bg-slate-800 border border-slate-600 rounded-lg p-4 h-96 overflow-auto shadow-inner"
                                 onClick={(e) => {
                                     // Handle navigation with data-nav attributes
                                     const target = (e.target as Element).closest('[data-nav]');

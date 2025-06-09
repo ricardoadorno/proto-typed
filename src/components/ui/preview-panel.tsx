@@ -10,9 +10,9 @@ export function PreviewPanel({
     children
 }: PreviewPanelProps) {
     return (
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6 mb-6">
+        <div className="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-6 mb-6">
             <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-slate-800 dark:text-white">
+                <h2 className="text-xl font-semibold text-white">
                     {title}
                 </h2>
             </div>

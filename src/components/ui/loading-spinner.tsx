@@ -16,7 +16,7 @@ export function LoadingSpinner({
     return (
         <div className="flex items-center justify-center h-full">
             <div className={`animate-spin rounded-full ${sizeClasses[size]} border-b-2 border-blue-600`}></div>
-            <span className="ml-2 text-slate-600 dark:text-slate-300">{message}</span>
+            <span className="ml-2 text-slate-300">{message}</span>
         </div>
     );
 }

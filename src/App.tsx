@@ -54,15 +54,13 @@ export default function App() {
 
     useEffect(() => {
         handleParse(input);
-    }, [input, handleParse]);
-
-    return (
-        <div className="min-h-full bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 pb-8">
+    }, [input, handleParse]); return (
+        <div className="min-h-full bg-gradient-to-br from-slate-900 to-slate-800 pb-8">
             <div className="container mx-auto p-6">
                 <div className="grid lg:grid-cols-2 gap-8">
                     {/* Editor Panel */}
                     <div className="flex flex-col space-y-6">
-                        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-6">
+                        <div className="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-6">
                             <AppHeader />                            <ActionButtons onExportHtml={exportAsHtml}>
                                 <ExampleModal />
                                 <AstModal ast={astResultJson} html={astToHtmlString(ast, { currentScreen: currentScreen || undefined })} />                            </ActionButtons>
