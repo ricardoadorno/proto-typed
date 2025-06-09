@@ -44,7 +44,7 @@ export default function App() {
 
         return (
             <div
-                className="p-4 overflow-auto h-full w-full"
+                className="overflow-auto h-full w-full"
                 style={{ containerType: 'inline-size' }}
                 dangerouslySetInnerHTML={{ __html: htmlString }}
                 onClick={handleNavigationClick}
@@ -54,46 +54,45 @@ export default function App() {
 
     useEffect(() => {
         handleParse(input);
-    }, [input, handleParse]); return (
-        <div className="min-h-full bg-gradient-to-br from-slate-900 to-slate-800 pb-8">
-            <div className="container mx-auto p-6">
-                <div className="grid lg:grid-cols-2 gap-8">
-                    {/* Editor Panel */}
-                    <div className="flex flex-col space-y-6">
-                        <div className="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-6">
-                            <AppHeader />                            <ActionButtons onExportHtml={exportAsHtml}>
-                                <ExampleModal />
-                                <AstModal ast={astResultJson} html={astToHtmlString(ast, { currentScreen: currentScreen || undefined })} />                            </ActionButtons>
+    }, [input, handleParse]); return (<div className="min-h-full bg-gradient-to-br from-slate-900 to-slate-800 pb-8">
+        <div className="w-full">
+            <div className="grid lg:grid-cols-2 gap-8 p-6">
+                {/* Editor Panel */}
+                <div className="flex flex-col space-y-6">
+                    <div className="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-6">
+                        <AppHeader />                            <ActionButtons onExportHtml={exportAsHtml}>
+                            <ExampleModal />
+                            <AstModal ast={astResultJson} html={astToHtmlString(ast, { currentScreen: currentScreen || undefined })} />                            </ActionButtons>
 
-                            <ExampleButtons
-                                examples={exampleConfigs}
-                                onExampleSelect={(code: string) => {
-                                    setInput(code);
-                                    resetNavigationHistory();
-                                }}
-                            />
+                        <ExampleButtons
+                            examples={exampleConfigs}
+                            onExampleSelect={(code: string) => {
+                                setInput(code);
+                                resetNavigationHistory();
+                            }}
+                        />
 
-                            <DeviceSelector
-                                value={uiStyle}
-                                onChange={setUiStyle}
-                            />
-                        </div>
-                        <EditorPanel error={error}>
-                            <DSLEditor
-                                value={input}
-                                onChange={(value) => setInput(value || "")}
-                            />
-                        </EditorPanel>
+                        <DeviceSelector
+                            value={uiStyle}
+                            onChange={setUiStyle}
+                        />
                     </div>
-                    <div className="flex flex-col">
-                        <PreviewPanel />
+                    <EditorPanel error={error}>
+                        <DSLEditor
+                            value={input}
+                            onChange={(value) => setInput(value || "")}
+                        />
+                    </EditorPanel>
+                </div>
+                <div className="flex flex-col">
+                    <PreviewPanel />
 
-                        <PreviewDevice deviceType={uiStyle}>
-                            {renderScreen()}
-                        </PreviewDevice>
-                    </div>
+                    <PreviewDevice deviceType={uiStyle}>
+                        {renderScreen()}
+                    </PreviewDevice>
                 </div>
             </div>
         </div>
+    </div>
     );
 }

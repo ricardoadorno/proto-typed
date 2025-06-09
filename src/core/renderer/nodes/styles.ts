@@ -44,17 +44,27 @@ export const elementStyles = {
   
   // Complex list items
   simpleListItem: 'flex justify-between items-center p-3 bg-gray-800 border border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200',
-  complexListItem: 'flex items-center justify-between p-4 bg-gray-800 border border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200',
-    // Mobile components
-  header: 'header fixed top-0 left-0 right-0 z-50 bg-gray-800 shadow-sm border-gray-700 px-4 py-3 flex items-center justify-between',
-  bottomNav: 'bottom bottom-nav bg-gray-800 border-t border-gray-700 flex flex-row justify-around py-1 z-50',
-  navItem: 'flex flex-col items-center justify-center py-2 px-1 text-xs font-medium text-gray-400 hover:text-blue-500 transition-colors duration-200',
-  drawerItem: 'flex items-center w-full px-4 py-3 text-left text-gray-300 hover:bg-gray-700 transition-colors duration-200',
-    // FAB
-  fab: 'w-14 h-14 rounded-full flex items-center justify-center text-xl font-bold',
-  fabItem: 'flex items-center',
-  fabItemBtn: 'w-10 h-10 rounded-full flex items-center justify-center text-sm transition-all duration-200 transform hover:scale-110',
-  fabItemLabel: 'ml-2 text-sm font-medium',
+  complexListItem: 'flex items-center justify-between p-4 bg-gray-800 border border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200',  // Mobile components
+  header: 'sticky top-0 left-0 right-0 z-50 bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800 backdrop-blur-md bg-opacity-95 shadow-xl border-b border-gray-700/50 px-6 py-4 flex items-center justify-between min-h-[72px]',
+  headerTitle: 'text-xl md:text-2xl font-bold text-white truncate mr-4 mb-0',
+  headerActions: 'flex items-center gap-3',
+  headerButton: 'px-3 py-2 rounded-lg bg-gray-700/70 hover:bg-gray-600/80 text-gray-200 hover:text-white transition-all duration-200 border border-gray-600/50 hover:border-gray-500 shadow-md hover:shadow-lg transform hover:scale-105',
+  headerIcon: 'w-5 h-5 mr-2',
+  headerBrand: 'flex items-center gap-3',
+  headerLogo: 'w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg',
+  bottomNav: 'sticky bottom-0 left-0 right-0 bg-gray-800/95 backdrop-blur-md border-t border-gray-700/50 flex flex-row justify-around py-2 z-50 w-full shadow-2xl',
+  navItem: 'flex flex-col items-center justify-center py-2 px-3 text-xs font-medium text-gray-400 hover:text-blue-400 active:text-blue-500 transition-all duration-200 rounded-lg hover:bg-gray-700/50 min-w-[60px]',
+  navItemIcon: 'mb-1 text-lg',
+  navItemLabel: 'text-xs font-medium',
+  drawerItem: 'flex items-center w-full px-4 py-3 text-left text-gray-300 hover:bg-gray-700/70 transition-all duration-200 rounded-lg mx-2 my-1',
+  drawerItemIcon: 'mr-3 text-lg flex-shrink-0',
+  drawerItemLabel: 'font-medium',  // FAB
+  fab: 'sticky bottom-25  w-14 h-14 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-2xl hover:shadow-blue-500/25 flex items-center justify-center text-xl font-bold text-white transition-all duration-300 transform hover:scale-110 z-40 ml-auto mt-auto',
+  fabContainer: 'sticky   right-6 z-40 flex flex-col items-end',
+  fabItemsList: 'mb-8 space-y-6 opacity-0 transform translate-y-4 transition-all duration-300 pointer-events-none',
+  fabItem: 'flex items-center justify-end',
+  fabItemBtn: 'w-12 h-12 mb-3 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center text-lg text-white transition-all duration-200 transform hover:scale-110 shadow-lg hover:shadow-xl',
+  fabItemLabel: 'mr-3 bg-gray-800 text-white px-3 py-1 rounded-lg text-sm font-medium shadow-lg whitespace-nowrap',
     // Modal and drawer
   modalBackdrop: 'modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-50',
   modalContent: 'modal-content bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6 relative',
@@ -71,6 +81,16 @@ export const elementStyles = {
  */
 export function getMarginClasses(context?: string): string {
   return context === 'header' ? '' : 'mr-4 mb-4';
+}
+
+/**
+ * Get button classes based on context
+ */
+export function getButtonClasses(context?: string): string {
+  if (context === 'header') {
+    return elementStyles.headerButton;
+  }
+  return elementStyles.button;
 }
 
 /**

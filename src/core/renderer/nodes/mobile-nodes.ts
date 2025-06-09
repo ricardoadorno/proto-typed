@@ -6,9 +6,39 @@ import { generateNavigationAttributes } from '../navigationHelper';
  * Render header element
  */
 export function renderHeader(node: AstNode, nodeRenderer?: (node: AstNode, context?: string) => string): string {
-  const headerElements = node.elements && nodeRenderer ? 
-    node.elements.flat().map(element => nodeRenderer(element, 'header')).join('\n') : '';
-  return `<header class="${elementStyles.header}">${headerElements}</header>`;
+  if (!node.elements || !nodeRenderer) {
+    return `<header class="${elementStyles.header}"></header>`;
+  }
+  
+  // Separate title and action elements
+  const titleElements: string[] = [];
+  const actionElements: string[] = [];
+  
+  for (const element of node.elements.flat()) {
+    const renderedElement = nodeRenderer(element, 'header');
+    
+    // Check if it's a heading (title)
+    if (element.type.startsWith('Heading')) {
+      const titleContent = renderedElement.replace(/<h[1-6][^>]*>(.*?)<\/h[1-6]>/g, '$1');
+      titleElements.push(`<div class="${elementStyles.headerTitle}">${titleContent}</div>`);
+    }
+    // Check if it's a button (action)
+    else if (element.type === 'Button') {
+      const buttonContent = renderedElement.replace(/class="[^"]*"/g, `class="${elementStyles.headerButton}"`);
+      actionElements.push(buttonContent);
+    }
+    // Other elements go to actions by default
+    else {
+      actionElements.push(renderedElement);
+    }
+  }
+  
+  const titleSection = titleElements.join('');
+  const actionSection = actionElements.length > 0 
+    ? `<div class="${elementStyles.headerActions}">${actionElements.join('')}</div>`
+    : '';
+  
+  return `<header class="${elementStyles.header}">${titleSection}${actionSection}</header>`;
 }
 
 /**
@@ -23,14 +53,14 @@ export function renderBottomNav(node: AstNode): string {
       
       return `
         <button class="${elementStyles.navItem}" ${navAttrs}>
-          <span class="mb-1">${icon || ''}</span>
-          <span>${label || ''}</span>
+          <span class="${elementStyles.navItemIcon}">${icon || ''}</span>
+          <span class="${elementStyles.navItemLabel}">${label || ''}</span>
         </button>
       `;
     }
     return '';
   }).join('') || '';
-  return `<nav class="${elementStyles.bottomNav}" style="margin-top: auto; order: 999;">${navItems}</nav>`;
+  return `<nav class="${elementStyles.bottomNav}">${navItems}</nav>`;
 }
 
 /**
@@ -43,8 +73,8 @@ export function renderNavItem(node: AstNode): string {
   
   return `
     <button class="${elementStyles.navItem}" ${navItemAttrs}>
-      <span class="mb-1">${navIcon || ''}</span>
-      <span>${navLabel || ''}</span>
+      <span class="${elementStyles.navItemIcon}">${navIcon || ''}</span>
+      <span class="${elementStyles.navItemLabel}">${navLabel || ''}</span>
     </button>
   `;
 }
@@ -59,8 +89,8 @@ export function renderDrawerItem(node: AstNode): string {
   
   return `
     <button class="${elementStyles.drawerItem}" ${drawerItemAttrs}>
-      <span class="mr-3 text-lg">${drawerIcon || ''}</span>
-      <span>${drawerLabel || ''}</span>
+      <span class="${elementStyles.drawerItemIcon}">${drawerIcon || ''}</span>
+      <span class="${elementStyles.drawerItemLabel}">${drawerLabel || ''}</span>
     </button>
   `;
 }
@@ -80,13 +110,12 @@ export function renderFAB(node: AstNode): string {
       const itemProps = item.props as any;
       const { icon: itemIcon, label: itemLabel, action: itemAction } = itemProps || {};
       const itemAttrs = generateNavigationAttributes(itemAction);
-      
-      return `
+        return `
         <div class="${elementStyles.fabItem}">
-          <button class="${elementStyles.fabItemBtn} w-12 h-12 rounded-full text-lg" ${itemAttrs}>
+          ${itemLabel ? `<span class="${elementStyles.fabItemLabel}">${itemLabel}</span>` : ''}
+          <button class="${elementStyles.fabItemBtn}" ${itemAttrs}>
             ${itemIcon || ''}
           </button>
-          ${itemLabel ? `<span class="fab-item-label">${itemLabel}</span>` : ''}
         </div>
       `;
     }).join('');

@@ -88,24 +88,6 @@ function generateLayoutClasses(screen: AstNode): string[] {
 }
 
 /**
- * Render screen elements HTML
- */
-function renderScreenElements(screen: AstNode): string {
-  return screen.elements
-    ?.filter(element => {
-      // Keep all elements except named modals and drawers (they'll be rendered globally)
-      const elementType = element.type?.toLowerCase();
-      if (elementType === 'modal' || elementType === 'drawer') {
-        // Only filter out elements that have names (global elements)
-        return !element.name;
-      }
-      return element != null;
-    })
-    .map(element => renderNode(element))
-    .join('\n      ') || '';
-}
-
-/**
  * Render a single screen to HTML with full configuration
  */
 function renderScreen(config: ScreenRenderConfig): string {
@@ -114,11 +96,49 @@ function renderScreen(config: ScreenRenderConfig): string {
   const screenName = screen.name?.toLowerCase() || '';
   const style = getScreenVisibilityStyle(screenName, index, currentScreen);
   const layoutClasses = generateLayoutClasses(screen);
-  const elementsHtml = renderScreenElements(screen);
+  
+  // Check if screen has header, bottom nav, or FAB to add appropriate classes
+  const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
+  const hasBottomNav = screen.elements?.some(element => element.type === 'BottomNav') || false;
+  const hasFAB = screen.elements?.some(element => element.type === 'FAB') || false;
+  
+  if (hasHeader) layoutClasses.push('has-header');
+  if (hasBottomNav) layoutClasses.push('has-bottom-nav');
+  if (hasFAB) layoutClasses.push('has-fab');
+  
+  // Separate header, content, FAB, and bottom nav for proper positioning
+  const headerElements = screen.elements?.filter(element => element.type === 'Header') || [];
+  const fabElements = screen.elements?.filter(element => element.type === 'FAB') || [];
+  const bottomNavElements = screen.elements?.filter(element => element.type === 'BottomNav') || [];
+  const contentElements = screen.elements?.filter(element => 
+    element.type !== 'Header' && element.type !== 'FAB' && element.type !== 'BottomNav'
+  ) || [];
+  
+  const headerHtml = headerElements
+    ?.map(element => renderNode(element))
+    .join('\n') || '';
+    
+  const contentHtml = contentElements
+    ?.filter(element => element != null)
+    .map(element => renderNode(element))
+    .join('\n      ') || '';
+    
+  const fabHtml = fabElements
+    ?.map(element => renderNode(element))
+    .join('\n') || '';
+    
+  const bottomNavHtml = bottomNavElements
+    ?.map(element => renderNode(element))
+    .join('\n') || '';
   
   return `
-  <div id="${screenName}-screen" class="screen container ${screenName} ${layoutClasses.join(' ')}" ${style}>
-      ${elementsHtml}
+  <div id="${screenName}-screen" class="screen container ${screenName} ${layoutClasses.join(' ')}" ${style} style="display: flex; flex-direction: column; min-height: 100vh; position: relative;">
+      ${headerHtml}
+      <div style="flex: 1; padding: 1rem; position: relative;">
+        ${contentHtml}
+        ${fabHtml}
+      </div>
+      ${bottomNavHtml}
   </div>`;
 }
 
@@ -129,28 +149,52 @@ function renderScreen(config: ScreenRenderConfig): string {
 export function screenToHtml(screen: AstNode): string {
   const screenName = screen.name || '';
   
-  // Check if screen has header or bottom nav to add appropriate classes
+  // Check if screen has header, bottom nav, or FAB to add appropriate classes
   const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
   const hasBottomNav = screen.elements?.some(element => element.type === 'BottomNav') || false;
+  const hasFAB = screen.elements?.some(element => element.type === 'FAB') || false;
   
   const layoutClasses = [];
   if (hasHeader) layoutClasses.push('has-header');
   if (hasBottomNav) layoutClasses.push('has-bottom-nav');
-    const elementsHtml = screen.elements
-    ?.filter(element => {
-      // Keep all elements except named modals and drawers (they'll be rendered globally)
-      if (element.type === 'modal' || element.type === 'drawer') {
-        // Only filter out elements that have names (global elements)
-        return !element.name;
-      }
-      return element != null;
-    })
+  if (hasFAB) layoutClasses.push('has-fab');
+  
+  // Separate header, content, FAB, and bottom nav for proper positioning
+  const headerElements = screen.elements?.filter(element => element.type === 'Header') || [];
+  const fabElements = screen.elements?.filter(element => element.type === 'FAB') || [];
+  const bottomNavElements = screen.elements?.filter(element => element.type === 'BottomNav') || [];
+  const contentElements = screen.elements?.filter(element => 
+    element.type !== 'Header' && element.type !== 'FAB' && element.type !== 'BottomNav' &&
+    // Keep all elements except named modals and drawers (they'll be rendered globally)
+    !(element.type === 'modal' && element.name) &&
+    !(element.type === 'drawer' && element.name)
+  ) || [];
+  
+  const headerHtml = headerElements
+    ?.map(element => renderNode(element))
+    .join('\n') || '';
+    
+  const contentHtml = contentElements
+    ?.filter(element => element != null)
     .map(element => renderNode(element))
     .join('\n      ') || '';
+    
+  const fabHtml = fabElements
+    ?.map(element => renderNode(element))
+    .join('\n') || '';
+    
+  const bottomNavHtml = bottomNavElements
+    ?.map(element => renderNode(element))
+    .join('\n') || '';
   
   return `
-  <div class="screen container ${screenName.toLowerCase()} ${layoutClasses.join(' ')}">
-      ${elementsHtml}
+  <div class="screen container ${screenName.toLowerCase()} ${layoutClasses.join(' ')}" style="display: flex; flex-direction: column; min-height: 100vh; position: relative;">
+      ${headerHtml}
+      <div style="flex: 1; padding: 1rem; position: relative;">
+        ${contentHtml}
+        ${fabHtml}
+      </div>
+      ${bottomNavHtml}
   </div>
   `.trim();
 }
@@ -203,6 +247,7 @@ function renderGlobalElements(modals: AstNode[], drawers: AstNode[]): string {
 
 /**
  * Convert AST to HTML string representation with pagination for in-app preview
+ * This version treats the container div as the "body" by adding appropriate styles
  */
 export function astToHtmlString(ast: AstNode | AstNode[], { currentScreen }: RenderOptions = {}): string {
   const nodes = Array.isArray(ast) ? ast : [ast];
@@ -218,12 +263,124 @@ export function astToHtmlString(ast: AstNode | AstNode[], { currentScreen }: Ren
   
   // Extract global modals and drawers
   const globalElements = extractGlobalElements(screens);
-    // Render screens and global elements
+  
+  // Render screens and global elements
   const screensHtml = renderAllScreens(screens, currentScreen);
   const globalElementsHtml = renderGlobalElements(globalElements.modals, globalElements.drawers);
+  // Add a wrapper div with body-like styles for proper rendering within the preview container
+  const result = `<div class=" min-h-full bg-gradient-to-br from-slate-900 to-slate-800 text-white relative" style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+<style>
+/* FAB animation styles for preview */
+.fab-items-list.show {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  pointer-events: auto !important;
+}
+
+.fab-item {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.2s ease-out;
+}
+
+.fab-item.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Ensure proper stacking */
+.fab-container {
+  position: sticky !important;
+  bottom: 1.5rem !important;
+  right: 1.5rem !important;
+  margin-left: auto !important;
+  margin-top: auto !important;
+  z-index: 50 !important;
+}
+
+/* Header and bottom nav overrides for mobile previews */
+.iphone-x .header,
+.browser-mockup .header {
+  position: sticky !important;
+  top: 0 !important;
+}
+
+.iphone-x .bottom-nav,
+.browser-mockup .bottom-nav {
+  position: sticky !important;
+  bottom: 0 !important;
+  margin-top: auto !important;
+}
+</style>
+${screensHtml}${globalElementsHtml}
+<script>
+${generateNavigationScript()}
+
+// FAB toggle functionality
+function toggleFAB(fabButton) {
+  const fabContainer = fabButton.closest('.fab-container') || fabButton.parentElement;
+  const fabItemsList = fabContainer.querySelector('.fab-items-list');
+  const fabItems = fabItemsList ? fabItemsList.querySelectorAll('.fab-item') : [];
+  const isOpen = fabItemsList && fabItemsList.classList.contains('show');
   
-  const result = `${screensHtml}${globalElementsHtml}`;
-  console.log('Final HTML output length:', result);
+  if (isOpen) {
+    // Close FAB
+    fabItems.forEach((item, index) => {
+      setTimeout(() => {
+        item.classList.remove('show');
+      }, index * 50);
+    });
+    
+    setTimeout(() => {
+      fabItemsList.classList.remove('show');
+    }, fabItems.length * 50);
+    
+    // Rotate FAB icon
+    fabButton.style.transform = 'rotate(0deg)';
+  } else if (fabItemsList) {
+    // Open FAB
+    fabItemsList.classList.add('show');
+    
+    fabItems.forEach((item, index) => {
+      setTimeout(() => {
+        item.classList.add('show');
+      }, index * 50);
+    });
+    
+    // Rotate FAB icon
+    fabButton.style.transform = 'rotate(45deg)';
+  }
+}
+
+// Close FAB when clicking outside
+document.addEventListener('click', function(event) {
+  const fabContainers = document.querySelectorAll('.fab-container');
+  fabContainers.forEach(container => {
+    if (!container.contains(event.target)) {
+      const fabItemsList = container.querySelector('.fab-items-list');
+      const fabItems = container.querySelectorAll('.fab-item');
+      const fabButton = container.querySelector('.fab');
+      
+      if (fabItemsList && fabItemsList.classList.contains('show')) {
+        fabItems.forEach((item, index) => {
+          setTimeout(() => {
+            item.classList.remove('show');
+          }, index * 50);
+        });
+        
+        setTimeout(() => {
+          fabItemsList.classList.remove('show');
+        }, fabItems.length * 50);
+        
+        if (fabButton) {
+          fabButton.style.transform = 'rotate(0deg)';
+        }
+      }
+    }
+  });
+});
+</script>
+</div>`;
   
   return result;
 }
@@ -255,7 +412,7 @@ function renderScreenForDocument(screen: AstNode, index: number): string {
 
   // Add Tailwind container and screen classes, and id for navigation
   return `
-  <div id="${screenName}-screen" class="screen container mx-auto px-4 py-8 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 ${screenName} ${layoutClasses.join(' ')}" ${style}>
+  <div id="${screenName}-screen" class="screen container mx-auto  ${screenName} ${layoutClasses.join(' ')}" ${style}>
       ${elementsHtml}
   </div>`;
 }
