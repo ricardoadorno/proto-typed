@@ -52,11 +52,6 @@ export const elementStyles = {
   complexListItem: 'flex items-center justify-between p-4 bg-gray-800 border border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200',  // Mobile components
   header: 'sticky top-0 left-0 right-0 z-50 bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800 backdrop-blur-md bg-opacity-95 shadow-xl border-b border-gray-700/50 px-6 py-4 flex items-center justify-between min-h-[72px]',
   headerTitle: 'text-xl md:text-2xl font-bold text-white truncate mr-4 mb-0',
-  headerActions: 'flex items-center gap-3',
-  headerButton: 'px-3 py-2 rounded-lg bg-gray-700/70 hover:bg-gray-600/80 text-gray-200 hover:text-white transition-all duration-200 border border-gray-600/50 hover:border-gray-500 shadow-md hover:shadow-lg transform hover:scale-105',
-  headerIcon: 'w-5 h-5 mr-2',
-  headerBrand: 'flex items-center gap-3',
-  headerLogo: 'w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg',
   bottomNav: 'sticky bottom-0 left-0 right-0 bg-gray-800/95 backdrop-blur-md border-t border-gray-700/50 flex flex-row justify-around py-2 z-50 w-full shadow-2xl',
   navItem: 'flex flex-col items-center justify-center py-2 px-3 text-xs font-medium text-gray-400 hover:text-blue-400 active:text-blue-500 transition-all duration-200 rounded-lg hover:bg-gray-700/50 min-w-[60px]',
   navItemIcon: 'mb-1 text-lg',
@@ -93,7 +88,7 @@ export function getMarginClasses(context?: string): string {
  */
 export function getButtonClasses(context?: string, variant?: string): string {
   if (context === 'header') {
-    return elementStyles.headerButton;
+    return '';
   }
   
   // Return appropriate button variant class

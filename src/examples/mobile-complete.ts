@@ -52,7 +52,7 @@ screen MobileApp:
 
 screen MessagesScreen:
   header:
-    #[< Back](MobileApp)
+    @_[CircleArrowLeft](MobileApp)
     # Messages
     @[Search]{🔍}
 
@@ -68,7 +68,7 @@ screen MessagesScreen:
 
 screen ProfileScreen:
   header:
-    #[< Back](MobileApp)
+    @_[CircleArrowLeft](MobileApp)
     # Profile
     @[Edit]{✏️}
 
@@ -103,7 +103,7 @@ screen ProfileScreen:
 
 screen SettingsScreen:
   header:
-    #[< Back](MobileApp)
+    @_[CircleArrowLeft](MobileApp)
     # Settings
 
   card:

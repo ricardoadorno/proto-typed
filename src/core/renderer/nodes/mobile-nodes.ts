@@ -33,11 +33,6 @@ export function renderHeader(node: AstNode, nodeRenderer?: (node: AstNode, conte
       const titleContent = renderedElement.replace(/<h[1-6][^>]*>(.*?)<\/h[1-6]>/g, '$1');
       titleElements.push(`<div class="${elementStyles.headerTitle}">${titleContent}</div>`);
     }
-    // Check if it's a button (action)
-    else if (element.type === 'Button') {
-      const buttonContent = renderedElement.replace(/class="[^"]*"/g, `class="${elementStyles.headerButton}"`);
-      actionElements.push(buttonContent);
-    }
     // Other elements go to actions by default
     else {
       actionElements.push(renderedElement);
@@ -45,11 +40,8 @@ export function renderHeader(node: AstNode, nodeRenderer?: (node: AstNode, conte
   }
   
   const titleSection = titleElements.join('');
-  const actionSection = actionElements.length > 0 
-    ? `<div class="${elementStyles.headerActions}">${actionElements.join('')}</div>`
-    : '';
   
-  return `<header class="${elementStyles.header}">${titleSection}${actionSection}</header>`;
+  return `<header class="${elementStyles.header}">${titleSection}${actionElements.join('')}</header>`;
 }
 
 /**
