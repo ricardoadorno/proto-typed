@@ -60,8 +60,8 @@ export const elementStyles = {
   drawerItem: 'flex items-center w-full px-4 py-3 text-left text-gray-300 hover:bg-gray-700/70 transition-all duration-200 rounded-lg mx-2 my-1',
   drawerItemIcon: 'mr-3 text-lg flex-shrink-0',
   drawerItemLabel: 'font-medium',  // FAB
-  fab: 'sticky bottom-25  w-14 h-14 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-2xl hover:shadow-blue-500/25 flex items-center justify-center text-xl font-bold text-white transition-all duration-300 transform hover:scale-110 z-40 ml-auto mt-auto',
-  fabContainer: 'sticky   right-6 z-40 flex flex-col items-end',
+  fab: 'w-14 h-14 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-2xl hover:shadow-blue-500/25 flex items-center justify-center text-xl font-bold text-white transition-all duration-300 transform hover:scale-110 z-40',
+  fabContainer: 'fab-container',
   fabItemsList: 'mb-8 space-y-6 opacity-0 transform translate-y-4 transition-all duration-300 pointer-events-none',
   fabItem: 'flex items-center justify-end',
   fabItemBtn: 'w-12 h-12 mb-3 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center text-lg text-white transition-all duration-200 transform hover:scale-110 shadow-lg hover:shadow-xl',

@@ -117,21 +117,22 @@ export function renderFAB(node: AstNode): string {
           </button>
         </div>
       `;
-    }).join('');
-    
-    return `
-      <div class="fab-container">
+    }).join('');    return `
+      <div class="${elementStyles.fabContainer}">
         <div class="fab-items-list">
           ${fabItemsHtml}
-        </div>        <button class="${elementStyles.fab}" onclick="toggleFAB(this)" ${fabAttrs}>
+        </div>
+        <button class="${elementStyles.fab}" onclick="toggleFAB(this)" ${fabAttrs}>
           ${renderIcon(fabIcon || '+')}
         </button>
       </div>
     `;  } else {
     return `
-      <button class="${elementStyles.fab}" ${fabAttrs}>
-        ${renderIcon(fabIcon || '+')}
-      </button>
+      <div class="${elementStyles.fabContainer}">
+        <button class="${elementStyles.fab}" ${fabAttrs}>
+          ${renderIcon(fabIcon || '+')}
+        </button>
+      </div>
     `;
   }
 }

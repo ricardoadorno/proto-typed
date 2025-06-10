@@ -129,15 +129,13 @@ function renderScreen(config: ScreenRenderConfig): string {
     
   const bottomNavHtml = bottomNavElements
     ?.map(element => renderNode(element))
-    .join('\n') || '';
-  
-  return `
-  <div id="${screenName}-screen" class="screen container ${screenName} ${layoutClasses.join(' ')}" ${style} style="display: flex; flex-direction: column; min-height: 100vh; position: relative;">
+    .join('\n') || '';  return `
+  <div id="${screenName}-screen" class="screen container ${screenName} ${layoutClasses.join(' ')} flex flex-col min-h-screen relative" ${style}>
       ${headerHtml}
-      <div style="flex: 1; padding: 1rem; position: relative;">
+      <div class="flex-1 p-4 relative">
         ${contentHtml}
-        ${fabHtml}
       </div>
+      ${fabHtml}
       ${bottomNavHtml}
   </div>`;
 }
@@ -185,15 +183,13 @@ export function screenToHtml(screen: AstNode): string {
     
   const bottomNavHtml = bottomNavElements
     ?.map(element => renderNode(element))
-    .join('\n') || '';
-  
-  return `
-  <div class="screen container ${screenName.toLowerCase()} ${layoutClasses.join(' ')}" style="display: flex; flex-direction: column; min-height: 100vh; position: relative;">
+    .join('\n') || '';    return `
+  <div class="screen container ${screenName.toLowerCase()} ${layoutClasses.join(' ')} flex flex-col min-h-full relative">
       ${headerHtml}
-      <div style="flex: 1; padding: 1rem; position: relative;">
+      <div class="flex-1 p-4 relative">
         ${contentHtml}
-        ${fabHtml}
       </div>
+      ${fabHtml}
       ${bottomNavHtml}
   </div>
   `.trim();
@@ -266,9 +262,8 @@ export function astToHtmlString(ast: AstNode | AstNode[], { currentScreen }: Ren
   
   // Render screens and global elements
   const screensHtml = renderAllScreens(screens, currentScreen);
-  const globalElementsHtml = renderGlobalElements(globalElements.modals, globalElements.drawers);
-  // Add a wrapper div with body-like styles for proper rendering within the preview container
-  const result = `<div class="mt-11 min-h-full bg-gradient-to-br from-slate-900 to-slate-800 text-white relative" >
+  const globalElementsHtml = renderGlobalElements(globalElements.modals, globalElements.drawers);  // Add a wrapper div with body-like styles for proper rendering within the preview container
+  const result = `<div class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white relative" >
 
   ${screensHtml}${globalElementsHtml}
 
