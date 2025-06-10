@@ -36,7 +36,7 @@ export const elementStyles = {
   },
   
   link: 'text-blue-400 hover:text-blue-300 underline transition-colors duration-200',
-    // Layout components
+  // Layout components
   container: 'container mx-auto px-4',
   card: 'bg-gray-800 rounded-xl border border-gray-700 shadow-lg p-6 mb-6',
   row: 'flex flex-wrap gap-4 mb-4',
@@ -47,9 +47,10 @@ export const elementStyles = {
   unorderedList: 'list-disc list-inside space-y-2 mb-4 text-gray-300',
   listItem: 'mb-2',
   
-  // Complex list items
+  // List items
   simpleListItem: 'flex justify-between items-center p-3 bg-gray-800 border border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200',
-  complexListItem: 'flex items-center justify-between p-4 bg-gray-800 border border-gray-700 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200',  // Mobile components
+  
+  // Mobile components
   header: 'sticky top-0 left-0 right-0 z-50 bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800 backdrop-blur-md bg-opacity-95 shadow-xl border-b border-gray-700/50 px-6 py-4 flex items-center justify-between min-h-[72px]',
   headerTitle: 'text-xl md:text-2xl font-bold text-white truncate mr-4 mb-0',
   bottomNav: 'sticky bottom-0 left-0 right-0 bg-gray-800/95 backdrop-blur-md border-t border-gray-700/50 flex flex-row justify-around py-2 z-50 w-full shadow-2xl',

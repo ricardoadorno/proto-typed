@@ -41,15 +41,14 @@ export default function ExampleModal() {
     - User Profile
     - Task Status
     - Project Update`,
-                description: "Create simple list items using dash-based syntax"
             }, {
-                name: "Complex List View",
-                code: `screen ComplexListExample:
+                name: "Advanced List View",
+                code: `screen AdvancedListExample:
   list:
-    - [https://placehold.co/50]User Profile{John Doe - Software Engineer}[https://placehold.co/50]
-    - [https://placehold.co/50]Task Status{Complete - Review pending}[https://placehold.co/50]
-    - [https://placehold.co/50]Project Update{New features added}[https://placehold.co/50]`,
-                description: "Create complex list items with images, main text, and subtexts (legacy support)"
+    - (HomePage)[Edit](edit)User Profile{John Doe}[Software Engineer][View](view)[Delete](delete)
+    - [Star](star)Important Task{Complete Project}[Due: Tomorrow][Mark Complete](complete)
+    - (ProjectPage)[Assign](assign)Bug Report{Fix Login Issue}[High Priority][Close](close)[Comment](comment)`,
+                description: "Create rich interactive list items with multiple buttons, links, and flexible content"
             },
             {
                 name: "Card Component",

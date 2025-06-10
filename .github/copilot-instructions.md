@@ -110,9 +110,44 @@ These named elements have special behavior - they are shown or hidden based on n
 - `section:`
 
 ### Data Display Components
-- `list:`
-  - `- List Item 1`
-  - `- List Item 2`
+- `list:` - Advanced Interactive Lists
+  - **Flexible Syntax**: `- [link_text](link_element)text{subtitle}[button_text](action)[button_text](action)`
+  - **Simple Items**: `- Simple text item` (legacy support)
+
+#### Advanced List Item Structure
+The new list syntax provides maximum flexibility for creating rich, interactive list items:
+
+```
+- [optional_link_text](optional_link)text{subtitle}[btn](action)[btn](action)
+```
+
+**Components (all optional except the initial dash):**
+- `[link_text](link)` - Optional navigation link with text that makes the entire item clickable
+- `free_text` - Free text content after the link
+- `{subtitle}` - Subtitle section
+- `[button](action)` - Action buttons at the end
+- `@[variant][button](action)` - Action buttons with variants (ghost: `@_`, outline: `@+`, secondary: `@-`, destructive: `@=`, warning: `@!`)
+
+**Examples:**
+```dsl
+list:
+  - [Star](star)Important Task{Complete Project}[Mark Complete](complete)
+  - [Project](ProjectPage)Bug Report{Fix Login Issue}@=[Close](close)@_[Comment](comment)
+  - Simple text item
+  - Just some text with @+[Button](action)
+  - [Link Only](destination)
+  - Text only with no special features
+  - {Just a subtitle}
+  - Multiple buttons[Save](save)@![Cancel](cancel)@=[Delete](delete)
+  - Task with variants@_[Ghost](ghost)@+[Outline](outline)@-[Secondary](secondary)
+```
+
+**Flexibility Features:**
+- **Multiple buttons**: Add as many `[text](action)` buttons as needed
+- **Mixed content**: Combine buttons, text, links, and titles freely  
+- **Optional elements**: Every component except the dash is optional
+- **Navigation support**: Both initial links and button actions support navigation
+- **Backward compatibility**: Simple `- text` items still work
 
 ### Mobile Components
 - `header:`

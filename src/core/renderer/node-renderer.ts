@@ -37,12 +37,11 @@ import {
   renderFAB, 
   renderFABItem 
 } from './nodes/mobile-nodes';
-import { 
-  renderOrderedList, 
+import {   renderOrderedList, 
   renderUnorderedList, 
   renderList, 
   renderListItem, 
-  renderComplexListItem 
+  renderAdvancedListItem 
 } from './nodes/list-nodes';
 
 /**
@@ -111,13 +110,11 @@ export function renderNode(node: AstNode, context?: string): string {
       return renderUnorderedList(node);
       
     case 'List':
-      return renderList(node, context, renderNode);
-
-    case 'ListItem':
+      return renderList(node, context, renderNode);    case 'ListItem':
       return renderListItem(node);
       
-    case 'ComplexListItem':
-      return renderComplexListItem(node);
+    case 'AdvancedListItem':
+      return renderAdvancedListItem(node);
       
     // Layout nodes
     case 'Row':

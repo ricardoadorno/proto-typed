@@ -176,10 +176,11 @@ export const UnorderedListItem = createToken({
   pattern: /(?:\r\n|\r|\n|\s)*-\s+([^\n\r]+)/
 });
 
-// Complex list item with images and subtexts (legacy support)
-export const ListItem = createToken({
-  name: "ListItem",
-  pattern: /(?:\r\n|\r|\n|\s)*-\s+\[([^\]]+)\]([^{]+)\{([^}]+)\}\[([^\]]+)\]/
+// Advanced list item with flexible syntax: - [link_text](link)text{subtitle}[btn](action)[btn](action)
+// Matches list items that contain either square brackets (links/buttons) or curly braces (subtitles)
+export const AdvancedListItem = createToken({
+  name: "AdvancedListItem",
+  pattern: /(?:\r\n|\r|\n|\s)*-\s+(?=.*(?:\[[^\]]*\]|\{[^}]*\})).*/
 });
 
 // Standalone Checkbox token
@@ -215,10 +216,8 @@ export const allTokens = [
   Quote,
   Heading,
   Link,
-  Image,  Equals,
-  Colon,
-  Identifier,OrderedListItem,
-  ListItem, // More specific pattern must come before UnorderedListItem
+  Image,  Equals,  Colon,
+  Identifier,OrderedListItem,  AdvancedListItem, // Most specific pattern must come first
   UnorderedListItem,
   RadioOption,
   Checkbox

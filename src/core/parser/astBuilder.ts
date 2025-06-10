@@ -373,9 +373,19 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       elements
     };
   }  
-  
-  listElement(ctx: Context) {    
+    listElement(ctx: Context) {    
     const items: any[] = [];
+
+    // Handle advanced list items (new flexible syntax)
+    if (ctx.AdvancedListItem) {
+      ctx.AdvancedListItem.forEach((item: any) => {
+        const itemText = item.image;
+        const advancedItem = this.parseAdvancedListItem(itemText);
+        if (advancedItem) {
+          items.push(advancedItem);
+        }
+      });
+    }
 
     // Handle simple unordered list items using UnorderedListItem
     if (ctx.UnorderedListItem) {
@@ -390,32 +400,7 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
             props: {
               text: text
             }
-          });
-        }
-      });
-    }
-
-    // Handle complex list items (legacy support)
-    if (ctx.ListItem) {
-      ctx.ListItem.forEach((item: any) => {
-        const itemText = item.image;
-        
-        // Parse the format: - [image]text{subtext}[image]
-        const match = itemText.match(/-\s+\[([^\]]+)\]([^{]+)\{([^}]+)\}\[([^\]]+)\]/);
-        
-        if (match) {
-          const [, leadingImage, mainText, subText, trailingImage] = match;
-          
-          items.push({
-            type: "ComplexListItem",
-            props: {
-              leadingImage: leadingImage.trim(),
-              mainText: mainText.trim(),
-              subText: subText.trim(),
-              trailingImage: trailingImage.trim()
-            }
-          });
-        }
+          });        }
       });
     }
 
@@ -423,6 +408,112 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       type: "List",
       elements: items
     };
+  }  // Helper method to parse advanced list item syntax
+  private parseAdvancedListItem(itemText: string) {
+    // Remove initial "- " and trim
+    const content = itemText.replace(/^(?:\r\n|\r|\n|\s)*-\s+/, '').trim();
+    
+    // Extract initial link if present: [text](link)
+    const linkMatch = content.match(/^\[([^\]]*)\]\(([^)]*)\)/);
+    const initialLink = linkMatch ? linkMatch[2] : '';
+    const linkText = linkMatch ? linkMatch[1] : '';
+    
+    // Remove the initial link from content for further parsing
+    let remainingContent = content;
+    if (linkMatch) {
+      remainingContent = content.substring(linkMatch[0].length).trim();
+    }
+    
+    // Extract subtitle from {subtitle} - this is optional
+    const subtitleMatch = remainingContent.match(/\{([^}]*)\}/);
+    const subtitle = subtitleMatch ? subtitleMatch[1].trim() : '';
+    
+    // Extract content before the subtitle section (free text)
+    let beforeSubtitle = '';
+    let afterSubtitle = '';
+    
+    if (subtitleMatch) {
+      beforeSubtitle = remainingContent.substring(0, remainingContent.indexOf('{')).trim();
+      afterSubtitle = remainingContent.substring(remainingContent.indexOf('}') + 1).trim();
+    } else {
+      // If no subtitle, all remaining content is "before subtitle" for text and button parsing
+      beforeSubtitle = remainingContent;
+    }
+    
+    return this.buildAdvancedListItemNode(initialLink, linkText, beforeSubtitle, subtitle, afterSubtitle);
+  }
+  // Helper method to build the advanced list item node
+  private buildAdvancedListItemNode(initialLink: string, linkText: string, beforeSubtitle: string, subtitle: string, afterSubtitle: string) {
+    const buttons: any[] = [];
+    const textSegments: string[] = [];
+    
+    // Parse before subtitle content for buttons and text
+    this.parseButtonsAndText(beforeSubtitle, buttons, textSegments);
+    
+    // Parse after subtitle content for buttons
+    this.parseButtonsAndText(afterSubtitle, buttons, []);
+    
+    return {
+      type: "AdvancedListItem",
+      props: {
+        initialLink: initialLink || '',
+        linkText: linkText || '',
+        title: '', // No longer used in simplified syntax
+        subtitle: subtitle || '',
+        buttons: buttons,
+        textSegments: textSegments.filter(t => t.trim())
+      }
+    };
+  }
+    // Helper method to parse buttons and text from content
+  private parseButtonsAndText(content: string, buttons: any[], textSegments: string[]) {
+    if (!content) return;
+    
+    // Find all button patterns: [text](action) and @[variant][text](action)
+    const buttonRegex = /(@([_+\-=!]?))?\[([^\]]*)\]\(([^)]*)\)/g;
+    let lastIndex = 0;
+    let match;
+    
+    while ((match = buttonRegex.exec(content)) !== null) {
+      // Add text before this button
+      const textBefore = content.substring(lastIndex, match.index).trim();
+      if (textBefore) {
+        textSegments.push(textBefore);
+      }
+      
+      const hasVariantPrefix = !!match[1]; // Check if @ prefix exists
+      const variantSymbol = match[2] || ''; // Get variant symbol
+      const text = match[3];
+      const action = match[4];
+      
+      // Map variant symbols to variant names (same as button element)
+      let variant = 'default';
+      if (hasVariantPrefix) {
+        switch (variantSymbol) {
+          case '_': variant = 'ghost'; break;
+          case '+': variant = 'outline'; break;
+          case '-': variant = 'secondary'; break;
+          case '=': variant = 'destructive'; break;
+          case '!': variant = 'warning'; break;
+          default: variant = 'default'; break;
+        }
+      }
+      
+      // Add the button with variant support
+      buttons.push({
+        text: text,
+        action: action,
+        variant: variant
+      });
+      
+      lastIndex = buttonRegex.lastIndex;
+    }
+    
+    // Add any remaining text after the last button
+    const remainingText = content.substring(lastIndex).trim();
+    if (remainingText) {
+      textSegments.push(remainingText);
+    }
   }
 
   cardElement(ctx: Context) {

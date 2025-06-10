@@ -7,6 +7,7 @@ import contactsAppExample from './contacts-app';
 import backNavigationExample from './back-navigation';
 import { mobileTest } from './mobile-test';
 import { buttonVariantsExample } from './button-variants';
+import listsExample from './lists';
 
 // Example configuration for UI
 export const exampleConfigs = [
@@ -16,6 +17,7 @@ export const exampleConfigs = [
   { label: "Mobile Test", code: mobileTest },
   { label: "Named Elements", code: namedElementsExample },
   { label: "Button Variants", code: buttonVariantsExample },
+  { label: "Lists Example", code: listsExample },
   { label: "Back Navigation Test", code: backNavigationExample },
   { label: "Contacts App", code: contactsAppExample },
 ] ;

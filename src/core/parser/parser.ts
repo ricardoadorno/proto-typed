@@ -3,7 +3,7 @@ import {
   allTokens, Screen, Component, Modal, ComponentInstance, 
   Identifier, Colon, Button, 
   Row, Card, Separator, Heading, Link, 
-  Image, Input, OrderedListItem, UnorderedListItem, ListItem, RadioOption, 
+  Image, Input, OrderedListItem, UnorderedListItem, AdvancedListItem, RadioOption, 
   Checkbox, Text, Note, Quote, Col, List,
   Header, BottomNav, Drawer, NavItem, DrawerItem, FAB, FABItem
 } from "../lexer/tokens";
@@ -188,16 +188,14 @@ export class UiDslParser extends CstParser {
       });
     });
   });  
-  
-  listElement = this.RULE("listElement", () => {
+    listElement = this.RULE("listElement", () => {
     this.CONSUME(List);
     this.CONSUME(Colon);
     this.OPTION(() => {
       this.CONSUME(Indent);
-      this.AT_LEAST_ONE(() => {
-        this.OR([
-          { ALT: () => this.CONSUME(UnorderedListItem) },
-          { ALT: () => this.CONSUME(ListItem) }
+      this.AT_LEAST_ONE(() => {        this.OR([
+          { ALT: () => this.CONSUME(AdvancedListItem) },
+          { ALT: () => this.CONSUME(UnorderedListItem) }
         ]);
       });
       this.OPTION2(() => {
