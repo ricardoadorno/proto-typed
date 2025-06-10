@@ -21,27 +21,12 @@ export function renderHeader(node: AstNode, nodeRenderer?: (node: AstNode, conte
     return `<header class="${elementStyles.header}"></header>`;
   }
   
-  // Separate title and action elements
-  const titleElements: string[] = [];
-  const actionElements: string[] = [];
+  // Render all content elements inside the header
+  const content = node.elements.flat()
+    .map(element => nodeRenderer(element, 'header'))
+    .join('');
   
-  for (const element of node.elements.flat()) {
-    const renderedElement = nodeRenderer(element, 'header');
-    
-    // Check if it's a heading (title)
-    if (element.type.startsWith('Heading')) {
-      const titleContent = renderedElement.replace(/<h[1-6][^>]*>(.*?)<\/h[1-6]>/g, '$1');
-      titleElements.push(`<div class="${elementStyles.headerTitle}">${titleContent}</div>`);
-    }
-    // Other elements go to actions by default
-    else {
-      actionElements.push(renderedElement);
-    }
-  }
-  
-  const titleSection = titleElements.join('');
-  
-  return `<header class="${elementStyles.header}">${titleSection}${actionElements.join('')}</header>`;
+  return `<header class="${elementStyles.header}">${content}</header>`;
 }
 
 /**

@@ -16,8 +16,7 @@ export const elementStyles = {
   // Form elements
   input: 'w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 bg-gray-700 text-white',
   label: 'block text-sm font-medium text-gray-300 mb-2',
-  select: 'w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 bg-gray-700 text-white',
-  checkbox: 'w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2',
+  select: 'w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 bg-gray-700 text-white',  checkbox: 'w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-600 ring-offset-gray-800 focus:ring-2',
   radio: 'w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 focus:ring-blue-600 ring-offset-gray-800 focus:ring-2',
     // Typography
   heading: {
@@ -27,6 +26,16 @@ export const elementStyles = {
     4: 'text-xl font-bold text-white mb-3',
     5: 'text-lg font-bold text-white mb-2',
     6: 'text-base font-bold text-white mb-2'
+  },
+  
+  // Header-specific headings (smaller, no margins/padding)
+  headerHeading: {
+    1: 'text-lg font-bold text-white',
+    2: 'text-lg font-bold text-white',
+    3: 'text-base font-bold text-white',
+    4: 'text-base font-bold text-white',
+    5: 'text-sm font-bold text-white',
+    6: 'text-sm font-bold text-white'
   },
   
   paragraph: {

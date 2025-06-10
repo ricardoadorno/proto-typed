@@ -94,10 +94,9 @@ export function renderNode(node: AstNode, context?: string): string {
       
     case 'Image':
       return renderImage(node);
-      
-    // Typography nodes
+        // Typography nodes
     case 'Heading':
-      return renderHeading(node);
+      return renderHeading(node, context);
       
     case 'Paragraph':
       return renderParagraph(node);

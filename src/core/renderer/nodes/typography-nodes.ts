@@ -4,12 +4,16 @@ import { elementStyles } from './styles';
 /**
  * Render heading element
  */
-export function renderHeading(node: AstNode): string {
+export function renderHeading(node: AstNode, context?: string): string {
   const props = node.props as any;
   const level = props?.level || 1;
-  const headingClasses = elementStyles.heading[level as keyof typeof elementStyles.heading] || elementStyles.heading[1];
   
-  return `<h${level} class="${headingClasses}">${props?.children || ''}</h${level}>`;
+  // Use header-specific styles when in header context
+  const headingStyles = context === 'header' 
+    ? elementStyles.headerHeading[level as keyof typeof elementStyles.headerHeading] || elementStyles.headerHeading[1]
+    : elementStyles.heading[level as keyof typeof elementStyles.heading] || elementStyles.heading[1];
+  
+  return `<h${level} class="${headingStyles}">${props?.children || ''}</h${level}>`;
 }
 
 /**
