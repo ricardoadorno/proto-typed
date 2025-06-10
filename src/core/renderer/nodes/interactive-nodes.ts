@@ -1,6 +1,6 @@
 import { AstNode } from '../../../types/astNode';
 import { generateNavigationAttributes, generateHrefAttribute } from '../navigationHelper';
-import { elementStyles, getMarginClasses } from './styles';
+import { elementStyles, getMarginClasses, getButtonClasses } from './styles';
 import { isLucideIcon, getLucideSvg } from '../../../utils/icon-utils';
 
 /**
@@ -8,12 +8,12 @@ import { isLucideIcon, getLucideSvg } from '../../../utils/icon-utils';
  */
 export function renderButton(node: AstNode, context?: string): string {
   const buttonProps = node.props as any;
-  const { children, href: buttonHref } = buttonProps || {};
+  const { children, href: buttonHref, variant } = buttonProps || {};
   const buttonText = children || '';
   
   const buttonNavAttrs = generateNavigationAttributes(buttonHref);
   const marginClasses = getMarginClasses(context);
-  const buttonClasses = `${elementStyles.button} ${marginClasses}`;
+  const buttonClasses = `${getButtonClasses(context, variant)} ${marginClasses}`;
     // Check if the button text is a Lucide icon name
   if (isLucideIcon(buttonText)) {
     const iconSvg = getLucideSvg(buttonText);

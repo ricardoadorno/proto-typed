@@ -132,7 +132,7 @@ export const RadioOption = createToken({
 // Interactive Element Tokens
 export const Button = createToken({ 
   name: "Button", 
-  pattern: /@\[([^\]]+)\](?:\{([^}]+)\})?(?:\(([^)]+)\))?/ 
+  pattern: /@([_+\-=!]?)\[([^\]]+)\](?:\{([^}]+)\})?(?:\(([^)]+)\))?/ 
 });
 
 export const Link = createToken({

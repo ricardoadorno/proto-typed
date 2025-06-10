@@ -5,8 +5,13 @@
 
 // Basic element styles optimized for dark mode only
 export const elementStyles = {
-  // Button - simplified without variants
+  // Button variants
   button: 'inline-flex items-center justify-center px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200',
+  buttonGhost: 'inline-flex items-center justify-center px-4 py-2 rounded-lg bg-transparent hover:bg-gray-800 text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors duration-200',
+  buttonOutline: 'inline-flex items-center justify-center px-4 py-2 rounded-lg bg-transparent border border-gray-600 hover:bg-gray-700 text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors duration-200',
+  buttonSecondary: 'inline-flex items-center justify-center px-4 py-2 rounded-lg bg-gray-600 hover:bg-gray-500 text-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-colors duration-200',
+  buttonDestructive: 'inline-flex items-center justify-center px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200',
+  buttonWarning: 'inline-flex items-center justify-center px-4 py-2 rounded-lg bg-yellow-600 hover:bg-yellow-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors duration-200',
   
   // Form elements
   input: 'w-full px-3 py-2 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 bg-gray-700 text-white',
@@ -84,13 +89,28 @@ export function getMarginClasses(context?: string): string {
 }
 
 /**
- * Get button classes based on context
+ * Get button classes based on context and variant
  */
-export function getButtonClasses(context?: string): string {
+export function getButtonClasses(context?: string, variant?: string): string {
   if (context === 'header') {
     return elementStyles.headerButton;
   }
-  return elementStyles.button;
+  
+  // Return appropriate button variant class
+  switch (variant) {
+    case 'ghost':
+      return elementStyles.buttonGhost;
+    case 'outline':
+      return elementStyles.buttonOutline;
+    case 'secondary':
+      return elementStyles.buttonSecondary;
+    case 'destructive':
+      return elementStyles.buttonDestructive;
+    case 'warning':
+      return elementStyles.buttonWarning;
+    default:
+      return elementStyles.button;
+  }
 }
 
 /**

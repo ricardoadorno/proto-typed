@@ -117,19 +117,29 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       }
     };
   }
-
   buttonElement(ctx: Context) {
     const buttonText = ctx.Button[0].image;
-    let text = '', icon = '', action = '';
+    let text = '', icon = '', action = '', variant = 'default';
 
-    // Updated pattern to match @[text]{icon}(action) - all parts are optional except text
-    const markdownMatch = buttonText.match(/@\[([^\]]+)\](?:\{([^}]+)\})?(?:\(([^)]+)\))?/);
+    // Updated pattern to match @[variant][text]{icon}(action) - captures variant symbol
+    const markdownMatch = buttonText.match(/@([_+\-=!]?)\[([^\]]+)\](?:\{([^}]+)\})?(?:\(([^)]+)\))?/);
     const dslMatch = buttonText.match(/button\s+\["([^"]*)"\]\s+([^\n\r]+)/);
 
     if (markdownMatch) {
-      text = markdownMatch[1];
-      icon = markdownMatch[2] || ''; // Icon is optional
-      action = markdownMatch[3] || ''; // Action is optional
+      const variantSymbol = markdownMatch[1];
+      text = markdownMatch[2];
+      icon = markdownMatch[3] || ''; // Icon is optional
+      action = markdownMatch[4] || ''; // Action is optional
+      
+      // Map variant symbols to variant names
+      switch (variantSymbol) {
+        case '_': variant = 'ghost'; break;
+        case '+': variant = 'outline'; break;
+        case '-': variant = 'secondary'; break;
+        case '=': variant = 'destructive'; break;
+        case '!': variant = 'warning'; break;
+        default: variant = 'default'; break;
+      }
     } else if (dslMatch) {
       action = dslMatch[1];
       text = dslMatch[2];
@@ -140,7 +150,8 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       props: {
         href: action,
         children: text,
-        icon: icon
+        icon: icon,
+        variant: variant
       }
     };
   }
