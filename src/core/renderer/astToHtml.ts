@@ -268,119 +268,14 @@ export function astToHtmlString(ast: AstNode | AstNode[], { currentScreen }: Ren
   const screensHtml = renderAllScreens(screens, currentScreen);
   const globalElementsHtml = renderGlobalElements(globalElements.modals, globalElements.drawers);
   // Add a wrapper div with body-like styles for proper rendering within the preview container
-  const result = `<div class=" min-h-full bg-gradient-to-br from-slate-900 to-slate-800 text-white relative" style="font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-<style>
-/* FAB animation styles for preview */
-.fab-items-list.show {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-  pointer-events: auto !important;
-}
+  const result = `<div class="mt-11 min-h-full bg-gradient-to-br from-slate-900 to-slate-800 text-white relative" >
 
-.fab-item {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.2s ease-out;
-}
+  ${screensHtml}${globalElementsHtml}
 
-.fab-item.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Ensure proper stacking */
-.fab-container {
-  position: sticky !important;
-  bottom: 1.5rem !important;
-  right: 1.5rem !important;
-  margin-left: auto !important;
-  margin-top: auto !important;
-  z-index: 50 !important;
-}
-
-/* Header and bottom nav overrides for mobile previews */
-.iphone-x .header,
-.browser-mockup .header {
-  position: sticky !important;
-  top: 0 !important;
-}
-
-.iphone-x .bottom-nav,
-.browser-mockup .bottom-nav {
-  position: sticky !important;
-  bottom: 0 !important;
-  margin-top: auto !important;
-}
-</style>
-${screensHtml}${globalElementsHtml}
-<script>
-${generateNavigationScript()}
-
-// FAB toggle functionality
-function toggleFAB(fabButton) {
-  const fabContainer = fabButton.closest('.fab-container') || fabButton.parentElement;
-  const fabItemsList = fabContainer.querySelector('.fab-items-list');
-  const fabItems = fabItemsList ? fabItemsList.querySelectorAll('.fab-item') : [];
-  const isOpen = fabItemsList && fabItemsList.classList.contains('show');
-  
-  if (isOpen) {
-    // Close FAB
-    fabItems.forEach((item, index) => {
-      setTimeout(() => {
-        item.classList.remove('show');
-      }, index * 50);
-    });
-    
-    setTimeout(() => {
-      fabItemsList.classList.remove('show');
-    }, fabItems.length * 50);
-    
-    // Rotate FAB icon
-    fabButton.style.transform = 'rotate(0deg)';
-  } else if (fabItemsList) {
-    // Open FAB
-    fabItemsList.classList.add('show');
-    
-    fabItems.forEach((item, index) => {
-      setTimeout(() => {
-        item.classList.add('show');
-      }, index * 50);
-    });
-    
-    // Rotate FAB icon
-    fabButton.style.transform = 'rotate(45deg)';
-  }
-}
-
-// Close FAB when clicking outside
-document.addEventListener('click', function(event) {
-  const fabContainers = document.querySelectorAll('.fab-container');
-  fabContainers.forEach(container => {
-    if (!container.contains(event.target)) {
-      const fabItemsList = container.querySelector('.fab-items-list');
-      const fabItems = container.querySelectorAll('.fab-item');
-      const fabButton = container.querySelector('.fab');
-      
-      if (fabItemsList && fabItemsList.classList.contains('show')) {
-        fabItems.forEach((item, index) => {
-          setTimeout(() => {
-            item.classList.remove('show');
-          }, index * 50);
-        });
-        
-        setTimeout(() => {
-          fabItemsList.classList.remove('show');
-        }, fabItems.length * 50);
-        
-        if (fabButton) {
-          fabButton.style.transform = 'rotate(0deg)';
-        }
-      }
-    }
-  });
-});
-</script>
-</div>`;
+  <script>
+    ${generateNavigationScript()}
+  </script>
+  </div>`;
   
   return result;
 }
@@ -440,13 +335,23 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
     .filter(screen => screen && screen.name)
     .map((screen, index) => renderScreenForDocument(screen, index))
     .join('\n\n');
-
   // Render global modals and drawers
   const globalElementsHtml = renderGlobalElements(globalElements.modals, globalElements.drawers);
+  
   // Tailwind CDN and dark mode configuration for export
   const tailwindCdn = `<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>`;
   const tailwindConfig = `<script>tailwind.config = { darkMode: 'class', theme: { extend: {} } };</script>`;
-  const darkModeScript = `<script>document.documentElement.classList.add('dark');</script>`;  // Create the full HTML document
+  const darkModeScript = `<script>document.documentElement.classList.add('dark');</script>`;
+  const lucideScript = `<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>`;
+  const lucideInitScript = `<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    });
+  </script>`;
+
+  // Create the full HTML document
   return `
 <!DOCTYPE html>
 <html lang="en" class="dark">
@@ -455,6 +360,7 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   ${tailwindCdn}
   ${tailwindConfig}
+  ${lucideScript}
   <title>Exported Screens</title>
   <style>
     html, body { 
@@ -464,8 +370,8 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
     .screen { transition: background 0.3s; }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 pb-8">
-  ${screensHtml}${globalElementsHtml}  ${darkModeScript}
+<body class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 pb-8">  ${screensHtml}${globalElementsHtml}  ${darkModeScript}
+  ${lucideInitScript}
   <script>
     ${generateNavigationScript()}
     

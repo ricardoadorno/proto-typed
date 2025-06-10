@@ -1,6 +1,17 @@
 import { AstNode } from '../../../types/astNode';
 import { elementStyles } from './styles';
 import { generateNavigationAttributes } from '../navigationHelper';
+import { isLucideIcon, getLucideSvg } from '../../../utils/icon-utils';
+
+/**
+ * Helper function to render an icon (either Lucide or regular text/emoji)
+ */
+function renderIcon(iconText: string): string {
+  if (isLucideIcon(iconText)) {
+    return getLucideSvg(iconText);
+  }
+  return iconText;
+}
 
 /**
  * Render header element
@@ -50,10 +61,9 @@ export function renderBottomNav(node: AstNode): string {
       const navItemProps = item.props as any;
       const { label, icon, action } = navItemProps || {};
       const navAttrs = generateNavigationAttributes(action);
-      
-      return `
+        return `
         <button class="${elementStyles.navItem}" ${navAttrs}>
-          <span class="${elementStyles.navItemIcon}">${icon || ''}</span>
+          <span class="${elementStyles.navItemIcon}">${renderIcon(icon || '')}</span>
           <span class="${elementStyles.navItemLabel}">${label || ''}</span>
         </button>
       `;
@@ -70,10 +80,9 @@ export function renderNavItem(node: AstNode): string {
   const navItemProps = node.props as any;
   const { label: navLabel, icon: navIcon, action: navAction } = navItemProps || {};
   const navItemAttrs = generateNavigationAttributes(navAction);
-  
-  return `
+    return `
     <button class="${elementStyles.navItem}" ${navItemAttrs}>
-      <span class="${elementStyles.navItemIcon}">${navIcon || ''}</span>
+      <span class="${elementStyles.navItemIcon}">${renderIcon(navIcon || '')}</span>
       <span class="${elementStyles.navItemLabel}">${navLabel || ''}</span>
     </button>
   `;
@@ -86,10 +95,9 @@ export function renderDrawerItem(node: AstNode): string {
   const drawerItemProps = node.props as any;
   const { label: drawerLabel, icon: drawerIcon, action: drawerAction } = drawerItemProps || {};
   const drawerItemAttrs = generateNavigationAttributes(drawerAction);
-  
-  return `
+    return `
     <button class="${elementStyles.drawerItem}" ${drawerItemAttrs}>
-      <span class="${elementStyles.drawerItemIcon}">${drawerIcon || ''}</span>
+      <span class="${elementStyles.drawerItemIcon}">${renderIcon(drawerIcon || '')}</span>
       <span class="${elementStyles.drawerItemLabel}">${drawerLabel || ''}</span>
     </button>
   `;
@@ -109,12 +117,11 @@ export function renderFAB(node: AstNode): string {
     const fabItemsHtml = fabItems.map(item => {
       const itemProps = item.props as any;
       const { icon: itemIcon, label: itemLabel, action: itemAction } = itemProps || {};
-      const itemAttrs = generateNavigationAttributes(itemAction);
-        return `
+      const itemAttrs = generateNavigationAttributes(itemAction);        return `
         <div class="${elementStyles.fabItem}">
           ${itemLabel ? `<span class="${elementStyles.fabItemLabel}">${itemLabel}</span>` : ''}
           <button class="${elementStyles.fabItemBtn}" ${itemAttrs}>
-            ${itemIcon || ''}
+            ${renderIcon(itemIcon || '')}
           </button>
         </div>
       `;
@@ -124,16 +131,14 @@ export function renderFAB(node: AstNode): string {
       <div class="fab-container">
         <div class="fab-items-list">
           ${fabItemsHtml}
-        </div>
-        <button class="${elementStyles.fab}" onclick="toggleFAB(this)" ${fabAttrs}>
-          ${fabIcon || '+'}
+        </div>        <button class="${elementStyles.fab}" onclick="toggleFAB(this)" ${fabAttrs}>
+          ${renderIcon(fabIcon || '+')}
         </button>
       </div>
-    `;
-  } else {
+    `;  } else {
     return `
       <button class="${elementStyles.fab}" ${fabAttrs}>
-        ${fabIcon || '+'}
+        ${renderIcon(fabIcon || '+')}
       </button>
     `;
   }
@@ -146,11 +151,10 @@ export function renderFABItem(node: AstNode): string {
   const fabItemProps = node.props as any;
   const { icon: fabItemIcon, label: fabItemLabel, action: fabItemAction } = fabItemProps || {};
   const fabItemAttrs = generateNavigationAttributes(fabItemAction);
-  
-  return `
+    return `
     <div class="${elementStyles.fabItem}">
       <button class="${elementStyles.fabItemBtn}" ${fabItemAttrs}>
-        ${fabItemIcon || ''}
+        ${renderIcon(fabItemIcon || '')}
       </button>
       <span class="${elementStyles.fabItemLabel}">${fabItemLabel || ''}</span>
     </div>

@@ -1,6 +1,7 @@
 import { AstNode } from '../../../types/astNode';
 import { generateNavigationAttributes, generateHrefAttribute } from '../navigationHelper';
 import { elementStyles, getMarginClasses } from './styles';
+import { isLucideIcon, getLucideSvg } from '../../../utils/icon-utils';
 
 /**
  * Render button element
@@ -13,8 +14,13 @@ export function renderButton(node: AstNode, context?: string): string {
   const buttonNavAttrs = generateNavigationAttributes(buttonHref);
   const marginClasses = getMarginClasses(context);
   const buttonClasses = `${elementStyles.button} ${marginClasses}`;
+    // Check if the button text is a Lucide icon name
+  if (isLucideIcon(buttonText)) {
+    const iconSvg = getLucideSvg(buttonText);
+    return `<button class="${buttonClasses}" ${buttonNavAttrs}>${iconSvg}</button>`;
+  }
   
-  return `<button class="${buttonClasses}" ${buttonNavAttrs}>${buttonText}</button>`;
+  return `<button class="${buttonClasses}" ${buttonNavAttrs}>${buttonText} </button>`;
 }
 
 /**
