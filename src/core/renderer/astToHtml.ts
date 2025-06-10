@@ -132,7 +132,7 @@ function renderScreen(config: ScreenRenderConfig): string {
     .join('\n') || '';  return `
   <div id="${screenName}-screen" class="screen container ${screenName} ${layoutClasses.join(' ')} flex flex-col min-h-screen relative" ${style}>
       ${headerHtml}
-      <div class="flex-1 p-4 relative">
+      <div class="flex-1 p-4 py-10 relative">
         ${contentHtml}
       </div>
       ${fabHtml}

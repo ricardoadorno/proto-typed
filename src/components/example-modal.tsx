@@ -58,8 +58,7 @@ export default function ExampleModal() {
     > Card content goes here
     @[Action Button]`,
                 description: "Group related content in a container with optional header and actions"
-            },
-            {
+            }, {
                 name: "Separator",
                 code: `screen SeparatorExample:
   # Section 1
@@ -68,6 +67,16 @@ export default function ExampleModal() {
   # Section 2
   > Content below separator`,
                 description: "Add a horizontal line to separate content sections"
+            },
+            {
+                name: "Empty Div",
+                code: `screen EmptyDivExample:
+  # First Section
+  > Some content here
+  --
+  # Second Section
+  > More content with spacing above`,
+                description: "Add empty spacing between elements using empty div"
             }
             ]
         },

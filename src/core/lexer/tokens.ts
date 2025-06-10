@@ -118,6 +118,11 @@ export const Separator = createToken({
   pattern: /---/ 
 });
 
+export const EmptyDiv = createToken({
+  name: "EmptyDiv",
+  pattern: /--(?!-)/  // Matches exactly two dashes, not three or more
+});
+
 // Input Family Tokens
 export const Input = createToken({ 
   name: "Input", 
@@ -207,9 +212,9 @@ export const allTokens = [
   List,
   Card,
   Header,
-  BottomNav,
-  Drawer,
+  BottomNav,  Drawer,
   Separator,
+  EmptyDiv,
   BlankLine,
   Text,
   Note,

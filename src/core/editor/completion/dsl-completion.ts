@@ -321,12 +321,18 @@ export function registerDSLCompletionProvider(monaco: Monaco) {
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation: 'Avatar image element',
           range: range,
-        },
-        {
+        },        {
           label: 'separator',
           kind: monaco.languages.CompletionItemKind.Operator,
           insertText: '---',
           documentation: 'Horizontal separator line',
+          range: range,
+        },
+        {
+          label: 'empty-div',
+          kind: monaco.languages.CompletionItemKind.Operator,
+          insertText: '--',
+          documentation: 'Empty div element for spacing',
           range: range,
         },
         

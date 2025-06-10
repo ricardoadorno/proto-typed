@@ -54,8 +54,8 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     if (ctx.drawerElement) return this.visit(ctx.drawerElement);
     if (ctx.navItemElement) return this.visit(ctx.navItemElement);    if (ctx.drawerItemElement) return this.visit(ctx.drawerItemElement);
     if (ctx.fabItemElement) return this.visit(ctx.fabItemElement);
-    if (ctx.fabElement) return this.visit(ctx.fabElement);
-    if (ctx.separatorElement) return this.visit(ctx.separatorElement);
+    if (ctx.fabElement) return this.visit(ctx.fabElement);    if (ctx.separatorElement) return this.visit(ctx.separatorElement);
+    if (ctx.emptyDivElement) return this.visit(ctx.emptyDivElement);
     if (ctx.headingElement) return this.visit(ctx.headingElement);
     if (ctx.textElement) return this.visit(ctx.textElement);
     if (ctx.linkElement) return this.visit(ctx.linkElement);
@@ -538,10 +538,16 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       elements
     };
   }  
-  
-  separatorElement(_ctx: Context) {
+    separatorElement(_ctx: Context) {
     return {
       type: "Separator",
+      props: {}
+    };
+  }
+
+  emptyDivElement(_ctx: Context) {
+    return {
+      type: "EmptyDiv",
       props: {}
     };
   }

@@ -80,9 +80,9 @@ export const elementStyles = {
   modalContent: 'modal-content bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6 relative',
   modalClose: 'modal-close absolute top-4 right-4 text-gray-400 hover:text-gray-200 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-700 transition-colors',
   drawer: 'drawer fixed top-0 left-0 z-40 w-64 h-screen bg-gray-800 border-r border-gray-700 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out',
-  
-  // Utility
+    // Utility
   separator: 'my-6 border-gray-700',
+  emptyDiv: 'w-full h-4 bg-transparent',
   image: 'max-w-full h-auto rounded-lg shadow-md'
 } as const;
 

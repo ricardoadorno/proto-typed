@@ -32,9 +32,9 @@ export function registerDSLLanguage(monaco: Monaco) {
         [/\$\w+/, 'variable.name'],    // variables like $LoginForm
         [/!\[.*?\]/, 'variable'],      // images
         [/___[*-]?:/, 'number'],       // inputs
-        [/\[[X ]\]/, 'constructor'],   // checkboxes
-        [/\([X ]\)/, 'constructor'],   // radio buttons
+        [/\[[X ]\]/, 'constructor'],   // checkboxes        [/\([X ]\)/, 'constructor'],   // radio buttons
         [/---+/, 'delimiter'],         // separators
+        [/--(?!-)/, 'delimiter'],      // empty div (exactly two dashes)
         [/>/, 'string'],               // text content
         [/\*>/, 'comment'],            // note text
         [/\">/, 'string.quote'],       // quote text

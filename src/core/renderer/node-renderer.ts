@@ -27,7 +27,8 @@ import {
   renderRow, 
   renderCol, 
   renderCard, 
-  renderSeparator 
+  renderSeparator,
+  renderEmptyDiv 
 } from './nodes/layout-nodes';
 import { 
   renderHeader, 
@@ -124,9 +125,11 @@ export function renderNode(node: AstNode, context?: string): string {
       
     case 'Card':
       return renderCard(node, context, renderNode);
-      
-    case 'Separator':
+        case 'Separator':
       return renderSeparator();
+      
+    case 'EmptyDiv':
+      return renderEmptyDiv();
       
     // Mobile nodes
     case 'Header':
