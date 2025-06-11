@@ -217,25 +217,24 @@ export default function ExampleModal() {
   > App content here
   
   navigator:
-    nav_item [Home]{🏠}(home-screen)
-    nav_item [Search]{🔍}(search-screen)
-    nav_item [Messages]{💬}(messages-screen)
-    nav_item [Profile]{👤}(profile-screen)
-    nav_item [More]{⋯}(more-screen)`,
+    - [Home]{🏠}(home-screen)
+    - [Search]{🔍}(search-screen)
+    - [Messages]{💬}(messages-screen)
+    - [Profile]{👤}(profile-screen)
+    - [More]{⋯}(more-screen)`,
                 description: "Create a fixed bottom navigation bar with icons and labels"
-            },
-            {
+            }, {
                 name: "Drawer",
                 code: `screen DrawerExample:
   # App Content
   > Main content area
   
   drawer MyDrawer:
-    drawer_item [Dashboard]{📊}(dashboard-screen)
-    drawer_item [Messages]{💬}(messages-screen)
-    drawer_item [Settings]{⚙️}(settings-screen)
-    drawer_item [Help]{❓}(help-screen)
-    drawer_item [Logout]{🚪}(logout)`,
+    - [Dashboard]{📊}(dashboard-screen)
+    - [Messages]{💬}(messages-screen)
+    - [Settings]{⚙️}(settings-screen)
+    - [Help]{❓}(help-screen)
+    - [Logout]{🚪}(logout)`,
                 description: "Create a slide-out drawer menu with navigation items"
             }, {
                 name: "Complete Mobile App",
@@ -252,13 +251,13 @@ export default function ExampleModal() {
       - John Doe - Online now
       - Jane Smith - 2 min ago      - Mike Johnson - 5 min ago
       navigator:
-    nav_item [Home]{🏠}(home)
-    nav_item [Messages]{💬}(messages)
-    nav_item [Profile]{👤}(profile)
+    - [Home]{🏠}(home)
+    - [Messages]{💬}(messages)
+    - [Profile]{👤}(profile)
     
   drawer MyDrawer:
-    drawer_item [Settings]{⚙️}(settings)
-    drawer_item [Help]{❓}(help)`,
+    - [Settings]{⚙️}(settings)
+    - [Help]{❓}(help)`,
                 description: "A complete mobile app layout with header, content, navigation and drawer"
             }
             ]
@@ -513,10 +512,9 @@ export default function ExampleModal() {
                                 <li><strong>Progress:</strong> Use <code>progress {"{value: 75}"}</code> for progress bars</li>
                                 <li><strong>Badges:</strong> Use <code>badge "Text"</code> for status indicators</li>
                             </ul>
-                        )}
-                        {activeTab === 'mobile' && (<ul>                            <li><strong>Header:</strong> Use <code>header:</code> for fixed top navigation</li>
-                            <li><strong>Navigator:</strong> Use <code>navigator:</code> with <code>nav_item</code> elements</li>
-                            <li><strong>Drawer:</strong> Use <code>drawer DrawerName:</code> with <code>drawer_item</code> elements</li>
+                        )}                        {activeTab === 'mobile' && (<ul>                            <li><strong>Header:</strong> Use <code>header:</code> for fixed top navigation</li>
+                            <li><strong>Navigator:</strong> Use <code>navigator:</code> with <code>- [label]{"{icon}"}(action)</code> items</li>
+                            <li><strong>Drawer:</strong> Use <code>drawer DrawerName:</code> with <code>- [label]{"{icon}"}(action)</code> items</li>
                             <li><strong>Icons:</strong> Use emoji or text within curly braces: <code>{"{🏠}"}</code></li>
                         </ul>
                         )}

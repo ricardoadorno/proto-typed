@@ -93,15 +93,7 @@ export const Drawer = createToken({
   pattern: /drawer/
 });
 
-export const NavItem = createToken({
-  name: "NavItem",
-  pattern: /nav_item\s+\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/
-});
 
-export const DrawerItem = createToken({
-  name: "DrawerItem", 
-  pattern: /drawer_item\s+\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/
-});
 
 export const FAB = createToken({
   name: "FAB",
@@ -194,17 +186,19 @@ export const allTokens = [
   NewLine,
   WhiteSpace,
   Screen,
-  Component,  Modal,
-  ComponentInstance,  NavItem,
-  DrawerItem,
+  Component,
+  Modal,
+  ComponentInstance,
   FAB,
   Input,
   Button,
   Row,
   Col,
   List,
-  Card,  Header,
-  Navigator,  Drawer,
+  Card,
+  Header,
+  Navigator,
+  Drawer,
   Separator,
   EmptyDiv,
   BlankLine,
@@ -213,8 +207,12 @@ export const allTokens = [
   Quote,
   Heading,
   Link,
-  Image,  Equals,  Colon,
-  Identifier,OrderedListItem,  AdvancedListItem, // Most specific pattern must come first
+  Image,
+  Equals,
+  Colon,
+  Identifier,
+  OrderedListItem,
+  AdvancedListItem, // Most specific pattern must come first
   UnorderedListItem,
   RadioOption,
   Checkbox

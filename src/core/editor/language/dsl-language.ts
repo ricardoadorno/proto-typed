@@ -17,9 +17,8 @@ export function registerDSLLanguage(monaco: Monaco) {
       root: [
         // Layout components - specific highlighting for container elements
         [/\b(container|grid|flex|card|row|col|section):\s*$/, 'tag'],
-        
-        // Mobile components
-        [/\b(header|navigator|fab|nav_item|drawer_item):\s*$/, 'tag'],
+          // Mobile components
+        [/\b(header|navigator|fab):\s*$/, 'tag'],
         
         // Named UI elements (modal, drawer)
         [/\b(modal|drawer)\s+\w+:\s*$/, 'keyword.named-ui-element'],

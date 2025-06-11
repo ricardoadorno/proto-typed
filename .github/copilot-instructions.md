@@ -153,8 +153,8 @@ list:
 - `header:`
 - `navigator:`
 - `fab {icon}`
-- `nav_item [label]{icon}`
-- `drawer_item [label]{icon}`
+- `- [label]{icon}(action)` for navigation items
+- `- [label]{icon}(action)` for drawer items
 
 ## Coding Guidelines
 

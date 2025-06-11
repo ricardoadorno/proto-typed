@@ -22,43 +22,43 @@ screen MobileApp:
       col:
         @[📧 Messages](MessagesScreen)
       col:
-        @[📊 Analytics](ProfileScreen)
-    row:
+        @[📊 Analytics](ProfileScreen)    row:
       col:
         @[⚙️ Settings](SettingsScreen)
-      col:        @[❓ Help](SettingsScreen)  
-        
+      col:
+        @[❓ Help](SettingsScreen)
+
   navigator:
-    nav_item [Home]{🏠}(MobileApp)
-    nav_item [Search]{🔍}(SettingsScreen)
-    nav_item [Messages]{💬}(MessagesScreen)
-    nav_item [Profile]{👤}(ProfileScreen)
-    nav_item [More]{⋯}(SettingsScreen)
+    - [Home]{🏠}(MobileApp)
+    - [Search]{🔍}(SettingsScreen)
+    - [Messages]{💬}(MessagesScreen)
+    - [Profile]{👤}(ProfileScreen)
+    - [More]{⋯}(SettingsScreen)
+    
   fab {+} MessagesScreen
 
   drawer MyDrawer:
-    drawer_item [Dashboard]{📊}(MobileApp)
-    drawer_item [Messages]{💬}(MessagesScreen)
-    drawer_item [Calendar]{📅}(SettingsScreen)
-    drawer_item [Files]{📁}(ProfileScreen)
-    drawer_item [Settings]{⚙️}(SettingsScreen)
-    drawer_item [Help]{❓}(SettingsScreen)
-    drawer_item [Logout]{🚪}(MobileApp)
+    - [Dashboard]{📊}(MobileApp)
+    - [Messages]{💬}(MessagesScreen)
+    - [Calendar]{📅}(SettingsScreen)
+    - [Files]{📁}(ProfileScreen)
+    - [Settings]{⚙️}(SettingsScreen)
+    - [Help]{❓}(SettingsScreen)
+    - [Logout]{🚪}(MobileApp)
 
 screen MessagesScreen:
   header:
     @_[CircleArrowLeft](MobileApp)
     # Messages
     @[Search]{🔍}
-
   > Your conversations
 
   navigator:
-    nav_item [Home]{🏠}(MobileApp)
-    nav_item [Search]{🔍}(SettingsScreen)
-    nav_item [Messages]{💬}(MessagesScreen)
-    nav_item [Profile]{👤}(ProfileScreen)
-    nav_item [More]{⋯}(SettingsScreen)
+    - [Home]{🏠}(MobileApp)
+    - [Search]{🔍}(SettingsScreen)
+    - [Messages]{💬}(MessagesScreen)
+    - [Profile]{👤}(ProfileScreen)
+    - [More]{⋯}(SettingsScreen)
 
 screen ProfileScreen:
   header:
@@ -85,14 +85,14 @@ screen ProfileScreen:
     [X] Email updates
     [ ] SMS alerts
     ___:Theme{Choose theme}[Light | Dark | Auto]
-      @[Save Changes]
+    @[Save Changes]
 
   navigator:
-    nav_item [Home]{🏠}(MobileApp)
-    nav_item [Search]{🔍}(SettingsScreen)
-    nav_item [Messages]{💬}(MessagesScreen)
-    nav_item [Profile]{👤}(ProfileScreen)
-    nav_item [More]{⋯}(SettingsScreen)
+    - [Home]{🏠}(MobileApp)
+    - [Search]{🔍}(SettingsScreen)
+    - [Messages]{💬}(MessagesScreen)
+    - [Profile]{👤}(ProfileScreen)
+    - [More]{⋯}(SettingsScreen)
 
 screen SettingsScreen:
   header:
@@ -101,33 +101,37 @@ screen SettingsScreen:
 
   card:
     ## Account
-    drawer_item [Profile]{👤}(ProfileScreen)
-    drawer_item [Privacy]{🔒}(ProfileScreen)
-    drawer_item [Security]{🛡️}(ProfileScreen)
+    list:
+      - [Profile]{👤}(ProfileScreen)
+      - [Privacy]{🔒}(ProfileScreen)
+      - [Security]{🛡️}(ProfileScreen)
     
   card:
     ## Preferences
     [X] Dark mode
     [X] Push notifications
-    [ ] Location services    ___:Language{Select language}[English | Spanish | French | German]
+    [ ] Location services
+    ___:Language{Select language}[English | Spanish | French | German]
     ___:Timezone{Select timezone}[UTC | EST | PST | CET]
     
   card:
     ## Support
-    drawer_item [Help Center]{❓}(MessagesScreen)
-    drawer_item [Contact Us]{📧}(MessagesScreen)
-    drawer_item [Feedback]{💭}(MessagesScreen)
-      card:
+    list:
+      - [Help Center]{❓}(MessagesScreen)
+      - [Contact Us]{📧}(MessagesScreen)
+      - [Feedback]{💭}(MessagesScreen)
+    
+  card:
     ## Account Actions
     @[Export Data]
     @[Delete Account](MobileApp)
 
   navigator:
-    nav_item [Home]{🏠}(MobileApp)
-    nav_item [Search]{🔍}(SettingsScreen)
-    nav_item [Messages]{💬}(MessagesScreen)
-    nav_item [Profile]{👤}(ProfileScreen)
-    nav_item [More]{⋯}(SettingsScreen)
+    - [Home]{🏠}(MobileApp)
+    - [Search]{🔍}(SettingsScreen)
+    - [Messages]{💬}(MessagesScreen)
+    - [Profile]{👤}(ProfileScreen)
+    - [More]{⋯}(SettingsScreen)
 `;
 
 export default mobileAppExample;

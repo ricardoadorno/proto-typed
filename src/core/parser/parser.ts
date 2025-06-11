@@ -5,7 +5,7 @@ import {
   Row, Card, Separator, EmptyDiv, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, AdvancedListItem, RadioOption, 
   Checkbox, Text, Note, Quote, Col, List,
-  Header, Navigator, Drawer, NavItem, DrawerItem, FAB
+  Header, Navigator, Drawer, FAB
 } from "../lexer/tokens";
 import { Indent, Outdent } from "../lexer/lexer";
 
@@ -62,9 +62,7 @@ export class UiDslParser extends CstParser {
       ]);
     });
   
-  });
-  
-  element = this.RULE("element", () => {
+  });    element = this.RULE("element", () => {
     this.OR([
       { ALT: () => this.SUBRULE(this.componentInstanceElement) },
       { ALT: () => this.SUBRULE(this.inputElement) },
@@ -72,20 +70,20 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.rowElement) },
       { ALT: () => this.SUBRULE(this.columnElement) },
       { ALT: () => this.SUBRULE(this.listElement) },
+      { ALT: () => this.SUBRULE(this.orderedListElement) },
+      { ALT: () => this.SUBRULE(this.unorderedListElement) },
       { ALT: () => this.SUBRULE(this.cardElement) },
       { ALT: () => this.SUBRULE(this.modalElement) },
       { ALT: () => this.SUBRULE(this.headerElement) },
       { ALT: () => this.SUBRULE(this.navigatorElement) },
-      { ALT: () => this.SUBRULE(this.drawerElement) },      { ALT: () => this.SUBRULE(this.navItemElement) },
-      { ALT: () => this.SUBRULE(this.drawerItemElement) },
-      { ALT: () => this.SUBRULE(this.fabElement) },{ ALT: () => this.SUBRULE(this.separatorElement) },
+      { ALT: () => this.SUBRULE(this.drawerElement) },
+      { ALT: () => this.SUBRULE(this.fabElement) },
+      { ALT: () => this.SUBRULE(this.separatorElement) },
       { ALT: () => this.SUBRULE(this.emptyDivElement) },
       { ALT: () => this.SUBRULE(this.headingElement) },
       { ALT: () => this.SUBRULE(this.textElement) },
       { ALT: () => this.SUBRULE(this.linkElement) },
       { ALT: () => this.SUBRULE(this.imageElement) },
-      { ALT: () => this.SUBRULE(this.orderedListElement) },
-      { ALT: () => this.SUBRULE(this.unorderedListElement) },
       { ALT: () => this.SUBRULE(this.radioButtonGroup) },
       { ALT: () => this.SUBRULE(this.checkboxElement) },
     ]);
@@ -107,21 +105,8 @@ export class UiDslParser extends CstParser {
   imageElement = this.RULE("imageElement", () => {
     this.CONSUME(Image);
   });
-
   inputElement = this.RULE("inputElement", () => {
     this.CONSUME(Input);
-  });
-
-  orderedListElement = this.RULE("orderedListElement", () => {
-    this.AT_LEAST_ONE(() => {
-      this.CONSUME(OrderedListItem);
-    });
-  });
-
-  unorderedListElement = this.RULE("unorderedListElement", () => {
-    this.AT_LEAST_ONE(() => {
-      this.CONSUME(UnorderedListItem);
-    });
   });
 
   radioButtonGroup = this.RULE("radioButtonGroup", () => {
@@ -189,8 +174,7 @@ export class UiDslParser extends CstParser {
         this.CONSUME(Outdent);
       });
     });
-  });  
-    listElement = this.RULE("listElement", () => {
+  });    listElement = this.RULE("listElement", () => {
     this.CONSUME(List);
     this.CONSUME(Colon);
     this.OPTION(() => {
@@ -206,6 +190,18 @@ export class UiDslParser extends CstParser {
     });
   });
 
+  // Standalone list element rules for individual list items
+  orderedListElement = this.RULE("orderedListElement", () => {
+    this.CONSUME(OrderedListItem);
+  });
+
+  unorderedListElement = this.RULE("unorderedListElement", () => {
+    this.OR([
+      { ALT: () => this.CONSUME(AdvancedListItem) },
+      { ALT: () => this.CONSUME(UnorderedListItem) }
+    ]);
+  });
+
   // Mobile Layout Elements
   headerElement = this.RULE("headerElement", () => {
     this.CONSUME(Header);
@@ -219,21 +215,22 @@ export class UiDslParser extends CstParser {
         this.CONSUME(Outdent);
       });
     });
-  });
-  navigatorElement = this.RULE("navigatorElement", () => {
+  });  navigatorElement = this.RULE("navigatorElement", () => {
     this.CONSUME(Navigator);
     this.CONSUME(Colon);
     this.OPTION(() => {
       this.CONSUME(Indent);
       this.AT_LEAST_ONE(() => {
-        this.CONSUME(NavItem);
+        this.OR([
+          { ALT: () => this.CONSUME(AdvancedListItem) },
+          { ALT: () => this.CONSUME(UnorderedListItem) }
+        ]);
       });
       this.OPTION2(() => {
         this.CONSUME(Outdent);
       });
     });
   });
-  
   drawerElement = this.RULE("drawerElement", () => {
     this.CONSUME(Drawer);
     this.CONSUME(Identifier, { LABEL: "name" });
@@ -241,22 +238,17 @@ export class UiDslParser extends CstParser {
     this.OPTION(() => {
       this.CONSUME(Indent);
       this.AT_LEAST_ONE(() => {
-        this.SUBRULE(this.element);
+        this.OR([
+          { ALT: () => this.CONSUME(AdvancedListItem) },
+          { ALT: () => this.CONSUME(UnorderedListItem) }
+        ]);
       });
       this.OPTION2(() => {
         this.CONSUME(Outdent);
       });
     });
   });
-
-  navItemElement = this.RULE("navItemElement", () => {
-    this.CONSUME(NavItem);
-  });  
-  
-  drawerItemElement = this.RULE("drawerItemElement", () => {
-    this.CONSUME(DrawerItem);
-  });
-    fabElement = this.RULE("fabElement", () => {
+  fabElement = this.RULE("fabElement", () => {
     this.CONSUME(FAB);
   });
   // Component instance rule for $ComponentName

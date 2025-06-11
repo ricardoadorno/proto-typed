@@ -10,16 +10,15 @@ screen TestMobile:
   card:
     ## Test Content
     > This screen should have:
-    > • Header at the top (sticky)
-    > • FAB in bottom right corner
-    > • Bottom nav at the bottom (sticky)
+    > Header at the top (sticky)
+    > FAB in bottom right corner
+    > Bottom nav at the bottom (sticky)
     
     @[Test Button](TestMobile)
   fab {+} TestMobile
-
   navigator:
-    nav_item [Home]{🏠}(TestMobile)
-    nav_item [Search]{🔍}(TestMobile)
-    nav_item [Messages]{💬}(TestMobile)
-    nav_item [Profile]{👤}(TestMobile)
+    - [Home]{🏠}(TestMobile)
+    - [Search]{🔍}(TestMobile)
+    - [Messages]{💬}(TestMobile)
+    - [Profile]{👤}(TestMobile)
 `;

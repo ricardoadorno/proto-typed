@@ -50,8 +50,7 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     if (ctx.columnElement) return this.visit(ctx.columnElement);
     if (ctx.listElement) return this.visit(ctx.listElement);
     if (ctx.cardElement) return this.visit(ctx.cardElement);
-    if (ctx.headerElement) return this.visit(ctx.headerElement);    if (ctx.navigatorElement) return this.visit(ctx.navigatorElement);
-    if (ctx.drawerElement) return this.visit(ctx.drawerElement);    if (ctx.navItemElement) return this.visit(ctx.navItemElement);    if (ctx.drawerItemElement) return this.visit(ctx.drawerItemElement);
+    if (ctx.headerElement) return this.visit(ctx.headerElement);    if (ctx.navigatorElement) return this.visit(ctx.navigatorElement);    if (ctx.drawerElement) return this.visit(ctx.drawerElement);
     if (ctx.fabElement) return this.visit(ctx.fabElement);if (ctx.separatorElement) return this.visit(ctx.separatorElement);
     if (ctx.emptyDivElement) return this.visit(ctx.emptyDivElement);
     if (ctx.headingElement) return this.visit(ctx.headingElement);
@@ -248,12 +247,26 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       }
     };
   }
-
   unorderedListElement(ctx: Context) {
-    const items = ctx.UnorderedListItem.map((item: any) => {
-      const match = item.image.match(/-\s+([^\n\r]+)/);
-      return match ? match[1].trim() : '';
-    });
+    let items: any[] = [];
+    
+    // Handle AdvancedListItem tokens
+    if (ctx.AdvancedListItem) {
+      items = items.concat(ctx.AdvancedListItem.map((item: any) => {
+        return this.parseAdvancedListItem(item.image);
+      }));
+    }
+    
+    // Handle UnorderedListItem tokens  
+    if (ctx.UnorderedListItem) {
+      items = items.concat(ctx.UnorderedListItem.map((item: any) => {
+        const match = item.image.match(/-\s+([^\n\r]+)/);
+        return {
+          type: "simple",
+          text: match ? match[1].trim() : ''
+        };
+      }));
+    }
 
     return {
       type: "UnorderedList",
@@ -571,28 +584,29 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       },
       elements
     };
-  }
-  navigatorElement(ctx: Context) {
-    const items = [];
+  }  navigatorElement(ctx: Context) {
+    const items: any[] = [];
 
-    if (ctx.NavItem) {
-      for (const item of ctx.NavItem) {
+    // Handle advanced list items (with brackets and braces)
+    if (ctx.AdvancedListItem) {
+      ctx.AdvancedListItem.forEach((item: any) => {
         const itemText = item.image;
-        // Pattern: nav_item [label]{icon}(action)
-        const match = itemText.match(/nav_item\s+\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/);
-        
-        if (match) {
-          const [, label, icon, action] = match;
-          items.push({
-            type: "NavItem",
-            props: {
-              label: label.trim(),
-              icon: icon.trim(),
-              action: action ? action.trim() : ''
-            }
-          });
+        const navItem = this.parseNavigatorItem(itemText);
+        if (navItem) {
+          items.push(navItem);
         }
-      }
+      });
+    }
+
+    // Handle simple unordered list items
+    if (ctx.UnorderedListItem) {
+      ctx.UnorderedListItem.forEach((item: any) => {
+        const itemText = item.image;
+        const navItem = this.parseNavigatorItem(itemText);
+        if (navItem) {
+          items.push(navItem);
+        }
+      });
     }
 
     return {
@@ -602,16 +616,36 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       },
       elements: items
     };
-  }
-  
-  drawerElement(ctx: Context) {
+  }  drawerElement(ctx: Context) {
     const name = ctx.name[0].image;
-    const elements = ctx.element ? ctx.element.map((el: CstNode) => this.visit(el)) : [];
+    const items: any[] = [];
+
+    // Handle advanced list items (with brackets and braces)
+    if (ctx.AdvancedListItem) {
+      ctx.AdvancedListItem.forEach((item: any) => {
+        const itemText = item.image;
+        const drawerItem = this.parseDrawerItem(itemText);
+        if (drawerItem) {
+          items.push(drawerItem);
+        }
+      });
+    }
+
+    // Handle simple unordered list items
+    if (ctx.UnorderedListItem) {
+      ctx.UnorderedListItem.forEach((item: any) => {
+        const itemText = item.image;
+        const drawerItem = this.parseDrawerItem(itemText);
+        if (drawerItem) {
+          items.push(drawerItem);
+        }
+      });
+    }
 
     return {
       type: "drawer",
       name,
-      elements
+      elements: items
     };
   }
 
@@ -653,7 +687,7 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     }
       return null;
   }
-    fabElement(ctx: Context) {
+  fabElement(ctx: Context) {
     const fabText = ctx.FAB[0].image;
     // Pattern: fab {icon} text
     const match = fabText.match(/fab\s+\{([^}]+)\}\s+([^\n\r]+)/);
@@ -671,8 +705,67 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     }
     
     return null;
+  }  // Helper method to parse navigator items from dash syntax
+  private parseNavigatorItem(itemText: string): any {
+    // Remove initial "- " and trim
+    const content = itemText.replace(/^(?:\r\n|\r|\n|\s)*-\s+/, '').trim();
+    
+    // Pattern: [label]{icon}(action) - all optional
+    const match = content.match(/^\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/);
+    
+    if (match) {
+      const [, label, icon, action] = match;
+      return {
+        type: "NavItem",
+        props: {
+          label: label.trim(),
+          icon: icon.trim(),
+          action: action ? action.trim() : ''
+        }
+      };
+    }
+    
+    // Fallback for simple text items
+    return {
+      type: "NavItem",
+      props: {
+        label: content,
+        icon: '',
+        action: ''
+      }
+    };
   }
-  componentInstanceElement(ctx: Context) {
+
+  // Helper method to parse drawer items from dash syntax
+  private parseDrawerItem(itemText: string): any {
+    // Remove initial "- " and trim
+    const content = itemText.replace(/^(?:\r\n|\r|\n|\s)*-\s+/, '').trim();
+    
+    // Pattern: [label]{icon}(action) - all optional
+    const match = content.match(/^\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/);
+    
+    if (match) {
+      const [, label, icon, action] = match;
+      return {
+        type: "DrawerItem",
+        props: {
+          label: label.trim(),
+          icon: icon.trim(),
+          action: action ? action.trim() : ''
+        }
+      };
+    }
+    
+    // Fallback for simple text items
+    return {
+      type: "DrawerItem",
+      props: {
+        label: content,
+        icon: '',
+        action: ''
+      }
+    };
+  }  componentInstanceElement(ctx: Context) {
     const token = ctx.ComponentInstance[0];
     const match = token.image.match(/\$([a-zA-Z_][a-zA-Z0-9_]*)/);
     const componentName = match ? match[1] : '';
