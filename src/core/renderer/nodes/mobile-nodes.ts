@@ -85,7 +85,7 @@ export function renderDrawerItem(node: AstNode): string {
  */
 export function renderFAB(node: AstNode): string {
   const fabProps = node.props as any;
-  const { icon: fabIcon, text: fabText, href: fabHref } = fabProps || {};
+  const { icon: fabIcon, href: fabHref } = fabProps || {};
   const fabAttrs = generateNavigationAttributes(fabHref);
   
   return `
