@@ -50,7 +50,7 @@ function IPhoneMockup({ children }: { children: React.ReactNode }) {
 // Browser Mockup Component with Tailwind
 function BrowserMockup({ children }: { children: React.ReactNode }) {
     return (
-        <div className="relative bg-slate-900 rounded-t-xl overflow-hidden mr-6 mt-4 h-[60%] shadow-[0_20px_25px_-5px_rgb(0_0_0/0.1),0_8px_10px_-6px_rgb(0_0_0/0.1)] border-t-[3rem] border-t-slate-800">
+        <div className="relative mx-auto my-10 w-[900px] h-[600px] bg-slate-900 rounded-t-xl overflow-hidden shadow-[0_20px_25px_-5px_rgb(0_0_0/0.1),0_8px_10px_-6px_rgb(0_0_0/0.1)] border-t-[3rem] border-t-slate-800">
             {/* Traffic lights */}
             <div className="absolute -top-8 left-4 w-3 h-3 rounded-full bg-red-500 shadow-[0_0_0_2px_rgb(239_68_68),1.5rem_0_0_2px_rgb(34_197_94),3rem_0_0_2px_rgb(251_191_36)]"></div>
 
@@ -58,7 +58,7 @@ function BrowserMockup({ children }: { children: React.ReactNode }) {
             <div className="absolute -top-9 left-[5.5rem] w-[calc(100%-6rem)] h-6 rounded-md bg-slate-50 border border-slate-200"></div>
 
             {/* Content */}
-            <div className="p-0 w-full h-full border-0" style={{ height: '600px', width: "100%", background: 'transparent', overflow: 'auto' }}>
+            <div className="overflow-auto h-full w-full" style={{ containerType: 'inline-size' }}>
                 {children}
             </div>
         </div>

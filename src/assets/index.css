@@ -1,12 +1,5 @@
 @import "tailwindcss";
 
-/* Custom container query for responsive grids */
-@container (max-width: 768px) {
-    .grid {
-        grid-template-columns: repeat(1, minmax(0, 1fr));
-    }
-}
-
 button {
    cursor: pointer;
 }
