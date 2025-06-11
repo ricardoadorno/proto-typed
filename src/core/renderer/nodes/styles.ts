@@ -73,11 +73,11 @@ export const elementStyles = {
   fabItem: 'flex items-center justify-end',
   fabItemBtn: 'w-12 h-12 mb-3 rounded-full bg-gray-700 flex items-center justify-center text-lg text-white shadow-lg',
   fabItemLabel: 'mr-3 bg-gray-800 text-white px-3 py-1 rounded-lg text-sm font-medium shadow-lg whitespace-nowrap',
-    // Modal and drawer
-  modalBackdrop: 'modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-50',
+  // Modal and drawer
+  modalBackdrop: 'modal-backdrop absolute inset-0 bg-black/60 flex items-center justify-center z-50',
   modalContent: 'modal-content bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6 relative',
   modalClose: 'modal-close absolute top-4 right-4 text-gray-400 hover:text-gray-200 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-700 transition-colors',
-  drawer: 'drawer fixed top-0 left-0 z-40 w-64 h-screen bg-gray-800 border-r border-gray-700 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out',
+  drawer: 'drawer absolute top-0 left-0 z-40 w-64 h-full bg-gray-800 border-r border-gray-700 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out',
     // Utility
   separator: 'my-6 border-gray-700',
   emptyDiv: 'w-full h-4 bg-transparent',
