@@ -37,11 +37,10 @@ export const elementStyles = {
     5: 'text-sm font-bold text-white',
     6: 'text-sm font-bold text-white'
   },
-  
-  paragraph: {
+    paragraph: {
     default: 'text-gray-300 mb-4 leading-relaxed',
-    note: 'text-sm text-gray-400 mb-3 italic',
-    quote: 'border-l-4 border-blue-500 pl-4 text-gray-400 italic mb-4'
+    note: 'bg-red-500 text-white px-4 py-2 rounded-lg m-2 shadow-lg',
+    quote: 'bg-gray-800 text-white px-4 py-2 rounded-lg m-2 shadow-lg'
   },
   
   link: 'text-blue-400 hover:text-blue-300 underline transition-colors duration-200',
@@ -66,14 +65,14 @@ export const elementStyles = {
   navItem: 'flex flex-col items-center justify-center py-2 px-3 text-xs font-medium text-gray-400 hover:text-blue-400 active:text-blue-500 transition-all duration-200 rounded-lg hover:bg-gray-700/50 min-w-[60px]',
   navItemIcon: 'mb-1 text-lg',
   navItemLabel: 'text-xs font-medium',
-  drawerItem: 'flex items-center w-full px-4 py-3 text-left text-gray-300 hover:bg-gray-700/70 transition-all duration-200 rounded-lg mx-2 my-1',
+  drawerItem: 'flex items-center w-full px-4 py-3 text-left text-gray-300 rounded-lg mx-2 my-1',
   drawerItemIcon: 'mr-3 text-lg flex-shrink-0',
   drawerItemLabel: 'font-medium',  // FAB
-  fab: 'w-14 h-14 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 shadow-2xl hover:shadow-blue-500/25 flex items-center justify-center text-xl font-bold text-white transition-all duration-300 transform hover:scale-110 z-40',
-  fabContainer: 'fab-container',
-  fabItemsList: 'mb-8 space-y-6 opacity-0 transform translate-y-4 transition-all duration-300 pointer-events-none',
+  fab: 'w-14 h-14 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 shadow-2xl flex items-center justify-center text-xl font-bold text-white z-40',
+  fabContainer: 'sticky bottom-6 right-6 left-auto z-40 flex flex-col items-end justify-end p-0 pb-4 ml-auto w-auto',
+  fabItemsList: 'mb-8 space-y-6 opacity-0 transform translate-y-4 pointer-events-none',
   fabItem: 'flex items-center justify-end',
-  fabItemBtn: 'w-12 h-12 mb-3 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center text-lg text-white transition-all duration-200 transform hover:scale-110 shadow-lg hover:shadow-xl',
+  fabItemBtn: 'w-12 h-12 mb-3 rounded-full bg-gray-700 flex items-center justify-center text-lg text-white shadow-lg',
   fabItemLabel: 'mr-3 bg-gray-800 text-white px-3 py-1 rounded-lg text-sm font-medium shadow-lg whitespace-nowrap',
     // Modal and drawer
   modalBackdrop: 'modal-backdrop fixed inset-0 bg-black/60 flex items-center justify-center z-50',

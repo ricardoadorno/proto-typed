@@ -87,7 +87,8 @@ export function renderFAB(node: AstNode): string {
   const fabProps = node.props as any;
   const { icon: fabIcon, text: fabText, href: fabHref } = fabProps || {};
   const fabAttrs = generateNavigationAttributes(fabHref);
-    return `
+  
+  return `
     <div class="${elementStyles.fabContainer}">
       <button class="${elementStyles.fab}" ${fabAttrs}>
         ${renderIcon(fabIcon || '+')}
