@@ -12,12 +12,19 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
   constructor() {
     super();
     this.validateVisitor();
-  }
+  }  /**
+   * Parse and process the entire program, including global elements (screens, components, modals, drawers)
+   * @param ctx - The parsing context containing all top-level elements
+   * @returns Array of all processed global elements
+   */
   program(ctx: Context) {
-    // Process multiple screens and components
+    // Process multiple screens, components, modals, and drawers as global elements
     const screens = ctx.screen ? ctx.screen.map((screen: CstNode) => this.visit(screen)) : [];
     const components = ctx.component ? ctx.component.map((component: CstNode) => this.visit(component)) : [];
-    return [...screens, ...components];
+    const modals = ctx.modal ? ctx.modal.map((modal: CstNode) => this.visit(modal)) : [];
+    const drawers = ctx.drawer ? ctx.drawer.map((drawer: CstNode) => this.visit(drawer)) : [];
+    
+    return [...screens, ...components, ...modals, ...drawers];
   }
   screen(ctx: Context) {
     const name = ctx.name[0].image;
@@ -40,17 +47,15 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       elements
     };
   } 
-  
-  element(ctx: Context) {
+    element(ctx: Context) {
     if (ctx.componentInstanceElement) return this.visit(ctx.componentInstanceElement);
-    if (ctx.modalElement) return this.visit(ctx.modalElement);
     if (ctx.inputElement) return this.visit(ctx.inputElement);
     if (ctx.buttonElement) return this.visit(ctx.buttonElement);
     if (ctx.rowElement) return this.visit(ctx.rowElement);
     if (ctx.columnElement) return this.visit(ctx.columnElement);
     if (ctx.listElement) return this.visit(ctx.listElement);
     if (ctx.cardElement) return this.visit(ctx.cardElement);
-    if (ctx.headerElement) return this.visit(ctx.headerElement);    if (ctx.navigatorElement) return this.visit(ctx.navigatorElement);    if (ctx.drawerElement) return this.visit(ctx.drawerElement);
+    if (ctx.headerElement) return this.visit(ctx.headerElement);    if (ctx.navigatorElement) return this.visit(ctx.navigatorElement);
     if (ctx.fabElement) return this.visit(ctx.fabElement);if (ctx.separatorElement) return this.visit(ctx.separatorElement);
     if (ctx.emptyDivElement) return this.visit(ctx.emptyDivElement);
     if (ctx.headingElement) return this.visit(ctx.headingElement);
@@ -616,7 +621,13 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       },
       elements: items
     };
-  }  drawerElement(ctx: Context) {
+  }  /**
+   * Process global drawer element declaration
+   * Drawers are globally accessible singleton elements that can be referenced by name
+   * @param ctx - The parsing context containing drawer name and navigation items
+   * @returns Drawer AST node with global accessibility
+   */
+  drawer(ctx: Context) {
     const name = ctx.name[0].image;
     const items: any[] = [];
 
@@ -775,8 +786,13 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       name: componentName
     };
   }
-
-  modalElement(ctx: Context) {
+  /**
+   * Process global modal element declaration
+   * Modals are globally accessible singleton elements that can be referenced by name
+   * @param ctx - The parsing context containing modal name and elements
+   * @returns Modal AST node with global accessibility
+   */
+  modal(ctx: Context) {
     const name = ctx.name[0].image;
     const elements = ctx.element ? ctx.element.map((el: CstNode) => this.visit(el)) : [];
 

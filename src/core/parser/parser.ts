@@ -17,13 +17,14 @@ export class UiDslParser extends CstParser {
     });
     this.performSelfAnalysis();
   }  
-  
-  // Top-level rule that can parse multiple screens and components
+    // Top-level rule that can parse multiple screens, components, modals, and drawers
   program = this.RULE("program", () => {
     this.MANY(() => {
       this.OR([
         { ALT: () => this.SUBRULE(this.screen) },
-        { ALT: () => this.SUBRULE(this.component) }
+        { ALT: () => this.SUBRULE(this.component) },
+        { ALT: () => this.SUBRULE(this.modal) },
+        { ALT: () => this.SUBRULE(this.drawer) }
       ]);
     });
     // Consume any remaining indent/outdent tokens at the end
@@ -48,7 +49,6 @@ export class UiDslParser extends CstParser {
       ]);
     });
   });
-
   // Component declaration rule
   component = this.RULE("component", () => {
     this.CONSUME(Component);
@@ -61,8 +61,38 @@ export class UiDslParser extends CstParser {
         { ALT: () => this.SUBRULE(this.element) }
       ]);
     });
-  
-  });    element = this.RULE("element", () => {
+  });
+
+  // Global modal declaration rule
+  modal = this.RULE("modal", () => {
+    this.CONSUME(Modal);
+    this.CONSUME(Identifier, { LABEL: "name" });
+    this.CONSUME(Colon);
+    this.MANY(() => {
+      this.OR([
+        { ALT: () => this.CONSUME(Indent) },
+        { ALT: () => this.CONSUME(Outdent) },
+        { ALT: () => this.SUBRULE(this.element) }
+      ]);
+    });
+  });
+
+  // Global drawer declaration rule
+  drawer = this.RULE("drawer", () => {
+    this.CONSUME(Drawer);
+    this.CONSUME(Identifier, { LABEL: "name" });
+    this.CONSUME(Colon);
+    this.MANY(() => {
+      this.OR([
+        { ALT: () => this.CONSUME(Indent) },
+        { ALT: () => this.CONSUME(Outdent) },
+        { ALT: () => this.OR2([
+          { ALT: () => this.CONSUME(AdvancedListItem) },
+          { ALT: () => this.CONSUME(UnorderedListItem) }
+        ]) }
+      ]);
+    });
+  });element = this.RULE("element", () => {
     this.OR([
       { ALT: () => this.SUBRULE(this.componentInstanceElement) },
       { ALT: () => this.SUBRULE(this.inputElement) },
@@ -73,10 +103,8 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.orderedListElement) },
       { ALT: () => this.SUBRULE(this.unorderedListElement) },
       { ALT: () => this.SUBRULE(this.cardElement) },
-      { ALT: () => this.SUBRULE(this.modalElement) },
       { ALT: () => this.SUBRULE(this.headerElement) },
       { ALT: () => this.SUBRULE(this.navigatorElement) },
-      { ALT: () => this.SUBRULE(this.drawerElement) },
       { ALT: () => this.SUBRULE(this.fabElement) },
       { ALT: () => this.SUBRULE(this.separatorElement) },
       { ALT: () => this.SUBRULE(this.emptyDivElement) },
@@ -230,46 +258,13 @@ export class UiDslParser extends CstParser {
         this.CONSUME(Outdent);
       });
     });
-  });
-  drawerElement = this.RULE("drawerElement", () => {
-    this.CONSUME(Drawer);
-    this.CONSUME(Identifier, { LABEL: "name" });
-    this.CONSUME(Colon);
-    this.OPTION(() => {
-      this.CONSUME(Indent);
-      this.AT_LEAST_ONE(() => {
-        this.OR([
-          { ALT: () => this.CONSUME(AdvancedListItem) },
-          { ALT: () => this.CONSUME(UnorderedListItem) }
-        ]);
-      });
-      this.OPTION2(() => {
-        this.CONSUME(Outdent);
-      });
-    });
-  });
-  fabElement = this.RULE("fabElement", () => {
+  });  fabElement = this.RULE("fabElement", () => {
     this.CONSUME(FAB);
   });
+  
   // Component instance rule for $ComponentName
   componentInstanceElement = this.RULE("componentInstanceElement", () => {
     this.CONSUME(ComponentInstance);
-  });
-
-  // Modal element rule - container with identifier
-  modalElement = this.RULE("modalElement", () => {
-    this.CONSUME(Modal);
-    this.CONSUME(Identifier, { LABEL: "name" });
-    this.CONSUME(Colon);
-    this.OPTION(() => {
-      this.CONSUME(Indent);
-      this.AT_LEAST_ONE(() => {
-        this.SUBRULE(this.element);
-      });
-      this.OPTION2(() => {
-        this.CONSUME(Outdent);
-      });
-    });
   });
 }
 

@@ -21,7 +21,7 @@ modal WelcomeModal:
   # Welcome to Proto-type!
   > This is a modal that was hidden until you clicked the button.
   > Modals are perfect for displaying important information without leaving the current screen.
-  @[Close]
+  @[Close](Home)
 
 modal SettingsModal:
   # Settings
