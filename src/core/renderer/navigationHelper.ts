@@ -1,5 +1,5 @@
 /**
- * Navigation Helper
+ * Navigation Helper - Refactored and Cleaned
  * Unifies navigation logic across the application using data-nav attributes
  */
 import { NavigationHandlerOptions } from '../../types/render';
@@ -9,8 +9,6 @@ export interface NavigationTarget {
   value: string;
   isValid: boolean;
 }
-
-
 
 /**
  * Navigation History Management
@@ -149,186 +147,70 @@ export function generateHrefAttribute(target: string | undefined): string {
 }
 
 /**
- * Generate the JavaScript code for navigation handling
+ * Toggle a drawer element
  */
-export function generateNavigationScript(): string {
-  return `
-    // Navigation History Management
-    let navigationHistory = [];
-    let currentScreenIndex = -1;
+export function toggleDrawer(drawerName: string): boolean {
+  const drawerContainer = document.getElementById(`drawer-${drawerName}`);
+  
+  if (!drawerContainer) {
+    console.warn(`Drawer ${drawerName} not found`);
+    return false;
+  }
+  
+  const isHidden = drawerContainer.classList.contains('hidden');
+  const drawerContent = drawerContainer.querySelector('.drawer-content');
     
-    function addToHistory(screenName) {
-      // Remove any screens after current position (when navigating after going back)
-      navigationHistory = navigationHistory.slice(0, currentScreenIndex + 1);
-      
-      // Don't add the same screen consecutively
-      if (navigationHistory[currentScreenIndex] !== screenName) {
-        navigationHistory.push(screenName);
-        currentScreenIndex++;
-      }
+  if (isHidden) {
+    // Show drawer
+    drawerContainer.classList.remove('hidden');
+    
+    if (drawerContent) {
+      drawerContent.classList.add('translate-x-0');
+      drawerContent.classList.remove('-translate-x-full');
+    }
+  } else {
+    // Hide drawer
+    if (drawerContent) {
+      drawerContent.classList.remove('translate-x-0');
+      drawerContent.classList.add('-translate-x-full');
     }
     
-    function navigateBack() {
-      if (currentScreenIndex > 0) {
-        currentScreenIndex--;
-        const previousScreen = navigationHistory[currentScreenIndex];
-        navigateToScreen(previousScreen);
-        return previousScreen;
-      }
-      return null;
-    }
-    
-    function navigateToScreen(screenName) {
-      const screens = document.querySelectorAll('.screen');
-      screens.forEach(screen => {
-        if (screen.className.includes(screenName.toLowerCase())) {
-          screen.style.display = 'block';
-        } else {
-          screen.style.display = 'none';
-        }
-      });
-      
-      // Add to history only if not coming from back navigation
-      if (screenName !== navigationHistory[currentScreenIndex]) {
-        addToHistory(screenName);
-      }
-    }function toggleElement(elementName) {
-      // Try to find element by ID patterns: drawer (unified), modal
-      const drawer = document.querySelector('.drawer');
-      const drawerElement = document.getElementById(\`drawer-\${elementName}\`);
-      const modal = document.getElementById(\`modal-\${elementName}\`);
-      
-      // Handle drawer (unified concept)
-      if (elementName === 'drawer' || elementName === 'Drawer' || !elementName) {
-        // Try legacy drawer first (mobile-style)
-        if (drawer) {
-          const overlay = document.querySelector('.drawer-overlay');
-          const isOpening = !drawer.classList.contains('open');
-            drawer.classList.toggle('open');
-          if (overlay) overlay.classList.toggle('open');
-          
-          // Scroll management removed
-          return;
-        }      }
-        // Handle named drawer elements
-      if (drawerElement) {
-        const isHidden = drawerElement.classList.contains('hidden');
-        const content = drawerElement.querySelector('.drawer-content');
-        
-        if (isHidden) {
-          drawerElement.classList.remove('hidden');
-          if (content) {
-            content.classList.add('translate-x-0');
-            content.classList.remove('-translate-x-full');
-          }
-          // Scroll management removed
-        } else {
-          if (content) {
-            content.classList.remove('translate-x-0');
-            content.classList.add('-translate-x-full');
-          }
-          setTimeout(() => {
-            drawerElement.classList.add('hidden');
-            // Scroll management removed
-          }, 300);
-        }
-        return;
-      }
-        // Handle modal
-      if (modal) {
-        const isOpening = modal.classList.contains('hidden');
-        modal.classList.toggle('hidden');
-        
-        // Scroll management removed
-        return;
-      }
-      
-      // Fallback: try generic element toggle
-      const element = document.getElementById(elementName) || document.querySelector(\`.\${elementName}\`);
-      if (element) {
-        element.classList.toggle('hidden');
-      }
-    }
-    
-    // Handle navigation clicks with data-nav attributes
-    document.addEventListener('click', function(e) {
-      const target = e.target.closest('[data-nav]');
-      if (!target) return;
-      
-      const navValue = target.getAttribute('data-nav');
-      const navType = target.getAttribute('data-nav-type');
-      
-      if (!navValue) return;
-        switch (navType) {        case 'internal':
-          e.preventDefault();
-          // Check if it's a modal or drawer first
-          const modal = document.getElementById(\`modal-\${navValue}\`);
-          const drawer = document.getElementById(\`drawer-\${navValue}\`);
-          
-          if (modal) {
-            toggleElement(navValue);
-          } else if (drawer) {
-            toggleElement(navValue);
-          } else {
-            navigateToScreen(navValue);
-          }
-          break;
-        case 'back':
-          e.preventDefault();
-          navigateBack();
-          break;
-        case 'external':
-          e.preventDefault();
-          window.open(navValue, '_blank', 'noopener,noreferrer');
-          break;
-        case 'action':
-          e.preventDefault();          try {
-            new Function(navValue)();
-          } catch (error) {
-            // Navigation action failed silently
-          }
-          break;
-        case 'toggle':
-          e.preventDefault();
-          // Extract element name from toggle commands          let elementName = '';
-          if (navValue.includes('(')) {            // Handle toggleDrawer(), etc.
-            const match = navValue.match(/toggle(\\w+)\\(\\)/);
-            elementName = match ? match[1].toLowerCase() : 'drawer';
-          } else if (navValue.includes('-')) {
-            // Handle toggle-drawer, etc.
-            elementName = navValue.split('-')[1] || 'drawer';
-          } else {
-            elementName = 'drawer'; // Default fallback
-          }
-          toggleElement(elementName);
-          break;
-      }
-    });      // Handle overlay clicks to close drawer/modal
-    document.addEventListener('click', function(e) {
-      if (e.target && e.target.classList.contains('drawer-overlay')) {
-        const drawer = document.querySelector('.drawer');
-        const overlay = document.querySelector('.drawer-overlay');
-        if (drawer) drawer.classList.remove('open');
-        if (overlay) overlay.classList.remove('open');
-        // Scroll management removed
-      }
-      
-      // Handle modal backdrop clicks to close modal
-      if (e.target && e.target.classList.contains('modal-backdrop')) {
-        const modal = e.target.closest('.modal');
-        if (modal) {
-          modal.classList.add('hidden');
-          // Scroll management removed
-        }
-      }
-    });
-  `;
+    setTimeout(() => {
+      drawerContainer.classList.add('hidden');
+    }, 300);
+  }
+  
+  return true;
+}
+
+/**
+ * Toggle a modal element
+ */
+export function toggleModal(modalName: string): boolean {
+  // Try both with and without the modal- prefix
+  let modal = document.getElementById(`modal-${modalName}`);
+  if (!modal) {
+    modal = document.getElementById(modalName);
+  }
+  
+  if (!modal) {
+    console.warn(`Modal ${modalName} not found`);
+    return false;
+  }
+  
+  const isHidden = modal.classList.contains('hidden');
+  if (isHidden) {
+    modal.classList.remove('hidden');
+  } else {
+    modal.classList.add('hidden');
+  }
+  
+  return true;
 }
 
 /**
  * Centralized navigation click handler for React and HTML export
  * Handles all navigation types and updates UI accordingly
- * Accepts optional callbacks for internal navigation and toggle actions
  */
 export function handleNavigationClick(
   e: React.MouseEvent<Element, MouseEvent> | MouseEvent,
@@ -361,7 +243,8 @@ export function handleNavigationClick(
       // Also check without the prefix in case of direct element names
       const directModalElement = document.getElementById(`modal-${navValue}`);
       const directDrawerElement = document.getElementById(`drawer-${navValue}`);
-        if (modalElement || directModalElement) {
+        
+      if (modalElement || directModalElement) {
         // Handle modal toggle
         const modalName = modalElement ? normalizedNavValue : navValue;
         toggleModal(modalName);
@@ -371,7 +254,6 @@ export function handleNavigationClick(
         toggleDrawer(drawerName);
       } else {
         // Regular screen navigation
-        // Add to history before navigating
         addToHistory(normalizedNavValue);
         
         if (options && options.onInternalNavigate) {
@@ -389,6 +271,7 @@ export function handleNavigationClick(
         }
       }
       break;
+      
     case 'back':
       const previousScreen = navigateBack();
       if (previousScreen) {
@@ -408,12 +291,14 @@ export function handleNavigationClick(
           }
         }
       }
-      break;case 'toggle':
+      break;
+      
+    case 'toggle':
       // Extract element name from toggle commands
       let elementName = '';
       if (navValue.includes('(')) {
         // Handle toggleDrawer(), etc.
-        const match = navValue.match(/toggle(\\w+)\\(\\)/);
+        const match = navValue.match(/toggle(\w+)\(\)/);
         elementName = match ? match[1].toLowerCase() : 'drawer';
       } else if (navValue.includes('-')) {
         // Handle toggle-drawer, etc.
@@ -423,28 +308,27 @@ export function handleNavigationClick(
       }
       
       if (options && options.onToggle) {
-        options.onToggle(elementName);      } else {
+        options.onToggle(elementName);      
+      } else {
         // Fallback: DOM manipulation for toggle
         const drawer = document.querySelector('.drawer');
         const drawerElement = document.getElementById(`drawer-${elementName}`);
         const modal = document.getElementById(`modal-${elementName}`);
-          if (elementName === 'drawer' && drawer) {
-          const overlay = document.querySelector('.drawer-overlay');
           
+        if (elementName === 'drawer' && drawer) {
+          const overlay = document.querySelector('.drawer-overlay');
           drawer.classList.toggle('open');
           if (overlay) overlay.classList.toggle('open');
-          
-          // Scroll management removed
         } else if (drawerElement) {
           const isHidden = drawerElement.classList.contains('hidden');
           const content = drawerElement.querySelector('.drawer-content');
-            if (isHidden) {
+            
+          if (isHidden) {
             drawerElement.classList.remove('hidden');
             if (content) {
               content.classList.add('translate-x-0');
               content.classList.remove('-translate-x-full');
             }
-            // Scroll management removed
           } else {
             if (content) {
               content.classList.remove('translate-x-0');
@@ -452,23 +336,22 @@ export function handleNavigationClick(
             }
             setTimeout(() => {
               drawerElement.classList.add('hidden');
-              // Scroll management removed
             }, 300);
-          }        } else if (modal) {
+          }        
+        } else if (modal) {
           modal.classList.toggle('hidden');
-          
-          // Scroll management removed
         }
       }
       break;
+      
     case 'external':
       window.open(navValue, '_blank', 'noopener,noreferrer');
       break;
+      
     case 'action':
       try {
         new Function(navValue)();
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error('Error executing navigation action:', error);
       }
       break;
@@ -476,150 +359,165 @@ export function handleNavigationClick(
 }
 
 /**
- * Check if an element is a modal or drawer by searching through AST nodes
+ * Generate the JavaScript code for navigation handling
  */
-export function findElementType(elementName: string, allNodes: any[]): 'modal' | 'drawer' | 'screen' | null {
-  const lowerName = elementName.toLowerCase();
-  
-  // Search for modal
-  const isModal = allNodes.some(node => 
-    node.type === 'modal' && node.name?.toLowerCase() === lowerName
-  );
-  
-  if (isModal) return 'modal';
-  
-  // Search for drawer
-  const isDrawer = allNodes.some(node => 
-    node.type === 'drawer' && node.name?.toLowerCase() === lowerName
-  );
-  
-  if (isDrawer) return 'drawer';
-  
-  // Search for screen
-  const isScreen = allNodes.some(node => 
-    node.type === 'screen' && node.name?.toLowerCase() === lowerName
-  );
-  
-  if (isScreen) return 'screen';
-  
-  return null;
-}
-
-/**
- * Get the actual element name with original case
- */
-export function getActualElementName(elementName: string, allNodes: any[]): string {
-  const lowerName = elementName.toLowerCase();
-  
-  // Find the node with matching name (case-insensitive)
-  const foundNode = allNodes.find(node => 
-    (node.type === 'modal' || node.type === 'drawer' || node.type === 'screen') && 
-    node.name?.toLowerCase() === lowerName
-  );
-  
-  return foundNode?.name || elementName;
-}
-
-/**
- * Toggle a drawer element
- */
-export function toggleDrawer(drawerName: string): boolean {
-  const drawerContainer = document.getElementById(`drawer-${drawerName}`);
-  
-  if (!drawerContainer) {
-    console.warn(`Drawer ${drawerName} not found`);
-    return false;
-  }
-  
-  const isHidden = drawerContainer.classList.contains('hidden');
-  const drawerContent = drawerContainer.querySelector('.drawer-content');
-    if (isHidden) {
-    // Show drawer
-    drawerContainer.classList.remove('hidden');
-    // Scroll management removed
+export function generateNavigationScript(): string {
+  return `
+    // Navigation History Management
+    let navigationHistory = [];
+    let currentScreenIndex = -1;
     
-    if (drawerContent) {
-      setTimeout(() => {
-        drawerContent.classList.remove('-translate-x-full');
-        drawerContent.classList.add('translate-x-0');
-      }, 50);
-    }
-  } else {
-    // Hide drawer
-    // Scroll management removed
-    
-    if (drawerContent) {
-      drawerContent.classList.remove('translate-x-0');
-      drawerContent.classList.add('-translate-x-full');
+    function addToHistory(screenName) {
+      navigationHistory = navigationHistory.slice(0, currentScreenIndex + 1);
+      if (navigationHistory[currentScreenIndex] !== screenName) {
+        navigationHistory.push(screenName);
+        currentScreenIndex++;
+      }
     }
     
-    setTimeout(() => {
-      drawerContainer.classList.add('hidden');
-    }, 300);
-  }
-  
-  return true;
-}
+    function navigateBack() {
+      if (currentScreenIndex > 0) {
+        currentScreenIndex--;
+        const previousScreen = navigationHistory[currentScreenIndex];
+        navigateToScreen(previousScreen);
+        return previousScreen;
+      }
+      return null;
+    }
+    
+    function navigateToScreen(screenName) {
+      const screens = document.querySelectorAll('.screen');
+      screens.forEach(screen => {
+        if (screen.className.includes(screenName.toLowerCase())) {
+          screen.style.display = 'block';
+        } else {
+          screen.style.display = 'none';
+        }
+      });
+      
+      if (screenName !== navigationHistory[currentScreenIndex]) {
+        addToHistory(screenName);
+      }
+    }
 
-/**
- * Toggle a modal element
- */
-export function toggleModal(modalName: string): boolean {
-  // Try both with and without the modal- prefix
-  let modal = document.getElementById(`modal-${modalName}`);
-  if (!modal) {
-    modal = document.getElementById(modalName);
-  }
-  
-  if (!modal) {
-    console.warn(`Modal ${modalName} not found. Available elements:`, 
-      Array.from(document.querySelectorAll('[id*="modal"]')).map(el => el.id)
-    );
-    return false;
-  }
-  
-  const isHidden = modal.classList.contains('hidden');
-  if (isHidden) {
-    modal.classList.remove('hidden');
-    // Scroll management removed
-  } else {
-    modal.classList.add('hidden');
-    // Scroll management removed
-  }
-  
-  return true;
-}
-
-/**
- * Handle navigation to different types of elements (screen, modal, drawer)
- * Returns true if navigation was handled, false if it should be passed to external handler
- */
-export function handleElementNavigation(
-  elementName: string, 
-  allNodes: any[]
-): { handled: boolean; elementType: string | null; actualName: string } {
-  const elementType = findElementType(elementName, allNodes);
-  const actualName = getActualElementName(elementName, allNodes);
-  
-  if (!elementType) {
-    return { handled: false, elementType: null, actualName };
-  }
-  
-  switch (elementType) {
-    case 'modal':
-      addToHistory(actualName);
-      toggleModal(actualName);
-      return { handled: true, elementType: 'modal', actualName };
+    function toggleElement(elementName) {
+      const drawer = document.querySelector('.drawer');
+      const drawerElement = document.getElementById(\`drawer-\${elementName}\`);
+      const modal = document.getElementById(\`modal-\${elementName}\`);
       
-    case 'drawer':
-      toggleDrawer(actualName);
-      return { handled: true, elementType: 'drawer', actualName };
+      if (elementName === 'drawer' || elementName === 'Drawer' || !elementName) {
+        if (drawer) {
+          const overlay = document.querySelector('.drawer-overlay');
+          drawer.classList.toggle('open');
+          if (overlay) overlay.classList.toggle('open');
+          return;
+        }
+      }
+        
+      if (drawerElement) {
+        const isHidden = drawerElement.classList.contains('hidden');
+        const content = drawerElement.querySelector('.drawer-content');
+        
+        if (isHidden) {
+          drawerElement.classList.remove('hidden');
+          if (content) {
+            content.classList.add('translate-x-0');
+            content.classList.remove('-translate-x-full');
+          }
+        } else {
+          if (content) {
+            content.classList.remove('translate-x-0');
+            content.classList.add('-translate-x-full');
+          }
+          setTimeout(() => {
+            drawerElement.classList.add('hidden');
+          }, 300);
+        }
+        return;
+      }
+        
+      if (modal) {
+        modal.classList.toggle('hidden');
+        return;
+      }
       
-    case 'screen':
-      addToHistory(actualName);
-      return { handled: false, elementType: 'screen', actualName };
+      const element = document.getElementById(elementName) || document.querySelector(\`.\${elementName}\`);
+      if (element) {
+        element.classList.toggle('hidden');
+      }
+    }
+    
+    // Handle navigation clicks with data-nav attributes
+    document.addEventListener('click', function(e) {
+      const target = e.target.closest('[data-nav]');
+      if (!target) return;
       
-    default:
-      return { handled: false, elementType: null, actualName };
-  }
+      const navValue = target.getAttribute('data-nav');
+      const navType = target.getAttribute('data-nav-type');
+      
+      if (!navValue) return;
+        
+      switch (navType) {
+        case 'internal':
+          e.preventDefault();
+          const modal = document.getElementById(\`modal-\${navValue}\`);
+          const drawer = document.getElementById(\`drawer-\${navValue}\`);
+          
+          if (modal) {
+            toggleElement(navValue);
+          } else if (drawer) {
+            toggleElement(navValue);
+          } else {
+            navigateToScreen(navValue);
+          }
+          break;
+        case 'back':
+          e.preventDefault();
+          navigateBack();
+          break;
+        case 'external':
+          e.preventDefault();
+          window.open(navValue, '_blank', 'noopener,noreferrer');
+          break;
+        case 'action':
+          e.preventDefault();
+          try {
+            new Function(navValue)();
+          } catch (error) {
+            // Navigation action failed silently
+          }
+          break;
+        case 'toggle':
+          e.preventDefault();
+          let elementName = '';
+          if (navValue.includes('(')) {
+            const match = navValue.match(/toggle(\\w+)\\(\\)/);
+            elementName = match ? match[1].toLowerCase() : 'drawer';
+          } else if (navValue.includes('-')) {
+            elementName = navValue.split('-')[1] || 'drawer';
+          } else {
+            elementName = 'drawer';
+          }
+          toggleElement(elementName);
+          break;
+      }
+    });
+      
+    // Handle overlay clicks to close drawer/modal
+    document.addEventListener('click', function(e) {
+      if (e.target && e.target.classList.contains('drawer-overlay')) {
+        const drawer = document.querySelector('.drawer');
+        const overlay = document.querySelector('.drawer-overlay');
+        if (drawer) drawer.classList.remove('open');
+        if (overlay) overlay.classList.remove('open');
+      }
+      
+      if (e.target && e.target.classList.contains('modal-backdrop')) {
+        const modal = e.target.closest('.modal');
+        if (modal) {
+          modal.classList.add('hidden');
+        }
+      }
+    });
+  `;
 }

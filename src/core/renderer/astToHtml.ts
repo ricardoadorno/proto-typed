@@ -17,28 +17,59 @@ function processAstNodes(ast: AstNode | AstNode[]): ProcessedAstData {
   const screens = nodes.filter(node => node.type === 'Screen' || node.type === 'screen');
   const components = nodes.filter(node => node.type === 'component');
   
-  return { screens, components, globalModals: [], globalDrawers: [] };
+  // Extract global modals and drawers from all screens
+  const globalModals: AstNode[] = [];
+  const globalDrawers: AstNode[] = [];
+  
+  screens.forEach(screen => {
+    const modalElements = screen.elements?.filter(element => 
+      element.type?.toLowerCase() === 'modal' && element.name
+    ) || [];
+    const drawerElements = screen.elements?.filter(element => 
+      element.type?.toLowerCase() === 'drawer' && element.name
+    ) || [];
+    
+    globalModals.push(...modalElements);
+    globalDrawers.push(...drawerElements);
+  });
+  
+  return { screens, components, globalModals, globalDrawers };
 }
 
 /**
- * Extract global modals and drawers from screens
+ * Generate layout classes for a screen based on its elements
  */
-function extractGlobalElements(screens: AstNode[]): { modals: AstNode[], drawers: AstNode[] } {
-  const modals: AstNode[] = [];
-  const drawers: AstNode[] = [];
+function generateLayoutClasses(screen: AstNode): string[] {
+  const layoutClasses: string[] = [];
   
-  screens.forEach(screen => {    const modalElements = screen.elements?.filter(element => 
-      element.type?.toLowerCase() === 'modal'
-    ) || [];
-    const drawerElements = screen.elements?.filter(element => 
-      element.type?.toLowerCase() === 'drawer'
-    ) || [];
-    
-    modals.push(...modalElements);
-    drawers.push(...drawerElements);
-  });
+  const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
+  const hasNavigator = screen.elements?.some(element => element.type === 'Navigator') || false;
+  const hasFAB = screen.elements?.some(element => element.type === 'FAB') || false;
   
-  return { modals, drawers };
+  if (hasHeader) layoutClasses.push('has-header');
+  if (hasNavigator) layoutClasses.push('has-navigator');
+  if (hasFAB) layoutClasses.push('has-fab');
+  
+  return layoutClasses;
+}
+
+/**
+ * Separate screen elements by type for proper positioning
+ */
+function separateScreenElements(screen: AstNode) {
+  const headerElements = screen.elements?.filter(element => element.type === 'Header') || [];
+  const fabElements = screen.elements?.filter(element => element.type === 'FAB') || [];
+  const navigatorElements = screen.elements?.filter(element => element.type === 'Navigator') || [];
+  const contentElements = screen.elements?.filter(element => 
+    element.type !== 'Header' && 
+    element.type !== 'FAB' && 
+    element.type !== 'Navigator' &&
+    // Exclude named modals and drawers (they'll be rendered globally)
+    !(element.type === 'modal' && element.name) &&
+    !(element.type === 'drawer' && element.name)
+  ) || [];
+  
+  return { headerElements, fabElements, navigatorElements, contentElements };
 }
 
 /**
@@ -52,20 +83,6 @@ function getScreenVisibilityStyle(screenName: string, index: number, currentScre
 }
 
 /**
- * Generate layout classes for a screen
- */
-function generateLayoutClasses(screen: AstNode): string[] {
-  const layoutClasses: string[] = [];
-    const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
-  const hasNavigator = screen.elements?.some(element => element.type === 'Navigator') || false;
-  
-  if (hasHeader) layoutClasses.push('has-header');
-  if (hasNavigator) layoutClasses.push('has-navigator');
-  
-  return layoutClasses;
-}
-
-/**
  * Render a single screen to HTML with full configuration
  */
 function renderScreen(config: ScreenRenderConfig): string {
@@ -74,37 +91,17 @@ function renderScreen(config: ScreenRenderConfig): string {
   const screenName = screen.name?.toLowerCase() || '';
   const style = getScreenVisibilityStyle(screenName, index, currentScreen);
   const layoutClasses = generateLayoutClasses(screen);
-    // Check if screen has header, navigator, or FAB to add appropriate classes
-  const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
-  const hasNavigator = screen.elements?.some(element => element.type === 'Navigator') || false;
-  const hasFAB = screen.elements?.some(element => element.type === 'FAB') || false;
+  const { headerElements, fabElements, navigatorElements, contentElements } = separateScreenElements(screen);
   
-  if (hasHeader) layoutClasses.push('has-header');
-  if (hasNavigator) layoutClasses.push('has-navigator');
-  if (hasFAB) layoutClasses.push('has-fab');
-    // Separate header, content, FAB, and navigator for proper positioning
-  const headerElements = screen.elements?.filter(element => element.type === 'Header') || [];
-  const fabElements = screen.elements?.filter(element => element.type === 'FAB') || [];
-  const navigatorElements = screen.elements?.filter(element => element.type === 'Navigator') || [];
-  const contentElements = screen.elements?.filter(element => 
-    element.type !== 'Header' && element.type !== 'FAB' && element.type !== 'Navigator'
-  ) || [];
-  
-  const headerHtml = headerElements
-    ?.map(element => renderNode(element))
-    .join('\n') || '';
-    
+  const headerHtml = headerElements.map(element => renderNode(element)).join('\n') || '';
   const contentHtml = contentElements
-    ?.filter(element => element != null)
+    .filter(element => element != null)
     .map(element => renderNode(element))
     .join('\n      ') || '';
-    
-  const fabHtml = fabElements
-    ?.map(element => renderNode(element))
-    .join('\n') || '';
-      const navigatorHtml = navigatorElements
-    ?.map(element => renderNode(element))
-    .join('\n') || '';  return `
+  const fabHtml = fabElements.map(element => renderNode(element)).join('\n') || '';
+  const navigatorHtml = navigatorElements.map(element => renderNode(element)).join('\n') || '';
+
+  return `
   <div id="${screenName}-screen" class="screen container ${screenName} ${layoutClasses.join(' ')} flex flex-col min-h-screen relative" ${style}>
       ${headerHtml}
       <div class="min-h-[812px] flex-1 p-4 py-10 relative">
@@ -121,41 +118,18 @@ function renderScreen(config: ScreenRenderConfig): string {
  */
 export function screenToHtml(screen: AstNode): string {
   const screenName = screen.name || '';
-    // Check if screen has header, navigator, or FAB to add appropriate classes
-  const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
-  const hasNavigator = screen.elements?.some(element => element.type === 'Navigator') || false;
-  const hasFAB = screen.elements?.some(element => element.type === 'FAB') || false;
+  const layoutClasses = generateLayoutClasses(screen);
+  const { headerElements, fabElements, navigatorElements, contentElements } = separateScreenElements(screen);
   
-  const layoutClasses = [];
-  if (hasHeader) layoutClasses.push('has-header');
-  if (hasNavigator) layoutClasses.push('has-navigator');
-  if (hasFAB) layoutClasses.push('has-fab');
-    // Separate header, content, FAB, and navigator for proper positioning
-  const headerElements = screen.elements?.filter(element => element.type === 'Header') || [];
-  const fabElements = screen.elements?.filter(element => element.type === 'FAB') || [];
-  const navigatorElements = screen.elements?.filter(element => element.type === 'Navigator') || [];
-  const contentElements = screen.elements?.filter(element => 
-    element.type !== 'Header' && element.type !== 'FAB' && element.type !== 'Navigator' &&
-    // Keep all elements except named modals and drawers (they'll be rendered globally)
-    !(element.type === 'modal' && element.name) &&
-    !(element.type === 'drawer' && element.name)
-  ) || [];
-  
-  const headerHtml = headerElements
-    ?.map(element => renderNode(element))
-    .join('\n') || '';
-    
+  const headerHtml = headerElements.map(element => renderNode(element)).join('\n') || '';
   const contentHtml = contentElements
-    ?.filter(element => element != null)
+    .filter(element => element != null)
     .map(element => renderNode(element))
     .join('\n      ') || '';
-    
-  const fabHtml = fabElements
-    ?.map(element => renderNode(element))
-    .join('\n') || '';
-      const navigatorHtml = navigatorElements
-    ?.map(element => renderNode(element))
-    .join('\n') || '';    return `
+  const fabHtml = fabElements.map(element => renderNode(element)).join('\n') || '';
+  const navigatorHtml = navigatorElements.map(element => renderNode(element)).join('\n') || '';
+
+  return `
   <div class="screen container ${screenName.toLowerCase()} ${layoutClasses.join(' ')} flex flex-col min-h-full relative">
       ${headerHtml}
       <div class="flex-1 p-4 relative">
@@ -211,17 +185,16 @@ export function astToHtmlString(ast: AstNode | AstNode[], { currentScreen }: Ren
   
   // Process AST nodes
   const processedData = processAstNodes(nodes);
-  const { screens, components } = processedData;
+  const { screens, components, globalModals, globalDrawers } = processedData;
   
   // Register components with the renderer
   setComponentDefinitions(components);
   
-  // Extract global modals and drawers
-  const globalElements = extractGlobalElements(screens);
-  
   // Render screens and global elements
   const screensHtml = renderAllScreens(screens, currentScreen);
-  const globalElementsHtml = renderGlobalElements(globalElements.modals, globalElements.drawers);  // Add a wrapper div with body-like styles for proper rendering within the preview container
+  const globalElementsHtml = renderGlobalElements(globalModals, globalDrawers);
+
+  // Add a wrapper div with body-like styles for proper rendering within the preview container
   const result = `<div class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white relative" >
 
   ${screensHtml}${globalElementsHtml}
@@ -240,13 +213,9 @@ export function astToHtmlString(ast: AstNode | AstNode[], { currentScreen }: Ren
 function renderScreenForDocument(screen: AstNode, index: number): string {
   const screenName = screen.name?.toLowerCase() || '';
   const style = index === 0 ? '' : 'style="display:none"';
-    // Check if screen has header or navigator to add appropriate classes
-  const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
-  const hasNavigator = screen.elements?.some(element => element.type === 'Navigator') || false;
-  const layoutClasses = [];
-  if (hasHeader) layoutClasses.push('has-header');
-  if (hasNavigator) layoutClasses.push('has-navigator');
-    const elementsHtml = screen.elements
+  const layoutClasses = generateLayoutClasses(screen);
+
+  const elementsHtml = screen.elements
     ?.filter(element => {
       // Keep all elements except named modals and drawers (they'll be rendered globally)
       if (element.type === 'modal' || element.type === 'drawer') {
@@ -275,13 +244,10 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
   
   // Process AST nodes using existing helper
   const processedData = processAstNodes(nodes);
-  const { screens, components } = processedData;
+  const { screens, components, globalModals, globalDrawers } = processedData;
   
   // Register components with the renderer
   setComponentDefinitions(components);
-
-  // Extract global modals and drawers
-  const globalElements = extractGlobalElements(screens);
 
   // Generate the HTML for all screens with styles to hide all but the first
   const screensHtml = screens
@@ -289,7 +255,7 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
     .map((screen, index) => renderScreenForDocument(screen, index))
     .join('\n\n');
   // Render global modals and drawers
-  const globalElementsHtml = renderGlobalElements(globalElements.modals, globalElements.drawers);
+  const globalElementsHtml = renderGlobalElements(globalModals, globalDrawers);
   
   // Tailwind CDN and dark mode configuration for export
   const tailwindCdn = `<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>`;
