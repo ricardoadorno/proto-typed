@@ -15,42 +15,39 @@ export function registerDSLLanguage(monaco: Monaco) {
   monaco.languages.setMonarchTokensProvider(DSL_LANGUAGE_ID, {
     tokenizer: {
       root: [
-        // Layout components - specific highlighting for container elements
-        [/\b(container|grid|flex|card|row|col|section|list):\s*$/, 'tag'],
-          // Mobile components
-        [/\b(header|navigator|fab):\s*$/, 'tag'],
-        
-          // Basic patterns using only standard Monaco tokens        
-        [/(screen|modal|drawer)\s/, 'keyword.screen'],
+        [/^(screen|modal|drawer)\s/, 'keyword.screen'],
         [/(component)\s/, 'keyword.component'],
-        [/@(?=\[)/, 'type'],           // only @ symbol when followed by [
-        [/#(?=\[)/, 'type'],           // only # symbol when followed by [
-        [/\(([^}]+)\)/, 'variable.name'],        
-        [/\$\w+/, 'variable.component'],    // variables like $LoginForm
-        [/!(?=\[)/, 'variable'],       // only ! symbol when followed by [
-        [/___[*-]?:/, 'number'],       // inputs
-        [/\[[X ]\]/, 'constructor'],   // checkboxes        [/\([X ]\)/, 'constructor'],   // radio buttons
-        [/---+/, 'delimiter'],         // separators
-        [/--(?!-)/, 'delimiter'],      // empty div (exactly two dashes)
-        [/>/, 'typography'],               // text content
-        [/\*>/, 'typography'],            // note text
-        [/\">/, 'typography.quote'],       // quote text
-        [/(#{1,6})\s+/, 'typography.heading'],  // headings (h1-h6)
-        [/(\S+):/, 'variable.name'],            // colons
-        [/:/, 'delimiter'],            // colons
-        [/[\[\]()]/, 'delimiter.bracket'], // brackets nd parentheses
+
+        [/\b(container|grid|flex|card|row|col|section|list):\s*$/, 'tag'],
+        [/\b(header|navigator|fab):\s*$/, 'tag'],
+        [/\blist:\s*$/, 'tag'],
+        [/\bavatar\b/, 'tag'],
+
+        [/(#{1,6})\s+/, 'typography.heading'],
+        [/>/, 'typography'],
+        [/\*>/, 'typography'],
+        [/\">/, 'typography.quote'],
+
+        [/@[\w+=-]|@(?=\[)/, 'type'],
+        [/#(?=\[)/, 'type'],
+        [/!(?=\[)/, 'variable'],
+
+        [/\$\w+/, 'variable.component'],
+        [/\(([^}]+)\)/, 'variable.name'],
+        [/(\S+):/, 'variable.name'],
+
+        [/___[*-]?:/, 'number'],
+
         [/\[[X\s]\]/, 'constructor'],
         [/\([X\s]\)/, 'constructor'],
-        
-        // List components
-        [/\blist:\s*$/, 'tag'],
-        [/\bprogress\b/, 'tag'],
-        [/\bbadge\b/, 'tag'],
-        [/\bavatar\b/, 'tag'],
-        
-        // List items
+
         [/^\s*-/, 'string'],
         [/^\s*\d+\./, 'string'],
+
+        [/---+/, 'delimiter'],
+        [/--(?!-)/, 'delimiter'],
+        [/[\[\]()]/, 'delimiter.bracket'],
+
         [/[ \t\r\n]+/, 'white'],         // whitespace
       ],
     },
