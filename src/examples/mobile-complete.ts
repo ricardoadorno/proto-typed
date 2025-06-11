@@ -26,10 +26,9 @@ screen MobileApp:
     row:
       col:
         @[⚙️ Settings](SettingsScreen)
-      col:
-        @[❓ Help](SettingsScreen)  
+      col:        @[❓ Help](SettingsScreen)  
         
-  bottom_nav:
+  navigator:
     nav_item [Home]{🏠}(MobileApp)
     nav_item [Search]{🔍}(SettingsScreen)
     nav_item [Messages]{💬}(MessagesScreen)
@@ -54,8 +53,7 @@ screen MessagesScreen:
 
   > Your conversations
 
-
-  bottom_nav:
+  navigator:
     nav_item [Home]{🏠}(MobileApp)
     nav_item [Search]{🔍}(SettingsScreen)
     nav_item [Messages]{💬}(MessagesScreen)
@@ -87,10 +85,9 @@ screen ProfileScreen:
     [X] Email updates
     [ ] SMS alerts
     ___:Theme{Choose theme}[Light | Dark | Auto]
-    
-    @[Save Changes]
+      @[Save Changes]
 
-  bottom_nav:
+  navigator:
     nav_item [Home]{🏠}(MobileApp)
     nav_item [Search]{🔍}(SettingsScreen)
     nav_item [Messages]{💬}(MessagesScreen)
@@ -120,13 +117,12 @@ screen SettingsScreen:
     drawer_item [Help Center]{❓}(MessagesScreen)
     drawer_item [Contact Us]{📧}(MessagesScreen)
     drawer_item [Feedback]{💭}(MessagesScreen)
-    
-  card:
+      card:
     ## Account Actions
     @[Export Data]
     @[Delete Account](MobileApp)
 
-  bottom_nav:
+  navigator:
     nav_item [Home]{🏠}(MobileApp)
     nav_item [Search]{🔍}(SettingsScreen)
     nav_item [Messages]{💬}(MessagesScreen)

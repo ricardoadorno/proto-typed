@@ -67,7 +67,7 @@ export interface FormNode extends BaseAstNode {
 }
 
 export interface MobileNode extends BaseAstNode {
-  type: 'header' | 'bottom_nav' | 'drawer' | 'fab' | 'nav_item' | 'drawer_item' | 'fab_item';
+  type: 'header' | 'navigator' | 'drawer' | 'fab' | 'nav_item' | 'drawer_item' | 'fab_item';
   props: {
     icon?: string;
     label?: string;

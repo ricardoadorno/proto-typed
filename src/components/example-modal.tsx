@@ -212,11 +212,11 @@ export default function ExampleModal() {
             },
             {
                 name: "Bottom Navigation",
-                code: `screen BottomNavExample:
+                code: `screen NavigatorExample:
   # Main Content
   > App content here
   
-  bottom_nav:
+  navigator:
     nav_item [Home]{🏠}(home-screen)
     nav_item [Search]{🔍}(search-screen)
     nav_item [Messages]{💬}(messages-screen)
@@ -250,9 +250,8 @@ export default function ExampleModal() {
     
     list:
       - John Doe - Online now
-      - Jane Smith - 2 min ago
-      - Mike Johnson - 5 min ago
-      bottom_nav:
+      - Jane Smith - 2 min ago      - Mike Johnson - 5 min ago
+      navigator:
     nav_item [Home]{🏠}(home)
     nav_item [Messages]{💬}(messages)
     nav_item [Profile]{👤}(profile)
@@ -515,9 +514,8 @@ export default function ExampleModal() {
                                 <li><strong>Badges:</strong> Use <code>badge "Text"</code> for status indicators</li>
                             </ul>
                         )}
-                        {activeTab === 'mobile' && (<ul>
-                            <li><strong>Header:</strong> Use <code>header:</code> for fixed top navigation</li>
-                            <li><strong>Bottom Nav:</strong> Use <code>bottom_nav:</code> with <code>nav_item</code> elements</li>
+                        {activeTab === 'mobile' && (<ul>                            <li><strong>Header:</strong> Use <code>header:</code> for fixed top navigation</li>
+                            <li><strong>Navigator:</strong> Use <code>navigator:</code> with <code>nav_item</code> elements</li>
                             <li><strong>Drawer:</strong> Use <code>drawer DrawerName:</code> with <code>drawer_item</code> elements</li>
                             <li><strong>Icons:</strong> Use emoji or text within curly braces: <code>{"{🏠}"}</code></li>
                         </ul>

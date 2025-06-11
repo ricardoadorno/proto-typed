@@ -9,20 +9,20 @@ export function renderScreen(node: AstNode, nodeRenderer: (node: AstNode, contex
   
   // Check if screen has header, bottom nav, or FAB to add appropriate classes
   const hasHeader = node.elements?.some(element => element.type === 'Header') || false;
-  const hasBottomNav = node.elements?.some(element => element.type === 'BottomNav') || false;
+  const hasNavigator = node.elements?.some(element => element.type === 'Navigator') || false;
   const hasFAB = node.elements?.some(element => element.type === 'FAB') || false;
   
   const layoutClasses = [];
   if (hasHeader) layoutClasses.push('has-header');
-  if (hasBottomNav) layoutClasses.push('has-bottom-nav');
+  if (hasNavigator) layoutClasses.push('has-navigator');
   if (hasFAB) layoutClasses.push('has-fab');
   
   // Separate header, content, FAB, and bottom nav for proper positioning
   const headerElements = node.elements?.filter(element => element.type === 'Header') || [];
   const fabElements = node.elements?.filter(element => element.type === 'FAB') || [];
-  const bottomNavElements = node.elements?.filter(element => element.type === 'BottomNav') || [];
+  const navigatorElements = node.elements?.filter(element => element.type === 'Navigator') || [];
   const contentElements = node.elements?.filter(element => 
-    element.type !== 'Header' && element.type !== 'FAB' && element.type !== 'BottomNav'
+    element.type !== 'Header' && element.type !== 'FAB' && element.type !== 'Navigator'
   ) || [];
   
   const headerHtml = headerElements
@@ -38,7 +38,7 @@ export function renderScreen(node: AstNode, nodeRenderer: (node: AstNode, contex
     ?.map(element => nodeRenderer(element))
     .join('\n') || '';
     
-  const bottomNavHtml = bottomNavElements
+  const navigatorHtml = navigatorElements
     ?.map(element => nodeRenderer(element))
     .join('\n') || '';
   
@@ -51,7 +51,7 @@ export function renderScreen(node: AstNode, nodeRenderer: (node: AstNode, contex
         ${contentHtml}
         ${fabHtml}
       </div>
-      ${bottomNavHtml}
+      ${navigatorHtml}
   </div>
   `.trim();
 }

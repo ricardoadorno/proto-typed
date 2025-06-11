@@ -17,7 +17,7 @@ screen TestMobile:
     @[Test Button](TestMobile)
   fab {+} TestMobile
 
-  bottom_nav:
+  navigator:
     nav_item [Home]{🏠}(TestMobile)
     nav_item [Search]{🔍}(TestMobile)
     nav_item [Messages]{💬}(TestMobile)

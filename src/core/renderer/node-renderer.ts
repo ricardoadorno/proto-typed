@@ -32,7 +32,7 @@ import {
 } from './nodes/layout-nodes';
 import { 
   renderHeader, 
-  renderBottomNav, 
+  renderNavigator, 
   renderNavItem, 
   renderDrawerItem, 
   renderFAB
@@ -132,10 +132,8 @@ export function renderNode(node: AstNode, context?: string): string {
       
     // Mobile nodes
     case 'Header':
-      return renderHeader(node, renderNode);
-
-    case 'BottomNav':
-      return renderBottomNav(node);
+      return renderHeader(node, renderNode);    case 'Navigator':
+      return renderNavigator(node);
     
     case 'NavItem':
       return renderNavItem(node);

@@ -249,14 +249,13 @@ export function registerDSLCompletionProvider(monaco: Monaco) {
           insertText: 'header:\n\t$0',
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation: 'Mobile header component',
-          range: range,
-        },
+          range: range,        },
         {
-          label: 'bottom_nav',
+          label: 'navigator',
           kind: monaco.languages.CompletionItemKind.Module,
-          insertText: 'bottom_nav:\n\t${1:nav_item [Home]{🏠}(home)}',
+          insertText: 'navigator:\n\t${1:nav_item [Home]{🏠}(home)}',
           insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-          documentation: 'Mobile bottom navigation',
+          documentation: 'Mobile navigator',
           range: range,
         },        {
           label: 'drawer',

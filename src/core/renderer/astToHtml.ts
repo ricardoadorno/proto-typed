@@ -77,12 +77,11 @@ function getScreenVisibilityStyle(screenName: string, index: number, currentScre
  */
 function generateLayoutClasses(screen: AstNode): string[] {
   const layoutClasses: string[] = [];
-  
-  const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
-  const hasBottomNav = screen.elements?.some(element => element.type === 'BottomNav') || false;
+    const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
+  const hasNavigator = screen.elements?.some(element => element.type === 'Navigator') || false;
   
   if (hasHeader) layoutClasses.push('has-header');
-  if (hasBottomNav) layoutClasses.push('has-bottom-nav');
+  if (hasNavigator) layoutClasses.push('has-navigator');
   
   return layoutClasses;
 }
@@ -96,22 +95,20 @@ function renderScreen(config: ScreenRenderConfig): string {
   const screenName = screen.name?.toLowerCase() || '';
   const style = getScreenVisibilityStyle(screenName, index, currentScreen);
   const layoutClasses = generateLayoutClasses(screen);
-  
-  // Check if screen has header, bottom nav, or FAB to add appropriate classes
+    // Check if screen has header, navigator, or FAB to add appropriate classes
   const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
-  const hasBottomNav = screen.elements?.some(element => element.type === 'BottomNav') || false;
+  const hasNavigator = screen.elements?.some(element => element.type === 'Navigator') || false;
   const hasFAB = screen.elements?.some(element => element.type === 'FAB') || false;
   
   if (hasHeader) layoutClasses.push('has-header');
-  if (hasBottomNav) layoutClasses.push('has-bottom-nav');
+  if (hasNavigator) layoutClasses.push('has-navigator');
   if (hasFAB) layoutClasses.push('has-fab');
-  
-  // Separate header, content, FAB, and bottom nav for proper positioning
+    // Separate header, content, FAB, and navigator for proper positioning
   const headerElements = screen.elements?.filter(element => element.type === 'Header') || [];
   const fabElements = screen.elements?.filter(element => element.type === 'FAB') || [];
-  const bottomNavElements = screen.elements?.filter(element => element.type === 'BottomNav') || [];
+  const navigatorElements = screen.elements?.filter(element => element.type === 'Navigator') || [];
   const contentElements = screen.elements?.filter(element => 
-    element.type !== 'Header' && element.type !== 'FAB' && element.type !== 'BottomNav'
+    element.type !== 'Header' && element.type !== 'FAB' && element.type !== 'Navigator'
   ) || [];
   
   const headerHtml = headerElements
@@ -126,8 +123,7 @@ function renderScreen(config: ScreenRenderConfig): string {
   const fabHtml = fabElements
     ?.map(element => renderNode(element))
     .join('\n') || '';
-    
-  const bottomNavHtml = bottomNavElements
+      const navigatorHtml = navigatorElements
     ?.map(element => renderNode(element))
     .join('\n') || '';  return `
   <div id="${screenName}-screen" class="screen container ${screenName} ${layoutClasses.join(' ')} flex flex-col min-h-screen relative" ${style}>
@@ -136,7 +132,7 @@ function renderScreen(config: ScreenRenderConfig): string {
         ${contentHtml}
       </div>
       ${fabHtml}
-      ${bottomNavHtml}
+      ${navigatorHtml}
   </div>`;
 }
 
@@ -146,23 +142,21 @@ function renderScreen(config: ScreenRenderConfig): string {
  */
 export function screenToHtml(screen: AstNode): string {
   const screenName = screen.name || '';
-  
-  // Check if screen has header, bottom nav, or FAB to add appropriate classes
+    // Check if screen has header, navigator, or FAB to add appropriate classes
   const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
-  const hasBottomNav = screen.elements?.some(element => element.type === 'BottomNav') || false;
+  const hasNavigator = screen.elements?.some(element => element.type === 'Navigator') || false;
   const hasFAB = screen.elements?.some(element => element.type === 'FAB') || false;
   
   const layoutClasses = [];
   if (hasHeader) layoutClasses.push('has-header');
-  if (hasBottomNav) layoutClasses.push('has-bottom-nav');
+  if (hasNavigator) layoutClasses.push('has-navigator');
   if (hasFAB) layoutClasses.push('has-fab');
-  
-  // Separate header, content, FAB, and bottom nav for proper positioning
+    // Separate header, content, FAB, and navigator for proper positioning
   const headerElements = screen.elements?.filter(element => element.type === 'Header') || [];
   const fabElements = screen.elements?.filter(element => element.type === 'FAB') || [];
-  const bottomNavElements = screen.elements?.filter(element => element.type === 'BottomNav') || [];
+  const navigatorElements = screen.elements?.filter(element => element.type === 'Navigator') || [];
   const contentElements = screen.elements?.filter(element => 
-    element.type !== 'Header' && element.type !== 'FAB' && element.type !== 'BottomNav' &&
+    element.type !== 'Header' && element.type !== 'FAB' && element.type !== 'Navigator' &&
     // Keep all elements except named modals and drawers (they'll be rendered globally)
     !(element.type === 'modal' && element.name) &&
     !(element.type === 'drawer' && element.name)
@@ -180,8 +174,7 @@ export function screenToHtml(screen: AstNode): string {
   const fabHtml = fabElements
     ?.map(element => renderNode(element))
     .join('\n') || '';
-    
-  const bottomNavHtml = bottomNavElements
+      const navigatorHtml = navigatorElements
     ?.map(element => renderNode(element))
     .join('\n') || '';    return `
   <div class="screen container ${screenName.toLowerCase()} ${layoutClasses.join(' ')} flex flex-col min-h-full relative">
@@ -190,7 +183,7 @@ export function screenToHtml(screen: AstNode): string {
         ${contentHtml}
       </div>
       ${fabHtml}
-      ${bottomNavHtml}
+      ${navigatorHtml}
   </div>
   `.trim();
 }
@@ -281,13 +274,12 @@ export function astToHtmlString(ast: AstNode | AstNode[], { currentScreen }: Ren
 function renderScreenForDocument(screen: AstNode, index: number): string {
   const screenName = screen.name?.toLowerCase() || '';
   const style = index === 0 ? '' : 'style="display:none"';
-  
-  // Check if screen has header or bottom nav to add appropriate classes
+    // Check if screen has header or navigator to add appropriate classes
   const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
-  const hasBottomNav = screen.elements?.some(element => element.type === 'BottomNav') || false;
+  const hasNavigator = screen.elements?.some(element => element.type === 'Navigator') || false;
   const layoutClasses = [];
   if (hasHeader) layoutClasses.push('has-header');
-  if (hasBottomNav) layoutClasses.push('has-bottom-nav');
+  if (hasNavigator) layoutClasses.push('has-navigator');
     const elementsHtml = screen.elements
     ?.filter(element => {
       // Keep all elements except named modals and drawers (they'll be rendered globally)

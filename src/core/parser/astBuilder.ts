@@ -50,7 +50,7 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     if (ctx.columnElement) return this.visit(ctx.columnElement);
     if (ctx.listElement) return this.visit(ctx.listElement);
     if (ctx.cardElement) return this.visit(ctx.cardElement);
-    if (ctx.headerElement) return this.visit(ctx.headerElement);    if (ctx.bottomNavElement) return this.visit(ctx.bottomNavElement);
+    if (ctx.headerElement) return this.visit(ctx.headerElement);    if (ctx.navigatorElement) return this.visit(ctx.navigatorElement);
     if (ctx.drawerElement) return this.visit(ctx.drawerElement);    if (ctx.navItemElement) return this.visit(ctx.navItemElement);    if (ctx.drawerItemElement) return this.visit(ctx.drawerItemElement);
     if (ctx.fabElement) return this.visit(ctx.fabElement);if (ctx.separatorElement) return this.visit(ctx.separatorElement);
     if (ctx.emptyDivElement) return this.visit(ctx.emptyDivElement);
@@ -572,8 +572,7 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       elements
     };
   }
-
-  bottomNavElement(ctx: Context) {
+  navigatorElement(ctx: Context) {
     const items = [];
 
     if (ctx.NavItem) {
@@ -597,13 +596,13 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     }
 
     return {
-      type: "BottomNav",
+      type: "Navigator",
       props: {
-        className: "bottom-nav"
+        className: "navigator"
       },
       elements: items
     };
-  }  
+  }
   
   drawerElement(ctx: Context) {
     const name = ctx.name[0].image;

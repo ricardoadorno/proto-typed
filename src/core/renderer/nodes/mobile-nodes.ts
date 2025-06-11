@@ -30,9 +30,9 @@ export function renderHeader(node: AstNode, nodeRenderer?: (node: AstNode, conte
 }
 
 /**
- * Render bottom navigation element
+ * Render navigator element
  */
-export function renderBottomNav(node: AstNode): string {
+export function renderNavigator(node: AstNode): string {
   const navItems = node.elements?.map(item => {
     if (item.type === 'NavItem') {
       const navItemProps = item.props as any;
@@ -47,7 +47,7 @@ export function renderBottomNav(node: AstNode): string {
     }
     return '';
   }).join('') || '';
-  return `<nav class="${elementStyles.bottomNav}">${navItems}</nav>`;
+  return `<nav class="${elementStyles.navigator}">${navItems}</nav>`;
 }
 
 /**

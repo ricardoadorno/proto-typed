@@ -151,7 +151,7 @@ list:
 
 ### Mobile Components
 - `header:`
-- `bottom_nav:`
+- `navigator:`
 - `fab {icon}`
 - `nav_item [label]{icon}`
 - `drawer_item [label]{icon}`

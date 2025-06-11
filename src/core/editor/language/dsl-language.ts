@@ -19,7 +19,7 @@ export function registerDSLLanguage(monaco: Monaco) {
         [/\b(container|grid|flex|card|row|col|section):\s*$/, 'tag'],
         
         // Mobile components
-        [/\b(header|bottom_nav|fab|nav_item|drawer_item):\s*$/, 'tag'],
+        [/\b(header|navigator|fab|nav_item|drawer_item):\s*$/, 'tag'],
         
         // Named UI elements (modal, drawer)
         [/\b(modal|drawer)\s+\w+:\s*$/, 'keyword.named-ui-element'],

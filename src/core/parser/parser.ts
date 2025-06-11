@@ -5,7 +5,7 @@ import {
   Row, Card, Separator, EmptyDiv, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, AdvancedListItem, RadioOption, 
   Checkbox, Text, Note, Quote, Col, List,
-  Header, BottomNav, Drawer, NavItem, DrawerItem, FAB
+  Header, Navigator, Drawer, NavItem, DrawerItem, FAB
 } from "../lexer/tokens";
 import { Indent, Outdent } from "../lexer/lexer";
 
@@ -75,7 +75,7 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.cardElement) },
       { ALT: () => this.SUBRULE(this.modalElement) },
       { ALT: () => this.SUBRULE(this.headerElement) },
-      { ALT: () => this.SUBRULE(this.bottomNavElement) },
+      { ALT: () => this.SUBRULE(this.navigatorElement) },
       { ALT: () => this.SUBRULE(this.drawerElement) },      { ALT: () => this.SUBRULE(this.navItemElement) },
       { ALT: () => this.SUBRULE(this.drawerItemElement) },
       { ALT: () => this.SUBRULE(this.fabElement) },{ ALT: () => this.SUBRULE(this.separatorElement) },
@@ -220,9 +220,8 @@ export class UiDslParser extends CstParser {
       });
     });
   });
-
-  bottomNavElement = this.RULE("bottomNavElement", () => {
-    this.CONSUME(BottomNav);
+  navigatorElement = this.RULE("navigatorElement", () => {
+    this.CONSUME(Navigator);
     this.CONSUME(Colon);
     this.OPTION(() => {
       this.CONSUME(Indent);
@@ -233,7 +232,7 @@ export class UiDslParser extends CstParser {
         this.CONSUME(Outdent);
       });
     });
-  });  
+  });
   
   drawerElement = this.RULE("drawerElement", () => {
     this.CONSUME(Drawer);

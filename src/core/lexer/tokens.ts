@@ -83,9 +83,9 @@ export const Header = createToken({
   pattern: /header/
 });
 
-export const BottomNav = createToken({
-  name: "BottomNav",
-  pattern: /bottom_nav/
+export const Navigator = createToken({
+  name: "Navigator",
+  pattern: /navigator/
 });
 
 export const Drawer = createToken({
@@ -203,9 +203,8 @@ export const allTokens = [
   Row,
   Col,
   List,
-  Card,
-  Header,
-  BottomNav,  Drawer,
+  Card,  Header,
+  Navigator,  Drawer,
   Separator,
   EmptyDiv,
   BlankLine,
