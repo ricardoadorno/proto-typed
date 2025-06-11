@@ -7,7 +7,7 @@ This is a React-based UI prototyping tool that allows users to create interactiv
 
 ### Technology Stack
 - **Frontend**: React 19 + TypeScript + Vite
-- **Testing**: Vitest + React Testing Library
+- **Testing**: Currently no test suite implemented (Vitest + React Testing Library configured but no tests written)
 - **Parsing**: Chevrotain (lexer & parser)
 - **Code Editor**: Monaco Editor with custom syntax highlighting
 - **State Management**: React Context for prototype state
@@ -193,6 +193,7 @@ list:
 - Test both positive and negative cases
 - Include edge cases like empty inputs, malformed syntax
 - Use the established pattern: parse → build AST → render → assert
+- **NOTE**: Currently no tests are implemented - test suite needs to be created
 
 ### Component Development:
 - Use React functional components with TypeScript
@@ -221,6 +222,7 @@ list:
 - Use `describe` blocks to group related tests
 - Mock external dependencies appropriately
 - Test error conditions and edge cases extensively
+- **NOTE**: Currently no test suite exists - comprehensive testing needs to be implemented
 
 ## Common Patterns
 

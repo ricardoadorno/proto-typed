@@ -1,42 +1,18 @@
 const contactsAppExample = `screen ContactsList:
   header:
-    > Lista de Contatos
-    @[☰](MainDrawer)
+    ### Lista de Contatos
+    @[Menu](MainDrawer)
 
   col:
     > Seus contatos estão organizados aqui
     
-    card:
-      > João Silva
-      > (11) 99999-9999
-      > joao@email.com
-      row:
-        @[✏️](EditContact)
-        @[🗑️](ConfirmDelete)
-    
-    card:
-      > Maria Santos
-      > (11) 88888-8888
-      > maria@email.com
-      row:
-        @[✏️](EditContact)
-        @[🗑️](ConfirmDelete)
-    
-    card:
-      > Pedro Oliveira
-      > (11) 77777-7777
-      > pedro@email.com
-      row:
-        @[✏️](EditContact)
-        @[🗑️](ConfirmDelete)
-    
-    card:
-      > Ana Costa
-      > (11) 66666-6666
-      > ana@email.com
-      row:
-        @[✏️](EditContact)
-        @[🗑️](ConfirmDelete)
+    list:
+      - João Silva{(11) 99999-9999 • joao@email.com}@[Edit](EditContact)@=[Trash](ConfirmDelete)
+      - Maria Santos{(11) 88888-8888 • maria@email.com}@[Edit](EditContact)@=[Trash](ConfirmDelete)
+      - Pedro Oliveira{(11) 77777-7777 • pedro@email.com}@[Edit](EditContact)@=[Trash](ConfirmDelete)
+      - Ana Costa{(11) 66666-6666 • ana@email.com}@[Edit](EditContact)@=[Trash](ConfirmDelete)
+
+  fab {Plus} CreateContact
 
 
 modal CreateContact:
@@ -72,22 +48,17 @@ modal ConfirmDelete:
       @[Excluir](ContactsList)
 
 drawer MainDrawer:
-  # Menu
-  
-  drawer_item [Contatos]{👥}(ContactsList)
-  drawer_item [Favoritos]{⭐}(Favorites)
-  drawer_item [Grupos]{👨‍👩‍👧‍👦}(Groups)
-  drawer_item [Configurações]{⚙️}(Settings)
-  
-  > ────────────────
-  
-  drawer_item [Sobre]{ℹ️}(About)
-  drawer_item [Ajuda]{❓}(Help)
+  - [Contatos]{Users}(ContactsList)
+  - [Favoritos]{Star}(Favorites)
+  - [Grupos]{Users2}(Groups)
+  - [Configurações]{Settings}(Settings)
+  - [Sobre]{Info}(About)
+  - [Ajuda]{HelpCircle}(Help)
 
 screen Favorites:
   header:
     > Favoritos
-    @[☰](MainDrawer)
+    @[Menu](MainDrawer)
 
   col:
     *> Nenhum contato favoritado ainda
@@ -97,27 +68,20 @@ screen Favorites:
 screen Groups:
   header:
     > Grupos
-    @[☰](MainDrawer)
+    @[Menu](MainDrawer)
 
   col:
     > Organize seus contatos em grupos
     
-    card:
-      > Família
-      > "5 contatos"
-    
-    card:
-      > Trabalho
-      > "12 contatos"
-    
-    card:
-      > Amigos
-      > "8 contatos"
+    list:
+      - Família{5 contatos}
+      - Trabalho{12 contatos}
+      - Amigos{8 contatos}
 
 screen Settings:
   header:
     > Configurações
-    @[☰](MainDrawer)
+    @[Menu](MainDrawer)
 
   col:
     # Configurações da Conta
@@ -138,7 +102,7 @@ screen Settings:
 screen About:
   header:
     > Sobre
-    @[☰](MainDrawer)
+    @[Menu](MainDrawer)
 
   col:
     # Contatos App
@@ -152,26 +116,16 @@ screen About:
 screen Help:
   header:
     > Ajuda
-    @[☰](MainDrawer)
+    @[Menu](MainDrawer)
 
   col:
     # Como usar
     
-    card:
-      > ## Adicionar contato
-      > Toque no botão + para criar um novo contato
-    
-    card:
-      > ## Editar contato
-      > Toque no ícone de edição ao lado do contato
-    
-    card:
-      > ## Excluir contato
-      > Toque no ícone da lixeira e confirme a exclusão
-    
-    card:
-      > ## Organizar em grupos
-      > Acesse a seção Grupos no menu lateral
+    list:
+      - Adicionar contato{Toque no botão + para criar um novo contato}
+      - Editar contato{Toque no ícone de edição ao lado do contato}
+      - Excluir contato{Toque no ícone da lixeira e confirme a exclusão}
+      - Organizar em grupos{Acesse a seção Grupos no Menu lateral}
 `;
 
 export default contactsAppExample;

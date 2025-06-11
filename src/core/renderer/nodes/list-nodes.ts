@@ -20,7 +20,14 @@ export function renderOrderedList(node: AstNode): string {
 export function renderUnorderedList(node: AstNode): string {
   const props = node.props as any;
   const ulItems = (props?.items || [])
-    .map((item: string) => `<li class="${elementStyles.listItem}">${item}</li>`)
+    .map((item: any) => {
+      // Handle object items with text property
+      if (typeof item === 'object' && item.text) {
+        return `<li class="${elementStyles.listItem}">${item.text}</li>`;
+      }
+      // Handle string items (fallback)
+      return `<li class="${elementStyles.listItem}">${item}</li>`;
+    })
     .join('\n');
   return `<ul class="${elementStyles.unorderedList}">${ulItems}</ul>`;
 }

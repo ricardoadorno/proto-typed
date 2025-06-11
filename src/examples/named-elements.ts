@@ -13,44 +13,40 @@ screen Home:
   @[Open Welcome Modal](WelcomeModal)
   @[Toggle Left Drawer](LeftDrawer)
   @[Open Settings Modal](SettingsModal)
-  
   card:
     > Try clicking the buttons above to see the modals and drawer in action.
     > Note that these elements are defined below but are hidden until activated.
-      modal WelcomeModal:
-    # Welcome to Proto-type!
-    > This is a modal that was hidden until you clicked the button.
-    > Modals are perfect for displaying important information without leaving the current screen.
-    @[Close]
+
+modal WelcomeModal:
+  # Welcome to Proto-type!
+  > This is a modal that was hidden until you clicked the button.
+  > Modals are perfect for displaying important information without leaving the current screen.
+  @[Close]
+
+modal SettingsModal:
+  # Settings
+  > Configure your preferences here.
+  
+  card:
+    > Theme:
+    ( ) Light
+    (X) Dark
+    ( ) System
     
-  modal SettingsModal:
-    # Settings
-    > Configure your preferences here.
+    > Notifications:
+    [X] Email
+    [ ] Push
+    [ ] SMS
     
-    card:
-      > Theme:
-      ( ) Light
-      (X) Dark
-      ( ) System
-      
-      > Notifications:
-      [X] Email
-      [ ] Push
-      [ ] SMS
-        @[Save Settings]
-    @[Cancel]
-    
-  drawer LeftDrawer:
-    # Navigation
-    > This is a drawer that was hidden until you clicked the button.
-    
-    list:
-      - Dashboard
-      - Profile
-      - Messages
-      - Settings
-      
-    @[Close Drawer]
+    @[Save Settings]
+  @[Cancel]
+
+drawer LeftDrawer:
+  - [Dashboard]{📊}(dashboard)
+  - [Profile]{👤}(profile)
+  - [Messages]{💬}(messages)
+  - [Settings]{⚙️}(settings)
+  - [Close Drawer]{❌}(LeftDrawer)
 `;
 
 export default namedElementsExample;

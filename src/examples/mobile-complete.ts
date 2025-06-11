@@ -3,7 +3,6 @@ screen MobileApp:
   header:
     # My App
     @[Menu](MyDrawer)
-    @[Profile](ProfileScreen)
 
   # Welcome to Mobile App
   > This is a complete mobile application example

@@ -43,12 +43,11 @@ export const elementStyles = {
     quote: 'bg-gray-800 text-white px-4 py-2 rounded-lg m-2 shadow-lg'
   },
   
-  link: 'text-blue-400 hover:text-blue-300 underline transition-colors duration-200',
-  // Layout components
+  link: 'text-blue-400 hover:text-blue-300 underline transition-colors duration-200',  // Layout components
   container: 'container mx-auto px-4',
   card: 'bg-gray-800 rounded-xl border border-gray-700 shadow-lg p-6 mb-6',
   row: 'flex flex-wrap gap-4 mb-4',
-  col: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6',
+  col: 'grid grid-cols-1 @md:grid-cols-2 @lg:grid-cols-3 gap-6',
   
   // Lists
   orderedList: 'list-decimal list-inside space-y-2 mb-4 text-gray-300',
@@ -69,7 +68,7 @@ export const elementStyles = {
   drawerItemIcon: 'mr-3 text-lg flex-shrink-0',
   drawerItemLabel: 'font-medium',  // FAB
   fab: 'w-14 h-14 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 shadow-2xl flex items-center justify-center text-xl font-bold text-white z-40',
-  fabContainer: 'sticky bottom-6 right-6 left-auto z-40 flex flex-col items-end justify-end p-0 pb-4 ml-auto w-auto',
+  fabContainer: 'sticky bottom-20 right-6 left-auto z-40 flex flex-col items-end justify-end p-0 pb-4 ml-auto w-auto',
   fabItemsList: 'mb-8 space-y-6 opacity-0 transform translate-y-4 pointer-events-none',
   fabItem: 'flex items-center justify-end',
   fabItemBtn: 'w-12 h-12 mb-3 rounded-full bg-gray-700 flex items-center justify-center text-lg text-white shadow-lg',
