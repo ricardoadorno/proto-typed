@@ -188,13 +188,6 @@ list:
 - Implement internal navigation for screen links
 - Support variable substitution in rendered content
 
-### When writing tests:
-- Use descriptive test names that explain the behavior
-- Test both positive and negative cases
-- Include edge cases like empty inputs, malformed syntax
-- Use the established pattern: parse → build AST → render → assert
-- **NOTE**: Currently no tests are implemented - test suite needs to be created
-
 ### Component Development:
 - Use React functional components with TypeScript
 - Implement proper error boundaries for parsing errors
@@ -216,13 +209,6 @@ list:
 - Implement proper error handling for user inputs
 - Use semantic HTML elements
 - Keep state management simple and local when possible
-
-### Testing:
-- Write tests for all core functionality including optional elements
-- Use `describe` blocks to group related tests
-- Mock external dependencies appropriately
-- Test error conditions and edge cases extensively
-- **NOTE**: Currently no test suite exists - comprehensive testing needs to be implemented
 
 ## Common Patterns
 
@@ -266,5 +252,16 @@ list:
 - Implement error boundaries for runtime rendering errors
 - Support graceful degradation when optional elements fail
 - Validate attribute types and provide helpful correction suggestions
+
+## Testing and Validation Approach
+- **DO NOT** create test files or write automated tests unless explicitly requested
+- **DO NOT** run test commands or suggest running tests
+- **Focus on runtime feedback**: Use the running application to validate changes and identify issues
+- **Ask for user feedback**: When unsure about functionality, ask the user to test the feature and provide feedback
+- **Use browser dev tools**: Leverage console logs, network tabs, and runtime errors for debugging
+- **Iterative development**: Make changes, run the app, and gather feedback from actual usage
+- **User-driven validation**: Let the user be the primary validator of functionality and behavior
+
+This project prioritizes rapid prototyping and real-world testing over automated test suites. Always prefer getting feedback from the running application and user interaction rather than writing tests.
 
 When generating code for this project, always consider the DSL syntax, maintain consistency with existing patterns, and ensure proper integration with the lexer-parser-renderer pipeline. Pay special attention to optional elements, attribute handling, and the robust error handling requirements outlined above.

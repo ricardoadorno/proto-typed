@@ -13,15 +13,18 @@ export function registerDSLTheme(monaco: Monaco) {// Define only the dark theme
       { token: 'keyword.component', foreground: '4ade80', fontStyle: 'bold' },     // component
       { token: 'keyword.named-ui-element', foreground: '4ade80', fontStyle: 'bold' },   // named UI elements
       { token: 'type', foreground: '60a5fa', fontStyle: 'bold' },           // buttons
-      { token: 'string', foreground: '34d399' },                            // links and text
+      { token: 'string' },                            // links and text
       { token: 'variable', foreground: 'f472b6' },                          // images
       { token: 'variable.name', foreground: 'f59e0b', fontStyle: 'italic' }, // variables like $LoginForm
+      { token: 'variable.component', foreground: 'f59e0b', fontStyle: 'bold' }, // variables like $LoginForm
       { token: 'number', foreground: 'a855f7' },                            // inputs
       { token: 'tag', foreground: 'ec4899', fontStyle: 'bold' },            // mobile elements
       { token: 'attribute', foreground: '8b5cf6' },                         // attributes
       { token: 'metatag', foreground: '95e1d3', fontStyle: 'bold' },        // headings
       { token: 'comment', foreground: 'fbbf24', fontStyle: 'italic' },      // notes
-      { token: 'string.quote', foreground: 'a78bfa', fontStyle: 'italic' }, // quotes
+      { token: 'typography', foreground: '34d399' }, 
+      { token: 'typography.quote', foreground: '34d399', fontStyle: 'italic' },
+      { token: 'typography.heading', foreground: '34d399', fontStyle: 'bold' },
       { token: 'constructor', foreground: 'a855f7', fontStyle: 'bold' },    // checkboxes/radio - enhanced visibility
       { token: 'delimiter', foreground: 'ffe66d' },                         // separators and colons
       { token: 'delimiter.bracket', foreground: 'ffe66d' },                 // brackets

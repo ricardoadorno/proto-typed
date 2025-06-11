@@ -16,27 +16,26 @@ export function registerDSLLanguage(monaco: Monaco) {
     tokenizer: {
       root: [
         // Layout components - specific highlighting for container elements
-        [/\b(container|grid|flex|card|row|col|section):\s*$/, 'tag'],
+        [/\b(container|grid|flex|card|row|col|section|list):\s*$/, 'tag'],
           // Mobile components
         [/\b(header|navigator|fab):\s*$/, 'tag'],
         
-        // Named UI elements (modal, drawer)
-        [/\b(modal|drawer)\s+\w+:\s*$/, 'keyword.named-ui-element'],
           // Basic patterns using only standard Monaco tokens        
-        [/(screen)\s/, 'keyword.screen'],
+        [/(screen|modal|drawer)\s/, 'keyword.screen'],
         [/(component)\s/, 'keyword.component'],
-        [/@\[.*?\]/, 'type'],          // buttons
-        [/#\[.*?\]/, 'type'],        // links  
+        [/@(?=\[)/, 'type'],           // only @ symbol when followed by [
+        [/#(?=\[)/, 'type'],           // only # symbol when followed by [
         [/\(([^}]+)\)/, 'variable.name'],        
-        [/\$\w+/, 'variable.name'],    // variables like $LoginForm
-        [/!\[.*?\]/, 'variable'],      // images
+        [/\$\w+/, 'variable.component'],    // variables like $LoginForm
+        [/!(?=\[)/, 'variable'],       // only ! symbol when followed by [
         [/___[*-]?:/, 'number'],       // inputs
         [/\[[X ]\]/, 'constructor'],   // checkboxes        [/\([X ]\)/, 'constructor'],   // radio buttons
         [/---+/, 'delimiter'],         // separators
         [/--(?!-)/, 'delimiter'],      // empty div (exactly two dashes)
-        [/>/, 'string'],               // text content
-        [/\*>/, 'comment'],            // note text
-        [/\">/, 'string.quote'],       // quote text
+        [/>/, 'typography'],               // text content
+        [/\*>/, 'typography'],            // note text
+        [/\">/, 'typography.quote'],       // quote text
+        [/(#{1,6})\s+/, 'typography.heading'],  // headings (h1-h6)
         [/(\S+):/, 'variable.name'],            // colons
         [/:/, 'delimiter'],            // colons
         [/[\[\]()]/, 'delimiter.bracket'], // brackets nd parentheses
