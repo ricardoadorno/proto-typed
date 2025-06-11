@@ -136,3 +136,54 @@ export function closeAllModals(): void {
     modal.classList.add('hidden');
   });
 }
+
+/**
+ * Check if any drawer is currently open
+ */
+export function hasOpenDrawer(): boolean {
+  // Check for named drawers
+  const drawers = document.querySelectorAll('[id^="drawer-"]');
+  for (const drawer of drawers) {
+    if (!drawer.classList.contains('hidden')) {
+      return true;
+    }
+  }
+  
+  // Check for legacy drawer
+  const legacyDrawer = document.querySelector('.drawer');
+  if (legacyDrawer && legacyDrawer.classList.contains('open')) {
+    return true;
+  }
+  
+  return false;
+}
+
+/**
+ * Check if any modal is currently open
+ */
+export function hasOpenModal(): boolean {
+  const modals = document.querySelectorAll('[id^="modal-"]');
+  for (const modal of modals) {
+    if (!modal.classList.contains('hidden')) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Check if any drawer or modal is currently open
+ */
+export function hasOpenOverlay(): boolean {
+  return hasOpenDrawer() || hasOpenModal();
+}
+
+/**
+ * Close all open overlays (modals and drawers) when a button is clicked
+ */
+export function closeOpenOverlaysOnButtonClick(): void {
+  if (hasOpenOverlay()) {
+    closeAllModals();
+    closeAllDrawers();
+  }
+}

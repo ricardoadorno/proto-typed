@@ -34,7 +34,11 @@ export {
   toggleModal,
   toggleElement,
   closeAllDrawers,
-  closeAllModals
+  closeAllModals,
+  hasOpenDrawer,
+  hasOpenModal,
+  hasOpenOverlay,
+  closeOpenOverlaysOnButtonClick
 } from './toggles';
 
 // Export main navigation handler

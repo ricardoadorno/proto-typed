@@ -4,7 +4,7 @@
  */
 import { NavigationHandlerOptions } from './types';
 import { addToHistory, navigateBack } from './history';
-import { toggleModal, toggleDrawer, toggleElement } from './toggles';
+import { toggleModal, toggleDrawer, toggleElement, closeOpenOverlaysOnButtonClick } from './toggles';
 
 /**
  * Centralized navigation click handler for React and HTML export
@@ -28,9 +28,17 @@ export function handleNavigationClick(
       e.preventDefault();
     }
   }
-
   // Always lowercase navValue for internal navigation to match screen IDs and rendering logic
   const normalizedNavValue = navType === 'internal' && navValue ? navValue.toLowerCase() : navValue;
+
+  // Close any open overlays before performing the navigation action
+  // Exception: don't close overlays if the action is to open the same modal/drawer
+  const isOpeningModal = navType === 'internal' && (document.getElementById(`modal-${normalizedNavValue}`) || document.getElementById(`modal-${navValue}`));
+  const isOpeningDrawer = navType === 'internal' && (document.getElementById(`drawer-${normalizedNavValue}`) || document.getElementById(`drawer-${navValue}`));
+  
+  if (!isOpeningModal && !isOpeningDrawer) {
+    closeOpenOverlaysOnButtonClick();
+  }
 
   switch (navType) {
     case 'internal':

@@ -11,8 +11,7 @@ export function generateNavigationScript(): string {
     // Navigation History Management
     let navigationHistory = [];
     let currentScreenIndex = -1;
-    
-    function addToHistory(screenName) {
+      function addToHistory(screenName) {
       navigationHistory = navigationHistory.slice(0, currentScreenIndex + 1);
       if (navigationHistory[currentScreenIndex] !== screenName) {
         navigationHistory.push(screenName);
@@ -42,6 +41,73 @@ export function generateNavigationScript(): string {
       
       if (screenName !== navigationHistory[currentScreenIndex]) {
         addToHistory(screenName);
+      }
+    }
+
+    // Helper functions for checking open overlays
+    function hasOpenDrawer() {
+      // Check for named drawers
+      const drawers = document.querySelectorAll('[id^="drawer-"]');
+      for (const drawer of drawers) {
+        if (!drawer.classList.contains('hidden')) {
+          return true;
+        }
+      }
+      
+      // Check for legacy drawer
+      const legacyDrawer = document.querySelector('.drawer');
+      if (legacyDrawer && legacyDrawer.classList.contains('open')) {
+        return true;
+      }
+      
+      return false;
+    }
+
+    function hasOpenModal() {
+      const modals = document.querySelectorAll('[id^="modal-"]');
+      for (const modal of modals) {
+        if (!modal.classList.contains('hidden')) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function hasOpenOverlay() {
+      return hasOpenDrawer() || hasOpenModal();
+    }
+
+    function closeAllDrawers() {
+      const drawers = document.querySelectorAll('[id^="drawer-"]');
+      drawers.forEach(drawer => {
+        const drawerContent = drawer.querySelector('.drawer-content');
+        if (drawerContent) {
+          drawerContent.classList.remove('translate-x-0');
+          drawerContent.classList.add('-translate-x-full');
+        }
+        setTimeout(() => {
+          drawer.classList.add('hidden');
+        }, 300);
+      });
+      
+      // Handle legacy drawer
+      const legacyDrawer = document.querySelector('.drawer');
+      const overlay = document.querySelector('.drawer-overlay');
+      if (legacyDrawer) legacyDrawer.classList.remove('open');
+      if (overlay) overlay.classList.remove('open');
+    }
+
+    function closeAllModals() {
+      const modals = document.querySelectorAll('[id^="modal-"]');
+      modals.forEach(modal => {
+        modal.classList.add('hidden');
+      });
+    }
+
+    function closeOpenOverlaysOnButtonClick() {
+      if (hasOpenOverlay()) {
+        closeAllModals();
+        closeAllDrawers();
       }
     }
 
@@ -91,8 +157,7 @@ export function generateNavigationScript(): string {
         element.classList.toggle('hidden');
       }
     }
-    
-    // Handle navigation clicks with data-nav attributes
+      // Handle navigation clicks with data-nav attributes
     document.addEventListener('click', function(e) {
       const target = e.target.closest('[data-nav]');
       if (!target) return;
@@ -101,6 +166,15 @@ export function generateNavigationScript(): string {
       const navType = target.getAttribute('data-nav-type');
       
       if (!navValue) return;
+
+      // Close any open overlays before performing the navigation action
+      // Exception: don't close overlays if the action is to open the same modal/drawer
+      const isOpeningModal = navType === 'internal' && document.getElementById(\`modal-\${navValue}\`);
+      const isOpeningDrawer = navType === 'internal' && document.getElementById(\`drawer-\${navValue}\`);
+      
+      if (!isOpeningModal && !isOpeningDrawer) {
+        closeOpenOverlaysOnButtonClick();
+      }
         
       switch (navType) {
         case 'internal':
