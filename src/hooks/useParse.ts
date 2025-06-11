@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { parseAndBuildAst } from '../core/parser/parse-and-build-ast';
 import { AstNode } from '../types/astNode';
-import { getNavigationHistory } from '../core/renderer/navigationHelper';
+import { getCurrentScreen } from '../core/renderer/navigationHelper';
 
 interface UseParseResult {
   ast: AstNode[];
@@ -29,12 +29,10 @@ export const useParse = (): UseParseResult => {
     }
 
     setIsLoading(true);
-    setError(null);
-
-    try {
+    setError(null);    try {
       const parsedAst = await parseAndBuildAst(input);
       
-      setCurrentScreen(getNavigationHistory().currentScreen);
+      setCurrentScreen(getCurrentScreen());
       setAst(parsedAst);
       setAstResultJson(JSON.stringify(parsedAst, null, 2));
       setError(null);

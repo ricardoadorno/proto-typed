@@ -1,27 +1,12 @@
 import { AstNode } from '../../types/astNode';
-import { RenderOptions } from '../../types/renderOptions';
+import { 
+  RenderOptions, 
+  ProcessedAstData, 
+  ScreenRenderConfig 
+} from '../../types/render';
 import { generateNavigationScript } from './navigationHelper';
 import { renderNode } from './node-renderer';
 import { setComponentDefinitions } from './nodes/component-nodes';
-
-/**
- * Processed AST data structure for rendering
- */
-interface ProcessedAstData {
-  screens: AstNode[];
-  components: AstNode[];
-  globalModals: AstNode[];
-  globalDrawers: AstNode[];
-}
-
-/**
- * Screen rendering configuration
- */
-interface ScreenRenderConfig {
-  screen: AstNode;
-  index: number;
-  currentScreen?: string | null;
-}
 
 /**
  * Parse and separate AST nodes into screens and components
@@ -42,23 +27,17 @@ function extractGlobalElements(screens: AstNode[]): { modals: AstNode[], drawers
   const modals: AstNode[] = [];
   const drawers: AstNode[] = [];
   
-  screens.forEach(screen => {
-    const modalElements = screen.elements?.filter(element => 
+  screens.forEach(screen => {    const modalElements = screen.elements?.filter(element => 
       element.type?.toLowerCase() === 'modal'
     ) || [];
     const drawerElements = screen.elements?.filter(element => 
       element.type?.toLowerCase() === 'drawer'
     ) || [];
     
-    console.log('Screen:', screen.name, 'Modals found:', modalElements.length, 'Drawers found:', drawerElements.length);
-    modalElements.forEach(modal => console.log('Modal:', modal.name, modal));
-    drawerElements.forEach(drawer => console.log('Drawer:', drawer.name, drawer));
-    
     modals.push(...modalElements);
     drawers.push(...drawerElements);
   });
   
-  console.log('Total extracted - Modals:', modals.length, 'Drawers:', drawers.length);
   return { modals, drawers };
 }
 
@@ -206,31 +185,18 @@ function renderAllScreens(screens: AstNode[], currentScreen?: string | null): st
  * Render global modals and drawers HTML
  */
 function renderGlobalElements(modals: AstNode[], drawers: AstNode[]): string {
-  console.log('Rendering global elements - Modals:', modals.length, 'Drawers:', drawers.length);
-  
   const modalsHtml = modals.length > 0 
-    ? modals.map(modal => {
-        const html = renderNode(modal);
-        console.log('Rendered modal HTML:', html.slice(0, 100) + '...');
-        return html;
-      }).join('\n') 
+    ? modals.map(modal => renderNode(modal)).join('\n') 
     : '';
   
   const drawersHtml = drawers.length > 0 
-    ? drawers.map(drawer => {
-        const html = renderNode(drawer);
-        console.log('Rendered drawer HTML:', html.slice(0, 100) + '...');
-        return html;
-      }).join('\n') 
+    ? drawers.map(drawer => renderNode(drawer)).join('\n') 
     : '';
   
   if (modalsHtml || drawersHtml) {
-    const result = '\n\n' + [modalsHtml, drawersHtml].filter(Boolean).join('\n') + '\n';
-    console.log('Final global elements HTML length:', result.length);
-    return result;
+    return '\n\n' + [modalsHtml, drawersHtml].filter(Boolean).join('\n') + '\n';
   }
   
-  console.log('No global elements to render');
   return '';
 }
 

@@ -2,6 +2,7 @@
  * Navigation Helper
  * Unifies navigation logic across the application using data-nav attributes
  */
+import { NavigationHandlerOptions } from '../../types/render';
 
 export interface NavigationTarget {
   type: 'internal' | 'external' | 'action' | 'toggle' | 'back';
@@ -57,17 +58,6 @@ export function getCurrentScreen(): string | null {
 export function resetNavigationHistory() {
   navigationHistory = [];
   currentScreenIndex = -1;
-}
-
-/**
- * Get navigation history for debugging
- */
-export function getNavigationHistory() {
-  return {
-    history: [...navigationHistory],
-    currentIndex: currentScreenIndex,
-    currentScreen: getCurrentScreen()
-  };
 }
 
 /**
@@ -292,11 +282,10 @@ export function generateNavigationScript(): string {
           window.open(navValue, '_blank', 'noopener,noreferrer');
           break;
         case 'action':
-          e.preventDefault();
-          try {
+          e.preventDefault();          try {
             new Function(navValue)();
           } catch (error) {
-            console.error('Error executing navigation action:', error);
+            // Navigation action failed silently
           }
           break;
         case 'toggle':
@@ -343,11 +332,7 @@ export function generateNavigationScript(): string {
  */
 export function handleNavigationClick(
   e: React.MouseEvent<Element, MouseEvent> | MouseEvent,
-  options?: {
-    onInternalNavigate?: (screenName: string) => void;
-    onToggle?: (elementName: string) => void;
-    onBack?: () => void;
-  }
+  options?: NavigationHandlerOptions
 ) {
   const target = (e.target as Element).closest('[data-nav]');
   if (!target) return;
@@ -376,23 +361,19 @@ export function handleNavigationClick(
       // Also check without the prefix in case of direct element names
       const directModalElement = document.getElementById(`modal-${navValue}`);
       const directDrawerElement = document.getElementById(`drawer-${navValue}`);
-      
-      if (modalElement || directModalElement) {
+        if (modalElement || directModalElement) {
         // Handle modal toggle
         const modalName = modalElement ? normalizedNavValue : navValue;
-        console.log(`Opening modal: ${modalName}`);
         toggleModal(modalName);
       } else if (drawerElement || directDrawerElement) {
         // Handle drawer toggle
         const drawerName = drawerElement ? normalizedNavValue : navValue;
-        console.log(`Opening drawer: ${drawerName}`);
         toggleDrawer(drawerName);
       } else {
         // Regular screen navigation
         // Add to history before navigating
         addToHistory(normalizedNavValue);
         
-        console.log(`Navigating to screen: ${normalizedNavValue}`);
         if (options && options.onInternalNavigate) {
           options.onInternalNavigate(normalizedNavValue);
         } else {
@@ -584,8 +565,6 @@ export function toggleDrawer(drawerName: string): boolean {
  * Toggle a modal element
  */
 export function toggleModal(modalName: string): boolean {
-  console.log(`Attempting to toggle modal: ${modalName}`);
-  
   // Try both with and without the modal- prefix
   let modal = document.getElementById(`modal-${modalName}`);
   if (!modal) {
@@ -599,18 +578,13 @@ export function toggleModal(modalName: string): boolean {
     return false;
   }
   
-  console.log(`Found modal element:`, modal);
-  
   const isHidden = modal.classList.contains('hidden');
-  console.log(`Modal is currently hidden: ${isHidden}`);
-    if (isHidden) {
+  if (isHidden) {
     modal.classList.remove('hidden');
     // Scroll management removed
-    console.log(`Modal ${modalName} opened`);
   } else {
     modal.classList.add('hidden');
     // Scroll management removed
-    console.log(`Modal ${modalName} closed`);
   }
   
   return true;

@@ -120,7 +120,7 @@ The new list syntax provides maximum flexibility for creating rich, interactive 
 ```
 - [optional_link_text](optional_link)text{subtitle}[btn](action)[btn](action)
 ```
-
+'
 **Components (all optional except the initial dash):**
 - `[link_text](link)` - Optional navigation link with text that makes the entire item clickable
 - `free_text` - Free text content after the link

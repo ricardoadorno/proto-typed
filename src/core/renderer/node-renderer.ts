@@ -52,10 +52,8 @@ export function renderNode(node: AstNode, context?: string): string {
     console.warn('Invalid node received:', node);
     return '';
   }
-  
-  switch (node.type) {
+    switch (node.type) {
     // Screen and structure nodes
-    case 'Screen':
     case 'screen':
       return renderScreen(node, renderNode);
     
@@ -94,7 +92,9 @@ export function renderNode(node: AstNode, context?: string): string {
       
     case 'Image':
       return renderImage(node);
-        // Typography nodes
+        
+      
+    // Typography nodes
     case 'Heading':
       return renderHeading(node, context);
       
@@ -109,7 +109,9 @@ export function renderNode(node: AstNode, context?: string): string {
       return renderUnorderedList(node);
       
     case 'List':
-      return renderList(node, context, renderNode);    case 'ListItem':
+      return renderList(node, context, renderNode);    
+      
+    case 'ListItem':
       return renderListItem(node);
       
     case 'AdvancedListItem':
@@ -124,7 +126,8 @@ export function renderNode(node: AstNode, context?: string): string {
       
     case 'Card':
       return renderCard(node, context, renderNode);
-        case 'Separator':
+        
+    case 'Separator':
       return renderSeparator();
       
     case 'EmptyDiv':
@@ -132,14 +135,18 @@ export function renderNode(node: AstNode, context?: string): string {
       
     // Mobile nodes
     case 'Header':
-      return renderHeader(node, renderNode);    case 'Navigator':
+      return renderHeader(node, renderNode);   
+      
+    case 'Navigator':
       return renderNavigator(node);
     
     case 'NavItem':
       return renderNavItem(node);
     
     case 'DrawerItem':
-      return renderDrawerItem(node);    case 'FAB':
+      return renderDrawerItem(node);    
+      
+    case 'FAB':
       return renderFAB(node);
         
     default:

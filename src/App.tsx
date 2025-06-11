@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { astToHtmlDocument, astToHtmlString } from './core/renderer/astToHtml';
-import ExampleModal from './components/example-modal';
+import { ExampleModal } from './components/examples';
 import AstModal from './components/ast-modal';
 import { resetNavigationHistory, handleNavigationClick } from './core/renderer/navigationHelper';
 import { DSLEditor } from './core/editor';
