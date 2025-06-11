@@ -1,6 +1,6 @@
 import { AstNode } from '../../../types/astNode';
 import { elementStyles } from './styles';
-import { generateNavigationAttributes } from '../navigationHelper';
+import { generateNavigationAttributes } from '../navigation-service';
 import { isLucideIcon, getLucideSvg } from '../../../utils/icon-utils';
 
 /**

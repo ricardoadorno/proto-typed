@@ -1,5 +1,5 @@
 import { AstNode } from '../../../types/astNode';
-import { generateNavigationAttributes, generateHrefAttribute } from '../navigationHelper';
+import { generateNavigationAttributes, generateHrefAttribute } from '../navigation-service';
 import { elementStyles, getMarginClasses, getButtonClasses } from './styles';
 import { isLucideIcon, getLucideSvg } from '../../../utils/icon-utils';
 

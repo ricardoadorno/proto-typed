@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Modal from '../ui/modal';
 import { parseAndBuildAst } from '../../core/parser/parse-and-build-ast';
-import { astToHtmlString } from '../../core/renderer/astToHtml';
+import { astToHtmlString } from '../../core/renderer/ast-to-html';
 
 // Import example data
 import layoutExamples from './layout';

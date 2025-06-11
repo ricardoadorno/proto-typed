@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { parseAndBuildAst } from '../core/parser/parse-and-build-ast';
 import { AstNode } from '../types/astNode';
-import { getCurrentScreen } from '../core/renderer/navigationHelper';
+import { getCurrentScreen } from '../core/renderer/navigation-service';
 
 interface UseParseResult {
   ast: AstNode[];

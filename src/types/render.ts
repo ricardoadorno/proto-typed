@@ -31,15 +31,6 @@ export interface ScreenRenderConfig {
 }
 
 /**
- * Navigation handler options for click events
- */
-export interface NavigationHandlerOptions {
-  onInternalNavigate?: (screenName: string) => void;
-  onToggle?: (elementName: string) => void;
-  onBack?: () => void;
-}
-
-/**
  * Node renderer function type
  */
 export type NodeRenderer = (node: AstNode, context?: string) => string;

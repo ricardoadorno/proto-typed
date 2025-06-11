@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { astToHtmlDocument, astToHtmlString } from './core/renderer/astToHtml';
+import { astToHtmlDocument, astToHtmlString } from './core/renderer/ast-to-html';
 import { ExampleModal } from './components/examples';
 import AstModal from './components/ast-modal';
-import { resetNavigationHistory, handleNavigationClick } from './core/renderer/navigationHelper';
+import { resetNavigationHistory, handleNavigationClick } from './core/renderer/navigation-service';
 import { DSLEditor } from './core/editor';
 import { useParse } from './hooks';
 import {
