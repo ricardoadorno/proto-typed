@@ -85,56 +85,13 @@ export function renderDrawerItem(node: AstNode): string {
  */
 export function renderFAB(node: AstNode): string {
   const fabProps = node.props as any;
-  const { icon: fabIcon, action: fabAction } = fabProps || {};
-  const fabAttrs = generateNavigationAttributes(fabAction);
-  
-  const fabItems = node.elements?.filter(el => el.type === 'FABItem') || [];
-  
-  if (fabItems.length > 0) {
-    const fabItemsHtml = fabItems.map(item => {
-      const itemProps = item.props as any;
-      const { icon: itemIcon, label: itemLabel, action: itemAction } = itemProps || {};
-      const itemAttrs = generateNavigationAttributes(itemAction);        return `
-        <div class="${elementStyles.fabItem}">
-          ${itemLabel ? `<span class="${elementStyles.fabItemLabel}">${itemLabel}</span>` : ''}
-          <button class="${elementStyles.fabItemBtn}" ${itemAttrs}>
-            ${renderIcon(itemIcon || '')}
-          </button>
-        </div>
-      `;
-    }).join('');    return `
-      <div class="${elementStyles.fabContainer}">
-        <div class="fab-items-list">
-          ${fabItemsHtml}
-        </div>
-        <button class="${elementStyles.fab}" onclick="toggleFAB(this)" ${fabAttrs}>
-          ${renderIcon(fabIcon || '+')}
-        </button>
-      </div>
-    `;  } else {
+  const { icon: fabIcon, text: fabText, href: fabHref } = fabProps || {};
+  const fabAttrs = generateNavigationAttributes(fabHref);
     return `
-      <div class="${elementStyles.fabContainer}">
-        <button class="${elementStyles.fab}" ${fabAttrs}>
-          ${renderIcon(fabIcon || '+')}
-        </button>
-      </div>
-    `;
-  }
-}
-
-/**
- * Render FAB item element
- */
-export function renderFABItem(node: AstNode): string {
-  const fabItemProps = node.props as any;
-  const { icon: fabItemIcon, label: fabItemLabel, action: fabItemAction } = fabItemProps || {};
-  const fabItemAttrs = generateNavigationAttributes(fabItemAction);
-    return `
-    <div class="${elementStyles.fabItem}">
-      <button class="${elementStyles.fabItemBtn}" ${fabItemAttrs}>
-        ${renderIcon(fabItemIcon || '')}
+    <div class="${elementStyles.fabContainer}">
+      <button class="${elementStyles.fab}" ${fabAttrs}>
+        ${renderIcon(fabIcon || '+')}
       </button>
-      <span class="${elementStyles.fabItemLabel}">${fabItemLabel || ''}</span>
     </div>
   `;
 }

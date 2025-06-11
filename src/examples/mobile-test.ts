@@ -15,11 +15,7 @@ screen TestMobile:
     > • Bottom nav at the bottom (sticky)
     
     @[Test Button](TestMobile)
-
-  fab {+}:
-    fab_item [Message]{📧}(TestMobile)
-    fab_item [Contact]{👤}(TestMobile)
-    fab_item [Camera]{📷}(TestMobile)
+  fab {+} TestMobile
 
   bottom_nav:
     nav_item [Home]{🏠}(TestMobile)

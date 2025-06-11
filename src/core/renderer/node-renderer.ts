@@ -35,8 +35,7 @@ import {
   renderBottomNav, 
   renderNavItem, 
   renderDrawerItem, 
-  renderFAB, 
-  renderFABItem 
+  renderFAB
 } from './nodes/mobile-nodes';
 import {   renderOrderedList, 
   renderUnorderedList, 
@@ -142,13 +141,8 @@ export function renderNode(node: AstNode, context?: string): string {
       return renderNavItem(node);
     
     case 'DrawerItem':
-      return renderDrawerItem(node);
-
-    case 'FAB':
+      return renderDrawerItem(node);    case 'FAB':
       return renderFAB(node);
-          
-    case 'FABItem':
-      return renderFABItem(node);
         
     default:
       console.warn(`Unknown node type: ${node.type}`);

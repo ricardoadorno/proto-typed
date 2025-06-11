@@ -5,7 +5,7 @@ import {
   Row, Card, Separator, EmptyDiv, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, AdvancedListItem, RadioOption, 
   Checkbox, Text, Note, Quote, Col, List,
-  Header, BottomNav, Drawer, NavItem, DrawerItem, FAB, FABItem
+  Header, BottomNav, Drawer, NavItem, DrawerItem, FAB
 } from "../lexer/tokens";
 import { Indent, Outdent } from "../lexer/lexer";
 
@@ -76,11 +76,9 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.modalElement) },
       { ALT: () => this.SUBRULE(this.headerElement) },
       { ALT: () => this.SUBRULE(this.bottomNavElement) },
-      { ALT: () => this.SUBRULE(this.drawerElement) },
-      { ALT: () => this.SUBRULE(this.navItemElement) },
+      { ALT: () => this.SUBRULE(this.drawerElement) },      { ALT: () => this.SUBRULE(this.navItemElement) },
       { ALT: () => this.SUBRULE(this.drawerItemElement) },
-      { ALT: () => this.SUBRULE(this.fabItemElement) },
-      { ALT: () => this.SUBRULE(this.fabElement) },      { ALT: () => this.SUBRULE(this.separatorElement) },
+      { ALT: () => this.SUBRULE(this.fabElement) },{ ALT: () => this.SUBRULE(this.separatorElement) },
       { ALT: () => this.SUBRULE(this.emptyDivElement) },
       { ALT: () => this.SUBRULE(this.headingElement) },
       { ALT: () => this.SUBRULE(this.textElement) },
@@ -259,25 +257,9 @@ export class UiDslParser extends CstParser {
   drawerItemElement = this.RULE("drawerItemElement", () => {
     this.CONSUME(DrawerItem);
   });
-  
-  fabElement = this.RULE("fabElement", () => {
+    fabElement = this.RULE("fabElement", () => {
     this.CONSUME(FAB);
-    this.CONSUME(Colon);
-    this.OPTION(() => {
-      this.CONSUME(Indent);
-      this.AT_LEAST_ONE(() => {
-        this.SUBRULE(this.fabItemElement);
-      });
-      this.OPTION2(() => {
-        this.CONSUME(Outdent);
-      });
-    });
   });
-
-  fabItemElement = this.RULE("fabItemElement", () => {
-    this.CONSUME(FABItem);
-  });
-
   // Component instance rule for $ComponentName
   componentInstanceElement = this.RULE("componentInstanceElement", () => {
     this.CONSUME(ComponentInstance);

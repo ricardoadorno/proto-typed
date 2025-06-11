@@ -35,11 +35,7 @@ screen MobileApp:
     nav_item [Messages]{💬}(MessagesScreen)
     nav_item [Profile]{👤}(ProfileScreen)
     nav_item [More]{⋯}(SettingsScreen)
-
-  fab {+}:
-    fab_item [New Message]{✉️}(MessagesScreen)
-    fab_item [New Contact]{👤}(ProfileScreen)
-    fab_item [Camera]{📷}(SettingsScreen)
+  fab {+} MessagesScreen
 
   drawer MyDrawer:
     drawer_item [Dashboard]{📊}(MobileApp)
