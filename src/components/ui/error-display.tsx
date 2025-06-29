@@ -16,7 +16,7 @@ export function ErrorDisplay({ error, title = "Parsing Error" }: ErrorDisplayPro
                     <h3 className="text-sm font-medium text-red-800 dark:text-red-400">
                         {title}
                     </h3>
-                    <div className="mt-2 text-sm text-red-700 dark:text-red-300">
+                    <div className="mt-2 text-sm text-red-700 dark:text-red-300 max-h-32 overflow-y-auto">
                         <pre className="whitespace-pre-wrap font-mono text-xs">{error}</pre>
                     </div>
                 </div>
