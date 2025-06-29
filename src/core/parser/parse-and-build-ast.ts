@@ -24,7 +24,19 @@ export async function parseAndBuildAst(text: string) {
     // If there are parsing errors, throw an error
     if (parser.errors.length > 0) {
         console.error('parser.errors', parser.errors);
-        throw new Error("Parsing error: " + parser.errors[0].message);
+        const error = parser.errors[0];
+        
+        // Extract position information from the token
+        let errorMessage = "Parsing error: " + error.message;
+        
+        // Try to get position from the error token
+        if (error.token) {
+            const line = error.token.startLine || 1;
+            const column = error.token.startColumn || 1;
+            errorMessage += ` at line ${line}, column ${column}`;
+        }
+        
+        throw new Error(errorMessage);
     }
 
     const builder = new AstBuilder();

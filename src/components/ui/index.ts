@@ -4,6 +4,7 @@ export { ActionButtons } from './action-buttons';
 export { ExampleButtons } from './example-buttons';
 export { DeviceSelector } from './device-selector';
 export { ErrorDisplay } from './error-display';
+export { ErrorTerminal } from './error-terminal';
 export { LoadingSpinner } from './loading-spinner';
 export { PreviewDevice } from './preview-device';
 export { EditorPanel } from './editor-panel';

@@ -197,6 +197,13 @@ list:
 
 ## Code Style Preferences
 
+### Styling and CSS:
+- **DARK MODE ONLY**: This application uses dark mode as the default and only theme
+- **NEVER use `dark:` prefixes** in Tailwind CSS classes - they are not needed
+- Use dark color variants directly: `bg-gray-800`, `text-gray-300`, `border-gray-700`
+- Avoid light color variants: do not use `bg-white`, `bg-gray-50`, `text-gray-900`, etc.
+- Color scheme should be optimized for dark backgrounds and light text
+
 ### TypeScript:
 - Use explicit interface definitions for complex types
 - Prefer `interface` over `type` for object shapes

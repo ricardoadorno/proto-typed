@@ -12,7 +12,8 @@ import {
     DeviceSelector,
     PreviewDevice,
     EditorPanel,
-    PreviewPanel
+    PreviewPanel,
+    ErrorTerminal
 } from './components/ui';
 import { exportDocument } from './utils';
 import { exampleConfigs } from './examples';
@@ -24,6 +25,7 @@ export default function App() {
         ast,
         astResultJson,
         error,
+        parsedErrors,
         currentScreen,
         handleParse } = useParse();
 
@@ -56,10 +58,10 @@ export default function App() {
         handleParse(input);
     }, [input, handleParse]); return (<div className="min-h-full bg-gradient-to-br from-slate-900 to-slate-800 pb-8">
         <div className="w-full">
-            <div className="grid lg:grid-cols-2 gap-8 p-6">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6">
                 {/* Editor Panel */}
-                <div className="flex flex-col space-y-6">
-                    <div className="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-6">
+                <div className="flex flex-col space-y-4 md:space-y-6 order-2 xl:order-1">
+                    <div className="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-4 md:p-6">
                         <AppHeader />                            <ActionButtons onExportHtml={exportAsHtml}>
                             <ExampleModal />
                             <AstModal ast={astResultJson} html={astToHtmlString(ast, { currentScreen: currentScreen || undefined })} />                            </ActionButtons>
@@ -77,14 +79,19 @@ export default function App() {
                             onChange={setUiStyle}
                         />
                     </div>
-                    <EditorPanel error={error}>
+                    <EditorPanel>
                         <DSLEditor
                             value={input}
                             onChange={(value) => setInput(value || "")}
+                            errors={parsedErrors}
                         />
                     </EditorPanel>
+                    <ErrorTerminal error={error} code={input} />
+
                 </div>
-                <div className="flex flex-col">
+
+                {/* Preview Panel */}
+                <div className="flex flex-col order-1 xl:order-2">
                     <PreviewPanel />
 
                     <PreviewDevice deviceType={uiStyle}>

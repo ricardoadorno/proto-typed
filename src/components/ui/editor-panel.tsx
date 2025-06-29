@@ -1,15 +1,11 @@
-import { ErrorDisplay } from './error-display';
-
 interface EditorPanelProps {
     children: React.ReactNode;
-    error?: string | null;
 }
 
-export function EditorPanel({ children, error }: EditorPanelProps) {
+export function EditorPanel({ children }: EditorPanelProps) {
     return (
         <div className="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 overflow-hidden h-[600px]">
-            {error && <ErrorDisplay error={error} />}
-            <div className="h-full">
+            <div className="h-full overflow-hidden">
                 {children}
             </div>
         </div>
