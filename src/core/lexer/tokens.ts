@@ -36,7 +36,7 @@ export const Modal = createToken({
 
 export const ComponentInstance = createToken({
   name: "ComponentInstance",
-  pattern: /\$([a-zA-Z_][a-zA-Z0-9_]*)/
+  pattern: /\$([^\s\n\r]+)/
 });
 
 export const Equals = createToken({ 
@@ -51,7 +51,7 @@ export const Colon = createToken({
 
 export const Identifier = createToken({ 
   name: "Identifier", 
-  pattern: /[a-zA-Z_][a-zA-Z0-9_]*/ 
+  pattern: /[^\s\n\r:{}[\]()]+/ 
 });
 
 
@@ -113,7 +113,7 @@ export const EmptyDiv = createToken({
 // Input Family Tokens
 export const Input = createToken({ 
   name: "Input", 
-  pattern: /___[\*\-]?(?::([a-zA-Z0-9_\s]+))?(?:\{([^}]+)\})?(?:\[([^\]]*)\])?/
+  pattern: /___[\*\-]?(?::([^\n\r:{}[\]]+))?(?:\{([^}]+)\})?(?:\[([^\]]*)\])?/
 });
 
 export const RadioOption = createToken({
