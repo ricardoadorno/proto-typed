@@ -44,6 +44,11 @@ ${error}`;
                     title: 'Syntax Structure Issue',
                     description: 'Problem with the structure or order of elements'
                 };
+            case 'component':
+                return {
+                    title: 'Component Reference Issue',
+                    description: 'Problem with component definition or instantiation'
+                };
             default:
                 return {
                     title: 'Unknown Issue',
@@ -64,6 +69,12 @@ ${error}`;
                 return (
                     <svg className="h-5 w-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                );
+            case 'component':
+                return (
+                    <svg className="h-5 w-5 text-purple-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                     </svg>
                 );
             default:
@@ -90,6 +101,13 @@ ${error}`;
                     border: 'border-red-400',
                     title: 'text-red-400',
                     text: 'text-red-300'
+                };
+            case 'component':
+                return {
+                    bg: 'bg-purple-900/20',
+                    border: 'border-purple-400',
+                    title: 'text-purple-400',
+                    text: 'text-purple-300'
                 };
             default:
                 return {

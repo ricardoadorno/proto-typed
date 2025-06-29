@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { parseAndBuildAst } from '../core/parser/parse-and-build-ast';
+import { astToHtmlString } from '../core/renderer/ast-to-html';
 import { AstNode } from '../types/astNode';
 import { getCurrentScreen } from '../core/renderer/navigation-service';
 import { parseChevrotainError } from '../utils/error-parser';
@@ -39,6 +40,15 @@ export const useParse = (): UseParseResult => {
     
     try {
       const parsedAst = await parseAndBuildAst(input);
+      
+      // Validate the AST by attempting to render it
+      // This will catch component reference errors during the parsing phase
+      try {
+        astToHtmlString(parsedAst, { currentScreen: getCurrentScreen() });
+      } catch (renderError: any) {
+        // If rendering fails, treat it as a parsing error
+        throw renderError;
+      }
       
       setCurrentScreen(getCurrentScreen());
       setAst(parsedAst);

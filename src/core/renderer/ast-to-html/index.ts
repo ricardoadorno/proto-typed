@@ -16,28 +16,33 @@ export function astToHtmlString(ast: AstNode | AstNode[], { currentScreen }: Ren
   
   if (nodes.length === 0) return '';
   
-  // Process AST nodes
-  const processedData = processAstNodes(nodes);
-  const { screens, components, globalModals, globalDrawers } = processedData;
-  
-  // Register components with the renderer
-  setComponentDefinitions(components);
-  
-  // Render screens and global elements
-  const screensHtml = renderAllScreens(screens, currentScreen);
-  const globalElementsHtml = renderGlobalElements(globalModals, globalDrawers);
+  try {
+    // Process AST nodes
+    const processedData = processAstNodes(nodes);
+    const { screens, components, globalModals, globalDrawers } = processedData;
+    
+    // Register components with the renderer
+    setComponentDefinitions(components);
+    
+    // Render screens and global elements
+    const screensHtml = renderAllScreens(screens, currentScreen);
+    const globalElementsHtml = renderGlobalElements(globalModals, globalDrawers);
 
-  // Add a wrapper div with body-like styles for proper rendering within the preview container
-  const result = `<div class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white relative" >
+    // Add a wrapper div with body-like styles for proper rendering within the preview container
+    const result = `<div class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white relative" >
 
-  ${screensHtml}${globalElementsHtml}
+    ${screensHtml}${globalElementsHtml}
 
-  <script>
-    ${generateNavigationScript()}
-  </script>
-  </div>`;
-  
-  return result;
+    <script>
+      ${generateNavigationScript()}
+    </script>
+    </div>`;
+    
+    return result;
+  } catch (error: any) {
+    // Re-throw the error so it can be caught by the parsing hook
+    throw error;
+  }
 }
 
 /**

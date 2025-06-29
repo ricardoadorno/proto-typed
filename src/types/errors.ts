@@ -24,7 +24,7 @@ export interface LexerError {
 }
 
 export interface ParsedError {
-  type: 'lexer' | 'parser' | 'unknown';
+  type: 'lexer' | 'parser' | 'component' | 'unknown';
   title: string;
   message: string;
   location?: {
@@ -37,6 +37,7 @@ export interface ParsedError {
     rule?: string;
     token?: string;
     expected?: string[];
+    component?: string;
   };
   suggestion?: string;
   code?: string;

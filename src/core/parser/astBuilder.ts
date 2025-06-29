@@ -47,6 +47,7 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       elements
     };
   } 
+  
     element(ctx: Context) {
     if (ctx.componentInstanceElement) return this.visit(ctx.componentInstanceElement);
     if (ctx.inputElement) return this.visit(ctx.inputElement);
@@ -187,7 +188,6 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     if (ctx.Input) {
       const inputText = ctx.Input[0].image;
       
-      // Parse out the components
       const isPassword = inputText.includes('___*');
       const isDisabled = inputText.includes('___-');
       

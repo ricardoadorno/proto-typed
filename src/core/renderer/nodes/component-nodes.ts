@@ -34,8 +34,7 @@ export function renderComponentInstance(node: AstNode, context?: string, nodeRen
   const componentDef = components.find(comp => comp.name === componentName);
   
   if (!componentDef) {
-    console.warn(`Component not found: ${componentName}`);
-    return `<div class="component-instance error" data-component="${componentName}">Component not found: ${componentName}</div>`;
+    throw new Error(`Component not found: ${componentName}`);
   }
   
   if (!nodeRenderer) {

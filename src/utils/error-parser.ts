@@ -47,6 +47,22 @@ export function parseChevrotainError(error: string): ParsedError {
     };
   }
 
+  // Handle component not found errors
+  if (error.includes('Component not found:')) {
+    const componentMatch = error.match(/Component not found: (\w+)/);
+    const componentName = componentMatch ? componentMatch[1] : 'unknown';
+    
+    return {
+      type: 'component',
+      title: 'Component Reference Error',
+      message: `Component "${componentName}" is not defined or available in the current scope.`,
+      context: {
+        component: componentName
+      },
+      suggestion: `Make sure you have declared the component "${componentName}" before using it. Components must be declared with "component ${componentName}:" syntax before they can be referenced with "$${componentName}".`
+    };
+  }
+
   // Handle indentation errors
   if (error.includes('invalid outdent')) {
     const offsetMatch = error.match(/invalid outdent at offset: (\d+)/);
@@ -180,6 +196,7 @@ function generateParserSuggestion(expected: string[], foundToken: string): strin
     'List': 'Use list syntax with list: followed by indented items',
     'Screen': 'Declare screens with: screen ScreenName:',
     'Component': 'Declare components with: component ComponentName:',
+    'ComponentInstance': 'Use component instances with: $ComponentName',
     'Modal': 'Declare modals with: modal ModalName:',
     'Drawer': 'Declare drawers with: drawer DrawerName:'
   };
