@@ -1,4 +1,4 @@
-# GitHub Copilot Instructions for Proto-type
+# GitHub Copilot Instructions for proto-typedd
 
 ## Project Overview
 This is a React-based UI prototyping tool that allows users to create interactive prototypes using a comprehensive, descriptive syntax. The application features a robust Domain Specific Language (DSL) with a complete lexer, parser, and renderer pipeline that supports optional elements, styling attributes, conditional rendering, and advanced layout management.

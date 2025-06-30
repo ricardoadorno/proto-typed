@@ -1,6 +1,6 @@
-*# Proto-type
+*# proto-typed
 
-A React-based UI prototyping tool that allows you to create interactive prototypes using a comprehensive, descriptive Domain Specific Language (DSL). Proto-type features a robust lexer-parser-renderer pipeline that supports optional elements, styling attributes, conditional rendering, and advanced layout management.
+A React-based UI prototyping tool that allows you to create interactive prototypes using a comprehensive, descriptive Domain Specific Language (DSL). proto-typed features a robust lexer-parser-renderer pipeline that supports optional elements, styling attributes, conditional rendering, and advanced layout management.
 
 ## Features
 
@@ -45,7 +45,7 @@ src/
 
 ## Styling with Tailwind CSS
 
-Proto-type uses Tailwind CSS as its styling foundation with extensive customizations for the dark theme and component system:
+proto-typed uses Tailwind CSS as its styling foundation with extensive customizations for the dark theme and component system:
 
 ### Dark Mode Optimization
 The application is optimized for dark mode with a carefully crafted color palette:
@@ -76,7 +76,7 @@ Tailwind's responsive prefixes are used throughout:
 - Flexible grid systems: `grid grid-cols-1 @md:grid-cols-2 @lg:grid-cols-3`
 
 ### Custom Utility Extensions
-Proto-type extends Tailwind with custom utilities for:
+proto-typed extends Tailwind with custom utilities for:
 - Screen layout classes (`has-header`, `has-navigator`, `has-fab`)
 - Component-specific spacing and positioning
 - Advanced shadow and backdrop effects for mobile UI elements
@@ -90,7 +90,7 @@ Proto-type extends Tailwind with custom utilities for:
 
 2. Navigate to the project directory:
    ```bash
-   cd proto-type
+   cd proto-typed
    ```
 
 3. Install dependencies:
@@ -117,7 +117,7 @@ The application will open in your browser with a split-pane interface:
 Define screens as top-level containers for your prototype:
 ```dsl
 screen HomePage:
-  # Welcome to Proto-type
+  # Welcome to proto-typed
   > Create amazing prototypes with simple syntax
   @[Get Started](GettingStarted)
 ```
@@ -287,7 +287,7 @@ $OptionalComponent?
 
 ## Navigation System
 
-Proto-type supports internal navigation between screens and activation of modals/drawers:
+proto-typed supports internal navigation between screens and activation of modals/drawers:
 
 ```dsl
 screen Home:
@@ -366,7 +366,7 @@ The application uses a sophisticated parsing pipeline:
 
 ## Contributing
 
-When contributing to Proto-type:
+When contributing to proto-typed:
 
 1. Follow the established DSL syntax patterns
 2. Maintain consistency with the lexer-parser-renderer pipeline

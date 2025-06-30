@@ -2,14 +2,14 @@ import { DSL_LANGUAGE_ID } from '../constants';
 import { Monaco } from '@monaco-editor/react';
 
 /**
- * Register the Proto-type DSL language with Monaco Editor
+ * Register the proto-typedd DSL language with Monaco Editor
  */
 export function registerDSLLanguage(monaco: Monaco) {
   // Register the language
   monaco.languages.register({
     id: DSL_LANGUAGE_ID,
     extensions: ['.dsl', '.proto'],
-    aliases: ['Proto-type DSL', 'dsl', 'proto-type'],
+    aliases: ['proto-typedd DSL', 'dsl', 'proto-typedd'],
   });
   // Set a very basic monarch tokenizer to avoid any reference issues
   monaco.languages.setMonarchTokensProvider(DSL_LANGUAGE_ID, {

@@ -1,12 +1,12 @@
 /**
- * Example demonstrating Button Variants functionality in Proto-type DSL
+ * Example demonstrating Button Variants functionality in proto-typedd DSL
  */
 
 const buttonVariantsExample = `
 screen ButtonVariants:
   # Button Variants Demo
   
-  > This screen demonstrates the different button variants available in Proto-type.
+  > This screen demonstrates the different button variants available in proto-typedd.
   > Each variant has its own symbol and visual style.
   
   # Default Button

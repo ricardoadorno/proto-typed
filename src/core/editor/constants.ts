@@ -1,5 +1,5 @@
 // Define the language ID
-export const DSL_LANGUAGE_ID = 'proto-type-dsl';
+export const DSL_LANGUAGE_ID = 'proto-typedd-dsl';
 
 // Token types for syntax highlighting
 export const DSL_TOKEN_TYPES = {

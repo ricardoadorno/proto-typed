@@ -84,7 +84,7 @@ screen ListExamples:
       - [Notification](NotificationDetail)New Message{From: team@company.com}[Mark Read](read)@=[Delete](delete)
       - System Update Available{Version 2.1.0 is ready}@+[Update Now](update)@_[Later](later)
       - [Alert](AlertDetail)Security Alert{Unusual login detected}@![Review](review)@_[Dismiss](dismiss)
-      - Welcome to Proto-type!{Getting started guide}[Start Tutorial](tutorial)@_[Skip](skip)
+      - Welcome to proto-typedd!{Getting started guide}[Start Tutorial](tutorial)@_[Skip](skip)
 
   @[Back to Examples](ExamplesList)
 `;
