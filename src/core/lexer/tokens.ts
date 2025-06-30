@@ -118,7 +118,7 @@ export const Input = createToken({
 
 export const RadioOption = createToken({
   name: "RadioOption",
-  pattern: /(?:\r\n|\r|\n|\s)*\([xX ]?\)\s+([^\n\r]+)/
+  pattern: /\([xX ]?\)\s+([^\n\r]+)/
 });
 
 // Interactive Element Tokens
@@ -140,12 +140,12 @@ export const Image = createToken({
 // Content Element Tokens
 export const Heading = createToken({
   name: "Heading",
-  pattern: /(?:\r\n|\r|\n|\s)*#{1,6}(?!#)\s+([^\n\r#[\]"=:]+)/
+  pattern: /#{1,6}(?!#)\s+([^\n\r#[\]"=:]+)/
 });
 
 export const Text = createToken({
   name: "Text",
-  pattern: /(?:\r\n|\r|\n|\s)*>\s+([^\n\r]+)/
+  pattern: />\s+([^\n\r]+)/
 });
 
 export const Note = createToken({
@@ -160,19 +160,19 @@ export const Quote = createToken({
 
 export const OrderedListItem = createToken({
   name: "OrderedListItem",
-  pattern: /(?:\r\n|\r|\n|\s)*\d+\.\s+([^\n\r]+)/
+  pattern: /\d+\.\s+([^\n\r]+)/
 });
 
 export const UnorderedListItem = createToken({
   name: "UnorderedListItem",
-  pattern: /(?:\r\n|\r|\n|\s)*-\s+([^\n\r]+)/
+  pattern: /-\s+([^\n\r]+)/
 });
 
 // Advanced list item with flexible syntax: - [link_text](link)text{subtitle}[btn](action)[btn](action)
 // Matches list items that contain either square brackets (links/buttons) or curly braces (subtitles)
 export const AdvancedListItem = createToken({
   name: "AdvancedListItem",
-  pattern: /(?:\r\n|\r|\n|\s)*-\s+(?=.*(?:\[[^\]]*\]|\{[^}]*\})).*/
+  pattern: /-\s+(?=.*(?:\[[^\]]*\]|\{[^}]*\})).*/
 });
 
 // Standalone Checkbox token
@@ -208,12 +208,12 @@ export const allTokens = [
   Heading,
   Link,
   Image,
-  Equals,
-  Colon,
-  Identifier,
   OrderedListItem,
   AdvancedListItem, // Most specific pattern must come first
   UnorderedListItem,
   RadioOption,
-  Checkbox
+  Checkbox,
+  Equals,
+  Colon,
+  Identifier
 ];
