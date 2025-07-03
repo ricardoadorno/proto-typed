@@ -44,13 +44,13 @@ function updateErrorMarkers(monaco: Monaco, editor: any, errors: ParsedError[]) 
 }
 
 /**
- * Monaco Editor component configured specifically for the proto-typedd DSL
+ * Monaco Editor component configured specifically for the proto-typed DSL
  */
 export function DSLEditor({
     value,
     onChange,
     height = "100%",
-    theme = "proto-typedd-dark",
+    theme = "proto-typed-dark",
     errors = []
 }: DSLEditorProps) {
     const { monaco, isInitialized, error } = useMonacoDSL();

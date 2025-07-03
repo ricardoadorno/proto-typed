@@ -4,7 +4,7 @@ import { Monaco } from '@monaco-editor/react';
  * Define custom dark theme for the DSL
  */
 export function registerDSLTheme(monaco: Monaco) {// Define only the dark theme
-  monaco.editor.defineTheme('proto-typedd-dark', {
+  monaco.editor.defineTheme('proto-typed-dark', {
     base: 'vs-dark',
     inherit: true,
     rules: [

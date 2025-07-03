@@ -4,7 +4,7 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({
-    title = "proto-typedd",
+    title = "proto-typed",
     description = "Create interactive prototypes with our powerful DSL"
 }: AppHeaderProps) {
     return (

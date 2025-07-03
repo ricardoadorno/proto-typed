@@ -1,6 +1,6 @@
 /**
  * Example demonstrating the Named UI Elements (modal and drawer) 
- * functionality in proto-typedd DSL, including auto-close behavior
+ * functionality in proto-typed DSL, including auto-close behavior
  */
 
 const namedElementsExample = `
@@ -39,7 +39,7 @@ screen TestScreen:
   @[Open Modal Again](WelcomeModal)
 
 modal WelcomeModal:
-  # Welcome to proto-typedd!
+  # Welcome to proto-typed!
   > This is a modal that was hidden until you clicked the button.
   > Modals are perfect for displaying important information without leaving the current screen.
   

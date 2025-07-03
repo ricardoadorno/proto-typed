@@ -93,7 +93,7 @@ export function ExampleModal() {
             header={
                 <div className="space-y-2">
                     <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
-                        proto-typedd DSL Reference
+                        proto-typed DSL Reference
                     </h2>
                     <p className="text-slate-600 dark:text-slate-300">
                         Interactive examples and live preview of the UI DSL syntax
