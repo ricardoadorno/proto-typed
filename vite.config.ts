@@ -8,5 +8,5 @@ export default defineConfig({
   build: {
     sourcemap: true
   },
-  base: '/proto-type/',
+  base: '/proto-typed/',
 })
