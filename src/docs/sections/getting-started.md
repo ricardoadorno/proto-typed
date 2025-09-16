@@ -1,0 +1,3 @@
+# Getting Started
+
+Welcome to Proto-Typed. Use our DSL to quickly prototype UIs.

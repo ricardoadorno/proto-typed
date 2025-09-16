@@ -11,13 +11,15 @@ export interface TocSection {
 
 export interface TocDocument {
     sections: TocSection[];
-    posts?: TocPost[];
+    contents?: TocContent[];
 }
 
-// Load external JSON content files for posts
-const contentModules = import.meta.glob<{ default: { content: string } }>("./posts/*.json", { eager: true });
+// Load external content files for docs pages
+// Support both JSON (with { content: string }) and Markdown (.md as raw string)
+const jsonModules = import.meta.glob<{ default: { content: string } }>("./sections/*.json", { eager: true });
+const mdModules = import.meta.glob<string>("./sections/*.md", { as: "raw", eager: true });
 
-interface TocPostMeta {
+interface TocContentMeta {
     path: string;
     title: string;
     excerpt?: string;
@@ -62,63 +64,70 @@ const sections: TocSection[] = [
     },
 ];
 
-const postMeta: TocPostMeta[] = [
+const contentMeta: TocContentMeta[] = [
     {
         path: "/docs",
         title: "Getting Started",
         excerpt: "Overview of the Proto-Typed DSL and how to use the editor.",
-        contentFile: "./posts/getting-started.json",
+        contentFile: "./sections/getting-started.json",
     },
     {
         path: "/docs/syntax",
         title: "Syntax Guide",
         excerpt: "All core syntax: screens, components, text, and actions.",
-        contentFile: "./posts/syntax.json",
+        contentFile: "./sections/syntax.json",
     },
     {
         path: "/docs/examples",
         title: "Examples",
         excerpt: "Practical examples to copy and modify.",
-        contentFile: "./posts/examples.json",
+        contentFile: "./sections/examples.json",
     },
     {
         path: "/docs/troubleshooting",
         title: "Troubleshooting",
         excerpt: "Common errors and how to fix them.",
-        contentFile: "./posts/troubleshooting.json",
+        contentFile: "./sections/troubleshooting.json",
     },
-    { path: "/docs/components", title: "Components", excerpt: "Reusable blocks with $ComponentName.", contentFile: "./posts/components.json" },
-    { path: "/docs/typography", title: "Typography", excerpt: "Headings, text, quotes, and notes.", contentFile: "./posts/typography.json" },
-    { path: "/docs/forms", title: "Forms", excerpt: "Inputs, selects, and validation.", contentFile: "./posts/forms.json" },
-    { path: "/docs/interactive", title: "Interactive", excerpt: "Buttons, links, and images.", contentFile: "./posts/interactive.json" },
-    { path: "/docs/layout", title: "Layout", excerpt: "Containers, grids, and flex.", contentFile: "./posts/layout.json" },
-    { path: "/docs/lists", title: "Lists", excerpt: "Advanced list item syntax.", contentFile: "./posts/lists.json" },
-    { path: "/docs/mobile", title: "Mobile", excerpt: "Header, navigator, and FAB.", contentFile: "./posts/mobile.json" },
-    { path: "/docs/modals", title: "Modals", excerpt: "Named togglable elements.", contentFile: "./posts/modals.json" },
-    { path: "/docs/navigation", title: "Navigation", excerpt: "Internal navigation patterns.", contentFile: "./posts/navigation.json" },
-    { path: "/docs/screens", title: "Screens", excerpt: "Screen declarations and routing.", contentFile: "./posts/screens.json" },
-    { path: "/docs/known-issues", title: "Known Issues", excerpt: "Current limitations.", contentFile: "./posts/known-issues.json" },
+    { path: "/docs/components", title: "Components", excerpt: "Reusable blocks with $ComponentName.", contentFile: "./sections/components.json" },
+    { path: "/docs/typography", title: "Typography", excerpt: "Headings, text, quotes, and notes.", contentFile: "./sections/typography.json" },
+    { path: "/docs/forms", title: "Forms", excerpt: "Inputs, selects, and validation.", contentFile: "./sections/forms.json" },
+    { path: "/docs/interactive", title: "Interactive", excerpt: "Buttons, links, and images.", contentFile: "./sections/interactive.json" },
+    { path: "/docs/layout", title: "Layout", excerpt: "Containers, grids, and flex.", contentFile: "./sections/layout.json" },
+    { path: "/docs/lists", title: "Lists", excerpt: "Advanced list item syntax.", contentFile: "./sections/lists.json" },
+    { path: "/docs/mobile", title: "Mobile", excerpt: "Header, navigator, and FAB.", contentFile: "./sections/mobile.json" },
+    { path: "/docs/modals", title: "Modals", excerpt: "Named togglable elements.", contentFile: "./sections/modals.json" },
+    { path: "/docs/navigation", title: "Navigation", excerpt: "Internal navigation patterns.", contentFile: "./sections/navigation.json" },
+    { path: "/docs/screens", title: "Screens", excerpt: "Screen declarations and routing.", contentFile: "./sections/screens.json" },
+    { path: "/docs/known-issues", title: "Known Issues", excerpt: "Current limitations.", contentFile: "./sections/known-issues.json" },
 ];
 
-const posts: TocPost[] = postMeta.map((p) => {
+const contents: TocContent[] = contentMeta.map((p) => {
     let content: string | undefined = undefined;
     if (p.contentFile) {
-        const mod = contentModules[p.contentFile as keyof typeof contentModules];
-        content = (mod as any)?.default?.content;
+        const jsonPath = p.contentFile;
+        const mdPath = p.contentFile.replace(/\.json$/i, ".md");
+
+        if (mdModules[mdPath as keyof typeof mdModules]) {
+            content = mdModules[mdPath as keyof typeof mdModules] as unknown as string;
+        } else if (jsonModules[jsonPath as keyof typeof jsonModules]) {
+            const mod = jsonModules[jsonPath as keyof typeof jsonModules];
+            content = (mod as any)?.default?.content;
+        }
     }
     return {
         path: p.path,
         title: p.title,
         excerpt: p.excerpt,
         content,
-    } as TocPost;
+    } as TocContent;
 });
 
-const toc: TocDocument = { sections, posts };
+const toc: TocDocument = { sections, contents };
 
 export default toc;
 
-export interface TocPost {
+export interface TocContent {
     path: string;
     title: string;
     excerpt?: string;
