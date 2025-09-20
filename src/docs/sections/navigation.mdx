@@ -1,44 +1,63 @@
-import { DslExample } from "../../components/docs";
-
 # Navigation
 
-Use actions to switch screens or activate named elements.
+import { DslExample } from "../../components/docs";
 
-## Screen to Screen
+Navigation connects screens and toggles named overlays like modals and drawers.
 
-<DslExample
-	title="Navigate Between Screens"
-	heightClassName="h-72"
-	code={`
+## Screens
+<DslExample title="Screen-to-screen navigation">
+
+```dsl
 screen Home:
-	# Home
-	@[Go to About](About)
+  > Welcome
+  @[Go to About](About)
 
 screen About:
-	# About
-	@[Back to Home](Home)
-	`}
-/>
+  > About screen
+  @[Back](Home)
+```
 
-## Activate Named Elements
+</DslExample>
 
-<DslExample
-	title="Open a Modal via Action"
-	heightClassName="h-72"
-	code={`
-modal Info:
-	# Info
-	> Details here
-	@[Close](close)
+## Links vs Buttons
+- `#[Link]()` for inline navigation
+- `@[Button]()` for call-to-action
 
-screen Home:
-	# Home
-	@[Open Info](Info)
-	`}
-/>
+<DslExample title="Links vs buttons" heightClassName="h-40">
 
-Tips:
+```dsl
+> Explore our #[examples](/docs/examples)
+@[Open Examples](/docs/examples)
+```
 
-- The first declared `screen` is the initial view.
-- `(Destination)` switches to a screen named `Destination` if it exists.
-- If `Destination` matches a named element (modal/drawer), it is activated instead of navigating.
+</DslExample>
+
+## Named Elements
+<DslExample title="Declare overlays">
+
+```dsl
+modal Help:
+  # Need Help?
+  > This modal opens from buttons
+  @[Close]()
+
+drawer Nav:
+  > Drawer content
+  #[Home](Home)
+```
+
+</DslExample>
+
+Activate by name via actions:
+<DslExample title="Activate overlays" heightClassName="h-28">
+
+```dsl
+@[Show Help](Help)
+@[Open Nav](Nav)
+```
+
+</DslExample>
+
+Notes:
+- Unreferenced overlays remain hidden by default.
+- Actions can target screens, modals, or drawers.

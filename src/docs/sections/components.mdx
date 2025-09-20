@@ -1,33 +1,44 @@
+# Components Overview
+
 import { DslExample } from "../../components/docs";
 
-# Components
+Components let you define reusable UI fragments once and reference them anywhere with `$Name`.
 
-Declare reusable blocks with `component Name:` and instantiate with `$Name`.
+## Declare a Component
+<DslExample title="Define a component">
 
-## Declare and Use
+```dsl
+component Callout:
+  card:
+    # Title
+    > Supporting text
+    @+[Learn more]
 
-<DslExample
-	title="Component Declaration and Usage"
-	heightClassName="h-72"
-	code={`
-component Header:
-	header:
-		# My App
+screen Library:
+  $Callout
+  $Callout
+```
 
-screen Home:
-	$Header
-	> Welcome to the app
-	@[About](About)
+</DslExample>
 
-screen About:
-	$Header
-	> About page content
-	@[Back](Home)
-	`}
-/>
 
-Tips:
+## Composition
+Components can include layout and interactive elements, and they can be combined with local content.
+<DslExample title="Compose components">
 
-- Keep components focused (headers, footers, cards).
-- Pass content via composition where needed (nest underneath after instantiation).
-- Combine with layout primitives for structure.
+```dsl
+component Toolbar:
+  row:
+    @[Save]() @_[Cancel]()
+
+screen Editor:
+  $Toolbar
+  container:
+    > Editor body
+```
+
+</DslExample>
+
+Guidelines:
+- Keep components focused and small.
+- Prefer composition over deep nesting for performance.

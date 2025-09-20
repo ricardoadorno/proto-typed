@@ -1,3 +1,37 @@
 # Troubleshooting
 
-If parsing fails, check indentation and token usage; see error hints in the UI.
+import { DslExample } from "../../components/docs";
+
+Tips to resolve common parsing or rendering issues.
+
+## Parse Errors
+- Check indentation — use consistent two spaces for nesting.
+- Confirm tokens: no stray characters before `#`, `>`, `@[`, etc.
+- Ensure attributes are well-formed: `{key: value}` pairs.
+
+## Optional Elements
+- Use `?` only where supported, e.g., `@[Button]?()`.
+- If something disappears unexpectedly, remove `?` to confirm.
+
+## Overlays Not Showing
+- Ensure the name matches: `modal Help:` then action `(Help)`.
+- Overlays are hidden unless activated by navigation.
+
+<DslExample title="Overlay names must match" heightClassName="h-36">
+
+```dsl
+modal Help:
+	> Content
+
+@[Show Help](Help)
+```
+
+</DslExample>
+
+## Lists Look Wrong
+- Follow the flexible format: `- [link](dest)text{subtitle}[btn](action)`.
+- For simple items, `- text` is still valid.
+
+## When in Doubt
+- Simplify the snippet until it parses, then re-introduce pieces.
+- Use the error panel for line/column hints and suggested fixes.

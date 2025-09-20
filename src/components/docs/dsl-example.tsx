@@ -1,27 +1,48 @@
 /** @jsxImportSource react */
-import { useState } from 'react';
+import { useState, type ReactNode, isValidElement } from 'react';
 import { DslMiniPreview } from './dsl-mini-preview';
 
 interface DslExampleProps {
     title?: string;
     description?: string;
-    code: string;
+    code?: string;
     heightClassName?: string; // height for the preview panel
     autoWrapScreen?: boolean;
+    children?: ReactNode; // optional MDX children as code source
 }
 
 export function DslExample({
     title = 'Example',
     description,
-    code,
+    code = '',
     heightClassName = 'h-72',
     autoWrapScreen = true,
+    children,
 }: DslExampleProps) {
     const [copied, setCopied] = useState(false);
 
+    const extractText = (node: ReactNode): string => {
+        if (node == null) return '';
+        if (typeof node === 'string') return node;
+        if (Array.isArray(node)) return node.map(extractText).join('');
+        if (isValidElement(node)) {
+            // Most MDX code blocks compile to <pre><code>{"..."}</code></pre>
+            const props: any = (node as any).props ?? {};
+            return extractText(props.children);
+        }
+        return '';
+    };
+
+    const resolvedCode = (() => {
+        const explicit = typeof code === 'string' ? code : '';
+        if (explicit.trim().length > 0) return explicit;
+        const fromChildren = extractText(children);
+        return fromChildren.replace(/^\n+|\n+$/g, '');
+    })();
+
     const copyToClipboard = async () => {
         try {
-            await navigator.clipboard.writeText(code);
+            await navigator.clipboard.writeText(resolvedCode);
             setCopied(true);
             setTimeout(() => setCopied(false), 1500);
         } catch (_) {
@@ -60,8 +81,8 @@ export function DslExample({
                             </button>
                         </div>
                     </div>
-                    <pre className="mb-0 mt-0 text-sm leading-relaxed text-gray-200 whitespace-pre overflow-auto min-h-[12rem] h-full">
-                        {code}
+                    <pre className="mb-0 mt-0 text-sm leading-relaxed text-gray-200 whitespace-pre overflow-auto min-h-[12rem] ">
+                        {resolvedCode}
                     </pre>
                 </div>
 
@@ -72,7 +93,7 @@ export function DslExample({
                     </div>
                     <DslMiniPreview
                         heightClassName={heightClassName}
-                        code={code}
+                        code={resolvedCode}
                         autoWrapScreen={autoWrapScreen}
                     />
                 </div>

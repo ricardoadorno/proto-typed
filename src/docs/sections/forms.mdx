@@ -1,55 +1,55 @@
-import { DslExample } from "../../components/docs";
-
 # Forms
 
-Collect user inputs with simple, expressive syntax. Inputs, passwords, disabled fields, selects, and grouped checkboxes/radios are supported.
+import { DslExample } from "../../components/docs";
 
-## Inputs
+Use compact tokens for inputs, passwords, disabled fields, and selects.
 
-<DslExample
-  title="Text Inputs"
-  description="Use ___:Label{Placeholder}. Append * for password or - to disable."
-  heightClassName="h-64"
-  code={`
-# Account
-___:Email{you@example.com}
-___*:Password{••••••••}
-___-:Disabled Field{Cannot edit}
-  `}
-/>
+## Text Inputs
+<DslExample title="Text input" heightClassName="h-28">
+
+```dsl
+___:Label{Placeholder}
+```
+
+</DslExample>
+
+## Password Inputs
+<DslExample title="Password input" heightClassName="h-28">
+
+```dsl
+___*:Password{Enter password}
+```
+
+</DslExample>
+
+## Disabled Inputs
+<DslExample title="Disabled input" heightClassName="h-28">
+
+```dsl
+___-:Read Only{Unavailable}
+```
+
+</DslExample>
 
 ## Selects
+<DslExample title="Select field" heightClassName="h-28">
 
-<DslExample
-  title="Select Field"
-  description="Append options in [A | B] to create a select."
-  heightClassName="h-56"
-  code={`
-# Preferences
-___:Theme{Choose}[Light | Dark | System]
-  `}
-/>
+```dsl
+___:Fruit{Choose}[Apple | Banana | Orange]
+```
 
-## Checkbox and Radio Groups
+</DslExample>
 
-<DslExample
-  title="Checkboxes and Radios"
-  description="[X]/[ ] for checkboxes; (X)/( ) for radios."
-  heightClassName="h-64"
-  code={`
-# Notifications
-[X] Email Alerts
-[ ] SMS Alerts
+## Checkboxes & Radio
+<DslExample title="Checkboxes & radios" heightClassName="h-40">
 
-# Priority
-(X) High
-( ) Medium
-( ) Low
-  `}
-/>
+```dsl
+[ ] Remember me
+[X] Subscribed
+( ) Free
+(X) Pro
+```
 
-Tips:
+</DslExample>
 
-- Group related fields with containers like `card:` or `section:`.
-- Combine with buttons to submit or navigate.
-- Use labels and placeholders to clarify intent.
+Combine form fields with `card`, `row`, and `col` for structure.

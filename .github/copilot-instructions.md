@@ -10,21 +10,29 @@ This is a React-based UI prototyping tool that allows users to create interactiv
 - **Testing**: Currently no test suite implemented (Vitest + React Testing Library configured but no tests written)
 - **Parsing**: Chevrotain (lexer & parser)
 - **Code Editor**: Monaco Editor with custom syntax highlighting
-- **State Management**: React Context for prototype state
 
 ### Project Structure
 - `src/core/lexer/` - Tokenization and lexical analysis
 - `src/core/parser/` - Grammar rules and AST building
 - `src/core/renderer/` - HTML generation from AST
-- `src/core/validator/` - DSL validation and type checking
 - `src/core/themes/` - Theme system and CSS variable management
 - `src/components/` - React UI components
 - `src/examples/` - Sample DSL code examples
 - `src/types/` - TypeScript type definitions
-- `src/test/` - Comprehensive test suites
 - `src/utils/` - Utility functions and helpers
 
 ## DSL Syntax Reference
+
+For complete, always-up-to-date guidance, see modular instructions:
+- `.github/instructions/01-overview.instructions.md`
+- `.github/instructions/02-dsl.instructions.md`
+- `.github/instructions/03-lexer-parser.instructions.md`
+- `.github/instructions/04-editor.instructions.md`
+- `.github/instructions/05-renderer.instructions.md`
+- `.github/instructions/06-components-organization.instructions.md`
+- `.github/instructions/07-coding-guidelines.instructions.md`
+- `.github/instructions/08-common-patterns.instructions.md`
+- `.github/instructions/09-docs.instructions.md`
 
 ### General Syntax Rules
 - **Optional Elements**: Use `?` suffix for optional components: `@[Button]?(action)`
@@ -103,11 +111,9 @@ These named elements have special behavior - they are shown or hidden based on n
 ### Layout Components
 - `container:`
 - `grid:`
-- `flex:`
 - `card:`
 - `row:`
 - `col:`
-- `section:`
 
 ### Data Display Components
 - `list:` - Advanced Interactive Lists
@@ -149,12 +155,12 @@ list:
 - **Navigation support**: Both initial links and button actions support navigation
 - **Backward compatibility**: Simple `- text` items still work
 
-### Mobile Components
-- `header:`
-- `navigator:`
-- `fab {icon}`
-- `- [label]{icon}(action)` for navigation items
-- `- [label]{icon}(action)` for drawer items
+### Components Organization (Canonical)
+- Primitives: Typography, Button, Link, Images, Icons
+- Form: Text, Select, Radio, Checkbox
+- Layout Primitives: Container, Row, Column, Flow, Grid
+- Content Structures: List, Table, Cards, Accordion, Carousel
+- Navigation & Overlays: Screens, App Bar, Drawer, Bottom Navigation, Modal, Floating Action Button
 
 ## Coding Guidelines
 

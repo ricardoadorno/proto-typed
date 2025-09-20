@@ -1,25 +1,48 @@
-export const meta = {
-  title: 'Getting Started'
-}
-
 # Getting Started
 
-Proto‑Typed lets you build interactive UI prototypes with a simple, expressive DSL and see results instantly.
+import { DslExample } from "../../components/docs";
 
-## Install
+Welcome to proto-typed — a React-based prototyping tool with a custom DSL. Use the editor on the left and the live preview on the right to iterate fast.
 
-```bash
-git clone <repository-url>
-cd proto-typed
-npm install
-npm run dev
-```
+## Core Concepts
+- Screens: top-level views declared with `screen Name:`
+- Components: reusable blocks declared with `component Name:` and used via `$Name`
+- Named Elements: `modal Name:` and `drawer Name:` managed by navigation
+- Layout: `container`, `row`, `col`, `grid`, `card`
+- Interactivity: `@[Button]()` and `#[Link]()` plus images `![alt](src)`
 
-
-## First Prototype
+## First Screen
+<DslExample title="Two screens and navigation" description="Define screens and navigate with button actions.">
 
 ```dsl
 screen Home:
-  # Welcome
-  @[Get Started](GettingStarted)
+  # Heading 1
+  > Welcome to proto-typed
+  @[Open Details](Details)
+
+screen Details:
+  > Back to home
+  @[Go Home](Home)
 ```
+
+</DslExample>
+
+## Reusable Component
+<DslExample title="Declare and use a component" description="Create a component once, reuse anywhere.">
+
+```dsl
+component Hero:
+  # Hello
+  > This content is reusable
+  @[Action]()
+
+screen UsesHero:
+  $Hero
+```
+
+</DslExample>
+
+Tips:
+- Indent children under containers with two spaces.
+- Optional pieces use `?` suffix, e.g., `@[Button]?()`.
+- Keep the app running with `npm run dev` to see changes instantly.

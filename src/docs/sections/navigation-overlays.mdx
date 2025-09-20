@@ -1,0 +1,35 @@
+# Navigation & Overlays
+
+import { DslExample } from "../../components/docs";
+
+Modals and drawers are named elements that toggle visibility via navigation actions.
+
+## Declare Overlays
+<DslExample title="Declare overlays">
+
+```dsl
+modal Help:
+  # Need Help?
+  > Helpful information here
+  @[Close]()
+
+drawer SideNav:
+  > Links and quick actions
+  #[Home](Home)
+```
+
+</DslExample>
+
+## Activate Overlays
+<DslExample title="Activate overlays" heightClassName="h-28">
+
+```dsl
+@[Show Help](Help)
+@[Open Menu](SideNav)
+```
+
+</DslExample>
+
+Notes:
+- Overlays are hidden by default and shown when referenced by name.
+- They can be placed alongside `screen` declarations or within components.

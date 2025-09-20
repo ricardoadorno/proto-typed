@@ -1,64 +1,56 @@
+# Layout Primitives
+
 import { DslExample } from "../../components/docs";
 
-# Layout
+Compose responsive prototypes with containers, rows, columns, grids, and cards.
 
-Layout primitives help structure content using indentation.
+## Container
+<DslExample title="Container" heightClassName="h-28">
 
-<DslExample
-  title="Container"
-  heightClassName="h-48"
-  code={`
+```dsl
 container:
-  # Grouped Content
-  > Use containers to scope related elements
-  `}
-/>
+  > Constrains content width and adds spacing
+```
 
-<DslExample
-  title="Grid of Cards"
-  heightClassName="h-80"
-  code={`
-grid:
-  card:
-    ### One
-    > Content
-  card:
-    ### Two
-    > Content
-  card:
-    ### Three
-    > Content
-  `}
-/>
+</DslExample>
 
-## Card
+## Rows & Columns
+<DslExample title="Rows & columns" heightClassName="h-40">
 
-<DslExample
-  title="Card"
-  heightClassName="h-56"
-  code={`
-card:
-  ## Title
-  > Body
-  @[Action](act)
-  `}
-/>
-
-## Row / Col
-
-<DslExample
-  title="Row and Columns"
-  heightClassName="h-56"
-  code={`
+```dsl
 row:
   col:
     > Left
   col:
     > Right
-  `}
-/>
+```
+
+</DslExample>
+
+## Grid
+<DslExample title="Grid" heightClassName="h-40">
+
+```dsl
+grid:
+  > Grid item A
+  > Grid item B
+  > Grid item C
+```
+
+</DslExample>
+
+## Cards
+<DslExample title="Card" heightClassName="h-40">
+
+```dsl
+card:
+  # Title
+  > Body text inside a card
+  @[Action]()
+```
+
+</DslExample>
 
 Tips:
-
-- Nest layout primitives to compose complex UIs, but keep indentation readable.
-- Prefer `grid:` for repeated cards and `flex:` for simple horizontal groupings.
+- Keep nesting shallow where possible.
+- Place actions at the end of groups for scannability.

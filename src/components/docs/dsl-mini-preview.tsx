@@ -101,7 +101,7 @@ export function DslMiniPreview({
             <div
                 ref={containerRef}
                 onClick={handleClick}
-                className={`border border-slate-700 rounded-lg  ${heightClassName} overflow-auto shadow-inner`}
+                className={`border border-slate-700 rounded-lg  ${heightClassName} overflow-auto shadow-inner min-h-full`}
             >
                 {error ? (
                     <div className="text-red-400 text-sm">{error}</div>

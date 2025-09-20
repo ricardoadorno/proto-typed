@@ -1,9 +1,95 @@
 # Syntax Guide
 
-This DSL describes screens, components, and interactive UI elements.
+import { DslExample } from "../../components/docs";
+
+This DSL composes UIs using indentation, concise tokens, and optional modifiers.
+
+## Screens and Components
+<DslExample title="Screens and components">
 
 ```dsl
-screen Home:
-  # Welcome
-  @[Go](Next)
+screen ScreenName:
+  > Content
+
+component Block:
+  > Reusable
+
+$Block
 ```
+
+</DslExample>
+
+## Typography
+- `#` to `######` for headings
+- `>` body text, `*>` notes, `">` quotes
+
+<DslExample title="Typography tokens" heightClassName="h-56">
+
+```dsl
+# H1
+## H2
+> Body text
+*> Note text
+" > Quote text
+```
+
+</DslExample>
+
+## Interactive Elements
+- Button: `@[Text](action)` with variants: `@_` ghost, `@+` outline, `@-` secondary, `@=` destructive, `@!` warning
+- Link: `#[Text](destination)`
+- Image: `![Alt](url)`
+
+<DslExample title="Interactive elements">
+
+```dsl
+@[Primary](go)
+@+[Outline](go)
+#[Docs](/docs)
+![Logo](https://placehold.co/200x60)
+```
+
+</DslExample>
+
+## Layout Primitives
+<DslExample title="Layout primitives">
+
+```dsl
+container:
+  row:
+    col:
+      card:
+        > Inside a card
+  grid:
+    > Grid content
+```
+
+</DslExample>
+
+## Lists (Advanced)
+<DslExample title="Advanced list items">
+
+```dsl
+list:
+  - [Star](star)Important Task{Complete Project}[Complete](complete)
+  - [Project](ProjectPage)Bug Report{Fix Login}@=[Close](close)@_[Comment](comment)
+  - Simple text item
+```
+
+</DslExample>
+
+## Named Elements & Navigation
+<DslExample title="Named elements & actions">
+
+```dsl
+modal Info:
+  > Informational dialog
+
+drawer Menu:
+  > App navigation
+
+@[Open Modal](Info)
+@[Open Drawer](Menu)
+```
+
+</DslExample>

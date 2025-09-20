@@ -1,0 +1,56 @@
+# Iconography
+
+import { DslExample } from "../../components/docs";
+
+Icons are used by writing a Lucide icon name as the element's text in places that support icons. When the text matches a Lucide icon name exactly (case‑sensitive), it is substituted with the corresponding SVG.
+
+## Where It Works
+- Button: icon‑only buttons when the button text is a Lucide name, e.g., `@[Trash]`
+- Advanced list buttons: action buttons inside list items, e.g., `@=[Trash](delete)`
+- Mobile navigation: provide the icon inside braces `{IconName}` for navigator and drawer items
+- FAB: provide the icon inside braces `{IconName}` after `fab`
+
+If the text does not match a Lucide icon, it renders as plain text/emoji.
+
+## DSL Examples
+<DslExample title="Buttons: icon-only via Lucide names">
+
+```dsl
+@[Home]
+@+[User]
+@=[Trash]
+@![AlertCircle]
+```
+
+</DslExample>
+
+<DslExample title="Lists: action buttons with icons">
+
+```dsl
+list:
+  - Task due today@=[Trash](delete)@_[Edit](edit)
+  - Another item@[Check](complete)
+```
+
+</DslExample>
+
+<DslExample title="Mobile: navigator, drawer, and FAB icons">
+
+```dsl
+navigator:
+  - [Home]{Home}(Main)
+  - [Search]{Search}(Search)
+
+fab {Plus} NewItem
+
+drawer Menu:
+  - [Settings]{Settings}(Settings)
+  - [Info]{Info}(About)
+```
+
+</DslExample>
+
+## Notes
+- Case‑sensitive: use the exact Lucide name (e.g., `Home`, `Trash`, `AlertCircle`).
+- Fallback: unknown names render as text so you can use emojis or labels too.
+- Styling: icons inherit color (`currentColor`). Default size is compact for UI controls.

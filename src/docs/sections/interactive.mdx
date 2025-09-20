@@ -1,72 +1,46 @@
-import { DslExample } from "../../components/docs";
-
 # Interactive Elements
 
-Interactive primitives connect your prototype with navigation and actions.
+import { DslExample } from "../../components/docs";
+
+Buttons, links, and images enable flows and interactions.
 
 ## Buttons
+Variants are prefixed with `@` modifiers:
+- Ghost: `@_`
+- Outline: `@+`
+- Secondary: `@-`
+- Destructive: `@=`
+- Warning: `@!`
 
-<DslExample
-	title="Buttons"
-	description="Label inside [brackets]; action/destination in (parentheses)"
-	heightClassName="h-48"
-	code={`
-screen Buttons:
-	@[Routing Button](Next)
-	@[Non-Routing Button]
+<DslExample title="Button variants" heightClassName="h-48">
 
-screen Next:
-	# You made it!
-	`}
-/>
+```dsl
+@[Primary](go)
+@_[Ghost](go)
+@+[Outline](go)
+@-[Secondary](go)
+@=[Delete](danger)
+@![Warn](warn)
+```
 
-### Variants
-
-Apply a variant before a button to change styling:
-
-<DslExample
-	title="Button Variants"
-	description="Ghost @_ • Outline @+ • Secondary @- • Destructive @= • Warning @!"
-	heightClassName="h-48"
-	code={`
-@_[Ghost](ghost)
-@+[Outline](outline)
-@-[Secondary](secondary)
-@=[Destructive](delete)
-@![Warning](warn)
-	`}
-/>
-
-Variants compose in lists and other containers.
+</DslExample>
 
 ## Links
+<DslExample title="Links" heightClassName="h-28">
 
-<DslExample
-	title="Links"
-	heightClassName="h-40"
-	code={`
-screen Links:
-	#[Open Details](Details)
-	#[Go gooogle](https://google.com)
+```dsl
+#[Open Docs](/docs)
+```
 
-screen Details:
-	# Details Page
-	`}
-/>
+</DslExample>
 
 ## Images
+<DslExample title="Images" heightClassName="h-40">
 
-<DslExample
-	title="Images"
-	heightClassName="h-64"
-	description="Use URLs for quick previews"
-	code={`
-![A placeholder image](https://picsum.photos/320/120)
-	`}
-/>
+```dsl
+![Alt text](https://placehold.co/600x200)
+```
 
-## Navigation
+</DslExample>
 
-- Actions like `(Destination)` navigate to a `screen Destination` if present.
-- If `Destination` matches a named element (`modal Name`, `drawer Name`), that element is activated.
-- Use `(close)` within modals/drawers to dismiss them.
+Combine interactivity with layout primitives for better UX.

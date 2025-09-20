@@ -1,41 +1,34 @@
-import { DslExample } from "../../components/docs";
-
 # Typography
 
-Typography elements provide structured text content.
+import { DslExample } from "../../components/docs";
+
+Use semantic tokens for headings, body, notes, and quotes.
 
 ## Headings
+<DslExample title="Headings" heightClassName="h-56">
 
-Use one to six hashes at the start of a line:
-
-
-<DslExample
-	title="Headings"
-	heightClassName="h-56"
-	code={`
+```dsl
 # Heading 1
 ## Heading 2
 ### Heading 3
 #### Heading 4
 ##### Heading 5
 ###### Heading 6
-`}
-/>
+```
 
-## Text, Notes, Quotes
+</DslExample>
 
-<DslExample
-	title="Rendered Text"
-	heightClassName="h-48"
-	code={`
-> Regular text paragraph
-*> Note text for tips or callouts
-"> Quote text spanning a paragraph
-`}
-/>
+## Text Variants
+<DslExample title="Text variants" heightClassName="h-40">
 
-Tips:
+```dsl
+> Regular body text for paragraphs
+*> Note text for hints or callouts
+" > Quote text for citations
+```
 
-- Notes (`*>)`) and quotes (`">`) follow the same indentation rules as other elements.
-- Use inside containers like `card:`, `section:`, or `grid:`.
-- Combine with lists and layout components for richer content.
+</DslExample>
+
+Guidelines:
+- Keep headings short and scannable.
+- Combine with `card` and layout primitives for rhythm.

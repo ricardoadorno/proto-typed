@@ -21,7 +21,7 @@ interface TocContentMeta {
     path: string;
     title: string;
     excerpt?: string;
-    contentFile?: string; // MDX only
+    contentFile?: string; 
 }
 
 const sections: TocSection[] = [
@@ -30,75 +30,111 @@ const sections: TocSection[] = [
         label: "Overview",
         items: [{ path: "/docs", label: "Getting Started" }],
     },
-    // {
-    //     id: "guide",
-    //     label: "Guides",
-    //     items: [
-    //         { path: "/docs/syntax", label: "Syntax Guide" },
-    //          { path: "/docs/navigation", label: "Navigation" },
-    // { path: "/docs/components", label: "Components" },
-    //         { path: "/docs/examples", label: "Examples" },
-    //         { path: "/docs/troubleshooting", label: "Troubleshooting" },
-    //     ],
-    // },
     {
-        id: "elements",
-        label: "Elements",
+        id: "guide",
+        label: "Guides",
         items: [
-            { path: "/docs/screens", label: "Screens" },
-            { path: "/docs/typography", label: "Typography" },
-            { path: "/docs/forms", label: "Forms" },
-            { path: "/docs/interactive", label: "Interactive" },
-            { path: "/docs/layout", label: "Layout" },
-            { path: "/docs/lists", label: "Lists" },
-            { path: "/docs/mobile", label: "Mobile" },
-            { path: "/docs/modals", label: "Modals" },
-            
+            { path: "/docs/syntax", label: "Syntax Guide" },
+            { path: "/docs/navigation", label: "Navigation" },
+            { path: "/docs/components", label: "Components" },
+            { path: "/docs/examples", label: "Examples" },
+            { path: "/docs/troubleshooting", label: "Troubleshooting" },
         ],
     },
-    // {
-    //     id: "meta",
-    //     label: "Meta",
-    //     items: [{ path: "/docs/known-issues", label: "Known Issues" }],
-    // },
+    {
+        id: "components",
+        label: "Components",
+        items: [
+            { path: "/docs/typography", label: "Typography" },
+            { path: "/docs/interactive", label: "Interactive" },
+            { path: "/docs/icons", label: "Iconography" },
+            { path: "/docs/forms", label: "Forms" },
+            { path: "/docs/layout", label: " Layout Primitives" },
+            { path: "/docs/structure", label: "Content Structures" },
+            { path: "/docs/navigation-overlays", label: "Navigation & Overlays" },
+        ],
+    },
 ];
 
 const contentMeta: TocContentMeta[] = [
     {
         path: "/docs",
         title: "Getting Started",
-        excerpt: "Overview of the Proto-Typed DSL and how to use the editor.",
+        excerpt: "Learn the basics of the DSL, editor, and live preview.",
         contentFile: "./sections/getting-started.mdx",
     },
     {
         path: "/docs/syntax",
         title: "Syntax Guide",
-        excerpt: "All core syntax: screens, components, text, and actions.",
+        excerpt: "Complete overview of the DSL building blocks and rules.",
         contentFile: "./sections/syntax.mdx",
+    },
+    {
+        path: "/docs/navigation",
+        title: "Navigation",
+        excerpt: "Screens, links, buttons, and named overlays for app flows.",
+        contentFile: "./sections/navigation.mdx",
+    },
+    {
+        path: "/docs/components",
+        title: "Components Overview",
+        excerpt: "Create reusable blocks and compose UIs with clarity.",
+        contentFile: "./sections/components.mdx",
     },
     {
         path: "/docs/examples",
         title: "Examples",
-        excerpt: "Practical examples to copy and modify.",
+        excerpt: "Practical snippets demonstrating common patterns and layouts.",
         contentFile: "./sections/examples.mdx",
     },
     {
         path: "/docs/troubleshooting",
         title: "Troubleshooting",
-        excerpt: "Common errors and how to fix them.",
+        excerpt: "Common issues, parsing tips, and how to recover fast.",
         contentFile: "./sections/troubleshooting.mdx",
     },
-    { path: "/docs/components", title: "Components", excerpt: "Reusable blocks with $ComponentName.", contentFile: "./sections/components.mdx" },
-    { path: "/docs/typography", title: "Typography", excerpt: "Headings, text, quotes, and notes.", contentFile: "./sections/typography.mdx" },
-    { path: "/docs/forms", title: "Forms", excerpt: "Inputs, selects, and validation.", contentFile: "./sections/forms.mdx" },
-    { path: "/docs/interactive", title: "Interactive", excerpt: "Buttons, links, and images.", contentFile: "./sections/interactive.mdx" },
-    { path: "/docs/layout", title: "Layout", excerpt: "Containers, grids, and flex.", contentFile: "./sections/layout.mdx" },
-    { path: "/docs/lists", title: "Lists", excerpt: "Advanced list item syntax.", contentFile: "./sections/lists.mdx" },
-    { path: "/docs/mobile", title: "Mobile", excerpt: "Header, navigator, and FAB.", contentFile: "./sections/mobile.mdx" },
-    { path: "/docs/modals", title: "Modals", excerpt: "Named togglable elements.", contentFile: "./sections/modals.mdx" },
-    { path: "/docs/navigation", title: "Navigation", excerpt: "Internal navigation patterns.", contentFile: "./sections/navigation.mdx" },
-    { path: "/docs/screens", title: "Screens", excerpt: "Screen declarations and routing.", contentFile: "./sections/screens.mdx" },
-    { path: "/docs/known-issues", title: "Known Issues", excerpt: "Current limitations.", contentFile: "./sections/known-issues.mdx" },
+    {
+        path: "/docs/typography",
+        title: "Typography",
+        excerpt: "Headings, body text, notes, and quotes.",
+        contentFile: "./sections/typography.mdx",
+    },
+    {
+        path: "/docs/interactive",
+        title: "Interactive Elements",
+        excerpt: "Buttons, links, images, and interactivity patterns.",
+        contentFile: "./sections/interactive.mdx",
+    },
+    {
+        path: "/docs/icons",
+        title: "Iconography",
+        excerpt: "Working with icons in the design system.",
+        contentFile: "./sections/icons.mdx",
+    },
+    {
+        path: "/docs/forms",
+        title: "Forms",
+        excerpt: "Inputs, passwords, disabled states, and selects.",
+        contentFile: "./sections/forms.mdx",
+    },
+    {
+        path: "/docs/layout",
+        title: "Layout Primitives",
+        excerpt: "Container, rows, columns, grid, and cards.",
+        contentFile: "./sections/layout.mdx",
+    },
+    {
+        path: "/docs/structure",
+        title: "Content Structures",
+        excerpt: "Lists and other rich content structures.",
+        contentFile: "./sections/structure.mdx",
+    },
+    {
+        path: "/docs/navigation-overlays",
+        title: "Navigation & Overlays",
+        excerpt: "Modals and drawers as named elements.",
+        contentFile: "./sections/navigation-overlays.mdx",
+    },
 ];
 
 const contents: TocContent[] = contentMeta.map((p) => {
