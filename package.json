@@ -16,7 +16,8 @@
     "@monaco-editor/react": "^4.7.0",
     "chevrotain": "^11.0.3",
     "lucide": "^0.513.0",
-    "marked": "^13.0.3",
+  "marked": "^13.0.3",
+  "@mdx-js/react": "^3.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.9.1"
@@ -39,6 +40,7 @@
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.26.1",
     "vite": "^6.3.1",
+    "@mdx-js/rollup": "^3.0.1",
     "vitest": "^3.1.2"
   }
 }

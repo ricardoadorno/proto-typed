@@ -1,0 +1,77 @@
+import { DslExample } from "../../components/docs";
+
+# Screens
+
+Screens are top-level views in your prototype. Declare them with `screen Name:` and indent child elements beneath.
+
+## Declaration
+
+<DslExample
+  title="Declare Screens"
+  description="Define multiple screens and navigate between them using button/link actions."
+  heightClassName="h-72"
+  code={`
+screen Home:
+  # Welcome
+  > Build fast with the DSL
+  @[Go to About](About)
+
+screen About:
+  # About Page
+  > This is a separate screen
+  @[Back](Home)
+  `}
+/>
+
+## Behavior
+
+- The first declared `screen` is the initial screen shown in the preview.
+- Navigation is internal: actions like `@[Go](Target)` switch to the `screen Target` if it exists.
+- If an action points to a named element (`modal`, `drawer`), that element is activated instead of switching screens.
+
+## Named Element Activation
+
+<DslExample
+  title="Open a Modal from a Screen"
+  description="Actions can target named UI elements. When they do, the element is shown without changing screens."
+  heightClassName="h-72"
+  code={`
+modal Info:
+  # Info
+  > Details here
+  @[Close](close)
+
+screen Home:
+  # Home
+  @[Open Info](Info)
+  `}
+/>
+
+## Composition
+
+Screens can include components and layout containers:
+
+<DslExample
+  title="Components and Layouts"
+  description="Reuse components inside screens and compose layouts with containers like grid and card."
+  heightClassName="h-80"
+  code={`
+component Header:
+  header:
+    # My App
+
+screen Dashboard:
+  $Header
+  grid:
+    card:
+      ### Metric
+      > 123
+  `}
+/>
+
+## Tips
+
+- Keep screen names concise and unique.
+- Prefer components for repeated structures (headers, footers, nav).
+- Use containers (`grid:`, `flex:`, `section:`, `card:`) for layout within a screen.
+- Target named elements (e.g., `Info` modal) to enhance flows without leaving the current screen.

@@ -54,6 +54,8 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     if (ctx.buttonElement) return this.visit(ctx.buttonElement);
     if (ctx.rowElement) return this.visit(ctx.rowElement);
     if (ctx.columnElement) return this.visit(ctx.columnElement);
+  if (ctx.gridElement) return this.visit(ctx.gridElement);
+  if (ctx.containerElement) return this.visit(ctx.containerElement);
     if (ctx.listElement) return this.visit(ctx.listElement);
     if (ctx.cardElement) return this.visit(ctx.cardElement);
     if (ctx.headerElement) return this.visit(ctx.headerElement);    if (ctx.navigatorElement) return this.visit(ctx.navigatorElement);
@@ -389,6 +391,42 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       elements
     };
   }  
+
+  containerElement(ctx: Context) {
+    const elements = [];
+
+    if (ctx.element && ctx.element.length > 0) {
+      for (const el of ctx.element) {
+        const elementAst = this.visit(el);
+        if (elementAst) {
+          elements.push(elementAst);
+        }
+      }
+    }
+
+    return {
+      type: "Container",
+      elements
+    };
+  }
+
+  gridElement(ctx: Context) {
+    const elements = [];
+
+    if (ctx.element && ctx.element.length > 0) {
+      for (const el of ctx.element) {
+        const elementAst = this.visit(el);
+        if (elementAst) {
+          elements.push(elementAst);
+        }
+      }
+    }
+
+    return {
+      type: "Grid",
+      elements
+    };
+  }
     listElement(ctx: Context) {    
     const items: any[] = [];
 

@@ -26,9 +26,11 @@ import {
 import { 
   renderRow, 
   renderCol, 
+  renderGrid,
   renderCard, 
   renderSeparator,
-  renderEmptyDiv 
+  renderEmptyDiv,
+  renderContainer 
 } from './nodes/layout-nodes';
 import { 
   renderHeader, 
@@ -123,6 +125,12 @@ export function renderNode(node: AstNode, context?: string): string {
       
     case 'Col':
       return renderCol(node, context, renderNode);
+    
+    case 'Grid':
+      return renderGrid(node, context, renderNode);
+
+    case 'Container':
+      return renderContainer(node, context, renderNode);
       
     case 'Card':
       return renderCard(node, context, renderNode);

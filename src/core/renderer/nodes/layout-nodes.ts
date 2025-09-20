@@ -11,12 +11,30 @@ export function renderRow(node: AstNode, context?: string, nodeRenderer?: (node:
 }
 
 /**
+ * Render container element
+ */
+export function renderContainer(node: AstNode, context?: string, nodeRenderer?: (node: AstNode, context?: string) => string): string {
+  const children = node.elements && nodeRenderer ?
+    node.elements.flat().map(element => nodeRenderer(element, context)).join('\n') : '';
+  return `<div class="${elementStyles.container}">${children}</div>`;
+}
+
+/**
  * Render col element
  */
 export function renderCol(node: AstNode, context?: string, nodeRenderer?: (node: AstNode, context?: string) => string): string {
   const colElements = node.elements && nodeRenderer ? 
     node.elements.flat().map(element => nodeRenderer(element, context)).join('\n') : '';
   return `<div class="${elementStyles.col}">${colElements}</div>`;
+}
+
+/**
+ * Render grid element
+ */
+export function renderGrid(node: AstNode, context?: string, nodeRenderer?: (node: AstNode, context?: string) => string): string {
+  const children = node.elements && nodeRenderer ?
+    node.elements.flat().map(element => nodeRenderer(element, context)).join('\n') : '';
+  return `<div class="${elementStyles.grid}">${children}</div>`;
 }
 
 /**

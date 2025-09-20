@@ -4,7 +4,7 @@ import {
   Identifier, Colon, Button, 
   Row, Card, Separator, EmptyDiv, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, AdvancedListItem, RadioOption, 
-  Checkbox, Text, Note, Quote, Col, List,
+  Checkbox, Text, Note, Quote, Col, List, Container, Grid,
   Header, Navigator, Drawer, FAB
 } from "../lexer/tokens";
 import { Indent, Outdent } from "../lexer/lexer";
@@ -99,6 +99,8 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.buttonElement) },
       { ALT: () => this.SUBRULE(this.rowElement) },
       { ALT: () => this.SUBRULE(this.columnElement) },
+  { ALT: () => this.SUBRULE(this.gridElement) },
+  { ALT: () => this.SUBRULE(this.containerElement) },
       { ALT: () => this.SUBRULE(this.listElement) },
       { ALT: () => this.SUBRULE(this.orderedListElement) },
       { ALT: () => this.SUBRULE(this.unorderedListElement) },
@@ -202,7 +204,37 @@ export class UiDslParser extends CstParser {
         this.CONSUME(Outdent);
       });
     });
-  });    listElement = this.RULE("listElement", () => {
+  });
+
+  containerElement = this.RULE("containerElement", () => {
+    this.CONSUME(Container);
+    this.CONSUME(Colon);
+    this.OPTION(() => {
+      this.CONSUME(Indent);
+      this.AT_LEAST_ONE(() => {
+        this.SUBRULE(this.element);
+      });
+      this.OPTION2(() => {
+        this.CONSUME(Outdent);
+      });
+    });
+  });
+
+  gridElement = this.RULE("gridElement", () => {
+    this.CONSUME(Grid);
+    this.CONSUME(Colon);
+    this.OPTION(() => {
+      this.CONSUME(Indent);
+      this.AT_LEAST_ONE(() => {
+        this.SUBRULE(this.element);
+      });
+      this.OPTION2(() => {
+        this.CONSUME(Outdent);
+      });
+    });
+  });
+
+  listElement = this.RULE("listElement", () => {
     this.CONSUME(List);
     this.CONSUME(Colon);
     this.OPTION(() => {

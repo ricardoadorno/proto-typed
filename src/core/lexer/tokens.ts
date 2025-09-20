@@ -67,6 +67,16 @@ export const Col = createToken({
   pattern: /col/ 
 });
 
+export const Grid = createToken({
+  name: "Grid",
+  pattern: /grid/
+});
+
+export const Container = createToken({
+  name: "Container",
+  pattern: /container/
+});
+
 export const List = createToken({ 
   name: "List", 
   pattern: /list/ 
@@ -194,6 +204,8 @@ export const allTokens = [
   Button,
   Row,
   Col,
+  Grid,
+  Container,
   List,
   Card,
   Header,

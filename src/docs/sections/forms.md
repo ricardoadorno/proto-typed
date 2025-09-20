@@ -1,3 +1,0 @@
-# Forms
-
-Create inputs with ___:Label{Placeholder} and variants like password (___*).

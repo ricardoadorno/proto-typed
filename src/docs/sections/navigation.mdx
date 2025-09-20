@@ -1,0 +1,44 @@
+import { DslExample } from "../../components/docs";
+
+# Navigation
+
+Use actions to switch screens or activate named elements.
+
+## Screen to Screen
+
+<DslExample
+	title="Navigate Between Screens"
+	heightClassName="h-72"
+	code={`
+screen Home:
+	# Home
+	@[Go to About](About)
+
+screen About:
+	# About
+	@[Back to Home](Home)
+	`}
+/>
+
+## Activate Named Elements
+
+<DslExample
+	title="Open a Modal via Action"
+	heightClassName="h-72"
+	code={`
+modal Info:
+	# Info
+	> Details here
+	@[Close](close)
+
+screen Home:
+	# Home
+	@[Open Info](Info)
+	`}
+/>
+
+Tips:
+
+- The first declared `screen` is the initial view.
+- `(Destination)` switches to a screen named `Destination` if it exists.
+- If `Destination` matches a named element (modal/drawer), it is activated instead of navigating.

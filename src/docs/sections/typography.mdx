@@ -1,0 +1,41 @@
+import { DslExample } from "../../components/docs";
+
+# Typography
+
+Typography elements provide structured text content.
+
+## Headings
+
+Use one to six hashes at the start of a line:
+
+
+<DslExample
+	title="Headings"
+	heightClassName="h-56"
+	code={`
+# Heading 1
+## Heading 2
+### Heading 3
+#### Heading 4
+##### Heading 5
+###### Heading 6
+`}
+/>
+
+## Text, Notes, Quotes
+
+<DslExample
+	title="Rendered Text"
+	heightClassName="h-48"
+	code={`
+> Regular text paragraph
+*> Note text for tips or callouts
+"> Quote text spanning a paragraph
+`}
+/>
+
+Tips:
+
+- Notes (`*>)`) and quotes (`">`) follow the same indentation rules as other elements.
+- Use inside containers like `card:`, `section:`, or `grid:`.
+- Combine with lists and layout components for richer content.

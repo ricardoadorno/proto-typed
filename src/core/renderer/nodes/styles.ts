@@ -45,6 +45,8 @@ export const elementStyles = {
   
   link: 'text-blue-400 hover:text-blue-300 underline transition-colors duration-200',  // Layout components
   container: 'container mx-auto px-4',
+  // Bootstrap-like grid: responsive columns and gaps
+  grid: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6',
   card: 'bg-gray-800 rounded-xl border border-gray-700 shadow-lg p-6 mb-6',
   row: 'flex flex-wrap gap-4 mb-4',
   col: 'grid grid-cols-1 @md:grid-cols-2 @lg:grid-cols-3 gap-6',

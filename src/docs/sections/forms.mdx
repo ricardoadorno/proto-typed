@@ -1,0 +1,55 @@
+import { DslExample } from "../../components/docs";
+
+# Forms
+
+Collect user inputs with simple, expressive syntax. Inputs, passwords, disabled fields, selects, and grouped checkboxes/radios are supported.
+
+## Inputs
+
+<DslExample
+  title="Text Inputs"
+  description="Use ___:Label{Placeholder}. Append * for password or - to disable."
+  heightClassName="h-64"
+  code={`
+# Account
+___:Email{you@example.com}
+___*:Password{••••••••}
+___-:Disabled Field{Cannot edit}
+  `}
+/>
+
+## Selects
+
+<DslExample
+  title="Select Field"
+  description="Append options in [A | B] to create a select."
+  heightClassName="h-56"
+  code={`
+# Preferences
+___:Theme{Choose}[Light | Dark | System]
+  `}
+/>
+
+## Checkbox and Radio Groups
+
+<DslExample
+  title="Checkboxes and Radios"
+  description="[X]/[ ] for checkboxes; (X)/( ) for radios."
+  heightClassName="h-64"
+  code={`
+# Notifications
+[X] Email Alerts
+[ ] SMS Alerts
+
+# Priority
+(X) High
+( ) Medium
+( ) Low
+  `}
+/>
+
+Tips:
+
+- Group related fields with containers like `card:` or `section:`.
+- Combine with buttons to submit or navigate.
+- Use labels and placeholders to clarify intent.

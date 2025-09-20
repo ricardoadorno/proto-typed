@@ -1,0 +1,31 @@
+import { DslExample } from "../../components/docs";
+
+# Lists
+
+Build rich list items with links, free text, optional subtitles, and action buttons with variants.
+
+## Advanced Items
+
+<DslExample
+	title="Flexible List Items"
+	description="Each line starts with '-'. Elements are optional: link, free text, {subtitle}, and trailing buttons (with optional variants)."
+	heightClassName="h-96"
+	code={`
+list:
+	- [Star](star)Important Task{Complete Project}[Mark Complete](complete)
+	- [Project](ProjectPage)Bug Report{Fix Login Issue}@=[Close](close)@_[Comment](comment)
+	- Simple text item
+	- Just some text with @+[Button](action)
+	- [Link Only](destination)
+	- Text only with no special features
+	- {Just a subtitle}
+	- Multiple buttons[Save](save)@![Cancel](cancel)@=[Delete](delete)
+	- Task with variants@_[Ghost](ghost)@+[Outline](outline)@-[Secondary](secondary)
+	`}
+/>
+
+Tips:
+
+- Multiple `[text](action)` buttons can be appended to an item.
+- Use variants before buttons: `@_` ghost, `@+` outline, `@-` secondary, `@=` destructive, `@!` warning.
+- Omit parts you don't need—only the leading `-` is required.

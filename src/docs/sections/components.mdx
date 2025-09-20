@@ -1,0 +1,33 @@
+import { DslExample } from "../../components/docs";
+
+# Components
+
+Declare reusable blocks with `component Name:` and instantiate with `$Name`.
+
+## Declare and Use
+
+<DslExample
+	title="Component Declaration and Usage"
+	heightClassName="h-72"
+	code={`
+component Header:
+	header:
+		# My App
+
+screen Home:
+	$Header
+	> Welcome to the app
+	@[About](About)
+
+screen About:
+	$Header
+	> About page content
+	@[Back](Home)
+	`}
+/>
+
+Tips:
+
+- Keep components focused (headers, footers, cards).
+- Pass content via composition where needed (nest underneath after instantiation).
+- Combine with layout primitives for structure.

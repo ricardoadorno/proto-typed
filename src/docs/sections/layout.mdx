@@ -1,0 +1,64 @@
+import { DslExample } from "../../components/docs";
+
+# Layout
+
+Layout primitives help structure content using indentation.
+
+<DslExample
+  title="Container"
+  heightClassName="h-48"
+  code={`
+container:
+  # Grouped Content
+  > Use containers to scope related elements
+  `}
+/>
+
+<DslExample
+  title="Grid of Cards"
+  heightClassName="h-80"
+  code={`
+grid:
+  card:
+    ### One
+    > Content
+  card:
+    ### Two
+    > Content
+  card:
+    ### Three
+    > Content
+  `}
+/>
+
+## Card
+
+<DslExample
+  title="Card"
+  heightClassName="h-56"
+  code={`
+card:
+  ## Title
+  > Body
+  @[Action](act)
+  `}
+/>
+
+## Row / Col
+
+<DslExample
+  title="Row and Columns"
+  heightClassName="h-56"
+  code={`
+row:
+  col:
+    > Left
+  col:
+    > Right
+  `}
+/>
+
+Tips:
+
+- Nest layout primitives to compose complex UIs, but keep indentation readable.
+- Prefer `grid:` for repeated cards and `flex:` for simple horizontal groupings.
