@@ -2,7 +2,7 @@
  * HTML Attribute Generators
  * Generate navigation-related HTML attributes for elements
  */
-import { analyzeNavigationTarget } from './analyzer';
+import { analyzeNavigationTarget } from './navigation-analyzer';
 
 /**
  * Generate navigation attributes for HTML elements

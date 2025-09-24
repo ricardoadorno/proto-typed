@@ -40,23 +40,23 @@ export function getCurrentScreen(): string | null {
 }
 
 /**
- * Reset navigation history
+ * Get current screen index
  */
-export function resetNavigationHistory(): void {
-  navigationHistory = [];
-  currentScreenIndex = -1;
+export function getCurrentScreenIndex(): number {
+  return currentScreenIndex;
 }
 
 /**
- * Get the full navigation history (for debugging/testing)
+ * Get full navigation history
  */
 export function getNavigationHistory(): string[] {
   return [...navigationHistory];
 }
 
 /**
- * Get current screen index (for debugging/testing)
+ * Reset navigation history
  */
-export function getCurrentScreenIndex(): number {
-  return currentScreenIndex;
+export function resetNavigationHistory(): void {
+  navigationHistory = [];
+  currentScreenIndex = -1;
 }

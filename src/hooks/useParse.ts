@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { parseAndBuildAst } from '../core/parser/parse-and-build-ast';
 import { astToHtmlString } from '../core/renderer/ast-to-html';
 import { AstNode } from '../types/astNode';
-import { getCurrentScreen } from '../core/renderer/navigation-service';
+import { getCurrentScreen } from '../core/renderer/route-manager';
 import { parseChevrotainError } from '../utils/error-parser';
 import { ParsedError } from '../types/errors';
 

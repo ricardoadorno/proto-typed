@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { astToHtmlDocument, astToHtmlString } from './core/renderer/ast-to-html';
 import { ExampleModal } from './components/examples';
 import AstModal from './components/ast-modal';
-import { resetNavigationHistory, handleNavigationClick } from './core/renderer/navigation-service';
+import { resetNavigationHistory } from './core/renderer/route-manager';
 import { DSLEditor } from './core/editor';
 import { useParse } from './hooks';
 import {
@@ -50,7 +50,6 @@ export default function App() {
                 className="overflow-auto h-full w-full"
                 style={{ containerType: 'inline-size' }}
                 dangerouslySetInnerHTML={{ __html: htmlString }}
-                onClick={handleNavigationClick}
             />
         );
     };

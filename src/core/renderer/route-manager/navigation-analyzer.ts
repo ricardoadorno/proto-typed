@@ -1,8 +1,16 @@
 /**
- * Navigation Target Analysis
+ * Navigation Analysis
  * Analyze navigation targets to determine their type and validity
  */
-import { NavigationTarget } from './types';
+
+/**
+ * Navigation target analysis result
+ */
+export interface NavigationTarget {
+  type: 'internal' | 'external' | 'action' | 'toggle' | 'back';
+  value: string;
+  isValid: boolean;
+}
 
 /**
  * Analyze a navigation target to determine its type
