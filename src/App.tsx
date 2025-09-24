@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { astToHtmlDocument, astToHtmlString } from './core/renderer/ast-to-html';
 import { ExampleModal } from './components/examples';
 import AstModal from './components/ast-modal';
 import { resetNavigationHistory } from './core/renderer/route-manager';
@@ -18,6 +17,8 @@ import {
 import { exportDocument } from './utils';
 import { exampleConfigs } from './examples';
 import { Link } from 'react-router-dom';
+import { astToHtmlDocument } from './core/renderer/ast-to-html-document';
+import { astToHtmlString } from './core/renderer/ast-to-html-string';
 
 export default function App() {
     const [input, setInput] = useState(exampleConfigs[0].code || "");

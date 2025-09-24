@@ -8,14 +8,12 @@ import backNavigationExample from './back-navigation';
 import { mobileTest } from './mobile-test';
 import { buttonVariantsExample } from './button-variants';
 import listsExample from './lists';
-import { modalDrawerTest } from './modal-drawer-test';
 
 // Example configuration for UI
 export const exampleConfigs = [
   { label: "Login Example", code: login },
   { label: "Dashboard Example", code: dashboard },
   { label: "Mobile Example", code: mobileComplete },
-  { label: "Modal/Drawer Test", code: modalDrawerTest },
   { label: "Mobile Test", code: mobileTest },
   { label: "Named Elements", code: namedElementsExample },
   { label: "Button Variants", code: buttonVariantsExample },

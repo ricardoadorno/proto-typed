@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { parseAndBuildAst } from '../../core/parser/parse-and-build-ast';
-import { astToHtmlString } from '../../core/renderer/ast-to-html';
+import { astToHtmlString } from '../../core/renderer/ast-to-html-string';
 
 interface DslMiniPreviewProps {
     code: string;

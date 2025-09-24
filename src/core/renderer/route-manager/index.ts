@@ -19,6 +19,14 @@ export type { NavigationTarget } from './navigation-analyzer';
 // Export the route manager class and global instance
 export { RouteManager, routeManager } from './route-manager';
 
+// Export screen rendering functions
+export {
+  renderScreen,
+  screenToHtml,
+  renderAllScreens,
+  renderScreenForDocument
+} from './screen-renderer';
+
 // Export navigation functions
 export { analyzeNavigationTarget } from './navigation-analyzer';
 export { 

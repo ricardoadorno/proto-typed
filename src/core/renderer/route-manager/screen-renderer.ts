@@ -1,3 +1,8 @@
+/**
+ * Screen Rendering Functions
+ * Functions for rendering screens in different contexts
+ */
+
 import { AstNode } from '../../../types/astNode';
 import { ScreenRenderConfig } from '../../../types/render';
 import { renderNode } from '../nodes-service/node-renderer';
@@ -101,7 +106,6 @@ export function renderScreenForDocument(screen: AstNode, index: number): string 
       ${elementsHtml}
   </div>`;
 }
-
 
 /**
  * Generate layout classes for a screen based on its elements

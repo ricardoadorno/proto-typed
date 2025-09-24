@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import Modal from '../ui/modal';
 import { parseAndBuildAst } from '../../core/parser/parse-and-build-ast';
-import { astToHtmlString } from '../../core/renderer/ast-to-html';
 
 // Import example data
 import layoutExamples from './layout';
@@ -20,6 +19,7 @@ import {
 } from './ui';
 
 import { ExampleData } from './types';
+import { astToHtmlString } from '../../core/renderer/ast-to-html-string';
 
 /**
  * Comprehensive example modal showcasing all DSL syntax with organized, documented examples

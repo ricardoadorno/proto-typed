@@ -3,10 +3,9 @@
  * Adapter for full HTML document generation using the route manager
  */
 
-import { RouteManager } from '../route-manager';
+import { RouteManager, renderScreenForDocument } from '../index';
 import { AstNode } from '../../../../types/astNode';
 import { setComponentDefinitions } from '../../nodes-service/component-nodes';
-import { renderScreenForDocument } from '../../ast-to-html/screen-renderer';
 import { renderNode } from '../../nodes-service/node-renderer';
 import { generateNavigationScript } from '../script-generator';
 
