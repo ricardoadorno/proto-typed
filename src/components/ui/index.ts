@@ -10,3 +10,4 @@ export { PreviewDevice } from './preview-device';
 export { EditorPanel } from './editor-panel';
 export { PreviewPanel } from './preview-panel';
 export { CurrentScreenIndicator } from './current-screen-indicator';
+export { RouteMetadataDisplay } from './route-metadata-display';

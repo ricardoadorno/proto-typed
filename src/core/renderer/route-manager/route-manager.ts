@@ -9,7 +9,9 @@ import {
   ScreenRoute, 
   GlobalRoute, 
   RouteProcessingOptions,
-  RouteRenderContext 
+  RouteRenderContext,
+  RouteMetadata,
+  RouteInfo 
 } from './types';
 
 export type { RouteRenderContext } from './types';
@@ -112,6 +114,54 @@ export class RouteManager {
       routes: this.routes,
       mode,
       options
+    };
+  }
+
+  /**
+   * Get unified route metadata for client consumption
+   * Provides a simplified view of all available routes organized by type
+   */
+  getMetadata(): RouteMetadata {
+    const screens: RouteInfo[] = Array.from(this.routes.screens.values()).map(screen => ({
+      id: screen.id,
+      name: screen.name,
+      type: screen.type,
+      isActive: screen.id === this.routes.currentScreen,
+      isDefault: screen.isDefault,
+      index: screen.index
+    }));
+
+    const components: RouteInfo[] = this.getRoutesByType('component').map(component => ({
+      id: component.id,
+      name: component.name,
+      type: component.type,
+      isActive: false // Components are not directly active
+    }));
+
+    const modals: RouteInfo[] = this.getRoutesByType('modal').map(modal => ({
+      id: modal.id,
+      name: modal.name,
+      type: modal.type,
+      isActive: modal.isVisible
+    }));
+
+    const drawers: RouteInfo[] = this.getRoutesByType('drawer').map(drawer => ({
+      id: drawer.id,
+      name: drawer.name,
+      type: drawer.type,
+      isActive: drawer.isVisible
+    }));
+
+    const totalRoutes = screens.length + components.length + modals.length + drawers.length;
+
+    return {
+      screens,
+      components,
+      modals,
+      drawers,
+      defaultScreen: this.routes.defaultScreen,
+      currentScreen: this.routes.currentScreen,
+      totalRoutes
     };
   }
 

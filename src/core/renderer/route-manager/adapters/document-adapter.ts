@@ -5,8 +5,8 @@
 
 import { RouteManager, renderScreenForDocument } from '../index';
 import { AstNode } from '../../../../types/astNode';
-import { setComponentDefinitions } from '../../nodes-service/component-nodes';
-import { renderNode } from '../../nodes-service/node-renderer';
+import { setComponentDefinitions } from '../../nodes/component-nodes';
+import { renderNode } from '../../nodes/node-renderer';
 import { generateNavigationScript } from '../script-generator';
 
 /**

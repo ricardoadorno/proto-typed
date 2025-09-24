@@ -3,12 +3,22 @@
  * Consolidates all rendering options, configurations, and data structures
  */
 import { AstNode } from './astNode';
+import { RouteMetadata } from '../core/renderer/route-manager/types';
 
 /**
  * Options for rendering AST to HTML
  */
 export interface RenderOptions {
   currentScreen?: string | null;
+  /** Route metadata context for client understanding */
+  routeMetadata?: RouteMetadata;
+  /** Available route targets for navigation */
+  availableRoutes?: {
+    screens: string[];
+    modals: string[];
+    drawers: string[];
+    components: string[];
+  };
 }
 
 /**

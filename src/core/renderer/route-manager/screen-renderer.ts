@@ -5,7 +5,7 @@
 
 import { AstNode } from '../../../types/astNode';
 import { ScreenRenderConfig } from '../../../types/render';
-import { renderNode } from '../nodes-service/node-renderer';
+import { renderNode } from '../nodes/node-renderer';
 
 /**
  * Render a single screen to HTML with full configuration

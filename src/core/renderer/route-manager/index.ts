@@ -10,7 +10,9 @@ export type {
   GlobalRoute,
   RouteCollection,
   RouteProcessingOptions,
-  RouteRenderContext
+  RouteRenderContext,
+  RouteMetadata,
+  RouteInfo
 } from './types';
 
 // Export navigation types
@@ -44,6 +46,16 @@ export {
 } from './navigation-history';
 export { setRouteContext, getRouteContext, clearRouteContext } from './route-context';
 
-// Export adapters (will be added after they are created)
-// export { PreviewAdapter } from './adapters/preview-adapter';
-// export { DocumentAdapter } from './adapters/document-adapter';
+// Export preview navigation services
+export { 
+  PreviewNavigationService, 
+  previewNavigationService, 
+  type NavigationEvent, 
+  type NavigationHandlers 
+} from './preview-navigation-service';
+export { 
+  ElementToggleService, 
+  elementToggleService, 
+  type ToggleState, 
+  type ToggleResult 
+} from './element-toggle-service';

@@ -76,3 +76,41 @@ export interface RouteRenderContext {
   /** Additional options */
   options?: RouteProcessingOptions;
 }
+
+/**
+ * Simplified route information for client consumption
+ */
+export interface RouteInfo {
+  /** Route identifier */
+  id: string;
+  /** Display name */
+  name: string;
+  /** Route type */
+  type: 'screen' | 'modal' | 'drawer' | 'component';
+  /** Whether this route is currently active/visible */
+  isActive?: boolean;
+  /** Whether this is the default screen */
+  isDefault?: boolean;
+  /** Screen index (for screens only) */
+  index?: number;
+}
+
+/**
+ * Unified route metadata for client context understanding
+ */
+export interface RouteMetadata {
+  /** Available screens */
+  screens: RouteInfo[];
+  /** Available components */
+  components: RouteInfo[];
+  /** Available modals */
+  modals: RouteInfo[];
+  /** Available drawers */
+  drawers: RouteInfo[];
+  /** Default screen identifier */
+  defaultScreen?: string;
+  /** Currently active screen */
+  currentScreen?: string;
+  /** Total count of all routes */
+  totalRoutes: number;
+}

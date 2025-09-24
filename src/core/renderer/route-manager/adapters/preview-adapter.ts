@@ -6,8 +6,8 @@
 import { RouteRenderContext, RouteManager, renderAllScreens, setRouteContext, clearRouteContext } from '../index';
 import { AstNode } from '../../../../types/astNode';
 import { RenderOptions } from '../../../../types/render';
-import { setComponentDefinitions } from '../../nodes-service/component-nodes';
-import { renderNode } from '../../nodes-service/node-renderer';
+import { setComponentDefinitions } from '../../nodes/component-nodes';
+import { renderNode } from '../../nodes/node-renderer';
 
 /**
  * Preview adapter for in-app preview rendering
