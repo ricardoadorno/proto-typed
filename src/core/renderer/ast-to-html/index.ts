@@ -3,8 +3,7 @@ import { type ProcessedAstData, type RenderOptions } from '../../../types/render
 import { generateNavigationScript } from '../navigation-service';
 import { setComponentDefinitions } from '../nodes-service/component-nodes';
 import { renderAllScreens, renderScreenForDocument } from './screen-renderer';
-import { renderGlobalElements } from './global-elements';
-import { generateHtmlDocumentTemplate } from './document-template';
+import { renderNode } from '../nodes-service/node-renderer';
 
 /**
  * Convert AST to HTML string representation with pagination for in-app preview
@@ -76,6 +75,11 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
 }
 
 
+// TODO: Refactor to a separate service file if it grows more complex
+
+/**
+ * Process AST nodes to categorize them into screens, components, modals, and drawers
+ */
 export function processGlobalNodes(ast: AstNode | AstNode[]): ProcessedAstData {
   const nodes = Array.isArray(ast) ? ast : [ast];
   
@@ -88,3 +92,70 @@ export function processGlobalNodes(ast: AstNode | AstNode[]): ProcessedAstData {
   return { screens, components, modals, drawers };
 }
 
+/**
+ * Render global modals and drawers HTML
+ */
+export function renderGlobalElements(modals: AstNode[], drawers: AstNode[]): string {
+  const modalsHtml = modals.length > 0 
+    ? modals.map(modal => renderNode(modal)).join('\n') 
+    : '';
+  
+  const drawersHtml = drawers.length > 0 
+    ? drawers.map(drawer => renderNode(drawer)).join('\n') 
+    : '';
+  
+  if (modalsHtml || drawersHtml) {
+    return '\n\n' + [modalsHtml, drawersHtml].filter(Boolean).join('\n') + '\n';
+  }
+  
+  return '';
+}
+
+/**
+ * Generate HTML document template
+ */
+export function generateHtmlDocumentTemplate(
+  screensHtml: string,
+  globalElementsHtml: string,
+  navigationScript: string
+): string {
+
+  const scripts = {
+    tailwindCdn: `<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>`,
+    tailwindConfig: `<script>tailwind.config = { darkMode: 'class', theme: { extend: {} } };</script>`,
+    darkModeScript: `<script>document.documentElement.classList.add('dark');</script>`,
+    lucideScript: `<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>`,
+    lucideInitScript: `<script>
+      document.addEventListener('DOMContentLoaded', function() {
+        if (typeof lucide !== 'undefined') {
+          lucide.createIcons();
+        }
+      });
+    </script>`
+  }
+
+  return `
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  ${scripts.tailwindCdn}
+  ${scripts.tailwindConfig}
+  ${scripts.lucideScript}
+  <title>Exported Screens</title>
+  <style>
+    html, body { 
+      min-height: 100%; 
+      background: linear-gradient(to bottom right, #0f172a, #1e293b);
+    }
+    .screen { transition: background 0.3s; }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 pb-8">  ${screensHtml}${globalElementsHtml}  ${scripts.darkModeScript}
+  ${scripts.lucideInitScript}  <script>
+    ${navigationScript}
+  </script>
+</body>
+</html>  `.trim();
+}

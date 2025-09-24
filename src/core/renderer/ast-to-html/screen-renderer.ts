@@ -1,7 +1,6 @@
 import { AstNode } from '../../../types/astNode';
 import { ScreenRenderConfig } from '../../../types/render';
 import { renderNode } from '../nodes-service/node-renderer';
-import { generateLayoutClasses, separateScreenElements, getScreenVisibilityStyle } from './screen-utils';
 
 /**
  * Render a single screen to HTML with full configuration
@@ -101,4 +100,51 @@ export function renderScreenForDocument(screen: AstNode, index: number): string 
   <div id="${screenName}-screen" class="screen container mx-auto  ${screenName} ${layoutClasses.join(' ')}" ${style}>
       ${elementsHtml}
   </div>`;
+}
+
+
+/**
+ * Generate layout classes for a screen based on its elements
+ */
+function generateLayoutClasses(screen: AstNode): string[] {
+  const layoutClasses: string[] = [];
+  
+  const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
+  const hasNavigator = screen.elements?.some(element => element.type === 'Navigator') || false;
+  const hasFAB = screen.elements?.some(element => element.type === 'FAB') || false;
+  
+  if (hasHeader) layoutClasses.push('has-header');
+  if (hasNavigator) layoutClasses.push('has-navigator');
+  if (hasFAB) layoutClasses.push('has-fab');
+  
+  return layoutClasses;
+}
+
+/**
+ * Separate screen elements by type for proper positioning
+ */
+function separateScreenElements(screen: AstNode) {
+  const headerElements = screen.elements?.filter(element => element.type === 'Header') || [];
+  const fabElements = screen.elements?.filter(element => element.type === 'FAB') || [];
+  const navigatorElements = screen.elements?.filter(element => element.type === 'Navigator') || [];
+  const contentElements = screen.elements?.filter(element => 
+    element.type !== 'Header' && 
+    element.type !== 'FAB' && 
+    element.type !== 'Navigator' &&
+    // Exclude named modals and drawers (they'll be rendered globally)
+    !(element.type === 'modal' && element.name) &&
+    !(element.type === 'drawer' && element.name)
+  ) || [];
+  
+  return { headerElements, fabElements, navigatorElements, contentElements };
+}
+
+/**
+ * Determine screen visibility style
+ */
+function getScreenVisibilityStyle(screenName: string, index: number, currentScreen?: string | null): string {
+  if (currentScreen) {
+    return screenName === currentScreen.toLowerCase() ? '' : 'style="display:none"';
+  }
+  return index === 0 ? '' : 'style="display:none"';
 }
