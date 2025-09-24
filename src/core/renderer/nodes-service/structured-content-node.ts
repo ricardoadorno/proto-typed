@@ -158,3 +158,28 @@ export function renderAdvancedListItem(node: AstNode): string {
     </div>
   `;
 }
+
+/**
+ * Render header element
+ */
+export function renderHeader(node: AstNode, nodeRenderer?: (node: AstNode, context?: string) => string): string {
+  if (!node.elements || !nodeRenderer) {
+    return `<header class="${elementStyles.header}"></header>`;
+  }
+  
+  // Render all content elements inside the header
+  const content = node.elements.flat()
+    .map(element => nodeRenderer(element, 'header'))
+    .join('');
+  
+  return `<header class="${elementStyles.header}">${content}</header>`;
+}
+
+/**
+ * Render card element
+ */
+export function renderCard(node: AstNode, context?: string, nodeRenderer?: (node: AstNode, context?: string) => string): string {
+  const cardElements = node.elements && nodeRenderer ? 
+    node.elements.flat().map(element => nodeRenderer(element, context)).join('\n') : '';
+  return `<article class="${elementStyles.card}">${cardElements}</article>`;
+}

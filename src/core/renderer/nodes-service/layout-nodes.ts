@@ -38,15 +38,6 @@ export function renderGrid(node: AstNode, context?: string, nodeRenderer?: (node
 }
 
 /**
- * Render card element
- */
-export function renderCard(node: AstNode, context?: string, nodeRenderer?: (node: AstNode, context?: string) => string): string {
-  const cardElements = node.elements && nodeRenderer ? 
-    node.elements.flat().map(element => nodeRenderer(element, context)).join('\n') : '';
-  return `<article class="${elementStyles.card}">${cardElements}</article>`;
-}
-
-/**
  * Render separator element
  */
 export function renderSeparator(): string {

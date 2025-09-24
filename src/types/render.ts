@@ -17,8 +17,8 @@ export interface RenderOptions {
 export interface ProcessedAstData {
   screens: AstNode[];
   components: AstNode[];
-  globalModals: AstNode[];
-  globalDrawers: AstNode[];
+  modals: AstNode[];
+  drawers: AstNode[];
 }
 
 /**

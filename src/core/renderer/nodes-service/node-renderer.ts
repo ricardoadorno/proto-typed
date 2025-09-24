@@ -1,22 +1,10 @@
 import { AstNode } from '../../../types/astNode';
 
 // Import all node renderers
-import { renderScreen } from './screen-nodes';
 import { 
   renderComponent, 
   renderComponentInstance, 
-  renderModal, 
-  renderDrawer 
 } from './component-nodes';
-import { 
-  renderButton, 
-  renderLink, 
-  renderImage 
-} from './interactive-nodes';
-import { 
-  renderHeading, 
-  renderParagraph 
-} from './typography-nodes';
 import { 
   renderInput, 
   renderRadioGroup, 
@@ -27,24 +15,13 @@ import {
   renderRow, 
   renderCol, 
   renderGrid,
-  renderCard, 
   renderSeparator,
   renderEmptyDiv,
   renderContainer 
 } from './layout-nodes';
-import { 
-  renderHeader, 
-  renderNavigator, 
-  renderNavItem, 
-  renderDrawerItem, 
-  renderFAB
-} from './mobile-nodes';
-import {   renderOrderedList, 
-  renderUnorderedList, 
-  renderList, 
-  renderListItem, 
-  renderAdvancedListItem 
-} from './list-nodes';
+import { renderDrawer, renderDrawerItem, renderFAB, renderModal, renderNavigator, renderNavItem, renderScreen } from './navigation-overlay-nodes';
+import { renderButton, renderHeading, renderImage, renderLink, renderParagraph } from './primitive-nodes';
+import { renderAdvancedListItem, renderCard, renderHeader, renderList, renderListItem, renderOrderedList, renderUnorderedList } from './structured-content-node';
 
 /**
  * Convert an AST node to HTML using modular node renderers
