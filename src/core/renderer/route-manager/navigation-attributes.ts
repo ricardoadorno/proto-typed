@@ -2,13 +2,15 @@
  * HTML Attribute Generators
  * Generate navigation-related HTML attributes for elements
  */
-import { analyzeNavigationTarget } from './navigation-analyzer';
+import { analyzeNavigationTarget, type RouteContext } from './navigation-analyzer';
+import { getRouteContext } from './route-context';
 
 /**
  * Generate navigation attributes for HTML elements
  */
-export function generateNavigationAttributes(target: string | undefined): string {
-  const navTarget = analyzeNavigationTarget(target);
+export function generateNavigationAttributes(target: string | undefined, routes?: RouteContext): string {
+  const routeContext = routes || getRouteContext();
+  const navTarget = analyzeNavigationTarget(target, routeContext);
   
   if (!navTarget.isValid) {
     return '';
@@ -40,8 +42,9 @@ export function generateNavigationAttributes(target: string | undefined): string
 /**
  * Generate href attribute for links
  */
-export function generateHrefAttribute(target: string | undefined): string {
-  const navTarget = analyzeNavigationTarget(target);
+export function generateHrefAttribute(target: string | undefined, routes?: RouteContext): string {
+  const routeContext = routes || getRouteContext();
+  const navTarget = analyzeNavigationTarget(target, routeContext);
   
   if (!navTarget.isValid) {
     return 'href="#"';
@@ -62,8 +65,9 @@ export function generateHrefAttribute(target: string | undefined): string {
 /**
  * Generate navigation data attributes as an object
  */
-export function generateNavigationDataAttributes(target: string | undefined): Record<string, string> {
-  const navTarget = analyzeNavigationTarget(target);
+export function generateNavigationDataAttributes(target: string | undefined, routes?: RouteContext): Record<string, string> {
+  const routeContext = routes || getRouteContext();
+  const navTarget = analyzeNavigationTarget(target, routeContext);
   
   if (!navTarget.isValid) {
     return {};

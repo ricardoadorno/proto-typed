@@ -29,7 +29,8 @@ export default function App() {
         error,
         parsedErrors,
         currentScreen,
-        handleParse } = useParse();
+        handleParse,
+        navigateToScreen } = useParse();
 
     const exportAsHtml = () => {
         if (ast.length === 0) {
@@ -51,8 +52,139 @@ export default function App() {
                 className="overflow-auto h-full w-full"
                 style={{ containerType: 'inline-size' }}
                 dangerouslySetInnerHTML={{ __html: htmlString }}
+                onClick={handlePreviewNavigation}
             />
         );
+    };
+
+    const handlePreviewNavigation = (e: React.MouseEvent) => {
+        const target = e.target as HTMLElement;
+        const navElement = target.closest('[data-nav]');
+
+        if (!navElement) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const navTarget = navElement.getAttribute('data-nav');
+        const navType = navElement.getAttribute('data-nav-type');
+
+        console.log('Preview navigation click:', {
+            navTarget,
+            navType,
+            element: navElement,
+            allDataAttrs: Object.fromEntries(
+                Array.from(navElement.attributes)
+                    .filter(attr => attr.name.startsWith('data-'))
+                    .map(attr => [attr.name, attr.value])
+            )
+        });
+
+        if (!navTarget) return;
+
+        if (navType === 'internal') {
+            // Navigate to screen - update React state
+            console.log('Navigating to screen:', navTarget);
+            navigateToScreen(navTarget);
+        } else if (navType === 'toggle') {
+            // Toggle modal/drawer
+            console.log('Toggling element:', navTarget);
+            togglePreviewElement(navTarget);
+        } else if (navType === 'back') {
+            // Handle back navigation
+            console.log('Back navigation');
+            // Could implement history management here if needed
+        } else {
+            // Default behavior for elements without explicit type
+            console.log('Default navigation - attempting toggle for:', navTarget);
+            togglePreviewElement(navTarget);
+        }
+    };
+
+    const togglePreviewElement = (elementName: string) => {
+        console.log('Looking for elements:', {
+            elementName,
+            modalId: `modal-${elementName}`,
+            drawerId: `drawer-${elementName}`
+        });
+
+        const modal = document.getElementById(`modal-${elementName}`);
+        const drawer = document.getElementById(`drawer-${elementName}`);
+
+        console.log('Found elements:', { modal, drawer });
+
+        // Try to find elements by data attributes as fallback
+        if (!modal && !drawer) {
+            const modalByData = document.querySelector(`[data-modal="${elementName}"]`);
+            const drawerByData = document.querySelector(`[data-drawer="${elementName}"]`);
+            console.log('Fallback search:', { modalByData, drawerByData });
+        }
+
+        if (modal) {
+            const isHidden = modal.classList.contains('hidden');
+            console.log('Modal state:', { isHidden, classList: Array.from(modal.classList) });
+
+            if (isHidden) {
+                modal.classList.remove('hidden');
+                // Add backdrop click handler
+                const backdrop = modal.querySelector('.modal-backdrop');
+                if (backdrop) {
+                    backdrop.addEventListener('click', (e) => {
+                        if (e.target === backdrop) {
+                            modal.classList.add('hidden');
+                        }
+                    });
+                }
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        if (drawer) {
+            const isHidden = drawer.classList.contains('hidden');
+            const content = drawer.querySelector('.drawer-content');
+
+            console.log('Drawer state:', {
+                isHidden,
+                classList: Array.from(drawer.classList),
+                contentClasses: content ? Array.from(content.classList) : null
+            });
+
+            if (isHidden) {
+                drawer.classList.remove('hidden');
+                if (content) {
+                    content.classList.add('translate-x-0');
+                    content.classList.remove('-translate-x-full');
+                }
+                // Add backdrop click handler
+                const overlay = drawer.querySelector('.drawer-overlay');
+                if (overlay) {
+                    overlay.addEventListener('click', (e) => {
+                        if (e.target === overlay) {
+                            if (content) {
+                                content.classList.remove('translate-x-0');
+                                content.classList.add('-translate-x-full');
+                            }
+                            setTimeout(() => {
+                                drawer.classList.add('hidden');
+                            }, 300);
+                        }
+                    });
+                }
+            } else {
+                if (content) {
+                    content.classList.remove('translate-x-0');
+                    content.classList.add('-translate-x-full');
+                }
+                setTimeout(() => {
+                    drawer.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        if (!modal && !drawer) {
+            console.warn('No modal or drawer found for element:', elementName);
+        }
     };
 
     useEffect(() => {

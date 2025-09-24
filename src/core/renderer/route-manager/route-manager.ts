@@ -93,6 +93,18 @@ export class RouteManager {
   }
 
   /**
+   * Get route context for navigation analysis
+   */
+  getRouteContext(): import('./navigation-analyzer').RouteContext {
+    return {
+      screens: Array.from(this.routes.screens.keys()),
+      modals: this.getRoutesByType('modal').map(route => route.name),
+      drawers: this.getRoutesByType('drawer').map(route => route.name),
+      components: this.getRoutesByType('component').map(route => route.name),
+    };
+  }
+
+  /**
    * Create render context for adapters
    */
   createRenderContext(mode: 'preview' | 'document', options?: RouteProcessingOptions): RouteRenderContext {

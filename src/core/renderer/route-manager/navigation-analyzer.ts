@@ -13,9 +13,19 @@ export interface NavigationTarget {
 }
 
 /**
+ * Available routes information for analysis
+ */
+export interface RouteContext {
+  screens: string[];
+  modals: string[];
+  drawers: string[];
+  components: string[];
+}
+
+/**
  * Analyze a navigation target to determine its type
  */
-export function analyzeNavigationTarget(target: string | undefined): NavigationTarget {
+export function analyzeNavigationTarget(target: string | undefined, routes?: RouteContext): NavigationTarget {
   if (!target || target.trim() === '') {
     return { type: 'internal', value: '', isValid: false };
   }
@@ -29,6 +39,13 @@ export function analyzeNavigationTarget(target: string | undefined): NavigationT
   // Check for toggle actions (drawer, modal, etc.)
   if (trimmedTarget.match(/^toggle\w*\(\)$/) || trimmedTarget.match(/^toggle-\w+$/)) {
     return { type: 'toggle', value: trimmedTarget, isValid: true };
+  }
+
+  // Check if target matches a modal or drawer name
+  if (routes) {
+    if (routes.modals.includes(trimmedTarget) || routes.drawers.includes(trimmedTarget)) {
+      return { type: 'toggle', value: trimmedTarget, isValid: true };
+    }
   }
 
   // Check if it's an external URL

@@ -13,7 +13,7 @@ export function renderModal(node: AstNode, context?: string, nodeRenderer?: (nod
   return `<div class="modal hidden" id="modal-${node.name}" data-modal="${node.name}">
     <div class="modal-backdrop absolute inset-0 bg-black/60 flex items-center justify-center z-50">
       <div class="modal-content bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 p-6 relative" >
-        <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" data-nav="${node.name}" data-nav-type="internal">&times;</button>
+        <button class="modal-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" data-nav="${node.name}" data-nav-type="toggle">&times;</button>
         ${modalElements}
       </div>
     </div>
@@ -37,7 +37,7 @@ export function renderDrawer(node: AstNode, context?: string, nodeRenderer?: (no
     <div class="drawer-overlay absolute inset-0 bg-black/30  z-[1050]"></div>
     <aside class="drawer-content absolute top-0 left-0 z-[1100] w-64 h-full bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out">
       <div class="p-4">
-        <button class="drawer-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" data-nav="${node.name}" data-nav-type="internal">&times;</button>
+        <button class="drawer-close absolute top-4 right-4 text-gray-500 hover:text-gray-700" data-nav="${node.name}" data-nav-type="toggle">&times;</button>
         ${drawerElements}
       </div>
     </aside>

@@ -3,12 +3,11 @@
  * Adapter for in-app preview rendering using the route manager
  */
 
-import { RouteRenderContext, RouteManager, renderAllScreens } from '../index';
+import { RouteRenderContext, RouteManager, renderAllScreens, setRouteContext, clearRouteContext } from '../index';
 import { AstNode } from '../../../../types/astNode';
 import { RenderOptions } from '../../../../types/render';
 import { setComponentDefinitions } from '../../nodes-service/component-nodes';
 import { renderNode } from '../../nodes-service/node-renderer';
-import { generateNavigationScript } from '../script-generator';
 
 /**
  * Preview adapter for in-app preview rendering
@@ -31,13 +30,23 @@ export class PreviewAdapter {
         currentScreen: options.currentScreen || undefined
       });
 
+      // Set route context for navigation analysis
+      setRouteContext(this.routeManager.getRouteContext());
+
       // Create render context
       const context = this.routeManager.createRenderContext('preview', {
         currentScreen: options.currentScreen || undefined
       });
 
-      return this.generatePreviewHtml(context);
+      const result = this.generatePreviewHtml(context);
+      
+      // Clear route context after rendering
+      clearRouteContext();
+      
+      return result;
     } catch (error: any) {
+      // Clear route context on error
+      clearRouteContext();
       throw error;
     }
   }
@@ -63,18 +72,12 @@ export class PreviewAdapter {
     // Render global elements (modals and drawers)
     const globalElementsHtml = this.renderGlobalElements();
     
-    // Generate navigation script
-    const navigationScript = generateNavigationScript();
-
-    // Return wrapped HTML for preview
-    return `<div class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white relative">
+    // Return wrapped HTML for preview (without script for in-app preview)
+    return `<div class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white relative" data-preview-container="true">
 
     ${screensHtml}
     ${globalElementsHtml}
 
-    <script>
-      ${navigationScript}
-    </script>
     </div>`;
   }
 

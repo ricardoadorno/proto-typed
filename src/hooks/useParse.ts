@@ -14,6 +14,7 @@ interface UseParseResult {
   currentScreen: string | null;
   isLoading: boolean;
   handleParse: (input: string) => Promise<void>;
+  navigateToScreen: (screenName: string) => void;
 }
 
 export const useParse = (): UseParseResult => {
@@ -69,6 +70,10 @@ export const useParse = (): UseParseResult => {
     }
   }, []);
 
+  const navigateToScreen = useCallback((screenName: string) => {
+    setCurrentScreen(screenName);
+  }, []);
+
   return {
     ast,
     astResultJson,
@@ -76,6 +81,7 @@ export const useParse = (): UseParseResult => {
     parsedErrors,
     currentScreen,
     isLoading,
-    handleParse
+    handleParse,
+    navigateToScreen
   };
 };
