@@ -1,4 +1,4 @@
-import { CstNode } from "chevrotain";
+import { type CstNode } from "chevrotain";
 import { UiDslParser } from './parser';
 
 type Context = {

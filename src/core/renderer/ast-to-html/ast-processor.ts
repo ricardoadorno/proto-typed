@@ -7,7 +7,7 @@ import { ProcessedAstData } from '../../../types/render';
 export function processAstNodes(ast: AstNode | AstNode[]): ProcessedAstData {
   const nodes = Array.isArray(ast) ? ast : [ast];
   
-  const screens = nodes.filter(node => node.type === 'Screen' || node.type === 'screen');
+  const screens = nodes.filter(node => node.type === 'screen');
   const components = nodes.filter(node => node.type === 'component');
   
   // Extract global modals and drawers directly from root nodes (they are now global singletons)

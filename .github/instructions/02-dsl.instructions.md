@@ -44,7 +44,7 @@ drawer DrawerName:
 ## Layout
 - `container:`, `grid:`, `card:`, `row:`, `col:`
 
-## Lists (Advanced)
+## Structured
 ```
 list:
   - [link](dest)title{subtitle}[Button](action)@_[Ghost](ghost)@=[Danger](danger)

@@ -1,6 +1,6 @@
 import { AstNode } from '../../../types/astNode';
 import { ScreenRenderConfig } from '../../../types/render';
-import { renderNode } from '../node-renderer';
+import { renderNode } from '../nodes-service/node-renderer';
 import { generateLayoutClasses, separateScreenElements, getScreenVisibilityStyle } from './screen-utils';
 
 /**

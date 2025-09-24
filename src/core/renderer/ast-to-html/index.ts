@@ -1,7 +1,7 @@
 import { AstNode } from '../../../types/astNode';
 import { RenderOptions } from '../../../types/render';
 import { generateNavigationScript } from '../navigation-service';
-import { setComponentDefinitions } from '../nodes/component-nodes';
+import { setComponentDefinitions } from '../nodes-service/component-nodes';
 import { processAstNodes } from './ast-processor';
 import { renderAllScreens, renderScreenForDocument } from './screen-renderer';
 import { renderGlobalElements } from './global-elements';
@@ -31,7 +31,8 @@ export function astToHtmlString(ast: AstNode | AstNode[], { currentScreen }: Ren
     // Add a wrapper div with body-like styles for proper rendering within the preview container
     const result = `<div class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white relative" >
 
-    ${screensHtml}${globalElementsHtml}
+    ${screensHtml}
+    ${globalElementsHtml}
 
     <script>
       ${generateNavigationScript()}
@@ -40,7 +41,6 @@ export function astToHtmlString(ast: AstNode | AstNode[], { currentScreen }: Ren
     
     return result;
   } catch (error: any) {
-    // Re-throw the error so it can be caught by the parsing hook
     throw error;
   }
 }

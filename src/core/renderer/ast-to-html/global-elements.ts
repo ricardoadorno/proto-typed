@@ -1,5 +1,5 @@
 import { AstNode } from '../../../types/astNode';
-import { renderNode } from '../node-renderer';
+import { renderNode } from '../nodes-service/node-renderer';
 
 /**
  * Render global modals and drawers HTML

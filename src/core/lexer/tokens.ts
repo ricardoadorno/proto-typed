@@ -131,6 +131,11 @@ export const RadioOption = createToken({
   pattern: /\([xX ]?\)\s+([^\n\r]+)/
 });
 
+export const Checkbox = createToken({ 
+  name: "Checkbox", 
+  pattern: /\[([ xX]?)\](?:\s+([^\n\r]+))/ 
+});
+
 // Interactive Element Tokens
 export const Button = createToken({ 
   name: "Button", 
@@ -183,12 +188,6 @@ export const UnorderedListItem = createToken({
 export const AdvancedListItem = createToken({
   name: "AdvancedListItem",
   pattern: /-\s+(?=.*(?:\[[^\]]*\]|\{[^}]*\})).*/
-});
-
-// Standalone Checkbox token
-export const Checkbox = createToken({ 
-  name: "Checkbox", 
-  pattern: /\[([ xX]?)\](?:\s+([^\n\r]+))/ 
 });
 
 // All tokens array - order matters for matching precedence

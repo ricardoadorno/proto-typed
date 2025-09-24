@@ -49,5 +49,4 @@ export {
 // Export script generation functions
 export {
   generateNavigationScript,
-  generateLightNavigationScript
 } from './script-generator';

@@ -35,7 +35,6 @@ For complete, always-up-to-date guidance, see modular instructions:
 - `.github/instructions/09-docs.instructions.md`
 
 ### General Syntax Rules
-- **Optional Elements**: Use `?` suffix for optional components: `@[Button]?(action)`
 - **Container Elements**: Use `:` followed by indented children for nested content
 - **Text Content**: Use specific prefixes like `>` for text, `#` for headings
 - **Interactive Elements**: Use `@[text]` for buttons, `#[text]` for links, `![alt]` for images

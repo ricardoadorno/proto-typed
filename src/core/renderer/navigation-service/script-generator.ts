@@ -240,27 +240,3 @@ export function generateNavigationScript(): string {
     });
   `;
 }
-
-/**
- * Generate a lightweight version of the navigation script
- */
-export function generateLightNavigationScript(): string {
-  return `
-    // Basic Navigation Handler
-    document.addEventListener('click', function(e) {
-      const target = e.target.closest('[data-nav]');
-      if (!target) return;
-      
-      const navValue = target.getAttribute('data-nav');
-      const navType = target.getAttribute('data-nav-type');
-      
-      if (!navValue) return;
-      
-      if (navType === 'external') {
-        window.open(navValue, '_blank', 'noopener,noreferrer');
-      } else {
-        e.preventDefault();
-      }
-    });
-  `;
-}

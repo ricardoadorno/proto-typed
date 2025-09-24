@@ -1,28 +1,28 @@
-import { AstNode } from '../../types/astNode';
+import { AstNode } from '../../../types/astNode';
 
 // Import all node renderers
-import { renderScreen } from './nodes/screen-nodes';
+import { renderScreen } from './screen-nodes';
 import { 
   renderComponent, 
   renderComponentInstance, 
   renderModal, 
   renderDrawer 
-} from './nodes/component-nodes';
+} from './component-nodes';
 import { 
   renderButton, 
   renderLink, 
   renderImage 
-} from './nodes/interactive-nodes';
+} from './interactive-nodes';
 import { 
   renderHeading, 
   renderParagraph 
-} from './nodes/typography-nodes';
+} from './typography-nodes';
 import { 
   renderInput, 
   renderRadioGroup, 
   renderSelect, 
   renderCheckbox 
-} from './nodes/form-nodes';
+} from './form-nodes';
 import { 
   renderRow, 
   renderCol, 
@@ -31,20 +31,20 @@ import {
   renderSeparator,
   renderEmptyDiv,
   renderContainer 
-} from './nodes/layout-nodes';
+} from './layout-nodes';
 import { 
   renderHeader, 
   renderNavigator, 
   renderNavItem, 
   renderDrawerItem, 
   renderFAB
-} from './nodes/mobile-nodes';
+} from './mobile-nodes';
 import {   renderOrderedList, 
   renderUnorderedList, 
   renderList, 
   renderListItem, 
   renderAdvancedListItem 
-} from './nodes/list-nodes';
+} from './list-nodes';
 
 /**
  * Convert an AST node to HTML using modular node renderers
@@ -55,11 +55,11 @@ export function renderNode(node: AstNode, context?: string): string {
     return '';
   }
     switch (node.type) {
-    // Screen and structure nodes
+
+    // High-level nodes
     case 'screen':
       return renderScreen(node, renderNode);
     
-    // Component nodes
     case 'component':
       return renderComponent(node);
     
@@ -71,6 +71,21 @@ export function renderNode(node: AstNode, context?: string): string {
       
     case 'drawer':
       return renderDrawer(node, context, renderNode);
+
+        case 'Header':
+      return renderHeader(node, renderNode);   
+      
+    case 'Navigator':
+      return renderNavigator(node);
+    
+    case 'NavItem':
+      return renderNavItem(node);
+    
+    case 'DrawerItem':
+      return renderDrawerItem(node);    
+      
+    case 'FAB':
+      return renderFAB(node);
 
     // Form nodes
     case 'Input':
@@ -140,22 +155,6 @@ export function renderNode(node: AstNode, context?: string): string {
       
     case 'EmptyDiv':
       return renderEmptyDiv();
-      
-    // Mobile nodes
-    case 'Header':
-      return renderHeader(node, renderNode);   
-      
-    case 'Navigator':
-      return renderNavigator(node);
-    
-    case 'NavItem':
-      return renderNavItem(node);
-    
-    case 'DrawerItem':
-      return renderDrawerItem(node);    
-      
-    case 'FAB':
-      return renderFAB(node);
         
     default:
       console.warn(`Unknown node type: ${node.type}`);
