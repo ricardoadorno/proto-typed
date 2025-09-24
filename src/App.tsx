@@ -114,7 +114,7 @@ export default function App() {
 
                 {/* Preview Panel */}
                 <div className="flex flex-col order-1 xl:order-2">
-                    <PreviewPanel metadata={metadata} />
+                    <PreviewPanel metadata={metadata} onNavigateToScreen={navigateToScreen} />
 
                     <PreviewDevice deviceType={uiStyle}>
                         {renderScreen()}

@@ -2,9 +2,10 @@ import { RouteMetadata } from '../../core/renderer/route-manager/types';
 
 interface RouteMetadataDisplayProps {
     metadata: RouteMetadata | null;
+    onNavigateToScreen?: (screenName: string) => void;
 }
 
-export function RouteMetadataDisplay({ metadata }: RouteMetadataDisplayProps) {
+export function RouteMetadataDisplay({ metadata, onNavigateToScreen }: RouteMetadataDisplayProps) {
     if (!metadata) return null;
 
     return (
@@ -32,7 +33,12 @@ export function RouteMetadataDisplay({ metadata }: RouteMetadataDisplayProps) {
                                 {metadata.currentScreen === screen.name
                                     && <span className="w-1.5 h-1.5 bg-green-400 rounded-full"></span>}
                                 {screen.isDefault && <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full"></span>}
-                                <span className={metadata.currentScreen === screen.name ? "text-white" : "text-gray-400"}>
+                                <span
+                                    className={`${metadata.currentScreen === screen.name ? "text-white" : "text-gray-400"
+                                        } ${onNavigateToScreen ? "cursor-pointer hover:text-blue-400 transition-colors" : ""}`}
+                                    onClick={() => onNavigateToScreen?.(screen.name)}
+                                    title={onNavigateToScreen ? `Navigate to ${screen.name}` : undefined}
+                                >
                                     {screen.name}
                                 </span>
                             </div>

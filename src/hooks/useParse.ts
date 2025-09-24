@@ -58,8 +58,6 @@ export const useParse = (): UseParseResult => {
       // Get metadata to determine available screens
       const metadata = getRouteMetadata(parsedAst, currentScreen || undefined);
       
-      console.log('useParse - available screens:', metadata.screens.map(s => s.id));
-      
       // Manter currentScreen se ainda existe nas novas rotas, senão usar default
       let newCurrentScreen = currentScreen;
       

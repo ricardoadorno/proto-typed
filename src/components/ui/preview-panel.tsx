@@ -7,12 +7,14 @@ interface PreviewPanelProps {
     title?: string;
     children?: React.ReactNode;
     metadata?: RouteMetadata | null;
+    onNavigateToScreen?: (screenName: string) => void;
 }
 
 export function PreviewPanel({
     title = "Live Preview",
     children,
-    metadata
+    metadata,
+    onNavigateToScreen
 }: PreviewPanelProps) {
     return (
         <div className="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-6 mb-6">
@@ -22,10 +24,9 @@ export function PreviewPanel({
                 </h2>
             </div>
 
-            {/* Route Metadata Display */}
-            <RouteMetadataDisplay metadata={metadata || null} />
 
-            {children}
+            {/* Route Metadata Display */}
+            <RouteMetadataDisplay metadata={metadata || null} onNavigateToScreen={onNavigateToScreen} />            {children}
         </div>
     );
 }
