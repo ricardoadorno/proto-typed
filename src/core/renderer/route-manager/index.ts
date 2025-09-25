@@ -12,11 +12,10 @@ export type {
   RouteProcessingOptions,
   RouteRenderContext,
   RouteMetadata,
-  RouteInfo
+  RouteInfo,
+  RouteContext,
+  NavigationTarget
 } from './types';
-
-// Export navigation types
-export type { NavigationTarget } from './navigation-analyzer';
 
 // Export the route manager class and global instance
 export { RouteManager, routeManager } from './route-manager';
@@ -30,28 +29,20 @@ export {
 } from './screen-renderer';
 
 // Export navigation functions
-export { analyzeNavigationTarget, type RouteContext } from './navigation-analyzer';
 export { 
+  analyzeNavigationTarget,
   generateNavigationAttributes, 
   generateHrefAttribute, 
   generateNavigationDataAttributes 
 } from './navigation-attributes';
-export {
-  addToHistory,
-  navigateBack,
-  getCurrentScreen,
-  getCurrentScreenIndex,
-  getNavigationHistory,
-  resetNavigationHistory
-} from './navigation-history';
-export { setRouteContext, getRouteContext, clearRouteContext } from './route-context';
 
 // Export preview navigation services
 export { 
   PreviewNavigationService, 
   previewNavigationService, 
   type NavigationEvent, 
-  type NavigationHandlers 
+  type NavigationHandlers,
+  type NavigationState
 } from './preview-navigation-service';
 export { 
   ElementToggleService, 

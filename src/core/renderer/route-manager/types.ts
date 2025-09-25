@@ -113,4 +113,29 @@ export interface RouteMetadata {
   currentScreen?: string;
   /** Total count of all routes */
   totalRoutes: number;
+  /** Navigation history */
+  navigationHistory: string[];
+  /** Current position in navigation history */
+  currentHistoryIndex: number;
+  /** Whether back navigation is possible */
+  canNavigateBack: boolean;
+}
+
+/**
+ * Available routes information for navigation analysis
+ */
+export interface RouteContext {
+  screens: string[];
+  modals: string[];
+  drawers: string[];
+  components: string[];
+}
+
+/**
+ * Navigation target analysis result
+ */
+export interface NavigationTarget {
+  type: 'internal' | 'external' | 'action' | 'toggle' | 'back';
+  value: string;
+  isValid: boolean;
 }

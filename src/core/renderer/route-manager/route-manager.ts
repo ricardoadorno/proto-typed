@@ -11,7 +11,8 @@ import {
   RouteProcessingOptions,
   RouteRenderContext,
   RouteMetadata,
-  RouteInfo 
+  RouteInfo,
+  RouteContext
 } from './types';
 
 export type { RouteRenderContext } from './types';
@@ -21,6 +22,9 @@ export type { RouteRenderContext } from './types';
  */
 export class RouteManager {
   private routes: RouteCollection;
+  private navigationHistory: string[] = [];
+  private currentHistoryIndex: number = -1;
+  private currentRouteContext: RouteContext | undefined = undefined;
 
   constructor() {
     this.routes = {
@@ -48,6 +52,11 @@ export class RouteManager {
     
     // Set current screen from options or default to first screen
     this.routes.currentScreen = options.currentScreen || this.routes.defaultScreen;
+
+    // Initialize navigation history with the current screen
+    if (this.routes.currentScreen) {
+      this.initializeNavigationHistory(this.routes.currentScreen);
+    }
 
     return this.routes;
   }
@@ -97,7 +106,7 @@ export class RouteManager {
   /**
    * Get route context for navigation analysis
    */
-  getRouteContext(): import('./navigation-analyzer').RouteContext {
+  getRouteContext(): RouteContext {
     return {
       screens: Array.from(this.routes.screens.keys()),
       modals: this.getRoutesByType('modal').map(route => route.name),
@@ -161,8 +170,115 @@ export class RouteManager {
       drawers,
       defaultScreen: this.routes.defaultScreen,
       currentScreen: this.routes.currentScreen,
-      totalRoutes
+      totalRoutes,
+      navigationHistory: [...this.navigationHistory],
+      currentHistoryIndex: this.currentHistoryIndex,
+      canNavigateBack: this.currentHistoryIndex > 0
     };
+  }
+
+  /**
+   * Navigation History Management
+   */
+
+  /**
+   * Add a screen to navigation history
+   */
+  addToHistory(screenName: string): void {
+    // Remove any screens after current position (when navigating after going back)
+    this.navigationHistory = this.navigationHistory.slice(0, this.currentHistoryIndex + 1);
+    
+    // Don't add the same screen consecutively
+    if (this.navigationHistory[this.currentHistoryIndex] !== screenName) {
+      this.navigationHistory.push(screenName);
+      this.currentHistoryIndex++;
+    }
+  }
+
+  /**
+   * Initialize navigation history with the current screen (for initial page load)
+   */
+  private initializeNavigationHistory(screenName: string): void {
+    if (this.navigationHistory.length === 0) {
+      this.navigationHistory.push(screenName);
+      this.currentHistoryIndex = 0;
+    }
+  }
+
+  /**
+   * Set the initial screen and initialize navigation history
+   * This should be called when the app first loads
+   */
+  setInitialScreen(screenName: string): void {
+    this.resetNavigationHistory();
+    this.initializeNavigationHistory(screenName);
+    this.routes.currentScreen = screenName;
+  }
+
+  /**
+   * Navigate back to previous screen
+   * Returns the previous screen name or null if no history
+   */
+  navigateBack(): string | null {
+    if (this.currentHistoryIndex > 0) {
+      this.currentHistoryIndex--;
+      return this.navigationHistory[this.currentHistoryIndex];
+    }
+    return null;
+  }
+
+  /**
+   * Get current screen from history
+   */
+  getCurrentScreen(): string | null {
+    return this.currentHistoryIndex >= 0 ? this.navigationHistory[this.currentHistoryIndex] : null;
+  }
+
+  /**
+   * Get current screen index
+   */
+  getCurrentScreenIndex(): number {
+    return this.currentHistoryIndex;
+  }
+
+  /**
+   * Get full navigation history
+   */
+  getNavigationHistory(): string[] {
+    return [...this.navigationHistory];
+  }
+
+  /**
+   * Reset navigation history
+   */
+  resetNavigationHistory(): void {
+    this.navigationHistory = [];
+    this.currentHistoryIndex = -1;
+  }
+
+  /**
+   * Route Context Management
+   */
+
+  /**
+   * Set the current route context for rendering
+   */
+  setRouteContext(context: RouteContext): void {
+    this.currentRouteContext = context;
+  }
+
+  /**
+   * Get the current route context
+   */
+  getCurrentRouteContext(): RouteContext | undefined {
+    return this.currentRouteContext;
+  }
+
+  /**
+   * Clear the route context
+   */
+  clearRouteContext(): void {
+    this.currentRouteContext = undefined;
   }
 
   /**

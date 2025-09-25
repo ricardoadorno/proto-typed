@@ -3,7 +3,7 @@
  * Adapter for in-app preview rendering using the route manager
  */
 
-import { RouteRenderContext, RouteManager, renderAllScreens, setRouteContext, clearRouteContext } from '../index';
+import { RouteRenderContext, RouteManager, renderAllScreens } from '../index';
 import { AstNode } from '../../../../types/astNode';
 import { RenderOptions } from '../../../../types/render';
 import { setComponentDefinitions } from '../../nodes/component-nodes';
@@ -31,7 +31,7 @@ export class PreviewAdapter {
       });
 
       // Set route context for navigation analysis
-      setRouteContext(this.routeManager.getRouteContext());
+      this.routeManager.setRouteContext(this.routeManager.getRouteContext());
 
       // Create render context
       const context = this.routeManager.createRenderContext('preview', {
@@ -41,12 +41,12 @@ export class PreviewAdapter {
       const result = this.generatePreviewHtml(context);
       
       // Clear route context after rendering
-      clearRouteContext();
+      this.routeManager.clearRouteContext();
       
       return result;
     } catch (error: any) {
       // Clear route context on error
-      clearRouteContext();
+      this.routeManager.clearRouteContext();
       throw error;
     }
   }

@@ -4,6 +4,7 @@
  */
 
 import { elementToggleService } from './element-toggle-service';
+import { routeManager } from './route-manager';
 
 export interface NavigationEvent {
   target: string;
@@ -17,6 +18,13 @@ export interface NavigationHandlers {
   onBackNavigation?: () => void;
 }
 
+export interface NavigationState {
+  history: string[];
+  currentIndex: number;
+  currentScreen: string | null;
+  canGoBack: boolean;
+}
+
 export class PreviewNavigationService {
   private handlers: NavigationHandlers | null = null;
 
@@ -25,6 +33,19 @@ export class PreviewNavigationService {
    */
   setHandlers(handlers: NavigationHandlers): void {
     this.handlers = handlers;
+  }
+
+  /**
+   * Initialize navigation with the current screen
+   * Should be called when the preview first loads
+   */
+  initializeNavigation(currentScreen: string): void {
+    console.log('Initializing navigation with screen:', currentScreen);
+    routeManager.setInitialScreen(currentScreen);
+    
+    // Debug: Show initial navigation state
+    const navState = this.getNavigationState();
+    console.log('Initial navigation state:', navState);
   }
 
   /**
@@ -61,6 +82,26 @@ export class PreviewNavigationService {
   }
 
   /**
+   * Reset navigation history
+   */
+  resetNavigationHistory(): void {
+    console.log('Resetting navigation history');
+    routeManager.resetNavigationHistory();
+  }
+
+  /**
+   * Get current navigation state
+   */
+  getNavigationState(): NavigationState {
+    return {
+      history: routeManager.getNavigationHistory(),
+      currentIndex: routeManager.getCurrentScreenIndex(),
+      currentScreen: routeManager.getCurrentScreen(),
+      canGoBack: routeManager.getCurrentScreenIndex() > 0
+    };
+  }
+
+  /**
    * Process navigation based on type
    */
   private processNavigation(event: NavigationEvent): void {
@@ -91,6 +132,21 @@ export class PreviewNavigationService {
   private handleScreenNavigation(screenName: string): void {
     console.log('Navigating to screen:', screenName);
     
+    // Only add to history if it's different from current screen
+    const currentScreen = routeManager.getCurrentScreen();
+    console.log('Current screen before navigation:', currentScreen);
+    
+    if (currentScreen !== screenName) {
+      console.log('Adding to history:', screenName);
+      routeManager.addToHistory(screenName);
+      
+      // Debug: Show updated navigation state
+      const navState = this.getNavigationState();
+      console.log('Updated navigation state:', navState);
+    } else {
+      console.log('Screen is the same as current, not adding to history');
+    }
+    
     if (this.handlers?.onScreenNavigation) {
       this.handlers.onScreenNavigation(screenName);
     } else {
@@ -119,11 +175,23 @@ export class PreviewNavigationService {
   private handleBackNavigation(): void {
     console.log('Back navigation');
     
-    if (this.handlers?.onBackNavigation) {
+    // Debug: Check current navigation state
+    const navState = this.getNavigationState();
+    console.log('Current navigation state:', navState);
+    
+    // Try to navigate back using route manager
+    const previousScreen = routeManager.navigateBack();
+    console.log('Previous screen from routeManager:', previousScreen);
+    
+    if (previousScreen && this.handlers?.onScreenNavigation) {
+      console.log(`Navigating back to screen: ${previousScreen}`);
+      this.handlers.onScreenNavigation(previousScreen);
+    } else if (this.handlers?.onBackNavigation) {
+      // Fallback to custom handler if provided
+      console.log('Using fallback onBackNavigation handler');
       this.handlers.onBackNavigation();
     } else {
-      // Could implement history management here if needed
-      console.log('No back navigation handler configured');
+      console.log('No previous screen in history or no back navigation handler configured');
     }
   }
 
@@ -149,6 +217,7 @@ export class PreviewNavigationService {
   createClickHandler(): (e: React.MouseEvent) => void {
     return (e: React.MouseEvent) => this.handleNavigationClick(e);
   }
+
 }
 
 // Create a singleton instance

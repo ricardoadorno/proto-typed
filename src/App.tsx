@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ExampleModal } from './components/examples';
 import AstModal from './components/ast-modal';
-import { resetNavigationHistory, previewNavigationService } from './core/renderer/route-manager';
+import { previewNavigationService } from './core/renderer/route-manager';
 import { DSLEditor } from './core/editor';
 import { useParse } from './hooks';
 import {
@@ -67,6 +67,13 @@ export default function App() {
         });
     }, [navigateToScreen]);
 
+    // Initialize navigation history when current screen is available
+    useEffect(() => {
+        if (currentScreen) {
+            previewNavigationService.initializeNavigation(currentScreen);
+        }
+    }, [currentScreen]);
+
     useEffect(() => {
         handleParse(input);
     }, [input, handleParse]);
@@ -92,7 +99,7 @@ export default function App() {
                             examples={exampleConfigs}
                             onExampleSelect={(code: string) => {
                                 setInput(code);
-                                resetNavigationHistory();
+                                previewNavigationService.resetNavigationHistory();
                             }}
                         />
 
