@@ -1,6 +1,6 @@
 import { AstNode } from '../../types/astNode';
-import { routeManager } from './route-manager';
 import { DocumentAdapter } from './route-manager/adapters/document-adapter';
+import { routeManager } from './route-manager/route-manager';
 
 /**
  * Generate a complete HTML document with all screens

@@ -1,7 +1,7 @@
 import { AstNode } from '../../../types/astNode';
 import { elementStyles, getButtonClasses } from './styles';
-import { generateNavigationAttributes } from '../route-manager';
 import { isLucideIcon, getLucideSvg } from '../../../utils/icon-utils';
+import { generateNavigationAttributes } from '../route-manager/navigation-attributes';
 
 /**
  * Render ordered list element

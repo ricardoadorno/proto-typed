@@ -1,7 +1,7 @@
 import { AstNode } from '../../types/astNode';
 import { RenderOptions } from '../../types/render';
-import { routeManager } from './route-manager';
 import { PreviewAdapter } from './route-manager/adapters/preview-adapter';
+import { routeManager } from './route-manager/route-manager';
 
 /**
  * Convert AST to HTML string representation with pagination for in-app preview

@@ -3,11 +3,12 @@
  * Adapter for in-app preview rendering using the route manager
  */
 
-import { RouteRenderContext, RouteManager, renderAllScreens } from '../index';
 import { AstNode } from '../../../../types/astNode';
 import { RenderOptions } from '../../../../types/render';
 import { setComponentDefinitions } from '../../nodes/component-nodes';
 import { renderNode } from '../../nodes/node-renderer';
+import { RouteManager, RouteRenderContext } from '../route-manager';
+import { renderAllScreens } from '../screen-renderer';
 
 /**
  * Preview adapter for in-app preview rendering

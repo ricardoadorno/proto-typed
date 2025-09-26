@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { ExampleModal } from './components/examples';
 import AstModal from './components/ast-modal';
-import { previewNavigationService } from './core/renderer/route-manager';
 import { DSLEditor } from './core/editor';
 import { useParse } from './hooks';
 import {
@@ -19,6 +18,7 @@ import { exampleConfigs } from './examples';
 import { Link } from 'react-router-dom';
 import { astToHtmlDocument } from './core/renderer/ast-to-html-document';
 import { astToHtmlString } from './core/renderer/ast-to-html-string';
+import { previewNavigationService } from './core/renderer/route-manager/preview-navigation-service';
 
 export default function App() {
     const [input, setInput] = useState(exampleConfigs[0].code || "");

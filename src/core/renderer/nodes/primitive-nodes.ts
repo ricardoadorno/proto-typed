@@ -1,7 +1,7 @@
 import { AstNode } from '../../../types/astNode';
-import { generateNavigationAttributes, generateHrefAttribute } from '../route-manager';
 import { elementStyles, getMarginClasses, getButtonClasses } from './styles';
 import { isLucideIcon, getLucideSvg } from '../../../utils/icon-utils';
+import { generateHrefAttribute, generateNavigationAttributes } from '../route-manager/navigation-attributes';
 
 /**
  * Render button element
