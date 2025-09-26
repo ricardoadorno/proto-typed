@@ -3,7 +3,6 @@
  * Handles all navigation interactions within the preview panel
  */
 
-import { elementToggleService } from './element-toggle-service';
 import { routeManager } from './route-manager';
 
 export interface NavigationEvent {
@@ -155,17 +154,107 @@ export class PreviewNavigationService {
   }
 
   /**
-   * Handle element toggle (modal/drawer)
+   * Handle element toggle (modal/drawer) - toggles the specific named element
    */
   private handleElementToggle(elementName: string): void {
     console.log('Toggling element:', elementName);
     
-    const result = elementToggleService.toggleElement(elementName);
+    // Look for specific modal or drawer by name
+    const modal = document.getElementById(`modal-${elementName}`);
+    const drawer = document.getElementById(`drawer-${elementName}`);
     
-    if (result.success) {
-      console.log(`Element ${elementName} toggled to ${result.newState}`);
+    console.log('Found elements:', { modal, drawer });
+    
+    if (modal) {
+      this.toggleModal(elementName, modal);
+      return;
+    }
+    
+    if (drawer) {
+      this.toggleDrawer(elementName, drawer);
+      return;
+    }
+    
+    console.warn('No modal or drawer found for element:', elementName);
+  }
+
+  /**
+   * Toggle modal visibility
+   */
+  private toggleModal(elementName: string, modal: HTMLElement): void {
+    const isHidden = modal.classList.contains('hidden');
+    console.log('Modal state:', { elementName, isHidden, classList: Array.from(modal.classList) });
+
+    if (isHidden) {
+      modal.classList.remove('hidden');
+      
+      // Add backdrop click handler
+      const backdrop = modal.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.addEventListener('click', (e) => {
+          if (e.target === backdrop) {
+            modal.classList.add('hidden');
+          }
+        });
+      }
+      
+      console.log(`Modal ${elementName} opened`);
     } else {
-      console.warn(`Failed to toggle element: ${elementName}`);
+      modal.classList.add('hidden');
+      console.log(`Modal ${elementName} closed`);
+    }
+  }
+
+  /**
+   * Toggle drawer visibility
+   */
+  private toggleDrawer(elementName: string, drawer: HTMLElement): void {
+    const isHidden = drawer.classList.contains('hidden');
+    const content = drawer.querySelector('.drawer-content');
+
+    console.log('Drawer state:', {
+      elementName,
+      isHidden,
+      classList: Array.from(drawer.classList),
+      contentClasses: content ? Array.from(content.classList) : null
+    });
+
+    if (isHidden) {
+      drawer.classList.remove('hidden');
+
+      if (content) {
+        content.classList.add('translate-x-0');
+        content.classList.remove('-translate-x-full');
+      }
+
+      // Add backdrop click handler
+      const overlay = drawer.querySelector('.drawer-overlay');
+      if (overlay) {
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) {
+            if (content) {
+              content.classList.remove('translate-x-0');
+              content.classList.add('-translate-x-full');
+            }
+            setTimeout(() => {
+              drawer.classList.add('hidden');
+            }, 300);
+          }
+        });
+      }
+
+      console.log(`Drawer ${elementName} opened`);
+    } else {
+      if (content) {
+        content.classList.remove('translate-x-0');
+        content.classList.add('-translate-x-full');
+      }
+      
+      setTimeout(() => {
+        drawer.classList.add('hidden');
+      }, 300);
+
+      console.log(`Drawer ${elementName} closed`);
     }
   }
 
