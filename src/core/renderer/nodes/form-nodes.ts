@@ -1,5 +1,5 @@
 import { AstNode } from '../../../types/ast-node';
-import { elementStyles, getFormControlClasses } from './styles';
+import { elementStyles, getFormControlClasses } from './styles/styles';
 
 /**
  * Render input element

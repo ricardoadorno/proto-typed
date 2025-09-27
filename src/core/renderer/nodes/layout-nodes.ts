@@ -1,5 +1,5 @@
 import { AstNode } from '../../../types/ast-node';
-import { elementStyles } from './styles';
+import { elementStyles } from './styles/styles';
 
 /**
  * Render row element

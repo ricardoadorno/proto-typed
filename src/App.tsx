@@ -18,7 +18,7 @@ import { exampleConfigs } from './examples';
 import { Link } from 'react-router-dom';
 import { astToHtmlDocument } from './core/renderer/ast-to-html-document';
 import { astToHtmlStringPreview } from './core/renderer/ast-to-html-string-preview';
-import { routeManagerGateway } from './core/renderer/helpers/route-manager-gateway';
+import { routeManagerGateway } from './core/renderer/infrastructure/route-manager-gateway';
 
 export default function App() {
     const [input, setInput] = useState(exampleConfigs[0].code || "");

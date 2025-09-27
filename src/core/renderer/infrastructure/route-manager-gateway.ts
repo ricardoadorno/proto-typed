@@ -3,7 +3,7 @@
  * Simplified API gateway for SPA clients to interact with the Route Manager
  */
 
-import { routeManager } from '../route-manager/route-manager';
+import { routeManager } from '../core/route-manager';
 import { RouteMetadata, RouteCollection, RouteRenderContext, RouteProcessingOptions } from '../../../types/routing';
 import { AstNode } from '../../../types/ast-node';
 

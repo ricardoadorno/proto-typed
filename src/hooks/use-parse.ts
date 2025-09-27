@@ -4,7 +4,7 @@ import { AstNode } from '../types/ast-node';
 import { parseChevrotainError } from '../utils/error-parser';
 import { ParsedError } from '../types/errors';
 import { astToHtmlStringPreview } from '../core/renderer/ast-to-html-string-preview';
-import { routeManagerGateway } from '../core/renderer/helpers/route-manager-gateway';
+import { routeManagerGateway } from '../core/renderer/infrastructure/route-manager-gateway';
 import { RouteMetadata } from '../types/routing';
 
 interface UseParseResult {

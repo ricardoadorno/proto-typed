@@ -5,12 +5,13 @@
 
 import { AstNode } from '../../../types/ast-node';
 import { ScreenRenderConfig } from '../../../types/render';
-import { renderNode } from '../nodes/node-renderer';
+import { renderNode } from '../core/node-renderer';
+import { RouteManager } from '../core/route-manager';
 
 /**
  * Render a single screen to HTML with full configuration
  */
-export function renderScreen(config: ScreenRenderConfig): string {
+function renderScreen(config: ScreenRenderConfig): string {
   const { screen, index, currentScreen } = config;
   
   const screenName = screen.name?.toLowerCase() || '';
@@ -35,35 +36,6 @@ export function renderScreen(config: ScreenRenderConfig): string {
       ${fabHtml}
       ${navigatorHtml}
   </div>`;
-}
-
-/**
- * Convert a single screen to HTML (simplified version for component usage)
- * This is used by nodeRenderer for individual screen rendering
- */
-export function screenToHtml(screen: AstNode): string {
-  const screenName = screen.name || '';
-  const layoutClasses = generateLayoutClasses(screen);
-  const { headerElements, fabElements, navigatorElements, contentElements } = separateScreenElements(screen);
-  
-  const headerHtml = headerElements.map(element => renderNode(element)).join('\n') || '';
-  const contentHtml = contentElements
-    .filter(element => element != null)
-    .map(element => renderNode(element))
-    .join('\n      ') || '';
-  const fabHtml = fabElements.map(element => renderNode(element)).join('\n') || '';
-  const navigatorHtml = navigatorElements.map(element => renderNode(element)).join('\n') || '';
-
-  return `
-  <div class="screen container ${screenName.toLowerCase()} ${layoutClasses.join(' ')} flex flex-col min-h-full relative">
-      ${headerHtml}
-      <div class="flex-1 p-4 relative">
-        ${contentHtml}
-      </div>
-      ${fabHtml}
-      ${navigatorHtml}
-  </div>
-  `.trim();
 }
 
 /**
@@ -151,4 +123,26 @@ function getScreenVisibilityStyle(screenName: string, index: number, currentScre
     return screenName === currentScreen.toLowerCase() ? '' : 'style="display:none"';
   }
   return index === 0 ? '' : 'style="display:none"';
+}
+
+/**
+ * Render global elements (modals and drawers)
+ */
+export function renderGlobalElements(routeManager: RouteManager): string {
+  const modalRoutes = routeManager.getRoutesByType('modal');
+  const drawerRoutes = routeManager.getRoutesByType('drawer');
+  
+  const modalsHtml = modalRoutes.length > 0 
+    ? modalRoutes.map(route => renderNode(route.node)).join('\n') 
+    : '';
+  
+  const drawersHtml = drawerRoutes.length > 0 
+    ? drawerRoutes.map(route => renderNode(route.node)).join('\n') 
+    : '';
+  
+  if (modalsHtml || drawersHtml) {
+    return '\n\n' + [modalsHtml, drawersHtml].filter(Boolean).join('\n') + '\n';
+  }
+  
+  return '';
 }

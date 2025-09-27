@@ -1,7 +1,7 @@
 import { AstNode } from '../../../types/ast-node';
 import { getLucideSvg, isLucideIcon } from '../../../utils';
-import { NavigationMediator } from '../helpers/navigation-mediator';
-import { elementStyles, getScreenClasses } from './styles';
+import { NavigationMediator } from '../infrastructure/navigation-mediator';
+import { elementStyles, getScreenClasses } from './styles/styles';
 
 /**
  * Render modal element

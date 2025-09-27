@@ -4,13 +4,13 @@ import { AstNode } from '../../../types/ast-node';
 import { 
   renderComponent, 
   renderComponentInstance, 
-} from './component-nodes';
+} from '../nodes/component-nodes';
 import { 
   renderInput, 
   renderRadioGroup, 
   renderSelect, 
   renderCheckbox 
-} from './form-nodes';
+} from '../nodes/form-nodes';
 import { 
   renderRow, 
   renderCol, 
@@ -18,10 +18,10 @@ import {
   renderSeparator,
   renderEmptyDiv,
   renderContainer 
-} from './layout-nodes';
-import { renderDrawer, renderDrawerItem, renderFAB, renderModal, renderNavigator, renderNavItem, renderScreen } from './navigation-overlay-nodes';
-import { renderButton, renderHeading, renderImage, renderLink, renderParagraph } from './primitive-nodes';
-import { renderAdvancedListItem, renderCard, renderHeader, renderList, renderListItem, renderOrderedList, renderUnorderedList } from './structured-content-node';
+} from '../nodes/layout-nodes';
+import { renderDrawer, renderDrawerItem, renderFAB, renderModal, renderNavigator, renderNavItem, renderScreen } from '../nodes/navigation-overlay-nodes';
+import { renderButton, renderHeading, renderImage, renderLink, renderParagraph } from '../nodes/primitive-nodes';
+import { renderAdvancedListItem, renderCard, renderHeader, renderList, renderListItem, renderOrderedList, renderUnorderedList } from '../nodes/structured-content-node';
 
 /**
  * Convert an AST node to HTML using modular node renderers

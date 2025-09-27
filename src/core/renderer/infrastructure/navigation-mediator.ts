@@ -2,7 +2,7 @@
  * Navigation Mediator
  * Mediates between route manager and node renderer for navigation-related operations
  */
-import { routeManager } from '../route-manager/route-manager';
+import { routeManager } from '../core/route-manager';
 import { RouteContext, NavigationTarget } from '../../../types/routing';
 
 /**
