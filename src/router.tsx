@@ -1,5 +1,5 @@
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
-import App from "./App";
+import App from "./app";
 import Docs from './pages/docs';
 import DocsLayout from './layouts/docs-layout';
 

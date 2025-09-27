@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ExampleModal } from './components/examples';
 import AstModal from './components/ast-modal';
 import { DSLEditor } from './core/editor';
-import { useParse } from './hooks';
+import { useParse } from './hooks/use-parse';
 import {
     AppHeader,
     ActionButtons,
