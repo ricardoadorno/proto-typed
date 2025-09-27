@@ -1,6 +1,6 @@
 /**
- * Preview Adapter
- * Adapter for in-app preview rendering using the route manager
+ * Preview Strategy
+ * Strategy for in-app preview rendering using the route manager
  */
 
 import { AstNode } from '../../../../types/astNode';
@@ -11,10 +11,10 @@ import { RouteManager, RouteRenderContext } from '../route-manager';
 import { renderAllScreens } from '../screen-renderer';
 
 /**
- * Preview adapter for in-app preview rendering
+ * Preview strategy for in-app preview rendering
  * This treats the container div as the "body" with appropriate styles
  */
-export class PreviewAdapter {
+export class StringPreviewStrategy {
   private routeManager: RouteManager;
 
   constructor(routeManager: RouteManager) {

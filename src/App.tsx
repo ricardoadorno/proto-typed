@@ -17,7 +17,7 @@ import { exportDocument } from './utils';
 import { exampleConfigs } from './examples';
 import { Link } from 'react-router-dom';
 import { astToHtmlDocument } from './core/renderer/ast-to-html-document';
-import { astToHtmlString } from './core/renderer/ast-to-html-string';
+import { astToHtmlString } from './core/renderer/ast-to-html-string-preview';
 import { previewNavigationService } from './core/renderer/route-manager/preview-navigation-service';
 
 export default function App() {

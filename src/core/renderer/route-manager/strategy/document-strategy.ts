@@ -1,6 +1,6 @@
 /**
- * Document Adapter
- * Adapter for full HTML document generation using the route manager
+ * Document Strategy
+ * Strategy for full HTML document generation using the route manager
  */
 
 import { AstNode } from '../../../../types/astNode';
@@ -10,9 +10,9 @@ import { RouteManager } from '../route-manager';
 import { renderScreenForDocument } from '../screen-renderer';
 
 /**
- * Document adapter for full HTML document generation
+ * Document strategy for full HTML document generation
  */
-export class DocumentAdapter {
+export class DocumentStrategy {
   private routeManager: RouteManager;
 
   constructor(routeManager: RouteManager) {

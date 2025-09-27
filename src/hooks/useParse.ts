@@ -3,7 +3,7 @@ import { parseAndBuildAst } from '../core/parser/parse-and-build-ast';
 import { AstNode } from '../types/astNode';
 import { parseChevrotainError } from '../utils/error-parser';
 import { ParsedError } from '../types/errors';
-import { astToHtmlString, getRouteMetadata } from '../core/renderer/ast-to-html-string';
+import { astToHtmlString, getRouteMetadata } from '../core/renderer/ast-to-html-string-preview';
 import { RouteMetadata } from '../core/renderer/route-manager';
 
 interface UseParseResult {

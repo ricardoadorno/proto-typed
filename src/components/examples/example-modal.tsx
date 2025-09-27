@@ -19,7 +19,7 @@ import {
 } from './ui';
 
 import { ExampleData } from './types';
-import { astToHtmlString } from '../../core/renderer/ast-to-html-string';
+import { astToHtmlString } from '../../core/renderer/ast-to-html-string-preview';
 
 /**
  * Comprehensive example modal showcasing all DSL syntax with organized, documented examples
