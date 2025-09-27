@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { parseAndBuildAst } from '../../core/parser/parse-and-build-ast';
-import { astToHtmlString } from '../../core/renderer/ast-to-html-string-preview';
+import { astToHtmlStringPreview } from '../../core/renderer/ast-to-html-string-preview';
 
 interface DslMiniPreviewProps {
     code: string;
@@ -45,7 +45,7 @@ export function DslMiniPreview({
         }
         try {
             const ast = await parseAndBuildAst(source);
-            const rendered = astToHtmlString(ast, { currentScreen });
+            const rendered = astToHtmlStringPreview(ast, { currentScreen });
             setHtml(rendered);
             setError(null);
         } catch (e: any) {

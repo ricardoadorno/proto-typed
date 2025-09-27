@@ -31,14 +31,3 @@ export function astToHtmlStringPreview(ast: AstNode | AstNode[], options: Render
   return stringPreviewStrategy.render(ast, enhancedOptions);
 }
 
-/**
- * Get route metadata from processed AST without rendering
- * Useful for clients that need context information only
- */
-export function getRouteMetadata(ast: AstNode | AstNode[], currentScreen?: string) {
-  console.log('getRouteMetadata called with currentScreen:', currentScreen);
-  routeManager.processRoutes(ast, { currentScreen });
-  const metadata = routeManager.getMetadata();
-  console.log('getRouteMetadata returning metadata:', metadata);
-  return metadata;
-}

@@ -19,7 +19,7 @@ import {
 } from './ui';
 
 import { ExampleData } from './types';
-import { astToHtmlString } from '../../core/renderer/ast-to-html-string-preview';
+import { astToHtmlStringPreview } from '../../core/renderer/ast-to-html-string-preview';
 
 /**
  * Comprehensive example modal showcasing all DSL syntax with organized, documented examples
@@ -51,7 +51,7 @@ export function ExampleModal() {
             // Use provided code or fall back to example code
             const codeToUse = codeToCompile ?? example.code;
             const ast = await parseAndBuildAst(codeToUse);
-            const html = astToHtmlString(ast, { currentScreen });
+            const html = astToHtmlStringPreview(ast, { currentScreen });
             setCompiledOutput(html);
         } catch (error) {
             console.error("Error compiling example:", error);

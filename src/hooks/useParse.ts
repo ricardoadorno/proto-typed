@@ -3,8 +3,9 @@ import { parseAndBuildAst } from '../core/parser/parse-and-build-ast';
 import { AstNode } from '../types/astNode';
 import { parseChevrotainError } from '../utils/error-parser';
 import { ParsedError } from '../types/errors';
-import { astToHtmlString, getRouteMetadata } from '../core/renderer/ast-to-html-string-preview';
-import { RouteMetadata } from '../core/renderer/route-manager';
+import { astToHtmlStringPreview } from '../core/renderer/ast-to-html-string-preview';
+import { routeManagerGateway } from '../core/renderer/helpers/route-manager-gateway';
+import { RouteMetadata } from '../core/renderer/route-manager/types';
 
 interface UseParseResult {
   ast: AstNode[];
@@ -49,14 +50,14 @@ export const useParse = (): UseParseResult => {
       // This will catch component reference errors during the parsing phase
       try {
         // Use current screen from state or undefined for validation
-        astToHtmlString(parsedAst, { currentScreen: currentScreen || undefined });
+        astToHtmlStringPreview(parsedAst, { currentScreen: currentScreen || undefined });
       } catch (renderError: any) {
         // If rendering fails, treat it as a parsing error
         throw renderError;
       }
       
       // Get metadata to determine available screens
-      const metadata = getRouteMetadata(parsedAst, currentScreen || undefined);
+      const metadata = routeManagerGateway.getRouteMetadata();
       
       // Manter currentScreen se ainda existe nas novas rotas, senão usar default
       let newCurrentScreen = currentScreen;

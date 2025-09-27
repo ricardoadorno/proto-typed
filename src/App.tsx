@@ -17,8 +17,8 @@ import { exportDocument } from './utils';
 import { exampleConfigs } from './examples';
 import { Link } from 'react-router-dom';
 import { astToHtmlDocument } from './core/renderer/ast-to-html-document';
-import { astToHtmlString } from './core/renderer/ast-to-html-string-preview';
-import { previewNavigationService } from './core/renderer/route-manager/preview-navigation-service';
+import { astToHtmlStringPreview } from './core/renderer/ast-to-html-string-preview';
+import { routeManagerGateway } from './core/renderer/helpers/route-manager-gateway';
 
 export default function App() {
     const [input, setInput] = useState(exampleConfigs[0].code || "");
@@ -47,14 +47,14 @@ export default function App() {
         if (ast.length === 0) return null;
 
         // Usar o currentScreen do estado React como fonte da verdade
-        const htmlString = astToHtmlString(ast, { currentScreen });
+        const htmlString = astToHtmlStringPreview(ast, { currentScreen });
 
         return (
             <div
                 className="overflow-auto h-full w-full"
                 style={{ containerType: 'inline-size' }}
                 dangerouslySetInnerHTML={{ __html: htmlString }}
-                onClick={previewNavigationService.createClickHandler()}
+                onClick={routeManagerGateway.createClickHandler()}
                 data-current-screen={currentScreen}
             />
         );
@@ -62,7 +62,7 @@ export default function App() {
 
     // Configure navigation handlers on mount
     useEffect(() => {
-        previewNavigationService.setHandlers({
+        routeManagerGateway.setHandlers({
             onScreenNavigation: navigateToScreen,
         });
     }, [navigateToScreen]);
@@ -70,7 +70,7 @@ export default function App() {
     // Initialize navigation history when current screen is available
     useEffect(() => {
         if (currentScreen) {
-            previewNavigationService.initializeNavigation(currentScreen);
+            routeManagerGateway.initializeNavigation(currentScreen);
         }
     }, [currentScreen]);
 
@@ -92,14 +92,14 @@ export default function App() {
 
                         <ActionButtons onExportHtml={exportAsHtml}>
                             <ExampleModal />
-                            <AstModal ast={astResultJson} html={astToHtmlString(ast, { currentScreen: currentScreen || undefined })} />
+                            <AstModal ast={astResultJson} html={astToHtmlStringPreview(ast, { currentScreen: currentScreen || undefined })} />
                         </ActionButtons>
 
                         <ExampleButtons
                             examples={exampleConfigs}
                             onExampleSelect={(code: string) => {
                                 setInput(code);
-                                previewNavigationService.resetNavigationHistory();
+                                routeManagerGateway.resetNavigation();
                             }}
                         />
 
