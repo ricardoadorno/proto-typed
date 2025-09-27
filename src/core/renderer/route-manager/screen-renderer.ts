@@ -3,7 +3,7 @@
  * Functions for rendering screens in different contexts
  */
 
-import { AstNode } from '../../../types/astNode';
+import { AstNode } from '../../../types/ast-node';
 import { ScreenRenderConfig } from '../../../types/render';
 import { renderNode } from '../nodes/node-renderer';
 

@@ -1,4 +1,4 @@
-import { AstNode } from '../../types/astNode';
+import { AstNode } from '../../types/ast-node';
 import { DocumentStrategy } from './route-manager/strategy/document-strategy';
 import { routeManager } from './route-manager/route-manager';
 

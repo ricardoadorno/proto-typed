@@ -1,11 +1,11 @@
 import { useState, useCallback } from 'react';
 import { parseAndBuildAst } from '../core/parser/parse-and-build-ast';
-import { AstNode } from '../types/astNode';
+import { AstNode } from '../types/ast-node';
 import { parseChevrotainError } from '../utils/error-parser';
 import { ParsedError } from '../types/errors';
 import { astToHtmlStringPreview } from '../core/renderer/ast-to-html-string-preview';
 import { routeManagerGateway } from '../core/renderer/helpers/route-manager-gateway';
-import { RouteMetadata } from '../core/renderer/route-manager/types';
+import { RouteMetadata } from '../types/routing';
 
 interface UseParseResult {
   ast: AstNode[];

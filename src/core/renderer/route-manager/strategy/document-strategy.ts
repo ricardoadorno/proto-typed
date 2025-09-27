@@ -3,7 +3,7 @@
  * Strategy for full HTML document generation using the route manager
  */
 
-import { AstNode } from '../../../../types/astNode';
+import { AstNode } from '../../../../types/ast-node';
 import { setComponentDefinitions } from '../../nodes/component-nodes';
 import { renderNode } from '../../nodes/node-renderer';
 import { RouteManager } from '../route-manager';

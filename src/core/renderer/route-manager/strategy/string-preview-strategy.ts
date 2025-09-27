@@ -3,7 +3,7 @@
  * Strategy for in-app preview rendering using the route manager
  */
 
-import { AstNode } from '../../../../types/astNode';
+import { AstNode } from '../../../../types/ast-node';
 import { RenderOptions } from '../../../../types/render';
 import { setComponentDefinitions } from '../../nodes/component-nodes';
 import { renderNode } from '../../nodes/node-renderer';

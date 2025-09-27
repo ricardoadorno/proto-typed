@@ -3,7 +3,7 @@
  * Central service for managing all application routes (screens, modals, drawers)
  */
 
-import { AstNode } from '../../../types/astNode';
+import { AstNode } from '../../../types/ast-node';
 import { 
   RouteCollection, 
   ScreenRoute, 
@@ -13,9 +13,9 @@ import {
   RouteMetadata,
   RouteInfo,
   RouteContext
-} from './types';
+} from '../../../types/routing';
 
-export type { RouteRenderContext } from './types';
+export type { RouteRenderContext } from '../../../types/routing';
 
 /**
  * Central route management service

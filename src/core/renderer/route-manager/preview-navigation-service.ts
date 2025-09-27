@@ -3,7 +3,7 @@
  * Simplified API gateway for SPA clients to interact with the Route Manager
  */
 
-import { routeManager } from '../route-manager/route-manager';
+import { routeManager } from './route-manager';
 import { RouteMetadata, RouteCollection, RouteRenderContext, RouteProcessingOptions } from '../../../types/routing';
 import { AstNode } from '../../../types/ast-node';
 
@@ -23,7 +23,7 @@ export interface NavigationState {
  * Route Manager Gateway - Simple API for SPA clients
  * Provides a clean interface to interact with the underlying Route Manager
  */
-class RouteManagerGateway {
+export class RouteManagerGateway {
   private handlers: NavigationHandlers | null = null;
 
   // ========================================
@@ -157,6 +157,7 @@ class RouteManagerGateway {
     routeManager.resetNavigationHistory();
   }
 
+
   // ========================================
   // DOM Interaction API
   // ========================================
@@ -247,77 +248,6 @@ class RouteManagerGateway {
   }
 
   // ========================================
-  // Route Context API
-  // ========================================
-
-  /**
-   * Get route context for navigation analysis
-   */
-  getRouteContext() {
-    return routeManager.getRouteContext();
-  }
-
-  /**
-   * Set route context
-   */
-  setRouteContext(context: any) {
-    routeManager.setRouteContext(context);
-  }
-
-  /**
-   * Clear route context
-   */
-  clearRouteContext() {
-    routeManager.clearRouteContext();
-  }
-
-  // ========================================
-  // Utility API
-  // ========================================
-
-  /**
-   * Check if a screen exists
-   */
-  hasScreen(screenName: string): boolean {
-    return routeManager.getScreenRoute(screenName) !== undefined;
-  }
-
-  /**
-   * Check if a global element exists
-   */
-  hasGlobalElement(elementName: string): boolean {
-    return routeManager.getGlobalRoute(elementName) !== undefined;
-  }
-
-  /**
-   * Get all screen names
-   */
-  getScreenNames(): string[] {
-    return routeManager.getScreenRoutes().map(route => route.name);
-  }
-
-  /**
-   * Get all modal names
-   */
-  getModalNames(): string[] {
-    return routeManager.getRoutesByType('modal').map(route => route.name);
-  }
-
-  /**
-   * Get all drawer names
-   */
-  getDrawerNames(): string[] {
-    return routeManager.getRoutesByType('drawer').map(route => route.name);
-  }
-
-  /**
-   * Get all component names
-   */
-  getComponentNames(): string[] {
-    return routeManager.getRoutesByType('component').map(route => route.name);
-  }
-
-  // ========================================
   // Private Helper Methods
   // ========================================
 
@@ -353,7 +283,11 @@ class RouteManagerGateway {
       });
     }
   }
+
 }
 
 // Create a singleton instance
 export const routeManagerGateway = new RouteManagerGateway();
+
+// Legacy alias for backwards compatibility
+export const previewNavigationService = routeManagerGateway;

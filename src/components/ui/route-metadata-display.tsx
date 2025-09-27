@@ -1,4 +1,4 @@
-import { RouteMetadata } from '../../core/renderer/route-manager/types';
+import { RouteMetadata } from '../../types/routing';
 
 interface RouteMetadataDisplayProps {
     metadata: RouteMetadata | null;

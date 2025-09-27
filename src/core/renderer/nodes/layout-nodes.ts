@@ -1,4 +1,4 @@
-import { AstNode } from '../../../types/astNode';
+import { AstNode } from '../../../types/ast-node';
 import { elementStyles } from './styles';
 
 /**

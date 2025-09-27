@@ -1,4 +1,4 @@
-import { AstNode } from '../../../types/astNode';
+import { AstNode } from '../../../types/ast-node';
 import { getLucideSvg, isLucideIcon } from '../../../utils';
 import { NavigationMediator } from '../helpers/navigation-mediator';
 import { elementStyles, getScreenClasses } from './styles';

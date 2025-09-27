@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { RouteMetadataDisplay } from './route-metadata-display';
-import { RouteMetadata } from '../../core/renderer/route-manager/types';
+import { RouteMetadata } from '../../types/routing';
 
 interface PreviewPanelProps {
     title?: string;

@@ -1,4 +1,4 @@
-import { AstNode } from '../../types/astNode';
+import { AstNode } from '../../types/ast-node';
 import { RenderOptions } from '../../types/render';
 import { StringPreviewStrategy } from './route-manager/strategy/string-preview-strategy';
 import { routeManager } from './route-manager/route-manager';
