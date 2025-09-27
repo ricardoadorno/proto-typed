@@ -1,6 +1,6 @@
 import { AstNode } from '../../../types/astNode';
 import { getLucideSvg, isLucideIcon } from '../../../utils';
-import { generateNavigationAttributes } from '../route-manager/navigation-attributes';
+import { NavigationMediator } from '../route-manager/navigation-mediator';
 import { elementStyles, getScreenClasses } from './styles';
 
 /**
@@ -119,7 +119,7 @@ export function renderNavigator(node: AstNode): string {
     if (item.type === 'NavItem') {
       const navItemProps = item.props as any;
       const { label, icon, action } = navItemProps || {};
-      const navAttrs = generateNavigationAttributes(action);
+      const navAttrs = NavigationMediator.generateNavigationAttributes(action);
         return `
         <button class="${elementStyles.navItem}" ${navAttrs}>
           <span class="${elementStyles.navItemIcon}">${renderIcon(icon || '')}</span>
@@ -138,7 +138,7 @@ export function renderNavigator(node: AstNode): string {
 export function renderNavItem(node: AstNode): string {
   const navItemProps = node.props as any;
   const { label: navLabel, icon: navIcon, action: navAction } = navItemProps || {};
-  const navItemAttrs = generateNavigationAttributes(navAction);
+  const navItemAttrs = NavigationMediator.generateNavigationAttributes(navAction);
     return `
     <button class="${elementStyles.navItem}" ${navItemAttrs}>
       <span class="${elementStyles.navItemIcon}">${renderIcon(navIcon || '')}</span>
@@ -153,7 +153,7 @@ export function renderNavItem(node: AstNode): string {
 export function renderDrawerItem(node: AstNode): string {
   const drawerItemProps = node.props as any;
   const { label: drawerLabel, icon: drawerIcon, action: drawerAction } = drawerItemProps || {};
-  const drawerItemAttrs = generateNavigationAttributes(drawerAction);
+  const drawerItemAttrs = NavigationMediator.generateNavigationAttributes(drawerAction);
     return `
     <button class="${elementStyles.drawerItem}" ${drawerItemAttrs}>
       <span class="${elementStyles.drawerItemIcon}">${renderIcon(drawerIcon || '')}</span>
@@ -168,7 +168,7 @@ export function renderDrawerItem(node: AstNode): string {
 export function renderFAB(node: AstNode): string {
   const fabProps = node.props as any;
   const { icon: fabIcon, href: fabHref } = fabProps || {};
-  const fabAttrs = generateNavigationAttributes(fabHref);
+  const fabAttrs = NavigationMediator.generateNavigationAttributes(fabHref);
   
   return `
     <div class="${elementStyles.fabContainer}">

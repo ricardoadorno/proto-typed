@@ -1,7 +1,7 @@
 import { AstNode } from '../../../types/astNode';
 import { elementStyles, getButtonClasses } from './styles';
 import { isLucideIcon, getLucideSvg } from '../../../utils/icon-utils';
-import { generateNavigationAttributes } from '../route-manager/navigation-attributes';
+import { NavigationMediator } from '../route-manager/navigation-mediator';
 
 /**
  * Render ordered list element
@@ -114,7 +114,7 @@ export function renderAdvancedListItem(node: AstNode): string {
   if (buttons && buttons.length > 0) {
     buttonsHtml = buttons.map((button: any) => {
       const { text, action, variant = 'default' } = button;
-      const buttonNavAttrs = generateNavigationAttributes(action);
+      const buttonNavAttrs = NavigationMediator.generateNavigationAttributes(action);
       const buttonClasses = getButtonClasses('list', variant);
       
       // Check if the button text is a Lucide icon name
@@ -135,7 +135,7 @@ export function renderAdvancedListItem(node: AstNode): string {
     }).join('');
   }
   // Create navigation attributes for the entire item if it should be clickable
-  const itemNavAttrs = isClickableItem ? generateNavigationAttributes(initialLink) : '';
+  const itemNavAttrs = isClickableItem ? NavigationMediator.generateNavigationAttributes(initialLink) : '';
   const itemClasses = isClickableItem ? 
     `${elementStyles.simpleListItem} hover:bg-gray-700 transition-colors duration-200` : 
     elementStyles.simpleListItem;

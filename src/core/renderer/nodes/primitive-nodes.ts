@@ -1,7 +1,7 @@
 import { AstNode } from '../../../types/astNode';
 import { elementStyles, getMarginClasses, getButtonClasses } from './styles';
 import { isLucideIcon, getLucideSvg } from '../../../utils/icon-utils';
-import { generateHrefAttribute, generateNavigationAttributes } from '../route-manager/navigation-attributes';
+import { NavigationMediator } from '../route-manager/navigation-mediator';
 
 /**
  * Render button element
@@ -11,7 +11,7 @@ export function renderButton(node: AstNode, context?: string): string {
   const { children, href: buttonHref, variant } = buttonProps || {};
   const buttonText = children || '';
   
-  const buttonNavAttrs = generateNavigationAttributes(buttonHref);
+  const buttonNavAttrs = NavigationMediator.generateNavigationAttributes(buttonHref);
   const marginClasses = getMarginClasses(context);
   const buttonClasses = `${getButtonClasses(context, variant)} ${marginClasses}`;
     // Check if the button text is a Lucide icon name
@@ -30,10 +30,10 @@ export function renderLink(node: AstNode): string {
   const props = node.props as any;
   const href = props?.href || '#';
   const linkText = props?.children || '';
-  
-  const linkNavAttrs = generateNavigationAttributes(href);
-  const linkHref = generateHrefAttribute(href);
-  
+
+  const linkNavAttrs = NavigationMediator.generateNavigationAttributes(href);
+  const linkHref = NavigationMediator.generateHrefAttribute(href);
+
   return `<a class="${elementStyles.link}" ${linkHref} ${linkNavAttrs}>${linkText}</a>`;
 }
 

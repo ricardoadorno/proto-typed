@@ -5,13 +5,6 @@
 
 import { routeManager } from './route-manager';
 
-export interface NavigationEvent {
-  target: string;
-  type: 'internal' | 'toggle' | 'back' | 'unknown';
-  element: HTMLElement;
-  allDataAttributes: Record<string, string>;
-}
-
 export interface NavigationHandlers {
   onScreenNavigation: (screenName: string) => void;
   onBackNavigation?: () => void;
@@ -51,9 +44,7 @@ export class PreviewNavigationService {
    * Handle preview navigation click events
    */
   handleNavigationClick(e: React.MouseEvent): void {
-    const target = e.target as HTMLElement;
-    const navElement = target.closest('[data-nav]');
-
+    const navElement = (e.target as HTMLElement).closest('[data-nav]');
     if (!navElement) return;
 
     e.preventDefault();
@@ -61,30 +52,30 @@ export class PreviewNavigationService {
 
     const navTarget = navElement.getAttribute('data-nav');
     const navType = navElement.getAttribute('data-nav-type');
-
-    const navigationEvent: NavigationEvent = {
-      target: navTarget || '',
-      type: this.determineNavigationType(navType),
-      element: navElement as HTMLElement,
-      allDataAttributes: Object.fromEntries(
-        Array.from(navElement.attributes)
-          .filter(attr => attr.name.startsWith('data-'))
-          .map(attr => [attr.name, attr.value])
-      )
-    };
-
-    console.log('Preview navigation click:', navigationEvent);
-
+    
     if (!navTarget) return;
 
-    this.processNavigation(navigationEvent);
+    // Direct navigation based on type
+    switch (navType) {
+      case 'internal':
+        this.handleScreenNavigation(navTarget);
+        break;
+      case 'toggle':
+        this.handleElementToggle(navTarget);
+        break;
+      case 'back':
+        this.handleBackNavigation();
+        break;
+      default:
+        this.handleElementToggle(navTarget);
+        break;
+    }
   }
 
   /**
    * Reset navigation history
    */
   resetNavigationHistory(): void {
-    console.log('Resetting navigation history');
     routeManager.resetNavigationHistory();
   }
 
@@ -100,30 +91,7 @@ export class PreviewNavigationService {
     };
   }
 
-  /**
-   * Process navigation based on type
-   */
-  private processNavigation(event: NavigationEvent): void {
-    switch (event.type) {
-      case 'internal':
-        this.handleScreenNavigation(event.target);
-        break;
-      
-      case 'toggle':
-        this.handleElementToggle(event.target);
-        break;
-      
-      case 'back':
-        this.handleBackNavigation();
-        break;
-      
-      default:
-        // Default behavior for elements without explicit type
-        console.log('Default navigation - attempting toggle for:', event.target);
-        this.handleElementToggle(event.target);
-        break;
-    }
-  }
+
 
   /**
    * Handle screen navigation
@@ -284,21 +252,7 @@ export class PreviewNavigationService {
     }
   }
 
-  /**
-   * Determine navigation type from data attribute
-   */
-  private determineNavigationType(navType: string | null): 'internal' | 'toggle' | 'back' | 'unknown' {
-    switch (navType) {
-      case 'internal':
-        return 'internal';
-      case 'toggle':
-        return 'toggle';
-      case 'back':
-        return 'back';
-      default:
-        return 'unknown';
-    }
-  }
+
 
   /**
    * Create a click handler function for React components
