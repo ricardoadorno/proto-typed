@@ -41,7 +41,7 @@ screen ForgotPassword:
     > Enter your email address below to receive a password reset link.
     ___*:Email{Your registered email address}
     @[Send Reset Link]
-    #[Back to Login](Login)
+    #[Back to Login](-1)
 `
 
 

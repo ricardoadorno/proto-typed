@@ -27,12 +27,10 @@ export default function App() {
         renderedHtml,
         error,
         parsedErrors,
-        currentScreen,
         metadata,
         handleParse,
         navigateToScreen,
         createClickHandler,
-        resetNavigation
     } = useParse();
 
     const exportAsHtml = () => {
@@ -83,7 +81,6 @@ export default function App() {
                             examples={exampleConfigs}
                             onExampleSelect={(code: string) => {
                                 setInput(code);
-                                resetNavigation();
                             }}
                         />
 

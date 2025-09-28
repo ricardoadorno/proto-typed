@@ -39,6 +39,9 @@ export class RouteManager {
   processRoutes(ast: AstNode | AstNode[], options: RouteProcessingOptions = {}): RouteCollection {
     const nodes = Array.isArray(ast) ? ast : [ast];
     
+    // Store current screen IDs to check if structure changed
+    const previousScreenIds = new Set(this.routes.screens.keys());
+    
     // Reset routes
     this.routes = {
       screens: new Map(),
@@ -53,9 +56,22 @@ export class RouteManager {
     // Set current screen from options or default to first screen
     this.routes.currentScreen = options.currentScreen || this.routes.defaultScreen;
 
-    // Initialize navigation history with the current screen
-    if (this.routes.currentScreen) {
-      this.initializeNavigationHistory(this.routes.currentScreen);
+    // Check if screen structure has changed
+    const newScreenIds = new Set(this.routes.screens.keys());
+    const screenStructureChanged = 
+      previousScreenIds.size !== newScreenIds.size ||
+      !Array.from(previousScreenIds).every(id => newScreenIds.has(id));
+
+    // Reset navigation history only if screen structure changed or if history is empty
+    if (screenStructureChanged || this.navigationHistory.length === 0) {
+      this.resetNavigationHistory();
+      if (this.routes.currentScreen) {
+        this.initializeNavigationHistory(this.routes.currentScreen);
+      }
+    } else if (this.routes.currentScreen) {
+      // Screen structure didn't change, just ensure current screen is set correctly
+      // But don't reset the navigation history
+      this.routes.currentScreen = options.currentScreen || this.routes.defaultScreen;
     }
 
     return this.routes;

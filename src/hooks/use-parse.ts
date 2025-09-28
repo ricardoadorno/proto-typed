@@ -19,7 +19,6 @@ interface UseParseResult {
   handleParse: (input: string) => Promise<void>;
   navigateToScreen: (screenName: string) => void;
   createClickHandler: () => (e: React.MouseEvent) => void;
-  resetNavigation: () => void;
 }
 
 export const useParse = (): UseParseResult => {
@@ -39,25 +38,6 @@ export const useParse = (): UseParseResult => {
     });
   }, []);
 
-
-  const updateCurrentScreen = useCallback((newMetadata: RouteMetadata, currentScreen: string | null) => {
-    if (currentScreen) {
-      // Check if current screen still exists
-      const screenExists = newMetadata.screens.some(screen => 
-        screen.id === currentScreen.toLowerCase()
-      );
-      if (screenExists) {
-        console.log('useParse - keeping existing screen:', currentScreen);
-        return currentScreen;
-      }
-    }
-    
-    // Use default screen if current doesn't exist or is null
-    const defaultScreen = newMetadata.defaultScreen || null;
-    console.log('useParse - using default screen:', defaultScreen);
-    return defaultScreen;
-  }, []);
-
   const handleParse = useCallback(async (input: string) => {
     if (!input.trim()) {
       setAst([]);
@@ -66,7 +46,19 @@ export const useParse = (): UseParseResult => {
       setError(null);
       setParsedErrors([]);
       setCurrentScreen(null);
-      setMetadata(null);
+      // Set empty metadata for case zero
+      setMetadata({
+        screens: [],
+        components: [],
+        modals: [],
+        drawers: [],
+        defaultScreen: undefined,
+        currentScreen: undefined,
+        totalRoutes: 0,
+        navigationHistory: [],
+        currentHistoryIndex: -1,
+        canNavigateBack: false
+      });
       return;
     }
 
@@ -77,9 +69,27 @@ export const useParse = (): UseParseResult => {
     try {
       const parsedAst = await parseAndBuildAst(input);
       
-      // Get metadata and determine screen
+      // Initialize routes with parsed AST to generate metadata
+      routeManagerGateway.initialize(parsedAst);
       const newMetadata = routeManagerGateway.getRouteMetadata();
-      const newCurrentScreen = updateCurrentScreen(newMetadata, currentScreen);
+      
+      // Handle case zero: when there are no routes/screens defined yet
+      let newCurrentScreen: string | null;
+      if (newMetadata.screens.length === 0) {
+        // No screens defined - create default metadata for empty case
+        newCurrentScreen = null;
+      } else if (currentScreen) {
+        const screenExists = newMetadata.screens.some(screen => 
+          screen.id === currentScreen.toLowerCase()
+        );
+        if (screenExists) {
+          newCurrentScreen = currentScreen;
+        } else {
+          newCurrentScreen = newMetadata.defaultScreen || null;
+        }
+      } else {
+        newCurrentScreen = newMetadata.defaultScreen || null;
+      }
       
       // Generate rendered HTML with the determined screen
       const htmlString = astToHtmlStringPreview(parsedAst, { currentScreen: newCurrentScreen || undefined });
@@ -105,10 +115,9 @@ export const useParse = (): UseParseResult => {
     } finally {
       setIsLoading(false);
     }
-  }, [currentScreen, updateCurrentScreen]);
+  }, [currentScreen]);
 
   const navigateToScreen = useCallback((screenName: string) => {
-    console.log('useParse - navigateToScreen called with:', screenName);
     setCurrentScreen(screenName);
     
     // Re-render HTML with new screen if we have AST
@@ -126,15 +135,6 @@ export const useParse = (): UseParseResult => {
     return routeManagerGateway.createClickHandler();
   }, []);
 
-  const resetNavigation = useCallback(() => {
-    routeManagerGateway.resetNavigation();
-    // Reset to default screen if available
-    if (metadata) {
-      const defaultScreen = metadata.defaultScreen || null;
-      setCurrentScreen(defaultScreen);
-    }
-  }, [metadata]);
-
   return {
     ast,
     astResultJson,
@@ -147,6 +147,5 @@ export const useParse = (): UseParseResult => {
     handleParse,
     navigateToScreen,
     createClickHandler,
-    resetNavigation
   };
 };
