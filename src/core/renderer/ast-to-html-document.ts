@@ -101,7 +101,24 @@ function generateNavigationScript(): string {
     // Navigation History Management
     let navigationHistory = [];
     let currentScreenIndex = -1;
-      function addToHistory(screenName) {
+    
+    // Initialize navigation with the first visible screen
+    function initializeNavigation() {
+      const screens = document.querySelectorAll('.screen');
+      for (const screen of screens) {
+        if (screen.style.display !== 'none') {
+          const screenClass = Array.from(screen.classList).find(cls => 
+            cls !== 'screen' && cls !== 'container' && cls !== 'mx-auto'
+          );
+          if (screenClass) {
+            addToHistory(screenClass);
+            break;
+          }
+        }
+      }
+    }
+      
+    function addToHistory(screenName) {
       navigationHistory = navigationHistory.slice(0, currentScreenIndex + 1);
       if (navigationHistory[currentScreenIndex] !== screenName) {
         navigationHistory.push(screenName);
@@ -317,5 +334,18 @@ function generateNavigationScript(): string {
         }
       }
     });
+    
+    // Initialize navigation history when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeNavigation();
+    });
+    
+    // Fallback initialization if DOMContentLoaded has already fired
+    if (document.readyState === 'loading') {
+      // DOMContentLoaded listener above will handle it
+    } else {
+      // DOM is already ready, initialize immediately
+      initializeNavigation();
+    }
   `;
 }
