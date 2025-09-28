@@ -17,8 +17,6 @@ import { exportDocument } from './utils';
 import { exampleConfigs } from './examples';
 import { Link } from 'react-router-dom';
 import { astToHtmlDocument } from './core/renderer/ast-to-html-document';
-import { astToHtmlStringPreview } from './core/renderer/ast-to-html-string-preview';
-import { routeManagerGateway } from './core/renderer/infrastructure/route-manager-gateway';
 
 export default function App() {
     const [input, setInput] = useState(exampleConfigs[0].code || "");
@@ -26,12 +24,16 @@ export default function App() {
     const {
         ast,
         astResultJson,
+        renderedHtml,
         error,
         parsedErrors,
         currentScreen,
         metadata,
         handleParse,
-        navigateToScreen } = useParse();
+        navigateToScreen,
+        createClickHandler,
+        resetNavigation
+    } = useParse();
 
     const exportAsHtml = () => {
         if (ast.length === 0) {
@@ -44,35 +46,17 @@ export default function App() {
     };
 
     const renderScreen = () => {
-        if (ast.length === 0) return null;
-
-        // Usar o currentScreen do estado React como fonte da verdade
-        const htmlString = astToHtmlStringPreview(ast, { currentScreen });
+        if (!renderedHtml) return null;
 
         return (
             <div
                 className="overflow-auto h-full w-full"
                 style={{ containerType: 'inline-size' }}
-                dangerouslySetInnerHTML={{ __html: htmlString }}
-                onClick={routeManagerGateway.createClickHandler()}
-                data-current-screen={currentScreen}
+                dangerouslySetInnerHTML={{ __html: renderedHtml }}
+                onClick={createClickHandler()}
             />
         );
     };
-
-    // Configure navigation handlers on mount
-    useEffect(() => {
-        routeManagerGateway.setHandlers({
-            onScreenNavigation: navigateToScreen,
-        });
-    }, [navigateToScreen]);
-
-    // Initialize navigation history when current screen is available
-    useEffect(() => {
-        if (currentScreen) {
-            routeManagerGateway.initializeNavigation(currentScreen);
-        }
-    }, [currentScreen]);
 
     useEffect(() => {
         handleParse(input);
@@ -91,15 +75,15 @@ export default function App() {
                         </Link>
 
                         <ActionButtons onExportHtml={exportAsHtml}>
-                            <ExampleModal />
-                            <AstModal ast={astResultJson} html={astToHtmlStringPreview(ast, { currentScreen: currentScreen || undefined })} />
+                            {/* <ExampleModal /> */}
+                            <AstModal ast={astResultJson} html={renderedHtml} />
                         </ActionButtons>
 
                         <ExampleButtons
                             examples={exampleConfigs}
                             onExampleSelect={(code: string) => {
                                 setInput(code);
-                                routeManagerGateway.resetNavigation();
+                                resetNavigation();
                             }}
                         />
 

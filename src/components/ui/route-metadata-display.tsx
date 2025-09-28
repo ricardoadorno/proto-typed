@@ -96,6 +96,56 @@ export function RouteMetadataDisplay({ metadata, onNavigateToScreen }: RouteMeta
                 </div>
             </div>
 
+            {/* Navigation History */}
+            {metadata.navigationHistory.length > 0 && (
+                <div className="bg-slate-700/50 rounded-lg p-3">
+                    <div className="flex items-center gap-2 mb-2">
+                        <span className="w-2 h-2 bg-orange-400 rounded-full"></span>
+                        <span className="text-gray-300 font-medium">
+                            Navigation History ({metadata.navigationHistory.length})
+                        </span>
+                        {metadata.canNavigateBack && (
+                            <span className="text-xs text-orange-400 bg-orange-400/20 px-2 py-0.5 rounded">
+                                Can go back
+                            </span>
+                        )}
+                    </div>
+                    <div className="space-y-1 max-h-20 overflow-y-auto">
+                        {metadata.navigationHistory.map((screen, index) => (
+                            <div key={`${screen}-${index}`} className="flex items-center gap-2">
+                                {index === metadata.currentHistoryIndex && (
+                                    <span className="w-1.5 h-1.5 bg-orange-400 rounded-full"></span>
+                                )}
+                                {index !== metadata.currentHistoryIndex && (
+                                    <span className="w-1.5 h-1.5 bg-gray-600 rounded-full"></span>
+                                )}
+                                <span className={`text-xs ${index === metadata.currentHistoryIndex
+                                        ? 'text-orange-300 font-medium'
+                                        : 'text-gray-400'
+                                    }`}>
+                                    {index + 1}.
+                                </span>
+                                <span className={`${index === metadata.currentHistoryIndex
+                                        ? 'text-white font-medium'
+                                        : 'text-gray-400'
+                                    }`}>
+                                    {screen}
+                                </span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Default Screen Info */}
+            {metadata.defaultScreen && (
+                <div className="flex items-center gap-2 text-sm">
+                    <span className="text-yellow-400">★</span>
+                    <span className="text-gray-300">Default Screen:</span>
+                    <span className="text-white font-medium">{metadata.defaultScreen}</span>
+                </div>
+            )}
+
             {/* Total Routes */}
             <div className="flex items-center justify-between pt-2 border-t border-slate-600">
                 <span className="text-gray-400 text-xs">Total Views</span>

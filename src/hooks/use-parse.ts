@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { parseAndBuildAst } from '../core/parser/parse-and-build-ast';
 import { AstNode } from '../types/ast-node';
 import { parseChevrotainError } from '../utils/error-parser';
@@ -10,6 +10,7 @@ import { RouteMetadata } from '../types/routing';
 interface UseParseResult {
   ast: AstNode[];
   astResultJson: string;
+  renderedHtml: string;
   error: string | null;
   parsedErrors: ParsedError[];
   currentScreen: string | null;
@@ -17,21 +18,51 @@ interface UseParseResult {
   isLoading: boolean;
   handleParse: (input: string) => Promise<void>;
   navigateToScreen: (screenName: string) => void;
+  createClickHandler: () => (e: React.MouseEvent) => void;
+  resetNavigation: () => void;
 }
 
 export const useParse = (): UseParseResult => {
   const [ast, setAst] = useState<AstNode[]>([]);
   const [astResultJson, setAstResultJson] = useState<string>('');
+  const [renderedHtml, setRenderedHtml] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const [parsedErrors, setParsedErrors] = useState<ParsedError[]>([]);
   const [currentScreen, setCurrentScreen] = useState<string | null>(null);
   const [metadata, setMetadata] = useState<RouteMetadata | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // Configure navigation handlers and manage route manager lifecycle
+  useEffect(() => {
+    routeManagerGateway.setHandlers({
+      onScreenNavigation: screenName => setCurrentScreen(screenName),
+    });
+  }, []);
+
+
+  const updateCurrentScreen = useCallback((newMetadata: RouteMetadata, currentScreen: string | null) => {
+    if (currentScreen) {
+      // Check if current screen still exists
+      const screenExists = newMetadata.screens.some(screen => 
+        screen.id === currentScreen.toLowerCase()
+      );
+      if (screenExists) {
+        console.log('useParse - keeping existing screen:', currentScreen);
+        return currentScreen;
+      }
+    }
+    
+    // Use default screen if current doesn't exist or is null
+    const defaultScreen = newMetadata.defaultScreen || null;
+    console.log('useParse - using default screen:', defaultScreen);
+    return defaultScreen;
+  }, []);
+
   const handleParse = useCallback(async (input: string) => {
     if (!input.trim()) {
       setAst([]);
       setAstResultJson('');
+      setRenderedHtml('');
       setError(null);
       setParsedErrors([]);
       setCurrentScreen(null);
@@ -46,44 +77,18 @@ export const useParse = (): UseParseResult => {
     try {
       const parsedAst = await parseAndBuildAst(input);
       
-      // Validate the AST by attempting to render it
-      // This will catch component reference errors during the parsing phase
-      try {
-        // Use current screen from state or undefined for validation
-        astToHtmlStringPreview(parsedAst, { currentScreen: currentScreen || undefined });
-      } catch (renderError: any) {
-        // If rendering fails, treat it as a parsing error
-        throw renderError;
-      }
+      // Get metadata and determine screen
+      const newMetadata = routeManagerGateway.getRouteMetadata();
+      const newCurrentScreen = updateCurrentScreen(newMetadata, currentScreen);
       
-      // Get metadata to determine available screens
-      const metadata = routeManagerGateway.getRouteMetadata();
-      
-      // Manter currentScreen se ainda existe nas novas rotas, senão usar default
-      let newCurrentScreen = currentScreen;
-      
-      if (currentScreen) {
-        // Verificar se currentScreen ainda existe
-        const screenExists = metadata.screens.some(screen => 
-          screen.id === currentScreen.toLowerCase()
-        );
-        if (!screenExists) {
-          // Se a tela atual não existe mais, usar a tela padrão
-          newCurrentScreen = metadata.defaultScreen || null;
-          console.log('useParse - currentScreen não existe mais, usando default:', newCurrentScreen);
-        } else {
-          console.log('useParse - mantendo currentScreen:', currentScreen);
-        }
-      } else {
-        // Se não há tela atual, usar a tela padrão
-        newCurrentScreen = metadata.defaultScreen || null;
-        console.log('useParse - nenhuma tela atual, usando default:', newCurrentScreen);
-      }
+      // Generate rendered HTML with the determined screen
+      const htmlString = astToHtmlStringPreview(parsedAst, { currentScreen: newCurrentScreen || undefined });
       
       setCurrentScreen(newCurrentScreen);
       setAst(parsedAst);
       setAstResultJson(JSON.stringify(parsedAst, null, 2));
-      setMetadata(metadata);
+      setRenderedHtml(htmlString);
+      setMetadata(newMetadata);
       setError(null);
       setParsedErrors([]);
     } catch (err: any) {
@@ -92,6 +97,7 @@ export const useParse = (): UseParseResult => {
       
       setAst([]);
       setAstResultJson('');
+      setRenderedHtml('');
       setError(errorMessage);
       setParsedErrors([parsedError]);
       setCurrentScreen(null);
@@ -99,22 +105,48 @@ export const useParse = (): UseParseResult => {
     } finally {
       setIsLoading(false);
     }
-  }, [currentScreen]);
+  }, [currentScreen, updateCurrentScreen]);
 
   const navigateToScreen = useCallback((screenName: string) => {
     console.log('useParse - navigateToScreen called with:', screenName);
     setCurrentScreen(screenName);
+    
+    // Re-render HTML with new screen if we have AST
+    if (ast.length > 0) {
+      try {
+        const htmlString = astToHtmlStringPreview(ast, { currentScreen: screenName || undefined });
+        setRenderedHtml(htmlString);
+      } catch (err: any) {
+        console.error('Error re-rendering after navigation:', err);
+      }
+    }
+  }, [ast]);
+
+  const createClickHandler = useCallback(() => {
+    return routeManagerGateway.createClickHandler();
   }, []);
+
+  const resetNavigation = useCallback(() => {
+    routeManagerGateway.resetNavigation();
+    // Reset to default screen if available
+    if (metadata) {
+      const defaultScreen = metadata.defaultScreen || null;
+      setCurrentScreen(defaultScreen);
+    }
+  }, [metadata]);
 
   return {
     ast,
     astResultJson,
+    renderedHtml,
     error,
     parsedErrors,
     currentScreen,
     metadata,
     isLoading,
     handleParse,
-    navigateToScreen
+    navigateToScreen,
+    createClickHandler,
+    resetNavigation
   };
 };
