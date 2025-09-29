@@ -12,6 +12,86 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
   constructor() {
     super();
     this.validateVisitor();
+  }
+
+  /**
+   * Parse layout modifiers from token image like "col-w50-center-stretch-p4"
+   * Returns structured modifiers object for CSS generation
+   */
+  private parseLayoutModifiers(tokenImage: string) {
+    const modifiers: any = {};
+    
+    // Extract modifiers from token image (e.g., "col-w50-center-stretch-p4")
+    const parts = tokenImage.split('-');
+    const elementType = parts[0]; // 'col', 'row', 'grid', 'container'
+    const modifierParts = parts.slice(1); // ['w50', 'center', 'stretch', 'p4']
+    
+    let justifyIndex = 0;
+    let alignIndex = 0;
+    
+    for (const modifier of modifierParts) {
+      // Sizing modifiers
+      if (modifier.match(/^w(\d+|full|auto)$/)) {
+        modifiers.width = modifier.substring(1);
+      } else if (modifier.match(/^h(\d+|full|auto)$/)) {
+        modifiers.height = modifier.substring(1);
+      }
+      // Justify content (flex main axis)
+      else if (['start', 'end', 'center', 'between', 'around', 'evenly'].includes(modifier)) {
+        if (justifyIndex === 0) {
+          modifiers.justify = modifier;
+          justifyIndex++;
+        } else if (alignIndex === 0) {
+          modifiers.align = modifier;
+          alignIndex++;
+        }
+      }
+      // Align items (flex cross axis) - specific to align
+      else if (['stretch', 'baseline'].includes(modifier)) {
+        modifiers.align = modifier;
+        alignIndex++;
+      }
+      // Spacing modifiers
+      else if (modifier.match(/^p(\d+)$/)) {
+        modifiers.padding = modifier.substring(1);
+      } else if (modifier.match(/^m(\d+)$/)) {
+        modifiers.margin = modifier.substring(1);
+      } else if (modifier.match(/^px(\d+)$/)) {
+        modifiers.paddingX = modifier.substring(2);
+      } else if (modifier.match(/^py(\d+)$/)) {
+        modifiers.paddingY = modifier.substring(2);
+      } else if (modifier.match(/^pl(\d+)$/)) {
+        modifiers.paddingLeft = modifier.substring(2);
+      } else if (modifier.match(/^pr(\d+)$/)) {
+        modifiers.paddingRight = modifier.substring(2);
+      } else if (modifier.match(/^pt(\d+)$/)) {
+        modifiers.paddingTop = modifier.substring(2);
+      } else if (modifier.match(/^pb(\d+)$/)) {
+        modifiers.paddingBottom = modifier.substring(2);
+      } else if (modifier.match(/^mx(\d+)$/)) {
+        modifiers.marginX = modifier.substring(2);
+      } else if (modifier.match(/^my(\d+)$/)) {
+        modifiers.marginY = modifier.substring(2);
+      } else if (modifier.match(/^ml(\d+)$/)) {
+        modifiers.marginLeft = modifier.substring(2);
+      } else if (modifier.match(/^mr(\d+)$/)) {
+        modifiers.marginRight = modifier.substring(2);
+      } else if (modifier.match(/^mt(\d+)$/)) {
+        modifiers.marginTop = modifier.substring(2);
+      } else if (modifier.match(/^mb(\d+)$/)) {
+        modifiers.marginBottom = modifier.substring(2);
+      }
+      // Gap modifier
+      else if (modifier.match(/^gap(\d+)$/)) {
+        modifiers.gap = modifier.substring(3);
+      }
+      // Grid columns modifier
+      else if (modifier.match(/^cols(\d+)$/)) {
+        modifiers.gridCols = modifier.substring(4);
+      }
+    }
+    
+    return modifiers;
   }  /**
    * Parse and process the entire program, including global elements (screens, components, modals, drawers)
    * @param ctx - The parsing context containing all top-level elements
@@ -354,6 +434,10 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
 
   rowElement(ctx: Context) {
     const elements = [];
+    
+    // Extract modifiers from the Row token
+    const rowToken = ctx.Row[0];
+    const modifiers = this.parseLayoutModifiers(rowToken.image);
 
     // Get elements directly from element subrules
     if (ctx.element && ctx.element.length > 0) {
@@ -368,12 +452,17 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
 
     return {
       type: "Row",
+      modifiers,
       elements
     };
   }  
   
   columnElement(ctx: Context) {
     const elements = [];
+    
+    // Extract modifiers from the Col token
+    const colToken = ctx.Col[0];
+    const modifiers = this.parseLayoutModifiers(colToken.image);
 
     // Get elements directly from element subrules
     if (ctx.element && ctx.element.length > 0) {
@@ -388,12 +477,17 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
 
     return {
       type: "Col",
+      modifiers,
       elements
     };
   }  
 
   containerElement(ctx: Context) {
     const elements = [];
+    
+    // Extract modifiers from the Container token
+    const containerToken = ctx.Container[0];
+    const modifiers = this.parseLayoutModifiers(containerToken.image);
 
     if (ctx.element && ctx.element.length > 0) {
       for (const el of ctx.element) {
@@ -406,12 +500,17 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
 
     return {
       type: "Container",
+      modifiers,
       elements
     };
   }
 
   gridElement(ctx: Context) {
     const elements = [];
+    
+    // Extract modifiers from the Grid token
+    const gridToken = ctx.Grid[0];
+    const modifiers = this.parseLayoutModifiers(gridToken.image);
 
     if (ctx.element && ctx.element.length > 0) {
       for (const el of ctx.element) {
@@ -424,6 +523,7 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
 
     return {
       type: "Grid",
+      modifiers,
       elements
     };
   }

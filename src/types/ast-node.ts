@@ -4,6 +4,28 @@ export interface BaseAstNode {
   elements?: AstNode[];
   props?: Record<string, any>;
   attributes?: Record<string, any>;
+  modifiers?: {
+    width?: string;
+    height?: string;
+    justify?: 'start' | 'end' | 'center' | 'between' | 'around' | 'evenly';
+    align?: 'start' | 'end' | 'center' | 'stretch' | 'baseline';
+    padding?: string;
+    paddingX?: string;
+    paddingY?: string;
+    paddingLeft?: string;
+    paddingRight?: string;
+    paddingTop?: string;
+    paddingBottom?: string;
+    margin?: string;
+    marginX?: string;
+    marginY?: string;
+    marginLeft?: string;
+    marginRight?: string;
+    marginTop?: string;
+    marginBottom?: string;
+    gap?: string;
+    gridCols?: string;
+  };
 }
 
 export interface ScreenNode extends BaseAstNode {

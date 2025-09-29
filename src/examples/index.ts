@@ -9,6 +9,7 @@ import { mobileTest } from './mobile-test';
 import { buttonVariantsExample } from './button-variants';
 import listsExample from './lists';
 import metadataDemo from './metadata-demo';
+import { layoutModifiersExample } from './layout-modifiers';
 
 // Example configuration for UI
 export const exampleConfigs = [
@@ -20,6 +21,7 @@ export const exampleConfigs = [
   { label: "Button Variants", code: buttonVariantsExample },
   { label: "Lists Example", code: listsExample },
   { label: "Metadata Demo", code: metadataDemo },
+  { label: "Layout Modifiers Demo", code: layoutModifiersExample },
   { label: "Back Navigation Test", code: backNavigationExample },
   { label: "Contacts App", code: contactsAppExample },
 ] ;
