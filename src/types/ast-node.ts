@@ -41,6 +41,7 @@ export interface ComponentNode extends BaseAstNode {
 export interface ComponentInstanceNode extends BaseAstNode {
   type: 'component_instance';
   name: string;
+  props?: string[];
 }
 
 export interface ModalNode extends BaseAstNode {

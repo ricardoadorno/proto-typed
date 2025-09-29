@@ -915,14 +915,39 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
       }
     };
   }  componentInstanceElement(ctx: Context) {
-    const token = ctx.ComponentInstance[0];
-    const match = token.image.match(/\$([a-zA-Z_][a-zA-Z0-9_]*)/);
-    const componentName = match ? match[1] : '';
+    // Handle component instance with props: $ComponentName: prop1 | prop2 | prop3
+    if (ctx.ComponentInstanceWithProps && ctx.ComponentInstanceWithProps.length > 0) {
+      const token = ctx.ComponentInstanceWithProps[0];
+      const match = token.image.match(/\$([a-zA-Z_][a-zA-Z0-9_]*)\s*:\s*(.+)/);
+      if (match) {
+        const componentName = match[1];
+        const propsString = match[2].trim();
+        
+        // Split props by | and clean them up
+        const props = propsString.split('|').map((prop: string) => prop.trim()).filter((prop: string) => prop.length > 0);
+        
+        return {
+          type: "component_instance",
+          name: componentName,
+          props: props
+        };
+      }
+    }
+    
+    // Handle simple component instance: $ComponentName
+    if (ctx.ComponentInstance && ctx.ComponentInstance.length > 0) {
+      const token = ctx.ComponentInstance[0];
+      const match = token.image.match(/\$([a-zA-Z_][a-zA-Z0-9_]*)/);
+      const componentName = match ? match[1] : '';
 
-    return {
-      type: "component_instance",
-      name: componentName
-    };
+      return {
+        type: "component_instance",
+        name: componentName,
+        props: []
+      };
+    }
+
+    return null;
   }
   /**
    * Process global modal element declaration

@@ -1,6 +1,6 @@
 // Import all token families
 import { WhiteSpace, NewLine, BlankLine } from './whitespace.tokens';
-import { Screen, Component, Modal,Drawer, ComponentInstance, Colon, Identifier } from './screen-overlay.tokens';
+import { Screen, Component, Modal,Drawer, ComponentInstance, ComponentInstanceWithProps, PropVariable, Colon, Identifier } from './screen-overlay.tokens';
 import { Row, Col, Grid, Container } from './layout.tokens';
 import { 
   AdvancedListItem, 
@@ -29,6 +29,8 @@ export {
   Component,
   Modal,
   ComponentInstance,
+  ComponentInstanceWithProps,
+  PropVariable,
   Colon,
   Identifier,
   
@@ -73,7 +75,9 @@ export const allTokens = [
   Screen,
   Component,
   Modal,
+  ComponentInstanceWithProps, // Must come before ComponentInstance for correct matching
   ComponentInstance,
+  PropVariable,
   FAB,
   Input,
   Button,

@@ -10,6 +10,7 @@ import { buttonVariantsExample } from './button-variants';
 import listsExample from './lists';
 import metadataDemo from './metadata-demo';
 import { layoutModifiersExample } from './layout-modifiers';
+import componentPropsDemo from './component-props-demo';
 
 // Example configuration for UI
 export const exampleConfigs = [
@@ -22,6 +23,7 @@ export const exampleConfigs = [
   { label: "Lists Example", code: listsExample },
   { label: "Metadata Demo", code: metadataDemo },
   { label: "Layout Modifiers Demo", code: layoutModifiersExample },
+  { label: "Component Props Demo", code: componentPropsDemo },
   { label: "Back Navigation Test", code: backNavigationExample },
   { label: "Contacts App", code: contactsAppExample },
 ] ;

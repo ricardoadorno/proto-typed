@@ -23,7 +23,17 @@ export const Drawer = createToken({
 
 export const ComponentInstance = createToken({
   name: "ComponentInstance",
-  pattern: /\$([^\s\n\r]+)/
+  pattern: /\$([^\s\n\r:]+)(?!\s*:)/
+});
+
+export const ComponentInstanceWithProps = createToken({
+  name: "ComponentInstanceWithProps",
+  pattern: /\$([^\s\n\r:]+):\s*(.+)/
+});
+
+export const PropVariable = createToken({
+  name: "PropVariable",
+  pattern: /%([a-zA-Z_][a-zA-Z0-9_]*)/
 });
 
 export const Colon = createToken({ 
