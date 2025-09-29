@@ -28,11 +28,6 @@ export const Navigator = createToken({
   pattern: /navigator/
 });
 
-export const Drawer = createToken({
-  name: "Drawer",
-  pattern: /drawer/
-});
-
 export const OrderedListItem = createToken({
   name: "OrderedListItem",
   pattern: /\d+\.\s+([^\n\r]+)/

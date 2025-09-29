@@ -16,6 +16,11 @@ export const Modal = createToken({
   pattern: /modal/
 });
 
+export const Drawer = createToken({
+  name: "Drawer",
+  pattern: /drawer/
+});
+
 export const ComponentInstance = createToken({
   name: "ComponentInstance",
   pattern: /\$([^\s\n\r]+)/
