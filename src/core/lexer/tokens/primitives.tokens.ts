@@ -1,0 +1,37 @@
+import { createToken } from "chevrotain";
+
+// Primitive Element Tokens
+export const Button = createToken({ 
+  name: "Button", 
+  pattern: /@([_+\-=!]?)\[([^\]]+)\](?:\{([^}]+)\})?(?:\(([^)]+)\))?/ 
+});
+
+export const Link = createToken({
+  name: "Link",
+  pattern: /#\[([^\]]+)\](?:\(([^)]+)\))?/
+});
+
+export const Image = createToken({ 
+  name: "Image", 
+  pattern: /!\[([^\]]+)\](?:\(([^)]+)\))?/ 
+});
+
+export const Heading = createToken({
+  name: "Heading",
+  pattern: /#{1,6}(?!#)\s+([^\n\r#[\]"=:]+)/
+});
+
+export const Text = createToken({
+  name: "Text",
+  pattern: />\s+([^\n\r]+)/
+});
+
+export const Note = createToken({
+  name: "Note",
+  pattern: /\*>\s+([^\n\r]+)/
+});
+
+export const Quote = createToken({
+  name: "Quote",
+  pattern: /">\s+([^\n\r]+)/
+});
