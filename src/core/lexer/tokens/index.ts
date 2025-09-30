@@ -3,7 +3,6 @@ import { WhiteSpace, NewLine, BlankLine } from './whitespace.tokens';
 import { Screen, Component, Modal,Drawer, ComponentInstance, ComponentInstanceWithProps, PropVariable, Colon, Identifier } from './screen-overlay.tokens';
 import { Row, Col, Grid, Container } from './layout.tokens';
 import { 
-  AdvancedListItem, 
   List, 
   Card, 
   Header, 
@@ -41,7 +40,6 @@ export {
   Container,
   
   // Structural Layout
-  AdvancedListItem,
   List,
   Card,
   Header,
@@ -81,6 +79,12 @@ export const allTokens = [
   FAB,
   Input,
   Button,
+  Link,
+  Image,
+  Heading,
+  Text,
+  Note,
+  Quote,
   Row,
   Col,
   Grid,
@@ -88,20 +92,10 @@ export const allTokens = [
   List,
   Card,
   Header,
-  Navigator,
-  Drawer,
+  OrderedListItem,
+  UnorderedListItem,
   Separator,
   EmptyDiv,
-  BlankLine,
-  Text,
-  Note,
-  Quote,
-  Heading,
-  Link,
-  Image,
-  OrderedListItem,
-  AdvancedListItem, // Most specific pattern must come first
-  UnorderedListItem,
   RadioOption,
   Checkbox,
   Colon,

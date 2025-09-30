@@ -1,16 +1,9 @@
 import { createToken } from "chevrotain";
 
 // Structural Layout Tokens
-// Advanced list item with flexible syntax: - [link_text](link)text{subtitle}[btn](action)[btn](action)
-// Matches list items that contain either square brackets (links/buttons) or curly braces (subtitles)
-export const AdvancedListItem = createToken({
-  name: "AdvancedListItem",
-  pattern: /-\s+(?=.*(?:\[[^\]]*\]|\{[^}]*\})).*/
-});
-
 export const List = createToken({ 
   name: "List", 
-  pattern: /list/ 
+  pattern: /list/
 });
 
 export const Card = createToken({ 

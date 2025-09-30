@@ -57,6 +57,12 @@ export interface ContainerNode extends BaseAstNode {
   type: 'container' | 'grid' | 'flex' | 'card' | 'row' | 'col' | 'section' | 'list';
 }
 
+export interface ListWithComponentNode extends BaseAstNode {
+  type: 'ListWithComponent';
+  componentName: string;
+  dataItems: string[][];
+}
+
 export interface TextNode extends BaseAstNode {
   type: 'text' | 'heading' | 'note' | 'quote';
   props: {
@@ -105,10 +111,12 @@ export interface UtilityNode extends BaseAstNode {
 
 export type AstNode = 
   | ScreenNode 
-  | ComponentNode   | ComponentInstanceNode
+  | ComponentNode   
+  | ComponentInstanceNode
   | ModalNode 
   | DrawerNode
   | ContainerNode
+  | ListWithComponentNode
   | TextNode 
   | InteractiveNode 
   | FormNode 

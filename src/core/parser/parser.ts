@@ -3,7 +3,7 @@ import {
   allTokens, Screen, Component, Modal, ComponentInstance, ComponentInstanceWithProps,
   Identifier, Colon, Button, 
   Row, Card, Separator, EmptyDiv, Heading, Link, 
-  Image, Input, OrderedListItem, UnorderedListItem, AdvancedListItem, RadioOption, 
+  Image, Input, OrderedListItem, UnorderedListItem, RadioOption, 
   Checkbox, Text, Note, Quote, Col, List, Container, Grid,
   Header, Navigator, Drawer, FAB
 } from "../lexer/tokens";
@@ -86,13 +86,12 @@ export class UiDslParser extends CstParser {
       this.OR([
         { ALT: () => this.CONSUME(Indent) },
         { ALT: () => this.CONSUME(Outdent) },
-        { ALT: () => this.OR2([
-          { ALT: () => this.CONSUME(AdvancedListItem) },
-          { ALT: () => this.CONSUME(UnorderedListItem) }
-        ]) }
+        { ALT: () => this.CONSUME(UnorderedListItem) }
       ]);
     });
-  });element = this.RULE("element", () => {
+  });
+
+  element = this.RULE("element", () => {
     this.OR([
       { ALT: () => this.SUBRULE(this.componentInstanceElement) },
       { ALT: () => this.SUBRULE(this.inputElement) },
@@ -236,15 +235,19 @@ export class UiDslParser extends CstParser {
 
   listElement = this.RULE("listElement", () => {
     this.CONSUME(List);
-    this.CONSUME(Colon);
+    // Check if there's a component name after 'list'
     this.OPTION(() => {
+      this.CONSUME(ComponentInstanceWithProps, { LABEL: "componentName" });
+    });
+    this.OPTION2(() => {
+      this.CONSUME(Colon);
+    });
+    this.OPTION3(() => {
       this.CONSUME(Indent);
-      this.AT_LEAST_ONE(() => {        this.OR([
-          { ALT: () => this.CONSUME(AdvancedListItem) },
-          { ALT: () => this.CONSUME(UnorderedListItem) }
-        ]);
+      this.AT_LEAST_ONE(() => {
+        this.CONSUME(UnorderedListItem);
       });
-      this.OPTION2(() => {
+      this.OPTION4(() => {
         this.CONSUME(Outdent);
       });
     });
@@ -256,10 +259,7 @@ export class UiDslParser extends CstParser {
   });
 
   unorderedListElement = this.RULE("unorderedListElement", () => {
-    this.OR([
-      { ALT: () => this.CONSUME(AdvancedListItem) },
-      { ALT: () => this.CONSUME(UnorderedListItem) }
-    ]);
+    this.CONSUME(UnorderedListItem);
   });
 
   // Mobile Layout Elements
@@ -281,10 +281,7 @@ export class UiDslParser extends CstParser {
     this.OPTION(() => {
       this.CONSUME(Indent);
       this.AT_LEAST_ONE(() => {
-        this.OR([
-          { ALT: () => this.CONSUME(AdvancedListItem) },
-          { ALT: () => this.CONSUME(UnorderedListItem) }
-        ]);
+        this.CONSUME(UnorderedListItem);
       });
       this.OPTION2(() => {
         this.CONSUME(Outdent);

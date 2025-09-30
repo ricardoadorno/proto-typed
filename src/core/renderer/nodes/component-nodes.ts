@@ -13,8 +13,44 @@ export function setComponentDefinitions(components: AstNode[]) {
 /**
  * Find all component definitions that are available in the current context
  */
-function findComponentDefinitions(): AstNode[] {
+export function findComponentDefinitions(): AstNode[] {
   return globalComponentDefinitions;
+}
+
+/**
+ * Recursively substitute props in any object
+ */
+export function substitutePropsRecursive(obj: any, props: string[]): any {
+  if (typeof obj === 'string') {
+    return substitutePropsInString(obj, props);
+  }
+  
+  if (Array.isArray(obj)) {
+    return obj.map(item => substitutePropsRecursive(item, props));
+  }
+  
+  if (obj && typeof obj === 'object') {
+    const result = { ...obj };
+    for (const key in result) {
+      if (result.hasOwnProperty(key)) {
+        result[key] = substitutePropsRecursive(result[key], props);
+      }
+    }
+    return result;
+  }
+  
+  return obj;
+}
+
+/**
+ * Recursively substitute props in an element
+ */
+export function substitutePropsInElement(element: AstNode, props: string[]): AstNode {
+  // Create a deep copy of the element
+  const elementCopy = JSON.parse(JSON.stringify(element));
+  
+  // Recursively substitute in all string properties
+  return substitutePropsRecursive(elementCopy, props);
 }
 
 /**
@@ -53,42 +89,6 @@ export function renderComponentInstance(node: AstNode, context?: string, nodeRen
       return nodeRenderer(elementWithSubstitution, context);
     })
     .join('\n');
-}
-
-/**
- * Recursively substitute %prop variables with actual prop values
- */
-function substitutePropsInElement(element: AstNode, props: string[]): AstNode {
-  // Create a deep copy of the element
-  const elementCopy = JSON.parse(JSON.stringify(element));
-  
-  // Recursively substitute in all string properties
-  return substitutePropsRecursive(elementCopy, props);
-}
-
-/**
- * Recursively substitute props in any object
- */
-function substitutePropsRecursive(obj: any, props: string[]): any {
-  if (typeof obj === 'string') {
-    return substitutePropsInString(obj, props);
-  }
-  
-  if (Array.isArray(obj)) {
-    return obj.map(item => substitutePropsRecursive(item, props));
-  }
-  
-  if (obj && typeof obj === 'object') {
-    const result = { ...obj };
-    for (const key in result) {
-      if (result.hasOwnProperty(key)) {
-        result[key] = substitutePropsRecursive(result[key], props);
-      }
-    }
-    return result;
-  }
-  
-  return obj;
 }
 
 /**

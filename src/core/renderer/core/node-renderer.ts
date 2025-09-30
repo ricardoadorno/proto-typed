@@ -21,7 +21,7 @@ import {
 } from '../nodes/layout-nodes';
 import { renderDrawer, renderDrawerItem, renderFAB, renderModal, renderNavigator, renderNavItem, renderScreen } from '../nodes/navigation-overlay-nodes';
 import { renderButton, renderHeading, renderImage, renderLink, renderParagraph } from '../nodes/primitive-nodes';
-import { renderAdvancedListItem, renderCard, renderHeader, renderList, renderListItem, renderOrderedList, renderUnorderedList } from '../nodes/structured-content-node';
+import { renderCard, renderHeader, renderList, renderListItem, renderOrderedList, renderUnorderedList } from '../nodes/structured-content-node';
 
 /**
  * Convert an AST node to HTML using modular node renderers
@@ -107,9 +107,6 @@ export function renderNode(node: AstNode, context?: string): string {
       
     case 'ListItem':
       return renderListItem(node);
-      
-    case 'AdvancedListItem':
-      return renderAdvancedListItem(node);
       
     // Layout nodes
     case 'Row':
