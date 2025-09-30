@@ -1,4 +1,16 @@
 const listsExample = `
+component UserList:
+  card:
+    row:
+      col:
+        ![Profile Photo](%photoUrl)
+      col:
+        # %name
+        > %phone
+        > %email
+        @+[Edit](%editAction)
+        @=[Delete](%deleteAction)
+
 screen ListExamples:
   # List Examples
   > This screen demonstrates different types of lists and their capabilities
@@ -14,14 +26,14 @@ screen ListExamples:
       - Final simple item
 
   card:
-    ## Advanced Interactive Lists
-    > Lists with links, subtitles, and action buttons with variants
+    ## User List with Component
+    > List using UserList component with data props
 
-    list:
-      - [Star](StarPage)Important Task{Complete Project}[Mark Complete](complete)@=[Delete](delete)
-      - [Project](ProjectPage)Bug Report{Fix Login Issue}@=[Close](close)@_[Comment](comment)
-      - [User](UserProfile)John Doe{Software Engineer}@+[Edit](edit)[Message](message)@![Block](block)
-      - [Settings](SettingsPage)Account Settings{Update your preferences}[Configure](configure)
+    list $UserList:
+      - João Silva | (11) 99999-9999 | joao@email.com
+      - Maria Santos | (11) 88888-8888 | maria@email.com
+      - Pedro Oliveira | (11) 77777-7777 | pedro@email.com
+      - Ana Costa | (11) 66666-6666 | ana@email.com
 
   card:
     ## Mixed Content Lists

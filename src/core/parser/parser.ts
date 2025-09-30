@@ -298,6 +298,15 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.CONSUME(ComponentInstance) }
     ]);
   });
+
+  // Individual list item rules
+  orderedListItem = this.RULE("orderedListItem", () => {
+    this.CONSUME(OrderedListItem);
+  });
+
+  unorderedListItem = this.RULE("unorderedListItem", () => {
+    this.CONSUME(UnorderedListItem);
+  });
 }
 
 // Create a singleton instance of the parser

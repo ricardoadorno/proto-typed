@@ -750,28 +750,19 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     // Remove initial "- " and trim
     const content = itemText.replace(/^(?:\r\n|\r|\n|\s)*-\s+/, '').trim();
     
-    // Pattern: [label]{icon}(action) - all optional
-    const match = content.match(/^\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/);
+    // New pattern: label | icon | action (all separated by pipes)
+    const parts = content.split('|').map(part => part.trim());
     
-    if (match) {
-      const [, label, icon, action] = match;
-      return {
-        type: "NavItem",
-        props: {
-          label: label.trim(),
-          icon: icon.trim(),
-          action: action ? action.trim() : ''
-        }
-      };
-    }
+    const label = parts[0] || '';
+    const icon = parts[1] || '';
+    const action = parts[2] || '';
     
-    // Fallback for simple text items
     return {
       type: "NavItem",
       props: {
-        label: content,
-        icon: '',
-        action: ''
+        label: label,
+        icon: icon,
+        action: action
       }
     };
   }
@@ -781,28 +772,19 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     // Remove initial "- " and trim
     const content = itemText.replace(/^(?:\r\n|\r|\n|\s)*-\s+/, '').trim();
     
-    // Pattern: [label]{icon}(action) - all optional
-    const match = content.match(/^\[([^\]]+)\]\{([^}]+)\}(?:\(([^)]+)\))?/);
+    // New pattern: label | icon | action (all separated by pipes)
+    const parts = content.split('|').map(part => part.trim());
     
-    if (match) {
-      const [, label, icon, action] = match;
-      return {
-        type: "DrawerItem",
-        props: {
-          label: label.trim(),
-          icon: icon.trim(),
-          action: action ? action.trim() : ''
-        }
-      };
-    }
+    const label = parts[0] || '';
+    const icon = parts[1] || '';
+    const action = parts[2] || '';
     
-    // Fallback for simple text items
     return {
       type: "DrawerItem",
       props: {
-        label: content,
-        icon: '',
-        action: ''
+        label: label,
+        icon: icon,
+        action: action
       }
     };
   }  componentInstanceElement(ctx: Context) {

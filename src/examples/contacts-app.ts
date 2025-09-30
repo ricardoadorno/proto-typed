@@ -1,4 +1,15 @@
-const contactsAppExample = `screen ContactsList:
+const contactsAppExample = `component ContactItem:
+  card:
+    row:
+      col:
+        ![Avatar](https://via.placeholder.com/50)
+      col:
+        # %name
+        > %phone • %email
+        @+[Edit](EditContact)
+        @=[Trash](ConfirmDelete)
+
+screen ContactsList:
   header:
     ### Lista de Contatos
     @[Menu](MainDrawer)
@@ -6,11 +17,11 @@ const contactsAppExample = `screen ContactsList:
   col:
     > Seus contatos estão organizados aqui
     
-    list:
-      - João Silva{(11) 99999-9999 • joao@email.com}@[Edit](EditContact)@=[Trash](ConfirmDelete)
-      - Maria Santos{(11) 88888-8888 • maria@email.com}@[Edit](EditContact)@=[Trash](ConfirmDelete)
-      - Pedro Oliveira{(11) 77777-7777 • pedro@email.com}@[Edit](EditContact)@=[Trash](ConfirmDelete)
-      - Ana Costa{(11) 66666-6666 • ana@email.com}@[Edit](EditContact)@=[Trash](ConfirmDelete)
+    list $ContactItem:
+      - João Silva | (11) 99999-9999 | joao@email.com
+      - Maria Santos | (11) 88888-8888 | maria@email.com
+      - Pedro Oliveira | (11) 77777-7777 | pedro@email.com
+      - Ana Costa | (11) 66666-6666 | ana@email.com
 
   fab {Plus} CreateContact
 
@@ -48,12 +59,12 @@ modal ConfirmDelete:
       @[Excluir](ContactsList)
 
 drawer MainDrawer:
-  - [Contatos]{Users}(ContactsList)
-  - [Favoritos]{Star}(Favorites)
-  - [Grupos]{Users2}(Groups)
-  - [Configurações]{Settings}(Settings)
-  - [Sobre]{Info}(About)
-  - [Ajuda]{HelpCircle}(Help)
+  - Contatos | Users | ContactsList
+  - Favoritos | Star | Favorites
+  - Grupos | Users2 | Groups
+  - Configurações | Settings | Settings
+  - Sobre | Info | About
+  - Ajuda | HelpCircle | Help
 
 screen Favorites:
   header:

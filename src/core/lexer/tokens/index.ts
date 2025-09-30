@@ -73,6 +73,7 @@ export const allTokens = [
   Screen,
   Component,
   Modal,
+  Drawer,
   ComponentInstanceWithProps, // Must come before ComponentInstance for correct matching
   ComponentInstance,
   PropVariable,
@@ -92,6 +93,7 @@ export const allTokens = [
   List,
   Card,
   Header,
+  Navigator,
   OrderedListItem,
   UnorderedListItem,
   Separator,

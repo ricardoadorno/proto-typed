@@ -1,5 +1,14 @@
 const mobileAppExample = `
-screen MobileApp:
+drawer MyDrawer:
+  - Dashboard | 📊 | MobileApp
+  - Messages | 💬 | MessagesScreen
+  - Calendar | 📅 | SettingsScreen
+  - Files | 📁 | ProfileScreen
+  - Settings | ⚙️ | SettingsScreen
+  - Help | ❓ | SettingsScreen
+  - Logout | 💪 | MobileApp
+
+screen Mob:
   header:
     # My App
     @[Menu](MyDrawer)
@@ -28,22 +37,22 @@ screen MobileApp:
         @[❓ Help](SettingsScreen)
 
   navigator:
-    - [Home]{🏠}(MobileApp)
-    - [Search]{🔍}(SettingsScreen)
-    - [Messages]{💬}(MessagesScreen)
-    - [Profile]{👤}(ProfileScreen)
-    - [More]{⋯}(SettingsScreen)
+    - Home | 🏠 | MobileApp
+    - Search | 🔍 | SettingsScreen
+    - Messages | 💬 | MessagesScreen
+    - Profile | 👤 | ProfileScreen
+    - More | ⋯ | SettingsScreen
     
   fab {+} MessagesScreen
 
   drawer MyDrawer:
-    - [Dashboard]{📊}(MobileApp)
-    - [Messages]{💬}(MessagesScreen)
-    - [Calendar]{📅}(SettingsScreen)
-    - [Files]{📁}(ProfileScreen)
-    - [Settings]{⚙️}(SettingsScreen)
-    - [Help]{❓}(SettingsScreen)
-    - [Logout]{🚪}(MobileApp)
+    - Dashboard | 📊 | MobileApp
+    - Messages | 💬 | MessagesScreen
+    - Calendar | 📅 | SettingsScreen
+    - Files | 📁 | ProfileScreen
+    - Settings | ⚙️ | SettingsScreen
+    - Help | ❓ | SettingsScreen
+    - Logout | 🚪 | MobileApp
 
 screen MessagesScreen:
   header:
@@ -53,11 +62,11 @@ screen MessagesScreen:
   > Your conversations
 
   navigator:
-    - [Home]{🏠}(MobileApp)
-    - [Search]{🔍}(SettingsScreen)
-    - [Messages]{💬}(MessagesScreen)
-    - [Profile]{👤}(ProfileScreen)
-    - [More]{⋯}(SettingsScreen)
+    - Home | 🏠 | MobileApp
+    - Search | 🔍 | SettingsScreen
+    - Messages | 💬 | MessagesScreen
+    - Profile | 👤 | ProfileScreen
+    - More | ⋯ | SettingsScreen
 
 screen ProfileScreen:
   header:
@@ -87,11 +96,11 @@ screen ProfileScreen:
     @[Save Changes]
 
   navigator:
-    - [Home]{🏠}(MobileApp)
-    - [Search]{🔍}(SettingsScreen)
-    - [Messages]{💬}(MessagesScreen)
-    - [Profile]{👤}(ProfileScreen)
-    - [More]{⋯}(SettingsScreen)
+    - Home | 🏠 | MobileApp
+    - Search | 🔍 | SettingsScreen
+    - Messages | 💬 | MessagesScreen
+    - Profile | 👤 | ProfileScreen
+    - More | ⋯ | SettingsScreen
 
 screen SettingsScreen:
   header:
@@ -126,11 +135,11 @@ screen SettingsScreen:
     @[Delete Account](MobileApp)
 
   navigator:
-    - [Home]{🏠}(MobileApp)
-    - [Search]{🔍}(SettingsScreen)
-    - [Messages]{💬}(MessagesScreen)
-    - [Profile]{👤}(ProfileScreen)
-    - [More]{⋯}(SettingsScreen)
+    - Home | 🏠 | MobileApp
+    - Search | 🔍 | SettingsScreen
+    - Messages | 💬 | MessagesScreen
+    - Profile | 👤 | ProfileScreen
+    - More | ⋯ | SettingsScreen
 `;
 
 export default mobileAppExample;

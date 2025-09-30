@@ -17,8 +17,8 @@ screen TestMobile:
     @[Test Button](TestMobile)
   fab {+} TestMobile
   navigator:
-    - [Home]{🏠}(TestMobile)
-    - [Search]{🔍}(TestMobile)
-    - [Messages]{💬}(TestMobile)
-    - [Profile]{👤}(TestMobile)
+    - Home | 🏠 | TestMobile
+    - Search | 🔍 | TestMobile
+    - Messages | 💬 | TestMobile
+    - Profile | 👤 | TestMobile
 `;
