@@ -2,7 +2,7 @@ import { CstParser } from "chevrotain";
 import { 
   allTokens, Screen, Component, Modal, ComponentInstance, ComponentInstanceWithProps,
   Identifier, Colon, Button, 
-  Row, Card, Separator, EmptyDiv, Heading, Link, 
+  Row, Card, Separator, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, RadioOption, 
   Checkbox, Text, Paragraph, MutedText, Note, Quote, Col, List, Container, Grid,
   Header, Navigator, Drawer, FAB
@@ -108,7 +108,6 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.navigatorElement) },
       { ALT: () => this.SUBRULE(this.fabElement) },
       { ALT: () => this.SUBRULE(this.separatorElement) },
-      { ALT: () => this.SUBRULE(this.emptyDivElement) },
       { ALT: () => this.SUBRULE(this.headingElement) },
       { ALT: () => this.SUBRULE(this.textElement) },
       { ALT: () => this.SUBRULE(this.linkElement) },
@@ -151,9 +150,7 @@ export class UiDslParser extends CstParser {
     this.CONSUME(Separator);
   });
 
-  emptyDivElement = this.RULE("emptyDivElement", () => {
-    this.CONSUME(EmptyDiv);
-  });
+
   
   textElement = this.RULE("textElement", () => {
     this.OR([

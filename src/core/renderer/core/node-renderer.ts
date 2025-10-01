@@ -16,7 +16,6 @@ import {
   renderCol, 
   renderGrid,
   renderSeparator,
-  renderEmptyDiv,
   renderContainer 
 } from '../nodes/layout-nodes';
 import { renderDrawer, renderDrawerItem, renderFAB, renderModal, renderNavigator, renderNavItem, renderScreen } from '../nodes/navigation-overlay-nodes';
@@ -132,9 +131,6 @@ export function renderNode(node: AstNode, context?: string): string {
         
     case 'Separator':
       return renderSeparator();
-      
-    case 'EmptyDiv':
-      return renderEmptyDiv();
         
     default:
       console.warn(`Unknown node type: ${node.type}`);

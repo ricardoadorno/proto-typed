@@ -11,7 +11,6 @@ import {
   UnorderedListItem, 
   FAB, 
   Separator, 
-  EmptyDiv 
 } from './structural.tokens';
 import { Input, RadioOption, Checkbox } from './input.tokens';
 import { Button, Link, Image, Heading, Text, Paragraph, MutedText, Note, Quote } from './primitives.tokens';
@@ -49,7 +48,6 @@ export {
   UnorderedListItem,
   FAB,
   Separator,
-  EmptyDiv,
   
   // Input & Form
   Input,
@@ -101,7 +99,6 @@ export const allTokens = [
   OrderedListItem,
   UnorderedListItem,
   Separator,
-  EmptyDiv,
   RadioOption,
   Checkbox,
   Colon,

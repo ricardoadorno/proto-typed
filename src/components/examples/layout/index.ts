@@ -61,7 +61,7 @@ export const layoutExamples: ExampleCategory = {
   --
   # Third Section
   > Content with empty space above`,
-      description: "Use separators (---) for visual breaks and empty divs (--) for spacing"
+      description: "Use separators (---) for visual breaks"
     },
     {
       name: "Nested Layout",

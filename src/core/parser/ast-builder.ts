@@ -139,7 +139,6 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     if (ctx.cardElement) return this.visit(ctx.cardElement);
     if (ctx.headerElement) return this.visit(ctx.headerElement);    if (ctx.navigatorElement) return this.visit(ctx.navigatorElement);
     if (ctx.fabElement) return this.visit(ctx.fabElement);if (ctx.separatorElement) return this.visit(ctx.separatorElement);
-    if (ctx.emptyDivElement) return this.visit(ctx.emptyDivElement);
     if (ctx.headingElement) return this.visit(ctx.headingElement);
     if (ctx.textElement) return this.visit(ctx.textElement);
     if (ctx.linkElement) return this.visit(ctx.linkElement);
@@ -626,12 +625,6 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     };
   }
 
-  emptyDivElement(_ctx: Context) {
-    return {
-      type: "EmptyDiv",
-      props: {}
-    };
-  }
   // Mobile Layout Elements
   headerElement(ctx: Context) {
     const elements = [];

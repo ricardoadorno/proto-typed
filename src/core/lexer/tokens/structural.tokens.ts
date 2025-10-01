@@ -41,7 +41,3 @@ export const Separator = createToken({
   pattern: /---/ 
 });
 
-export const EmptyDiv = createToken({
-  name: "EmptyDiv",
-  pattern: /--(?!-)/  // Matches exactly two dashes, not three or more
-});

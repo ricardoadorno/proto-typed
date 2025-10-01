@@ -172,9 +172,4 @@ export function renderSeparator(): string {
   return `<hr class="${elementStyles.separator}">`;
 }
 
-/**
- * Render empty div element
- */
-export function renderEmptyDiv(): string {
-  return `<div class="${elementStyles.emptyDiv}"></div>`;
-}
+

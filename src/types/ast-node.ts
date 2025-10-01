@@ -107,7 +107,7 @@ export interface MobileNode extends BaseAstNode {
 }
 
 export interface UtilityNode extends BaseAstNode {
-  type: 'Separator' | 'EmptyDiv';
+  type: 'Separator';
   props: Record<string, any>;
 }
 

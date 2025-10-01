@@ -85,16 +85,8 @@ export const elementStyles = {
   drawer: 'drawer absolute top-0 left-0 z-40 w-64 h-full bg-gray-800 border-r border-gray-700 shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out',
     // Utility
   separator: 'my-6 border-gray-700',
-  emptyDiv: 'w-full h-4 bg-transparent',
   image: 'max-w-full h-auto rounded-lg shadow-md'
 } as const;
-
-/**
- * Get margin classes based on context
- */
-export function getMarginClasses(context?: string): string {
-  return context === 'header' ? '' : 'mr-4 mb-4';
-}
 
 /**
  * Get button classes based on context and variant

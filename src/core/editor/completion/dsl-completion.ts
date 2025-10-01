@@ -327,13 +327,6 @@ export function registerDSLCompletionProvider(monaco: Monaco) {
           documentation: 'Horizontal separator line',
           range: range,
         },
-        {
-          label: 'empty-div',
-          kind: monaco.languages.CompletionItemKind.Operator,
-          insertText: '--',
-          documentation: 'Empty div element for spacing',
-          range: range,
-        },
         
         // List items
         {
