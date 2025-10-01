@@ -178,56 +178,68 @@ export class UiDslParser extends CstParser {
   
   rowElement = this.RULE("rowElement", () => {
     this.CONSUME(Row);
-    this.CONSUME(Colon);
+    // Optional layout attributes in brackets
     this.OPTION(() => {
-      this.CONSUME(Indent);
-      this.AT_LEAST_ONE(() => {
-        this.SUBRULE(this.element);
-      });
+      this.CONSUME(Colon);
       this.OPTION2(() => {
-        this.CONSUME(Outdent);
+        this.CONSUME(Indent);
+        this.AT_LEAST_ONE(() => {
+          this.SUBRULE(this.element);
+        });
+        this.OPTION3(() => {
+          this.CONSUME(Outdent);
+        });
       });
     });
   });
 
   columnElement = this.RULE("columnElement", () => {
     this.CONSUME(Col);
-    this.CONSUME(Colon);
+    // Optional layout attributes in brackets
     this.OPTION(() => {
-      this.CONSUME(Indent);
-      this.AT_LEAST_ONE(() => {
-        this.SUBRULE(this.element);
-      });
+      this.CONSUME(Colon);
       this.OPTION2(() => {
-        this.CONSUME(Outdent);
+        this.CONSUME(Indent);
+        this.AT_LEAST_ONE(() => {
+          this.SUBRULE(this.element);
+        });
+        this.OPTION3(() => {
+          this.CONSUME(Outdent);
+        });
       });
     });
   });
 
   containerElement = this.RULE("containerElement", () => {
     this.CONSUME(Container);
-    this.CONSUME(Colon);
+    // Optional layout attributes in brackets
     this.OPTION(() => {
-      this.CONSUME(Indent);
-      this.AT_LEAST_ONE(() => {
-        this.SUBRULE(this.element);
-      });
+      this.CONSUME(Colon);
       this.OPTION2(() => {
-        this.CONSUME(Outdent);
+        this.CONSUME(Indent);
+        this.AT_LEAST_ONE(() => {
+          this.SUBRULE(this.element);
+        });
+        this.OPTION3(() => {
+          this.CONSUME(Outdent);
+        });
       });
     });
   });
 
   gridElement = this.RULE("gridElement", () => {
     this.CONSUME(Grid);
-    this.CONSUME(Colon);
+    // Optional layout attributes in brackets
     this.OPTION(() => {
-      this.CONSUME(Indent);
-      this.AT_LEAST_ONE(() => {
-        this.SUBRULE(this.element);
-      });
+      this.CONSUME(Colon);
       this.OPTION2(() => {
-        this.CONSUME(Outdent);
+        this.CONSUME(Indent);
+        this.AT_LEAST_ONE(() => {
+          this.SUBRULE(this.element);
+        });
+        this.OPTION3(() => {
+          this.CONSUME(Outdent);
+        });
       });
     });
   });

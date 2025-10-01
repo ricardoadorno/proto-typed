@@ -25,62 +25,81 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     const parts = tokenImage.split('-');
     const modifierParts = parts.slice(1); // ['w50', 'center', 'stretch', 'p4']
     
-    let justifyIndex = 0;
-    let alignIndex = 0;
+    // Track if justify/align have been explicitly set to avoid conflicts
+    let justifySet = false;
+    let alignSet = false;
     
     for (const modifier of modifierParts) {
+      // Skip empty modifiers
+      if (!modifier) continue;
+      
       // Sizing modifiers
       if (modifier.match(/^w(\d+|full|auto)$/)) {
         modifiers.width = modifier.substring(1);
-      } else if (modifier.match(/^h(\d+|full|auto)$/)) {
+      } 
+      else if (modifier.match(/^h(\d+|full|auto)$/)) {
         modifiers.height = modifier.substring(1);
       }
-      // Justify content (flex main axis)
+      // Flexbox: Justify content (flex main axis) - only set if not already set
       else if (['start', 'end', 'center', 'between', 'around', 'evenly'].includes(modifier)) {
-        if (justifyIndex === 0) {
+        if (!justifySet) {
           modifiers.justify = modifier;
-          justifyIndex++;
-        } else if (alignIndex === 0) {
+          justifySet = true;
+        } else if (!alignSet) {
           modifiers.align = modifier;
-          alignIndex++;
+          alignSet = true;
         }
       }
-      // Align items (flex cross axis) - specific to align
+      // Flexbox: Align items (flex cross axis) - specific alignment values
       else if (['stretch', 'baseline'].includes(modifier)) {
         modifiers.align = modifier;
-        alignIndex++;
+        alignSet = true;
       }
-      // Spacing modifiers
+      // Padding modifiers - all directions
       else if (modifier.match(/^p(\d+)$/)) {
         modifiers.padding = modifier.substring(1);
-      } else if (modifier.match(/^m(\d+)$/)) {
-        modifiers.margin = modifier.substring(1);
-      } else if (modifier.match(/^px(\d+)$/)) {
+      } 
+      else if (modifier.match(/^px(\d+)$/)) {
         modifiers.paddingX = modifier.substring(2);
-      } else if (modifier.match(/^py(\d+)$/)) {
+      } 
+      else if (modifier.match(/^py(\d+)$/)) {
         modifiers.paddingY = modifier.substring(2);
-      } else if (modifier.match(/^pl(\d+)$/)) {
+      } 
+      else if (modifier.match(/^pl(\d+)$/)) {
         modifiers.paddingLeft = modifier.substring(2);
-      } else if (modifier.match(/^pr(\d+)$/)) {
+      } 
+      else if (modifier.match(/^pr(\d+)$/)) {
         modifiers.paddingRight = modifier.substring(2);
-      } else if (modifier.match(/^pt(\d+)$/)) {
+      } 
+      else if (modifier.match(/^pt(\d+)$/)) {
         modifiers.paddingTop = modifier.substring(2);
-      } else if (modifier.match(/^pb(\d+)$/)) {
+      } 
+      else if (modifier.match(/^pb(\d+)$/)) {
         modifiers.paddingBottom = modifier.substring(2);
-      } else if (modifier.match(/^mx(\d+)$/)) {
+      }
+      // Margin modifiers - all directions
+      else if (modifier.match(/^m(\d+)$/)) {
+        modifiers.margin = modifier.substring(1);
+      } 
+      else if (modifier.match(/^mx(\d+)$/)) {
         modifiers.marginX = modifier.substring(2);
-      } else if (modifier.match(/^my(\d+)$/)) {
+      } 
+      else if (modifier.match(/^my(\d+)$/)) {
         modifiers.marginY = modifier.substring(2);
-      } else if (modifier.match(/^ml(\d+)$/)) {
+      } 
+      else if (modifier.match(/^ml(\d+)$/)) {
         modifiers.marginLeft = modifier.substring(2);
-      } else if (modifier.match(/^mr(\d+)$/)) {
+      } 
+      else if (modifier.match(/^mr(\d+)$/)) {
         modifiers.marginRight = modifier.substring(2);
-      } else if (modifier.match(/^mt(\d+)$/)) {
+      } 
+      else if (modifier.match(/^mt(\d+)$/)) {
         modifiers.marginTop = modifier.substring(2);
-      } else if (modifier.match(/^mb(\d+)$/)) {
+      } 
+      else if (modifier.match(/^mb(\d+)$/)) {
         modifiers.marginBottom = modifier.substring(2);
       }
-      // Gap modifier
+      // Gap modifier for flexbox/grid spacing
       else if (modifier.match(/^gap(\d+)$/)) {
         modifiers.gap = modifier.substring(3);
       }
