@@ -65,7 +65,23 @@ export function renderHeading(node: AstNode, context?: string): string {
 }
 
 /**
- * Render paragraph element
+ * Render text element (simple text without padding)
+ */
+export function renderText(node: AstNode): string {
+  const props = node.props as any;
+  const rawVariant = props?.variant;
+  const effectiveVariant = 
+    typeof rawVariant === 'string' && (rawVariant in elementStyles.paragraph) 
+    ? rawVariant as keyof typeof elementStyles.paragraph
+    : 'text';
+  
+  const textClasses = elementStyles.paragraph[effectiveVariant];
+  
+  return `<span class="${textClasses}">${props?.children || ''}</span>`;
+}
+
+/**
+ * Render paragraph element (text with padding bottom)
  */
 export function renderParagraph(node: AstNode): string {
   const props = node.props as any;
@@ -73,9 +89,25 @@ export function renderParagraph(node: AstNode): string {
   const effectiveVariant = 
     typeof rawVariant === 'string' && (rawVariant in elementStyles.paragraph) 
     ? rawVariant as keyof typeof elementStyles.paragraph
-    : 'default';
+    : 'paragraph';
   
   const paragraphClasses = elementStyles.paragraph[effectiveVariant];
   
   return `<p class="${paragraphClasses}">${props?.children || ''}</p>`;
+}
+
+/**
+ * Render muted text element (gray text without padding)
+ */
+export function renderMutedText(node: AstNode): string {
+  const props = node.props as any;
+  const rawVariant = props?.variant;
+  const effectiveVariant = 
+    typeof rawVariant === 'string' && (rawVariant in elementStyles.paragraph) 
+    ? rawVariant as keyof typeof elementStyles.paragraph
+    : 'muted';
+  
+  const mutedClasses = elementStyles.paragraph[effectiveVariant];
+  
+  return `<span class="${mutedClasses}">${props?.children || ''}</span>`;
 }

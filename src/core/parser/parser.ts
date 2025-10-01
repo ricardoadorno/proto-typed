@@ -4,7 +4,7 @@ import {
   Identifier, Colon, Button, 
   Row, Card, Separator, EmptyDiv, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, RadioOption, 
-  Checkbox, Text, Note, Quote, Col, List, Container, Grid,
+  Checkbox, Text, Paragraph, MutedText, Note, Quote, Col, List, Container, Grid,
   Header, Navigator, Drawer, FAB
 } from "../lexer/tokens";
 import { Indent, Outdent } from "../lexer/lexer";
@@ -158,6 +158,8 @@ export class UiDslParser extends CstParser {
   textElement = this.RULE("textElement", () => {
     this.OR([
       { ALT: () => this.CONSUME(Text) },
+      { ALT: () => this.CONSUME(Paragraph) },
+      { ALT: () => this.CONSUME(MutedText) },
       { ALT: () => this.CONSUME(Note) },
       { ALT: () => this.CONSUME(Quote) }
     ]);

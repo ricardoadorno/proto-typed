@@ -39,6 +39,9 @@ export const elementStyles = {
   },
     paragraph: {
     default: 'text-gray-300 mb-4 leading-relaxed',
+    text: 'text-gray-300 leading-relaxed',
+    paragraph: 'text-gray-300 mb-4 leading-relaxed',
+    muted: 'text-gray-500 leading-relaxed',
     note: 'bg-red-500 text-white px-4 py-2 rounded-lg m-2 shadow-lg',
     quote: 'bg-gray-800 text-white px-4 py-2 rounded-lg m-2 shadow-lg'
   },

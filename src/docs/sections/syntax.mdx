@@ -9,10 +9,10 @@ This DSL composes UIs using indentation, concise tokens, and optional modifiers.
 
 ```dsl
 screen ScreenName:
-  > Content
+  >> Content
 
 component Block:
-  > Reusable
+  >> Reusable
 
 $Block
 ```
@@ -28,9 +28,9 @@ $Block
 ```dsl
 # H1
 ## H2
-> Body text
+>> Body text
 *> Note text
-" > Quote text
+"> Quote text
 ```
 
 </DslExample>
@@ -59,9 +59,9 @@ container:
   row:
     col:
       card:
-        > Inside a card
+        >> Inside a card
   grid:
-    > Grid content
+    >> Grid content
 ```
 
 </DslExample>
@@ -83,10 +83,10 @@ list:
 
 ```dsl
 modal Info:
-  > Informational dialog
+  >> Informational dialog
 
 drawer Menu:
-  > App navigation
+  >> App navigation
 
 @[Open Modal](Info)
 @[Open Drawer](Menu)

@@ -64,9 +64,11 @@ export interface ListWithComponentNode extends BaseAstNode {
 }
 
 export interface TextNode extends BaseAstNode {
-  type: 'text' | 'heading' | 'note' | 'quote';
+  type: 'Text' | 'Paragraph' | 'MutedText' | 'heading' | 'note' | 'quote';
   props: {
-    content: string;
+    content?: string;
+    children?: string;
+    variant?: string;
     level?: number;
   };
 }

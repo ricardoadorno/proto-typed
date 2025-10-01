@@ -9,11 +9,11 @@ Navigation connects screens and toggles named overlays like modals and drawers.
 
 ```dsl
 screen Home:
-  > Welcome
+  >> Welcome
   @[Go to About](About)
 
 screen About:
-  > About screen
+  >> About screen
   @[Back](Home)
 ```
 
@@ -26,7 +26,7 @@ screen About:
 <DslExample title="Links vs buttons" heightClassName="h-40">
 
 ```dsl
-> Explore our #[examples](/docs/examples)
+>> Explore our #[examples](/docs/examples)
 @[Open Examples](/docs/examples)
 ```
 
@@ -38,11 +38,11 @@ screen About:
 ```dsl
 modal Help:
   # Need Help?
-  > This modal opens from buttons
+  >> This modal opens from buttons
   @[Close]()
 
 drawer Nav:
-  > Drawer content
+  >> Drawer content
   #[Home](Home)
 ```
 

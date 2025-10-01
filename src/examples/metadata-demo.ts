@@ -7,7 +7,6 @@ export const metadataDemo = `screen Home:
   # Welcome to Route Metadata Demo
   > This demo shows how the route manager creates unified metadata
   @[Open Settings Modal](SettingsModal)
-  @[Open Navigation Drawer](NavigationDrawer)
   @[Go to Profile](Profile)
   
   container:
@@ -38,10 +37,6 @@ modal SettingsModal:
       @[Save](close)
       @[Cancel](close)
 
-drawer NavigationDrawer:
-  # Navigation
-  > Menu options
-  
   list:
     - [Home](Home)Home Page
     - [Profile](Profile)User Profile  

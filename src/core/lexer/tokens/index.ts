@@ -14,7 +14,7 @@ import {
   EmptyDiv 
 } from './structural.tokens';
 import { Input, RadioOption, Checkbox } from './input.tokens';
-import { Button, Link, Image, Heading, Text, Note, Quote } from './primitives.tokens';
+import { Button, Link, Image, Heading, Text, Paragraph, MutedText, Note, Quote } from './primitives.tokens';
 
 // Export all tokens
 export {
@@ -62,6 +62,8 @@ export {
   Image,
   Heading,
   Text,
+  Paragraph,
+  MutedText,
   Note,
   Quote
 };
@@ -83,6 +85,8 @@ export const allTokens = [
   Link,
   Image,
   Heading,
+  MutedText,
+  Paragraph,
   Text,
   Note,
   Quote,

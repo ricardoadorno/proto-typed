@@ -190,7 +190,7 @@ function generateParserSuggestion(expected: string[], foundToken: string): strin
     'Button': 'Use button syntax: @[Button Text](action)',
     'Link': 'Use link syntax: #[Link Text](target)',
     'Heading': 'Use heading syntax: # Heading Text',
-    'Text': 'Use text syntax: > Your text here',
+    'Text': 'Use text syntax: >> Your text here',
     'Input': 'Use input syntax: ___:Label{Placeholder}',
     'Image': 'Use image syntax: ![Alt Text](image-url)',
     'List': 'Use list syntax with list: followed by indented items',

@@ -23,7 +23,17 @@ export const Heading = createToken({
 
 export const Text = createToken({
   name: "Text",
+  pattern: />>\s+([^\n\r]+)/
+});
+
+export const Paragraph = createToken({
+  name: "Paragraph", 
   pattern: />\s+([^\n\r]+)/
+});
+
+export const MutedText = createToken({
+  name: "MutedText",
+  pattern: />>>\s+([^\n\r]+)/
 });
 
 export const Note = createToken({

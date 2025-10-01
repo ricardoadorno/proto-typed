@@ -20,7 +20,7 @@ import {
   renderContainer 
 } from '../nodes/layout-nodes';
 import { renderDrawer, renderDrawerItem, renderFAB, renderModal, renderNavigator, renderNavItem, renderScreen } from '../nodes/navigation-overlay-nodes';
-import { renderButton, renderHeading, renderImage, renderLink, renderParagraph } from '../nodes/primitive-nodes';
+import { renderButton, renderHeading, renderImage, renderLink, renderParagraph, renderText, renderMutedText } from '../nodes/primitive-nodes';
 import { renderCard, renderHeader, renderList, renderListItem, renderOrderedList, renderUnorderedList } from '../nodes/structured-content-node';
 
 /**
@@ -92,8 +92,14 @@ export function renderNode(node: AstNode, context?: string): string {
     case 'Heading':
       return renderHeading(node, context);
       
+    case 'Text':
+      return renderText(node);
+      
     case 'Paragraph':
       return renderParagraph(node);
+      
+    case 'MutedText':
+      return renderMutedText(node);
       
     // List nodes
     case 'OrderedList':

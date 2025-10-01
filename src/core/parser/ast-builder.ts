@@ -400,23 +400,37 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
   textElement(ctx: Context) {
     let variant = "text";
     let content = "";
+    let type = "Text";
 
     if (ctx.Text) {
       const match = ctx.Text[0].image.match(/>\s+([^\n\r]+)/);
       content = match ? match[1].trim() : '';
       variant = "text";
+      type = "Text";
+    } else if (ctx.Paragraph) {
+      const match = ctx.Paragraph[0].image.match(/>\s+([^\n\r]+)/);
+      content = match ? match[1].trim() : '';
+      variant = "paragraph";
+      type = "Paragraph";
+    } else if (ctx.MutedText) {
+      const match = ctx.MutedText[0].image.match(/>>>\s+([^\n\r]+)/);
+      content = match ? match[1].trim() : '';
+      variant = "muted";
+      type = "MutedText";
     } else if (ctx.Note) {
       const match = ctx.Note[0].image.match(/\*>\s+([^\n\r]+)/);
       content = match ? match[1].trim() : '';
       variant = "note";
+      type = "Text";
     } else if (ctx.Quote) {
       const match = ctx.Quote[0].image.match(/">\s+([^\n\r]+)/);
       content = match ? match[1].trim() : '';
       variant = "quote";
+      type = "Text";
     }
 
     return {
-      type: "Paragraph",
+      type,
       props: {
         variant,
         children: content
