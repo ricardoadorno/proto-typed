@@ -1,5 +1,5 @@
 import { AstNode } from '../../../types/ast-node';
-import { elementStyles, getFormControlClasses } from './styles/styles';
+import { elementStyles, getFormControlClasses, getInputInlineStyles, getLabelInlineStyles, getSelectInlineStyles, getCheckboxInlineStyles, getRadioInlineStyles } from './styles/styles';
 
 /**
  * Render input element
@@ -9,10 +9,10 @@ export function renderInput(node: AstNode): string {
   let inputHtml = '';
   
   if (inputProps?.label) {
-    inputHtml += `<label class="${elementStyles.label}">${inputProps.label}:${inputProps.required ? ' <span class="text-red-500">*</span>' : ''}\n`;
+    inputHtml += `<label class="${elementStyles.label}" style="${getLabelInlineStyles()}">${inputProps.label}:${inputProps.required ? ' <span style="color: var(--destructive);">*</span>' : ''}\n`;
   }
   
-  inputHtml += `  <input class="${elementStyles.input}" placeholder="${inputProps?.placeholder || ''}" />`;
+  inputHtml += `  <input class="${elementStyles.input}" style="${getInputInlineStyles()}" placeholder="${inputProps?.placeholder || ''}" />`;
 
   if (inputProps?.label) {
     inputHtml += '\n</label>';
@@ -30,8 +30,8 @@ export function renderRadioGroup(node: AstNode): string {
   const radioOptions = (props?.options || [])
     .map((option: { label: string, selected: boolean }) => `
       <label class="${getFormControlClasses()} mb-2">
-        <input type="radio" name="${radioName}" ${option.selected ? 'checked' : ''} class="${elementStyles.radio}" />
-        <span class="text-gray-700 dark:text-gray-300">${option.label}</span>
+        <input type="radio" name="${radioName}" ${option.selected ? 'checked' : ''} class="${elementStyles.radio}" style="${getRadioInlineStyles()}" />
+        <span style="color: var(--foreground);">${option.label}</span>
       </label>
     `)
     .join('\n');
@@ -46,7 +46,7 @@ export function renderSelect(node: AstNode): string {
   let selectHtml = '';
   
   if (selectProps?.label) {
-    selectHtml += `<label class="${elementStyles.label}">${selectProps.label}:${selectProps.required ? ' <span class="text-red-500">*</span>' : ''}\n`;
+    selectHtml += `<label class="${elementStyles.label}" style="${getLabelInlineStyles()}">${selectProps.label}:${selectProps.required ? ' <span style="color: var(--destructive);">*</span>' : ''}\n`;
   }
   
   const optionsHtml = (selectProps?.options || [])
@@ -59,7 +59,7 @@ export function renderSelect(node: AstNode): string {
     })
     .join('\n');
   
-  selectHtml += `  <select class="${elementStyles.select}">${optionsHtml}</select>`;
+  selectHtml += `  <select class="${elementStyles.select}" style="${getSelectInlineStyles()}">${optionsHtml}</select>`;
   
   if (selectProps?.label) {
     selectHtml += '\n</label>';
@@ -77,8 +77,8 @@ export function renderCheckbox(node: AstNode): string {
   const label = props?.label || '';
   return `
     <label class="${getFormControlClasses()}">
-      <input type="checkbox" ${checked ? 'checked' : ''} class="${elementStyles.checkbox}" />
-      <span class="text-gray-700 dark:text-gray-300">${label}</span>
+      <input type="checkbox" ${checked ? 'checked' : ''} class="${elementStyles.checkbox}" style="${getCheckboxInlineStyles()}" />
+      <span style="color: var(--foreground);">${label}</span>
     </label>
   `;
 }

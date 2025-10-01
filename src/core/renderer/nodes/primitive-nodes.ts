@@ -1,5 +1,5 @@
 import { AstNode } from '../../../types/ast-node';
-import { elementStyles, getButtonClasses } from './styles/styles';
+import { elementStyles, getButtonClasses, getButtonInlineStyles, getHeadingInlineStyles, getParagraphInlineStyles, getLinkInlineStyles } from './styles/styles';
 import { isLucideIcon, getLucideSvg } from '../../../utils/icon-utils';
 import { NavigationMediator } from '../infrastructure/navigation-mediator';
 
@@ -13,13 +13,15 @@ export function renderButton(node: AstNode, context?: string): string {
   
   const buttonNavAttrs = NavigationMediator.generateNavigationAttributes(buttonHref);
   const buttonClasses = `${getButtonClasses(context, variant)}`;
-    // Check if the button text is a Lucide icon name
+  const buttonInlineStyles = getButtonInlineStyles(variant || 'primary');
+  
+  // Check if the button text is a Lucide icon name
   if (isLucideIcon(buttonText)) {
     const iconSvg = getLucideSvg(buttonText);
-    return `<button class="${buttonClasses}" ${buttonNavAttrs}>${iconSvg}</button>`;
+    return `<button class="${buttonClasses}" style="${buttonInlineStyles}" ${buttonNavAttrs}>${iconSvg}</button>`;
   }
   
-  return `<button class="${buttonClasses}" ${buttonNavAttrs}>${buttonText} </button>`;
+  return `<button class="${buttonClasses}" style="${buttonInlineStyles}" ${buttonNavAttrs}>${buttonText} </button>`;
 }
 
 /**
@@ -33,7 +35,7 @@ export function renderLink(node: AstNode): string {
   const linkNavAttrs = NavigationMediator.generateNavigationAttributes(href);
   const linkHref = NavigationMediator.generateHrefAttribute(href);
 
-  return `<a class="${elementStyles.link}" ${linkHref} ${linkNavAttrs}>${linkText}</a>`;
+  return `<a class="${elementStyles.link}" style="${getLinkInlineStyles()}" ${linkHref} ${linkNavAttrs}>${linkText}</a>`;
 }
 
 /**
@@ -60,7 +62,7 @@ export function renderHeading(node: AstNode, context?: string): string {
     ? elementStyles.headerHeading[level as keyof typeof elementStyles.headerHeading] || elementStyles.headerHeading[1]
     : elementStyles.heading[level as keyof typeof elementStyles.heading] || elementStyles.heading[1];
   
-  return `<h${level} class="${headingStyles}">${props?.children || ''}</h${level}>`;
+  return `<h${level} class="${headingStyles}" style="${getHeadingInlineStyles()}">${props?.children || ''}</h${level}>`;
 }
 
 /**
@@ -75,8 +77,9 @@ export function renderText(node: AstNode): string {
     : 'text';
   
   const textClasses = elementStyles.paragraph[effectiveVariant];
+  const inlineStyles = getParagraphInlineStyles(effectiveVariant);
   
-  return `<span class="${textClasses}">${props?.children || ''}</span>`;
+  return `<span class="${textClasses}" style="${inlineStyles}">${props?.children || ''}</span>`;
 }
 
 /**
@@ -91,8 +94,9 @@ export function renderParagraph(node: AstNode): string {
     : 'paragraph';
   
   const paragraphClasses = elementStyles.paragraph[effectiveVariant];
+  const inlineStyles = getParagraphInlineStyles(effectiveVariant);
   
-  return `<p class="${paragraphClasses}">${props?.children || ''}</p>`;
+  return `<p class="${paragraphClasses}" style="${inlineStyles}">${props?.children || ''}</p>`;
 }
 
 /**

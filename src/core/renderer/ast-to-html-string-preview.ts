@@ -1,6 +1,7 @@
 import { AstNode } from '../../types/ast-node';
 import { RenderOptions } from '../../types/render';
 import { routeManager } from './core/route-manager';
+import { customPropertiesManager } from './core/theme-manager';
 import { setComponentDefinitions } from './nodes/component-nodes';
 import { renderAllScreens, renderGlobalElements } from './infrastructure/html-render-helper';
 
@@ -10,6 +11,14 @@ import { renderAllScreens, renderGlobalElements } from './infrastructure/html-re
  */
 export function astToHtmlStringPreview(ast: AstNode | AstNode[], options: RenderOptions = {}): string {
   try {
+    // Reset and process custom properties for this preview
+    customPropertiesManager.reset();
+    
+    // Process styles first to configure custom properties
+    const astArray = Array.isArray(ast) ? ast : [ast];
+    const stylesNodes = astArray.filter(node => node.type === 'styles');
+    customPropertiesManager.processStylesConfig(stylesNodes);
+
     // Process routes through the route manager
     routeManager.processRoutes(ast, {
       currentScreen: options.currentScreen || undefined
@@ -57,8 +66,22 @@ function generatePreviewHtml(context: any): string {
   // Render global elements (modals and drawers)
   const globalElementsHtml = renderGlobalElements(routeManager);
   
-  // Return wrapped HTML for preview (without script for in-app preview)
-  return `<div class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 text-white relative" data-preview-container="true">
+  // Generate complete CSS variables for scoped styling (theme + custom)
+  const allVariables = customPropertiesManager.generateAllCssVariables(true);
+  const scopedStyles = allVariables ? `
+    <style>
+      [data-preview-container="true"] {
+${allVariables}
+        /* Use CSS variables instead of hardcoded colors */
+        background: var(--background);
+        color: var(--foreground);
+        min-height: 100vh;
+        position: relative;
+      }
+    </style>` : '';
+  
+  // Return wrapped HTML for preview with only theme-based styling
+  return `${scopedStyles}<div data-preview-container="true">
 
     ${screensHtml}
     ${globalElementsHtml}

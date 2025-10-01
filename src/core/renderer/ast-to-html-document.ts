@@ -76,8 +76,8 @@ function generateHtmlDocumentTemplate(
     </script>`
   }
 
-  // Generate CSS variables from custom properties manager
-  const customVariables = customPropertiesManager.generateCustomCssVariables();
+  // Generate CSS variables from theme and custom properties
+  const allVariables = customPropertiesManager.generateAllCssVariables(true); // Dark mode
 
   return `
 <!DOCTYPE html>
@@ -88,10 +88,10 @@ function generateHtmlDocumentTemplate(
   ${scripts.tailwindCdn}
   ${scripts.tailwindConfig}
   ${scripts.lucideScript}
-  <title>Exported Screens</title>
+  <title>Exported Screens - ${customPropertiesManager.getCurrentThemeName()} theme</title>
   <style>
     :root {
-${customVariables}
+${allVariables}
     }
     
     html, body { 

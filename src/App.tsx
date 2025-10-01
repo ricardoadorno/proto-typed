@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { ExampleModal } from './components/examples';
 import AstModal from './components/ast-modal';
 import { DSLEditor } from './core/editor';
 import { useParse } from './hooks/use-parse';
@@ -8,6 +7,7 @@ import {
     ActionButtons,
     ExampleButtons,
     DeviceSelector,
+    ThemeSelector,
     PreviewDevice,
     EditorPanel,
     PreviewPanel,
@@ -17,10 +17,12 @@ import { exportDocument } from './utils';
 import { exampleConfigs } from './examples';
 import { Link } from 'react-router-dom';
 import { astToHtmlDocument } from './core/renderer/ast-to-html-document';
+import { customPropertiesManager } from './core/renderer/core/theme-manager';
 
 export default function App() {
     const [input, setInput] = useState(exampleConfigs[0].code || "");
     const [uiStyle, setUiStyle] = useState("iphone-x");
+    const [selectedTheme, setSelectedTheme] = useState("neutral");
     const {
         ast,
         astResultJson,
@@ -60,6 +62,13 @@ export default function App() {
         handleParse(input);
     }, [input, handleParse]);
 
+    // Sync theme changes with the theme manager
+    useEffect(() => {
+        customPropertiesManager.setExternalTheme(selectedTheme);
+        // Trigger re-parsing to apply theme changes
+        handleParse(input);
+    }, [selectedTheme, input, handleParse]);
+
     return (<div className="min-h-full bg-gradient-to-br from-slate-900 to-slate-800 pb-8">
         <div className="w-full">
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6">
@@ -87,6 +96,11 @@ export default function App() {
                         <DeviceSelector
                             value={uiStyle}
                             onChange={setUiStyle}
+                        />
+
+                        <ThemeSelector
+                            value={selectedTheme}
+                            onChange={setSelectedTheme}
                         />
                     </div>
                     <EditorPanel>

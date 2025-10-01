@@ -1,10 +1,30 @@
 import { AstNode } from '../../../types/ast-node';
+import { availableThemes, generateThemeCssVariables, getThemeByName, Theme } from '../../themes/theme-definitions';
 
 /**
- * Custom CSS properties manager for processing styles configurations
+ * Combined theme and custom CSS properties manager
  */
 export class CustomPropertiesManager {
   private customProperties: Record<string, string> = {};
+  private selectedTheme: Theme;
+
+  constructor() {
+    this.selectedTheme = availableThemes.neutral; // Default theme
+  }
+
+  /**
+   * Set external theme (from UI selector)
+   */
+  setExternalTheme(themeName: string): void {
+    this.selectedTheme = getThemeByName(themeName);
+  }
+
+  /**
+   * Get current theme name
+   */
+  getCurrentThemeName(): string {
+    return this.selectedTheme.name;
+  }
 
   /**
    * Process styles configuration from AST
@@ -29,6 +49,16 @@ export class CustomPropertiesManager {
   }
 
   /**
+   * Generate complete CSS variables (theme + custom properties)
+   */
+  generateAllCssVariables(isDark: boolean = true): string {
+    const themeVars = generateThemeCssVariables(this.selectedTheme, isDark);
+    const customVars = this.generateCustomCssVariables();
+    
+    return customVars ? `${themeVars}\n${customVars}` : themeVars;
+  }
+
+  /**
    * Generate CSS variables for custom properties only
    */
   generateCustomCssVariables(): string {
@@ -45,10 +75,11 @@ export class CustomPropertiesManager {
   }
 
   /**
-   * Reset custom properties manager
+   * Reset custom properties manager (keeps external theme)
    */
   reset(): void {
     this.customProperties = {};
+    // Note: We don't reset selectedTheme here as it's controlled externally
   }
 }
 

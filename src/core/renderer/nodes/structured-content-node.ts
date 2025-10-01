@@ -1,5 +1,5 @@
 import { AstNode } from '../../../types/ast-node';
-import { elementStyles } from './styles/styles';
+import { elementStyles, getCardInlineStyles, getListInlineStyles, getListItemInlineStyles } from './styles/styles';
 import { findComponentDefinitions, substitutePropsInElement } from './component-nodes';
 
 /**
@@ -10,7 +10,7 @@ export function renderOrderedList(node: AstNode): string {
   const olItems = (props?.items || [])
     .map((item: string) => `<li class="${elementStyles.listItem}">${item}</li>`)
     .join('\n');
-  return `<ol class="${elementStyles.orderedList}">${olItems}</ol>`;
+  return `<ol class="${elementStyles.orderedList}" style="${getListInlineStyles()}">${olItems}</ol>`;
 }
 
 /**
@@ -28,7 +28,7 @@ export function renderUnorderedList(node: AstNode): string {
       return `<li class="${elementStyles.listItem}">${item}</li>`;
     })
     .join('\n');
-  return `<ul class="${elementStyles.unorderedList}">${ulItems}</ul>`;
+  return `<ul class="${elementStyles.unorderedList}" style="${getListInlineStyles()}">${ulItems}</ul>`;
 }
 
 /**
@@ -42,21 +42,19 @@ export function renderList(node: AstNode, context?: string, nodeRenderer?: (node
     const { componentName, dataItems } = props;
     
     if (!componentName || !dataItems || !Array.isArray(dataItems)) {
-      return '<div class="text-red-500">Error: Invalid list with component data</div>';
+      return '<div style="color: var(--destructive);">Error: Invalid list with component data</div>';
     }
 
     const components = findComponentDefinitions();
     const componentDef = components.find((comp: any) => comp.name === componentName);
     
     if (!componentDef) {
-      return `<div class="text-red-500">Error: Component "${componentName}" not found</div>`;
+      return `<div style="color: var(--destructive);">Error: Component "${componentName}" not found</div>`;
     }
-
+    
     if (!nodeRenderer) {
-      return `<div class="text-red-500">Error: Node renderer not provided</div>`;
-    }
-
-    // Render each data item using the component as template
+      return `<div style="color: var(--destructive);">Error: Node renderer not provided</div>`;
+    }    // Render each data item using the component as template
     const renderedItems = dataItems.map((itemProps: string[]) => {
       const componentElements = componentDef.elements || [];
       return componentElements
@@ -85,8 +83,8 @@ export function renderListItem(node: AstNode): string {
   const { text } = props || {};
   
   return `
-    <div class="${elementStyles.simpleListItem}">
-      <span class="text-gray-700 dark:text-gray-300">${text || ''}</span>
+    <div class="${elementStyles.simpleListItem}" style="${getListItemInlineStyles()}">
+      <span style="color: var(--foreground);">${text || ''}</span>
     </div>  `;
 }
 
@@ -112,5 +110,5 @@ export function renderHeader(node: AstNode, nodeRenderer?: (node: AstNode, conte
 export function renderCard(node: AstNode, context?: string, nodeRenderer?: (node: AstNode, context?: string) => string): string {
   const cardElements = node.elements && nodeRenderer ? 
     node.elements.flat().map(element => nodeRenderer(element, context)).join('\n') : '';
-  return `<article class="${elementStyles.card}">${cardElements}</article>`;
+  return `<article class="${elementStyles.card}" style="${getCardInlineStyles()}">${cardElements}</article>`;
 }

@@ -5,66 +5,66 @@
 
 // Basic element styles using CSS variables for theming
 export const elementStyles = {
-  // Button variants - now using CSS variables
-  button: 'inline-flex items-center justify-center px-4 py-2 rounded-[--radius] bg-primary hover:bg-primary/90 text-primary-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors duration-200',
-  buttonGhost: 'inline-flex items-center justify-center px-4 py-2 rounded-[--radius] bg-transparent hover:bg-accent text-foreground hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors duration-200',
-  buttonOutline: 'inline-flex items-center justify-center px-4 py-2 rounded-[--radius] bg-background border border-input hover:bg-accent text-foreground hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors duration-200',
-  buttonSecondary: 'inline-flex items-center justify-center px-4 py-2 rounded-[--radius] bg-secondary hover:bg-secondary/80 text-secondary-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors duration-200',
-  buttonDestructive: 'inline-flex items-center justify-center px-4 py-2 rounded-[--radius] bg-destructive hover:bg-destructive/90 text-destructive-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-colors duration-200',
-  buttonWarning: 'inline-flex items-center justify-center px-4 py-2 rounded-[--radius] bg-yellow-600 hover:bg-yellow-700 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-colors duration-200',
+  // Button variants - now using inline styles with CSS variables
+  button: 'inline-flex items-center justify-center px-4 py-2 focus:outline-none focus:ring-2 transition-colors duration-200',
+  buttonGhost: 'inline-flex items-center justify-center px-4 py-2 focus:outline-none focus:ring-2 transition-colors duration-200',
+  buttonOutline: 'inline-flex items-center justify-center px-4 py-2 focus:outline-none focus:ring-2 transition-colors duration-200',
+  buttonSecondary: 'inline-flex items-center justify-center px-4 py-2 focus:outline-none focus:ring-2 transition-colors duration-200',
+  buttonDestructive: 'inline-flex items-center justify-center px-4 py-2 focus:outline-none focus:ring-2 transition-colors duration-200',
+  buttonWarning: 'inline-flex items-center justify-center px-4 py-2 focus:outline-none focus:ring-2 transition-colors duration-200',
   
-  // Form elements using CSS variables
-  input: 'w-full px-3 py-2 border border-input rounded-[--radius] shadow-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-input bg-background text-foreground',
-  label: 'block text-sm font-medium text-foreground mb-2',
-  select: 'w-full px-3 py-2 border border-input rounded-[--radius] shadow-sm focus:outline-none focus:ring-2 focus:ring-ring focus:border-input bg-background text-foreground',
-  checkbox: 'w-4 h-4 text-primary bg-background border-input rounded focus:ring-primary ring-offset-background focus:ring-2',
-  radio: 'w-4 h-4 text-primary bg-background border-input focus:ring-primary ring-offset-background focus:ring-2',
+  // Form elements - using base classes only
+  input: 'w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors',
+  label: 'block text-sm font-medium mb-2',
+  select: 'w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors',
+  checkbox: 'w-4 h-4 rounded focus:ring-2 transition-colors',
+  radio: 'w-4 h-4 focus:ring-2 transition-colors',
 
-  // Typography using CSS variables
+  // Typography - using base classes only
   heading: {
-    1: 'text-4xl font-bold text-foreground mb-6',
-    2: 'text-3xl font-bold text-foreground mb-5',
-    3: 'text-2xl font-bold text-foreground mb-4',
-    4: 'text-xl font-bold text-foreground mb-3',
-    5: 'text-lg font-bold text-foreground mb-2',
-    6: 'text-base font-bold text-foreground mb-2'
+    1: 'text-4xl font-bold mb-6',
+    2: 'text-3xl font-bold mb-5',
+    3: 'text-2xl font-bold mb-4',
+    4: 'text-xl font-bold mb-3',
+    5: 'text-lg font-bold mb-2',
+    6: 'text-base font-bold mb-2'
   },
   
   // Header-specific headings (smaller, no margins/padding)
   headerHeading: {
-    1: 'text-lg font-bold text-foreground',
-    2: 'text-lg font-bold text-foreground',
-    3: 'text-base font-bold text-foreground',
-    4: 'text-base font-bold text-foreground',
-    5: 'text-sm font-bold text-foreground',
-    6: 'text-sm font-bold text-foreground'
+    1: 'text-lg font-bold',
+    2: 'text-lg font-bold',
+    3: 'text-base font-bold',
+    4: 'text-base font-bold',
+    5: 'text-sm font-bold',
+    6: 'text-sm font-bold'
   },
 
   paragraph: {
-    default: 'text-foreground mb-4 leading-relaxed',
-    text: 'text-foreground leading-relaxed',
-    paragraph: 'text-foreground mb-4 leading-relaxed',
-    muted: 'text-muted-foreground leading-relaxed',
-    note: 'bg-destructive text-destructive-foreground px-4 py-2 rounded-[--radius] m-2 shadow-lg',
-    quote: 'bg-muted text-muted-foreground px-4 py-2 rounded-[--radius] m-2 shadow-lg border-l-4 border-primary'
+    default: 'mb-4 leading-relaxed',
+    text: 'leading-relaxed',
+    paragraph: 'mb-4 leading-relaxed',
+    muted: 'leading-relaxed',
+    note: 'px-4 py-2 m-2 shadow-lg',
+    quote: 'px-4 py-2 m-2 shadow-lg border-l-4'
   },
   
-  link: 'text-primary hover:text-primary/80 underline transition-colors duration-200',
+  link: 'underline transition-colors duration-200',
 
-  // Layout components using CSS variables
+  // Layout components - using base classes only
   container: 'container mx-auto px-4',
   grid: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6',
-  card: 'bg-card rounded-[--radius] border border-border shadow-lg p-6 mb-6',
+  card: 'shadow-lg p-6 mb-6',
   row: 'flex flex-wrap gap-4 mb-4',
   col: 'grid grid-cols-1 @md:grid-cols-2 @lg:grid-cols-3 gap-6',
   
-  // Lists using CSS variables
-  orderedList: 'list-decimal list-inside space-y-2 mb-4 text-foreground',
-  unorderedList: 'list-disc list-inside space-y-2 mb-4 text-foreground',
+  // Lists - using base classes only
+  orderedList: 'list-decimal list-inside space-y-2 mb-4',
+  unorderedList: 'list-disc list-inside space-y-2 mb-4',
   listItem: 'mb-2',
   
-  // List items using CSS variables
-  simpleListItem: 'flex justify-between items-center p-3 bg-card border border-border rounded-[--radius] shadow-sm hover:shadow-md transition-shadow duration-200',
+  // List items - using base classes only
+  simpleListItem: 'flex justify-between items-center p-3 shadow-sm hover:shadow-md transition-shadow duration-200',
   
   // Mobile components using CSS variables
   header: 'sticky top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border px-6 py-4 flex items-center justify-between min-h-[72px]',
@@ -134,4 +134,152 @@ export function getFormControlClasses(): string {
 export function getScreenClasses(layoutClasses: string[]): string {
   const baseClasses = 'screen container';
   return `${baseClasses} ${layoutClasses.join(' ')}`;
+}
+
+/**
+ * Generate inline styles for button variants using CSS variables
+ */
+export function getButtonInlineStyles(variant: 'primary' | 'ghost' | 'outline' | 'secondary' | 'destructive' | 'warning'): string {
+  const baseStyle = 'border-radius: var(--radius); focus-ring-color: var(--ring);';
+  
+  switch (variant) {
+    case 'primary':
+      return `${baseStyle} background-color: var(--primary); color: var(--primary-foreground);`;
+    case 'ghost':
+      return `${baseStyle} background-color: transparent; color: var(--foreground);`;
+    case 'outline':
+      return `${baseStyle} background-color: var(--background); border: 1px solid var(--input); color: var(--foreground);`;
+    case 'secondary':
+      return `${baseStyle} background-color: var(--secondary); color: var(--secondary-foreground);`;
+    case 'destructive':
+      return `${baseStyle} background-color: var(--destructive); color: var(--destructive-foreground);`;
+    case 'warning':
+      return `${baseStyle} background-color: #dc7609; color: white;`;
+    default:
+      return `${baseStyle} background-color: var(--primary); color: var(--primary-foreground);`;
+  }
+}
+
+/**
+ * Generate inline styles for form elements using CSS variables
+ */
+export function getInputInlineStyles(): string {
+  return 'border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);';
+}
+
+export function getLabelInlineStyles(): string {
+  return 'color: var(--foreground);';
+}
+
+export function getSelectInlineStyles(): string {
+  return 'border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);';
+}
+
+export function getCheckboxInlineStyles(): string {
+  return 'accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);';
+}
+
+export function getRadioInlineStyles(): string {
+  return 'accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);';
+}
+
+/**
+ * Generate inline styles for typography elements using CSS variables
+ */
+export function getHeadingInlineStyles(): string {
+  return 'color: var(--foreground);';
+}
+
+export function getParagraphInlineStyles(variant: 'default' | 'text' | 'paragraph' | 'muted' | 'note' | 'quote'): string {
+  const baseStyle = 'border-radius: var(--radius);';
+  
+  switch (variant) {
+    case 'muted':
+      return 'color: var(--muted-foreground);';
+    case 'note':
+      return `${baseStyle} background-color: var(--destructive); color: var(--destructive-foreground);`;
+    case 'quote':
+      return `${baseStyle} background-color: var(--muted); color: var(--muted-foreground); border-left-color: var(--primary);`;
+    default:
+      return 'color: var(--foreground);';
+  }
+}
+
+export function getLinkInlineStyles(): string {
+  return 'color: var(--primary);';
+}
+
+/**
+ * Generate inline styles for layout elements using CSS variables
+ */
+export function getCardInlineStyles(): string {
+  return 'background-color: var(--card); border-radius: var(--radius); border: 1px solid var(--border);';
+}
+
+/**
+ * Generate inline styles for list elements using CSS variables
+ */
+export function getListInlineStyles(): string {
+  return 'color: var(--foreground);';
+}
+
+export function getListItemInlineStyles(): string {
+  return 'background-color: var(--card); border: 1px solid var(--border); border-radius: var(--radius);';
+}
+
+/**
+ * Generate inline styles for mobile/navigation elements using CSS variables
+ */
+export function getHeaderInlineStyles(): string {
+  return 'background-color: var(--background); border-bottom-color: var(--border);';
+}
+
+export function getHeaderTitleInlineStyles(): string {
+  return 'color: var(--foreground);';
+}
+
+export function getNavigatorInlineStyles(): string {
+  return 'background-color: var(--background); border-top-color: var(--border);';
+}
+
+export function getNavItemInlineStyles(): string {
+  return 'color: var(--muted-foreground); border-radius: var(--radius);';
+}
+
+export function getDrawerItemInlineStyles(): string {
+  return 'color: var(--foreground); border-radius: var(--radius);';
+}
+
+/**
+ * Generate inline styles for FAB elements using CSS variables
+ */
+export function getFabInlineStyles(): string {
+  return 'background-color: var(--primary); color: var(--primary-foreground);';
+}
+
+export function getFabItemBtnInlineStyles(): string {
+  return 'background-color: var(--secondary); color: var(--secondary-foreground);';
+}
+
+export function getFabItemLabelInlineStyles(): string {
+  return 'background-color: var(--popover); color: var(--popover-foreground); border-radius: var(--radius);';
+}
+
+/**
+ * Generate inline styles for modal and drawer elements using CSS variables
+ */
+export function getModalBackdropInlineStyles(): string {
+  return 'background-color: var(--background);';
+}
+
+export function getModalContentInlineStyles(): string {
+  return 'background-color: var(--card); border-radius: var(--radius); border: 1px solid var(--border);';
+}
+
+export function getModalCloseInlineStyles(): string {
+  return 'color: var(--muted-foreground);';
+}
+
+export function getDrawerInlineStyles(): string {
+  return 'background-color: var(--card); border-right: 1px solid var(--border);';
 }
