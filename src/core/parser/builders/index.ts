@@ -20,3 +20,6 @@ export * from './content.builders';
 
 // Navigation and overlay builders
 export * from './navigation.builders';
+
+// Styles and theming builders
+export * from './styles-builder';

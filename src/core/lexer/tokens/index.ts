@@ -14,6 +14,7 @@ import {
 } from './structural.tokens';
 import { Input, RadioOption, Checkbox } from './input.tokens';
 import { Button, Link, Image, Heading, Text, Paragraph, MutedText, Note, Quote } from './primitives.tokens';
+import { Styles, CssProperty } from './styles.tokens';
 
 // Export all tokens
 export {
@@ -63,13 +64,20 @@ export {
   Paragraph,
   MutedText,
   Note,
-  Quote
+  Quote,
+  
+  // Styles & Theming
+  Styles,
+  CssProperty
 };
 
 // All tokens array - order matters for matching precedence
 export const allTokens = [
   NewLine,
   WhiteSpace,
+  // Styles tokens must come early for proper matching
+  Styles,
+  CssProperty,
   Screen,
   Component,
   Modal,

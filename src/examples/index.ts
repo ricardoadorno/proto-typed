@@ -12,9 +12,11 @@ import metadataDemo from './metadata-demo';
 import { layoutModifiersExample } from './layout-modifiers';
 import componentPropsDemo from './component-props-demo';
 import testStructuralTokens from './test-structural-tokens';
+import customStylesDemo from './custom-styles-demo';
 
 // Example configuration for UI
 export const exampleConfigs = [
+  { label: "Custom Styles Demo", code: customStylesDemo },
   { label: "Test Structural Tokens", code: testStructuralTokens },
   { label: "Login Example", code: login },
   { label: "Dashboard Example", code: dashboard },

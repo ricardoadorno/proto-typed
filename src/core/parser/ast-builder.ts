@@ -32,7 +32,10 @@ import {
   buildFABElement,
   buildNavItemElement,
   buildDrawerItemElement,
-  buildComponentInstanceElement
+  buildComponentInstanceElement,
+  // Styles builders
+  buildStyles,
+  buildStyleDeclaration
 } from './builders';
 
 type Context = {
@@ -48,18 +51,19 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     this.validateVisitor();
   }
 
-  /** Parse and process the entire program, including global elements (screens, components, modals, drawers)
+  /** Parse and process the entire program, including global elements (screens, components, modals, drawers, styles)
    * @param ctx - The parsing context containing all top-level elements
    * @returns Array of all processed global elements
    */
   program(ctx: Context) {
-    // Process multiple screens, components, modals, and drawers as global elements
+    // Process multiple screens, components, modals, drawers, and styles as global elements
+    const styles = ctx.styles ? ctx.styles.map((style: CstNode) => this.visit(style)) : [];
     const screens = ctx.screen ? ctx.screen.map((screen: CstNode) => this.visit(screen)) : [];
     const components = ctx.component ? ctx.component.map((component: CstNode) => this.visit(component)) : [];
     const modals = ctx.modal ? ctx.modal.map((modal: CstNode) => this.visit(modal)) : [];
     const drawers = ctx.drawer ? ctx.drawer.map((drawer: CstNode) => this.visit(drawer)) : [];
     
-    return [...screens, ...components, ...modals, ...drawers];
+    return [...styles, ...screens, ...components, ...modals, ...drawers];
   }
   screen(ctx: Context) {
     return buildScreen(ctx, this);
@@ -191,6 +195,20 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
    */
   modal(ctx: Context) {
     return buildModal(ctx, this);
+  }
+
+  /**
+   * Process styles configuration declaration
+   */
+  styles(ctx: Context) {
+    return buildStyles(ctx);
+  }
+
+  /**
+   * Process individual style declaration
+   */
+  styleDeclaration(ctx: Context) {
+    return buildStyleDeclaration(ctx);
   }
 }
 

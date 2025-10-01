@@ -5,7 +5,7 @@ import {
   Row, Card, Separator, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, RadioOption, 
   Checkbox, Text, Paragraph, MutedText, Note, Quote, Col, List, Container, Grid,
-  Header, Navigator, Drawer, FAB
+  Header, Navigator, Drawer, FAB, Styles, CssProperty
 } from "../lexer/tokens";
 import { Indent, Outdent } from "../lexer/lexer";
 
@@ -17,10 +17,11 @@ export class UiDslParser extends CstParser {
     });
     this.performSelfAnalysis();
   }  
-    // Top-level rule that can parse multiple screens, components, modals, and drawers
+  // Top-level rule that can parse multiple screens, components, modals, drawers, and styles
   program = this.RULE("program", () => {
     this.MANY(() => {
       this.OR([
+        { ALT: () => this.SUBRULE(this.styles) },
         { ALT: () => this.SUBRULE(this.screen) },
         { ALT: () => this.SUBRULE(this.component) },
         { ALT: () => this.SUBRULE(this.modal) },
@@ -36,6 +37,24 @@ export class UiDslParser extends CstParser {
     });
   });
   
+  // Styles configuration rule
+  styles = this.RULE("styles", () => {
+    this.CONSUME(Styles);
+    this.CONSUME(Colon);
+    this.MANY(() => {
+      this.OR([
+        { ALT: () => this.CONSUME(Indent) },
+        { ALT: () => this.CONSUME(Outdent) },
+        { ALT: () => this.SUBRULE(this.styleDeclaration) }
+      ]);
+    });
+  });
+
+  // Style declaration rule for custom properties only
+  styleDeclaration = this.RULE("styleDeclaration", () => {
+    this.CONSUME(CssProperty);
+  });
+
   // Root rule for a single screen
   screen = this.RULE("screen", () => {
     this.CONSUME(Screen);

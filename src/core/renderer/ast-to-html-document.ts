@@ -1,5 +1,6 @@
 import { AstNode } from '../../types/ast-node';
 import { routeManager } from './core/route-manager';
+import { customPropertiesManager } from './core/theme-manager';
 import { setComponentDefinitions } from './nodes/component-nodes';
 import { renderGlobalElements, renderScreenForDocument } from './infrastructure/html-render-helper';
 
@@ -8,6 +9,14 @@ import { renderGlobalElements, renderScreenForDocument } from './infrastructure/
  */
 export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
   try {
+    // Reset custom properties manager for each document generation
+    customPropertiesManager.reset();
+    
+    // Process styles first to configure custom properties
+    const astArray = Array.isArray(ast) ? ast : [ast];
+    const stylesNodes = astArray.filter(node => node.type === 'styles');
+    customPropertiesManager.processStylesConfig(stylesNodes);
+    
     // Process routes through the route manager
     routeManager.processRoutes(ast);
 
@@ -67,6 +76,9 @@ function generateHtmlDocumentTemplate(
     </script>`
   }
 
+  // Generate CSS variables from custom properties manager
+  const customVariables = customPropertiesManager.generateCustomCssVariables();
+
   return `
 <!DOCTYPE html>
 <html lang="en" class="dark">
@@ -78,14 +90,19 @@ function generateHtmlDocumentTemplate(
   ${scripts.lucideScript}
   <title>Exported Screens</title>
   <style>
+    :root {
+${customVariables}
+    }
+    
     html, body { 
       min-height: 100%; 
-      background: linear-gradient(to bottom right, #0f172a, #1e293b);
+      background: var(--background);
+      color: var(--foreground);
     }
     .screen { transition: background 0.3s; }
   </style>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 pb-8">  ${screensHtml}${globalElementsHtml}  ${scripts.darkModeScript}
+<body class="min-h-screen bg-background text-foreground pb-8">  ${screensHtml}${globalElementsHtml}  ${scripts.darkModeScript}
   ${scripts.lucideInitScript}  <script>
     ${navigationScript}
   </script>
