@@ -27,6 +27,10 @@ export function buildInputElement(ctx: Context) {
     const contentMatch = inputText.match(/\[([^\]]*)\]/);
     const content = contentMatch ? contentMatch[1].trim() : '';
     
+    // Extract variable binding if present
+    const variableMatch = inputText.match(/\((%[a-zA-Z_][a-zA-Z0-9_]*)\)/);
+    const variableBinding = variableMatch ? variableMatch[1] : undefined;
+    
     // Default props that will always be included
     const props: Record<string, any> = {
       type: isPassword ? 'password' : 'text',
@@ -41,6 +45,11 @@ export function buildInputElement(ctx: Context) {
     // Only add placeholder if it exists
     if (placeholderMatch && placeholderMatch[1].trim()) {
       props.placeholder = placeholderMatch[1].trim();
+    }
+    
+    // Add variable binding if present
+    if (variableBinding) {
+      props.variableBinding = variableBinding;
     }
     
     // Check if this is a select field (has pipe-separated options)

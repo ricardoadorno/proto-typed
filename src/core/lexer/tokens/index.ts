@@ -1,6 +1,6 @@
 // Import all token families
 import { WhiteSpace, NewLine, BlankLine } from './whitespace.tokens';
-import { Screen, Component, Modal,Drawer, ComponentInstance, ComponentInstanceWithProps, PropVariable, Colon, Identifier } from './screen-overlay.tokens';
+import { Screen, Component, Modal,Drawer, ComponentInstance, ComponentInstanceWithProps, ComponentInstanceWithDataSource, PropVariable, Colon, Identifier } from './screen-overlay.tokens';
 import { Row, Col, Grid, Container } from './layout.tokens';
 import { 
   List, 
@@ -13,7 +13,7 @@ import {
   Separator, 
 } from './structural.tokens';
 import { Input, RadioOption, Checkbox } from './input.tokens';
-import { Button, Link, Image, Heading, Text, Paragraph, MutedText, Note, Quote } from './primitives.tokens';
+import { Button, Link, Image, Heading, Text, Paragraph, MutedText, Note, Quote, ButtonWithMutation } from './primitives.tokens';
 import { Styles, CssProperty } from './styles.tokens';
 
 // Export all tokens
@@ -29,6 +29,7 @@ export {
   Modal,
   ComponentInstance,
   ComponentInstanceWithProps,
+  ComponentInstanceWithDataSource,
   PropVariable,
   Colon,
   Identifier,
@@ -57,6 +58,7 @@ export {
   
   // Primitive Elements
   Button,
+  ButtonWithMutation,
   Link,
   Image,
   Heading,
@@ -82,11 +84,13 @@ export const allTokens = [
   Component,
   Modal,
   Drawer,
+  ComponentInstanceWithDataSource, // Must come before other ComponentInstance tokens for correct matching
   ComponentInstanceWithProps, // Must come before ComponentInstance for correct matching
   ComponentInstance,
   PropVariable,
   FAB,
   Input,
+  ButtonWithMutation, // Must come before Button for correct matching
   Button,
   Link,
   Image,

@@ -6,6 +6,11 @@ export const Button = createToken({
   pattern: /@([_+\-=!]?)\[([^\]]+)\](?:\{([^}]+)\})?(?:\(([^)]+)\))?/ 
 });
 
+export const ButtonWithMutation = createToken({
+  name: "ButtonWithMutation",
+  pattern: /@([_+\-=!]?)\[([^\]]+)\]\(st:\/\/([^\s\n\r)]+)\)/
+});
+
 export const Link = createToken({
   name: "Link",
   pattern: /#\[([^\]]+)\](?:\(([^)]+)\))?/

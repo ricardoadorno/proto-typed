@@ -352,6 +352,118 @@ function generateNavigationScript(): string {
       }
     });
     
+    // Form Mutation Manager for handling data operations
+    class FormMutationManager {
+      constructor() {
+        this.initializeEventListeners();
+      }
+
+      initializeEventListeners() {
+        document.addEventListener('click', this.handleButtonClick.bind(this));
+      }
+
+      async handleButtonClick(event) {
+        const target = event.target;
+        
+        if (target.tagName === 'BUTTON' && target.hasAttribute('data-form-submit')) {
+          const mutationType = target.getAttribute('data-mutation-type');
+          const mutationKey = target.getAttribute('data-mutation-key');
+          
+          if (mutationType === 'session_storage' && mutationKey) {
+            await this.handleSessionStorageMutation(mutationKey);
+          }
+        }
+      }
+
+      async handleSessionStorageMutation(key) {
+        try {
+          const formData = this.collectFormData();
+          
+          if (Object.keys(formData).length === 0) {
+            console.warn('No form data to submit');
+            return;
+          }
+
+          // Get existing data
+          const existingData = sessionStorage.getItem('proto-typed:data:' + key);
+          
+          if (existingData) {
+            // Update existing data (merge)
+            const existing = JSON.parse(existingData);
+            const updated = { ...existing, ...formData };
+            sessionStorage.setItem('proto-typed:data:' + key, JSON.stringify(updated));
+            this.showSuccessMessage('Data updated successfully!');
+          } else {
+            // Create new data
+            sessionStorage.setItem('proto-typed:data:' + key, JSON.stringify(formData));
+            this.showSuccessMessage('Data saved successfully!');
+          }
+          
+          console.log('Data saved to storage:', key, formData);
+        } catch (error) {
+          console.error('Error during mutation:', error);
+          this.showErrorMessage('An error occurred while saving data');
+        }
+      }
+
+      collectFormData() {
+        const formData = {};
+        const formControls = document.querySelectorAll('[data-form-control="true"][data-variable-binding]');
+        
+        formControls.forEach(control => {
+          const variableBinding = control.getAttribute('data-variable-binding');
+          if (!variableBinding) return;
+          
+          const variableName = variableBinding.replace(/^%/, '');
+          
+          if (control.tagName === 'INPUT') {
+            let value = control.value;
+            
+            if (control.type === 'checkbox') {
+              value = control.checked;
+            } else if (control.type === 'number') {
+              value = parseFloat(control.value) || 0;
+            }
+            
+            formData[variableName] = value;
+          } else if (control.tagName === 'SELECT' || control.tagName === 'TEXTAREA') {
+            formData[variableName] = control.value;
+          }
+        });
+        
+        return formData;
+      }
+
+      showSuccessMessage(message) {
+        this.showMessage(message, 'success');
+      }
+
+      showErrorMessage(message) {
+        this.showMessage(message, 'error');
+      }
+
+      showMessage(message, type) {
+        const toast = document.createElement('div');
+        toast.className = \`fixed top-4 right-4 p-4 rounded-md shadow-lg z-50 \${
+          type === 'success' 
+            ? 'bg-green-500 text-white' 
+            : 'bg-red-500 text-white'
+        }\`;
+        toast.textContent = message;
+        
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+          if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+          }
+        }, 3000);
+      }
+    }
+    
+    // Initialize form mutation manager
+    const formMutationManager = new FormMutationManager();
+    
     // Initialize navigation history when page loads
     document.addEventListener('DOMContentLoaded', function() {
       initializeNavigation();

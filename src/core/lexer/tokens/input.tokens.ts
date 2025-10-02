@@ -3,7 +3,7 @@ import { createToken } from "chevrotain";
 // Input Family Tokens
 export const Input = createToken({ 
   name: "Input", 
-  pattern: /___[\*\-]?(?::([^\n\r:{}[\]]+))?(?:\{([^}]+)\})?(?:\[([^\]]*)\])?/
+  pattern: /___[\*\-]?(?::([^\n\r:{}[\]()]+))?(?:\{([^}]+)\})?(?:\[([^\]]*)\])?(?:\((%[a-zA-Z_][a-zA-Z0-9_]*)\))?/
 });
 
 export const RadioOption = createToken({

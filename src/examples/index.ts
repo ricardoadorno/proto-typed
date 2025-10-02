@@ -13,10 +13,17 @@ import { layoutModifiersExample } from './layout-modifiers';
 import componentPropsDemo from './component-props-demo';
 import testStructuralTokens from './test-structural-tokens';
 import customStylesDemo from './custom-styles-demo';
+import { dataGatewayDemo } from './data-gateway-demo';
+import { formMutationDemo, completeFormExample } from './form-mutation-demo';
+import { dataComponentDemo } from './data-component-demo';
 
 // Example configuration for UI
 export const exampleConfigs = [
   { label: "Login Example", code: login },
+  { label: "Form Mutation Demo", code: formMutationDemo },
+  { label: "Complete Form Example", code: completeFormExample },
+  { label: "Data Component Demo", code: dataComponentDemo },
+  { label: "Data Gateway Demo", code: dataGatewayDemo },
   { label: "Custom Styles Demo", code: customStylesDemo },
   { label: "Test Structural Tokens", code: testStructuralTokens },
   { label: "Dashboard Example", code: dashboard },

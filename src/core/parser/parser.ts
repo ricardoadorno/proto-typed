@@ -1,7 +1,7 @@
 import { CstParser } from "chevrotain";
 import { 
-  allTokens, Screen, Component, Modal, ComponentInstance, ComponentInstanceWithProps,
-  Identifier, Colon, Button, 
+  allTokens, Screen, Component, Modal, ComponentInstance, ComponentInstanceWithProps, ComponentInstanceWithDataSource,
+  Identifier, Colon, Button, ButtonWithMutation,
   Row, Card, Separator, Heading, Link, 
   Image, Input, OrderedListItem, UnorderedListItem, RadioOption, 
   Checkbox, Text, Paragraph, MutedText, Note, Quote, Col, List, Container, Grid,
@@ -146,7 +146,10 @@ export class UiDslParser extends CstParser {
   });
 
   buttonElement = this.RULE("buttonElement", () => {
-    this.CONSUME(Button);
+    this.OR([
+      { ALT: () => this.CONSUME(ButtonWithMutation) },
+      { ALT: () => this.CONSUME(Button) }
+    ]);
   });
 
   imageElement = this.RULE("imageElement", () => {
@@ -321,9 +324,10 @@ export class UiDslParser extends CstParser {
     this.CONSUME(FAB);
   });
   
-  // Component instance rule for $ComponentName or $ComponentName: prop1 | prop2
+  // Component instance rule for $ComponentName, $ComponentName: prop1 | prop2, or $ComponentName(st://key)
   componentInstanceElement = this.RULE("componentInstanceElement", () => {
     this.OR([
+      { ALT: () => this.CONSUME(ComponentInstanceWithDataSource) },
       { ALT: () => this.CONSUME(ComponentInstanceWithProps) },
       { ALT: () => this.CONSUME(ComponentInstance) }
     ]);

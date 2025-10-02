@@ -3,7 +3,7 @@ import { AstNode } from '../../../types/ast-node';
 // Import all node renderers
 import { 
   renderComponent, 
-  renderComponentInstance, 
+  renderComponentInstanceSync, 
 } from '../nodes/component-nodes';
 import { 
   renderInput, 
@@ -40,7 +40,7 @@ export function renderNode(node: AstNode, context?: string): string {
       return renderComponent(node);
     
     case 'component_instance':
-      return renderComponentInstance(node, context, renderNode);
+      return renderComponentInstanceSync(node, context, renderNode);
     
     case 'modal':
       return renderModal(node, context, renderNode);

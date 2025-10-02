@@ -202,6 +202,26 @@ export function buildDrawerItemElement(ctx: Context) {
  * Build component instance element from context
  */
 export function buildComponentInstanceElement(ctx: Context) {
+  // Handle component instance with data source: $ComponentName(st://key)
+  if (ctx.ComponentInstanceWithDataSource && ctx.ComponentInstanceWithDataSource.length > 0) {
+    const token = ctx.ComponentInstanceWithDataSource[0];
+    const match = token.image.match(/\$([a-zA-Z_][a-zA-Z0-9_]*)\(st:\/\/([^\s\n\r)]+)\)/);
+    if (match) {
+      const componentName = match[1];
+      const dataSourceKey = match[2];
+      
+      return {
+        type: "component_instance",
+        name: componentName,
+        props: [],
+        dataSource: {
+          type: "session_storage",
+          key: dataSourceKey
+        }
+      };
+    }
+  }
+
   // Handle component instance with props: $ComponentName: prop1 | prop2 | prop3
   if (ctx.ComponentInstanceWithProps && ctx.ComponentInstanceWithProps.length > 0) {
     const token = ctx.ComponentInstanceWithProps[0];

@@ -8,11 +8,16 @@ export function renderInput(node: AstNode): string {
   const inputProps = node.props as any;
   let inputHtml = '';
   
+  // Generate data attributes for variable binding
+  const dataAttributes = inputProps?.variableBinding 
+    ? `data-variable-binding="${inputProps.variableBinding}" data-form-control="true"`
+    : 'data-form-control="true"';
+  
   if (inputProps?.label) {
     inputHtml += `<label class="${elementStyles.label}" style="${getLabelInlineStyles()}">${inputProps.label}:${inputProps.required ? ' <span style="color: var(--destructive);">*</span>' : ''}\n`;
   }
   
-  inputHtml += `  <input class="${elementStyles.input}" style="${getInputInlineStyles()}" placeholder="${inputProps?.placeholder || ''}" />`;
+  inputHtml += `  <input class="${elementStyles.input}" style="${getInputInlineStyles()}" placeholder="${inputProps?.placeholder || ''}" ${dataAttributes} />`;
 
   if (inputProps?.label) {
     inputHtml += '\n</label>';

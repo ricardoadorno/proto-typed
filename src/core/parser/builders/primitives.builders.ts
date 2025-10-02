@@ -83,42 +83,84 @@ export function buildTextElement(ctx: Context) {
  * Build button element from context
  */
 export function buildButtonElement(ctx: Context) {
-  const buttonText = ctx.Button[0].image;
-  let text = '', icon = '', action = '', variant = 'default';
-
-  // Updated pattern to match @[variant][text]{icon}(action) - captures variant symbol
-  const markdownMatch = buttonText.match(/@([_+\-=!]?)\[([^\]]+)\](?:\{([^}]+)\})?(?:\(([^)]+)\))?/);
-  const dslMatch = buttonText.match(/button\s+\["([^"]*)"\]\s+([^\n\r]+)/);
-
-  if (markdownMatch) {
-    const variantSymbol = markdownMatch[1];
-    text = markdownMatch[2];
-    icon = markdownMatch[3] || ''; // Icon is optional
-    action = markdownMatch[4] || ''; // Action is optional
+  // Handle ButtonWithMutation first
+  if (ctx.ButtonWithMutation && ctx.ButtonWithMutation[0]) {
+    const buttonText = ctx.ButtonWithMutation[0].image;
     
-    // Map variant symbols to variant names
-    switch (variantSymbol) {
-      case '_': variant = 'ghost'; break;
-      case '+': variant = 'outline'; break;
-      case '-': variant = 'secondary'; break;
-      case '=': variant = 'destructive'; break;
-      case '!': variant = 'warning'; break;
-      default: variant = 'default'; break;
+    // Extract mutation pattern: @[variant][text](st://key)
+    const mutationMatch = buttonText.match(/@([_+\-=!]?)\[([^\]]+)\]\(st:\/\/([^\s\n\r)]+)\)/);
+    
+    if (mutationMatch) {
+      const variantSymbol = mutationMatch[1];
+      const text = mutationMatch[2];
+      const mutationKey = mutationMatch[3];
+      
+      // Map variant symbols to variant names
+      let variant = 'default';
+      switch (variantSymbol) {
+        case '_': variant = 'ghost'; break;
+        case '+': variant = 'outline'; break;
+        case '-': variant = 'secondary'; break;
+        case '=': variant = 'destructive'; break;
+        case '!': variant = 'warning'; break;
+        default: variant = 'default'; break;
+      }
+      
+      return {
+        type: "Button",
+        props: {
+          children: text,
+          variant: variant,
+          mutation: {
+            type: 'session_storage',
+            key: mutationKey
+          }
+        }
+      };
     }
-  } else if (dslMatch) {
-    action = dslMatch[1];
-    text = dslMatch[2];
   }
+  
+  // Handle regular Button
+  if (ctx.Button && ctx.Button[0]) {
+    const buttonText = ctx.Button[0].image;
+    let text = '', icon = '', action = '', variant = 'default';
 
-  return {
-    type: "Button",
-    props: {
-      href: action,
-      children: text,
-      icon: icon,
-      variant: variant
+    // Updated pattern to match @[variant][text]{icon}(action) - captures variant symbol
+    const markdownMatch = buttonText.match(/@([_+\-=!]?)\[([^\]]+)\](?:\{([^}]+)\})?(?:\(([^)]+)\))?/);
+    const dslMatch = buttonText.match(/button\s+\["([^"]*)"\]\s+([^\n\r]+)/);
+
+    if (markdownMatch) {
+      const variantSymbol = markdownMatch[1];
+      text = markdownMatch[2];
+      icon = markdownMatch[3] || ''; // Icon is optional
+      action = markdownMatch[4] || ''; // Action is optional
+      
+      // Map variant symbols to variant names
+      switch (variantSymbol) {
+        case '_': variant = 'ghost'; break;
+        case '+': variant = 'outline'; break;
+        case '-': variant = 'secondary'; break;
+        case '=': variant = 'destructive'; break;
+        case '!': variant = 'warning'; break;
+        default: variant = 'default'; break;
+      }
+    } else if (dslMatch) {
+      action = dslMatch[1];
+      text = dslMatch[2];
     }
-  };
+
+    return {
+      type: "Button",
+      props: {
+        href: action,
+        children: text,
+        icon: icon,
+        variant: variant
+      }
+    };
+  }
+  
+  return null;
 }
 
 /**

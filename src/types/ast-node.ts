@@ -42,6 +42,10 @@ export interface ComponentInstanceNode extends BaseAstNode {
   type: 'component_instance';
   name: string;
   props?: string[];
+  dataSource?: {
+    type: 'session_storage';
+    key: string;
+  };
 }
 
 export interface ModalNode extends BaseAstNode {

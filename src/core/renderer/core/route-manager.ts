@@ -1,6 +1,17 @@
 /**
  * Route Manager
- * Central service for managing all application routes (screens, modals, drawers)
+ * Centra  constructor(dataGateway?: DataGateway) {
+    this.routes = {
+      screens: new Map(),
+      globals: new Map()
+    };
+    
+    // Initialize data gateway integration if provided
+    if (dataGateway) {
+      this.dataGateway = dataGateway;
+      this.initializeDataGatewayIntegration();
+    }
+  }vice for managing all application routes (screens, modals, drawers)
  */
 
 import { AstNode } from '../../../types/ast-node';
@@ -14,23 +25,96 @@ import {
   RouteInfo,
   RouteContext
 } from '../../../types/routing';
+import { DataGateway } from './data-gateway';
+import { RenderUpdateTrigger } from './data-gateway-types';
 
 export type { RouteRenderContext } from '../../../types/routing';
 
 /**
  * Central route management service
  */
-export class RouteManager {
+export class RouteManager implements RenderUpdateTrigger {
   private routes: RouteCollection;
   private navigationHistory: string[] = [];
   private currentHistoryIndex: number = -1;
   private currentRouteContext: RouteContext | undefined = undefined;
+  private dataGateway?: DataGateway;
+  private renderCallbacks: Set<(target?: string) => void> = new Set();
 
-  constructor() {
+  constructor(dataGateway?: DataGateway) {
     this.routes = {
       screens: new Map(),
       globals: new Map(),
     };
+    
+    // Initialize data gateway integration if provided
+    if (dataGateway) {
+      this.dataGateway = dataGateway;
+      this.initializeDataGatewayIntegration();
+    }
+  }
+
+  /**
+   * Initialize data gateway integration for automatic re-rendering
+   */
+  private initializeDataGatewayIntegration(): void {
+    if (!this.dataGateway) return;
+    
+    // Set this RouteManager as the render update trigger
+    this.dataGateway.setRenderUpdateTrigger(this);
+  }
+
+  /**
+   * Trigger a re-render of specific components/screens (RenderUpdateTrigger implementation)
+   */
+  triggerUpdate(target?: string): void {
+    this.renderCallbacks.forEach(callback => {
+      try {
+        callback(target);
+      } catch (error) {
+        console.error('RouteManager: Error in render callback', error);
+      }
+    });
+  }
+
+  /**
+   * Force a full re-render (RenderUpdateTrigger implementation)
+   */
+  forceFullUpdate(): void {
+    this.renderCallbacks.forEach(callback => {
+      try {
+        callback();
+      } catch (error) {
+        console.error('RouteManager: Error in render callback', error);
+      }
+    });
+  }
+
+  /**
+   * Add render callback for data-driven updates
+   */
+  addRenderCallback(callback: (target?: string) => void): () => void {
+    this.renderCallbacks.add(callback);
+    
+    // Return unsubscribe function
+    return () => {
+      this.renderCallbacks.delete(callback);
+    };
+  }
+
+  /**
+   * Get data gateway instance
+   */
+  getDataGateway(): DataGateway | undefined {
+    return this.dataGateway;
+  }
+
+  /**
+   * Set data gateway and initialize integration
+   */
+  setDataGateway(dataGateway: DataGateway): void {
+    this.dataGateway = dataGateway;
+    this.initializeDataGatewayIntegration();
   }
 
   /**

@@ -8,20 +8,29 @@ import { NavigationMediator } from '../infrastructure/navigation-mediator';
  */
 export function renderButton(node: AstNode, context?: string): string {
   const buttonProps = node.props as any;
-  const { children, href: buttonHref, variant } = buttonProps || {};
+  const { children, href: buttonHref, variant, mutation } = buttonProps || {};
   const buttonText = children || '';
   
-  const buttonNavAttrs = NavigationMediator.generateNavigationAttributes(buttonHref);
+  // Generate navigation or mutation attributes
+  let buttonAttrs = '';
+  if (mutation) {
+    // Button with mutation capability
+    buttonAttrs = `data-mutation-type="${mutation.type}" data-mutation-key="${mutation.key}" data-form-submit="true"`;
+  } else {
+    // Regular navigation button
+    buttonAttrs = NavigationMediator.generateNavigationAttributes(buttonHref);
+  }
+  
   const buttonClasses = `${getButtonClasses(context, variant)}`;
   const buttonInlineStyles = getButtonInlineStyles(variant || 'primary');
   
   // Check if the button text is a Lucide icon name
   if (isLucideIcon(buttonText)) {
     const iconSvg = getLucideSvg(buttonText);
-    return `<button class="${buttonClasses}" style="${buttonInlineStyles}" ${buttonNavAttrs}>${iconSvg}</button>`;
+    return `<button class="${buttonClasses}" style="${buttonInlineStyles}" ${buttonAttrs}>${iconSvg}</button>`;
   }
   
-  return `<button class="${buttonClasses}" style="${buttonInlineStyles}" ${buttonNavAttrs}>${buttonText} </button>`;
+  return `<button class="${buttonClasses}" style="${buttonInlineStyles}" ${buttonAttrs}>${buttonText} </button>`;
 }
 
 /**
