@@ -16,9 +16,9 @@ import customStylesDemo from './custom-styles-demo';
 
 // Example configuration for UI
 export const exampleConfigs = [
+  { label: "Login Example", code: login },
   { label: "Custom Styles Demo", code: customStylesDemo },
   { label: "Test Structural Tokens", code: testStructuralTokens },
-  { label: "Login Example", code: login },
   { label: "Dashboard Example", code: dashboard },
   { label: "Mobile Example", code: mobileComplete },
   { label: "Mobile Test", code: mobileTest },
