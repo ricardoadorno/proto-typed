@@ -6,13 +6,13 @@ import { NavigationMediator } from '../infrastructure/navigation-mediator';
 /**
  * Render button element
  */
-export function renderButton(node: AstNode, context?: string): string {
+export function renderButton(node: AstNode): string {
   const buttonProps = node.props as any;
   const { text, action, variant, icon } = buttonProps || {};
   const buttonText = text || '';
   
   const buttonNavAttrs = NavigationMediator.generateNavigationAttributes(action);
-  const buttonClasses = `${getButtonClasses(context, variant)}`;
+  const buttonClasses = `${getButtonClasses(variant)}`;
   const buttonInlineStyles = getButtonInlineStyles(variant || 'primary');
   
   // If there's an icon, show icon + text or just icon
@@ -59,14 +59,12 @@ export function renderImage(node: AstNode): string {
 /**
  * Render heading element
  */
-export function renderHeading(node: AstNode, context?: string): string {
+export function renderHeading(node: AstNode): string {
   const props = node.props as any;
   const level = props?.level || 1;
   
   // Use header-specific styles when in header context
-  const headingStyles = context === 'header' 
-    ? elementStyles.headerHeading[level as keyof typeof elementStyles.headerHeading] || elementStyles.headerHeading[1]
-    : elementStyles.heading[level as keyof typeof elementStyles.heading] || elementStyles.heading[1];
+  const headingStyles = elementStyles.heading[level as keyof typeof elementStyles.heading] || elementStyles.heading[1];
   
   return `<h${level} class="${headingStyles}" style="${getHeadingInlineStyles()}">${props?.content || ''}</h${level}>`;
 }

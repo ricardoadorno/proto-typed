@@ -96,10 +96,7 @@ export const elementStyles = {
 /**
  * Get button classes based on context and variant
  */
-export function getButtonClasses(context?: string, variant?: string): string {
-  if (context === 'header') {
-    return '';
-  }
+export function getButtonClasses(variant?: string): string {
   
   // Return appropriate button variant class
   switch (variant) {

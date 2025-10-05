@@ -71,7 +71,7 @@ export function renderListItem(node: AstNode): string {
 /**
  * Render card element
  */
-export function renderCard(node: AstNode, _context?: string, nodeRenderer?: (node: AstNode, context?: string) => string): string {
+export function renderCard(node: AstNode, nodeRenderer?: (node: AstNode, context?: string) => string): string {
   const cardElements = node.children && nodeRenderer ? 
     node.children.map(child => nodeRenderer(child, 'card')).join('\n') : '';
   
