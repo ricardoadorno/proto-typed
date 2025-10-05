@@ -1,127 +1,135 @@
-export interface BaseAstNode {
-  type: string;
+// Define all possible node types - matching token names exactly
+export type NodeType = 
+  // Views (from views.tokens.ts)
+  | 'Screen'
+  | 'Modal'
+  | 'Drawer'
+  
+  // Primitives (from primitives.tokens.ts)
+  | 'Button'
+  | 'Link'
+  | 'Image'
+  | 'Heading'
+  | 'Text'
+  | 'Paragraph'
+  | 'MutedText'
+  | 'Note'
+  | 'Quote'
+  
+  // Layouts (from layouts.tokens.ts)
+  | 'Row'
+  | 'Col'
+  | 'Grid'
+  | 'Container'
+  
+  // Structures (from structures.tokens.ts)
+  | 'List'
+  | 'Card'
+  | 'Header'
+  | 'Navigator'
+  | 'OrderedListItem'
+  | 'UnorderedListItem'
+  | 'FAB'
+  | 'Separator'
+  
+  // Inputs (from inputs.tokens.ts)
+  | 'Input'
+  | 'RadioOption'
+  | 'Checkbox'
+  
+  // Components (from components.tokens.ts)
+  | 'Component'
+  | 'ComponentInstance'
+  | 'ComponentInstanceWithProps'
+  | 'PropVariable'
+  
+  // Styles (from styles.tokens.ts)
+  | 'Styles'
+  | 'CssProperty'
+  
+  // Core (from core.tokens.ts)
+  | 'Identifier';
+
+// Define layout modifier properties
+export interface LayoutProps {
+  width?: string;
+  height?: string;
+  justify?: 'start' | 'end' | 'center' | 'between' | 'around' | 'evenly';
+  align?: 'start' | 'end' | 'center' | 'stretch' | 'baseline';
+  padding?: string;
+  paddingX?: string;
+  paddingY?: string;
+  paddingLeft?: string;
+  paddingRight?: string;
+  paddingTop?: string;
+  paddingBottom?: string;
+  margin?: string;
+  marginX?: string;
+  marginY?: string;
+  marginLeft?: string;
+  marginRight?: string;
+  marginTop?: string;
+  marginBottom?: string;
+  gap?: string;
+  gridCols?: string;
+}
+
+// Define text-specific properties
+export interface TextProps extends LayoutProps {
+  content?: string;
+  level?: number; // For headings (1-6)
+  variant?: string;
+}
+
+// Define interactive element properties
+export interface InteractiveProps extends LayoutProps {
+  text?: string;
+  action?: string;
+  destination?: string;
+  alt?: string;
+  src?: string;
+}
+
+// Define form element properties
+export interface FormProps extends LayoutProps {
+  label?: string;
+  placeholder?: string;
+  value?: string;
+  checked?: boolean;
+  disabled?: boolean;
+  password?: boolean;
+  options?: string[];
+}
+
+// Define mobile element properties
+export interface MobileProps extends LayoutProps {
+  icon?: string;
+  label?: string;
+  action?: string;
+}
+
+// Define structural element properties
+export interface StructuralProps extends LayoutProps {
   name?: string;
-  elements?: AstNode[];
-  props?: Record<string, any>;
-  attributes?: Record<string, any>;
-  modifiers?: {
-    width?: string;
-    height?: string;
-    justify?: 'start' | 'end' | 'center' | 'between' | 'around' | 'evenly';
-    align?: 'start' | 'end' | 'center' | 'stretch' | 'baseline';
-    padding?: string;
-    paddingX?: string;
-    paddingY?: string;
-    paddingLeft?: string;
-    paddingRight?: string;
-    paddingTop?: string;
-    paddingBottom?: string;
-    margin?: string;
-    marginX?: string;
-    marginY?: string;
-    marginLeft?: string;
-    marginRight?: string;
-    marginTop?: string;
-    marginBottom?: string;
-    gap?: string;
-    gridCols?: string;
-  };
-}
-
-export interface ScreenNode extends BaseAstNode {
-  type: 'screen';
-  name: string;
-}
-
-export interface ComponentNode extends BaseAstNode {
-  type: 'component';
-  name: string;
-}
-
-export interface ComponentInstanceNode extends BaseAstNode {
-  type: 'component_instance';
-  name: string;
+  componentName?: string;
+  dataItems?: string[][];
   props?: string[];
 }
 
-export interface ModalNode extends BaseAstNode {
-  type: 'modal';  name: string;
-}
+// Union type for all possible props
+export type NodeProps = 
+  | LayoutProps 
+  | TextProps 
+  | InteractiveProps 
+  | FormProps 
+  | MobileProps 
+  | StructuralProps
+  | Record<string, any>;
 
-export interface DrawerNode extends BaseAstNode {
-  type: 'drawer';
-  name: string;
+// Base AST Node interface with standardized structure
+export interface AstNode {
+  type: NodeType;
+  id: string;
+  children: AstNode[];
+  props: NodeProps;
 }
-
-export interface ContainerNode extends BaseAstNode {
-  type: 'container' | 'grid' | 'flex' | 'card' | 'row' | 'col' | 'section' | 'list';
-}
-
-export interface ListWithComponentNode extends BaseAstNode {
-  type: 'ListWithComponent';
-  componentName: string;
-  dataItems: string[][];
-}
-
-export interface TextNode extends BaseAstNode {
-  type: 'Text' | 'Paragraph' | 'MutedText' | 'heading' | 'note' | 'quote';
-  props: {
-    content?: string;
-    children?: string;
-    variant?: string;
-    level?: number;
-  };
-}
-
-export interface InteractiveNode extends BaseAstNode {
-  type: 'button' | 'link' | 'image';
-  props: {
-    text?: string;
-    action?: string;
-    destination?: string;
-    alt?: string;
-    src?: string;
-  };
-}
-
-export interface FormNode extends BaseAstNode {
-  type: 'input' | 'checkbox' | 'radio' | 'select';
-  props: {
-    label?: string;
-    placeholder?: string;
-    value?: string;
-    checked?: boolean;
-    disabled?: boolean;
-    password?: boolean;
-    options?: string[];
-  };
-}
-
-export interface MobileNode extends BaseAstNode {
-  type: 'header' | 'navigator' | 'drawer' | 'fab' | 'nav_item' | 'drawer_item' | 'fab_item';
-  props: {
-    icon?: string;
-    label?: string;
-    action?: string;
-  };
-}
-
-export interface UtilityNode extends BaseAstNode {
-  type: 'Separator';
-  props: Record<string, any>;
-}
-
-export type AstNode = 
-  | ScreenNode 
-  | ComponentNode   
-  | ComponentInstanceNode
-  | ModalNode 
-  | DrawerNode
-  | ContainerNode
-  | ListWithComponentNode
-  | TextNode 
-  | InteractiveNode 
-  | FormNode 
-  | MobileNode 
-  | UtilityNode
-  | BaseAstNode;
