@@ -13,6 +13,7 @@ import { layoutModifiersExample } from './layout-modifiers';
 import componentPropsDemo from './component-props-demo';
 import testStructuralTokens from './test-structural-tokens';
 import customStylesDemo from './custom-styles-demo';
+import { fabTestExample } from './fab-test';
 
 // Example configuration for UI
 export const exampleConfigs = [
@@ -30,5 +31,6 @@ export const exampleConfigs = [
   { label: "Component Props Demo", code: componentPropsDemo },
   { label: "Back Navigation Test", code: backNavigationExample },
   { label: "Contacts App", code: contactsAppExample },
+  { label: "FAB Test", code: fabTestExample },
 ] ;
 

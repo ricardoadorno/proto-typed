@@ -15,7 +15,7 @@ screen TestMobile:
     > Bottom nav at the bottom (sticky)
     
     @[Test Button](TestMobile)
-  fab {+} TestMobile
+  fab{+}(TestMobile)
   navigator:
     - Home | 🏠 | TestMobile
     - Search | 🔍 | TestMobile

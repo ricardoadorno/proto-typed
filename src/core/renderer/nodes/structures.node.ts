@@ -1,6 +1,7 @@
 import { AstNode } from '../../../types/ast-node';
-import { elementStyles, getCardInlineStyles, getListInlineStyles, getUnorderedListInlineStyles } from './styles/styles';
+import { elementStyles, getCardInlineStyles, getListInlineStyles, getUnorderedListInlineStyles, getFabInlineStyles } from './styles/styles';
 import { findComponentDefinitions, substitutePropsInElement } from './components.node';
+import { NavigationMediator } from '../infrastructure/navigation-mediator';
 
 /**
  * Render list element
@@ -82,4 +83,24 @@ export function renderHeader(node: AstNode, nodeRenderer: (node: AstNode, contex
  */
 export function renderSeparator(): string {
   return `<hr class="${elementStyles.separator}" />`;
+}
+
+/**
+ * Render FAB (Floating Action Button) element
+ */
+export function renderFAB(node: AstNode): string {
+  const props = node.props as any;
+  const icon = props?.icon || 'plus';
+  const action = props?.action || '';
+  
+  // Generate navigation attributes using NavigationMediator
+  const navAttrs = NavigationMediator.generateNavigationAttributes(action);
+  
+  return `
+    <div class="${elementStyles.fabContainer}">
+      <button class="${elementStyles.fab}" style="${getFabInlineStyles()}" ${navAttrs}>
+        ${icon}
+      </button>
+    </div>
+  `;
 }

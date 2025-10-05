@@ -183,8 +183,8 @@ export function buildNavigatorElement(ctx: Context) {
 export function buildFABElement(ctx: Context) {
   const fabText = ctx.FAB[0].image;
   
-  // Parse fab {icon} text pattern
-  const match = fabText.match(/fab\s+\{([^}]+)\}\s+([^\n\r]+)/);
+  // Parse fab{icon}(action) pattern
+  const match = fabText.match(/fab\{([^}]+)\}\(([^)]+)\)/);
   
   if (match) {
     const icon = match[1];

@@ -28,7 +28,7 @@ export const UnorderedListItem = createToken({
 
 export const FAB = createToken({
   name: "FAB",
-  pattern: /fab\s+\{([^}]+)\}\s+([^\n\r]+)/
+  pattern: /fab\{([^}]+)\}\(([^)]+)\)/
 });
 
 export const Separator = createToken({
