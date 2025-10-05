@@ -6,7 +6,7 @@ import { elementStyles, getScreenClasses, getModalBackdropInlineStyles, getModal
  */
 export function renderScreen(node: AstNode, nodeRenderer: (node: AstNode, context?: string) => string): string {
   const screenName = (node.props as any)?.name || 'default';
-  const screenClasses = getScreenClasses([String(screenName).toLowerCase()]);
+  const screenClasses = getScreenClasses([screenName]);
   const screenElements = node.children ? 
     node.children.map(child => nodeRenderer(child, 'screen')).join('\n') : '';
   

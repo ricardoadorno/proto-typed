@@ -74,7 +74,7 @@ export function DslMiniPreview({
                 root.querySelectorAll('.screen').forEach((el) => {
                     (el as HTMLElement).style.display = 'none';
                 });
-                const targetScreen = root.querySelector(`#${navValue.toLowerCase()}-screen`);
+                const targetScreen = root.querySelector(`#${navValue}-screen`);
                 if (targetScreen) (targetScreen as HTMLElement).style.display = 'block';
             }
             return;
@@ -90,7 +90,7 @@ export function DslMiniPreview({
                 root.querySelectorAll('.screen').forEach((el) => {
                     (el as HTMLElement).style.display = 'none';
                 });
-                const targetScreen = root.querySelector(`#${screenName.toLowerCase()}-screen`);
+                const targetScreen = root.querySelector(`#${screenName}-screen`);
                 if (targetScreen) (targetScreen as HTMLElement).style.display = 'block';
             }
         }

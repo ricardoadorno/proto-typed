@@ -80,7 +80,7 @@ export const useParse = (): UseParseResult => {
         newCurrentScreen = null;
       } else if (currentScreen) {
         const screenExists = newMetadata.screens.some(screen => 
-          screen.id === currentScreen.toLowerCase()
+          screen.name === currentScreen
         );
         if (screenExists) {
           newCurrentScreen = currentScreen;

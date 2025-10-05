@@ -108,9 +108,16 @@ class RouteManagerGateway {
     const currentScreen = routeManager.getCurrentScreen();
     
     if (currentScreen !== screenName) {
-      routeManager.addToHistory(screenName);
-      // Update the route manager's current screen state
+      // Check if the screen exists before navigating
+      const screenRoute = routeManager.getScreenRoute(screenName);
+      if (!screenRoute) {
+        console.warn(`Screen "${screenName}" does not exist`);
+        return false;
+      }
+      
+      // First set the current screen, then add to history
       routeManager.setCurrentScreen(screenName);
+      routeManager.addToHistory(screenName);
       
       if (this.handlers?.onScreenNavigation) {
         this.handlers.onScreenNavigation(screenName);

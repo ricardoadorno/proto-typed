@@ -120,14 +120,14 @@ export function RouteMetadataDisplay({ metadata, onNavigateToScreen }: RouteMeta
                                     <span className="w-1.5 h-1.5 bg-gray-600 rounded-full"></span>
                                 )}
                                 <span className={`text-xs ${index === metadata.currentHistoryIndex
-                                        ? 'text-orange-300 font-medium'
-                                        : 'text-gray-400'
+                                    ? 'text-orange-300 font-medium'
+                                    : 'text-gray-400'
                                     }`}>
                                     {index + 1}.
                                 </span>
                                 <span className={`${index === metadata.currentHistoryIndex
-                                        ? 'text-white font-medium'
-                                        : 'text-gray-400'
+                                    ? 'text-white font-medium'
+                                    : 'text-gray-400'
                                     }`}>
                                     {screen}
                                 </span>

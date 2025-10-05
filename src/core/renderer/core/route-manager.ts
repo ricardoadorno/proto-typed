@@ -256,6 +256,18 @@ export class RouteManager {
    */
   setCurrentScreen(screenName: string): void {
     this.routes.currentScreen = screenName;
+    
+    // Ensure navigation history is synchronized with current screen
+    // Only update history if this screen is not already the current item
+    if (this.currentHistoryIndex < 0 || this.navigationHistory[this.currentHistoryIndex] !== screenName) {
+      // Check if screen exists in history
+      const existingIndex = this.navigationHistory.findIndex(screen => screen === screenName);
+      if (existingIndex >= 0) {
+        // Screen exists in history, jump to it
+        this.currentHistoryIndex = existingIndex;
+      }
+      // Don't automatically add to history here, let addToHistory be called explicitly
+    }
   }
 
   /**
@@ -274,6 +286,10 @@ export class RouteManager {
    * Get current screen from history
    */
   getCurrentScreen(): string | null {
+    // Prefer the explicitly set currentScreen, fallback to history
+    if (this.routes.currentScreen) {
+      return this.routes.currentScreen;
+    }
     return this.currentHistoryIndex >= 0 ? this.navigationHistory[this.currentHistoryIndex] : null;
   }
 

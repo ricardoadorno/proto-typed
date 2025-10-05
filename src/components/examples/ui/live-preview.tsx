@@ -22,7 +22,7 @@ export function LivePreview({ code, onScreenChange }: Omit<ExamplePreviewProps, 
                 });
 
                 // Show the selected screen
-                const targetScreen = document.getElementById(`${navValue.toLowerCase()}-screen`);
+                const targetScreen = document.getElementById(`${navValue}-screen`);
                 if (targetScreen) {
                     targetScreen.style.display = 'block';
                 }
@@ -43,7 +43,7 @@ export function LivePreview({ code, onScreenChange }: Omit<ExamplePreviewProps, 
                 });
 
                 // Show the selected screen
-                const targetScreen = document.getElementById(`${screenName.toLowerCase()}-screen`);
+                const targetScreen = document.getElementById(`${screenName}-screen`);
                 if (targetScreen) {
                     targetScreen.style.display = 'block';
                 }
