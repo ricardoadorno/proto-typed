@@ -6,6 +6,7 @@
 import { routeManager } from '../core/route-manager';
 import { RouteMetadata, RouteCollection, RouteRenderContext, RouteProcessingOptions } from '../../../types/routing';
 import { AstNode } from '../../../types/ast-node';
+import type { MouseEvent } from 'react';
 
 export interface NavigationHandlers {
   onScreenNavigation: (screenName: string) => void;
@@ -25,6 +26,8 @@ export interface NavigationState {
  */
 class RouteManagerGateway {
   private handlers: NavigationHandlers | null = null;
+  // Cached click handler to avoid recreating the function on every render
+  private clickHandler?: (e: MouseEvent) => void;
 
   // ========================================
   // Core API Methods
@@ -225,7 +228,7 @@ class RouteManagerGateway {
   /**
    * Handle navigation click events from DOM
    */
-  handleNavigationClick(e: React.MouseEvent): void {
+  handleNavigationClick(e: MouseEvent): void {
     const navElement = (e.target as HTMLElement).closest('[data-nav]');
     if (!navElement) return;
 
@@ -256,8 +259,12 @@ class RouteManagerGateway {
   /**
    * Create a click handler function for React components
    */
-  createClickHandler(): (e: React.MouseEvent) => void {
-    return (e: React.MouseEvent) => this.handleNavigationClick(e);
+  createClickHandler(): (e: MouseEvent) => void {
+    if (!this.clickHandler) {
+      // Store a stable reference so React can optimize and we don't attach new listeners unnecessarily
+      this.clickHandler = (e: MouseEvent) => this.handleNavigationClick(e);
+    }
+    return this.clickHandler;
   }
 
   // ========================================

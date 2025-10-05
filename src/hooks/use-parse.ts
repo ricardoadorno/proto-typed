@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { parseAndBuildAst } from '../core/parser/parse-and-build-ast';
 import { AstNode } from '../types/ast-node';
 import { parseChevrotainError } from '../utils/error-parser';
@@ -30,13 +30,6 @@ export const useParse = (): UseParseResult => {
   const [currentScreen, setCurrentScreen] = useState<string | null>(null);
   const [metadata, setMetadata] = useState<RouteMetadata | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  // Configure navigation handlers and manage route manager lifecycle
-  useEffect(() => {
-    routeManagerGateway.setHandlers({
-      onScreenNavigation: screenName => setCurrentScreen(screenName),
-    });
-  }, []);
 
   const handleParse = useCallback(async (input: string) => {
     if (!input.trim()) {
@@ -93,6 +86,27 @@ export const useParse = (): UseParseResult => {
       
       // Generate rendered HTML with the determined screen
       const htmlString = astToHtmlStringPreview(parsedAst, { currentScreen: newCurrentScreen || undefined });
+
+      // Register navigation handlers so clicks inside the rendered preview update React state
+      routeManagerGateway.setHandlers({
+        onScreenNavigation: (screenName: string) => {
+          // Re-render HTML for the new current screen
+            const updatedHtml = astToHtmlStringPreview(parsedAst, { currentScreen: screenName });
+            setRenderedHtml(updatedHtml);
+            setCurrentScreen(screenName);
+            // Refresh metadata (includes history and current screen info)
+            const updatedMetadata = routeManagerGateway.getRouteMetadata();
+            setMetadata(updatedMetadata);
+        },
+        onBackNavigation: () => {
+          const meta = routeManagerGateway.getRouteMetadata();
+          const current = meta.currentScreen || null;
+          const updatedHtml = astToHtmlStringPreview(parsedAst, { currentScreen: current || undefined });
+          setRenderedHtml(updatedHtml);
+          setCurrentScreen(current);
+          setMetadata(meta);
+        }
+      });
       
       setCurrentScreen(newCurrentScreen);
       setAst(parsedAst);
@@ -117,23 +131,14 @@ export const useParse = (): UseParseResult => {
     }
   }, [currentScreen]);
 
-  const navigateToScreen = useCallback((screenName: string) => {
+  const navigateToScreen = (screenName: string) => {
+    routeManagerGateway.navigateToScreen(screenName);
+    const updatedMetadata = routeManagerGateway.getRouteMetadata();
+    setMetadata(updatedMetadata);
     setCurrentScreen(screenName);
-    
-    // Re-render HTML with new screen if we have AST
-    if (Array.isArray(ast) ? ast.length > 0 : Object.keys(ast).length > 0) {
-      try {
-        const htmlString = astToHtmlStringPreview(ast, { currentScreen: screenName || undefined });
-        setRenderedHtml(htmlString);
-      } catch (err: any) {
-        console.error('Error re-rendering after navigation:', err);
-      }
-    }
-  }, [ast]);
+  }
 
-  const createClickHandler = useCallback(() => {
-    return routeManagerGateway.createClickHandler();
-  }, []);
+  const createClickHandler = () => routeManagerGateway.createClickHandler()
 
   return {
     ast,
