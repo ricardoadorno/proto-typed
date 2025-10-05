@@ -202,7 +202,7 @@ class RouteManagerGateway {
     if (!drawer) return false;
 
     const isHidden = drawer.classList.contains('hidden');
-    const content = drawer.querySelector('.drawer-content');
+    const content = drawer.querySelector('.drawer'); // Changed from '.drawer-content' to '.drawer'
 
     if (isHidden) {
       drawer.classList.remove('hidden');

@@ -48,8 +48,8 @@ export function renderDrawer(node: AstNode, context?: string, nodeRenderer?: (no
     node.children.map(child => nodeRenderer(child, context)).join('\n') : '';
     
   return `<div class="drawer-container hidden" id="drawer-${drawerName}" data-drawer="${drawerName}">
-    <div class="drawer-overlay backdrop-blur-sm absolute inset-0 bg-black/30  z-[1050]"></div>
-    <aside class="${elementStyles.drawer}" style="${getDrawerInlineStyles()}">
+    <div class="drawer-overlay backdrop-blur-sm absolute inset-0 bg-black/30 z-[1040]"></div>
+    <aside class="${elementStyles.drawer} z-[1050]" style="${getDrawerInlineStyles()}">
       <div class="p-4">
         <button class="${elementStyles.modalClose}" style="${getModalCloseInlineStyles()}" data-nav="${drawerName}" data-nav-type="toggle">&times;</button>
         ${drawerElements}
