@@ -64,17 +64,6 @@ export class UiDslParser extends CstParser {
     });
   }
 
-  // Helper method for consuming indent/outdent and list items
-  private consumeIndentedListItems() {
-    this.MANY(() => {
-      this.OR([
-        { ALT: () => this.CONSUME(Indent) },
-        { ALT: () => this.CONSUME(Outdent) },
-        { ALT: () => this.CONSUME(UnorderedListItem) }
-      ]);
-    });
-  }
-
   // Helper method for container-like elements with optional content
   private containerWithOptionalContent() {
     this.OPTION(() => {
@@ -150,7 +139,7 @@ export class UiDslParser extends CstParser {
     this.CONSUME(Drawer);
     this.CONSUME(Identifier, { LABEL: "name" });
     this.CONSUME(Colon);
-    this.consumeIndentedListItems();
+    this.consumeIndentedElements();
   });
 
   // ===== COMPONENT RULES =====

@@ -30,7 +30,6 @@ import {
   buildNavigatorElement,
   buildFABElement,
   buildNavItemElement,
-  buildDrawerItemElement,
   buildComponentInstanceElement,
   // Styles builders
   buildStyles,
@@ -136,7 +135,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
    * Drawers are globally accessible singleton elements that can be referenced by name
    */
   drawer(ctx: Context) {
-    return buildDrawer(ctx);
+    return buildDrawer(ctx, this);
   }
 
   // ===== COMPONENT RULES =====
@@ -222,10 +221,6 @@ export function createAstBuilder(parserInstance: UiDslParser) {
   // Legacy navigation item methods
   navItemElement(ctx: Context) {
     return buildNavItemElement(ctx);
-  }
-
-  drawerItemElement(ctx: Context) {
-    return buildDrawerItemElement(ctx);
   }
 
   // ===== INPUT ELEMENT RULES =====

@@ -59,12 +59,25 @@ modal ConfirmDelete:
       @[Excluir](ContactsList)
 
 drawer MainDrawer:
-  - Contatos | Users | ContactsList
-  - Favoritos | Star | Favorites
-  - Grupos | Users2 | Groups
-  - Configurações | Settings | Settings
-  - Sobre | Info | About
-  - Ajuda | HelpCircle | Help
+  > ## Menu Principal
+  
+  #[Contatos](ContactsList)
+  > Users Lista de contatos
+  
+  #[Favoritos](Favorites)
+  > Star Contatos favoritos
+  
+  #[Grupos](Groups)
+  > Users2 Grupos de contatos
+  
+  #[Configurações](Settings)
+  > Settings Configurações do app
+  
+  #[Sobre](About)
+  > Info Sobre o aplicativo
+  
+  #[Ajuda](Help)
+  > HelpCircle Central de ajuda
 
 screen Favorites:
   header:

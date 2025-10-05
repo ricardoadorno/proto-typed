@@ -73,9 +73,6 @@ export const elementStyles = {
   navItem: 'flex flex-col items-center justify-center py-2 px-3 text-xs font-medium text-muted-foreground hover:text-primary active:text-primary/80 transition-all duration-200 rounded-[--radius] hover:bg-accent min-w-[60px]',
   navItemIcon: 'mb-1 text-lg',
   navItemLabel: 'text-xs font-medium',
-  drawerItem: 'flex items-center w-full px-4 py-3 text-left text-foreground rounded-[--radius] mx-2 my-1 hover:bg-accent',
-  drawerItemIcon: 'mr-3 text-lg flex-shrink-0',
-  drawerItemLabel: 'font-medium',
 
   // FAB using CSS variables
   fab: 'w-14 h-14 rounded-full bg-primary shadow-2xl flex items-center justify-center text-xl font-bold text-primary-foreground z-40',
@@ -244,10 +241,6 @@ export function getNavigatorInlineStyles(): string {
 
 export function getNavItemInlineStyles(): string {
   return 'color: var(--muted-foreground); border-radius: var(--radius);';
-}
-
-export function getDrawerItemInlineStyles(): string {
-  return 'color: var(--foreground); border-radius: var(--radius);';
 }
 
 /**

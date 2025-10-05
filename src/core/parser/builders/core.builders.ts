@@ -114,10 +114,3 @@ export function parseNavigatorItem(itemText: string) {
     destination: null
   };
 }
-
-/**
- * Parse drawer item: "- text (destination)"
- */
-export function parseDrawerItem(itemText: string) {
-  return parseNavigatorItem(itemText); // Same format as navigator items
-}

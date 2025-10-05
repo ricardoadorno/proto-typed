@@ -201,7 +201,3 @@ export function buildFABElement(ctx: Context) {
 export function buildNavItemElement(ctx: Context) {
   return buildNavigatorElement(ctx);
 }
-
-export function buildDrawerItemElement(ctx: Context) {
-  return buildNavigatorElement(ctx);
-}

@@ -40,38 +40,13 @@ export function buildModal(ctx: Context, visitor: any) {
 /**
  * Build drawer element from context
  */
-export function buildDrawer(ctx: Context) {
+export function buildDrawer(ctx: Context, visitor: any) {
   const name = ctx.name[0].image;
-  const items: any[] = [];
-
-  // Parse drawer items (UnorderedListItem tokens)
-  if (ctx.UnorderedListItem) {
-    ctx.UnorderedListItem.forEach((item: any) => {
-      const itemText = item.image;
-      
-      // Parse drawer item format: "- text (destination)"
-      const match = itemText.match(/^-\s+(.+?)\s*\(([^)]+)\)/);
-      if (match) {
-        items.push({
-          text: match[1].trim(),
-          destination: match[2].trim()
-        });
-      } else {
-        // Simple text item without destination
-        const textMatch = itemText.match(/^-\s+(.+)/);
-        if (textMatch) {
-          items.push({
-            text: textMatch[1].trim(),
-            destination: null
-          });
-        }
-      }
-    });
-  }
+  const elements = ctx.element ? ctx.element.map((el: CstNode) => visitor.visit(el)) : [];
 
   return {
     type: "drawer",
     name,
-    items
+    elements
   };
 }

@@ -1,12 +1,27 @@
 const mobileAppExample = `
 drawer MyDrawer:
-  - Dashboard | 📊 | MobileApp
-  - Messages | 💬 | MessagesScreen
-  - Calendar | 📅 | SettingsScreen
-  - Files | 📁 | ProfileScreen
-  - Settings | ⚙️ | SettingsScreen
-  - Help | ❓ | SettingsScreen
-  - Logout | 💪 | MobileApp
+  > ## App Menu
+  
+  #[Dashboard](MobileApp)
+  > 📊 View dashboard
+  
+  #[Messages](MessagesScreen)
+  > 💬 Check messages
+  
+  #[Calendar](SettingsScreen)
+  > 📅 View calendar
+  
+  #[Files](ProfileScreen)
+  > 📁 Browse files
+  
+  #[Settings](SettingsScreen)
+  > ⚙️ App settings
+  
+  #[Help](SettingsScreen)
+  > ❓ Get help
+  
+  @[Logout](MobileApp)
+  > 💪 Sign out
 
 screen Mob:
   header:
@@ -46,13 +61,28 @@ screen Mob:
   fab {+} MessagesScreen
 
   drawer MyDrawer:
-    - Dashboard | 📊 | MobileApp
-    - Messages | 💬 | MessagesScreen
-    - Calendar | 📅 | SettingsScreen
-    - Files | 📁 | ProfileScreen
-    - Settings | ⚙️ | SettingsScreen
-    - Help | ❓ | SettingsScreen
-    - Logout | 🚪 | MobileApp
+    > ## App Menu
+    
+    #[Dashboard](MobileApp)
+    > 📊 View dashboard
+    
+    #[Messages](MessagesScreen)
+    > 💬 Check messages
+    
+    #[Calendar](SettingsScreen)
+    > 📅 View calendar
+    
+    #[Files](ProfileScreen)
+    > 📁 Browse files
+    
+    #[Settings](SettingsScreen)
+    > ⚙️ App settings
+    
+    #[Help](SettingsScreen)
+    > ❓ Get help
+    
+    @[Logout](MobileApp)
+    > 🚪 Sign out
 
 screen MessagesScreen:
   header:

@@ -148,21 +148,6 @@ export function renderNavItem(node: AstNode): string {
 }
 
 /**
- * Render drawer item element
- */
-export function renderDrawerItem(node: AstNode): string {
-  const drawerItemProps = node.props as any;
-  const { label: drawerLabel, icon: drawerIcon, action: drawerAction } = drawerItemProps || {};
-  const drawerItemAttrs = NavigationMediator.generateNavigationAttributes(drawerAction);
-    return `
-    <button class="${elementStyles.drawerItem}" ${drawerItemAttrs}>
-      <span class="${elementStyles.drawerItemIcon}">${renderIcon(drawerIcon || '')}</span>
-      <span class="${elementStyles.drawerItemLabel}">${drawerLabel || ''}</span>
-    </button>
-  `;
-}
-
-/**
  * Render FAB (Floating Action Button) element
  */
 export function renderFAB(node: AstNode): string {

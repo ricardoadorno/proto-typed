@@ -18,7 +18,7 @@ import {
   renderSeparator,
   renderContainer 
 } from '../nodes/layout-nodes';
-import { renderDrawer, renderDrawerItem, renderFAB, renderModal, renderNavigator, renderNavItem, renderScreen } from '../nodes/navigation-overlay-nodes';
+import { renderDrawer, renderFAB, renderModal, renderNavigator, renderNavItem, renderScreen } from '../nodes/navigation-overlay-nodes';
 import { renderButton, renderHeading, renderImage, renderLink, renderParagraph, renderText, renderMutedText } from '../nodes/primitive-nodes';
 import { renderCard, renderHeader, renderList, renderListItem, renderOrderedList, renderUnorderedList } from '../nodes/structured-content-node';
 
@@ -56,9 +56,6 @@ export function renderNode(node: AstNode, context?: string): string {
     
     case 'NavItem':
       return renderNavItem(node);
-    
-    case 'DrawerItem':
-      return renderDrawerItem(node);    
       
     case 'FAB':
       return renderFAB(node);

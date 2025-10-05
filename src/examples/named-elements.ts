@@ -72,12 +72,24 @@ modal SettingsModal:
     @[Apply & Test](TestScreen)
 
 drawer LeftDrawer:
-  - Dashboard | 📊 | TestScreen
-  - Profile | 👤 | TestScreen
-  - Messages | 💬 | TestScreen
-  - Settings | ⚙️ | SettingsModal
-  - Home | 🏠 | Home
-  - Close Drawer | ❌ | LeftDrawer
+  > ## Navigation Menu
+  
+  #[Dashboard](TestScreen)
+  > 📊 Go to dashboard
+  
+  #[Profile](TestScreen)
+  > 👤 View your profile
+  
+  #[Messages](TestScreen)
+  > 💬 Check messages
+  
+  #[Settings](SettingsModal)
+  > ⚙️ Open settings
+  
+  #[Home](Home)
+  > 🏠 Return home
+  
+  @[Close Drawer](LeftDrawer)
 `;
 
 export default namedElementsExample;
