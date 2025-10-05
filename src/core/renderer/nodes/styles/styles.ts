@@ -220,8 +220,9 @@ export function getListInlineStyles(): string {
   return 'color: var(--foreground);';
 }
 
-export function getListItemInlineStyles(): string {
-  return 'background-color: var(--card); border: 1px solid var(--border); border-radius: var(--radius);';
+// Unordered list (ul) container inline styles
+export function getUnorderedListInlineStyles(): string {
+  return 'margin: 0 0 1rem 1rem; color: var(--foreground);';
 }
 
 /**
@@ -261,9 +262,6 @@ export function getFabItemLabelInlineStyles(): string {
 /**
  * Generate inline styles for modal and drawer elements using CSS variables
  */
-export function getModalBackdropInlineStyles(): string {
-  return 'background-color: var(--background);';
-}
 
 export function getModalContentInlineStyles(): string {
   return 'background-color: var(--card); border-radius: var(--radius); border: 1px solid var(--border);';

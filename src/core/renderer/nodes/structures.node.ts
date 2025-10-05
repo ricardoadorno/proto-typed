@@ -1,5 +1,5 @@
 import { AstNode } from '../../../types/ast-node';
-import { elementStyles, getCardInlineStyles, getListInlineStyles, getListItemInlineStyles } from './styles/styles';
+import { elementStyles, getCardInlineStyles, getListInlineStyles, getUnorderedListInlineStyles } from './styles/styles';
 import { findComponentDefinitions, substitutePropsInElement } from './components.node';
 
 /**
@@ -54,7 +54,7 @@ export function renderListItem(node: AstNode): string {
   const props = node.props as any;
   const itemContent = props?.text || '';
   
-  return `<div class="${elementStyles.listItem}" style="${getListItemInlineStyles()}">${itemContent}</div>`;
+  return `<li class="${elementStyles.listItem}" style="${getUnorderedListInlineStyles()}">${itemContent}</li>`;
 }
 
 /**

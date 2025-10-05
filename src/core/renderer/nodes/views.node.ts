@@ -1,5 +1,5 @@
 import { AstNode } from '../../../types/ast-node';
-import { elementStyles, getScreenClasses, getModalBackdropInlineStyles, getModalContentInlineStyles, getModalCloseInlineStyles, getDrawerInlineStyles } from './styles/styles';
+import { elementStyles, getScreenClasses,  getModalContentInlineStyles, getModalCloseInlineStyles, getDrawerInlineStyles } from './styles/styles';
 
 /**
  * Render screen element
@@ -23,7 +23,7 @@ export function renderModal(node: AstNode, context?: string, nodeRenderer?: (nod
   const modalName = (node.props as any)?.name || 'modal';
   
   return `<div class="modal hidden" id="modal-${modalName}" data-modal="${modalName}">
-    <div class="${elementStyles.modalBackdrop}" style="${getModalBackdropInlineStyles()}">
+    <div class="${elementStyles.modalBackdrop}" >
       <div class="${elementStyles.modalContent}" style="${getModalContentInlineStyles()}" >
         <button class="${elementStyles.modalClose}" style="${getModalCloseInlineStyles()}" data-nav="${modalName}" data-nav-type="toggle">&times;</button>
         ${modalElements}
@@ -48,7 +48,7 @@ export function renderDrawer(node: AstNode, context?: string, nodeRenderer?: (no
     node.children.map(child => nodeRenderer(child, context)).join('\n') : '';
     
   return `<div class="drawer-container hidden" id="drawer-${drawerName}" data-drawer="${drawerName}">
-    <div class="drawer-overlay absolute inset-0 bg-black/30  z-[1050]"></div>
+    <div class="drawer-overlay backdrop-blur-sm absolute inset-0 bg-black/30  z-[1050]"></div>
     <aside class="${elementStyles.drawer}" style="${getDrawerInlineStyles()}">
       <div class="p-4">
         <button class="${elementStyles.modalClose}" style="${getModalCloseInlineStyles()}" data-nav="${drawerName}" data-nav-type="toggle">&times;</button>
