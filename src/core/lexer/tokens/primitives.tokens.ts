@@ -1,6 +1,6 @@
 import { createToken } from "chevrotain";
 
-// Primitive Element Tokens
+// Primitive Element Tokens - Basic UI elements
 export const Button = createToken({ 
   name: "Button", 
   pattern: /@([_+\-=!]?)\[([^\]]+)\](?:\{([^}]+)\})?(?:\(([^)]+)\))?/ 

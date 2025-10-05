@@ -1,6 +1,6 @@
 import { createToken, Lexer } from "chevrotain";
 
-// Whitespace & Formatting Tokens
+// Core Language Tokens - Essential tokens for parsing structure
 export const WhiteSpace = createToken({
   name: "Spaces",
   pattern: / +/,
@@ -16,4 +16,14 @@ export const NewLine = createToken({
 export const BlankLine = createToken({ 
   name: "BlankLine", 
   pattern: /\r?\n\s*\r?\n/ 
+});
+
+export const Colon = createToken({ 
+  name: "Colon", 
+  pattern: /:/ 
+});
+
+export const Identifier = createToken({ 
+  name: "Identifier", 
+  pattern: /[^\s\n\r:{}[\](\)]+/ 
 });

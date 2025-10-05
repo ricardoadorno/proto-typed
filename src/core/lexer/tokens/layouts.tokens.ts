@@ -1,6 +1,6 @@
 import { createToken } from "chevrotain";
 
-// Layout Primitives - Simplified Tokens
+// Layout Primitives - Basic layout containers with modifiers
 // The token patterns are now simple and clean, capturing the base keyword plus optional modifiers.
 // The complex parsing logic for modifiers is handled in the parser and AST builder.
 // 
@@ -17,7 +17,6 @@ import { createToken } from "chevrotain";
 // - Spacing: p[number], m[number], px[number], py[number], mx[number], my[number]
 // - Grid: gap[number], cols[1-12]
 
-// Simplified tokens - let the parser handle the complex logic
 export const Row = createToken({ 
   name: "Row", 
   pattern: /row(?:-[a-zA-Z0-9-]*)?/

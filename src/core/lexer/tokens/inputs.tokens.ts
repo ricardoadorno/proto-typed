@@ -1,6 +1,6 @@
 import { createToken } from "chevrotain";
 
-// Input Family Tokens
+// Input & Form Tokens - Interactive form elements
 export const Input = createToken({ 
   name: "Input", 
   pattern: /___[\*\-]?(?::([^\n\r:{}[\]]+))?(?:\{([^}]+)\})?(?:\[([^\]]*)\])?/
