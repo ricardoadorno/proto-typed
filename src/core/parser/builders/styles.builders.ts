@@ -26,9 +26,10 @@ export function buildStyles(ctx: Context): AstNode {
   }
 
   return {
-    type: 'styles',
+    type: 'Styles',
+    id: "", // ID will be generated later
     props: {},
-    elements: styleDeclarations
+    children: styleDeclarations
   };
 }
 
@@ -51,11 +52,13 @@ function buildStyleDeclarationFromCst(cstNode: CstNode): AstNode | null {
     const propertyValue = match[2].trim();
     
     return {
-      type: 'css_property',
+      type: 'CssProperty',
+      id: "", // ID will be generated later
       props: {
-        name: propertyName,
+        property: propertyName,
         value: propertyValue
-      }
+      },
+      children: []
     };
   }
   
@@ -81,11 +84,13 @@ export function buildStyleDeclaration(ctx: Context): AstNode | null {
     const propertyValue = match[2].trim();
     
     return {
-      type: 'css_property',
+      type: 'CssProperty',
+      id: "", // ID will be generated later
       props: {
-        name: propertyName,
+        property: propertyName,
         value: propertyValue
-      }
+      },
+      children: []
     };
   }
   

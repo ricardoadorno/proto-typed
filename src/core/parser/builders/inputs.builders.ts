@@ -29,7 +29,7 @@ export function buildInputElement(ctx: Context) {
     
     // Default props that will always be included
     const props: any = {
-      type: isPassword ? 'password' : 'text',
+      inputType: isPassword ? 'password' : 'text',
       disabled: isDisabled,
       label: labelMatch ? labelMatch[1].trim() : '',
       placeholder: placeholderMatch ? placeholderMatch[1] : ''
@@ -42,11 +42,13 @@ export function buildInputElement(ctx: Context) {
       
       return {
         type: "Select",
+        id: "", // ID will be generated later
         props: {
           ...props,
-          type: 'select',
+          selectType: 'select',
           options
-        }
+        },
+        children: []
       };
     } else if (content) {
       // Single content, could be a type or validation rule
@@ -55,7 +57,9 @@ export function buildInputElement(ctx: Context) {
 
     return {
       type: "Input",
-      props
+      id: "", // ID will be generated later
+      props,
+      children: []
     };
   }
 
@@ -88,10 +92,12 @@ export function buildRadioButtonGroup(ctx: Context) {
   }
 
   return {
-    type: "RadioGroup",
+    type: "RadioOption",
+    id: "", // ID will be generated later
     props: {
       options
-    }
+    },
+    children: []
   };
 }
 
@@ -110,20 +116,24 @@ export function buildCheckboxElement(ctx: Context) {
     
     return {
       type: "Checkbox",
+      id: "", // ID will be generated later
       props: {
         checked: isChecked,
         label: label.trim(),
         value: label.toLowerCase().replace(/\s+/g, '_')
-      }
+      },
+      children: []
     };
   }
   
   return {
     type: "Checkbox",
+    id: "", // ID will be generated later
     props: {
       checked: false,
       label: '',
       value: ''
-    }
+    },
+    children: []
   };
 }

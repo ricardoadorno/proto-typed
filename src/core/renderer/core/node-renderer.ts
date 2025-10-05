@@ -1,79 +1,78 @@
 import { AstNode } from '../../../types/ast-node';
 
-// Import all node renderers
+// Import all node renderers from the new modular organization
 import { 
-  renderComponent, 
-  renderComponentInstance, 
-} from '../nodes/component-nodes';
+  renderScreen, 
+  renderModal, 
+  renderDrawer 
+} from '../nodes/views.node';
+
 import { 
-  renderInput, 
-  renderRadioGroup, 
-  renderSelect, 
-  renderCheckbox 
-} from '../nodes/form-nodes';
+  renderButton, 
+  renderLink, 
+  renderImage, 
+  renderHeading, 
+  renderText, 
+  renderParagraph, 
+  renderMutedText 
+} from '../nodes/primitives.node';
+
 import { 
   renderRow, 
   renderCol, 
-  renderGrid,
-  renderSeparator,
-  renderContainer 
-} from '../nodes/layout-nodes';
-import { renderDrawer, renderFAB, renderModal, renderNavigator, renderNavItem, renderScreen } from '../nodes/navigation-overlay-nodes';
-import { renderButton, renderHeading, renderImage, renderLink, renderParagraph, renderText, renderMutedText } from '../nodes/primitive-nodes';
-import { renderCard, renderHeader, renderList, renderListItem, renderOrderedList, renderUnorderedList } from '../nodes/structured-content-node';
+  renderGrid, 
+  renderContainer, 
+  renderSeparator 
+} from '../nodes/layouts.node';
+
+import { 
+  renderList, 
+  renderListItem, 
+  renderCard, 
+  renderHeader 
+} from '../nodes/structures.node';
+
+import { 
+  renderInput, 
+  renderRadioGroup, 
+  renderCheckbox 
+} from '../nodes/inputs.node';
+
+import { 
+  renderComponent, 
+  renderComponentInstance 
+} from '../nodes/components.node';
 
 /**
  * Convert an AST node to HTML using modular node renderers
+ * Optimized for performance with organized imports and clear case mapping
  */
 export function renderNode(node: AstNode, context?: string): string {
   if (!node || !node.type) {
     console.warn('Invalid node received:', node);
     return '';
   }
-    switch (node.type) {
 
-    // High-level nodes
-    case 'screen':
+  switch (node.type) {
+    // Views (screens, modals, drawers)
+    case 'Screen':
       return renderScreen(node, renderNode);
     
-    case 'component':
-      return renderComponent(node);
-    
-    case 'component_instance':
-      return renderComponentInstance(node, context, renderNode);
-    
-    case 'modal':
+    case 'Modal':
       return renderModal(node, context, renderNode);
       
-    case 'drawer':
+    case 'Drawer':
       return renderDrawer(node, context, renderNode);
 
-        case 'Header':
-      return renderHeader(node, renderNode);   
-      
-    case 'Navigator':
-      return renderNavigator(node);
+    // Components
+    case 'Component':
+      return renderComponent(node);
     
-    case 'NavItem':
-      return renderNavItem(node);
-      
-    case 'FAB':
-      return renderFAB(node);
+    case 'ComponentInstance':
+    case 'ComponentInstanceWithProps':
+      return renderComponentInstance(node, context, renderNode);
 
-    // Form nodes
-    case 'Input':
-      return renderInput(node);
-      
-    case 'RadioGroup':
-      return renderRadioGroup(node);
-      
-    case 'Select':
-      return renderSelect(node);
-      
-    case 'Checkbox':
-      return renderCheckbox(node);
-
-    // Interactive nodes
+    // Primitives (buttons, text, images, etc.)
     case 'Button':
       return renderButton(node, context);
       
@@ -83,8 +82,6 @@ export function renderNode(node: AstNode, context?: string): string {
     case 'Image':
       return renderImage(node);
         
-      
-    // Typography nodes
     case 'Heading':
       return renderHeading(node, context);
       
@@ -96,21 +93,8 @@ export function renderNode(node: AstNode, context?: string): string {
       
     case 'MutedText':
       return renderMutedText(node);
-      
-    // List nodes
-    case 'OrderedList':
-      return renderOrderedList(node);
-      
-    case 'UnorderedList':
-      return renderUnorderedList(node);
-      
-    case 'List':
-      return renderList(node, context, renderNode);    
-      
-    case 'ListItem':
-      return renderListItem(node);
-      
-    // Layout nodes
+
+    // Layouts (rows, columns, grids, containers)
     case 'Row':
       return renderRow(node, context, renderNode);
       
@@ -123,11 +107,31 @@ export function renderNode(node: AstNode, context?: string): string {
     case 'Container':
       return renderContainer(node, context, renderNode);
       
+    case 'Separator':
+      return renderSeparator();
+
+    // Structures (lists, cards, headers)
+    case 'List':
+      return renderList(node, context, renderNode);    
+      
+    case 'UnorderedListItem':
+      return renderListItem(node);
+      
     case 'Card':
       return renderCard(node, context, renderNode);
         
-    case 'Separator':
-      return renderSeparator();
+    case 'Header':
+      return renderHeader(node, renderNode);   
+
+    // Inputs (forms)
+    case 'Input':
+      return renderInput(node);
+      
+    case 'RadioOption':
+      return renderRadioGroup(node);
+      
+    case 'Checkbox':
+      return renderCheckbox(node);
         
     default:
       console.warn(`Unknown node type: ${node.type}`);

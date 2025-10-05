@@ -42,13 +42,16 @@ export function buildListElement(ctx: Context) {
 
     return {
       type: "List",
+      id: "", // ID will be generated later
       props: {
         variant: "component",
         component: componentName
       },
-      elements: dataItems.map(columns => ({
-        type: "ListDataItem",
-        props: { columns }
+      children: dataItems.map(columns => ({
+        type: "UnorderedListItem",
+        id: "",
+        props: { columns },
+        children: []
       }))
     };
   } else {
@@ -65,10 +68,11 @@ export function buildListElement(ctx: Context) {
 
     return {
       type: "List",
+      id: "", // ID will be generated later
       props: {
         variant: "advanced"
       },
-      elements: items
+      children: items
     };
   }
 }
@@ -90,8 +94,9 @@ export function buildCardElement(ctx: Context, visitor: any) {
 
   return {
     type: "Card",
+    id: "", // ID will be generated later
     props: {},
-    elements
+    children: elements
   };
 }
 
@@ -101,7 +106,9 @@ export function buildCardElement(ctx: Context, visitor: any) {
 export function buildSeparatorElement(_ctx: Context) {
   return {
     type: "Separator",
-    props: {}
+    id: "", // ID will be generated later
+    props: {},
+    children: []
   };
 }
 
@@ -117,10 +124,12 @@ export function buildUnorderedListElement(ctx: Context) {
   const content = match ? match[1] : listText;
 
   return {
-    type: "UnorderedList",
+    type: "UnorderedListItem",
+    id: "", // ID will be generated later
     props: {
-      items: [content]
-    }
+      text: content
+    },
+    children: []
   };
 }/**
  * Build header element from context
@@ -139,8 +148,9 @@ export function buildHeaderElement(ctx: Context, visitor: any) {
 
   return {
     type: "Header",
+    id: "", // ID will be generated later
     props: {},
-    elements
+    children: elements
   };
 }
 
@@ -161,8 +171,9 @@ export function buildNavigatorElement(ctx: Context) {
 
   return {
     type: "Navigator",
+    id: "", // ID will be generated later
     props: {},
-    elements: items
+    children: items
   };
 }
 
@@ -181,19 +192,23 @@ export function buildFABElement(ctx: Context) {
     
     return {
       type: "FAB",
+      id: "", // ID will be generated later
       props: {
         icon,
         action
-      }
+      },
+      children: []
     };
   }
   
   return {
     type: "FAB",
+    id: "", // ID will be generated later
     props: {
       icon: "plus",
       action: ""
-    }
+    },
+    children: []
   };
 }
 

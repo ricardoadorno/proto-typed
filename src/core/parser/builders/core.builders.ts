@@ -90,8 +90,10 @@ export function parseListItem(itemText: string) {
   const content = itemText.replace(/^-\s+/, '').trim();
   
   return {
-    type: 'ListItem',
-    text: content
+    type: 'UnorderedListItem',
+    id: "", // ID will be generated later
+    props: { text: content },
+    children: []
   };
 }
 

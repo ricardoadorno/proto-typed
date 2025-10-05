@@ -31,8 +31,8 @@ export class CustomPropertiesManager {
    */
   processStylesConfig(stylesNodes: AstNode[]): void {
     for (const stylesNode of stylesNodes) {
-      if (stylesNode.type === 'styles') {
-        this.processStyleDeclarations(stylesNode.elements || []);
+      if (stylesNode.type === 'Styles') {
+        this.processStyleDeclarations(stylesNode.children || []);
       }
     }
   }
@@ -42,8 +42,11 @@ export class CustomPropertiesManager {
    */
   private processStyleDeclarations(declarations: AstNode[]): void {
     for (const decl of declarations) {
-      if (decl.type === 'css-property' && decl.props?.property && decl.props?.value) {
-        this.customProperties[decl.props.property] = decl.props.value;
+      if (decl.type === 'CssProperty') {
+        const props = decl.props as any;
+        if (props?.property && props?.value) {
+          this.customProperties[props.property] = props.value;
+        }
       }
     }
   }

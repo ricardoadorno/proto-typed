@@ -109,6 +109,8 @@ class RouteManagerGateway {
     
     if (currentScreen !== screenName) {
       routeManager.addToHistory(screenName);
+      // Update the route manager's current screen state
+      routeManager.setCurrentScreen(screenName);
       
       if (this.handlers?.onScreenNavigation) {
         this.handlers.onScreenNavigation(screenName);
@@ -125,9 +127,14 @@ class RouteManagerGateway {
   navigateBack(): boolean {
     const previousScreen = routeManager.navigateBack();
     
-    if (previousScreen && this.handlers?.onScreenNavigation) {
-      this.handlers.onScreenNavigation(previousScreen);
-      return true;
+    if (previousScreen) {
+      // Update the route manager's current screen state
+      routeManager.setCurrentScreen(previousScreen);
+      
+      if (this.handlers?.onScreenNavigation) {
+        this.handlers.onScreenNavigation(previousScreen);
+        return true;
+      }
     }
     
     if (this.handlers?.onBackNavigation) {

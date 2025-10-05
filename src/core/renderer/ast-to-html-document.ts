@@ -1,7 +1,7 @@
 import { AstNode } from '../../types/ast-node';
 import { routeManager } from './core/route-manager';
 import { customPropertiesManager } from './core/theme-manager';
-import { setComponentDefinitions } from './nodes/component-nodes';
+import { setComponentDefinitions } from './nodes/components.node';
 import { renderGlobalElements, renderScreenForDocument } from './infrastructure/html-render-helper';
 
 /**
@@ -14,7 +14,7 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
     
     // Process styles first to configure custom properties
     const astArray = Array.isArray(ast) ? ast : [ast];
-    const stylesNodes = astArray.filter(node => node.type === 'styles');
+    const stylesNodes = astArray.filter(node => node.type === 'Styles');
     customPropertiesManager.processStylesConfig(stylesNodes);
     
     // Process routes through the route manager
@@ -156,7 +156,7 @@ function generateNavigationScript(): string {
     function navigateToScreen(screenName) {
       const screens = document.querySelectorAll('.screen');
       screens.forEach(screen => {
-        if (screen.className.includes(screenName.toLowerCase())) {
+        if (screen.getAttribute('data-screen') === screenName) {
           screen.style.display = 'block';
         } else {
           screen.style.display = 'none';

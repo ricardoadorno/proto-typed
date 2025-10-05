@@ -14,12 +14,13 @@ type Context = {
  */
 export function buildScreen(ctx: Context, visitor: any) {
   const name = ctx.name[0].image;
-  const elements = ctx.element ? ctx.element.map((el: CstNode) => visitor.visit(el)) : [];
+  const children = ctx.element ? ctx.element.map((el: CstNode) => visitor.visit(el)) : [];
 
   return {
-    type: "screen",
-    name,
-    elements
+    type: "Screen",
+    id: "", // ID will be generated later
+    props: { name },
+    children
   };
 }
 
@@ -28,12 +29,13 @@ export function buildScreen(ctx: Context, visitor: any) {
  */
 export function buildModal(ctx: Context, visitor: any) {
   const name = ctx.name[0].image;
-  const elements = ctx.element ? ctx.element.map((el: CstNode) => visitor.visit(el)) : [];
+  const children = ctx.element ? ctx.element.map((el: CstNode) => visitor.visit(el)) : [];
 
   return {
-    type: "modal",
-    name,
-    elements
+    type: "Modal",
+    id: "", // ID will be generated later
+    props: { name },
+    children
   };
 }
 
@@ -42,11 +44,12 @@ export function buildModal(ctx: Context, visitor: any) {
  */
 export function buildDrawer(ctx: Context, visitor: any) {
   const name = ctx.name[0].image;
-  const elements = ctx.element ? ctx.element.map((el: CstNode) => visitor.visit(el)) : [];
+  const children = ctx.element ? ctx.element.map((el: CstNode) => visitor.visit(el)) : [];
 
   return {
-    type: "drawer",
-    name,
-    elements
+    type: "Drawer",
+    id: "", // ID will be generated later
+    props: { name },
+    children
   };
 }

@@ -8,12 +8,20 @@ import { NavigationMediator } from '../infrastructure/navigation-mediator';
  */
 export function renderButton(node: AstNode, context?: string): string {
   const buttonProps = node.props as any;
-  const { children, href: buttonHref, variant } = buttonProps || {};
-  const buttonText = children || '';
+  const { text, action, variant, icon } = buttonProps || {};
+  const buttonText = text || '';
   
-  const buttonNavAttrs = NavigationMediator.generateNavigationAttributes(buttonHref);
+  const buttonNavAttrs = NavigationMediator.generateNavigationAttributes(action);
   const buttonClasses = `${getButtonClasses(context, variant)}`;
   const buttonInlineStyles = getButtonInlineStyles(variant || 'primary');
+  
+  // If there's an icon, show icon + text or just icon
+  if (icon) {
+    if (isLucideIcon(icon)) {
+      const iconSvg = getLucideSvg(icon);
+      return `<button class="${buttonClasses}" style="${buttonInlineStyles}" ${buttonNavAttrs}>${iconSvg}${buttonText ? ' ' + buttonText : ''}</button>`;
+    }
+  }
   
   // Check if the button text is a Lucide icon name
   if (isLucideIcon(buttonText)) {
@@ -21,7 +29,7 @@ export function renderButton(node: AstNode, context?: string): string {
     return `<button class="${buttonClasses}" style="${buttonInlineStyles}" ${buttonNavAttrs}>${iconSvg}</button>`;
   }
   
-  return `<button class="${buttonClasses}" style="${buttonInlineStyles}" ${buttonNavAttrs}>${buttonText} </button>`;
+  return `<button class="${buttonClasses}" style="${buttonInlineStyles}" ${buttonNavAttrs}>${buttonText}</button>`;
 }
 
 /**
@@ -29,11 +37,11 @@ export function renderButton(node: AstNode, context?: string): string {
  */
 export function renderLink(node: AstNode): string {
   const props = node.props as any;
-  const href = props?.href || '#';
-  const linkText = props?.children || '';
+  const destination = props?.destination || '#';
+  const linkText = props?.text || '';
 
-  const linkNavAttrs = NavigationMediator.generateNavigationAttributes(href);
-  const linkHref = NavigationMediator.generateHrefAttribute(href);
+  const linkNavAttrs = NavigationMediator.generateNavigationAttributes(destination);
+  const linkHref = NavigationMediator.generateHrefAttribute(destination);
 
   return `<a class="${elementStyles.link}" style="${getLinkInlineStyles()}" ${linkHref} ${linkNavAttrs}>${linkText}</a>`;
 }
@@ -48,8 +56,6 @@ export function renderImage(node: AstNode): string {
   return `<img src="${src}" alt="${alt}" class="${elementStyles.image}" />`;
 }
 
-
-
 /**
  * Render heading element
  */
@@ -62,7 +68,7 @@ export function renderHeading(node: AstNode, context?: string): string {
     ? elementStyles.headerHeading[level as keyof typeof elementStyles.headerHeading] || elementStyles.headerHeading[1]
     : elementStyles.heading[level as keyof typeof elementStyles.heading] || elementStyles.heading[1];
   
-  return `<h${level} class="${headingStyles}" style="${getHeadingInlineStyles()}">${props?.children || ''}</h${level}>`;
+  return `<h${level} class="${headingStyles}" style="${getHeadingInlineStyles()}">${props?.content || ''}</h${level}>`;
 }
 
 /**
@@ -79,7 +85,7 @@ export function renderText(node: AstNode): string {
   const textClasses = elementStyles.paragraph[effectiveVariant];
   const inlineStyles = getParagraphInlineStyles(effectiveVariant);
   
-  return `<span class="${textClasses}" style="${inlineStyles}">${props?.children || ''}</span>`;
+  return `<span class="${textClasses}" style="${inlineStyles}">${props?.content || ''}</span>`;
 }
 
 /**
@@ -96,7 +102,7 @@ export function renderParagraph(node: AstNode): string {
   const paragraphClasses = elementStyles.paragraph[effectiveVariant];
   const inlineStyles = getParagraphInlineStyles(effectiveVariant);
   
-  return `<p class="${paragraphClasses}" style="${inlineStyles}">${props?.children || ''}</p>`;
+  return `<p class="${paragraphClasses}" style="${inlineStyles}">${props?.content || ''}</p>`;
 }
 
 /**
@@ -112,5 +118,5 @@ export function renderMutedText(node: AstNode): string {
   
   const mutedClasses = elementStyles.paragraph[effectiveVariant];
   
-  return `<span class="${mutedClasses}">${props?.children || ''}</span>`;
+  return `<span class="${mutedClasses}">${props?.content || ''}</span>`;
 }

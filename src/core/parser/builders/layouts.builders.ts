@@ -30,8 +30,9 @@ export function buildContainerElement(ctx: Context, visitor: any) {
 
   return {
     type: "Container",
+    id: "", // ID will be generated later
     props: modifiers,
-    elements
+    children: elements
   };
 }
 
@@ -56,8 +57,9 @@ export function buildRowElement(ctx: Context, visitor: any) {
 
   return {
     type: "Row",
+    id: "", // ID will be generated later
     props: modifiers,
-    elements
+    children: elements
   };
 }
 
@@ -82,8 +84,9 @@ export function buildColumnElement(ctx: Context, visitor: any) {
 
   return {
     type: "Col",
+    id: "", // ID will be generated later
     props: modifiers,
-    elements
+    children: elements
   };
 }
 
@@ -108,7 +111,8 @@ export function buildGridElement(ctx: Context, visitor: any) {
 
   return {
     type: "Grid",
+    id: "", // ID will be generated later
     props: modifiers,
-    elements
+    children: elements
   };
 }

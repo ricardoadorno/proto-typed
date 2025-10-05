@@ -28,10 +28,12 @@ export function buildHeadingElement(ctx: Context) {
 
   return {
     type: "Heading",
+    id: "", // ID will be generated later
     props: {
       level,
-      children: content
-    }
+      content
+    },
+    children: []
   };
 }
 
@@ -72,10 +74,12 @@ export function buildTextElement(ctx: Context) {
 
   return {
     type,
+    id: "", // ID will be generated later
     props: {
       variant,
-      children: content
-    }
+      content
+    },
+    children: []
   };
 }
 
@@ -112,12 +116,14 @@ export function buildButtonElement(ctx: Context) {
 
   return {
     type: "Button",
+    id: "", // ID will be generated later
     props: {
-      href: action,
-      children: text,
-      icon: icon,
-      variant: variant
-    }
+      action,
+      text,
+      icon,
+      variant
+    },
+    children: []
   };
 }
 
@@ -142,10 +148,12 @@ export function buildLinkElement(ctx: Context) {
 
   return {
     type: "Link",
+    id: "", // ID will be generated later
     props: {
-      href: url,
-      children: text
-    }
+      destination: url,
+      text
+    },
+    children: []
   };
 }
 
@@ -169,9 +177,11 @@ export function buildImageElement(ctx: Context) {
 
   return {
     type: "Image",
+    id: "", // ID will be generated later
     props: {
       src: url,
       alt: text
-    }
+    },
+    children: []
   };
 }

@@ -8,7 +8,7 @@ import { routeManagerGateway } from '../core/renderer/infrastructure/route-manag
 import { RouteMetadata } from '../types/routing';
 
 interface UseParseResult {
-  ast: AstNode[];
+  ast: AstNode[] | AstNode;
   astResultJson: string;
   renderedHtml: string;
   error: string | null;
@@ -22,7 +22,7 @@ interface UseParseResult {
 }
 
 export const useParse = (): UseParseResult => {
-  const [ast, setAst] = useState<AstNode[]>([]);
+  const [ast, setAst] = useState<AstNode[] | AstNode>([]);
   const [astResultJson, setAstResultJson] = useState<string>('');
   const [renderedHtml, setRenderedHtml] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
@@ -121,7 +121,7 @@ export const useParse = (): UseParseResult => {
     setCurrentScreen(screenName);
     
     // Re-render HTML with new screen if we have AST
-    if (ast.length > 0) {
+    if (Array.isArray(ast) ? ast.length > 0 : Object.keys(ast).length > 0) {
       try {
         const htmlString = astToHtmlStringPreview(ast, { currentScreen: screenName || undefined });
         setRenderedHtml(htmlString);

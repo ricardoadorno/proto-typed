@@ -14,18 +14,18 @@ import { RouteManager } from '../core/route-manager';
 function renderScreen(config: ScreenRenderConfig): string {
   const { screen, index, currentScreen } = config;
   
-  const screenName = screen.name?.toLowerCase() || '';
+  const screenName = (screen.props as any)?.name || ''; // Nome original preservado
   const style = getScreenVisibilityStyle(screenName, index, currentScreen);
   const layoutClasses = generateLayoutClasses(screen);
   const { headerElements, fabElements, navigatorElements, contentElements } = separateScreenElements(screen);
   
-  const headerHtml = headerElements.map(element => renderNode(element)).join('\n') || '';
+  const headerHtml = headerElements.map((element: any) => renderNode(element)).join('\n') || '';
   const contentHtml = contentElements
-    .filter(element => element != null)
-    .map(element => renderNode(element))
+    .filter((element: any) => element != null)
+    .map((element: any) => renderNode(element))
     .join('\n      ') || '';
-  const fabHtml = fabElements.map(element => renderNode(element)).join('\n') || '';
-  const navigatorHtml = navigatorElements.map(element => renderNode(element)).join('\n') || '';
+  const fabHtml = fabElements.map((element: any) => renderNode(element)).join('\n') || '';
+  const navigatorHtml = navigatorElements.map((element: any) => renderNode(element)).join('\n') || '';
 
   return `
   <div id="${screenName}-screen" class="screen container ${screenName} ${layoutClasses.join(' ')} flex flex-col min-h-screen relative" ${style}>
@@ -43,7 +43,7 @@ function renderScreen(config: ScreenRenderConfig): string {
  */
 export function renderAllScreens(screens: AstNode[], currentScreen?: string | null): string {
   return screens
-    .filter(screen => screen && screen.name)
+    .filter(screen => screen && (screen.props as any)?.name)
     .map((screen, index) => renderScreen({
       screen,
       index,
@@ -56,16 +56,16 @@ export function renderAllScreens(screens: AstNode[], currentScreen?: string | nu
  * Render a single screen to HTML for document export with enhanced styling
  */
 export function renderScreenForDocument(screen: AstNode, index: number): string {
-  const screenName = screen.name?.toLowerCase() || '';
+  const screenName = (screen.props as any)?.name || ''; // Nome original preservado
   const style = index === 0 ? '' : 'style="display:none"';
   const layoutClasses = generateLayoutClasses(screen);
 
-  const elementsHtml = screen.elements
-    ?.filter(element => {
+  const elementsHtml = screen.children
+    ?.filter((element: any) => {
       // Keep all elements except named modals and drawers (they'll be rendered globally)
-      if (element.type === 'modal' || element.type === 'drawer') {
+      if (element.type === 'Modal' || element.type === 'Drawer') {
         // Only filter out elements that have names (global elements)
-        return !element.name;
+        return !(element.props as any)?.name;
       }
       return element != null;
     })
@@ -85,9 +85,9 @@ export function renderScreenForDocument(screen: AstNode, index: number): string 
 function generateLayoutClasses(screen: AstNode): string[] {
   const layoutClasses: string[] = [];
   
-  const hasHeader = screen.elements?.some(element => element.type === 'Header') || false;
-  const hasNavigator = screen.elements?.some(element => element.type === 'Navigator') || false;
-  const hasFAB = screen.elements?.some(element => element.type === 'FAB') || false;
+  const hasHeader = screen.children?.some((element: any) => element.type === 'Header') || false;
+  const hasNavigator = screen.children?.some((element: any) => element.type === 'Navigator') || false;
+  const hasFAB = screen.children?.some((element: any) => element.type === 'FAB') || false;
   
   if (hasHeader) layoutClasses.push('has-header');
   if (hasNavigator) layoutClasses.push('has-navigator');
@@ -100,16 +100,16 @@ function generateLayoutClasses(screen: AstNode): string[] {
  * Separate screen elements by type for proper positioning
  */
 function separateScreenElements(screen: AstNode) {
-  const headerElements = screen.elements?.filter(element => element.type === 'Header') || [];
-  const fabElements = screen.elements?.filter(element => element.type === 'FAB') || [];
-  const navigatorElements = screen.elements?.filter(element => element.type === 'Navigator') || [];
-  const contentElements = screen.elements?.filter(element => 
+  const headerElements = screen.children?.filter((element: any) => element.type === 'Header') || [];
+  const fabElements = screen.children?.filter((element: any) => element.type === 'FAB') || [];
+  const navigatorElements = screen.children?.filter((element: any) => element.type === 'Navigator') || [];
+  const contentElements = screen.children?.filter((element: any) => 
     element.type !== 'Header' && 
     element.type !== 'FAB' && 
     element.type !== 'Navigator' &&
     // Exclude named modals and drawers (they'll be rendered globally)
-    !(element.type === 'modal' && element.name) &&
-    !(element.type === 'drawer' && element.name)
+    !(element.type === 'Modal' && (element.props as any)?.name) &&
+    !(element.type === 'Drawer' && (element.props as any)?.name)
   ) || [];
   
   return { headerElements, fabElements, navigatorElements, contentElements };
@@ -120,7 +120,7 @@ function separateScreenElements(screen: AstNode) {
  */
 function getScreenVisibilityStyle(screenName: string, index: number, currentScreen?: string | null): string {
   if (currentScreen) {
-    return screenName === currentScreen.toLowerCase() ? '' : 'style="display:none"';
+    return screenName === currentScreen ? '' : 'style="display:none"';
   }
   return index === 0 ? '' : 'style="display:none"';
 }

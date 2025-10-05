@@ -2,7 +2,7 @@ import { AstNode } from '../../types/ast-node';
 import { RenderOptions } from '../../types/render';
 import { routeManager } from './core/route-manager';
 import { customPropertiesManager } from './core/theme-manager';
-import { setComponentDefinitions } from './nodes/component-nodes';
+import { setComponentDefinitions } from './nodes/components.node';
 import { renderAllScreens, renderGlobalElements } from './infrastructure/html-render-helper';
 
 /**
@@ -16,7 +16,7 @@ export function astToHtmlStringPreview(ast: AstNode | AstNode[], options: Render
     
     // Process styles first to configure custom properties
     const astArray = Array.isArray(ast) ? ast : [ast];
-    const stylesNodes = astArray.filter(node => node.type === 'styles');
+    const stylesNodes = astArray.filter(node => node.type === 'Styles');
     customPropertiesManager.processStylesConfig(stylesNodes);
 
     // Process routes through the route manager

@@ -14,12 +14,13 @@ type Context = {
  */
 export function buildComponent(ctx: Context, visitor: any) {
   const name = ctx.name[0].image;
-  const elements = ctx.element ? ctx.element.map((el: CstNode) => visitor.visit(el)) : [];
+  const children = ctx.element ? ctx.element.map((el: CstNode) => visitor.visit(el)) : [];
 
   return {
-    type: "component",
-    name,
-    elements
+    type: "Component",
+    id: "", // ID will be generated later
+    props: { name },
+    children
   };
 }
 
@@ -38,12 +39,13 @@ export function buildComponentInstanceElement(ctx: Context) {
       const propsString = match[2].trim();
       
       // Split props by | and clean them up
-      const props = propsString.split('|').map((prop: string) => prop.trim()).filter((prop: string) => prop.length > 0);
+      const propsList = propsString.split('|').map((prop: string) => prop.trim()).filter((prop: string) => prop.length > 0);
       
       return {
-        type: "component_instance",
-        name: componentName,
-        props: props
+        type: "ComponentInstanceWithProps",
+        id: "", // ID will be generated later
+        props: { componentName, props: propsList },
+        children: []
       };
     }
   }
@@ -57,9 +59,10 @@ export function buildComponentInstanceElement(ctx: Context) {
       const componentName = match[1];
       
       return {
-        type: "component_instance",
-        name: componentName,
-        props: []
+        type: "ComponentInstance",
+        id: "", // ID will be generated later
+        props: { componentName },
+        children: []
       };
     }
   }

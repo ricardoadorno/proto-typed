@@ -1,15 +1,17 @@
 import { tokenize } from '../lexer/lexer';
 import { parser } from './parser';
 import { createAstBuilder } from './ast-builder';
+import { generateDeterministicIds } from '../utils/deterministic-ids';
 
 /**
  * Parse input text into a Concrete Syntax Tree (CST) and then outputs an Abstract Syntax Tree (AST).
  * 
  * @param text The DSL text to parse
- * @returns The Abstract Syntax Tree representing the parsed input
+ * @param previousAst Optional previous AST for ID reuse (for better stability between parses)
+ * @returns The Abstract Syntax Tree representing the parsed input with deterministic IDs
  * @throws Error if parsing fails
  */
-export function parseAndBuildAst(text: string) {
+export function parseAndBuildAst(text: string, previousAst?: any) {
     // First tokenize the text using the lexer
     const lexResult = tokenize(text);
 
@@ -41,6 +43,9 @@ export function parseAndBuildAst(text: string) {
 
     const ast = builder.visit(cst);
 
-    // Return the built AST
-    return ast;
+    // Generate deterministic IDs for all nodes in the AST
+    const astWithIds = generateDeterministicIds(ast, previousAst);
+
+    // Return the built AST with deterministic IDs
+    return astWithIds;
 }

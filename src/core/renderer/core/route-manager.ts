@@ -34,6 +34,26 @@ export class RouteManager {
   }
 
   /**
+   * Recursively find all nodes of a specific type in the AST
+   */
+  private findNodesByType(nodes: AstNode[], nodeType: string): AstNode[] {
+    const found: AstNode[] = [];
+    
+    for (const node of nodes) {
+      if (node.type === nodeType) {
+        found.push(node);
+      }
+      
+      // Recursively search in children
+      if (node.children && node.children.length > 0) {
+        found.push(...this.findNodesByType(node.children, nodeType));
+      }
+    }
+    
+    return found;
+  }
+
+  /**
    * Process AST nodes and organize them into a unified route collection
    */
   processRoutes(ast: AstNode | AstNode[], options: RouteProcessingOptions = {}): RouteCollection {
@@ -88,14 +108,14 @@ export class RouteManager {
    * Get a specific screen route
    */
   getScreenRoute(name: string): ScreenRoute | undefined {
-    return this.routes.screens.get(name.toLowerCase());
+    return this.routes.screens.get(name);
   }
 
   /**
    * Get a specific global route
    */
   getGlobalRoute(name: string): GlobalRoute | undefined {
-    return this.routes.globals.get(name.toLowerCase());
+    return this.routes.globals.get(name);
   }
 
   /**
@@ -151,7 +171,7 @@ export class RouteManager {
       id: screen.id,
       name: screen.name,
       type: screen.type,
-      isActive: screen.id === this.routes.currentScreen,
+      isActive: screen.name === this.routes.currentScreen,
       isDefault: screen.isDefault,
       index: screen.index
     }));
@@ -232,6 +252,13 @@ export class RouteManager {
   }
 
   /**
+   * Set the current screen (used during navigation)
+   */
+  setCurrentScreen(screenName: string): void {
+    this.routes.currentScreen = screenName;
+  }
+
+  /**
    * Navigate back to previous screen
    * Returns the previous screen name or null if no history
    */
@@ -301,17 +328,18 @@ export class RouteManager {
    * Process screen nodes into screen routes
    */
   private processScreenRoutes(nodes: AstNode[], options: RouteProcessingOptions): void {
-    const screenNodes = nodes.filter(node => node.type === 'screen');
+    const screenNodes = this.findNodesByType(nodes, 'Screen');
     
     screenNodes.forEach((screen, index) => {
-      if (!screen.name) return; // Skip unnamed screens
-      
-      const screenName = screen.name.toLowerCase();
-      const isDefault = index === 0 || screenName === options.defaultScreen?.toLowerCase();
+      const props = screen.props as any;
+      if (!props?.name) return; // Skip unnamed screens
+
+      const screenName = props.name;
+      const isDefault = index === 0 || screenName === options.defaultScreen;
       
       const screenRoute: ScreenRoute = {
         id: screenName,
-        name: screen.name,
+        name: screenName,
         node: screen,
         type: 'screen',
         isDefault,
@@ -331,20 +359,21 @@ export class RouteManager {
    * Process global element nodes (modals, drawers) into global routes
    */
   private processGlobalRoutes(nodes: AstNode[]): void {
-    const globalNodes = nodes.filter(node => 
-      (node.type === 'modal' || node.type === 'drawer') && node.name
-    );
+    const modalNodes = this.findNodesByType(nodes, 'Modal');
+    const drawerNodes = this.findNodesByType(nodes, 'Drawer');
+    const globalNodes = [...modalNodes, ...drawerNodes];
     
     globalNodes.forEach(globalNode => {
-      if (!globalNode.name) return; // Skip unnamed global elements
-      
-      const globalName = globalNode.name.toLowerCase();
+      const props = globalNode.props as any;
+      if (!props?.name) return; // Skip unnamed global elements
+
+      const globalName = props.name;
       
       const globalRoute: GlobalRoute = {
         id: globalName,
-        name: globalNode.name,
+        name: globalName,
         node: globalNode,
-        type: globalNode.type as 'modal' | 'drawer',
+        type: globalNode.type.toLowerCase() as 'modal' | 'drawer',
         isVisible: false, // Global elements are hidden by default
       };
 
@@ -356,16 +385,17 @@ export class RouteManager {
    * Process component nodes into global routes (components are treated as global reusable elements)
    */
   private processComponentRoutes(nodes: AstNode[]): void {
-    const componentNodes = nodes.filter(node => node.type === 'component' && node.name);
+    const componentNodes = this.findNodesByType(nodes, 'Component');
     
     componentNodes.forEach(componentNode => {
-      if (!componentNode.name) return; // Skip unnamed components
-      
-      const componentName = componentNode.name.toLowerCase();
+      const props = componentNode.props as any;
+      if (!props?.name) return; // Skip unnamed components
+
+      const componentName = props.name;
       
       const componentRoute: GlobalRoute = {
         id: componentName,
-        name: componentNode.name,
+        name: componentName,
         node: componentNode,
         type: 'component',
         isVisible: false, // Components are not directly visible, they're instantiated

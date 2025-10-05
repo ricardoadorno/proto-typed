@@ -49,18 +49,12 @@ export function renderSelect(node: AstNode): string {
     selectHtml += `<label class="${elementStyles.label}" style="${getLabelInlineStyles()}">${selectProps.label}:${selectProps.required ? ' <span style="color: var(--destructive);">*</span>' : ''}\n`;
   }
   
-  const optionsHtml = (selectProps?.options || [])
-    .map((option: string) => {
-      if (selectProps?.placeholder && option === selectProps.options[0]) {
-        return `<option value="" disabled selected>${selectProps.placeholder}</option>
-<option value="${option}">${option}</option>`;
-      }
-      return `<option value="${option}">${option}</option>`;
-    })
+  const selectOptions = (selectProps?.options || [])
+    .map((option: string) => `<option value="${option}">${option}</option>`)
     .join('\n');
-  
-  selectHtml += `  <select class="${elementStyles.select}" style="${getSelectInlineStyles()}">${optionsHtml}</select>`;
-  
+    
+  selectHtml += `  <select class="${elementStyles.select}" style="${getSelectInlineStyles()}">\n${selectOptions}\n  </select>`;
+
   if (selectProps?.label) {
     selectHtml += '\n</label>';
   }
@@ -72,13 +66,11 @@ export function renderSelect(node: AstNode): string {
  * Render checkbox element
  */
 export function renderCheckbox(node: AstNode): string {
-  const props = node.props as any;
-  const checked = props?.checked || false;
-  const label = props?.label || '';
-  return `
-    <label class="${getFormControlClasses()}">
-      <input type="checkbox" ${checked ? 'checked' : ''} class="${elementStyles.checkbox}" style="${getCheckboxInlineStyles()}" />
-      <span style="color: var(--foreground);">${label}</span>
-    </label>
-  `;
+  const checkboxProps = node.props as any;
+  const checked = checkboxProps?.checked ? 'checked' : '';
+  
+  return `<label class="${getFormControlClasses()}">
+    <input type="checkbox" ${checked} class="${elementStyles.checkbox}" style="${getCheckboxInlineStyles()}" />
+    <span style="color: var(--foreground);">${checkboxProps?.label || ''}</span>
+  </label>`;
 }
