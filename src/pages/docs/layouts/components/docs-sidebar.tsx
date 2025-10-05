@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import toc from "../../docs/toc";
+import toc from "../../../../docs/toc";
 
 export function DocsSidebar() {
     const location = useLocation();

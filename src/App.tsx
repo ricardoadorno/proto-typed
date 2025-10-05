@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AstModal from './components/ast-modal';
+import AstModal from './components/ui/ast-modal';
 import { DSLEditor } from './core/editor';
 import { useParse } from './hooks/use-parse';
 import {

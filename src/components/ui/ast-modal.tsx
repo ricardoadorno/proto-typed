@@ -1,4 +1,4 @@
-import Modal from './ui/modal';
+import Modal from './modal';
 
 export default function AstModal({ ast, html }: { ast: string, html: string }) {
     return (

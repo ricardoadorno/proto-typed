@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { AppHeader } from "../../components/ui";
+import { AppHeader } from "../../../../components/ui";
 
 export function DocsHeader() {
 

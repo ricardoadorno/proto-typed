@@ -1,7 +1,7 @@
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import App from "./App";
 import Docs from './pages/docs';
-import DocsLayout from './layouts/docs-layout';
+import DocsLayout from './pages/docs/layouts/docs-layout';
 
 const routes: RouteObject[] = [
     { path: "/", Component: App },
