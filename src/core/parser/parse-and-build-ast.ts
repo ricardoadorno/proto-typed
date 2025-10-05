@@ -37,9 +37,7 @@ export function parseAndBuildAst(text: string) {
         throw new Error(errorMessage);
     }
 
-    // Create AST builder using the factory with dependency injection
-    const AstBuilderClass = createAstBuilder(parser);
-    const builder = new AstBuilderClass(parser);
+    const builder = createAstBuilder(parser);
 
     const ast = builder.visit(cst);
 

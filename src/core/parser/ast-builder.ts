@@ -53,7 +53,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
   const BaseUiDslCstVisitor = parserInstance.getBaseCstVisitorConstructorWithDefaults();
 
   class AstBuilder extends BaseUiDslCstVisitor {
-    constructor(private parser: UiDslParser) {
+    constructor() {
       super();
       this.validateVisitor();
     }
@@ -248,6 +248,6 @@ export function createAstBuilder(parserInstance: UiDslParser) {
   }
   }
 
-  return AstBuilder;
+  return new AstBuilder();
 }
 

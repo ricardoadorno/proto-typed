@@ -1,25 +1,28 @@
 /**
  * Centralized exports for all AST builder modules
- * Provides a clean interface for importing builder functions
+ * Organized by category following the same structure as tokens
  */
 
-// Utility functions
-export * from './utils.builders';
+// Core utilities
+export * from './core.builders';
 
-// Primitive builders
+// Views (screens, modals, drawers)
+export * from './views.builders';
+
+// Primitives (text, buttons, links, images)
 export * from './primitives.builders';
 
-// Form builders
-export * from './form.builders';
+// Layouts (containers, rows, columns, grids)
+export * from './layouts.builders';
 
-// Layout builders
-export * from './layout.builders';
+// Structures (lists, cards, navigation, separators)
+export * from './structures.builders';
 
-// Content structure builders
-export * from './content.builders';
+// Inputs (forms, checkboxes, radio buttons)
+export * from './inputs.builders';
 
-// Navigation and overlay builders
-export * from './navigation.builders';
+// Components (definitions and instances)
+export * from './components.builders';
 
-// Styles and theming builders
-export * from './styles-builder';
+// Styles (CSS and theming)
+export * from './styles.builders';

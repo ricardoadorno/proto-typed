@@ -3,7 +3,7 @@
  * Handles containers, rows, columns, and grids
  */
 
-import { parseLayoutModifiers } from './utils.builders';
+import { parseLayoutModifiers } from './core.builders';
 
 type Context = {
   [key: string]: any;
@@ -30,7 +30,7 @@ export function buildContainerElement(ctx: Context, visitor: any) {
 
   return {
     type: "Container",
-    modifiers,
+    props: modifiers,
     elements
   };
 }
@@ -45,11 +45,9 @@ export function buildRowElement(ctx: Context, visitor: any) {
   const rowToken = ctx.Row[0];
   const modifiers = parseLayoutModifiers(rowToken.image);
 
-  // Get elements directly from element subrules
   if (ctx.element && ctx.element.length > 0) {
     for (const el of ctx.element) {
       const elementAst = visitor.visit(el);
-      
       if (elementAst) {
         elements.push(elementAst);
       }
@@ -58,7 +56,7 @@ export function buildRowElement(ctx: Context, visitor: any) {
 
   return {
     type: "Row",
-    modifiers,
+    props: modifiers,
     elements
   };
 }
@@ -73,11 +71,9 @@ export function buildColumnElement(ctx: Context, visitor: any) {
   const colToken = ctx.Col[0];
   const modifiers = parseLayoutModifiers(colToken.image);
 
-  // Get elements directly from element subrules
   if (ctx.element && ctx.element.length > 0) {
     for (const el of ctx.element) {
       const elementAst = visitor.visit(el);
-      
       if (elementAst) {
         elements.push(elementAst);
       }
@@ -85,8 +81,8 @@ export function buildColumnElement(ctx: Context, visitor: any) {
   }
 
   return {
-    type: "Col",
-    modifiers,
+    type: "Column",
+    props: modifiers,
     elements
   };
 }
@@ -112,7 +108,7 @@ export function buildGridElement(ctx: Context, visitor: any) {
 
   return {
     type: "Grid",
-    modifiers,
+    props: modifiers,
     elements
   };
 }
