@@ -90,7 +90,7 @@ export function parseListItem(itemText: string) {
   const content = itemText.replace(/^-\s+/, '').trim();
   
   return {
-    type: 'list_item',
+    type: 'ListItem',
     text: content
   };
 }

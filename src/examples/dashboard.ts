@@ -8,9 +8,9 @@ screen Dashboard:
       card:
         ## Analytics
         > This widget shows analytics data
-        1. Total Users: 1,245
-        2. Active Sessions: 423
-        3. Conversion Rate: 8.5%
+        - Total Users: 1,245
+        - Active Sessions: 423
+        - Conversion Rate: 8.5%
         @[View Details]
     
     col:
@@ -24,10 +24,10 @@ screen Dashboard:
         @[Generate Report]
   card:
     ## Recent Activity
-    1. Updated profile information
-    2. Changed account settings
-    3. Added new dashboard widget
-    4. Completed onboarding process
+    - Updated profile information
+    - Changed account settings
+    - Added new dashboard widget
+    - Completed onboarding process
   
   row:
     col:

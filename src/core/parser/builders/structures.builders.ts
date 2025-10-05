@@ -108,27 +108,20 @@ export function buildSeparatorElement(_ctx: Context) {
 /**
  * Build ordered list element from context
  */
-export function buildOrderedListElement(ctx: Context) {
-  const orderText = ctx.OrderedListItem[0].image;
-  const match = orderText.match(/\d+\.\s+([^\n\r]+)/);
-  const content = match ? match[1] : orderText;
-
-  return {
-    type: "OrderedListItem",
-    props: {
-      children: content
-    }
-  };
-}
-
 /**
  * Build unordered list element from context
  */
 export function buildUnorderedListElement(ctx: Context) {
   const listText = ctx.UnorderedListItem[0].image;
-  const parsedItem = parseListItem(listText);
+  const match = listText.match(/^-\s+(.+)/);
+  const content = match ? match[1] : listText;
 
-  return parsedItem;
+  return {
+    type: "UnorderedList",
+    props: {
+      items: [content]
+    }
+  };
 }/**
  * Build header element from context
  */

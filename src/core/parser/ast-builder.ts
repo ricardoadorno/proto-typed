@@ -20,7 +20,6 @@ import {
   buildListElement,
   buildCardElement,
   buildSeparatorElement,
-  buildOrderedListElement,
   buildUnorderedListElement,
   // Navigation builders
   buildScreen,
@@ -89,7 +88,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
       'componentInstanceElement', 'buttonElement', 'linkElement', 'imageElement', 
       'headingElement', 'textElement', 'rowElement', 'columnElement', 'gridElement', 
       'containerElement', 'listElement', 'cardElement', 'headerElement', 
-      'navigatorElement', 'orderedListElement', 'unorderedListElement', 
+      'navigatorElement', 'unorderedListElement', 
       'fabElement', 'separatorElement', 'inputElement', 'radioButtonGroup', 
       'checkboxElement'
     ];
@@ -206,10 +205,6 @@ export function createAstBuilder(parserInstance: UiDslParser) {
 
   navigatorElement(ctx: Context) {
     return buildNavigatorElement(ctx);
-  }
-
-  orderedListElement(ctx: Context) {
-    return buildOrderedListElement(ctx);
   }
 
   unorderedListElement(ctx: Context) {

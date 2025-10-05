@@ -1,6 +1,6 @@
 /**
  * Test example for structural tokens
- * Tests Separator, OrderedListItem and UnorderedListItem
+ * Tests Separator and UnorderedListItem
  */
 
 export const testStructuralTokens = `screen TestStructural:
@@ -8,11 +8,6 @@ export const testStructuralTokens = `screen TestStructural:
 
   > Testing separator:
   ---
-  
-  > Testing ordered list:
-  1. First item
-  2. Second item  
-  3. Third item
   
   > Testing unordered list:
   - First bullet point

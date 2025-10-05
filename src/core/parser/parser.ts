@@ -10,7 +10,7 @@ import {
   // Layouts
   Row, Col, Grid, Container,
   // Structures
-  List, Card, Header, Navigator, OrderedListItem, UnorderedListItem, FAB, Separator,
+  List, Card, Header, Navigator, UnorderedListItem, FAB, Separator,
   // Inputs
   Input, RadioOption, Checkbox,
   // Components
@@ -193,7 +193,6 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.cardElement) },
       { ALT: () => this.SUBRULE(this.headerElement) },
       { ALT: () => this.SUBRULE(this.navigatorElement) },
-      { ALT: () => this.SUBRULE(this.orderedListElement) },
       { ALT: () => this.SUBRULE(this.unorderedListElement) },
       { ALT: () => this.SUBRULE(this.fabElement) },
       { ALT: () => this.SUBRULE(this.separatorElement) },
@@ -310,10 +309,6 @@ export class UiDslParser extends CstParser {
   });
 
   // Standalone list element rules for individual list items
-  orderedListElement = this.RULE("orderedListElement", () => {
-    this.CONSUME(OrderedListItem);
-  });
-
   unorderedListElement = this.RULE("unorderedListElement", () => {
     this.CONSUME(UnorderedListItem);
   });

@@ -21,11 +21,6 @@ export const Navigator = createToken({
   pattern: /navigator/
 });
 
-export const OrderedListItem = createToken({
-  name: "OrderedListItem",
-  pattern: /\d+\.\s+([^\n\r]+)/
-});
-
 export const UnorderedListItem = createToken({
   name: "UnorderedListItem",
   pattern: /-\s+([^\n\r]+)/

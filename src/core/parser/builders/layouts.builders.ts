@@ -81,7 +81,7 @@ export function buildColumnElement(ctx: Context, visitor: any) {
   }
 
   return {
-    type: "Column",
+    type: "Col",
     props: modifiers,
     elements
   };

@@ -27,7 +27,6 @@ export type NodeType =
   | 'Card'
   | 'Header'
   | 'Navigator'
-  | 'OrderedListItem'
   | 'UnorderedListItem'
   | 'FAB'
   | 'Separator'

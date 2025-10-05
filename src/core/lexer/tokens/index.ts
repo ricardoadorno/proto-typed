@@ -3,7 +3,7 @@ import { WhiteSpace, NewLine, BlankLine, Colon, Identifier } from './core.tokens
 import { Screen, Modal, Drawer } from './views.tokens';
 import { Button, Link, Image, Heading, Text, Paragraph, MutedText, Note, Quote } from './primitives.tokens';
 import { Row, Col, Grid, Container } from './layouts.tokens';
-import { List, Card, Header, Navigator, OrderedListItem, UnorderedListItem, FAB, Separator } from './structures.tokens';
+import { List, Card, Header, Navigator, UnorderedListItem, FAB, Separator } from './structures.tokens';
 import { Input, RadioOption, Checkbox } from './inputs.tokens';
 import { Component, ComponentInstance, ComponentInstanceWithProps, PropVariable } from './components.tokens';
 import { Styles, CssProperty } from './styles.tokens';
@@ -44,7 +44,6 @@ export {
   Card,
   Header,
   Navigator,
-  OrderedListItem,
   UnorderedListItem,
   FAB,
   Separator,
@@ -98,7 +97,6 @@ export const allTokens = [
   Card,
   Header,
   Navigator,
-  OrderedListItem,
   UnorderedListItem,
   Separator,
   RadioOption,
