@@ -9,33 +9,42 @@ import { isLucideIcon, getLucideSvg } from '../../../utils/icon-utils';
  */
 export function renderList(node: AstNode, context?: string, nodeRenderer?: (node: AstNode, context?: string) => string): string {
   const props = node.props as any;
-  
-  // Check if this is a list with component template
-  if (props?.componentName && props?.dataItems) {
-    const { componentName, dataItems } = props;
-    
-    if (!componentName || !dataItems || !Array.isArray(dataItems)) {
-      return '<div style="color: var(--destructive);">Error: Invalid list with component data</div>';
-    }
 
-    const components = findComponentDefinitions();
-    const componentDef = components.find((comp: any) => comp.name === componentName);
-    
-    if (!componentDef) {
-      return `<div style="color: var(--destructive);">Error: Component "${componentName}" not found</div>`;
-    }
+  // Normalização de propriedades
+  const componentName: string | undefined = props?.componentName || props?.component;
+  let dataItems: string[][] | undefined = props?.dataItems;
 
+  // Caso não exista dataItems mas seja variant component, derivar de children
+  if (!dataItems && props?.variant === 'component' && node.children?.length) {
+    dataItems = node.children.map(child => (child.props as any)?.columns).filter(Boolean);
+  }
+
+  // Lista baseada em template de componente
+  if (componentName && Array.isArray(dataItems)) {
     if (!nodeRenderer) {
       return '<div style="color: var(--destructive);">Error: NodeRenderer required for list rendering</div>';
     }
 
-    // Render each data item using the component template
-    const listItems = dataItems.map((dataItem: string[]) => {
-      const componentElements = componentDef.children || [];
-      
+    const components = findComponentDefinitions();
+    const componentDef = components.find((comp: any) => (comp.props as any)?.name === componentName);
+
+    if (!componentDef) {
+      return `<div style="color: var(--destructive);">Error: Component \"${componentName}\" not found</div>`;
+    }
+
+    const componentElements = componentDef.children || [];
+
+    // Pré-extração ordenada de placeholders para manter comportamento consistente com instâncias isoladas
+    const templateText = JSON.stringify(componentElements);
+    const placeholderMatches = Array.from(templateText.matchAll(/%([a-zA-Z_][a-zA-Z0-9_]*)/g));
+    const orderedUniqueNames: string[] = [];
+    placeholderMatches.forEach(m => { const nm = m[1]; if (!orderedUniqueNames.includes(nm)) orderedUniqueNames.push(nm); });
+
+    // Renderização de cada linha de dados
+    const listItems = dataItems.map((rowValues: string[]) => {
       return componentElements.map(element => {
-        const substitutedElement = substitutePropsInElement(element, dataItem);
-        return nodeRenderer(substitutedElement, context);
+        const substituted = substitutePropsInElement(element, rowValues, orderedUniqueNames);
+        return nodeRenderer(substituted, context);
       }).join('\n');
     }).join('\n');
 

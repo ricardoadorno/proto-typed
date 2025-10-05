@@ -20,49 +20,68 @@ export function findComponentDefinitions(): AstNode[] {
 /**
  * Recursively substitute props in any object
  */
-export function substitutePropsRecursive(obj: any, props: string[]): any {
+export function substitutePropsRecursive(obj: any, props: string[], namedMap?: Record<string, string>): any {
   if (typeof obj === 'string') {
-    return substitutePropsInString(obj, props);
+    return substitutePropsInString(obj, props, namedMap);
   }
-  
+
   if (Array.isArray(obj)) {
-    return obj.map(item => substitutePropsRecursive(item, props));
+    return obj.map(item => substitutePropsRecursive(item, props, namedMap));
   }
-  
+
   if (obj && typeof obj === 'object') {
-    const result = { ...obj };
+    const result: Record<string, any> = Array.isArray(obj) ? [...obj] : { ...obj };
     for (const key in result) {
-      if (result.hasOwnProperty(key)) {
-        result[key] = substitutePropsRecursive(result[key], props);
+      if (Object.prototype.hasOwnProperty.call(result, key)) {
+        result[key] = substitutePropsRecursive(result[key], props, namedMap);
       }
     }
     return result;
   }
-  
+
   return obj;
 }
 
 /**
  * Substitute props in a string
  */
-export function substitutePropsInString(text: string, props: string[]): string {
+export function substitutePropsInString(text: string, props: string[], namedMap?: Record<string, string>): string {
   let result = text;
+
+  // 1. Positional: $prop1, $prop2 ... (legado)
   props.forEach((prop, index) => {
     const propPattern = new RegExp(`\\$prop${index + 1}\\b`, 'g');
     result = result.replace(propPattern, prop);
   });
+
+  // 2. Named: %name, %email etc.
+  if (namedMap) {
+    Object.entries(namedMap).forEach(([name, value]) => {
+      const pattern = new RegExp(`%${name}\\b`, 'g');
+      result = result.replace(pattern, value);
+    });
+  }
+
   return result;
 }
 
 /**
  * Recursively substitute props in an element
  */
-export function substitutePropsInElement(element: AstNode, props: string[]): AstNode {
-  // Create a deep copy of the element
+export function substitutePropsInElement(element: AstNode, props: string[], propNames?: string[]): AstNode {
+  // Deep copy
   const elementCopy = JSON.parse(JSON.stringify(element));
-  
-  // Apply prop substitution recursively
-  return substitutePropsRecursive(elementCopy, props);
+
+  // Build named map if names provided
+  let namedMap: Record<string, string> | undefined;
+  if (propNames && propNames.length) {
+    namedMap = {};
+    propNames.forEach((name, idx) => {
+      if (name) namedMap![name] = props[idx] ?? '';
+    });
+  }
+
+  return substitutePropsRecursive(elementCopy, props, namedMap);
 }
 
 /**
@@ -83,7 +102,7 @@ export function renderComponentInstance(node: AstNode, context?: string, nodeRen
   }
   
   const componentName = (node.props as any)?.componentName;
-  const propValues = (node.props as any)?.props || [];
+  const propValues: string[] = (node.props as any)?.props || [];
   
   if (!componentName) {
     console.warn('Component instance missing componentName');
@@ -102,8 +121,19 @@ export function renderComponentInstance(node: AstNode, context?: string, nodeRen
   
   // Render each element in the component with prop substitution
   const componentElements = componentDef.children || [];
+
+  // Attempt to derive prop names from placeholders (%name) present in template
+  // Scan first pass of stringified node for %identifier tokens
+  const templateText = JSON.stringify(componentElements);
+  const placeholderMatches = Array.from(templateText.matchAll(/%([a-zA-Z_][a-zA-Z0-9_]*)/g));
+  const orderedUniqueNames: string[] = [];
+  placeholderMatches.forEach(m => {
+    const nm = m[1];
+    if (!orderedUniqueNames.includes(nm)) orderedUniqueNames.push(nm);
+  });
+
   const renderedElements = componentElements.map(element => {
-    const substitutedElement = substitutePropsInElement(element, propValues);
+    const substitutedElement = substitutePropsInElement(element, propValues, orderedUniqueNames);
     return nodeRenderer(substitutedElement, context);
   }).join('\n');
   

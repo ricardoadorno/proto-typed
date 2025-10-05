@@ -42,11 +42,17 @@ export function buildListElement(ctx: Context) {
 
     return {
       type: "List",
-      id: "", // ID will be generated later
+      id: "", // ID will be generated posteriormente
       props: {
         variant: "component",
-        component: componentName
+        // Mantém propriedade antiga para retrocompatibilidade
+        component: componentName,
+        // Nova propriedade explícita
+        componentName,
+        // Fornece dados crus também para renderer otimizado
+        dataItems: dataItems
       },
+      // Mantém children como representação detalhada para outros usos
       children: dataItems.map(columns => ({
         type: "UnorderedListItem",
         id: "",
