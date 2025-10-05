@@ -213,18 +213,19 @@ function generateNavigationScript(): string {
     }
 
     function closeAllDrawers() {
+      // Updated: new drawer structure uses root .drawer-container with overlay + aside
       const drawers = document.querySelectorAll('[id^="drawer-"]');
       drawers.forEach(drawer => {
-        const drawerContent = drawer.querySelector('.drawer-content');
-        if (drawerContent) {
-          drawerContent.classList.remove('translate-x-0');
-          drawerContent.classList.add('-translate-x-full');
-        }
-        setTimeout(() => {
+        const aside = drawer.querySelector('aside');
+        if (aside) {
+          aside.classList.add('-translate-x-full');
+          aside.classList.remove('translate-x-0');
+          // Delay hiding container to allow transition
+          setTimeout(() => drawer.classList.add('hidden'), 250);
+        } else {
           drawer.classList.add('hidden');
-        }, 300);
+        }
       });
-      
     }
 
     function closeAllModals() {
@@ -242,50 +243,41 @@ function generateNavigationScript(): string {
     }
 
     function toggleElement(elementName) {
-      const drawer = document.querySelector('.drawer');
-      const drawerElement = document.getElementById(\`drawer-\${elementName}\`);
-      const modal = document.getElementById(\`modal-\${elementName}\`);
-      
-      if (elementName === 'drawer' || elementName === 'Drawer' || !elementName) {
-        if (drawer) {
-          const overlay = document.querySelector('.drawer-overlay');
-          drawer.classList.toggle('open');
-          if (overlay) overlay.classList.toggle('open');
-          return;
-        }
-      }
-        
-      if (drawerElement) {
-        const isHidden = drawerElement.classList.contains('hidden');
-        const content = drawerElement.querySelector('.drawer-content');
-        
+      if (!elementName) return;
+      // Updated drawer/modal toggling aligned with new markup from views.node.ts
+      const drawerContainer = document.getElementById('drawer-' + elementName); // .drawer-container root
+      if (drawerContainer) {
+        const aside = drawerContainer.querySelector('aside');
+        const isHidden = drawerContainer.classList.contains('hidden');
         if (isHidden) {
-          drawerElement.classList.remove('hidden');
-          if (content) {
-            content.classList.add('translate-x-0');
-            content.classList.remove('-translate-x-full');
+          drawerContainer.classList.remove('hidden');
+          if (aside) {
+            // Start off-screen then bring in next frame
+            aside.classList.add('-translate-x-full');
+            requestAnimationFrame(() => {
+              aside.classList.remove('-translate-x-full');
+              aside.classList.add('translate-x-0');
+            });
           }
         } else {
-          if (content) {
-            content.classList.remove('translate-x-0');
-            content.classList.add('-translate-x-full');
+          if (aside) {
+            aside.classList.remove('translate-x-0');
+            aside.classList.add('-translate-x-full');
+            setTimeout(() => drawerContainer.classList.add('hidden'), 250);
+          } else {
+            drawerContainer.classList.add('hidden');
           }
-          setTimeout(() => {
-            drawerElement.classList.add('hidden');
-          }, 300);
         }
         return;
       }
-        
+      const modal = document.getElementById('modal-' + elementName);
       if (modal) {
         modal.classList.toggle('hidden');
         return;
       }
-      
-      const element = document.getElementById(elementName) || document.querySelector(\`.\${elementName}\`);
-      if (element) {
-        element.classList.toggle('hidden');
-      }
+      // Fallback legacy support: attempt generic element id / class
+      const element = document.getElementById(elementName) || document.querySelector('.' + elementName);
+      if (element) element.classList.toggle('hidden');
     }
       // Handle navigation clicks with data-nav attributes
     document.addEventListener('click', function(e) {
@@ -338,16 +330,14 @@ function generateNavigationScript(): string {
           break;
         case 'toggle':
           e.preventDefault();
-          let elementName = '';
-          if (navValue.includes('(')) {
-            const match = navValue.match(/toggle(\\w+)\\(\\)/);
-            elementName = match ? match[1].toLowerCase() : 'drawer';
-          } else if (navValue.includes('-')) {
-            elementName = navValue.split('-')[1] || 'drawer';
-          } else {
-            elementName = 'drawer';
+          // Simplified: navValue directly represents the drawer/modal name now
+          // Maintain legacy pattern support (toggleName()) if detected
+          let directName = navValue;
+          if (/^toggle\w+\(\)$/.test(navValue)) {
+            const m = navValue.match(/^toggle(\w+)\(\)$/);
+            directName = m ? m[1].toLowerCase() : navValue;
           }
-          toggleElement(elementName);
+          toggleElement(directName);
           break;
       }
     });
@@ -355,17 +345,21 @@ function generateNavigationScript(): string {
     // Handle overlay clicks to close drawer/modal
     document.addEventListener('click', function(e) {
       if (e.target && e.target.classList.contains('drawer-overlay')) {
-        const drawer = document.querySelector('.drawer');
-        const overlay = document.querySelector('.drawer-overlay');
-        if (drawer) drawer.classList.remove('open');
-        if (overlay) overlay.classList.remove('open');
+        const container = e.target.closest('[id^="drawer-"]');
+        if (container) {
+          const aside = container.querySelector('aside');
+          if (aside) {
+            aside.classList.remove('translate-x-0');
+            aside.classList.add('-translate-x-full');
+            setTimeout(() => container.classList.add('hidden'), 250);
+          } else {
+            container.classList.add('hidden');
+          }
+        }
       }
-      
       if (e.target && e.target.classList.contains('modal-backdrop')) {
         const modal = e.target.closest('.modal');
-        if (modal) {
-          modal.classList.add('hidden');
-        }
+        if (modal) modal.classList.add('hidden');
       }
     });
     
