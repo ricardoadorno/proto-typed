@@ -44,7 +44,7 @@ export function DslMiniPreview({
             return;
         }
         try {
-            const ast = await parseAndBuildAst(source);
+            const ast = parseAndBuildAst(source);
             const rendered = astToHtmlStringPreview(ast, { currentScreen });
             setHtml(rendered);
             setError(null);

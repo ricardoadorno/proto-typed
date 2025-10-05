@@ -173,8 +173,6 @@ export class UiDslParser extends CstParser {
 
   // ===== MAIN ELEMENT DISPATCHER =====
 
-  // ===== MAIN ELEMENT DISPATCHER =====
-
   element = this.RULE("element", () => {
     this.OR([
       // Components
@@ -233,8 +231,6 @@ export class UiDslParser extends CstParser {
   imageElement = this.RULE("imageElement", () => {
     this.CONSUME(Image);
   });
-
-  // ===== LAYOUT ELEMENT RULES =====
 
   // ===== LAYOUT ELEMENT RULES =====
 

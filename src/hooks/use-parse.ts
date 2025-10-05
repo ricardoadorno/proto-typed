@@ -67,7 +67,7 @@ export const useParse = (): UseParseResult => {
     setParsedErrors([]);
     
     try {
-      const parsedAst = await parseAndBuildAst(input);
+      const parsedAst = parseAndBuildAst(input);
       
       // Initialize routes with parsed AST to generate metadata
       routeManagerGateway.initialize(parsedAst);

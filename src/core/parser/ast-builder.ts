@@ -42,14 +42,23 @@ type Context = {
   [key: string]: any;
 };
 
-// Create a parser instance to get the visitor constructor
-const parserInstance = new UiDslParser();
+/**
+ * Factory function that creates an AST Builder class using the provided parser instance
+ * This approach uses composition and dependency injection to avoid circular dependencies
+ * 
+ * @param parserInstance - The UiDslParser instance to use for creating the visitor
+ * @returns AstBuilder class that extends the parser's visitor
+ */
+export function createAstBuilder(parserInstance: UiDslParser) {
+  const BaseUiDslCstVisitor = parserInstance.getBaseCstVisitorConstructorWithDefaults();
 
-export default class AstBuilder extends parserInstance.getBaseCstVisitorConstructorWithDefaults() {
-  constructor() {
-    super();
-    this.validateVisitor();
-  }
+  class AstBuilder extends BaseUiDslCstVisitor {
+    constructor(private parser: UiDslParser) {
+      super();
+      this.validateVisitor();
+    }
+
+  // ===== CORE PROGRAM RULES =====
 
   /** Parse and process the entire program, including global elements (screens, components, modals, drawers, styles)
    * @param ctx - The parsing context containing all top-level elements
@@ -65,136 +74,34 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
     
     return [...styles, ...screens, ...components, ...modals, ...drawers];
   }
-  screen(ctx: Context) {
-    return buildScreen(ctx, this);
-  }
 
-  component(ctx: Context) {
-    return buildComponent(ctx, this);
-  } 
-  
-    element(ctx: Context) {
-    if (ctx.componentInstanceElement) return this.visit(ctx.componentInstanceElement);
-    if (ctx.inputElement) return this.visit(ctx.inputElement);
-    if (ctx.buttonElement) return this.visit(ctx.buttonElement);
-    if (ctx.rowElement) return this.visit(ctx.rowElement);
-    if (ctx.columnElement) return this.visit(ctx.columnElement);
-  if (ctx.gridElement) return this.visit(ctx.gridElement);
-  if (ctx.containerElement) return this.visit(ctx.containerElement);
-    if (ctx.listElement) return this.visit(ctx.listElement);
-    if (ctx.cardElement) return this.visit(ctx.cardElement);
-    if (ctx.headerElement) return this.visit(ctx.headerElement);    if (ctx.navigatorElement) return this.visit(ctx.navigatorElement);
-    if (ctx.fabElement) return this.visit(ctx.fabElement);if (ctx.separatorElement) return this.visit(ctx.separatorElement);
-    if (ctx.headingElement) return this.visit(ctx.headingElement);
-    if (ctx.textElement) return this.visit(ctx.textElement);
-    if (ctx.linkElement) return this.visit(ctx.linkElement);
-    if (ctx.imageElement) return this.visit(ctx.imageElement);
-    if (ctx.orderedListElement) return this.visit(ctx.orderedListElement);
-    if (ctx.unorderedListElement) return this.visit(ctx.unorderedListElement);
-    if (ctx.radioButtonGroup) return this.visit(ctx.radioButtonGroup);
-    if (ctx.checkboxElement) return this.visit(ctx.checkboxElement);
-    console.warn('Unknown element type:', ctx);    return null;
-  }
-
-  headingElement(ctx: Context) {
-    return buildHeadingElement(ctx);
-  }
-  
-  linkElement(ctx: Context) {
-    return buildLinkElement(ctx);
-  }
-  buttonElement(ctx: Context) {
-    return buildButtonElement(ctx);
-  }
-
-  imageElement(ctx: Context) {
-    return buildImageElement(ctx);
-  }  
-  
-  inputElement(ctx: Context) {
-    return buildInputElement(ctx);
-  }
-
-  orderedListElement(ctx: Context) {
-    return buildOrderedListElement(ctx);
-  }
-  unorderedListElement(ctx: Context) {
-    return buildUnorderedListElement(ctx);
-  }
-
-  radioButtonGroup(ctx: Context) {
-    return buildRadioButtonGroup(ctx);
-  }
-
-  checkboxElement(ctx: Context) {
-    return buildCheckboxElement(ctx);
-  }
-
-  textElement(ctx: Context) {
-    return buildTextElement(ctx);
-  }
-
-  rowElement(ctx: Context) {
-    return buildRowElement(ctx, this);
-  }  
-  
-  columnElement(ctx: Context) {
-    return buildColumnElement(ctx, this);
-  }  
-
-  containerElement(ctx: Context) {
-    return buildContainerElement(ctx, this);
-  }
-
-  gridElement(ctx: Context) {
-    return buildGridElement(ctx, this);
-  }
-  listElement(ctx: Context) {
-    return buildListElement(ctx);
-  }
-
-  cardElement(ctx: Context) {
-    return buildCardElement(ctx, this);
-  }  
-  separatorElement(ctx: Context) {
-    return buildSeparatorElement(ctx);
-  }
-
-  // Mobile Layout Elements
-  headerElement(ctx: Context) {
-    return buildHeaderElement(ctx, this);
-  }  navigatorElement(ctx: Context) {
-    return buildNavigatorElement(ctx);
-  }  /**
-   * Process global drawer element declaration
-   * Drawers are globally accessible singleton elements that can be referenced by name
-   */
-  drawer(ctx: Context) {
-    return buildDrawer(ctx);
-  }
-
-  navItemElement(ctx: Context) {
-    return buildNavItemElement(ctx);
-  }
-
-  drawerItemElement(ctx: Context) {
-    return buildDrawerItemElement(ctx);
-  }
-
-  fabElement(ctx: Context) {
-    return buildFABElement(ctx);
-  }
-
-  componentInstanceElement(ctx: Context) {
-    return buildComponentInstanceElement(ctx);
-  }
+  // ===== STYLES RULES =====
 
   /**
-   * Process global modal element declaration
-   * Modals are globally accessible singleton elements that can be referenced by name
+   * Main element dispatcher - uses automatic visitor dispatch
+   * This method corresponds to the 'element' rule in the parser and automatically
+   * dispatches to the appropriate element-specific method based on the CST structure.
    */
-  modal(ctx: Context) {
-    return buildModal(ctx, this);
+  element(ctx: Context) {
+    // The visitor pattern automatically dispatches to the correct sub-rule method
+    // We just need to find which element type is present and visit it
+    const elementTypes = [
+      'componentInstanceElement', 'buttonElement', 'linkElement', 'imageElement', 
+      'headingElement', 'textElement', 'rowElement', 'columnElement', 'gridElement', 
+      'containerElement', 'listElement', 'cardElement', 'headerElement', 
+      'navigatorElement', 'orderedListElement', 'unorderedListElement', 
+      'fabElement', 'separatorElement', 'inputElement', 'radioButtonGroup', 
+      'checkboxElement'
+    ];
+
+    for (const elementType of elementTypes) {
+      if (ctx[elementType]) {
+        return this.visit(ctx[elementType]);
+      }
+    }
+
+    console.warn('Unknown element type in context:', Object.keys(ctx));
+    return null;
   }
 
   /**
@@ -210,5 +117,137 @@ export default class AstBuilder extends parserInstance.getBaseCstVisitorConstruc
   styleDeclaration(ctx: Context) {
     return buildStyleDeclaration(ctx);
   }
+
+  // ===== VIEW CONTAINER RULES =====
+
+  screen(ctx: Context) {
+    return buildScreen(ctx, this);
+  }
+
+  /**
+   * Process global modal element declaration
+   * Modals are globally accessible singleton elements that can be referenced by name
+   */
+  modal(ctx: Context) {
+    return buildModal(ctx, this);
+  }
+
+  /**
+   * Process global drawer element declaration
+   * Drawers are globally accessible singleton elements that can be referenced by name
+   */
+  drawer(ctx: Context) {
+    return buildDrawer(ctx);
+  }
+
+  // ===== COMPONENT RULES =====
+
+  component(ctx: Context) {
+    return buildComponent(ctx, this);
+  }
+
+  componentInstanceElement(ctx: Context) {
+    return buildComponentInstanceElement(ctx);
+  }
+
+  // ===== PRIMITIVE ELEMENT RULES =====
+
+  headingElement(ctx: Context) {
+    return buildHeadingElement(ctx);
+  }
+  
+  textElement(ctx: Context) {
+    return buildTextElement(ctx);
+  }
+
+  buttonElement(ctx: Context) {
+    return buildButtonElement(ctx);
+  }
+
+  linkElement(ctx: Context) {
+    return buildLinkElement(ctx);
+  }
+
+  imageElement(ctx: Context) {
+    return buildImageElement(ctx);
+  }
+
+  // ===== LAYOUT ELEMENT RULES =====
+
+  rowElement(ctx: Context) {
+    return buildRowElement(ctx, this);
+  }  
+  
+  columnElement(ctx: Context) {
+    return buildColumnElement(ctx, this);
+  }  
+
+  gridElement(ctx: Context) {
+    return buildGridElement(ctx, this);
+  }
+
+  containerElement(ctx: Context) {
+    return buildContainerElement(ctx, this);
+  }
+
+  // ===== STRUCTURE ELEMENT RULES =====
+
+  listElement(ctx: Context) {
+    return buildListElement(ctx);
+  }
+
+  cardElement(ctx: Context) {
+    return buildCardElement(ctx, this);
+  }
+
+  headerElement(ctx: Context) {
+    return buildHeaderElement(ctx, this);
+  }
+
+  navigatorElement(ctx: Context) {
+    return buildNavigatorElement(ctx);
+  }
+
+  orderedListElement(ctx: Context) {
+    return buildOrderedListElement(ctx);
+  }
+
+  unorderedListElement(ctx: Context) {
+    return buildUnorderedListElement(ctx);
+  }
+
+  fabElement(ctx: Context) {
+    return buildFABElement(ctx);
+  }
+
+  separatorElement(ctx: Context) {
+    return buildSeparatorElement(ctx);
+  }
+
+  // Legacy navigation item methods
+  navItemElement(ctx: Context) {
+    return buildNavItemElement(ctx);
+  }
+
+  drawerItemElement(ctx: Context) {
+    return buildDrawerItemElement(ctx);
+  }
+
+  // ===== INPUT ELEMENT RULES =====
+
+  inputElement(ctx: Context) {
+    return buildInputElement(ctx);
+  }
+
+  radioButtonGroup(ctx: Context) {
+    return buildRadioButtonGroup(ctx);
+  }
+
+  checkboxElement(ctx: Context) {
+    return buildCheckboxElement(ctx);
+  }
+  }
+
+  return AstBuilder;
 }
 

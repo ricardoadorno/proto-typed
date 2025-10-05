@@ -1,17 +1,15 @@
 import { tokenize } from '../lexer/lexer';
 import { parser } from './parser';
+import { createAstBuilder } from './ast-builder';
 
 /**
  * Parse input text into a Concrete Syntax Tree (CST) and then outputs an Abstract Syntax Tree (AST).
  * 
  * @param text The DSL text to parse
- * @returns The Concrete Syntax Tree representing the parsed input
+ * @returns The Abstract Syntax Tree representing the parsed input
  * @throws Error if parsing fails
  */
-export async function parseAndBuildAst(text: string) {
-    // Import AstBuilder dynamically to avoid circular dependency
-    const { default: AstBuilder } = await import('./ast-builder');
-
+export function parseAndBuildAst(text: string) {
     // First tokenize the text using the lexer
     const lexResult = tokenize(text);
 
@@ -39,7 +37,9 @@ export async function parseAndBuildAst(text: string) {
         throw new Error(errorMessage);
     }
 
-    const builder = new AstBuilder();
+    // Create AST builder using the factory with dependency injection
+    const AstBuilderClass = createAstBuilder(parser);
+    const builder = new AstBuilderClass(parser);
 
     const ast = builder.visit(cst);
 

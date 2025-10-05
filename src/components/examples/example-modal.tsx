@@ -50,7 +50,7 @@ export function ExampleModal() {
 
             // Use provided code or fall back to example code
             const codeToUse = codeToCompile ?? example.code;
-            const ast = await parseAndBuildAst(codeToUse);
+            const ast = parseAndBuildAst(codeToUse);
             const html = astToHtmlStringPreview(ast, { currentScreen });
             setCompiledOutput(html);
         } catch (error) {
