@@ -1,7 +1,8 @@
 import { AstNode } from '../../../types/ast-node';
-import { elementStyles, getCardInlineStyles, getListInlineStyles, getUnorderedListInlineStyles, getFabInlineStyles } from './styles/styles';
+import { elementStyles, getCardInlineStyles, getListInlineStyles, getUnorderedListInlineStyles, getFabInlineStyles, getNavigatorInlineStyles } from './styles/styles';
 import { findComponentDefinitions, substitutePropsInElement } from './components.node';
 import { NavigationMediator } from '../infrastructure/navigation-mediator';
+import { isLucideIcon, getLucideSvg } from '../../../utils/icon-utils';
 
 /**
  * Render list element
@@ -102,5 +103,64 @@ export function renderFAB(node: AstNode): string {
         ${icon}
       </button>
     </div>
+  `;
+}
+
+/**
+ * Render Navigator (Bottom Navigation) element
+ */
+export function renderNavigator(node: AstNode): string {
+  const items = node.children || [];
+  
+  const navItems = items.map((item: any) => {
+    const text = item.props?.text || '';
+    const icon = item.props?.icon || '';
+    const destination = item.props?.destination || '';
+    
+    // Generate navigation action if destination is provided
+    const navigationAttrs = destination ? NavigationMediator.generateNavigationAttributes(destination) : '';
+    
+    // Helper function to render text or icon
+    const renderTextOrIcon = (content: string, className: string, extraStyle: string = '') => {
+      if (!content) return '';
+      
+      if (isLucideIcon(content)) {
+        // It's a Lucide icon name, render as SVG
+        const svgContent = getLucideSvg(content);
+        return `<div class="${className}" style="${extraStyle}">${svgContent}</div>`;
+      } else {
+        // It's regular text (could be emoji or text)
+        return `<div class="${className}" style="${extraStyle}">${content}</div>`;
+      }
+    };
+    
+    // Build content based on what's available
+    let content = '';
+    
+    if (icon && text) {
+      // Both icon and text - stack them vertically
+      content = `
+        ${renderTextOrIcon(icon, elementStyles.navItemIcon)}
+        ${renderTextOrIcon(text, elementStyles.navItemLabel)}
+      `;
+    } else if (icon) {
+      // Only icon - center it
+      content = renderTextOrIcon(icon, elementStyles.navItemIcon, 'margin-bottom: 0;');
+    } else if (text) {
+      // Only text - center it
+      content = renderTextOrIcon(text, elementStyles.navItemLabel, 'margin-top: 0;');
+    }
+    
+    return `
+      <button class="${elementStyles.navItem}" style="${getNavigatorInlineStyles()}" ${navigationAttrs}>
+        ${content}
+      </button>
+    `;
+  }).join('');
+  
+  return `
+    <nav class="${elementStyles.navigator}" style="${getNavigatorInlineStyles()}">
+      ${navItems}
+    </nav>
   `;
 }

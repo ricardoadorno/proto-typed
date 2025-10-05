@@ -30,7 +30,8 @@ import {
   renderListItem, 
   renderCard, 
   renderHeader,
-  renderFAB 
+  renderFAB,
+  renderNavigator 
 } from '../nodes/structures.node';
 
 import { 
@@ -126,6 +127,9 @@ export function renderNode(node: AstNode, context?: string): string {
 
     case 'FAB':
       return renderFAB(node);
+
+    case 'Navigator':
+      return renderNavigator(node);
 
     // Inputs (forms)
     case 'Input':

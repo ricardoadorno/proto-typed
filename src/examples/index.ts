@@ -14,6 +14,7 @@ import componentPropsDemo from './component-props-demo';
 import testStructuralTokens from './test-structural-tokens';
 import customStylesDemo from './custom-styles-demo';
 import { fabTestExample } from './fab-test';
+import { navigatorTest } from './navigator-test';
 
 // Example configuration for UI
 export const exampleConfigs = [
@@ -23,6 +24,7 @@ export const exampleConfigs = [
   { label: "Dashboard Example", code: dashboard },
   { label: "Mobile Example", code: mobileComplete },
   { label: "Mobile Test", code: mobileTest },
+  { label: "Navigator Test", code: navigatorTest },
   { label: "Named Elements", code: namedElementsExample },
   { label: "Button Variants", code: buttonVariantsExample },
   { label: "Lists Example", code: listsExample },

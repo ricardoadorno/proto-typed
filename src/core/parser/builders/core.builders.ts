@@ -98,21 +98,49 @@ export function parseListItem(itemText: string) {
 }
 
 /**
- * Parse navigator item: "- text (destination)"
+ * Parse navigator item: "- text | icon | destination" or "- text | destination"
  */
 export function parseNavigatorItem(itemText: string) {
-  const match = itemText.match(/^-\s+(.+?)\s*\(([^)]+)\)/);
-  if (match) {
+  // Try 3-part pipe format: "- text | icon | destination"
+  const threePartMatch = itemText.match(/^-\s+([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*(.+)/);
+  if (threePartMatch) {
     return {
-      text: match[1].trim(),
-      destination: match[2].trim()
+      type: "NavigatorItem",
+      id: "", // ID will be generated later
+      props: {
+        text: threePartMatch[1].trim(),
+        icon: threePartMatch[2].trim(),
+        destination: threePartMatch[3].trim()
+      },
+      children: []
+    };
+  }
+  
+  // Try 2-part pipe format: "- text | destination"
+  const twoPartMatch = itemText.match(/^-\s+([^|]+?)\s*\|\s*(.+)/);
+  if (twoPartMatch) {
+    return {
+      type: "NavigatorItem",
+      id: "", // ID will be generated later
+      props: {
+        text: twoPartMatch[1].trim(),
+        icon: '',
+        destination: twoPartMatch[2].trim()
+      },
+      children: []
     };
   }
   
   // Fallback for simple text items
   const textMatch = itemText.match(/^-\s+(.+)/);
   return {
-    text: textMatch ? textMatch[1].trim() : itemText,
-    destination: null
+    type: "NavigatorItem",
+    id: "", // ID will be generated later
+    props: {
+      text: textMatch ? textMatch[1].trim() : itemText,
+      icon: '',
+      destination: ''
+    },
+    children: []
   };
 }

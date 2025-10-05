@@ -20,18 +20,32 @@ function getLucideIcons(): Set<string> {
 }
 
 /**
- * Check if a string is a valid Lucide icon name
+ * Check if a string is a valid Lucide icon name with 'i-' prefix
+ * Now accepts patterns like 'i-home', 'i-trash', etc.
  */
 export function isLucideIcon(text: string): boolean {
+  // Check if text starts with 'i-' and has at least one more character
+  if (!text.startsWith('i-') || text.length < 3) {
+    return false;
+  }
+  
+  // Extract the icon name without the 'i-' prefix
+  const iconName = text.substring(2);
+  
+  // Check if the icon name (without 'i-') exists in Lucide icons
   const iconSet = getLucideIcons();
-  return iconSet.has(text);
+  return iconSet.has(iconName);
 }
 
 /**
- * Get the SVG content for a Lucide icon
+ * Get the SVG content for a Lucide icon with 'i-' prefix
+ * Accepts patterns like 'i-home', 'i-trash', etc.
  */
 export function getLucideSvg(iconName: string): string {
-  const icon = icons[iconName as keyof typeof icons];
+  // Remove the 'i-' prefix if present
+  const actualIconName = iconName.startsWith('i-') ? iconName.substring(2) : iconName;
+  
+  const icon = icons[actualIconName as keyof typeof icons];
   if (!icon) {
     return '';
   }
@@ -68,7 +82,7 @@ export function getLucideSvg(iconName: string): string {
     
     return svg.outerHTML;
   } catch (error) {
-    console.warn(`Error rendering Lucide icon ${iconName}:`, error);
+    console.warn(`Error rendering Lucide icon ${actualIconName} (from ${iconName}):`, error);
     return '';
   }
 }
