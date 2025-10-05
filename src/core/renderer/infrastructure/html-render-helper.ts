@@ -55,9 +55,12 @@ export function renderAllScreens(screens: AstNode[], currentScreen?: string | nu
 /**
  * Render a single screen to HTML for document export with enhanced styling
  */
-export function renderScreenForDocument(screen: AstNode, index: number): string {
-  const screenName = (screen.props as any)?.name || ''; // Nome original preservado
-  const style = index === 0 ? '' : 'style="display:none"';
+export function renderScreenForDocument(screen: AstNode, index: number, currentScreen?: string | null): string {
+  const screenName = (screen.props as any)?.name || '';
+  // If a currentScreen is explicitly provided, use that for visibility, else fall back to first screen visible
+  const style = currentScreen
+    ? (screenName === currentScreen ? '' : 'style="display:none"')
+    : (index === 0 ? '' : 'style="display:none"');
   const layoutClasses = generateLayoutClasses(screen);
 
   const elementsHtml = screen.children
@@ -74,7 +77,7 @@ export function renderScreenForDocument(screen: AstNode, index: number): string 
 
   // Add Tailwind container and screen classes, and id for navigation
   return `
-  <div id="${screenName}-screen" class="screen container mx-auto  ${screenName} ${layoutClasses.join(' ')}" ${style}>
+  <div id="${screenName}-screen" data-screen="${screenName}" class="screen container mx-auto ${screenName} ${layoutClasses.join(' ')}" ${style}>
       ${elementsHtml}
   </div>`;
 }

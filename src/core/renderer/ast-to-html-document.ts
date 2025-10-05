@@ -3,11 +3,12 @@ import { routeManager } from './core/route-manager';
 import { customPropertiesManager } from './core/theme-manager';
 import { setComponentDefinitions } from './nodes/components.node';
 import { renderGlobalElements, renderScreenForDocument } from './infrastructure/html-render-helper';
+import { RenderOptions } from '../../types/render';
 
 /**
  * Generate a complete HTML document with all screens
  */
-export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
+export function astToHtmlDocument(ast: AstNode | AstNode[], options: RenderOptions = {}): string {
   try {
     // Reset custom properties manager for each document generation
     customPropertiesManager.reset();
@@ -17,11 +18,26 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
     const stylesNodes = astArray.filter(node => node.type === 'Styles');
     customPropertiesManager.processStylesConfig(stylesNodes);
     
-    // Process routes through the route manager
-    routeManager.processRoutes(ast);
+    // Process routes through the route manager with possible currentScreen
+    routeManager.processRoutes(ast, {
+      currentScreen: options.currentScreen || undefined
+    });
 
-    return generateDocumentHtml();
+    // Set route context for navigation analysis
+    routeManager.setRouteContext(routeManager.getRouteContext());
+
+    // Create render context
+    const context = routeManager.createRenderContext('document', {
+      currentScreen: options.currentScreen || undefined
+    });
+
+    const result = generateDocumentHtml(context);
+
+    // Clear after
+    routeManager.clearRouteContext();
+    return result;
   } catch (error: any) {
+    routeManager.clearRouteContext();
     throw error;
   }
 }
@@ -29,17 +45,18 @@ export function astToHtmlDocument(ast: AstNode | AstNode[]): string {
 /**
  * Generate full HTML document
  */
-function generateDocumentHtml(): string {
+function generateDocumentHtml(context: any): string {
+  const { routes } = context;
   // Register components with the renderer
   const componentRoutes = routeManager.getRoutesByType('component');
   const componentNodes = componentRoutes.map(route => route.node);
   setComponentDefinitions(componentNodes);
   
-  // Generate screens HTML with visibility styles
+  // Generate screens HTML with visibility styles using currentScreen from context
   const screenRoutes = routeManager.getScreenRoutes();
   const screensHtml = screenRoutes
     .filter(route => route.node && route.name)
-    .map((route, index) => renderScreenForDocument(route.node, index))
+    .map((route, index) => renderScreenForDocument(route.node, index, routes.currentScreen))
     .join('\n\n');
   
   // Render global elements

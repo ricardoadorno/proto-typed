@@ -36,7 +36,7 @@ export default function App() {
     } = useParse();
 
     const exportAsHtml = () => {
-        if (ast.length === 0) {
+        if (Object.keys(ast).length === 0) {
             alert("Please parse the input first to generate content.");
             return;
         }
