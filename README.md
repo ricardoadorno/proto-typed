@@ -1,119 +1,135 @@
 # proto-typed
 
-A React-based UI prototyping tool that allows you to create interactive prototypes using a comprehensive, descriptive Domain Specific Language (DSL). proto-typed features a robust lexer-parser-renderer pipeline that supports optional elements, styling attributes, conditional rendering, and advanced layout management.
+**A lightweight DSL for rapid UI prototyping** - Write text, see UI instantly.
 
-## Features
+proto-typed is a browser-based tool that lets you create interactive UI prototypes using a simple, readable Domain Specific Language (DSL). No framework knowledge required - just type natural-looking syntax and watch your interface come to life in real-time.
 
-- **Comprehensive DSL**: Intuitive syntax for defining UI components, layouts, and interactions
-- **Real-time Preview**: Live rendering of prototypes as you type with split-pane interface
-- **Interactive Elements**: Buttons, forms, navigation, modals, drawers, and mobile components
-- **Component System**: Reusable components and advanced layout containers
-- **Monaco Editor**: Syntax highlighting, IntelliSense, and intelligent code editing
-- **Mobile-First**: Support for mobile UI patterns and responsive design
-- **Theme Support**: Built-in dark mode theming system with CSS variables
-- **Navigation System**: Internal screen links with modal and drawer activation
-- **Export Functionality**: Export rendered output for sharing and embedding
+## What is proto-typed?
+
+proto-typed bridges the gap between wireframes and functional prototypes. Instead of dragging components or writing framework code, you describe your UI in plain text using an intuitive syntax. The tool handles the parsing, rendering, and interaction automatically.
+
+**Perfect for**:
+- **Designers** sketching interaction flows without code
+- **Product Managers** creating clickable mockups for stakeholder reviews
+- **Developers** rapidly prototyping UI ideas before implementation
+- **Teams** collaborating on interface concepts with a shared, readable format
+
+## Key Features
+
+- 🚀 **Real-time Preview**: See your prototype update as you type
+- 📱 **Mobile-First**: Built-in support for headers, navigators, modals, and drawers
+- 🎨 **Theme System**: shadcn-inspired theming with CSS custom properties
+- 🧩 **Component System**: Create reusable UI blocks with prop interpolation
+- 🔗 **Navigation**: Screen transitions, modal/drawer toggles, back navigation
+- 📝 **Monaco Editor**: Syntax highlighting, IntelliSense, and error detection
+- 📤 **Export**: Download standalone HTML prototypes
+- 🎯 **Zero Dependencies**: Prototypes use only Tailwind CDN + Lucide icons
+
+## Quick Start
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/ricardoadorno/proto-typed.git
+cd proto-typed
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+The app will open at `http://localhost:5173` with a split-pane interface:
+- **Left**: Monaco editor with DSL syntax
+- **Right**: Live prototype preview with device selector
+
+### Your First Prototype
+
+```dsl
+screen Welcome:
+  # Hello World
+  > This is your first prototype
+  @[Get Started](NextScreen)
+
+screen NextScreen:
+  # Success!
+  > You just navigated between screens
+  @[Go Back](-1)
+```
+
+**That's it!** You now have a working two-screen prototype with navigation.
+
+## How It Works
+
+proto-typed uses a **Lexer → Parser → AST → Renderer** pipeline:
+
+1. **Lexer** tokenizes your DSL text (Chevrotain)
+2. **Parser** builds an Abstract Syntax Tree (AST)
+3. **Renderer** converts AST to HTML with Tailwind CSS + shadcn variables
+4. **Preview** displays the result in a simulated device frame
+
+Your DSL is transformed into semantic HTML with proper navigation, theming, and responsive layout - no build step, no framework lock-in.
 
 ## Technology Stack
 
 - **Frontend**: React 19 + TypeScript + Vite
 - **Parsing**: Chevrotain (lexer & parser)
-- **Code Editor**: Monaco Editor with custom DSL language support
-- **State Management**: React Context
-- **Styling**: Tailwind CSS with dark mode optimizations
-- **Testing**: Vitest + React Testing Library (configured)
+- **Editor**: Monaco Editor with custom DSL language
+- **Styling**: Tailwind CSS + shadcn theming system
+- **Output**: Standalone HTML with CDN dependencies
 
-## Installation
+## DSL Syntax Overview
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd proto-typed
-   ```
+The DSL uses intuitive, readable syntax inspired by Markdown and common UI patterns.
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-## Usage
-
-The application opens with a split-pane interface:
-- **Left pane**: Monaco editor with DSL syntax highlighting and IntelliSense
-- **Right pane**: Live preview of your prototype with device selection
-
-Start by creating a simple screen:
-
-```dsl
-screen HomePage:
-  # Welcome to proto-typed
-  > Create amazing prototypes with simple syntax
-  @[Get Started](GettingStarted)
-```
-
-## DSL Syntax Reference
-
-### Basic Structure
-
-#### Screens and Components
-Define screens as top-level containers and create reusable components:
-
-```dsl
-component Header:
-  # My App
-  @[Menu](menu)
-
-screen Dashboard:
-  $Header
-  > Dashboard content here
-```
-
-#### Navigation
-Navigate between screens and activate modals/drawers:
+### Screens & Views
 
 ```dsl
 screen Home:
-  @[Go to About](About)
-  @[Open Modal](UserModal)
+  # Welcome
+  > Main content here
 
-modal UserModal:
-  # User Information
-  @[Close](close)
+modal Dialog:
+  # Confirmation
+  @[OK](close)
+
+drawer Menu:
+  # Navigation
+  - [Home](Home)
+  - [Settings](Settings)
 ```
 
 ### Typography
 
 ```dsl
-# Heading 1
-## Heading 2
-### Heading 3
-
-> Regular text
-*> Note text
-"> Quote text
+# to ###### → Headings (H1-H6)
+>           → Paragraph text
+>>          → Text (no bottom margin)
+>>>         → Muted text
+*>          → Note text
+">          → Quote text
 ```
 
-### Interactive Elements
+### Buttons
+
+Size: `@` (large), `@@` (medium), `@@@` (small)  
+Variants: `_` (ghost), `+` (outline), `-` (secondary), `=` (destructive), `!` (warning)
 
 ```dsl
-@[Button Text](action)
-@[Optional Button]?(action)
-#[Link Text](destination)
-![Alt Text](image-url)
+@[Large Default](action)
+@@+[Medium Outline](action)
+@@@=[Small Delete](action)
+@[With Icon]{icon-name}(action)
 ```
 
-### Form Elements
+### Forms
 
 ```dsl
-___:Email{Enter your email}
+___:Email{Enter email}
 ___*:Password{Enter password}
-___-:Disabled{Cannot edit}
-___:Country{Select country}[USA | Canada | Mexico]
+___:Country{Select}[USA | Canada | Mexico]
 
 [X] Checked checkbox
 [ ] Unchecked checkbox
@@ -121,123 +137,125 @@ ___:Country{Select country}[USA | Canada | Mexico]
 ( ) Unselected radio
 ```
 
-### Layout Components
+### Layouts
+
+All layouts support inline modifiers:
 
 ```dsl
-container:
-  # Container Content
-  > Organized layout
+row-w50-center-p4:
+  @[Button 1]
+  @[Button 2]
 
-grid:
-  @[Item 1](action1)
-  @[Item 2](action2)
-  @[Item 3](action3)
+col-h100-start-m2:
+  > Content in column
 
-card:
-  # Card Title
-  > Card content with automatic styling
-  @[Action](action)
+grid-cols3-gap4:
+  card:
+    # Item 1
+  card:
+    # Item 2
+  card:
+    # Item 3
+
+container-wfull-center-p8:
+  # Centered content
 ```
 
-### Advanced Lists
+**Modifiers**: `w[num]`, `h[num]`, `wfull`, `hfull`, `center`, `start`, `end`, `p[num]`, `m[num]`, `gap[num]`, `cols[1-12]`
 
-Create rich, interactive lists with flexible syntax:
+### Components with Props
 
 ```dsl
-list:
-  - [Star](star)Important Task{Complete by Friday}[Complete](done)
-  - [Project](view)Bug Report{Fix login issue}@=[Close](close)@_[Comment](comment)
-  - Multiple actions[Save](save)@![Delete](delete)@+[Edit](edit)
+component UserCard:
+  card:
+    # %name
+    > Email: %email
+    > Phone: %phone
+
+screen Users:
+  list $UserCard:
+    - John | john@email.com | 555-1234
+    - Jane | jane@email.com | 555-5678
 ```
 
-**List Item Components:**
-- `[link_text](destination)` - Makes item clickable
-- `free_text` - Regular text content
-- `{subtitle}` - Subtitle section
-- `[button](action)` - Action buttons
-- `@[variant][button](action)` - Styled button variants:
-  - `@_` Ghost style
-  - `@+` Outline style
-  - `@-` Secondary style
-  - `@=` Destructive style
-  - `@!` Warning style
+Props are pipe-separated (`|`) and interpolated with `%propName`.
+
+### Navigation
+
+```dsl
+@[Go to Screen](ScreenName)    → Navigate to screen
+@[Open Modal](ModalName)       → Toggle modal
+@[Open Drawer](DrawerName)     → Toggle drawer
+@[Go Back](-1)                 → History back
+#[External Link](https://...)  → External URL
+```
 
 ### Mobile Components
 
 ```dsl
-header:
-  # App Header
-  @[Menu](menu)
+header-h100-center:
+  # App Name
+  @_[Menu](menu)
 
 navigator:
-  - [Home]{home}(HomePage)
-  - [Profile]{user}(ProfilePage)
-  - [Settings]{settings}(SettingsPage)
+  - [Home]{home}(Home)
+  - [Profile]{user}(Profile)
 
-fab {plus}
-```
-
-### Named UI Elements
-
-Modals and drawers with special behavior:
-
-```dsl
-modal ConfirmDialog:
-  # Confirm Action
-  > Are you sure you want to proceed?
-  @[Yes](confirm)
-  @[Cancel](close)
-
-drawer MenuDrawer:
-  # Menu
-  - [Home](HomePage)
-  - [About](AboutPage)
-  - [Contact](ContactPage)
+fab{plus}(addItem)
 ```
 ## Complete Example
 
+Here's a full app with navigation, components, modals, and lists:
+
 ```dsl
-component AppHeader:
-  header:
-    # MyApp
-    @[Menu](MainMenu)
+component Header:
+  header-h100-center:
+    # TaskApp
+    @_[Menu](MainMenu)
 
 modal ConfirmDelete:
-  # Confirm Delete
-  > Are you sure you want to delete this item?
-  @[Delete](@=delete)
-  @[Cancel](close)
+  # Delete Task?
+  > This action cannot be undone
+  @=[Delete](delete)
+  @-[Cancel](close)
 
 drawer MainMenu:
-  # Navigation
-  - [Dashboard](Dashboard)
-  - [Users](Users)
-  - [Settings](Settings)
+  # Menu
+  list:
+    - [Dashboard](Dashboard)
+    - [Tasks](Tasks)
+    - [Settings](Settings)
 
 screen Dashboard:
-  $AppHeader
+  $Header
   
-  card:
-    ## Welcome Back!
-    > Here's your dashboard overview
-  
-  grid:
-    card:
-      ### Active Users
-      > 1,247
+  container-wfull-center-p8:
+    card-p6:
+      ## Welcome Back
+      > You have 5 tasks pending
     
-    card:
-      ### Revenue
-      > $12,450
+    row-between-center-m4:
+      card-w50-p4:
+        ### Active
+        > 12 tasks
+      card-w50-p4:
+        ### Completed
+        > 48 tasks
 
-screen Users:
-  $AppHeader
+screen Tasks:
+  $Header
   
-  @[Add User](AddUser)
+  @[Add Task](AddTask)
   
   list:
-    - [John Doe](UserDetail)Admin User{john@example.com}@+[Edit](edit)@=[Delete](ConfirmDelete)
-    - [Jane Smith](UserDetail)Regular User{jane@example.com}@+[Edit](edit)@=[Delete](ConfirmDelete)
+    - Setup Project{Due: Today}@+[Edit](edit)@=[Delete](ConfirmDelete)
+    - Review Code{Due: Tomorrow}@+[Edit](edit)@=[Delete](ConfirmDelete)
+    - Deploy App{Due: Friday}@+[Edit](edit)@=[Delete](ConfirmDelete)
+  
+  navigator:
+    - [Dashboard]{home}(Dashboard)
+    - [Tasks]{check-square}(Tasks)
+    - [Settings]{settings}(Settings)
 ```
 
 ## Architecture
@@ -245,63 +263,132 @@ screen Users:
 ```
 src/
 ├── core/
-│   ├── lexer/          # Tokenization and lexical analysis
-│   ├── parser/         # Grammar rules and AST building
-│   ├── renderer/       # HTML generation from AST
-│   ├── editor/         # Monaco editor configuration and DSL language support
-│   │   ├── components/ # DSL editor React component
-│   │   ├── completion/ # IntelliSense and auto-completion
-│   │   ├── language/   # Monaco language registration and tokenization
-│   │   ├── theme/      # Custom dark theme for DSL syntax highlighting
-│   │   └── hooks/      # React hooks for editor state management
-│   └── themes/         # Theme system and CSS variables
+│   ├── lexer/          # Tokenization (Chevrotain)
+│   ├── parser/         # Grammar rules & AST building
+│   ├── renderer/       # AST → HTML conversion
+│   │   ├── core/       # node-renderer, route-manager, theme-manager
+│   │   ├── infrastructure/  # Gateways, mediators, helpers
+│   │   └── nodes/      # Element-specific renderers
+│   ├── editor/         # Monaco editor integration
+│   └── themes/         # shadcn-based theme system
 ├── components/         # React UI components
-├── examples/          # Sample DSL code examples
-├── types/             # TypeScript type definitions
-└── utils/             # Utility functions
+├── examples/          # DSL example code
+├── types/             # TypeScript definitions
+└── utils/             # Helper functions
 ```
 
-### Core Pipeline
+### Rendering Pipeline
 
-The application uses a sophisticated parsing pipeline:
+1. **Lexer** (`lexer/tokens/`) - Tokenize DSL text into structured tokens
+2. **Parser** (`parser/`) - Build Abstract Syntax Tree (AST) from tokens
+3. **Route Manager** - Process screens, modals, drawers, components
+4. **Theme Manager** - Merge shadcn themes with user styles
+5. **Node Renderer** - Convert AST nodes to HTML with navigation
+6. **Output** - Standalone HTML or preview fragment
 
-1. **Lexer** (`src/core/lexer/`) - Tokenizes the DSL input
-2. **Parser** (`src/core/parser/`) - Builds Abstract Syntax Tree (AST)
-3. **Renderer** (`src/core/renderer/`) - Converts AST to HTML
+### Design Patterns
 
-### DSL Architecture
+- **Strategy Pattern**: Node type → renderer function mapping
+- **Facade Pattern**: RouteManagerGateway simplifies complex APIs
+- **Mediator Pattern**: NavigationMediator decouples navigation logic
+- **Singleton Pattern**: Global route and theme managers
 
-- **DSL**: Descriptive syntax to declare screens, components, layouts, and interactions
-- **AST**: Clean, typed nodes built from the parser's CST with optional elements support
-- **Renderer**: Deterministic AST-to-HTML with semantic elements and built-in navigation
+## For Developers
 
-## Development
+### Project Philosophy
+
+- **Runtime validation** over automated tests
+- **Dark mode only** - no light theme support
+- **shadcn theming** - CSS variables for all colors
+- **No hardcoded colors** - always use semantic tokens
+- **Type-safe** - Full TypeScript coverage
 
 ### Adding New DSL Elements
 
-1. Define the token pattern in `src/core/lexer/tokens.ts`
-2. Add parsing rule in `src/core/parser/parser.ts`
-3. Implement AST building in `src/core/parser/astBuilder.ts`
-4. Add HTML rendering in `src/core/renderer/nodeRenderer.ts`
-5. Update examples and documentation
+1. **Token** (`lexer/tokens/*.tokens.ts`) - Define regex pattern
+2. **Parser** (`parser/parser.ts`) - Add grammar rule
+3. **Builder** (`parser/builders/*.builders.ts`) - CST → AST conversion
+4. **Renderer** (`renderer/nodes/*.node.ts`) - AST → HTML rendering
+5. **Types** (`types/ast-node.ts`) - Add to NodeType union
 
-### Token Pattern Guidelines
-- Use capturing groups for extracting content and optional elements
-- Handle optional whitespace and newlines consistently
-- Support attribute parsing with proper nesting
-- Consider token precedence in matching order
+**Example**: Adding a badge element
 
-## Contributing
+```typescript
+// 1. Token (lexer/tokens/primitives.tokens.ts)
+export const Badge = createToken({
+  name: "Badge",
+  pattern: /badge\[([^\]]+)\]/
+});
 
-When contributing to proto-typed:
+// 2. Builder (parser/builders/primitives.builders.ts)
+export function buildBadgeElement(ctx: Context) {
+  const match = ctx.Badge[0].image.match(/badge\[([^\]]+)\]/);
+  return {
+    type: "Badge",
+    props: { text: match?.[1] || '' },
+    children: []
+  };
+}
 
-1. Follow the established DSL syntax patterns
-2. Maintain consistency with the lexer-parser-renderer pipeline
-3. Test features using the live application (no automated tests required)
-4. Ensure proper TypeScript typing
-5. Update documentation for new syntax elements
-6. Use dark mode styling with Tailwind CSS
+// 3. Renderer (renderer/nodes/primitives.node.ts)
+export function renderBadge(node: AstNode): string {
+  const { text } = node.props as any;
+  return `<span class="badge" style="background-color: var(--primary);">${text}</span>`;
+}
+
+// 4. Add to RENDERERS map (renderer/core/node-renderer.ts)
+const RENDERERS: Record<NodeType, typeof _render> = {
+  // ... existing renderers
+  Badge: (n) => renderBadge(n),
+}
+```
+
+### Code Style
+
+**Tailwind CSS**:
+- ✅ Base classes only: `flex items-center px-4 py-2`
+- ❌ No hardcoded colors: `bg-blue-500 text-white`
+- ❌ No dark mode prefixes: `dark:bg-gray-900`
+
+**CSS Variables** (shadcn):
+- ✅ Semantic tokens: `var(--primary)`, `var(--muted-foreground)`
+- ✅ UI elements: `var(--border)`, `var(--input)`, `var(--ring)`
+- ❌ Color names: `var(--blue-500)`, `var(--gray-800)`
+
+### Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/new-element`
+3. Make changes following the code style
+4. Test in the running app (no automated tests)
+5. Submit a pull request
+
+See `.github/copilot-instructions.md` for comprehensive development guidelines.
 
 ## License
 
-This project is licensed under the MIT License.
+Licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
+
+```
+Copyright 2025 Ricardo Adorno
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
+## Acknowledgments
+
+- **shadcn/ui** - Theming system inspiration
+- **Chevrotain** - Parsing library
+- **Monaco Editor** - Code editor component
+- **Tailwind CSS** - Utility-first CSS framework
+- **Lucide Icons** - Icon system

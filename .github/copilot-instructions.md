@@ -1,279 +1,690 @@
-# GitHub Copilot Instructions for proto-typed
+# Proto-Typed DSL: LLM-Optimized Development Guide
 
-## Project Overview
-This is a React-based UI prototyping tool that allows users to create interactive prototypes using a comprehensive, descriptive syntax. The application features a robust Domain Specific Language (DSL) with a complete lexer, parser, and renderer pipeline that supports optional elements, styling attributes, conditional rendering, and advanced layout management.
+## 🎯 Critical Context First
 
-## Core Architecture
+**BEFORE making ANY changes**: Read the actual implementation in `src/core/` to understand current token patterns, parsing rules, and AST structures. This file is a GUIDE - the SOURCE OF TRUTH is the code.
 
 ### Technology Stack
+- **Parse Pipeline**: Chevrotain (Lexer → Parser → AST Builder → Renderer)
 - **Frontend**: React 19 + TypeScript + Vite
-- **Testing**: Currently no test suite implemented (Vitest + React Testing Library configured but no tests written)
-- **Parsing**: Chevrotain (lexer & parser)
-- **Code Editor**: Monaco Editor with custom syntax highlighting
+- **Editor**: Monaco with custom DSL syntax
+- **Testing Philosophy**: Runtime validation over automated tests (no test suite)
 
-### Project Structure
-- `src/core/lexer/` - Tokenization and lexical analysis
-- `src/core/parser/` - Grammar rules and AST building
-- `src/core/renderer/` - HTML generation from AST
-- `src/core/themes/` - Theme system and CSS variable management
-- `src/components/` - React UI components
-- `src/examples/` - Sample DSL code examples
-- `src/types/` - TypeScript type definitions
-- `src/utils/` - Utility functions and helpers
+### Code Architecture
+```
+src/core/
+├── lexer/tokens/        ← Token definitions by category
+├── parser/              ← Grammar rules (parser.ts)
+├── parser/builders/     ← CST → AST conversion by category
+├── renderer/            ← AST → HTML generation
+└── themes/              ← CSS variable system
+```
 
-## DSL Syntax Reference
+---
 
-For complete, always-up-to-date guidance, see modular instructions:
-- `.github/instructions/01-overview.instructions.md`
-- `.github/instructions/02-dsl.instructions.md`
-- `.github/instructions/03-lexer-parser.instructions.md`
-- `.github/instructions/04-editor.instructions.md`
-- `.github/instructions/05-renderer.instructions.md`
-- `.github/instructions/06-components-organization.instructions.md`
-- `.github/instructions/07-coding-guidelines.instructions.md`
-- `.github/instructions/08-common-patterns.instructions.md`
-- `.github/instructions/09-docs.instructions.md`
+## 📋 DSL Syntax Reference (Current Implementation)
 
-### General Syntax Rules
-- **Container Elements**: Use `:` followed by indented children for nested content
-- **Text Content**: Use specific prefixes like `>` for text, `#` for headings
-- **Interactive Elements**: Use `@[text]` for buttons, `#[text]` for links, `![alt]` for images
+### Token Categories (see `src/core/lexer/tokens/`)
 
-### Screen Declaration
+#### **Views** (`views.tokens.ts`)
 ```
 screen ScreenName:
-  // Screen content
-```
-
-### Component Declaration
-Components allow you to create reusable UI blocks that can be instantiated throughout your prototype:
-```
-component ComponentName:
-  // Component content
-  > This is reusable content
-  @[Button]()
-```
-
-To use a declared component, reference it with the `$` prefix:
-```
-$ComponentName
-```
-
-### Modal and Drawer Elements
-Named elements that can be toggled active/inactive through navigation:
-```
 modal ModalName:
-  // Modal content
-  > This is a modal dialog
-
 drawer DrawerName:
-  // Drawer content
-  > This is a drawer panel
 ```
 
-These elements can be activated by calling their names in navigation actions.
+#### **Typography** (`primitives.tokens.ts`)
+```
+# to ###### → Heading (levels 1-6)
+>           → Paragraph
+>>          → Text
+>>>         → MutedText
+*>          → Note
+">          → Quote
+```
 
-### Typography Elements
-- `# Heading 1` to `###### Heading 6`
-- `> Regular text`
-- `*> Note text`
-- `"> Quote text`
+#### **Buttons** (`primitives.tokens.ts`)
+Pattern: `(@{1,3})([_+\-=!]?)\[text\](?:\{icon\})?(?:\(action\))?`
 
-### Interactive Elements
-- `@[Button Text]()`
-- `#[Link Text]()`
-- `![Alt Text](image-url)`
-- `$ComponentName` - Component instantiation
+**Size** (@ count):
+- `@[Text]` → Large
+- `@@[Text]` → Medium  
+- `@@@[Text]` → Small
 
-### Component System
-- `component ComponentName:` - Component declaration
-- `$ComponentName` - Component instantiation/usage
+**Variants** (symbol after @):
+- `@[Default]` → Default
+- `@_[Ghost]` → Ghost
+- `@+[Outline]` → Outline
+- `@-[Secondary]` → Secondary
+- `@=[Delete]` → Destructive
+- `@![Warning]` → Warning
 
-### Named UI Elements  
-- `modal ModalName:` - Modal declaration
-- `drawer DrawerName:` - Drawer declaration
+**Examples**:
+```
+@[Click Me](action)
+@@+[Medium Outline]{icon}(action)
+@@@=[Small Delete](delete)
+```
 
-These named elements have special behavior - they are shown or hidden based on navigation. When a button references their name in its action parameter (e.g., `@[Open Modal]()`), they will be activated. Otherwise, they remain hidden/inactive by default.
+#### **Links & Images** (`primitives.tokens.ts`)
+```
+#[Link Text](destination)
+![Alt Text](image-url)
+```
 
-### Advanced Form Elements
-- `___:Label{Placeholder}`
-- `___*:Label{Placeholder}` - Password fields
-- `___-:Label{Placeholder}` - Disabled fields
-- `___:Label{Placeholder}[Option1 | Option2]` - Select fields
-
-### Checkbox and Radio Groups
-- `[X] Label` - Checked checkboxes
-- `[ ] Label` - Unchecked checkboxes
-- `(X) Label` - Selected radio buttons
-- `( ) Label` - Unselected radio buttons
-
-### Layout Components
-- `container:`
-- `grid:`
-- `card:`
-- `row:`
-- `col:`
-
-### Data Display Components
-- `list:` - Advanced Interactive Lists
-  - **Flexible Syntax**: `- [link_text](link_element)text{subtitle}[button_text](action)[button_text](action)`
-  - **Simple Items**: `- Simple text item` (legacy support)
-
-#### Advanced List Item Structure
-The new list syntax provides maximum flexibility for creating rich, interactive list items:
+#### **Layout Elements** (`layouts.tokens.ts`)
+All support **inline modifiers** with dash-separated syntax:
 
 ```
-- [optional_link_text](optional_link)text{subtitle}[btn](action)[btn](action)
+row-w50-center-p4:
+col-h100-start-m2:
+grid-cols3-gap4-p2:
+container-wfull-center-stretch-p8:
 ```
-'
-**Components (all optional except the initial dash):**
-- `[link_text](link)` - Optional navigation link with text that makes the entire item clickable
-- `free_text` - Free text content after the link
-- `{subtitle}` - Subtitle section
-- `[button](action)` - Action buttons at the end
-- `@[variant][button](action)` - Action buttons with variants (ghost: `@_`, outline: `@+`, secondary: `@-`, destructive: `@=`, warning: `@!`)
 
-**Examples:**
-```dsl
+**Available Modifiers**:
+- **Size**: `w[num]`, `h[num]`, `wfull`, `hfull`, `wauto`, `hauto`
+- **Justify**: `start`, `end`, `center`, `between`, `around`, `evenly`
+- **Align**: `start`, `end`, `center`, `stretch`, `baseline`
+- **Padding**: `p[num]`, `px[num]`, `py[num]`, `pl[num]`, `pr[num]`, `pt[num]`, `pb[num]`
+- **Margin**: `m[num]`, `mx[num]`, `my[num]`, `ml[num]`, `mr[num]`, `mt[num]`, `mb[num]`
+- **Grid**: `gap[num]`, `cols[1-12]`
+
+#### **Structures** (`structures.tokens.ts`)
+```
 list:
-  - [Star](star)Important Task{Complete Project}[Mark Complete](complete)
-  - [Project](ProjectPage)Bug Report{Fix Login Issue}@=[Close](close)@_[Comment](comment)
-  - Simple text item
-  - Just some text with @+[Button](action)
-  - [Link Only](destination)
-  - Text only with no special features
-  - {Just a subtitle}
-  - Multiple buttons[Save](save)@![Cancel](cancel)@=[Delete](delete)
-  - Task with variants@_[Ghost](ghost)@+[Outline](outline)@-[Secondary](secondary)
+  - Simple item
+  - Complex item with content
+
+card:
+card-w75-p4:
+header:
+header-h100-center:
+navigator:
+  - icon text | destination
+  - Home | HomeScreen
+  - i-Settings Config | Settings
+fab{icon}(action)
+---  (separator)
 ```
 
-**Flexibility Features:**
-- **Multiple buttons**: Add as many `[text](action)` buttons as needed
-- **Mixed content**: Combine buttons, text, links, and titles freely  
-- **Optional elements**: Every component except the dash is optional
-- **Navigation support**: Both initial links and button actions support navigation
-- **Backward compatibility**: Simple `- text` items still work
+**Navigator Format**:
+- **Two parts**: `- text | destination` → Text without icon
+- **Three parts**: `- text | icon | destination` → Text with icon prefix
+- **Icon-first**: `- i-Home Home | HomeScreen` → Icon name (i-Home) + label (Home) as text
 
-### Components Organization (Canonical)
-- Primitives: Typography, Button, Link, Images, Icons
-- Form: Text, Select, Radio, Checkbox
-- Layout Primitives: Container, Row, Column, Flow, Grid
-- Content Structures: List, Table, Cards, Accordion, Carousel
-- Navigation & Overlays: Screens, App Bar, Drawer, Bottom Navigation, Modal, Floating Action Button
+#### **Forms** (`inputs.tokens.ts`)
+Pattern: `___[\*\-]?(?::Label)?(?:\{Placeholder\})?(?:\[Options\])?`
 
-## Coding Guidelines
+```
+___:Email{Enter email}
+___*:Password{Enter password}
+___-:Disabled{Can't edit}
+___:Country{Select}[USA | Canada | Mexico]
 
-### When working with the lexer (`src/core/lexer/`):
-- All tokens are defined in `tokens.ts` with Chevrotain's `createToken`
-- **IMPORTANT**: StringLiteral token is NOT used in this DSL and should never be implemented or referenced
-- Use regex patterns that match the DSL syntax precisely, including optional elements
-- Handle indentation with custom matchers in `lexer.ts`
-- Support attribute parsing with `{key: value}` syntax
-- Implement variable token recognition with `$variable` pattern
-- Always include proper token precedence in the `allTokens` array
+[X] Checked checkbox
+[ ] Unchecked checkbox
+(X) Selected radio
+( ) Unselected radio
+```
 
-### When working with the parser (`src/core/parser/`):
-- Grammar rules are defined in `parser.ts` using Chevrotain's CstParser
-- Each UI element should have its own parsing rule with optional attribute support
-- Use proper CST (Concrete Syntax Tree) structure
-- Handle indentation with `Indent`/`Outdent` tokens
-- Parse attribute objects and optional modifiers correctly
+#### **Components** (`components.tokens.ts`)
+```
+component UserCard:
+  > Component content here
+  > Use %propName for variables
 
-### When working with the AST builder (`src/core/parser/astBuilder.ts`):
-- Convert CST nodes to clean AST nodes with type, props, and optional elements
-- Extract data from token patterns using regex matching with optional group support
-- Handle edge cases and provide fallback values for optional elements
-- Support dynamic content resolution with variable substitution
+$UserCard                           ← Simple instantiation
+$UserCard:                          ← With props (see below)
+  - Name | Email | Phone            ← Pipe-separated prop values
 
-### When working with renderers (`src/core/renderer/`):
-- `nodeRenderer.ts` - Convert individual AST nodes to HTML with attribute support
-- `documentRenderer.ts` - Generate full HTML documents
-- `astToHtml.ts` - Main rendering function with screen management
-- Use proper HTML attributes and semantic elements
-- Implement internal navigation for screen links
-- Support variable substitution in rendered content
+list $UserCard:                     ← Component-based list
+  - John | john@email.com | 555-1234
+  - Jane | jane@email.com | 555-5678
+```
 
-### Component Development:
-- Use React functional components with TypeScript
-- Implement proper error boundaries for parsing errors
-- Use Monaco Editor for syntax highlighting and code editing with custom DSL support
-- Keep components focused and reusable
-- Support real-time preview updates with debounced parsing
+**Prop Variables**: Use `%propName` inside component to interpolate values
 
-## Code Style Preferences
+#### **Styles** (`styles.tokens.ts`)
+```
+styles:
+  --primary-color: #3b82f6;
+  --font-size: 16px;
+```
 
-### Styling and CSS:
-- **DARK MODE ONLY**: This application uses dark mode as the default and only theme
-- **NEVER use `dark:` prefixes** in Tailwind CSS classes - they are not needed
-- Use dark color variants directly: `bg-gray-800`, `text-gray-300`, `border-gray-700`
-- Avoid light color variants: do not use `bg-white`, `bg-gray-50`, `text-gray-900`, etc.
-- Color scheme should be optimized for dark backgrounds and light text
+---
 
-### TypeScript:
-- Use explicit interface definitions for complex types
-- Prefer `interface` over `type` for object shapes
-- Use proper generic constraints where applicable
-- Always handle null/undefined cases
-- Implement discriminated unions for AST node types
+## 🏗️ Renderer Architecture
 
-### React:
-- Use functional components with hooks
-- Implement proper error handling for user inputs
-- Use semantic HTML elements
-- Keep state management simple and local when possible
+### Design Philosophy: Layered Architecture with Clean Separation
 
-## Common Patterns
+The renderer follows a **3-tier layered architecture** with clear boundaries and responsibilities:
 
-### Adding a new DSL element:
-1. Define the token pattern in `tokens.ts` with optional syntax support
-2. Add parsing rule in `parser.ts` with attribute handling
-3. Implement AST building in `astBuilder.ts` with proper type checking
-4. Add HTML rendering in `nodeRenderer.ts` with attribute application
-5. Write comprehensive tests including optional variations
-6. Update examples and documentation
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Top-Level Adapters (Public API)                            │
+│  • ast-to-html-document.ts   - Full HTML doc with CDN       │
+│  • ast-to-html-string-preview.ts - Preview HTML for SPA     │
+└─────────────────────────────────────────────────────────────┘
+                          ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Infrastructure Layer (Services & Patterns)                  │
+│  • route-manager-gateway.ts  - Facade for SPA clients       │
+│  • navigation-mediator.ts    - Navigation analysis          │
+│  • html-render-helper.ts     - Screen rendering utilities   │
+└─────────────────────────────────────────────────────────────┘
+                          ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Core Layer (Business Logic)                                │
+│  • node-renderer.ts    - Central dispatcher (Strategy)      │
+│  • route-manager.ts    - Navigation state & routes          │
+│  • theme-manager.ts    - CSS variables & theming            │
+└─────────────────────────────────────────────────────────────┘
+                          ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Node Renderers (Pure Functions)                            │
+│  • views.node.ts       - Screen, Modal, Drawer              │
+│  • primitives.node.ts  - Button, Link, Text, Image          │
+│  • layouts.node.ts     - Row, Col, Grid, Container          │
+│  • structures.node.ts  - List, Card, Header, Navigator      │
+│  • inputs.node.ts      - Input, Checkbox, Radio             │
+│  • components.node.ts  - Component system                   │
+└─────────────────────────────────────────────────────────────┘
+```
 
-### Token Pattern Guidelines:
-- Use capturing groups for extracting content and optional elements
-- Handle optional whitespace and newlines consistently
-- Support attribute parsing with proper nesting
-- Consider token precedence in matching order
-- Test patterns with various input combinations including edge cases
+### Core Layer Components
 
-### AST Node Structure:
-- Always include `type` field for discriminated unions
-- Use `props` for core element properties
-- Use `elements` array for nested content
-- Keep structure flat and consistent across all element types
-- Support optional element indicators
+#### **node-renderer.ts** - Central Dispatcher
+- **Pattern**: Strategy Pattern
+- **Purpose**: Map `NodeType` to specialized renderer functions
+- **Key Feature**: `RENDERERS` object with type-safe mapping
+```typescript
+const RENDERERS: Record<NodeType, typeof _render> = {
+  Button: (n) => renderButton(n),
+  Screen: (n) => renderScreen(n, _render),
+  // ... 40+ node types
+}
+```
+- **Usage**: Single entry point for all AST → HTML conversion
+- **Extensibility**: Add new node type = add to RENDERERS map
 
+#### **route-manager.ts** - Navigation State Management
+- **Pattern**: Singleton Service
+- **Responsibilities**:
+  - Process AST nodes into `RouteCollection` (screens, modals, drawers, components)
+  - Maintain navigation history with back/forward support
+  - Detect screen structure changes and reset history appropriately
+  - Provide route metadata and context for rendering
+- **Key Methods**:
+  - `processRoutes(ast, options)` - Organize nodes by type
+  - `findNodesByType(nodes, type)` - Recursive AST traversal
+  - `navigate(target)` / `goBack()` - Navigation operations
+  - `createRenderContext(mode, options)` - Context for rendering pipeline
+- **State Management**: Tracks `currentScreen`, `navigationHistory`, `currentHistoryIndex`
 
-## Performance Considerations
-- Parser state should be reset between inputs to prevent memory leaks
-- Avoid deep nesting in AST structures for rendering efficiency
-- Use efficient regex patterns in tokens with proper backtracking prevention
-- Implement proper error recovery in parsing to handle partial inputs
-- Cache compiled attribute objects to improve re-render performance
-- Use React.memo for expensive rendering components
-- Debounce real-time parsing updates to improve editor performance
+#### **theme-manager.ts** - CSS Variable System
+- **Pattern**: Singleton Service (`CustomPropertiesManager`)
+- **Responsibilities**:
+  - Merge theme CSS variables with user-defined custom properties
+  - Process `styles:` blocks from DSL
+  - Generate complete CSS variable declarations
+- **Key Methods**:
+  - `processStylesConfig(stylesNodes)` - Extract custom properties from AST
+  - `generateAllCssVariables(isDark)` - Combine theme + custom variables
+  - `setExternalTheme(themeName)` - UI theme selector integration
+- **Flow**: External theme (UI) + DSL styles (`styles:`) = Complete CSS
 
-## Error Handling
-- Provide meaningful error messages for parsing failures with context
-- Handle malformed input gracefully with partial recovery
-- Show clear feedback to users about syntax errors with suggestions
-- Include line/column information and highlight problematic code
-- Implement error boundaries for runtime rendering errors
-- Support graceful degradation when optional elements fail
-- Validate attribute types and provide helpful correction suggestions
+### Infrastructure Layer Components
 
-## Testing and Validation Approach
-- **DO NOT** create test files or write automated tests unless explicitly requested
-- **DO NOT** run test commands or suggest running tests
-- **Focus on runtime feedback**: Use the running application to validate changes and identify issues
-- **Ask for user feedback**: When unsure about functionality, ask the user to test the feature and provide feedback
-- **Use browser dev tools**: Leverage console logs, network tabs, and runtime errors for debugging
-- **Iterative development**: Make changes, run the app, and gather feedback from actual usage
-- **User-driven validation**: Let the user be the primary validator of functionality and behavior
+#### **route-manager-gateway.ts** - Facade Pattern
+- **Purpose**: Simplify RouteManager API for SPA clients
+- **Benefits**:
+  - Clean, focused API for React components
+  - Hides internal complexity of RouteManager
+  - Manages event handlers for navigation
+- **Key APIs**:
+  - `initialize(ast, options)` - Setup route system
+  - `getRouteMetadata()` - Get all route info
+  - `navigateTo(target)` / `goBack()` - Navigation controls
+  - `createNavigationClickHandler()` - React event handler factory
+- **Pattern**: Gateway shields clients from RouteManager internals
 
-This project prioritizes rapid prototyping and real-world testing over automated test suites. Always prefer getting feedback from the running application and user interaction rather than writing tests.
+#### **navigation-mediator.ts** - Navigation Analysis
+- **Pattern**: Mediator Pattern
+- **Purpose**: Decouple navigation logic from node renderers
+- **Key Responsibilities**:
+  - Analyze navigation targets to determine type (internal/external/action/toggle/back)
+  - Generate appropriate HTML attributes (`href`, `data-nav`, `data-nav-type`)
+  - Support modal/drawer toggle actions
+- **Key Methods**:
+  - `analyzeNavigationTarget(target, routes)` → `{ type, value, isValid }`
+  - `generateHrefAttribute(target)` → `href="..."` string
+  - `generateNavigationAttributes(target)` → data attributes object
+- **Navigation Types**:
+  - `internal` - Screen navigation (`#ScreenName`)
+  - `external` - URLs with `://` or `mailto:`
+  - `action` - JavaScript calls (contains `()` or `.`)
+  - `toggle` - Modal/Drawer activation (matches modal/drawer names)
+  - `back` - History back (`-1`)
 
-When generating code for this project, always consider the DSL syntax, maintain consistency with existing patterns, and ensure proper integration with the lexer-parser-renderer pipeline. Pay special attention to optional elements, attribute handling, and the robust error handling requirements outlined above.
+#### **html-render-helper.ts** - Screen Rendering Utilities
+- **Purpose**: Shared screen rendering logic
+- **Key Functions**:
+  - `renderAllScreens(screens, currentScreen)` - Preview mode rendering
+  - `renderScreenForDocument(screen, index, currentScreen)` - Document export
+  - `renderGlobalElements(routeManager)` - Modals/Drawers rendering
+  - `generateLayoutClasses(screen)` - Detect header/navigator/FAB presence
+- **Pattern**: Utility functions used by top-level adapters
+
+### Node Renderers Layer
+
+**Pure Functions** that convert AST nodes to HTML strings:
+
+- **views.node.ts**: Screen, Modal, Drawer with visibility management
+- **primitives.node.ts**: Button (with icon support), Link, Image, Heading, Text/Paragraph
+- **layouts.node.ts**: Row, Col, Grid, Container with modifier parsing
+- **structures.node.ts**: List, Card, Header, Navigator, FAB, Separator
+- **inputs.node.ts**: Input (text/password/select), Checkbox, Radio
+- **components.node.ts**: Component definition storage and instantiation
+
+**Key Characteristics**:
+- Import infrastructure services (NavigationMediator, styles)
+- No direct state mutation
+- Recursive rendering via `_render` callback
+- Apply Tailwind classes + inline styles
+
+### Top-Level Adapters
+
+#### **ast-to-html-document.ts**
+- **Purpose**: Generate standalone HTML document
+- **Includes**:
+  - Full `<!DOCTYPE html>` structure
+  - Tailwind CDN + plugins (forms, typography)
+  - Lucide icons CDN
+  - Navigation JavaScript with event delegation
+  - CSS variables in `<style>` tag
+- **Flow**:
+  1. Reset `customPropertiesManager`
+  2. Process styles config
+  3. Process routes via `routeManager`
+  4. Set route context
+  5. Render screens + global elements
+  6. Generate navigation script
+  7. Clear route context
+- **Use Case**: Export prototype as downloadable HTML
+
+#### **ast-to-html-string-preview.ts**
+- **Purpose**: Generate HTML fragment for SPA embedding
+- **Differences from Document**:
+  - No `<html>` wrapper (just content divs)
+  - No CDN includes (SPA already has them)
+  - Returns preview HTML string for React iframe/preview
+- **Use Case**: Real-time preview in editor
+
+### Key Design Patterns Summary
+
+| Pattern | Component | Purpose |
+|---------|-----------|---------|
+| **Strategy** | `node-renderer.ts` | Map node types to renderers |
+| **Singleton** | `routeManager`, `customPropertiesManager` | Global state management |
+| **Facade/Gateway** | `route-manager-gateway.ts` | Simplify API for clients |
+| **Mediator** | `navigation-mediator.ts` | Decouple navigation logic |
+| **Template Method** | Render pipeline | Consistent render flow |
+| **Pure Functions** | Node renderers | Predictable HTML generation |
+
+### Critical Rendering Flow
+
+```
+1. AST Input
+   ↓
+2. customPropertiesManager.reset()
+   ↓
+3. customPropertiesManager.processStylesConfig(stylesNodes)
+   ↓
+4. routeManager.processRoutes(ast, options)
+   ↓
+5. routeManager.setRouteContext()
+   ↓
+6. Render screens via node-renderer.ts
+   ↓
+7. Render global elements (modals/drawers)
+   ↓
+8. Generate navigation script (document) or return HTML (preview)
+   ↓
+9. routeManager.clearRouteContext()
+   ↓
+10. Return HTML string
+```
+
+### When Modifying Renderer Code
+
+1. **Adding New Node Type**:
+   - Add renderer function in appropriate `nodes/*.node.ts`
+   - Add to `RENDERERS` map in `node-renderer.ts`
+   - Use `NavigationMediator` for any navigation attributes
+   - Import styles from `nodes/styles/styles.ts`
+
+2. **Changing Navigation Behavior**:
+   - Modify `navigation-mediator.ts` for target analysis
+   - Update `route-manager.ts` for state management
+   - Update navigation script in `ast-to-html-document.ts`
+
+3. **Adding Layout Modifiers**:
+   - Update modifier parsing in `parser/builders/layouts.builders.ts`
+   - Apply modifiers in `renderer/nodes/layouts.node.ts`
+   - Use Tailwind classes + inline styles
+
+4. **Theming Changes**:
+   - Update `themes/theme-definitions.ts` for theme variables
+   - Use `customPropertiesManager` for DSL `styles:` blocks
+   - Ensure dark mode compatibility (no light colors)
+
+---
+
+## 🔧 Development Directives
+
+### When Adding/Modifying DSL Elements
+
+1. **Token** (`src/core/lexer/tokens/*.tokens.ts`):
+   - Define regex pattern with Chevrotain's `createToken`
+   - Use capturing groups `()` for extraction
+   - Use non-capturing groups `(?:)` for optional parts
+   - **NO StringLiteral token** - this DSL doesn't use it
+
+2. **Parser Rule** (`src/core/parser/parser.ts`):
+   - Add parsing rule using CstParser methods
+   - Handle `Indent`/`Outdent` for nesting
+   - Use helper methods for common patterns
+
+3. **AST Builder** (`src/core/parser/builders/*.builders.ts`):
+   - Extract data from CST context
+   - Build AST node with `{ type, id, props, children }`
+   - Parse inline modifiers (see `parseLayoutModifiers()`)
+
+4. **Renderer** (`src/core/renderer/nodes/*.node.ts`):
+   - Convert AST node to HTML string
+   - Apply props as HTML attributes/classes
+   - Support navigation actions
+
+5. **Type Definitions** (`src/types/ast-node.ts`):
+   - Add to `NodeType` union
+   - Define props interface if needed
+
+### Layout Modifier Parsing
+
+**IMPORTANT**: Layout modifiers are **inline** (not attributes). Parse from token image string.
+
+Example from `layouts.builders.ts`:
+```typescript
+const rowToken = ctx.Row[0];
+const modifiers = parseLayoutModifiers(rowToken.image);
+// rowToken.image = "row-w50-center-p4"
+// modifiers = { width: "50", justify: "center", padding: "4" }
+```
+
+### Component Props System
+
+**Data Flow**:
+1. List with component: `list $UserCard:`
+2. Items with pipe-separated values: `- John | john@email.com | 555-1234`
+3. Props extracted and matched to component variables
+4. `%name`, `%email`, `%phone` interpolated in component template
+
+---
+
+## 🎨 Styling System: shadcn-Inspired Architecture
+
+### Design Philosophy
+The styling system is based on **shadcn/ui** design patterns, using CSS custom properties (variables) for theming and Tailwind CSS for utility classes. This approach provides:
+- **Theme flexibility**: Easy theme switching via CSS variables
+- **Consistency**: All components reference the same color tokens
+- **Customizability**: Users can override variables via `styles:` block
+- **Dark mode by default**: All themes optimized for dark mode
+
+### CSS Variables Structure (`themes/theme-definitions.ts`)
+
+Based on shadcn's theming system with **OKLCH color space** for better perceptual uniformity:
+
+```typescript
+interface ThemeColors {
+  // Core colors
+  background, foreground, card, cardForeground, popover, popoverForeground
+  
+  // Semantic colors
+  primary, primaryForeground
+  secondary, secondaryForeground
+  muted, mutedForeground
+  accent, accentForeground
+  destructive, destructiveForeground
+  
+  // UI elements
+  border, input, ring
+  
+  // Charts
+  chart1, chart2, chart3, chart4, chart5
+}
+```
+
+**Available Themes**: neutral, stone, slate, gray, zinc, red, rose, orange, green, blue, yellow, violet
+
+### Styling Implementation Pattern
+
+#### 1. **Base Classes** (`nodes/styles/styles.ts`)
+Define Tailwind utility classes WITHOUT colors:
+```typescript
+button: 'inline-flex items-center justify-center px-4 py-2 focus:outline-none focus:ring-2 transition-colors'
+```
+
+#### 2. **Inline Styles with CSS Variables**
+Apply colors via inline styles referencing CSS variables:
+```typescript
+getButtonInlineStyles(variant): string {
+  return `background-color: var(--primary); color: var(--primary-foreground); border-radius: var(--radius);`
+}
+```
+
+#### 3. **Component Rendering**
+Combine base classes + inline styles:
+```typescript
+<button class="${buttonClasses}" style="${getButtonInlineStyles(variant)}">
+```
+
+### shadcn Pattern Implementation
+
+**DO** ✅:
+```typescript
+// Use CSS variable references
+style="background-color: var(--primary); color: var(--primary-foreground);"
+
+// Base classes without color
+class="inline-flex items-center justify-center px-4 py-2 rounded-md"
+
+// Semantic naming from shadcn
+var(--card), var(--muted-foreground), var(--border), var(--ring)
+```
+
+**DON'T** ❌:
+```typescript
+// Hardcoded Tailwind color classes
+class="bg-blue-500 text-white"
+
+// Dark mode prefixes (not needed)
+class="bg-gray-800 dark:bg-gray-900"
+
+// Non-semantic color tokens
+var(--blue-500), var(--gray-800)
+```
+
+### Tailwind + CSS Variables Integration
+
+#### Element Style Pattern:
+```typescript
+// 1. Define base classes (structure + spacing)
+const baseClasses = 'inline-flex items-center justify-center px-4 py-2 rounded-md transition-colors';
+
+// 2. Generate inline styles (colors from CSS variables)
+const inlineStyles = 'background-color: var(--primary); color: var(--primary-foreground);';
+
+// 3. Render with both
+<button class="${baseClasses}" style="${inlineStyles}">Click</button>
+```
+
+#### Common CSS Variable Patterns:
+- **Buttons**: `var(--primary)`, `var(--secondary)`, `var(--destructive)`
+- **Text**: `var(--foreground)`, `var(--muted-foreground)`
+- **Backgrounds**: `var(--background)`, `var(--card)`, `var(--popover)`
+- **Borders**: `var(--border)`, `var(--input)`
+- **Interactive**: `var(--ring)`, `var(--accent)`
+- **Radius**: `var(--radius)` for border-radius consistency
+
+### Theme System Flow
+
+1. **Theme Definition** (`theme-definitions.ts`):
+   - Define OKLCH color values for light and dark modes
+   - Export as Theme interface
+
+2. **CSS Variable Generation**:
+   - `generateThemeCssVariables(theme, isDark)` creates CSS variable declarations
+   - Example: `--primary: oklch(0.922 0 0);`
+
+3. **User Custom Properties** (`styles:` block):
+   - User can override any variable: `--primary-color: #3b82f6;`
+   - CustomPropertiesManager merges theme + user variables
+
+4. **Component Rendering**:
+   - Components reference variables: `var(--primary)`
+   - Theme changes update all components automatically
+
+### Adding New Styled Elements
+
+When creating new DSL elements that need styling:
+
+1. **Add base classes** to `elementStyles` in `nodes/styles/styles.ts`:
+```typescript
+newElement: 'flex items-center px-4 py-2 rounded-md transition-colors'
+```
+
+2. **Create inline style function**:
+```typescript
+export function getNewElementInlineStyles(): string {
+  return 'background-color: var(--card); color: var(--card-foreground); border: 1px solid var(--border);';
+}
+```
+
+3. **Use in renderer** (`nodes/*.node.ts`):
+```typescript
+import { elementStyles, getNewElementInlineStyles } from './styles/styles';
+
+export function renderNewElement(node: AstNode): string {
+  return `<div class="${elementStyles.newElement}" style="${getNewElementInlineStyles()}">${content}</div>`;
+}
+```
+
+### Code Style Mandates
+
+#### Tailwind CSS
+- **DARK MODE ONLY** - never use `dark:` prefix
+- **NO hardcoded colors** - always use CSS variables
+- Base classes: structure, spacing, typography
+- Example: `flex items-center px-4 py-2 rounded-md` ✅
+- Avoid: `bg-blue-500 text-white` ❌
+
+#### CSS Variables
+- **ALWAYS use semantic shadcn tokens**
+- Primary: `var(--primary)`, `var(--primary-foreground)`
+- Secondary: `var(--secondary)`, `var(--secondary-foreground)`
+- Muted: `var(--muted)`, `var(--muted-foreground)`
+- Destructive: `var(--destructive)`, `var(--destructive-foreground)`
+- UI: `var(--border)`, `var(--input)`, `var(--ring)`, `var(--radius)`
+
+#### TypeScript
+- Use `interface` over `type` for objects
+- Discriminated unions for AST nodes
+- Explicit null handling
+
+#### React
+- Functional components only
+- Error boundaries for parsing
+- Debounced parsing for performance
+
+---
+
+## 🚨 Critical Rules
+
+### DO NOT
+- ❌ Create test files unless explicitly requested
+- ❌ Reference StringLiteral token (doesn't exist)
+- ❌ Use attribute syntax for layout modifiers (they're inline)
+- ❌ Use light color Tailwind classes
+- ❌ Make assumptions - check `src/core/` implementation first
+
+### ALWAYS
+- ✅ Read token implementation before modifying syntax
+- ✅ Use inline modifiers for layouts: `row-w50-center-p4:`
+- ✅ Use @ count for button size, symbol for variant
+- ✅ Validate with running app, not tests
+- ✅ Ask user for feedback on functionality
+
+---
+
+## 📖 Quick Syntax Examples
+
+### Complete Screen Example
+```
+screen Dashboard:
+  header-h100-center-p4:
+    # Dashboard
+    @_[Settings](Settings)
+  
+  container-wfull-center-p8:
+    row-between-center-m4:
+      col-w50-start-p2:
+        ## User Stats
+        > Total Users: 1,234
+        @[View Details](Users)
+      
+      col-w50-end-p2:
+        ## Revenue
+        >>> Last updated: 5 mins ago
+        @+[Refresh](Refresh)
+    
+    list:
+      - Recent activity item
+      - Another update
+  
+  navigator:
+    - i-Home Dashboard | Dashboard
+    - i-Users Users | Users
+    - i-Settings Settings | Settings
+```
+
+### Component with Props Example
+```
+component ContactCard:
+  card-p4-m2:
+    # %name
+    > Email: %email
+    > Phone: %phone
+    @@[Call](PhoneView)
+
+screen Contacts:
+  list $ContactCard:
+    - John Doe | john@email.com | 555-1234
+    - Jane Smith | jane@email.com | 555-5678
+```
+
+---
+
+## 🔍 Debugging Workflow
+
+1. **Check Token Pattern**: Does regex match intended syntax?
+2. **Verify Parser Rule**: Is CST structure correct?
+3. **Inspect AST**: Are props extracted properly?
+4. **Test Renderer**: Does HTML output match expectations?
+5. **Runtime Validation**: Does it work in the running app?
+
+Use browser DevTools, not tests. Gather user feedback for validation.
+
+---
+
+**Remember**: This file guides you. The code in `src/core/` is the truth. When in doubt, read the implementation.

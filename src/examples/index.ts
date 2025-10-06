@@ -21,18 +21,6 @@ export const exampleConfigs = [
   { label: "Contacts App", code: contactsAppExample },
   { label: "Login Example", code: login },
   { label: "Custom Styles Demo", code: customStylesDemo },
-  { label: "Test Structural Tokens", code: testStructuralTokens },
-  { label: "Dashboard Example", code: dashboard },
-  { label: "Mobile Example", code: mobileComplete },
-  { label: "Mobile Test", code: mobileTest },
   { label: "Navigator Test", code: navigatorTest },
-  { label: "Named Elements", code: namedElementsExample },
-  { label: "Button Variants", code: buttonVariantsExample },
-  { label: "Lists Example", code: listsExample },
-  { label: "Metadata Demo", code: metadataDemo },
-  { label: "Layout Modifiers Demo", code: layoutModifiersExample },
-  { label: "Component Props Demo", code: componentPropsDemo },
-  { label: "Back Navigation Test", code: backNavigationExample },
-  { label: "FAB Test", code: fabTestExample },
 ] ;
 

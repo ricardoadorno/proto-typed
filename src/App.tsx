@@ -93,15 +93,16 @@ export default function App() {
                             }}
                         />
 
-                        <DeviceSelector
-                            value={uiStyle}
-                            onChange={setUiStyle}
-                        />
-
-                        <ThemeSelector
-                            value={selectedTheme}
-                            onChange={setSelectedTheme}
-                        />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <DeviceSelector
+                                value={uiStyle}
+                                onChange={setUiStyle}
+                            />
+                            <ThemeSelector
+                                value={selectedTheme}
+                                onChange={setSelectedTheme}
+                            />
+                        </div>
                     </div>
                     <EditorPanel>
                         <DSLEditor

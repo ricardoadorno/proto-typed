@@ -1,155 +1,253 @@
-const contactsAppExample = `component ContactItem:
-  card:
-    row-between:
-      col-gap0:
+const contactsAppExample = `styles:
+  --primary: #3b82f6;
+  --accent: #8b5cf6;
+
+
+component ContactCard:
+  card-p4-m2:
+    row-between-center:
+      col-gap1:
         >> %name
         >>> %email
-      row-center-center:
-        @@@[i-Edit]
-        @@@[i-Trash]
+      row:
+        @@@+[i-Edit](EditContact)
 
 
-screen ContactsList:
-  header:
-    ### Lista de Contatos
-    @[Menu](MainDrawer)
+screen Contacts:
+  header-h100-between-p4:
+    >> My Contacts
+    @@@_[i-Menu](MainDrawer)
 
-  col:
-    > Seus contatos estão organizados aqui
-    
-    list $ContactItem:
-      - João Silva | (11) 99999-9999 | joao@email.com
-      - Maria Santos | (11) 88888-8888 | maria@email.com
-      - Pedro Oliveira | (11) 77777-7777 | pedro@email.com
-      - Ana Costa | (11) 66666-6666 | ana@email.com
+    > Your contacts organized in one place
+
+    list $ContactCard:
+      - John Silva | john@email.com
+      - Maria Santos | maria@email.com
+      - Pedro Costa | pedro@email.com
+
+  navigator:
+    - i-Users | Contacts
+    - i-Star | Favorites
+    - i-Settings | Settings
 
   fab{+}(CreateContact)
 
 
 modal CreateContact:
-    # Novo Contato
-    
-    ___:Nome{Digite o nome}
-    ___:Telefone{(11) 99999-9999}
-    ___:Email{email@exemplo.com}
-    
-    row:
-      @[Cancelar](ContactsList)
-      @[Salvar](ContactsList)
+  card-p6:
+    ## New Contact
+    >>> Fill contact information
 
-modal EditContact:
-    # Editar Contato
-    
-    ___:Nome{João Silva}
-    ___:Telefone{(11) 99999-9999}
-    ___:Email{joao@email.com}
-    
-    row:
-      @[Cancelar](ContactsList)
-      @[Salvar](ContactsList)
+    ___*:Full Name{Enter name}
+    ___*:Email{email@example.com}
+    ___:Phone{(11) 99999-9999}
+    ___-:ID{Auto-generated}
+
+    ---
+
+    #### Category
+    (X) Personal
+    ( ) Work
+    ( ) Family
+
+    ---
+
+    [X] Add to favorites
+    [ ] Sync with cloud
+
+    row-between-p4:
+      @@-[Cancel](-1)
+      @@[i-Save Save](Contacts)
+
 
 modal ConfirmDelete:
-    # Confirmar Exclusão
-    > Tem certeza que deseja excluir este contato?
-    
-    *> Esta ação não pode ser desfeita.
-    
-    row:
-      @[Cancelar](ContactsList)
-      @[Excluir](ContactsList)
+  card-p6:
+    ### Delete Contact?
+    > This action cannot be undone
+
+    *> All contact data will be permanently removed
+
+    "> Consider archiving instead of deleting
+
+    row-between-p4:
+      @@+[Cancel](-1)
+      @@=[i-Trash Delete](Contacts)
+
 
 drawer MainDrawer:
-  > ## Menu Principal
-  
-  #[Contatos](ContactsList)
-  > Users Lista de contatos
-  
-  #[Favoritos](Favorites)
-  > Star Contatos favoritos
-  
-  #[Grupos](Groups)
-  > Users2 Grupos de contatos
-  
-  #[Configurações](Settings)
-  > Settings Configurações do app
-  
-  #[Sobre](About)
-  > Info Sobre o aplicativo
-  
-  #[Ajuda](Help)
-  > HelpCircle Central de ajuda
+  col-p6-gap4:
+    ![App Logo](https://via.placeholder.com/150x50)
+    
+    ###### Main Menu
+
+    list:
+      - #[i-Users Contacts](Contacts)
+      - #[i-Star Favorites](Favorites)
+      - #[i-Folder Groups](Groups)
+      - #[i-Settings Settings](Settings)
+
+    ---
+
+    card-p4:
+      >> Premium Features
+      >>> Unlock advanced tools
+      @@[i-Crown Upgrade](Premium)
+
+    ---
+
+    @@=[i-LogOut Sign Out](Contacts)
+
 
 screen Favorites:
-  header:
-    > Favoritos
-    @[Menu](MainDrawer)
+  header-p4:
+    ## ⭐ Favorites
+    @[i-Menu](MainDrawer)
 
-  col:
-    *> Nenhum contato favoritado ainda
-    
-    > Adicione contatos aos favoritos tocando na estrela ao lado do nome.
+  container-wfull-center-p8:
+    col-center-gap4:
+      ![Star](https://via.placeholder.com/100)
+      
+      > No favorites yet
+      
+      *> Tap the star icon to add contacts
+
+      @@[i-ArrowLeft Back](Contacts)
+
+  navigator:
+    - i-Users Contacts | Contacts
+    - i-Star Favorites | Favorites
+    - i-Settings Settings | Settings
+
 
 screen Groups:
-  header:
-    > Grupos
-    @[Menu](MainDrawer)
+  header-p4:
+    ## Groups
+    @[i-Menu](MainDrawer)
 
-  col:
-    > Organize seus contatos em grupos
-    
+  col-p4:
+    > Organize contacts by groups
+
     list:
-      - Família{5 contatos}
-      - Trabalho{12 contatos}
-      - Amigos{8 contatos}
+      - #[Family](Contacts) >>> 5 members
+      - #[Work](Contacts) >>> 12 members
+      - #[Friends](Contacts) >>> 8 members
+
+    ---
+
+    @@[i-Plus New Group](Contacts)
+
+  navigator:
+    - i-Users Contacts | Contacts
+    - i-Star Favorites | Favorites
+    - i-Settings Settings | Settings
+
 
 screen Settings:
-  header:
-    > Configurações
-    @[Menu](MainDrawer)
+  header-p4:
+    ## Settings
+    @[i-Menu](MainDrawer)
 
-  col:
-    # Configurações da Conta
-    
+  col-p4:
+    card-p4-m2:
+      #### Account
+      
+      list:
+        - #[Sync Settings](Contacts)
+        - #[Backup Settings](Contacts)
+        - #[Import Contacts](ImportScreen)
+        - #[Export Contacts](ExportScreen)
+
+    ---
+
+    card-p4-m2:
+      #### Preferences
+      
+      [X] Dark mode
+      [X] Notifications
+      [ ] Auto-backup
+
+    ---
+
+    row-center-p4:
+      @@=[Clear Cache](Contacts)
+
+  navigator:
+    - i-Users Contacts | Contacts
+    - i-Star Favorites | Favorites
+    - i-Settings Settings | Settings
+
+
+screen ImportScreen:
+  header-p4:
+    ### Import Contacts
+    @_[i-ArrowLeft](Settings)
+
+  col-p4:
+    > Import from other sources
+
     list:
-      - Sincronização
-      - Backup automático
-      - Importar contatos
-      - Exportar contatos
-    
-    # Aparência
-    
-    list:
-      - Tema escuro
-      - Tamanho da fonte
-      - Idioma
+      - #[i-FileText CSV File](Settings)
+      - #[i-Smartphone Google](Settings)
+      - #[i-Cloud iCloud](Settings)
 
-screen About:
-  header:
-    > Sobre
-    @[Menu](MainDrawer)
+    *> Existing contacts won't be replaced
 
-  col:
-    # Contatos App
-    
-    > Versão 1.0.0
-    
-    > Desenvolvido para gerenciar seus contatos de forma simples e eficiente.
-    
-    *> © 2025 Todos os direitos reservados
 
-screen Help:
-  header:
-    > Ajuda
-    @[Menu](MainDrawer)
+screen ExportScreen:
+  header-p4:
+    ### Export Contacts
+    @_[i-ArrowLeft](Settings)
 
-  col:
-    # Como usar
-    
-    list:
-      - Adicionar contato{Toque no botão + para criar um novo contato}
-      - Editar contato{Toque no ícone de edição ao lado do contato}
-      - Excluir contato{Toque no ícone da lixeira e confirme a exclusão}
-      - Organizar em grupos{Acesse a seção Grupos no Menu lateral}
+  col-p4:
+    > Export for backup
+
+    (X) CSV
+    ( ) vCard
+    ( ) JSON
+
+    ---
+
+    [ ] Include archived
+    [X] Include photos
+
+    ---
+
+    @@[i-Download Export Now](Settings)
+
+
+screen Premium:
+  header-p4:
+    ### 👑 Premium
+    @_[i-ArrowLeft](-1)
+
+  container-wfull-center-p8:
+    col-center-gap4:
+      ![Crown](https://via.placeholder.com/100)
+      
+      ## Unlock Premium
+      
+      > Get exclusive features
+
+      ---
+
+      grid-cols2-gap3:
+        card-p4:
+          >> ∞
+          >>> Unlimited contacts
+        card-p4:
+          >> 🔄
+          >>> Real-time sync
+
+      ---
+
+      # $9.90/month
+      >>> or $99/year (save 15%)
+
+      ---
+
+      @@[i-Crown Subscribe](Contacts)
+      @_[Maybe Later](-1)
+
 `;
 
 export default contactsAppExample;

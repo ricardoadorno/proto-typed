@@ -1,23 +1,39 @@
-Refatorar render e sua paginação
+# TODO
 
-Reimaginzar componentes de Layout como listas, header e fab
-
-Reimaginizar controle fino de layout como padding, margin, align, justify
-
-Implementar Temas - customização de cores, fontes e estilos globais
-
-===
-
-consolilidação da lingugem - vistors pattern, padronizar ast, github-instructions
-
-Refatorar o editor e lint, padronizar erros, formatação
-
-Refatoração docs e exemplos
+Features
+    - Parsing
+    - Render Engine
+    - Routing Engine
+    - Primitives, Layouts & Views Implementation
+    - Componentization with props
+    - Preview & Export HTML
+    - Basic Themes Customization API
+    - Basic Editor Integration
 
 ===
 
-reverse ast
+Consolidation
+    - Agent Context Window
+    - Editor
+    - Errors
+    - Lint
+    - Formatter
+    - Docs/Examples
 
-implementar integração com llm: RFC 7396 (Merge Patch) RFC 7396 (Merge Patch)
+===
 
-implementar camada de persistência
+Upgrades
+    - Reverse AST
+    - JSON Patch tool
+    - LLM Integration
+    - Data Persistence Layer
+    - Expand theme customization API
+
+===
+
+Refactor
+    - Codebase cleanup
+    - Parsing Optimization
+    - Inline Implementation
+    - Evolve Modularization
+    - Testing
