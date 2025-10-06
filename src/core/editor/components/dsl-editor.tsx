@@ -1,3 +1,26 @@
+/**
+ * DSL Editor Component
+ * 
+ * Monaco Editor configured specifically for the proto-typed DSL.
+ * Integrates syntax highlighting, IntelliSense, and error markers.
+ * 
+ * Features:
+ * - Real-time syntax highlighting with custom theme
+ * - Context-aware completions (IntelliSense)
+ * - Error markers with suggestions
+ * - Auto-indentation and bracket matching
+ * 
+ * Usage:
+ * ```tsx
+ * <DSLEditor
+ *   value={code}
+ *   onChange={handleChange}
+ *   errors={parseErrors}
+ *   theme="proto-typed-dark"
+ * />
+ * ```
+ */
+
 import { Editor } from '@monaco-editor/react';
 import { useMonacoDSL } from '../hooks/use-monaco-dsl';
 import { getDSLEditorOptions } from '../index';
@@ -17,6 +40,9 @@ interface DSLEditorProps {
 
 /**
  * Update Monaco editor error markers for a specific editor instance
+ * 
+ * Converts ParsedError objects into Monaco markers with proper positioning
+ * and enhanced messages including suggestions.
  */
 function updateErrorMarkers(monaco: Monaco, editor: any, errors: ParsedError[]) {
     if (!editor) return;

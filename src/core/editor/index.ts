@@ -1,3 +1,26 @@
+/**
+ * Monaco Editor Integration for proto-typed DSL
+ * 
+ * This module provides the complete Monaco Editor setup for the DSL:
+ * - Language registration (syntax, tokenization)
+ * - Theme configuration (dark mode)
+ * - Completion provider (IntelliSense)
+ * - Editor options (optimized for DSL editing)
+ * 
+ * Main exports:
+ * - DSLEditor: React component for the editor
+ * - useMonacoDSL: Hook for Monaco initialization
+ * - initializeMonacoDSL: Setup function for Monaco features
+ * - getDSLEditorOptions: Default editor configuration
+ * 
+ * Usage:
+ * ```tsx
+ * import { DSLEditor } from '@/core/editor';
+ * 
+ * <DSLEditor value={code} onChange={setCode} errors={errors} />
+ * ```
+ */
+
 import { Monaco } from '@monaco-editor/react';
 import { registerDSLCompletionProvider } from './completion/dsl-completion';
 import { registerDSLLanguage } from './language/dsl-language';
@@ -9,7 +32,11 @@ export { useMonacoDSL } from './hooks/use-monaco-dsl';
 
 /**
  * Initialize Monaco DSL language and features
- * This function should be called from beforeMount callback
+ * 
+ * This function should be called once when Monaco is loaded.
+ * It registers the DSL language, theme, and completion provider.
+ * 
+ * @param monaco - Monaco instance from @monaco-editor/react
  */
 export function initializeMonacoDSL(monaco: Monaco) {
   registerDSLLanguage(monaco);
@@ -18,7 +45,16 @@ export function initializeMonacoDSL(monaco: Monaco) {
 }
 
 /**
- * Configure Monaco editor options for DSL
+ * Get optimized Monaco editor options for DSL editing
+ * 
+ * Returns configuration object with:
+ * - Monospace font optimized for code
+ * - Disabled minimap for cleaner UI
+ * - Word wrap enabled for long lines
+ * - Enhanced suggestions (IntelliSense)
+ * - Auto-indentation and formatting
+ * 
+ * @returns Monaco editor options object
  */
 export function getDSLEditorOptions() {
   return {

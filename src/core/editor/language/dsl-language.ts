@@ -1,3 +1,15 @@
+/**
+ * Monaco Language Definition for proto-typed DSL
+ * 
+ * Registers the DSL language with Monaco Editor and defines:
+ * - Language configuration (brackets, auto-closing pairs, indentation)
+ * - Monarch tokenizer for syntax highlighting
+ * 
+ * Tokenization rules match actual DSL syntax from copilot-instructions.md
+ * 
+ * @see copilot-instructions.md for complete DSL syntax reference
+ */
+
 import { DSL_LANGUAGE_ID } from '../constants';
 import { Monaco } from '@monaco-editor/react';
 
@@ -11,55 +23,113 @@ export function registerDSLLanguage(monaco: Monaco) {
     extensions: ['.dsl', '.proto'],
     aliases: ['proto-typed DSL', 'dsl', 'proto-typed'],
   });
-  // Set a very basic monarch tokenizer to avoid any reference issues
+
+  /**
+   * Monarch Tokenizer
+   * Defines syntax highlighting rules based on actual DSL implementation
+   */
   monaco.languages.setMonarchTokensProvider(DSL_LANGUAGE_ID, {
     tokenizer: {
       root: [
-        [/^(screen|modal|drawer)\s/, 'keyword.screen'],
-        [/(component)\s/, 'keyword.component'],
+        // ========================================
+        // VIEWS (screen, modal, drawer)
+        // ========================================
+        [/^(screen|modal|drawer)\s+\w+:/, 'keyword.view'],
 
-        [/\b(container|grid|flex|card|row|col|section|list):\s*$/, 'tag'],
-        [/\b(header|navigator|fab):\s*$/, 'tag'],
-        [/\blist:\s*$/, 'tag'],
-        [/\bavatar\b/, 'tag'],
+        // ========================================
+        // COMPONENTS
+        // ========================================
+        [/^component\s+\w+:/, 'keyword.component'],
+        [/\$\w+/, 'variable.component'],       // $ComponentName
+        [/%\w+/, 'variable.prop'],             // %propName
 
-        [/(#{1,6})\s+/, 'typography.heading'],
-        [/>/, 'typography'],
-        [/\*>/, 'typography'],
-        [/\">/, 'typography.quote'],
+        // ========================================
+        // STYLES
+        // ========================================
+        [/^styles:/, 'keyword.styles'],
+        [/--[\w-]+/, 'variable.css'],          // --custom-property
 
-        [/@[\w+=-]|@(?=\[)/, 'type'],
-        [/#(?=\[)/, 'type'],
-        [/!(?=\[)/, 'variable'],
+        // ========================================
+        // LAYOUTS (row, col, grid, container with modifiers)
+        // Pattern: element-modifier1-modifier2:
+        // ========================================
+        [/\b(row|col|grid|container)(?:-[\w\d]+)*:/, 'keyword.layout'],
 
-        [/\$\w+/, 'variable.component'],
-        [/\(([^}]+)\)/, 'variable.name'],
-        [/(\S+):/, 'variable.name'],
+        // ========================================
+        // STRUCTURES
+        // ========================================
+        [/\b(card)(?:-[\w\d]+)*:/, 'keyword.structure'],
+        [/\b(header|navigator)(?:-[\w\d]+)*:/, 'keyword.structure'],
+        [/\blist(?:\s+\$\w+)?:/, 'keyword.structure'],  // list: or list $Component:
+        [/fab\{[\w-]+\}\([\w-]+\)/, 'keyword.structure'],  // fab{icon}(action)
+        [/^---+/, 'delimiter.separator'],      // --- separator
 
-        [/___[*-]?:/, 'number'],
+        // ========================================
+        // TYPOGRAPHY
+        // ========================================
+        [/^#{1,6}\s+/, 'markup.heading'],      // # to ######
+        [/^>\s/, 'markup.paragraph'],          // >
+        [/^>>\s/, 'markup.text'],              // >>
+        [/^>>>\s/, 'markup.muted'],            // >>>
+        [/^\*>\s/, 'markup.note'],             // *>
+        [/^">\s/, 'markup.quote'],             // ">
 
-        [/\[[X\s]\]/, 'constructor'],
-        [/\([X\s]\)/, 'constructor'],
+        // ========================================
+        // BUTTONS
+        // Pattern: (@{1,3})([_+\-=!]?)\[text\](?:\{icon\})?(?:\(action\))?
+        // ========================================
+        [/@{1,3}[_+\-=!]?(?=\[)/, 'keyword.button'],
 
-        [/^\s*-/, 'string'],
-        [/^\s*\d+\./, 'string'],
+        // ========================================
+        // LINKS & IMAGES
+        // ========================================
+        [/#(?=\[)/, 'keyword.link'],           // #[text](dest)
+        [/!(?=\[)/, 'keyword.image'],          // ![alt](url)
 
-        [/---+/, 'delimiter'],
-        [/--(?!-)/, 'delimiter'],
-        [/[\[\]()]/, 'delimiter.bracket'],
+        // ========================================
+        // FORMS
+        // ========================================
+        [/___[*-]?:/, 'keyword.input'],        // ___, ___*, ___-
+        [/\[[X\s]\]/, 'keyword.checkbox'],     // [X], [ ]
+        [/\([X\s]\)/, 'keyword.radio'],        // (X), ( )
 
-        [/[ \t\r\n]+/, 'white'],         // whitespace
+        // ========================================
+        // NAVIGATOR ITEMS
+        // Format: - text | destination or - text | icon | destination
+        // ========================================
+        [/^\s*-\s+i-\w+/, 'keyword.structure'], // - i-IconName (icon-first format)
+        [/^\s*-\s+/, 'string'],                 // Regular list items
+
+        // ========================================
+        // DELIMITERS & SYMBOLS
+        // ========================================
+        [/\|/, 'delimiter.pipe'],              // Pipe separator (navigator, props)
+        [/[\[\]]/, 'delimiter.bracket'],       // Square brackets
+        [/[()]/, 'delimiter.parenthesis'],     // Parentheses
+        [/[{}]/, 'delimiter.brace'],           // Curly braces
+        [/:/, 'delimiter.colon'],              // Colon
+
+        // ========================================
+        // WHITESPACE
+        // ========================================
+        [/[ \t\r\n]+/, 'white'],
       ],
     },
   });
 
-  // Configure language settings
+  /**
+   * Language Configuration
+   * Defines editor behavior for brackets, auto-closing, and indentation
+   */
   monaco.languages.setLanguageConfiguration(DSL_LANGUAGE_ID, {
+    // Bracket pairs for matching/highlighting
     brackets: [
       ['{', '}'],
       ['[', ']'],
       ['(', ')'],
     ],
+
+    // Auto-closing pairs (when typing opening char, insert closing char)
     autoClosingPairs: [
       { open: '{', close: '}' },
       { open: '[', close: ']' },
@@ -67,6 +137,8 @@ export function registerDSLLanguage(monaco: Monaco) {
       { open: '"', close: '"' },
       { open: "'", close: "'" },
     ],
+
+    // Surrounding pairs (when selecting text and typing opening char)
     surroundingPairs: [
       { open: '{', close: '}' },
       { open: '[', close: ']' },
@@ -74,9 +146,19 @@ export function registerDSLLanguage(monaco: Monaco) {
       { open: '"', close: '"' },
       { open: "'", close: "'" },
     ],
+
+    // Indentation rules
     indentationRules: {
+      // Increase indent after lines ending with ':'
       increaseIndentPattern: /.*:$/,
+      // Decrease indent on empty lines
       decreaseIndentPattern: /^\s*$/,
+    },
+
+    // Comments configuration (if needed in future)
+    comments: {
+      lineComment: '//',
+      blockComment: ['/*', '*/'],
     },
   });
 }

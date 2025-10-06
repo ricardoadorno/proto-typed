@@ -15,10 +15,10 @@ Features
 Consolidation
     - Agent Context Window
     - Editor
+    - Docs/Examples
     - Errors
     - Lint
     - Formatter
-    - Docs/Examples
 
 ===
 

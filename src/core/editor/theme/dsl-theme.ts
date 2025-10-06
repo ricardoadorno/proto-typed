@@ -1,47 +1,119 @@
+/**
+ * Monaco Editor Theme for proto-typed DSL
+ * 
+ * Defines dark theme optimized for DSL syntax highlighting.
+ * Token colors align with actual DSL implementation in dsl-language.ts
+ * 
+ * Design Philosophy:
+ * - Dark mode only (no light theme support)
+ * - High contrast for readability
+ * - Semantic color mapping (views = red, components = green, buttons = blue, etc.)
+ * 
+ * @see dsl-language.ts for token definitions
+ * @see constants.ts for token type mapping
+ */
+
 import { Monaco } from '@monaco-editor/react';
 
 /**
- * Define custom dark theme for the DSL
+ * Register custom dark theme for the DSL
+ * Colors chosen for optimal contrast and semantic meaning
  */
-export function registerDSLTheme(monaco: Monaco) {// Define only the dark theme
+export function registerDSLTheme(monaco: Monaco) {
   monaco.editor.defineTheme('proto-typed-dark', {
     base: 'vs-dark',
     inherit: true,
     rules: [
-      // DSL specific tokens using standard Monaco token types
-      { token: 'keyword.screen', foreground: 'ff6b6b', fontStyle: 'bold' },        // screen and layout
-      { token: 'keyword.component', foreground: '4ade80', fontStyle: 'bold' },     // component
-      { token: 'keyword.named-ui-element', foreground: '4ade80', fontStyle: 'bold' },   // named UI elements
-      { token: 'type', foreground: '60a5fa', fontStyle: 'bold' },           // buttons
-      { token: 'string' },                            // links and text
-      { token: 'variable', foreground: 'f472b6' },                          // images
-      { token: 'variable.name', foreground: 'f59e0b', fontStyle: 'italic' }, // variables like $LoginForm
-      { token: 'variable.component', foreground: 'f59e0b', fontStyle: 'bold' }, // variables like $LoginForm
-      { token: 'number', foreground: 'a855f7' },                            // inputs
-      { token: 'tag', foreground: 'ec4899', fontStyle: 'bold' },            // mobile elements
-      { token: 'attribute', foreground: '8b5cf6' },                         // attributes
-      { token: 'metatag', foreground: '95e1d3', fontStyle: 'bold' },        // headings
-      { token: 'comment', foreground: 'fbbf24', fontStyle: 'italic' },      // notes
-      { token: 'typography', foreground: '34d399' }, 
-      { token: 'typography.quote', foreground: '34d399', fontStyle: 'italic' },
-      { token: 'typography.heading', foreground: '34d399', fontStyle: 'bold' },
-      { token: 'constructor', foreground: 'a855f7', fontStyle: 'bold' },    // checkboxes/radio - enhanced visibility
-      { token: 'delimiter', foreground: 'ffe66d' },                         // separators and colons
-      { token: 'delimiter.bracket', foreground: 'ffe66d' },                 // brackets
-      { token: 'delimiter.curly', foreground: 'ffe66d' },                   // braces
-      { token: 'string.uri', foreground: '06b6d4', fontStyle: 'underline' }, // URLs
-      { token: 'identifier', foreground: '4ecdc4' },                        // identifiers
+      // ========================================
+      // VIEWS (screen, modal, drawer)
+      // ========================================
+      { token: 'keyword.view', foreground: 'ff6b6b', fontStyle: 'bold' },
+
+      // ========================================
+      // COMPONENTS
+      // ========================================
+      { token: 'keyword.component', foreground: '4ade80', fontStyle: 'bold' },
+      { token: 'variable.component', foreground: 'f59e0b', fontStyle: 'bold' },  // $ComponentName
+      { token: 'variable.prop', foreground: 'f59e0b', fontStyle: 'italic' },     // %propName
+
+      // ========================================
+      // STYLES
+      // ========================================
+      { token: 'keyword.styles', foreground: 'a78bfa', fontStyle: 'bold' },
+      { token: 'variable.css', foreground: '8b5cf6' },  // CSS custom properties
+
+      // ========================================
+      // LAYOUTS (row, col, grid, container)
+      // ========================================
+      { token: 'keyword.layout', foreground: 'ec4899', fontStyle: 'bold' },
+
+      // ========================================
+      // STRUCTURES (list, card, header, navigator, fab)
+      // ========================================
+      { token: 'keyword.structure', foreground: 'ec4899', fontStyle: 'bold' },
+
+      // ========================================
+      // TYPOGRAPHY
+      // ========================================
+      { token: 'markup.heading', foreground: '34d399', fontStyle: 'bold' },      // # to ######
+      { token: 'markup.paragraph', foreground: '34d399' },                       // >
+      { token: 'markup.text', foreground: '34d399' },                            // >>
+      { token: 'markup.muted', foreground: '6ee7b7' },                           // >>>
+      { token: 'markup.note', foreground: 'fbbf24', fontStyle: 'italic' },       // *>
+      { token: 'markup.quote', foreground: '34d399', fontStyle: 'italic' },      // ">
+
+      // ========================================
+      // BUTTONS
+      // ========================================
+      { token: 'keyword.button', foreground: '60a5fa', fontStyle: 'bold' },
+
+      // ========================================
+      // LINKS & IMAGES
+      // ========================================
+      { token: 'keyword.link', foreground: '60a5fa', fontStyle: 'bold' },        // #[text](dest)
+      { token: 'keyword.image', foreground: 'f472b6' },                          // ![alt](url)
+
+      // ========================================
+      // FORMS
+      // ========================================
+      { token: 'keyword.input', foreground: 'a855f7' },                          // ___, ___*, ___-
+      { token: 'keyword.checkbox', foreground: 'a855f7', fontStyle: 'bold' },    // [X], [ ]
+      { token: 'keyword.radio', foreground: 'a855f7', fontStyle: 'bold' },       // (X), ( )
+
+      // ========================================
+      // DELIMITERS & SYMBOLS
+      // ========================================
+      { token: 'delimiter.separator', foreground: 'ffe66d' },                    // ---
+      { token: 'delimiter.pipe', foreground: 'ffe66d' },                         // |
+      { token: 'delimiter.bracket', foreground: 'ffe66d' },                      // [ ]
+      { token: 'delimiter.parenthesis', foreground: 'ffe66d' },                  // ( )
+      { token: 'delimiter.brace', foreground: 'ffe66d' },                        // { }
+      { token: 'delimiter.colon', foreground: 'ffe66d' },                        // :
+
+      // ========================================
+      // GENERAL TOKENS
+      // ========================================
+      { token: 'string', foreground: 'e2e8f0' },                                 // General strings/text
+      { token: 'identifier', foreground: '4ecdc4' },                             // Identifiers
     ],
+
+    // ========================================
+    // EDITOR COLORS (UI elements)
+    // ========================================
     colors: {
-      'editor.background': '#0f172a',
-      'editor.foreground': '#e2e8f0',
-      'editorLineNumber.foreground': '#475569',
-      'editorLineNumber.activeForeground': '#94a3b8',
-      'editor.selectionBackground': '#334155',
-      'editor.inactiveSelectionBackground': '#1e293b',
-      'editorCursor.foreground': '#60a5fa',
-      'editor.findMatchBackground': '#fbbf24',
-      'editor.findMatchHighlightBackground': '#f59e0b',
+      'editor.background': '#0f172a',                    // Dark slate background
+      'editor.foreground': '#e2e8f0',                    // Light text
+      'editorLineNumber.foreground': '#475569',          // Muted line numbers
+      'editorLineNumber.activeForeground': '#94a3b8',    // Active line number
+      'editor.selectionBackground': '#334155',           // Selection highlight
+      'editor.inactiveSelectionBackground': '#1e293b',   // Inactive selection
+      'editorCursor.foreground': '#60a5fa',              // Blue cursor
+      'editor.findMatchBackground': '#fbbf2480',         // Find match (yellow, transparent)
+      'editor.findMatchHighlightBackground': '#f59e0b40',// Find highlight (orange, transparent)
+      'editorBracketMatch.background': '#334155',        // Bracket match background
+      'editorBracketMatch.border': '#60a5fa',            // Bracket match border
+      'editorIndentGuide.background': '#1e293b',         // Indent guides
+      'editorIndentGuide.activeBackground': '#334155',   // Active indent guide
     },
   });
 }

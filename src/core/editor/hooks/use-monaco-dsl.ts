@@ -1,3 +1,21 @@
+/**
+ * React Hook: Monaco DSL Initialization
+ * 
+ * Manages Monaco Editor initialization for the proto-typed DSL.
+ * Handles language registration, theme setup, and completion provider.
+ * 
+ * Usage:
+ * ```tsx
+ * const { monaco, isInitialized, error } = useMonacoDSL();
+ * 
+ * if (error) return <ErrorDisplay error={error} />;
+ * if (!isInitialized) return <LoadingSpinner />;
+ * // Monaco is ready to use
+ * ```
+ * 
+ * @returns {object} Monaco instance, initialization state, and error state
+ */
+
 import { useEffect, useState } from 'react';
 import { useMonaco } from '@monaco-editor/react';
 import { initializeMonacoDSL } from '../index';
