@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="HCk2bEk_7Lk_C3lk0JEq" name="Proto-Typed Architecture">
-        <mxGraphModel dx="1590" dy="1293" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1200" math="0" shadow="0">
+        <mxGraphModel dx="2065" dy="995" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1200" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -42,6 +42,9 @@
                 </mxCell>
                 <mxCell id="ast-builder" value="AST Builder&#xa;(CST → AST)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
                     <mxGeometry x="310" y="390" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="ast" target="2">
+                    <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="ast" value="Abstract Syntax Tree&#xa;(AST)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1" parent="1" vertex="1">
                     <mxGeometry x="310" y="470" width="200" height="60" as="geometry"/>
@@ -185,7 +188,7 @@
                 <mxCell id="legend2" value="Processing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10" parent="1" vertex="1">
                     <mxGeometry x="150" y="780" width="90" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="legend3" value="Infrastructure" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10" parent="1" vertex="1">
+                <mxCell id="legend3" value="Infrastructure" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#dae8fc, #392f3f);strokeColor=#9673a6;fontSize=10" parent="1" vertex="1">
                     <mxGeometry x="50" y="820" width="90" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="legend4" value="Core Logic" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10" parent="1" vertex="1">
@@ -196,6 +199,9 @@
                 </mxCell>
                 <mxCell id="legend6" value="Error" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10" parent="1" vertex="1">
                     <mxGeometry x="150" y="860" width="90" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="AI AGENTE LAYER" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#dae8fc, #392f3f);strokeColor=light-dark(#6C8EBF,#9577A3);fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="310" y="650" width="200" height="40" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
