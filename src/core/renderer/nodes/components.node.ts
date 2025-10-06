@@ -22,7 +22,7 @@ export function findComponentDefinitions(): AstNode[] {
  */
 export function substitutePropsRecursive(obj: any, props: string[], namedMap?: Record<string, string>): any {
   if (typeof obj === 'string') {
-    return substitutePropsInString(obj, props, namedMap);
+    return substitutePropsInString(obj, namedMap);
   }
 
   if (Array.isArray(obj)) {
@@ -45,7 +45,7 @@ export function substitutePropsRecursive(obj: any, props: string[], namedMap?: R
 /**
  * Substitute props in a string
  */
-export function substitutePropsInString(text: string, props: string[], namedMap?: Record<string, string>): string {
+export function substitutePropsInString(text: string, namedMap?: Record<string, string>): string {
   let result = text;
 
   // 2. Named: %name, %email etc.
