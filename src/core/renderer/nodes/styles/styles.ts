@@ -13,6 +13,11 @@ export const elementStyles = {
   buttonDestructive: 'inline-flex items-center justify-center px-4 py-2 focus:outline-none focus:ring-2 transition-colors duration-200',
   buttonWarning: 'inline-flex items-center justify-center px-4 py-2 focus:outline-none focus:ring-2 transition-colors duration-200',
   
+  // Button sizes - fixed width and height for consistent appearance
+  buttonLarge: 'w-32 h-12 text-base',   // 128x48px
+  buttonMedium: 'w-24 h-10 text-sm',    // 96x40px
+  buttonSmall: 'w-8 h-8 text-xs',       // 32x32px (quadrado para ícones)
+  
   // Form elements - using base classes only
   input: 'w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors',
   label: 'block text-sm font-medium mb-2',
@@ -29,16 +34,6 @@ export const elementStyles = {
     5: 'text-lg font-bold mb-2',
     6: 'text-base font-bold mb-2'
   },
-  
-  // Header-specific headings (smaller, no margins/padding)
-  headerHeading: {
-    1: 'text-lg font-bold',
-    2: 'text-lg font-bold',
-    3: 'text-base font-bold',
-    4: 'text-base font-bold',
-    5: 'text-sm font-bold',
-    6: 'text-sm font-bold'
-  },
 
   paragraph: {
     default: 'mb-4 leading-relaxed',
@@ -51,15 +46,14 @@ export const elementStyles = {
   
   link: 'underline transition-colors duration-200',
 
-  // Layout components - using base classes only
-  container: 'container mx-auto px-4',
-  grid: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6',
-  card: 'shadow-lg p-6 mb-6',
-  row: 'flex flex-wrap gap-4 mb-4',
-  col: 'grid grid-cols-1 @md:grid-cols-2 @lg:grid-cols-3 gap-6',
+  // Layout components - responsive by default using only existing tokens
+  container: 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8', // Responsive container with proper constraints
+  grid: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6', // Auto-responsive grid
+  card: 'bg-card border border-border rounded-lg shadow-sm p-4 sm:p-6 transition-shadow hover:shadow-md', // Responsive card with proper theming  
+  row: 'flex flex-wrap gap-4 sm:gap-6', // Responsive row with flexible wrapping
+  col: 'flex flex-col gap-4', // Column layout with consistent spacing
   
   // Lists - using base classes only
-  orderedList: 'list-decimal list-inside space-y-2 mb-4',
   unorderedList: 'list-disc list-inside space-y-2 mb-4',
   listItem: 'mb-2',
   
@@ -94,25 +88,51 @@ export const elementStyles = {
 } as const;
 
 /**
- * Get button classes based on context and variant
+ * Get button classes based on context, variant and size
  */
-export function getButtonClasses(variant?: string): string {
-  
-  // Return appropriate button variant class
+export function getButtonClasses(variant?: string, size?: string): string {
+  // Get base button variant class
+  let variantClass = '';
   switch (variant) {
     case 'ghost':
-      return elementStyles.buttonGhost;
+      variantClass = elementStyles.buttonGhost;
+      break;
     case 'outline':
-      return elementStyles.buttonOutline;
+      variantClass = elementStyles.buttonOutline;
+      break;
     case 'secondary':
-      return elementStyles.buttonSecondary;
+      variantClass = elementStyles.buttonSecondary;
+      break;
     case 'destructive':
-      return elementStyles.buttonDestructive;
+      variantClass = elementStyles.buttonDestructive;
+      break;
     case 'warning':
-      return elementStyles.buttonWarning;
+      variantClass = elementStyles.buttonWarning;
+      break;
     default:
-      return elementStyles.button;
+      variantClass = elementStyles.button;
+      break;
   }
+
+  // Get size class
+  let sizeClass = '';
+  switch (size) {
+    case 'small':
+      sizeClass = elementStyles.buttonSmall;
+      break;
+    case 'medium':
+      sizeClass = elementStyles.buttonMedium;
+      break;
+    case 'large':
+    default:
+      sizeClass = elementStyles.buttonLarge;
+      break;
+  }
+
+  // Remove default padding from variant class and add size-specific styling
+  const baseClass = variantClass.replace(/px-\d+|py-\d+|text-\w+/g, '').trim();
+  
+  return `${baseClass} ${sizeClass}`;
 }
 
 /**
@@ -206,8 +226,54 @@ export function getLinkInlineStyles(): string {
 /**
  * Generate inline styles for layout elements using CSS variables
  */
+export function getContainerInlineStyles(): string {
+  return 'background-color: var(--background);';
+}
+
+export function getGridInlineStyles(): string {
+  return 'background-color: var(--background);';
+}
+
+export function getRowInlineStyles(): string {
+  return 'background-color: var(--background);';
+}
+
+export function getColInlineStyles(): string {
+  return 'background-color: var(--background);';
+}
+
+/**
+ * Enhanced card inline styles - responsive by default
+ */
 export function getCardInlineStyles(): string {
-  return 'background-color: var(--card); border-radius: var(--radius); border: 1px solid var(--border);';
+  return 'background-color: var(--card); border-radius: var(--radius); border-color: var(--border);';
+}
+
+/**
+ * Generate layout modifier styles using CSS variables
+ */
+export function getLayoutModifierInlineStyles(modifiers: any): string {
+  const styles: string[] = [];
+  
+  // Custom spacing using CSS variables
+  if (modifiers.padding) {
+    styles.push(`padding: ${modifiers.padding};`);
+  }
+  if (modifiers.margin) {
+    styles.push(`margin: ${modifiers.margin};`);
+  }
+  
+  // Custom colors using CSS variables
+  if (modifiers.background) {
+    styles.push(`background-color: var(--${modifiers.background});`);
+  }
+  
+  // Border radius using CSS variables
+  if (modifiers.rounded !== false) {
+    styles.push('border-radius: var(--radius);');
+  }
+  
+  return styles.join(' ');
 }
 
 /**

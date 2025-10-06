@@ -18,6 +18,7 @@ import { navigatorTest } from './navigator-test';
 
 // Example configuration for UI
 export const exampleConfigs = [
+  { label: "Contacts App", code: contactsAppExample },
   { label: "Login Example", code: login },
   { label: "Custom Styles Demo", code: customStylesDemo },
   { label: "Test Structural Tokens", code: testStructuralTokens },
@@ -32,7 +33,6 @@ export const exampleConfigs = [
   { label: "Layout Modifiers Demo", code: layoutModifiersExample },
   { label: "Component Props Demo", code: componentPropsDemo },
   { label: "Back Navigation Test", code: backNavigationExample },
-  { label: "Contacts App", code: contactsAppExample },
   { label: "FAB Test", code: fabTestExample },
 ] ;
 

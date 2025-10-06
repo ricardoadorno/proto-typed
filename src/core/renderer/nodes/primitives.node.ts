@@ -8,11 +8,11 @@ import { NavigationMediator } from '../infrastructure/navigation-mediator';
  */
 export function renderButton(node: AstNode): string {
   const buttonProps = node.props as any;
-  const { text, action, variant, icon } = buttonProps || {};
+  const { text, action, variant, icon, size } = buttonProps || {};
   const buttonText = text || '';
   
   const buttonNavAttrs = NavigationMediator.generateNavigationAttributes(action);
-  const buttonClasses = `${getButtonClasses(variant)}`;
+  const buttonClasses = `${getButtonClasses(variant, size)}`;
   const buttonInlineStyles = getButtonInlineStyles(variant || 'primary');
   
   // If there's an icon, show icon + text or just icon
@@ -115,6 +115,7 @@ export function renderMutedText(node: AstNode): string {
     : 'muted';
   
   const mutedClasses = elementStyles.paragraph[effectiveVariant];
+  const inlineStyles = getParagraphInlineStyles(effectiveVariant);
   
-  return `<span class="${mutedClasses}">${props?.content || ''}</span>`;
+  return `<span class="${mutedClasses}" style="${inlineStyles}">${props?.content || ''}</span>`;
 }

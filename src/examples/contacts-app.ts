@@ -1,12 +1,12 @@
 const contactsAppExample = `component ContactItem:
-  card:
-    row-wfull-between:
-      col:
-        > Maria
+  card-between:
+    row-between:
+      col-gap0:
+        >> Maria
         >>> maria@email.com
-      row:
-        @[lorem]
-        @[ipsom]
+      row-center-center:
+        @@@[i-Edit]
+        @@@[i-Trash]
 
 
 screen ContactsList:

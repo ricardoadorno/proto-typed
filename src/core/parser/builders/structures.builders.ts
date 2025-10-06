@@ -3,7 +3,7 @@
  * Handles lists, cards, separators, headers, navigators, and FAB elements
  */
 
-import { parseNavigatorItem, parseListItem } from './core.builders';
+import { parseNavigatorItem, parseListItem, parseLayoutModifiers } from './core.builders';
 
 type Context = {
   [key: string]: any;
@@ -88,6 +88,10 @@ export function buildListElement(ctx: Context) {
  */
 export function buildCardElement(ctx: Context, visitor: any) {
   const elements = [];
+  
+  // Extract modifiers from the Card token
+  const cardToken = ctx.Card[0];
+  const modifiers = parseLayoutModifiers(cardToken.image);
 
   if (ctx.element && ctx.element.length > 0) {
     for (const el of ctx.element) {
@@ -101,7 +105,7 @@ export function buildCardElement(ctx: Context, visitor: any) {
   return {
     type: "Card",
     id: "", // ID will be generated later
-    props: {},
+    props: modifiers,
     children: elements
   };
 }
@@ -142,6 +146,10 @@ export function buildUnorderedListElement(ctx: Context) {
  */
 export function buildHeaderElement(ctx: Context, visitor: any) {
   const elements = [];
+  
+  // Extract modifiers from the Header token
+  const headerToken = ctx.Header[0];
+  const modifiers = parseLayoutModifiers(headerToken.image);
 
   if (ctx.element && ctx.element.length > 0) {
     for (const el of ctx.element) {
@@ -155,7 +163,7 @@ export function buildHeaderElement(ctx: Context, visitor: any) {
   return {
     type: "Header",
     id: "", // ID will be generated later
-    props: {},
+    props: modifiers,
     children: elements
   };
 }

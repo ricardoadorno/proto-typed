@@ -3,6 +3,7 @@ import { elementStyles, getCardInlineStyles, getListInlineStyles, getUnorderedLi
 import { findComponentDefinitions, substitutePropsInElement } from './components.node';
 import { NavigationMediator } from '../infrastructure/navigation-mediator';
 import { isLucideIcon, getLucideSvg } from '../../../utils/icon-utils';
+import { buildModifierClasses } from './layouts.node';
 
 /**
  * Render list element
@@ -72,20 +73,22 @@ export function renderListItem(node: AstNode): string {
  * Render card element
  */
 export function renderCard(node: AstNode, nodeRenderer?: (node: AstNode, context?: string) => string): string {
+  const modifierClasses = buildModifierClasses(node.props);
   const cardElements = node.children && nodeRenderer ? 
     node.children.map(child => nodeRenderer(child, 'card')).join('\n') : '';
   
-  return `<div class="${elementStyles.card}" style="${getCardInlineStyles()}">${cardElements}</div>`;
+  return `<div class="${elementStyles.card} ${modifierClasses}" style="${getCardInlineStyles()}">${cardElements}</div>`;
 }
 
 /**
  * Render header element
  */
 export function renderHeader(node: AstNode, nodeRenderer: (node: AstNode, context?: string) => string): string {
+  const modifierClasses = buildModifierClasses(node.props);
   const headerElements = node.children ? 
     node.children.map(child => nodeRenderer(child, 'header')).join('\n') : '';
   
-  return `<header class="${elementStyles.header}">${headerElements}</header>`;
+  return `<header class="${elementStyles.header} ${modifierClasses}">${headerElements}</header>`;
 }
 
 /**

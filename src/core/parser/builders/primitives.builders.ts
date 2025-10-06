@@ -88,17 +88,26 @@ export function buildTextElement(ctx: Context) {
  */
 export function buildButtonElement(ctx: Context) {
   const buttonText = ctx.Button[0].image;
-  let text = '', icon = '', action = '', variant = 'default';
+  let text = '', icon = '', action = '', variant = 'default', size = 'large';
 
-  // Updated pattern to match @[variant][text]{icon}(action) - captures variant symbol
-  const markdownMatch = buttonText.match(/@([_+\-=!]?)\[([^\]]+)\](?:\{([^}]+)\})?(?:\(([^)]+)\))?/);
+  // Updated pattern to match @{1,3}[variant][text]{icon}(action) - captures size, variant symbol
+  const markdownMatch = buttonText.match(/(@{1,3})([_+\-=!]?)\[([^\]]+)\](?:\{([^}]+)\})?(?:\(([^)]+)\))?/);
   const dslMatch = buttonText.match(/button\s+\["([^"]*)"\]\s+([^\n\r]+)/);
 
   if (markdownMatch) {
-    const variantSymbol = markdownMatch[1];
-    text = markdownMatch[2];
-    icon = markdownMatch[3] || ''; // Icon is optional
-    action = markdownMatch[4] || ''; // Action is optional
+    const sizeSymbols = markdownMatch[1];
+    const variantSymbol = markdownMatch[2];
+    text = markdownMatch[3];
+    icon = markdownMatch[4] || ''; // Icon is optional
+    action = markdownMatch[5] || ''; // Action is optional
+    
+    // Map number of @ symbols to size
+    switch (sizeSymbols.length) {
+      case 1: size = 'large'; break;    // @ = large (default)
+      case 2: size = 'medium'; break;   // @@ = medium
+      case 3: size = 'small'; break;    // @@@ = small
+      default: size = 'large'; break;
+    }
     
     // Map variant symbols to variant names
     switch (variantSymbol) {
@@ -121,7 +130,8 @@ export function buildButtonElement(ctx: Context) {
       action,
       text,
       icon,
-      variant
+      variant,
+      size
     },
     children: []
   };

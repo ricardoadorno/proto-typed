@@ -30,15 +30,26 @@ export function parseLayoutModifiers(tokenImage: string) {
       modifiers.height = modifier.substring(1);
     }
     
-    // Justify content modifiers
-    else if (['start', 'end', 'center', 'between', 'around', 'evenly'].includes(modifier)) {
+    // Handle start, end, center with smart assignment (first occurrence goes to justify, second to align)
+    else if (['start', 'end', 'center'].includes(modifier)) {
+      if (!justifySet) {
+        modifiers.justifyContent = modifier;
+        justifySet = true;
+      } else if (!alignSet) {
+        modifiers.alignItems = modifier;
+        alignSet = true;
+      }
+    }
+    
+    // Other justify content modifiers (between, around, evenly)
+    else if (['between', 'around', 'evenly'].includes(modifier)) {
       if (!justifySet) {
         modifiers.justifyContent = modifier;
         justifySet = true;
       }
     }
     
-    // Align items modifiers
+    // Align items modifiers (stretch, baseline)
     else if (['stretch', 'baseline'].includes(modifier)) {
       if (!alignSet) {
         modifiers.alignItems = modifier;

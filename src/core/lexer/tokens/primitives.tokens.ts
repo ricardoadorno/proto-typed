@@ -3,7 +3,7 @@ import { createToken } from "chevrotain";
 // Primitive Element Tokens - Basic UI elements
 export const Button = createToken({ 
   name: "Button", 
-  pattern: /@([_+\-=!]?)\[([^\]]+)\](?:\{([^}]+)\})?(?:\(([^)]+)\))?/ 
+  pattern: /(@{1,3})([_+\-=!]?)\[([^\]]+)\](?:\{([^}]+)\})?(?:\(([^)]+)\))?/ 
 });
 
 export const Link = createToken({
