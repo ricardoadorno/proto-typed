@@ -1,13 +1,13 @@
 const contactsAppExample = `component ContactItem:
   card:
-    row:
+    row-wfull-between:
       col:
-        ![Avatar](https://via.placeholder.com/50)
-      col:
-        # %name
-        > %phone • %email
-        @+[Edit](EditContact)
-        @=[Trash](ConfirmDelete)
+        > Maria
+        >>> maria@email.com
+      row:
+        @[lorem]
+        @[ipsom]
+
 
 screen ContactsList:
   header:
@@ -23,7 +23,7 @@ screen ContactsList:
       - Pedro Oliveira | (11) 77777-7777 | pedro@email.com
       - Ana Costa | (11) 66666-6666 | ana@email.com
 
-  fab{Plus}(CreateContact)
+  fab{+}(CreateContact)
 
 
 modal CreateContact:
