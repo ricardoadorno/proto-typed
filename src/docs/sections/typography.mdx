@@ -1,34 +1,88 @@
-# Typography
+# Tipografia
 
 import { DslExample } from "../../components/docs";
 
-Use semantic tokens for headings, body, notes, and quotes.
+Elementos semânticos para estruturar texto.
 
-## Headings
-<DslExample title="Headings" heightClassName="h-56">
+---
+
+## Títulos
+
+**Sintaxe:** `#` até `######` (H1 a H6)
+
+<DslExample title="Títulos" heightClassName="h-56">
 
 ```dsl
-# Heading 1
-## Heading 2
-### Heading 3
-#### Heading 4
-##### Heading 5
-###### Heading 6
+# Título 1
+## Título 2
+### Título 3
+#### Título 4
+##### Título 5
+###### Título 6
 ```
 
 </DslExample>
 
-## Text Variants
-<DslExample title="Text variants" heightClassName="h-40">
+---
+
+## Textos
+
+| Sintaxe | Elemento | Uso |
+|---------|----------|-----|
+| `>` | Parágrafo | Texto principal |
+| `>>` | Texto | Texto secundário |
+| `>>>` | Texto sutil | Metadados, timestamps |
+
+<DslExample title="Variações de Texto" heightClassName="h-40">
 
 ```dsl
->> Regular body text for paragraphs
-*> Note text for hints or callouts
-"> Quote text for citations
+> Parágrafo principal para conteúdo importante
+>> Texto secundário para informações complementares
+>>> Texto sutil para metadados ou detalhes discretos
 ```
 
 </DslExample>
 
-Guidelines:
-- Keep headings short and scannable.
-- Combine with `card` and layout primitives for rhythm.
+---
+
+## Elementos Especiais
+
+| Sintaxe | Elemento | Uso |
+|---------|----------|-----|
+| `*>` | Nota | Destaques, avisos, dicas |
+| `">` | Citação | Citações, depoimentos |
+
+<DslExample title="Notas e Citações" heightClassName="h-40">
+
+```dsl
+*> Nota importante: Esta informação merece destaque visual
+
+"> A simplicidade é a máxima sofisticação. — Leonardo da Vinci
+```
+
+</DslExample>
+
+---
+
+## Casos de Uso
+
+<DslExample title="Artigo Completo" heightClassName="h-64">
+
+```dsl
+screen Article:
+  container-p8:
+    # Como Usar Proto-Typed
+    >>> Publicado em: 06/10/2025 | Autor: Ricardo
+    
+    ## Introdução
+    > Proto-Typed é uma ferramenta de prototipagem rápida usando DSL.
+    
+    *> Dica: Use a documentação interativa para aprender rapidamente
+    
+    ## Recursos
+    > Crie interfaces complexas com sintaxe simples e intuitiva.
+    
+    "> O melhor protótipo é aquele que você consegue iterar rapidamente.
+```
+
+</DslExample>

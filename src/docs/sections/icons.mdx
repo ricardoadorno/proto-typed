@@ -1,56 +1,143 @@
-# Iconography
+# Ícones
 
 import { DslExample } from "../../components/docs";
 
-Icons are used by writing a Lucide icon name as the element's text in places that support icons. When the text matches a Lucide icon name exactly (case‑sensitive), it is substituted with the corresponding SVG.
+Sistema de ícones usando **Lucide Icons** (https://lucide.dev).
 
-## Where It Works
-- Button: icon‑only buttons when the button text is a Lucide name, e.g., `@[Trash]`
-- Advanced list buttons: action buttons inside list items, e.g., `@=[Trash](delete)`
-- Mobile navigation: provide the icon inside braces `{IconName}` for navigator and drawer items
-- FAB: provide the icon inside braces `{IconName}` after `fab`
+---
 
-If the text does not match a Lucide icon, it renders as plain text/emoji.
+## Como Funciona
 
-## DSL Examples
-<DslExample title="Buttons: icon-only via Lucide names">
+Ícones são adicionados usando `{nome-icone}` em elementos que suportam ícones.
+
+**Biblioteca:** [Lucide Icons](https://lucide.dev) - mais de 1000 ícones disponíveis
+
+---
+
+## Onde Usar
+
+| Elemento | Sintaxe | Exemplo |
+|----------|---------|---------|
+| Botões | `{icone}` após texto | `@[Salvar]{save}(action)` |
+| Navigator | `i-NomeIcone` antes do texto | `- i-Home Início \| Home` |
+| FAB | `{icone}` após `fab` | `fab{plus}(NewItem)` |
+
+---
+
+## Botões com Ícones
+
+<DslExample title="Botões + Ícones" heightClassName="h-48">
 
 ```dsl
-@[Home]
-@+[User]
-@=[Trash]
-@![AlertCircle]
+screen IconButtons:
+  container-p8:
+    row-gap4:
+      @[Salvar]{save}(save)
+      @[Editar]{edit}(edit)
+      @[Compartilhar]{share}(share)
+      @[Deletar]{trash-2}(delete)
+    
+    row-gap4:
+      @@+[Download]{download}(download)
+      @@@_[Configurações]{settings}(settings)
 ```
 
 </DslExample>
 
-<DslExample title="Lists: action buttons with icons">
+---
+
+## Navigator com Ícones
+
+<DslExample title="Navegação com Ícones" heightClassName="h-56">
 
 ```dsl
-list:
-  - Task due today@=[Trash](delete)@_[Edit](edit)
-  - Another item@[Check](complete)
+screen Home:
+  container-p8:
+    # Início
+    > Conteúdo da tela
+  
+  navigator:
+    - i-Home Início | Home
+    - i-Search Buscar | Search
+    - i-User Perfil | Profile
+    - i-Settings Config | Settings
 ```
 
 </DslExample>
 
-<DslExample title="Mobile: navigator, drawer, and FAB icons">
+---
+
+## FAB com Ícone
+
+<DslExample title="Floating Action Button" heightClassName="h-48">
 
 ```dsl
-navigator:
-  - [Home]{Home}(Main)
-  - [Search]{Search}(Search)
-
-fab {Plus} NewItem
-
-drawer Menu:
-  - [Settings]{Settings}(Settings)
-  - [Info]{Info}(About)
+screen Messages:
+  container-p8:
+    # Mensagens
+    
+    list:
+      - Conversa com João
+      - Conversa com Maria
+  
+  fab{plus}(NewMessage)
 ```
 
 </DslExample>
 
-## Notes
-- Case‑sensitive: use the exact Lucide name (e.g., `Home`, `Trash`, `AlertCircle`).
-- Fallback: unknown names render as text so you can use emojis or labels too.
-- Styling: icons inherit color (`currentColor`). Default size is compact for UI controls.
+---
+
+## Ícones Populares
+
+| Nome | Ícone | Uso Comum |
+|------|-------|-----------|
+| `home` | 🏠 | Tela inicial |
+| `search` | 🔍 | Busca |
+| `user` | 👤 | Perfil |
+| `settings` | ⚙️ | Configurações |
+| `plus` | ➕ | Adicionar |
+| `trash-2` | 🗑️ | Deletar |
+| `edit` | ✏️ | Editar |
+| `save` | 💾 | Salvar |
+| `share` | 📤 | Compartilhar |
+| `download` | ⬇️ | Download |
+| `mail` | 📧 | Email |
+| `bell` | 🔔 | Notificações |
+| `check` | ✓ | Confirmar |
+| `x` | ✕ | Fechar |
+
+**Importante:** Nomes são **case-sensitive** - use exatamente como no Lucide.
+
+---
+
+## Casos de Uso
+
+### Toolbar
+
+<DslExample title="Toolbar com Ações" heightClassName="h-40">
+
+```dsl
+screen Editor:
+  header-between-p4:
+    # Editor
+    row-gap2:
+      @@@_[Salvar]{save}(save)
+      @@@_[Desfazer]{undo}(undo)
+      @@@_[Refazer]{redo}(redo)
+```
+
+</DslExample>
+
+### Lista com Ações
+
+<DslExample title="Lista com Botões de Ação" heightClassName="h-48">
+
+```dsl
+screen Tasks:
+  container-p8:
+    list:
+      - Fazer compras @[Concluir]{check}(complete) @@@_[Editar]{edit}(edit)
+      - Estudar DSL @[Concluir]{check}(complete) @@@=[Deletar]{trash}(delete)
+```
+
+</DslExample>

@@ -1,0 +1,169 @@
+# Primitivos
+
+import { DslExample } from "../../components/docs";
+
+Elementos básicos de texto e mídia.
+
+---
+
+## Títulos
+
+**Sintaxe:** `#` até `######` (H1 a H6)
+
+<DslExample title="Títulos" description="6 níveis de hierarquia">
+
+```dsl
+screen TypographyDemo:
+  container-p8:
+    # Título Nível 1
+    ## Título Nível 2
+    ### Título Nível 3
+    #### Título Nível 4
+    ##### Título Nível 5
+    ###### Título Nível 6
+```
+
+</DslExample>
+
+**Quando usar:**
+- `#` para títulos principais de telas (H1)
+- `##` para seções importantes (H2)
+- `###` a `######` para subsecções e categorias
+
+---
+
+## Textos
+
+| Sintaxe | Uso |
+|---------|-----|
+| `>` | Parágrafo principal |
+| `>>` | Texto secundário |
+| `>>>` | Texto sutil (metadados, timestamps) |
+
+<DslExample title="Textos" description="3 níveis de hierarquia">
+
+```dsl
+screen TextLevels:
+  container-p8:
+    # Bem-vindo ao Proto-Typed
+    > Este é um parágrafo principal com conteúdo importante que merece destaque visual.
+    >> Este é um texto secundário, usado para informações complementares.
+    >>> Este é um texto sutil para metadados, timestamps ou notas discretas.
+```
+
+</DslExample>
+
+---
+
+## Notas e Citações
+
+| Sintaxe | Uso |
+|---------|-----|
+| `*>` | Notas, avisos, destaques |
+| `">` | Citações, depoimentos |
+
+<DslExample title="Notas e Citações" description="Destaques especiais">
+
+```dsl
+screen NotesAndQuotes:
+  container-p8:
+    ## Avisos e Citações
+    
+    *> Atenção: Esta é uma nota importante que precisa de destaque visual especial.
+    
+    "> A simplicidade é a máxima sofisticação. — Leonardo da Vinci
+    
+    > Notas são ideais para avisos, tips, ou chamadas de atenção do usuário.
+```
+
+</DslExample>
+
+---
+
+## Imagens
+
+**Sintaxe:** `![alt text](url)`
+
+<DslExample title="Imagens" description="Adicionar elementos visuais">
+
+```dsl
+screen ImageExample:
+  container-p8-center:
+    # Galeria de Produtos
+    
+    ![Logo da Empresa](https://via.placeholder.com/400x200)
+    
+    > Produtos em destaque
+    ![Produto A](https://via.placeholder.com/300x300)
+    ![Produto B](https://via.placeholder.com/300x300)
+```
+
+</DslExample>
+
+---
+
+## Links
+
+**Sintaxe:** `#[texto](destino)`
+
+**Tipos de destino:**
+- Tela interna: `#[Perfil](ProfileScreen)`
+- URL externa: `#[Google](https://google.com)`
+- Email: `#[Contato](mailto:email@exemplo.com)`
+
+<DslExample title="Links" description="Navegação e URLs externas">
+
+```dsl
+screen LinksDemo:
+  container-p8:
+    ## Tipos de Links
+    
+    > Links internos navegam entre telas:
+    #[Ir para Dashboard](Dashboard)
+    
+    > Links externos abrem URLs:
+    #[Visitar Google](https://google.com)
+    
+    > Links de email:
+    #[Enviar Email](mailto:contato@exemplo.com)
+```
+
+</DslExample>
+
+---
+
+## Exemplo Completo
+
+<DslExample title="Combinando Primitivos" description="Tela com todos os elementos">
+
+```dsl
+screen WelcomeScreen:
+  container-p8:
+    # 🎉 Bem-vindo ao Proto-Typed
+    
+    > Proto-Typed é uma ferramenta de prototipagem rápida que usa uma DSL limpa e intuitiva.
+    
+    ![Hero Image](https://via.placeholder.com/600x300)
+    
+    ## Por que usar?
+    
+    >> Prototipe interfaces rapidamente sem escrever HTML ou CSS
+    >>> Criado em: 2025 | Versão: 1.0
+    
+    *> Dica: Comece explorando os exemplos na navegação lateral
+    
+    "> A melhor ferramenta é aquela que some do caminho e deixa você criar. — Design First
+    
+    ---
+    
+    ### Recursos Principais
+    > ✨ Sintaxe declarativa simples
+    > 🎨 Sistema de temas integrado
+    > 🔄 Preview em tempo real
+    > 📱 Componentes mobile-first
+    
+    #[Explorar Documentação](Docs)
+    #[Ver Exemplos](Examples)
+```
+
+</DslExample>

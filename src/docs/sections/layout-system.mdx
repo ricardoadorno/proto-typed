@@ -1,0 +1,267 @@
+# Sistema de Layout
+
+import { DslExample } from "../../components/docs";
+
+Organize elementos com containers, rows, cols e grids. Use **modificadores inline** para customizar.
+
+---
+
+## Container
+
+**Sintaxe:** `container:` ou `container-{modificadores}:`
+
+Centraliza conteúdo com padding.
+
+<DslExample title="Container" description="Wrapper centralizado">
+
+```dsl
+screen ContainerExample:
+  container-p8:
+    # Conteúdo Centralizado
+    > O container organiza e centraliza o conteúdo.
+```
+
+</DslExample>
+
+---
+
+## Row (Linha)
+
+**Sintaxe:** `row:` ou `row-{modificadores}:`
+
+Organiza elementos horizontalmente (flexbox).
+
+<DslExample title="Row" description="Layout horizontal">
+
+```dsl
+screen RowExample:
+  container-p8:
+    row-gap4:
+      @[Botão 1](action)
+      @[Botão 2](action)
+      @[Botão 3](action)
+```
+
+</DslExample>
+
+---
+
+## Col (Coluna)
+
+**Sintaxe:** `col:` ou `col-{modificadores}:`
+
+Organiza elementos verticalmente (flexbox).
+
+<DslExample title="Col" description="Layout vertical">
+
+```dsl
+screen ColExample:
+  container-p8:
+    col-gap4:
+      @[Ação 1](action)
+      @[Ação 2](action)
+      @[Ação 3](action)
+```
+
+</DslExample>
+
+---
+
+## Grid
+
+**Sintaxe:** `grid:` ou `grid-{modificadores}:`
+
+Layout em grade com colunas.
+
+<DslExample title="Grid" description="Layout em grade">
+
+```dsl
+screen GridExample:
+  container-p8:
+    grid-cols3-gap4:
+      card-p4:
+        ## Item 1
+      card-p4:
+        ## Item 2
+      card-p4:
+        ## Item 3
+```
+
+</DslExample>
+
+---
+
+## Modificadores Inline
+
+Adicione modificadores com `-` após o elemento. Exemplos:
+
+**Tamanho:**
+- `w50`, `w75`, `wfull`, `wauto`
+- `h100`, `hfull`, `hauto`
+
+**Spacing:**
+- `p4`, `p8` (padding)
+- `px4`, `py8` (padding horizontal/vertical)
+- `m4`, `m8` (margin)
+- `gap2`, `gap4` (espaçamento entre filhos)
+
+**Alinhamento:**
+- `center`, `start`, `end` (align-items)
+- `between`, `around`, `evenly` (justify-content)
+
+**Grid:**
+- `cols2`, `cols3`, `cols4` (número de colunas)
+
+### Exemplos de Modificadores
+
+<DslExample title="Modificadores" description="Customização inline">
+
+```dsl
+screen ModifiersExample:
+  row-between-center-p4:
+    > Espaço entre elementos
+    @[Ação](action)
+  
+  col-w50-center-p8:
+    # Coluna 50% de largura
+    > Centralizada
+  
+  grid-cols2-gap8-p4:
+    card:
+      > Grid item 1
+    card:
+      > Grid item 2
+```
+
+</DslExample>
+
+---
+
+## Casos de Uso
+
+### Dashboard Layout
+
+<DslExample title="Dashboard" description="Grid + cards">
+
+```dsl
+screen Dashboard:
+  container-p8:
+    # Dashboard
+    
+    grid-cols3-gap4:
+      card-p6:
+        ## Usuários
+        >>> 1,234
+      
+      card-p6:
+        ## Vendas
+        >>> R$ 45,678
+      
+      card-p6:
+        ## Conversão
+        >>> 23.5%
+```
+
+</DslExample>
+
+### Header com Ações
+
+<DslExample title="Header" description="Row com alinhamento">
+
+```dsl
+screen AppHeader:
+  header-between-p4:
+    # Minha App
+    row-gap2:
+      @@@_[Busca]{search}(search)
+      @@@_[Perfil]{user}(profile)
+```
+
+</DslExample>
+
+### Sidebar + Conteúdo
+
+<DslExample title="Layout 2 Colunas" description="Sidebar e main">
+
+```dsl
+screen AppLayout:
+  row-hfull:
+    col-w25-p4:
+      # Menu
+      > Home
+      > Perfil
+      > Configurações
+    
+    col-w75-p8:
+      # Conteúdo Principal
+      > Área de conteúdo
+```
+
+</DslExample>
+
+### Form Grid
+
+<DslExample title="Formulário em Grid" description="2 colunas de inputs">
+
+```dsl
+screen FormGrid:
+  container-p8:
+    grid-cols2-gap4:
+      ___:Nome{Nome}
+      ___:Email{Email}
+      
+      ___:Telefone{Telefone}
+      ___:CEP{CEP}
+    
+    @[Enviar](submit)
+```
+
+</DslExample>
+
+---
+
+## Combinando Layouts
+
+<DslExample title="Layout Complexo" description="Nested layouts">
+
+```dsl
+screen ComplexLayout:
+  container-p8:
+    row-gap8:
+      col-w50:
+        card-p6:
+          # Card Esquerdo
+          > Conteúdo aqui
+          
+          row-gap2:
+            @@[Ação 1](action)
+            @@[Ação 2](action)
+      
+      col-w50:
+        card-p6:
+          # Card Direito
+          > Mais conteúdo
+          
+          grid-cols2-gap2:
+            @@@[A](a)
+            @@@[B](b)
+            @@@[C](c)
+            @@@[D](d)
+```
+
+</DslExample>
+
+---
+
+## Referência de Modificadores
+
+| Categoria | Modificadores | Exemplos |
+|-----------|---------------|----------|
+| **Largura** | `w{num}`, `wfull`, `wauto` | `w25`, `w50`, `w75`, `wfull` |
+| **Altura** | `h{num}`, `hfull`, `hauto` | `h100`, `hfull` |
+| **Padding** | `p{num}`, `px{num}`, `py{num}` | `p4`, `p8`, `px6`, `py4` |
+| **Margin** | `m{num}`, `mx{num}`, `my{num}` | `m4`, `mx8` |
+| **Gap** | `gap{num}` | `gap2`, `gap4`, `gap8` |
+| **Justify** | `start`, `end`, `center`, `between`, `around`, `evenly` | `between`, `center` |
+| **Align** | `start`, `end`, `center`, `stretch` | `center`, `start` |
+| **Grid** | `cols{1-12}` | `cols2`, `cols3`, `cols4` |

@@ -1,63 +1,191 @@
-# Navigation
+# Navegação
 
 import { DslExample } from "../../components/docs";
 
-Navigation connects screens and toggles named overlays like modals and drawers.
+Sistema de navegação entre telas com links e botões.
 
-## Screens
-<DslExample title="Screen-to-screen navigation">
+---
+
+## Screens (Telas)
+
+**Sintaxe:** `screen NomeDaTela:`
+
+Cada tela é uma view separada que pode ser acessada via navegação.
+
+<DslExample title="Navegação entre Telas" heightClassName="h-48">
 
 ```dsl
 screen Home:
-  >> Welcome
-  @[Go to About](About)
+  container-p8:
+    # Bem-vindo
+    > Tela inicial da aplicação
+    @[Ver Perfil](Profile)
+    @[Configurações](Settings)
 
-screen About:
-  >> About screen
-  @[Back](Home)
+screen Profile:
+  container-p8:
+    # Perfil
+    > Informações do usuário
+    @[Voltar](Home)
+
+screen Settings:
+  container-p8:
+    # Configurações
+    @[Voltar](Home)
 ```
 
 </DslExample>
 
-## Links vs Buttons
-- `#[Link]()` for inline navigation
-- `@[Button]()` for call-to-action
+---
 
-<DslExample title="Links vs buttons" heightClassName="h-40">
+## Tipos de Navegação
+
+| Tipo | Sintaxe | Exemplo |
+|------|---------|---------|
+| Tela interna | `(NomeDaTela)` | `@[Dashboard](Dashboard)` |
+| URL externa | `(https://...)` | `@[Site](https://exemplo.com)` |
+| Voltar | `(-1)` | `@[Voltar](-1)` |
+| Modal/Drawer | `(NomeOverlay)` | `@[Ajuda](HelpModal)` |
+
+---
+
+## Links vs Botões
+
+**Links:** `#[texto](destino)` - para navegação inline
+**Botões:** `@[texto](destino)` - para call-to-action
+
+<DslExample title="Links vs Botões" heightClassName="h-40">
 
 ```dsl
->> Explore our #[examples](/docs/examples)
-@[Open Examples](/docs/examples)
+screen Docs:
+  container-p8:
+    # Documentação
+    
+    > Leia mais sobre #[componentes](Components) e #[layouts](Layouts)
+    
+    @[Voltar ao Início](Home)
 ```
 
 </DslExample>
 
-## Named Elements
-<DslExample title="Declare overlays">
+---
+
+## Navegação com Navigator
+
+Use `navigator:` para criar barra de navegação inferior (mobile).
+
+<DslExample title="Navigator (Barra Inferior)" heightClassName="h-56">
 
 ```dsl
-modal Help:
-  # Need Help?
-  >> This modal opens from buttons
-  @[Close]()
+screen Home:
+  container-p8:
+    # Início
+    > Conteúdo principal
+  
+  navigator:
+    - i-Home Início | Home
+    - i-Search Buscar | Search
+    - i-User Perfil | Profile
+    - i-Settings Config | Settings
 
-drawer Nav:
-  >> Drawer content
-  #[Home](Home)
+screen Search:
+  container-p8:
+    # Buscar
+  
+  navigator:
+    - i-Home Início | Home
+    - i-Search Buscar | Search
+    - i-User Perfil | Profile
+    - i-Settings Config | Settings
 ```
 
 </DslExample>
 
-Activate by name via actions:
-<DslExample title="Activate overlays" heightClassName="h-28">
+---
+
+## Fluxos de Navegação
+
+<DslExample title="Fluxo Multi-Tela" heightClassName="h-64">
 
 ```dsl
-@[Show Help](Help)
-@[Open Nav](Nav)
+screen Welcome:
+  container-p8-center:
+    # Bem-vindo
+    > Cadastro em 3 passos
+    @[Começar](Step1)
+
+screen Step1:
+  container-p8:
+    # Passo 1: Dados Pessoais
+    ___:Nome{Seu nome}
+    ___:Email{email@exemplo.com}
+    @[Próximo](Step2)
+
+screen Step2:
+  container-p8:
+    # Passo 2: Endereço
+    ___:CEP{00000-000}
+    row-gap4:
+      @@+[Voltar](Step1)
+      @[Próximo](Step3)
+
+screen Step3:
+  container-p8:
+    # Passo 3: Confirmação
+    > Revise seus dados
+    row-gap4:
+      @@+[Voltar](Step2)
+      @[Finalizar](Success)
+
+screen Success:
+  container-p8-center:
+    # ✓ Sucesso!
+    > Cadastro concluído
+    @[Ir ao Dashboard](Dashboard)
 ```
 
 </DslExample>
 
-Notes:
-- Unreferenced overlays remain hidden by default.
-- Actions can target screens, modals, or drawers.
+---
+
+## Casos de Uso
+
+### App com Tabs
+
+<DslExample title="Navegação por Tabs" heightClassName="h-56">
+
+```dsl
+screen Feed:
+  container-p8:
+    # Feed
+    list:
+      - Post 1
+      - Post 2
+  
+  navigator:
+    - i-Home Feed | Feed
+    - i-Compass Explorar | Explore
+    - i-Bell Notificações | Notifications
+    - i-User Perfil | Profile
+```
+
+</DslExample>
+
+### Header com Navegação
+
+<DslExample title="Header + Navegação" heightClassName="h-48">
+
+```dsl
+screen App:
+  header-between-p4:
+    # Minha App
+    row-gap2:
+      @@@_[Início]{home}(Home)
+      @@@_[Docs]{book}(Docs)
+      @@@_[Perfil]{user}(Profile)
+  
+  container-p8:
+    # Conteúdo
+```
+
+</DslExample>

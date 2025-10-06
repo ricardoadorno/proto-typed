@@ -1,0 +1,218 @@
+# Formulários e Inputs
+
+import { DslExample } from "../../components/docs";
+
+**Sintaxe básica:** `___:Label{Placeholder}`
+
+---
+
+## Input de Texto
+
+<DslExample title="Input Básico" description="Campo de texto simples">
+
+```dsl
+screen FormBasic:
+  container-p8:
+    ___:Nome{Digite seu nome}
+    ___:Email{seu@email.com}
+    ___:Telefone{(00) 00000-0000}
+```
+
+</DslExample>
+
+---
+
+## Modificadores
+
+| Modificador | Sintaxe | Uso |
+|-------------|---------|-----|
+| Senha | `___*:` | Texto mascarado |
+| Desabilitado | `___-:` | Somente leitura |
+
+<DslExample title="Modificadores" description="Senha e desabilitado">
+
+```dsl
+screen LoginForm:
+  card-p6:
+    ___:Email{seu@email.com}
+    ___*:Senha{Digite sua senha}
+    ___-:ID{user-12345}
+    
+    @[Entrar](login)
+```
+
+</DslExample>
+
+---
+
+## Select (Dropdown)
+
+**Sintaxe:** `___:Label{Placeholder}[Opção1 | Opção2 | Opção3]`
+
+<DslExample title="Select" description="Menu com opções">
+
+```dsl
+screen AddressForm:
+  container-p8:
+    ___:Estado{Selecione}[SP | RJ | MG | RS | PR]
+    ___:País{Selecione}[Brasil | Argentina | Chile]
+```
+
+</DslExample>
+
+---
+
+## Checkboxes
+
+**Sintaxe:**
+- `[X]` → Marcado
+- `[ ]` → Desmarcado
+
+<DslExample title="Checkboxes" description="Seleção múltipla">
+
+```dsl
+screen Preferences:
+  card-p6:
+    # Notificações
+    
+    [X] Receber emails
+    [X] Notificações push
+    [ ] SMS urgentes
+    [ ] Newsletter
+```
+
+</DslExample>
+
+---
+
+## Radio Buttons
+
+**Sintaxe:**
+- `(X)` → Selecionado
+- `( )` → Não selecionado
+
+<DslExample title="Radio Buttons" description="Seleção única">
+
+```dsl
+screen Survey:
+  card-p6:
+    # Avaliação
+    
+    (X) Excelente
+    ( ) Bom
+    ( ) Regular
+    ( ) Ruim
+```
+
+</DslExample>
+
+---
+
+## Formulário Completo
+
+<DslExample title="Exemplo Completo" description="Todos os tipos de input">
+
+```dsl
+screen Registration:
+  container-p8:
+    card-p8:
+      # Criar Conta
+      
+      ___:Nome Completo{João Silva}
+      ___:Email{joao@exemplo.com}
+      ___*:Senha{Mínimo 8 caracteres}
+      ___*:Confirmar Senha{Digite novamente}
+      
+      ---
+      
+      ___:País{Selecione}[Brasil | Portugal | Outro]
+      ___:Estado{Selecione}[SP | RJ | MG]
+      
+      ---
+      
+      > Tipo de conta:
+      (X) Pessoa Física
+      ( ) Pessoa Jurídica
+      
+      > Notificações:
+      [X] Aceito emails
+      [X] Aceito termos
+      
+      row-gap4:
+        @[Criar Conta]{user-plus}(register)
+        @@+[Cancelar](cancel)
+```
+
+</DslExample>
+
+---
+
+## Casos de Uso
+
+### Login
+
+<DslExample title="Formulário de Login" description="Email e senha">
+
+```dsl
+screen Login:
+  container-center:
+    card-p8:
+      # Bem-vindo
+      
+      ___:Email{Digite seu email}
+      ___*:Senha{Sua senha}
+      
+      [X] Lembrar de mim
+      
+      @[Entrar]{log-in}(login)
+      
+      >>> #[Esqueci minha senha](recover)
+```
+
+</DslExample>
+
+### Busca com Filtros
+
+<DslExample title="Busca e Filtros" description="Inputs e selects combinados">
+
+```dsl
+screen Search:
+  container-p8:
+    ___:Buscar{Nome do produto}
+    
+    ___:Categoria{Todas}[Eletrônicos | Roupas | Livros]
+    ___:Ordenar{Relevância}[Preço | Avaliação | Vendas]
+    
+    [X] Frete Grátis
+    [ ] Em Promoção
+    
+    @[Buscar]{search}(search)
+```
+
+</DslExample>
+
+### Formulário em Grid
+
+<DslExample title="Layout em Colunas" description="Grid para formulários complexos">
+
+```dsl
+screen ProductForm:
+  container-p8:
+    grid-cols2-gap4:
+      ___:Nome{Camiseta Básica}
+      ___:SKU{ABC-123}
+      
+      ___:Preço{R$ 0,00}
+      ___:Estoque{0}
+      
+      ___:Categoria{Selecione}[Roupas | Acessórios]
+      ___:Marca{Selecione}[Nike | Adidas]
+    
+    ___:Descrição{Descrição do produto}
+    
+    [X] Produto ativo
+    
+    @[Salvar]{save}(save)
+```
+
+</DslExample>

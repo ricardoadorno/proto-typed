@@ -1,0 +1,334 @@
+# Estruturas de Conte\u00fado
+
+import { DslExample } from "../../components/docs";
+
+Elementos estruturais para organizar conte\u00fado: listas, cards, headers, navegadores, FABs e separadores.
+
+---
+
+## List (Lista)
+
+**Sintaxe:** `list:` seguido de itens com `-`
+
+<DslExample title="Lista Simples" description="Itens com marcadores">
+
+```dsl
+screen TodoList:
+  container-p8:
+    # Tarefas
+    
+    list:
+      - Fazer compras
+      - Limpar casa
+      - Estudar DSL
+```
+
+</DslExample>
+
+### Lista com Conte\u00fado Complexo
+
+<DslExample title="Lista Complexa" description="Itens com m\u00faltiplos elementos">
+
+```dsl
+screen Features:
+  container-p8:
+    # Funcionalidades
+    
+    list:
+      - ## Prototipagem R\u00e1pida
+        > Crie interfaces em minutos
+        @@[Saiba Mais](docs)
+      
+      - ## Sistema de Temas
+        > 12 temas dispon\u00edveis
+        @@[Ver Temas](themes)
+```
+
+</DslExample>
+
+---
+
+## Card
+
+**Sintaxe:** `card:` ou `card-{modificadores}:`
+
+Container com borda e sombra para agrupar conte\u00fado.
+
+<DslExample title="Cards" description="Containers destacados">
+
+```dsl
+screen Dashboard:
+  container-p8:
+    grid-cols2-gap4:
+      card-p6:
+        ## Usu\u00e1rios Ativos
+        # 1,234
+        >>> +12% este m\u00eas
+      
+      card-p6:
+        ## Receita Total
+        # R$ 45,678
+        >>> +8% este m\u00eas
+```
+
+</DslExample>
+
+---
+
+## Header
+
+**Sintaxe:** `header:` ou `header-{modificadores}:`
+
+Cabe\u00e7alho fixo no topo da tela.
+
+<DslExample title="Header" description="Cabe\u00e7alho da aplica\u00e7\u00e3o">
+
+```dsl
+screen App:
+  header-between-p4:
+    # Minha App
+    row-gap2:
+      @@@_[Busca]{search}(search)
+      @@@_[Perfil]{user}(profile)
+  
+  container-p8:
+    # Conte\u00fado Principal
+    > Lorem ipsum dolor sit amet
+```
+
+</DslExample>
+
+---
+
+## Navigator
+
+**Sintaxe:** `navigator:` seguido de itens com formato especial
+
+**Formatos:**
+- `- texto | destino` (sem \u00edcone)
+- `- i-NomeIcone Texto | destino` (\u00edcone + texto)
+
+<DslExample title="Navigator" description="Barra de navega\u00e7\u00e3o inferior">
+
+```dsl
+screen Home:
+  container-p8:
+    # Bem-vindo
+    > Conte\u00fado da tela
+  
+  navigator:
+    - i-Home In\u00edcio | Home
+    - i-Search Buscar | Search
+    - i-User Perfil | Profile
+    - i-Settings Config | Settings
+
+screen Search:
+  container-p8:
+    # Buscar
+  
+  navigator:
+    - i-Home In\u00edcio | Home
+    - i-Search Buscar | Search
+    - i-User Perfil | Profile
+    - i-Settings Config | Settings
+```
+
+</DslExample>
+
+---
+
+## FAB (Floating Action Button)
+
+**Sintaxe:** `fab{icone}(a\u00e7\u00e3o)`
+
+Bot\u00e3o flutuante fixo no canto inferior direito.
+
+<DslExample title="FAB" description="A\u00e7\u00e3o prim\u00e1ria flutuante">
+
+```dsl
+screen Messages:
+  container-p8:
+    # Mensagens
+    
+    list:
+      - Conversa com Jo\u00e3o
+      - Conversa com Maria
+      - Conversa com Pedro
+  
+  fab{plus}(NewMessage)
+
+screen NewMessage:
+  container-p8:
+    # Nova Mensagem
+    ___:Para{Destinat\u00e1rio}
+    ___:Mensagem{Digite aqui}
+    @[Enviar](send)
+```
+
+</DslExample>
+
+---
+
+## Separator (Separador)
+
+**Sintaxe:** `---`
+
+Linha horizontal para dividir se\u00e7\u00f5es.
+
+<DslExample title="Separador" description="Divis\u00f3rias visuais">
+
+```dsl
+screen Profile:
+  container-p8:
+    # Jo\u00e3o Silva
+    >> Desenvolvedor Full Stack
+    
+    ---
+    
+    ## Contato
+    > Email: joao@email.com
+    > Telefone: (11) 99999-9999
+    
+    ---
+    
+    ## Biografia
+    > Apaixonado por tecnologia e c\u00f3digo limpo.
+```
+
+</DslExample>
+
+---
+
+## Casos de Uso
+
+### App Mobile Completo
+
+<DslExample title="App com Estruturas" description="Header + Navigator + FAB">
+
+```dsl
+screen TaskApp:
+  header-between-p4:
+    # Tarefas
+    @@@_[Filtro]{filter}(filter)
+  
+  container-p8:
+    list:
+      - [X] Fazer compras
+      - [ ] Limpar casa
+      - [ ] Estudar DSL
+  
+  navigator:
+    - i-Home Hoje | TaskApp
+    - i-Calendar Semana | Week
+    - i-CheckSquare Conclu\u00eddas | Done
+  
+  fab{plus}(NewTask)
+```
+
+</DslExample>
+
+### Dashboard Empresarial
+
+<DslExample title="Dashboard com Cards" description="Grid de m\u00e9tricas">
+
+```dsl
+screen BusinessDashboard:
+  header-between-p4:
+    # Dashboard
+    @@@_[Atualizar]{refresh-cw}(refresh)
+  
+  container-p8:
+    grid-cols3-gap4:
+      card-p6-center:
+        >>> Receita
+        # R$ 145K
+        >> +23% vs m\u00eas anterior
+      
+      card-p6-center:
+        >>> Clientes
+        # 2,456
+        >> +156 novos
+      
+      card-p6-center:
+        >>> Taxa Convers\u00e3o
+        # 18.5%
+        >> -2.3% vs m\u00eas anterior
+    
+    ---
+    
+    ## Vendas Recentes
+    list:
+      - Pedido #1234 - R$ 1,250
+      - Pedido #1235 - R$ 890
+      - Pedido #1236 - R$ 2,100
+```
+
+</DslExample>
+
+### Perfil Social
+
+<DslExample title="Perfil com Se\u00e7\u00f5es" description="Separadores e conte\u00fado rico">
+
+```dsl
+screen SocialProfile:
+  container-p8:
+    card-p6-center:
+      ![Avatar](https://via.placeholder.com/150)
+      # @joaosilva
+      >> Designer & Developer
+      >>> S\u00e3o Paulo, Brasil
+      
+      row-gap4-center:
+        @+[Seguir]{user-plus}(follow)
+        @@_[Mensagem]{mail}(message)
+    
+    ---
+    
+    ## Estat\u00edsticas
+    row-around:
+      col-center:
+        # 1,234
+        >>> Seguidores
+      
+      col-center:
+        # 567
+        >>> Seguindo
+      
+      col-center:
+        # 89
+        >>> Posts
+    
+    ---
+    
+    ## Sobre
+    > Apaixonado por design e tecnologia. Criando produtos digitais incr\u00edveis.
+    
+    ---
+    
+    ## Links
+    list:
+      - #[Portfolio](https://portfolio.com)
+      - #[GitHub](https://github.com/joao)
+      - #[LinkedIn](https://linkedin.com/in/joao)
+```
+
+</DslExample>
+
+---
+
+## Combina\u00e7\u00f5es
+
+Todas as estruturas suportam modificadores inline:
+
+```dsl
+card-p8-w75-center:
+  # Card Customizado
+
+header-between-center-p6:
+  # Header com Padding e Alinhamento
+
+list:
+  - Item com card:
+    card-p4-m2:
+      > Conte\u00fado aninhado
+```

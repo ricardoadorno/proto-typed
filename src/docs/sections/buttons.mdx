@@ -1,0 +1,171 @@
+# Botões
+
+import { DslExample } from "../../components/docs";
+
+**Sintaxe:** `@[Texto](ação)`
+
+**Com modificadores:** `@{variante}[Texto]{ícone}(ação)`
+
+---
+
+## Tamanhos
+
+| Símbolo | Tamanho |
+|---------|----------|
+| `@` | Grande |
+| `@@` | Médio |
+| `@@@` | Pequeno |
+
+<DslExample title="Tamanhos" description="3 tamanhos disponíveis">
+
+```dsl
+screen ButtonSizes:
+  container-p8-center:
+    @[Grande](action)
+    @@[Médio](action)
+    @@@[Pequeno](action)
+```
+
+</DslExample>
+
+---
+
+## Variantes
+
+| Modificador | Nome | Uso |
+|-------------|------|-----|
+| _(nenhum)_ | Padrão | Ação primária |
+| `_` | Ghost | Ação discreta |
+| `+` | Outline | Ação secundária |
+| `-` | Secondary | Estilo alternativo |
+| `=` | Destructive | Deletar/remover |
+| `!` | Warning | Atenção/confirmação |
+
+<DslExample title="Variantes" description="6 estilos visuais">
+
+```dsl
+screen ButtonVariants:
+  container-p8:
+    row-gap4:
+      @[Padrão](action)
+      @_[Ghost](action)
+      @+[Outline](action)
+    
+    row-gap4:
+      @-[Secundário](action)
+      @=[Deletar](delete)
+      @![Aviso](warning)
+```
+
+</DslExample>
+
+---
+
+## Ícones
+
+**Sintaxe:** `{nome-icone}` após o texto
+
+**Biblioteca:** [Lucide Icons](https://lucide.dev)
+
+<DslExample title="Botões com Ícones" description="Adicionar ícones">
+
+```dsl
+screen IconButtons:
+  container-p8:
+    row-gap4:
+      @[Salvar]{save}(save)
+      @[Editar]{edit}(edit)
+      @[Compartilhar]{share}(share)
+    
+    row-gap4:
+      @@+[Download]{download}(download)
+      @@@=[Excluir]{trash-2}(delete)
+```
+
+</DslExample>
+
+---
+
+## Ações
+
+| Tipo | Sintaxe | Exemplo |
+|------|---------|----------|
+| Navegação interna | `(NomeDaTela)` | `@[Dashboard](Dashboard)` |
+| URL externa | `(https://...)` | `@[Site](https://exemplo.com)` |
+| JavaScript | `(código)` | `@[Alert](alert('Oi!'))` |
+| Voltar | `(-1)` | `@[Voltar](-1)` |
+
+<DslExample title="Tipos de Ação" description="Navegação e JavaScript">
+
+```dsl
+screen Home:
+  container-p8:
+    @[Ir para Dashboard](Dashboard)
+    @[Abrir GitHub](https://github.com)
+    @[Mostrar Mensagem](alert('Clicado!'))
+
+screen Dashboard:
+  container-p8:
+    # Dashboard
+    @[Voltar](Home)
+```
+
+</DslExample>
+
+---
+
+## Casos de Uso
+
+### Formulário
+
+<DslExample title="Formulário com Botões" description="CTAs e ações secundárias">
+
+```dsl
+screen FormExample:
+  card-p6:
+    # Cadastro
+    ___:Nome{Digite seu nome}
+    ___:Email{email@exemplo.com}
+    
+    row-gap4:
+      @[Cadastrar]{user-plus}(register)
+      @@+[Cancelar](cancel)
+```
+
+</DslExample>
+
+### Card de Produto
+
+<DslExample title="Card com Múltiplos Botões" description="Hierarquia de ações">
+
+```dsl
+screen ProductCard:
+  card-p4:
+    ![Produto](https://via.placeholder.com/200)
+    ## Produto XYZ
+    >> R$ 99,90
+    
+    row-between:
+      @-[Detalhes](ProductDetail)
+      @@[Comprar]{shopping-cart}(buy)
+```
+
+</DslExample>
+
+### Ações Destrutivas
+
+<DslExample title="Confirmação de Exclusão" description="Variante destrutiva">
+
+```dsl
+screen DeleteConfirm:
+  container-p8-center:
+    card-p6:
+      # Confirmar Exclusão
+      > Esta ação não pode ser desfeita.
+      
+      row-gap4:
+        @=[Excluir Permanentemente]{trash}(delete)
+        @@+[Cancelar](cancel)
+```
+
+</DslExample>

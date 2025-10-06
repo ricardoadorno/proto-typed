@@ -1,49 +1,299 @@
-# Examples
+# Exemplos
 
 import { DslExample } from "../../components/docs";
 
-A few practical snippets to accelerate your prototyping flow.
+Exemplos práticos para acelerar sua prototipagem.
 
-## Dashboard
-<DslExample title="Dashboard layout">
+---
 
-```dsl
-screen Dashboard:
-  row:
-    col:
-      # Welcome
-      > You have 3 tasks today
-      @[New Task]()
-    col:
-      list:
-        - [Inbox](Inbox)Email{2 unread}[Open](Inbox)
-        - [Tasks](Tasks)Today{3 items}[Open](Tasks)
-```
+## Login
 
-</DslExample>
-
-## Auth
-<DslExample title="Login form">
+<DslExample title="Tela de Login" heightClassName="h-56">
 
 ```dsl
 screen Login:
-  card:
-    # Sign in
-    ___:Email{you@example.com}
-    ___*:Password{••••••}
-    @[Sign In]() @_[Forgot Password]()
+  container-p8-center:
+    card-p8:
+      # Bem-vindo de Volta
+      
+      ___:Email{seu@email.com}
+      ___*:Senha{Digite sua senha}
+      
+      [X] Lembrar de mim
+      
+      @[Entrar]{log-in}(login)
+      
+      >>> #[Esqueci minha senha](recover) | #[Criar conta](register)
 ```
 
 </DslExample>
 
-## List Variants
-<DslExample title="Flexible list items">
+---
+
+## Dashboard
+
+<DslExample title="Dashboard com Métricas" heightClassName="h-64">
 
 ```dsl
-list:
-  - [Project](Project)Bug Report{Fix login}@=[Close](close)@_[Comment](comment)
-  - Simple text item
-  - Multiple buttons[Save](save)@![Cancel](cancel)
+screen Dashboard:
+  header-between-p4:
+    # Dashboard
+    @@@_[Atualizar]{refresh-cw}(refresh)
+  
+  container-p8:
+    grid-cols3-gap4:
+      card-p6-center:
+        >>> Usuários
+        # 1,234
+        >> +12% vs mês anterior
+      
+      card-p6-center:
+        >>> Receita
+        # R$ 45K
+        >> +8% vs mês anterior
+      
+      card-p6-center:
+        >>> Conversão
+        # 23.5%
+        >> -2% vs mês anterior
+    
+    ---
+    
+    card-p6:
+      ## Atividade Recente
+      list:
+        - Novo usuário cadastrado há 2 min
+        - Venda #1234 concluída há 15 min
+        - Sistema atualizado há 1 hora
+  
+  navigator:
+    - i-Home Dashboard | Dashboard
+    - i-Users Usuários | Users
+    - i-Settings Config | Settings
+```
+
+</DslExample>
+
+---
+
+## Perfil de Usuário
+
+<DslExample title="Perfil Social" heightClassName="h-72">
+
+```dsl
+screen Profile:
+  container-p8:
+    card-p6-center:
+      ![Avatar](https://via.placeholder.com/150)
+      # João Silva
+      >> Designer & Developer
+      >>> São Paulo, Brasil
+      
+      row-gap4-center:
+        @+[Seguir]{user-plus}(follow)
+        @@_[Mensagem]{mail}(message)
+    
+    ---
+    
+    row-around:
+      col-center:
+        # 1,234
+        >>> Seguidores
+      
+      col-center:
+        # 567
+        >>> Seguindo
+      
+      col-center:
+        # 89
+        >>> Posts
+    
+    ---
+    
+    ## Sobre
+    > Apaixonado por design e tecnologia.
+    
+    list:
+      - #[Portfolio](https://portfolio.com)
+      - #[GitHub](https://github.com/joao)
+      - #[LinkedIn](https://linkedin.com/in/joao)
+```
+
+</DslExample>
+
+---
+
+## E-commerce
+
+<DslExample title="Loja de Produtos" heightClassName="h-72">
+
+```dsl
+screen Shop:
+  header-between-p4:
+    # Loja
+    row-gap2:
+      @@@_[Busca]{search}(search)
+      @@@_[Carrinho]{shopping-cart}(cart)
+  
+  container-p8:
+    grid-cols3-gap4:
+      card-p4:
+        ![Produto](https://via.placeholder.com/200)
+        ## Camiseta Básica
+        >> R$ 49,90
+        @[Comprar]{shopping-cart}(buy)
+      
+      card-p4:
+        ![Produto](https://via.placeholder.com/200)
+        ## Calça Jeans
+        >> R$ 129,90
+        @[Comprar]{shopping-cart}(buy)
+      
+      card-p4:
+        ![Produto](https://via.placeholder.com/200)
+        ## Tênis Sport
+        >> R$ 199,90
+        @[Comprar]{shopping-cart}(buy)
+  
+  navigator:
+    - i-Home Início | Shop
+    - i-Search Buscar | Search
+    - i-ShoppingCart Carrinho | Cart
+    - i-User Perfil | Profile
+```
+
+</DslExample>
+
+---
+
+## App de Tarefas
+
+<DslExample title="Lista de Tarefas" heightClassName="h-64">
+
+```dsl
+modal NewTask:
+  card-p8:
+    # Nova Tarefa
+    ___:Título{Nome da tarefa}
+    ___:Prioridade{Selecione}[Alta | Média | Baixa]
+    row-gap4:
+      @[Criar]{plus}(create)
+      @@+[Cancelar](close)
+
+screen Tasks:
+  header-between-p4:
+    # Tarefas
+    @@@[Nova]{plus}(NewTask)
+  
+  container-p8:
+    ## Hoje
+    list:
+      - [X] Fazer compras @@@_[Editar]{edit}(edit)
+      - [ ] Limpar casa @@@_[Editar]{edit}(edit)
+      - [ ] Estudar DSL @@@_[Editar]{edit}(edit)
+    
+    ---
+    
+    ## Amanhã
+    list:
+      - [ ] Reunião 10h @@@_[Editar]{edit}(edit)
+      - [ ] Academia 18h @@@_[Editar]{edit}(edit)
+  
+  fab{plus}(NewTask)
+  
+  navigator:
+    - i-CheckSquare Hoje | Tasks
+    - i-Calendar Semana | Week
+    - i-Archive Concluídas | Done
+```
+
+</DslExample>
+
+---
+
+## Formulário Multi-Step
+
+<DslExample title="Cadastro em Etapas" heightClassName="h-64">
+
+```dsl
+screen Step1:
+  container-p8:
+    # Passo 1 de 3
+    >>> Dados Pessoais
+    
+    ___:Nome Completo{Seu nome}
+    ___:Email{email@exemplo.com}
+    ___:Telefone{(00) 00000-0000}
+    
+    @[Próximo: Endereço]{arrow-right}(Step2)
+
+screen Step2:
+  container-p8:
+    # Passo 2 de 3
+    >>> Endereço
+    
+    ___:CEP{00000-000}
+    ___:Rua{Nome da rua}
+    ___:Número{123}
+    ___:Estado{Selecione}[SP | RJ | MG]
+    
+    row-gap4:
+      @@+[Voltar](Step1)
+      @[Próximo: Confirmação]{arrow-right}(Step3)
+
+screen Step3:
+  container-p8:
+    # Passo 3 de 3
+    >>> Revisão
+    
+    card-p6:
+      ## Seus Dados
+      > Nome: João Silva
+      > Email: joao@email.com
+      > Endereço: Rua ABC, 123 - SP
+    
+    row-gap4:
+      @@+[Voltar](Step2)
+      @[Finalizar]{check}(Success)
+```
+
+</DslExample>
+
+---
+
+## Mensagens/Chat
+
+<DslExample title="App de Mensagens" heightClassName="h-64">
+
+```dsl
+drawer Menu:
+  container-p8:
+    # Menu
+    list:
+      - i-User Perfil | Profile
+      - i-Settings Configurações | Settings
+      - i-HelpCircle Ajuda | Help
+    ---
+    @_[Sair]{log-out}(logout)
+
+screen Chats:
+  header-between-p4:
+    @@@_[Menu]{menu}(Menu)
+    # Mensagens
+    @@@_[Nova]{plus}(NewChat)
+  
+  container-p8:
+    list:
+      - João Silva >>> há 2 min @[Abrir](ChatJoao)
+      - Maria Santos >>> há 1 hora @[Abrir](ChatMaria)
+      - Pedro Costa >>> ontem @[Abrir](ChatPedro)
+  
+  fab{plus}(NewChat)
+  
+  navigator:
+    - i-MessageCircle Chats | Chats
+    - i-Users Contatos | Contacts
+    - i-User Perfil | Profile
 ```
 
 </DslExample>

@@ -1,0 +1,307 @@
+# Temas e Estilos
+
+import { DslExample } from "../../components/docs";
+
+Sistema de temas baseado em CSS variables com 12 temas pr\u00e9-definidos e customiza\u00e7\u00e3o via `styles:`.
+
+---
+
+## Temas Dispon\u00edveis
+
+12 temas baseados no sistema **shadcn/ui** com suporte a dark mode:
+
+- `neutral`
+- `stone`
+- `slate`
+- `gray`
+- `zinc` (padr\u00e3o)
+- `red`
+- `rose`
+- `orange`
+- `green`
+- `blue`
+- `yellow`
+- `violet`
+
+**Nota:** Temas s\u00e3o selecionados na UI do editor (canto superior direito).
+
+---
+
+## CSS Variables
+
+O sistema usa vari\u00e1veis CSS sem\u00e2nticas inspiradas no shadcn:
+
+| Vari\u00e1vel | Uso |
+|-----------|-----|
+| `--background` | Fundo principal |
+| `--foreground` | Texto principal |
+| `--primary` | Cor prim\u00e1ria (bot\u00f5es, links) |
+| `--primary-foreground` | Texto sobre prim\u00e1ria |
+| `--secondary` | Cor secund\u00e1ria |
+| `--muted` | Fundo sutil |
+| `--muted-foreground` | Texto secund\u00e1rio |
+| `--card` | Fundo de cards |
+| `--border` | Cor de bordas |
+| `--input` | Fundo de inputs |
+| `--destructive` | Cor de a\u00e7\u00f5es destrutivas |
+| `--radius` | Border radius padr\u00e3o |
+
+---
+
+## Customiza\u00e7\u00e3o
+
+Use `styles:` para sobrescrever ou adicionar vari\u00e1veis CSS.
+
+**Sintaxe:**
+```dsl
+styles:
+  --nome-variavel: valor;
+  --outra-variavel: valor;
+```
+
+<DslExample title="Customizar Cores" description="Sobrescrever vari\u00e1veis de tema">
+
+```dsl
+styles:
+  --primary: oklch(0.7 0.2 250);
+  --primary-foreground: oklch(1 0 0);
+  --radius: 1rem;
+
+screen CustomTheme:
+  container-p8:
+    # Tema Customizado
+    > As cores prim\u00e1rias foram personalizadas
+    
+    card-p6:
+      ## Card com Tema Custom
+      @[Bot\u00e3o Customizado](action)
+```
+
+</DslExample>
+
+---
+
+## Vari\u00e1veis Customizadas
+
+Crie suas pr\u00f3prias vari\u00e1veis para reutilizar valores:
+
+<DslExample title="Vari\u00e1veis Pr\u00f3prias" description="Definir e usar custom properties">
+
+```dsl
+styles:
+  --brand-color: #3b82f6;
+  --spacing-large: 2rem;
+  --font-display: 'Inter', sans-serif;
+
+screen BrandedApp:
+  container-p8:
+    # App com Branding
+    > Use as vari\u00e1veis customizadas no seu design system
+```
+
+</DslExample>
+
+---
+
+## Espa\u00e7amento
+
+O sistema usa escala de espa\u00e7amento baseada em m\u00faltiplos de 0.25rem (4px):
+
+| Valor | Pixels | Rem |
+|-------|--------|-----|
+| `1` | 4px | 0.25rem |
+| `2` | 8px | 0.5rem |
+| `4` | 16px | 1rem |
+| `6` | 24px | 1.5rem |
+| `8` | 32px | 2rem |
+| `12` | 48px | 3rem |
+| `16` | 64px | 4rem |
+
+Usado em modificadores: `p4`, `m8`, `gap6`, etc.
+
+---
+
+## Cores Sem\u00e2nticas
+
+O sistema usa cores sem\u00e2nticas ao inv\u00e9s de cores absolutas:
+
+\u2705 **Correto:**
+```dsl
+# Bot\u00e3o usa --primary automaticamente
+@[A\u00e7\u00e3o](action)
+
+# Card usa --card e --border
+card-p6:
+  > Conte\u00fado
+```
+
+\u274c **Evite:**
+```
+# N\u00c3O h\u00e1 suporte para cores inline hard-coded
+# Use o sistema de temas e vari\u00e1veis
+```
+
+---
+
+## Tipografia
+
+Vari\u00e1veis de tipografia dispon\u00edveis:
+
+| Elemento | Vari\u00e1vel Aplicada |
+|----------|---------------------|
+| T\u00edtulos (`#`) | Tamanhos predefinidos (H1-H6) |
+| Par\u00e1grafo (`>`) | `--foreground` |
+| Texto sutil (`>>>`) | `--muted-foreground` |
+| Notas (`*>`) | `--accent` background |
+| Cita\u00e7\u00f5es (`\">`) | `--border` borda esquerda |
+
+---
+
+## Border Radius
+
+Customize o arredondamento de cantos:
+
+<DslExample title="Border Radius" description="Ajustar arredondamento">
+
+```dsl
+styles:
+  --radius: 0.5rem;
+
+screen RoundedUI:
+  container-p8:
+    card-p6:
+      # Cantos Arredondados
+      > Cards, bot\u00f5es e inputs usar\u00e3o este radius
+      @[Bot\u00e3o](action)
+```
+
+</DslExample>
+
+Valores comuns:
+- `0rem` \u2192 Sem arredondamento (quadrado)
+- `0.25rem` \u2192 Sutil
+- `0.5rem` \u2192 M\u00e9dio (padr\u00e3o)
+- `1rem` \u2192 Arredondado
+- `9999px` \u2192 Totalmente arredondado (p\u00edlula)
+
+---
+
+## Espa\u00e7o de Cores OKLCH
+
+Os temas usam **OKLCH** para melhor percep\u00e7\u00e3o de cores:
+
+```css
+--primary: oklch(lightness chroma hue);
+```
+
+- `lightness`: 0-1 (0 = preto, 1 = branco)
+- `chroma`: 0-0.4 (0 = cinza, 0.4 = saturado)
+- `hue`: 0-360 (\u00e2ngulo da roda de cores)
+
+**Exemplo:**
+```dsl
+styles:
+  --primary: oklch(0.7 0.2 250);  # Azul m\u00e9dio saturado
+  --destructive: oklch(0.6 0.25 20);  # Vermelho
+```
+
+---
+
+## Casos de Uso
+
+### Brand Colors
+
+<DslExample title="Cores da Marca" description="Definir paleta custom">
+
+```dsl
+styles:
+  --primary: oklch(0.55 0.22 250);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.85 0.1 250);
+  --accent: oklch(0.7 0.15 150);
+
+screen BrandApp:
+  container-p8:
+    # Nossa Marca
+    
+    card-p6:
+      ## Produto Destaque
+      @[Ver Mais](details)
+      @@-[Compartilhar](share)
+```
+
+</DslExample>
+
+### Espa\u00e7amento Customizado
+
+<DslExample title="Escala de Espa\u00e7amento" description="Ajustar spacing">
+
+```dsl
+styles:
+  --spacing-unit: 8px;
+
+screen TightLayout:
+  container-p4:
+    grid-cols2-gap2:
+      card-p2:
+        >> Compact Card
+      card-p2:
+        >> Compact Card
+```
+
+</DslExample>
+
+### Modo High Contrast
+
+<DslExample title="Alto Contraste" description="Melhorar acessibilidade">
+
+```dsl
+styles:
+  --foreground: oklch(1 0 0);
+  --background: oklch(0 0 0);
+  --border: oklch(0.9 0 0);
+
+screen HighContrast:
+  container-p8:
+    # Conte\u00fado Alto Contraste
+    > Texto com m\u00e1ximo contraste para melhor legibilidade
+```
+
+</DslExample>
+
+---
+
+## Refer\u00eancia R\u00e1pida
+
+### Vari\u00e1veis Principais
+
+```css
+/* Cores de fundo */
+--background
+--card
+--popover
+--muted
+
+/* Cores de texto */
+--foreground
+--card-foreground
+--muted-foreground
+
+/* Cores de a\u00e7\u00e3o */
+--primary
+--primary-foreground
+--secondary
+--secondary-foreground
+--destructive
+--destructive-foreground
+
+/* UI */
+--border
+--input
+--ring
+--radius
+```
+
+### Modificadores de Layout
+
+Ver **Layout System** para lista completa de modificadores (`p4`, `m8`, `gap6`, `w50`, etc).

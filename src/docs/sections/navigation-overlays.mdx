@@ -1,35 +1,205 @@
-# Navigation & Overlays
+# Modals e Drawers
 
 import { DslExample } from "../../components/docs";
 
-Modals and drawers are named elements that toggle visibility via navigation actions.
+Overlays nomeados para dialogs e menus laterais.
 
-## Declare Overlays
-<DslExample title="Declare overlays">
+---
+
+## Modal
+
+**Sintaxe:** `modal NomeDoModal:`
+
+Dialogs centralizados para conteúdo temporário.
+
+<DslExample title="Declarar Modal" heightClassName="h-48">
 
 ```dsl
 modal Help:
-  # Need Help?
-  >> Helpful information here
-  @[Close]()
+  card-p8-center:
+    # Precisa de Ajuda?
+    > Entre em contato conosco
+    ___:Email{seu@email.com}
+    @[Enviar](send)
+    @@_[Fechar](close)
 
-drawer SideNav:
-  >> Links and quick actions
-  #[Home](Home)
+screen Home:
+  container-p8:
+    # Início
+    @[Abrir Ajuda](Help)
 ```
 
 </DslExample>
 
-## Activate Overlays
-<DslExample title="Activate overlays" heightClassName="h-28">
+---
+
+## Drawer
+
+**Sintaxe:** `drawer NomeDoDrawer:`
+
+Menu lateral deslizante.
+
+<DslExample title="Declarar Drawer" heightClassName="h-56">
 
 ```dsl
-@[Show Help](Help)
-@[Open Menu](SideNav)
+drawer Menu:
+  container-p8:
+    # Menu
+    
+    list:
+      - #[Início](Home)
+      - #[Perfil](Profile)
+      - #[Configurações](Settings)
+      - #[Sobre](About)
+    
+    ---
+    
+    @=[Sair](logout)
+
+screen Home:
+  header-between-p4:
+    @@@_[Menu]{menu}(Menu)
+    # App
+  
+  container-p8:
+    > Conteúdo principal
 ```
 
 </DslExample>
 
-Notes:
-- Overlays are hidden by default and shown when referenced by name.
-- They can be placed alongside `screen` declarations or within components.
+---
+
+## Ativação
+
+Modals e drawers são **ocultos por padrão** e aparecem quando referenciados por nome.
+
+| Método | Sintaxe | Exemplo |
+|--------|---------|---------|
+| Botão | `@[texto](NomeOverlay)` | `@[Ajuda](HelpModal)` |
+| Link | `#[texto](NomeOverlay)` | `#[Menu](SideMenu)` |
+
+---
+
+## Casos de Uso
+
+### Confirmação de Ação
+
+<DslExample title="Modal de Confirmação" heightClassName="h-56">
+
+```dsl
+modal ConfirmDelete:
+  card-p8-center:
+    # Confirmar Exclusão
+    > Esta ação não pode ser desfeita.
+    
+    row-gap4-center:
+      @=[Excluir]{trash}(confirmDelete)
+      @@+[Cancelar](close)
+
+screen Items:
+  container-p8:
+    list:
+      - Item 1 @@@=[Deletar](ConfirmDelete)
+      - Item 2 @@@=[Deletar](ConfirmDelete)
+```
+
+</DslExample>
+
+### Menu Lateral
+
+<DslExample title="Drawer de Navegação" heightClassName="h-64">
+
+```dsl
+drawer SideNav:
+  container-p8:
+    # Navegação
+    
+    >>> usuário@email.com
+    
+    ---
+    
+    list:
+      - i-Home Início | Home
+      - i-User Perfil | Profile
+      - i-Settings Configurações | Settings
+      - i-HelpCircle Ajuda | Help
+    
+    ---
+    
+    @_[Sair]{log-out}(logout)
+
+screen App:
+  header-between-p4:
+    row-gap2:
+      @@@_[Menu]{menu}(SideNav)
+      # Minha App
+    @@@_[Perfil]{user}(Profile)
+  
+  container-p8:
+    # Dashboard
+    > Conteúdo principal
+```
+
+</DslExample>
+
+### Formulário em Modal
+
+<DslExample title="Modal com Formulário" heightClassName="h-64">
+
+```dsl
+modal NewTask:
+  card-p8:
+    # Nova Tarefa
+    
+    ___:Título{Nome da tarefa}
+    ___:Descrição{Detalhes}
+    ___:Prioridade{Selecione}[Alta | Média | Baixa]
+    
+    row-gap4:
+      @[Criar]{plus}(create)
+      @@+[Cancelar](close)
+
+screen Tasks:
+  container-p8:
+    header-between-p4:
+      # Tarefas
+      @@@[Nova]{plus}(NewTask)
+    
+    list:
+      - Tarefa 1
+      - Tarefa 2
+  
+  fab{plus}(NewTask)
+```
+
+</DslExample>
+
+---
+
+## Fechar Overlays
+
+Overlays fecham automaticamente quando:
+1. Navega para outra tela
+2. Clica em ação que navega para tela
+3. Usa ação especial `(close)`
+
+<DslExample title="Fechar Explicitamente" heightClassName="h-40">
+
+```dsl
+modal Info:
+  card-p8:
+    # Informação
+    > Conteúdo do modal
+    @[Fechar](close)
+```
+
+</DslExample>
+
+---
+
+## Dicas
+
+- ✅ Use **modals** para confirmações, formulários rápidos, alertas
+- ✅ Use **drawers** para menus, navegação, filtros
+- ⚠️ Modals e drawers devem ter **nomes únicos**
+- ⚠️ Overlays não aparecem até serem referenciados em ação
