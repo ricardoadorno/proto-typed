@@ -33,14 +33,17 @@ export function registerDSLLanguage(monaco: Monaco) {
       root: [
         // ========================================
         // VIEWS (screen, modal, drawer)
+        // Capture keyword and name separately for different colors
         // ========================================
-        [/^(screen|modal|drawer)\s+\w+:/, 'keyword.view'],
+        [/^(screen|modal|drawer)(\s+)(\w+)(:)/, ['keyword.view', 'white', 'entity.name.view', 'delimiter.colon']],
 
         // ========================================
         // COMPONENTS
+        // Capture keyword and name separately for different colors
+        // Only highlight $ComponentName if it starts with uppercase letter
         // ========================================
-        [/^component\s+\w+:/, 'keyword.component'],
-        [/\$\w+/, 'variable.component'],       // $ComponentName
+        [/^(component)(\s+)(\w+)(:)/, ['keyword.component', 'white', 'entity.name.component', 'delimiter.colon']],
+        [/\$[A-Z]\w*/, 'variable.component'],  // $ComponentName (only if starts with uppercase)
         [/%\w+/, 'variable.prop'],             // %propName
 
         // ========================================
@@ -53,32 +56,40 @@ export function registerDSLLanguage(monaco: Monaco) {
         // LAYOUTS (row, col, grid, container with modifiers)
         // Pattern: element-modifier1-modifier2:
         // ========================================
-        [/\b(row|col|grid|container)(?:-[\w\d]+)*:/, 'keyword.layout'],
+        [/\b(row|col|grid|container|navigator|fab)(?:-[\w\d]+)*:/, 'keyword.layout'],
+        [/fab\{[\w-]+\}\([\w-]+\)/, 'keyword.layout'],  // fab{icon}(action) - same color as layouts
 
         // ========================================
-        // STRUCTURES
+        // STRUCTURES (list, card, header)
+        // Note: navigator removed from keyword highlighting
         // ========================================
+        [/^\s*header(?:-[\w\d]+)*:/, 'keyword.structure'],     // header at start
         [/\b(card)(?:-[\w\d]+)*:/, 'keyword.structure'],
-        [/\b(header|navigator)(?:-[\w\d]+)*:/, 'keyword.structure'],
         [/\blist(?:\s+\$\w+)?:/, 'keyword.structure'],  // list: or list $Component:
-        [/fab\{[\w-]+\}\([\w-]+\)/, 'keyword.structure'],  // fab{icon}(action)
-        [/^---+/, 'delimiter.separator'],      // --- separator
+        [/^\s*---+/, 'delimiter.separator'],      // --- separator
 
         // ========================================
         // TYPOGRAPHY
         // ========================================
-        [/^#{1,6}\s+/, 'markup.heading'],      // # to ######
-        [/^>\s/, 'markup.paragraph'],          // >
-        [/^>>\s/, 'markup.text'],              // >>
-        [/^>>>\s/, 'markup.muted'],            // >>>
-        [/^\*>\s/, 'markup.note'],             // *>
-        [/^">\s/, 'markup.quote'],             // ">
+        [/^\s*#{1,6}\s+/, 'markup.heading'],      // # to ######
+        [/^\s*>>>\s/, 'markup.muted'],            // >>> (must be before >>)
+        [/^\s*>>\s/, 'markup.text'],              // >>
+        [/^\s*>\s/, 'markup.paragraph'],          // >
+        [/^\s*\*>\s/, 'markup.note'],             // *>
+        [/^\s*">\s/, 'markup.quote'],             // ">
 
         // ========================================
         // BUTTONS
         // Pattern: (@{1,3})([_+\-=!]?)\[text\](?:\{icon\})?(?:\(action\))?
         // ========================================
         [/@{1,3}[_+\-=!]?(?=\[)/, 'keyword.button'],
+
+        // ========================================
+        // ROUTE REFERENCES in Links/Buttons
+        // Pattern: ](RouteReference) where RouteReference starts with capital letter
+        // Must come BEFORE generic delimiters to capture properly
+        // ========================================
+        [/\](\()([A-Z]\w*)(\))/, 'entity.name.view'],
 
         // ========================================
         // LINKS & IMAGES
@@ -88,24 +99,34 @@ export function registerDSLLanguage(monaco: Monaco) {
 
         // ========================================
         // FORMS
+        // Radio buttons only at start of line (with optional whitespace)
         // ========================================
         [/___[*-]?:/, 'keyword.input'],        // ___, ___*, ___-
         [/\[[X\s]\]/, 'keyword.checkbox'],     // [X], [ ]
-        [/\([X\s]\)/, 'keyword.radio'],        // (X), ( )
+        [/^\s*\([X\s]\)/, 'keyword.radio'],    // (X), ( ) at start of line only
 
         // ========================================
-        // NAVIGATOR ITEMS
+        // ICONS
+        // Pattern: <space>i-IconName<space>
+        // Highlight icon references like "i-Home" or "i-Settings"
+        // ========================================
+        [/\bi-[A-Z]\w*\b/, 'entity.name.icon'],  // Icon references like i-Home, i-Settings
+
+        // ========================================
+        // LIST & NAVIGATOR ITEMS
         // Format: - text | destination or - text | icon | destination
         // ========================================
-        [/^\s*-\s+i-\w+/, 'keyword.structure'], // - i-IconName (icon-first format)
-        [/^\s*-\s+/, 'string'],                 // Regular list items
+        [/^\s*-\s+/, 'markup.list'],              // Regular list items (-)
 
         // ========================================
         // DELIMITERS & SYMBOLS
+        // Note: Parentheses only highlighted in specific contexts:
+        // - Radio buttons: (X), ( ) at start of line
+        // - Route references: ](RouteRef)
+        // Generic parentheses have no color
         // ========================================
         [/\|/, 'delimiter.pipe'],              // Pipe separator (navigator, props)
         [/[\[\]]/, 'delimiter.bracket'],       // Square brackets
-        [/[()]/, 'delimiter.parenthesis'],     // Parentheses
         [/[{}]/, 'delimiter.brace'],           // Curly braces
         [/:/, 'delimiter.colon'],              // Colon
 

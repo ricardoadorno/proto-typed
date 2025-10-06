@@ -1,5 +1,12 @@
 /**
- * Monaco Editor Constants for proto-typed DSL
+ * Monaco Editor   // Typography (primitives.tokens.ts)
+  heading: 'markup.heading',         // # to ######
+  paragraph: 'markup.paragraph',     // >
+  text: 'markup.text',               // >>
+  mutedText: 'markup.muted',         // >>>
+  note: 'markup.note',               // *>
+  quote: 'markup.quote',             // ">
+  listItem: 'markup.list',           // - (list items)ts for proto-typed DSL
  * 
  * This file defines core constants for Monaco Editor integration.
  * Token types align with actual DSL syntax documented in copilot-instructions.md
@@ -19,6 +26,7 @@ export const DSL_TOKEN_TYPES = {
   screen: 'keyword.view',
   modal: 'keyword.view',
   drawer: 'keyword.view',
+  viewName: 'entity.name.view',          // Screen/Modal/Drawer names
   
   // Typography (primitives.tokens.ts)
   heading: 'markup.heading',         // # to ######
@@ -35,6 +43,7 @@ export const DSL_TOKEN_TYPES = {
   // Links & Images (primitives.tokens.ts)
   link: 'keyword.link',              // #[text](dest)
   image: 'keyword.image',            // ![alt](url)
+  icon: 'entity.name.icon',          // i-IconName (icon references)
   
   // Layouts (layouts.tokens.ts)
   // All support inline modifiers: row-w50-center-p4:
@@ -42,13 +51,13 @@ export const DSL_TOKEN_TYPES = {
   col: 'keyword.layout',
   grid: 'keyword.layout',
   container: 'keyword.layout',
+  fab: 'keyword.layout',             // fab{icon}(action) - same color as layouts
   
   // Structures (structures.tokens.ts)
   list: 'keyword.structure',
   card: 'keyword.structure',
   header: 'keyword.structure',
-  navigator: 'keyword.structure',
-  fab: 'keyword.structure',
+  navigator: 'string',               // No special highlighting (acts like regular text)
   separator: 'delimiter.separator',  // ---
   
   // Forms (inputs.tokens.ts)
@@ -59,6 +68,7 @@ export const DSL_TOKEN_TYPES = {
   
   // Components (components.tokens.ts)
   component: 'keyword.component',    // component Name:
+  componentName: 'entity.name.component', // Component definition name
   componentInstance: 'variable.component', // $ComponentName
   componentProp: 'variable.prop',    // %propName
   

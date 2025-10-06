@@ -28,12 +28,14 @@ export function registerDSLTheme(monaco: Monaco) {
       // VIEWS (screen, modal, drawer)
       // ========================================
       { token: 'keyword.view', foreground: 'ff6b6b', fontStyle: 'bold' },
+      { token: 'entity.name.view', foreground: '00d9ff', fontStyle: 'bold' },  // Bright cyan for route names
 
       // ========================================
       // COMPONENTS
       // ========================================
-      { token: 'keyword.component', foreground: '4ade80', fontStyle: 'bold' },
-      { token: 'variable.component', foreground: 'f59e0b', fontStyle: 'bold' },  // $ComponentName
+      { token: 'keyword.component', foreground: 'ff6b6b', fontStyle: 'bold' },
+      { token: 'entity.name.component', foreground: '4ade80', fontStyle: 'bold' },  
+      { token: 'variable.component', foreground: '4ade80', fontStyle: 'bold' },  // $ComponentName
       { token: 'variable.prop', foreground: 'f59e0b', fontStyle: 'italic' },     // %propName
 
       // ========================================
@@ -43,12 +45,13 @@ export function registerDSLTheme(monaco: Monaco) {
       { token: 'variable.css', foreground: '8b5cf6' },  // CSS custom properties
 
       // ========================================
-      // LAYOUTS (row, col, grid, container)
+      // LAYOUTS (row, col, grid, container, fab)
       // ========================================
       { token: 'keyword.layout', foreground: 'ec4899', fontStyle: 'bold' },
 
       // ========================================
-      // STRUCTURES (list, card, header, navigator, fab)
+      // STRUCTURES (list, card, header)
+      // Note: navigator has no special highlighting, fab moved to layouts
       // ========================================
       { token: 'keyword.structure', foreground: 'ec4899', fontStyle: 'bold' },
 
@@ -59,8 +62,9 @@ export function registerDSLTheme(monaco: Monaco) {
       { token: 'markup.paragraph', foreground: '34d399' },                       // >
       { token: 'markup.text', foreground: '34d399' },                            // >>
       { token: 'markup.muted', foreground: '6ee7b7' },                           // >>>
-      { token: 'markup.note', foreground: 'fbbf24', fontStyle: 'italic' },       // *>
+      { token: 'markup.note', foreground: '34d399', fontStyle: 'italic' },       // *>
       { token: 'markup.quote', foreground: '34d399', fontStyle: 'italic' },      // ">
+      { token: 'markup.list', foreground: 'fbbf24' },                            // - (list items)
 
       // ========================================
       // BUTTONS
@@ -71,7 +75,8 @@ export function registerDSLTheme(monaco: Monaco) {
       // LINKS & IMAGES
       // ========================================
       { token: 'keyword.link', foreground: '60a5fa', fontStyle: 'bold' },        // #[text](dest)
-      { token: 'keyword.image', foreground: 'f472b6' },                          // ![alt](url)
+      { token: 'keyword.image', foreground: '60a5fa' },                          // ![alt](url)
+      { token: 'entity.name.icon', foreground: 'ff8c00' },    // i-IconName (bright cyan)
 
       // ========================================
       // FORMS
