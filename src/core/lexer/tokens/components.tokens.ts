@@ -13,7 +13,7 @@ export const ComponentInstance = createToken({
 
 export const ComponentInstanceWithProps = createToken({
   name: "ComponentInstanceWithProps",
-  pattern: /\$([^\s\n\r:]+):\s*(.+)/
+  pattern: /\$([^\s\n\r:]+):/
 });
 
 export const PropVariable = createToken({

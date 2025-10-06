@@ -97,7 +97,7 @@ export const allTokens = [
   Card,
   Header,
   Navigator,
-  UnorderedListItem,
+  UnorderedListItem, // Must come after other tokens to avoid conflicts
   Separator,
   RadioOption,
   Checkbox,

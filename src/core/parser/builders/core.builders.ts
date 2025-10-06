@@ -113,7 +113,7 @@ export function parseListItem(itemText: string) {
  */
 export function parseNavigatorItem(itemText: string) {
   // Try 3-part pipe format: "- text | icon | destination"
-  const threePartMatch = itemText.match(/^-\s+([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*(.+)/);
+  const threePartMatch = itemText.match(/^-\s+([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*(.+)$/);
   if (threePartMatch) {
     return {
       type: "NavigatorItem",
@@ -128,7 +128,7 @@ export function parseNavigatorItem(itemText: string) {
   }
   
   // Try 2-part pipe format: "- text | destination"
-  const twoPartMatch = itemText.match(/^-\s+([^|]+?)\s*\|\s*(.+)/);
+  const twoPartMatch = itemText.match(/^-\s+([^|]+?)\s*\|\s*(.+)$/);
   if (twoPartMatch) {
     return {
       type: "NavigatorItem",
@@ -143,7 +143,7 @@ export function parseNavigatorItem(itemText: string) {
   }
   
   // Fallback for simple text items
-  const textMatch = itemText.match(/^-\s+(.+)/);
+  const textMatch = itemText.match(/^-\s+(.+)$/);
   return {
     type: "NavigatorItem",
     id: "", // ID will be generated later

@@ -48,12 +48,6 @@ export function substitutePropsRecursive(obj: any, props: string[], namedMap?: R
 export function substitutePropsInString(text: string, props: string[], namedMap?: Record<string, string>): string {
   let result = text;
 
-  // 1. Positional: $prop1, $prop2 ... (legado)
-  props.forEach((prop, index) => {
-    const propPattern = new RegExp(`\\$prop${index + 1}\\b`, 'g');
-    result = result.replace(propPattern, prop);
-  });
-
   // 2. Named: %name, %email etc.
   if (namedMap) {
     Object.entries(namedMap).forEach(([name, value]) => {

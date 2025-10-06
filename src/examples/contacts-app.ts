@@ -1,9 +1,9 @@
 const contactsAppExample = `component ContactItem:
-  card-between:
+  card:
     row-between:
       col-gap0:
-        >> Maria
-        >>> maria@email.com
+        >> %name
+        >>> %email
       row-center-center:
         @@@[i-Edit]
         @@@[i-Trash]

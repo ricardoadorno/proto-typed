@@ -30,7 +30,7 @@ export function buildListElement(ctx: Context) {
       ctx.UnorderedListItem.forEach((item: any) => {
         const itemText = item.image;
         // Extract text after the dash and space: "- text" -> "text"
-        const textMatch = itemText.match(/^-\s+(.+)/);
+        const textMatch = itemText.match(/^-\s+(.+)$/);
         if (textMatch) {
           const content = textMatch[1];
           // Split by | for data columns
@@ -130,7 +130,7 @@ export function buildSeparatorElement(_ctx: Context) {
  */
 export function buildUnorderedListElement(ctx: Context) {
   const listText = ctx.UnorderedListItem[0].image;
-  const match = listText.match(/^-\s+(.+)/);
+  const match = listText.match(/^-\s+(.+)$/);
   const content = match ? match[1] : listText;
 
   return {

@@ -35,7 +35,7 @@ export const Navigator = createToken({
 
 export const UnorderedListItem = createToken({
   name: "UnorderedListItem",
-  pattern: /-\s+([^\n\r]+)/
+  pattern: /-\s+[^\n\r]+/
 });
 
 export const FAB = createToken({
