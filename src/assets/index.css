@@ -5,54 +5,6 @@ button {
    cursor: pointer;
 }
 
-.min-h {
-    min-height: 812px;
-}
-
-/* Container type support for responsive design */
-.container-type-inline {
-    container-type: inline-size;
-}
-
-/* Container Query Support for Device Previews */
-@container (max-width: 480px) {
-  .cq-mobile-only {
-    display: block;
-  }
-  .cq-desktop-only {
-    display: none;
-  }
-  .cq-mobile-text {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
-  .cq-mobile-padding {
-    padding: 0.75rem;
-  }
-  .cq-mobile-margin {
-    margin: 0.5rem;
-  }
-}
-
-@container (min-width: 481px) {
-  .cq-mobile-only {
-    display: none;
-  }
-  .cq-desktop-only {
-    display: block;
-  }
-  .cq-desktop-text {
-    font-size: 1rem;
-    line-height: 1.5rem;
-  }
-  .cq-desktop-padding {
-    padding: 1rem;
-  }
-  .cq-desktop-margin {
-    margin: 1rem;
-  }
-}
-
 /* Custom scrollbar styles for webkit browsers - dark mode only */
 ::-webkit-scrollbar {
     width: 8px;
@@ -70,47 +22,3 @@ button {
 ::-webkit-scrollbar-thumb:hover {
     background-color: #6b7280;
 }
-
-/* Container Query Support for Responsive Grid Layout */
-/* Override viewport-based responsive classes with container-based ones */
-@container (min-width: 768px) {
-    .md\:grid-cols-2 {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    }
-}
-
-@container (min-width: 1024px) {
-    .lg\:grid-cols-3 {
-        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    }
-}
-
-@container (min-width: 1280px) {
-    .xl\:grid-cols-4 {
-        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    }
-}
-
-/* Additional container query breakpoints for grid layouts */
-@container (min-width: 480px) {
-    .sm\:grid-cols-2 {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    }
-}
-
-@container (min-width: 640px) {
-    .grid-responsive-2 {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
-@container (min-width: 768px) {
-    .grid-responsive-3 {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-}
-
-
-
-
-
