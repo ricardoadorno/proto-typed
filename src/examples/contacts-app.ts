@@ -24,12 +24,10 @@ component GroupItem:
 
 screen Contacts:
   header:
-    row-between:
-      >> My Contacts
-      @@@_[i-Menu](MainDrawer)
-
+    >> My Contacts
+    @@@_[i-Menu](MainDrawer)
+  container:
     > Your contacts organized in one place
-
     list $ContactCard:
       - John Silva | john@email.com
       - Maria Santos | maria@email.com

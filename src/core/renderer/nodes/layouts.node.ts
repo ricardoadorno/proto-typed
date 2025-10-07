@@ -38,8 +38,8 @@ const LAYOUT_PRESETS: Record<string, string> = {
   'card-feature': 'border-2 rounded-xl p-8 shadow-lg',
   
   // Special
-  'header': 'sticky top-0 border-b px-4 py-3',
-  'sidebar': 'h-full border-r p-4',
+  'header': 'sticky top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md px-6 py-4 flex items-center justify-between min-h-[72px]',
+  'sidebar': 'h-full fixed border-r p-4 pt-8'
 };
 
 /**
@@ -53,7 +53,7 @@ function getLayoutInlineStyles(layoutType: string): string {
     return 'background-color: var(--card); color: var(--card-foreground); border-color: var(--border);';
   }
   
-  if (layoutType === 'header' || layoutType === 'sidebar') {
+  if (layoutType === 'sidebar') {
     return 'background-color: var(--background); border-color: var(--border);';
   }
   
