@@ -1,6 +1,6 @@
 import { AstNode, NodeType } from '../../../types/ast-node';
 
-// Import all node renderers from the modular organization (unchanged)
+// Import all node renderers from the modular organization
 import { 
   renderScreen, 
   renderModal, 
@@ -16,20 +16,13 @@ import {
   renderMutedText 
 } from '../nodes/primitives.node';
 import { 
-  renderRow, 
-  renderCol, 
-  renderGrid, 
-  renderContainer, 
-  renderSeparator 
-} from '../nodes/layouts.node';
-import { 
+  renderLayout,
   renderList, 
   renderListItem, 
-  renderCard, 
-  renderHeader, 
+  renderSeparator,
   renderFAB, 
   renderNavigator 
-} from '../nodes/structures.node';
+} from '../nodes/layouts.node';
 import { 
   renderInput, 
   renderRadioGroup, 
@@ -67,20 +60,13 @@ const RENDERERS: Record<NodeType, typeof _render> = {
   Note: () => '',
   Quote: () => '',
 
-  // Layout
-  Row: (n, ctx) => renderRow(n, ctx, _render),
-  Col: (n, ctx) => renderCol(n, ctx, _render),
-  Grid: (n, ctx) => renderGrid(n, ctx, _render),
-  Container: (n, ctx) => renderContainer(n, ctx, _render),
-  Separator: () => renderSeparator(),
-
-  // Structures
+  // Layout (canonical presets + structural elements)
+  Layout: (n) => renderLayout(n, _render),
   List: (n, ctx) => renderList(n, ctx, _render),
   UnorderedListItem: (n) => renderListItem(n),
-  Card: (n) => renderCard(n, _render),
-  Header: (n) => renderHeader(n, _render),
   Navigator: (n) => renderNavigator(n),
   FAB: (n) => renderFAB(n),
+  Separator: () => renderSeparator(),
 
   // Inputs
   Input: (n) => renderInput(n),

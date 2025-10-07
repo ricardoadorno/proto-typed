@@ -1,38 +1,146 @@
 import { createToken } from "chevrotain";
 
-// Layout Primitives - Basic layout containers with modifiers
-// The token patterns are now simple and clean, capturing the base keyword plus optional modifiers.
-// The complex parsing logic for modifiers is handled in the parser and AST builder.
-// 
-// Supported syntax patterns:
-// - row, row-w50, row-center-p4, row-w50-center-stretch-p4
-// - col, col-h100, col-start-m2, col-h100-start-baseline-m2  
-// - grid, grid-cols3, grid-gap4-p2, grid-cols3-gap4-center-p2
-// - container, container-wfull, container-center-p8, container-wfull-center-p8
+// Canonical Layout Tokens
+// Preset layouts that cover common UI patterns without modifiers
+// Each layout has predefined Tailwind classes and shadcn styling
 //
-// Modifiers include:
-// - Sizing: w[number], h[number], wfull, hfull, wauto, hauto
-// - Justify: start, end, center, between, around, evenly  
-// - Align: start, end, center, stretch, baseline
-// - Spacing: p[number], m[number], px[number], py[number], mx[number], my[number]
-// - Grid: gap[number], cols[1-12]
+// Categories:
+// - Containers: container, container-narrow, container-wide, container-full
+// - Stacks: stack, stack-tight, stack-loose (vertical flow)
+// - Rows: row-start, row-center, row-between, row-end (horizontal flow)
+// - Grids: grid-2, grid-3, grid-4, grid-auto
+// - Cards: card, card-compact, card-feature
+// - Special: header, sidebar, list
 
-export const Row = createToken({ 
-  name: "Row", 
-  pattern: /row(?:-[a-zA-Z0-9-]*)?/
+// Container Layouts
+export const ContainerNarrow = createToken({ 
+  name: "ContainerNarrow", 
+  pattern: /container-narrow/ 
 });
 
-export const Col = createToken({ 
-  name: "Col", 
-  pattern: /col(?:-[a-zA-Z0-9-]*)?/
+export const ContainerWide = createToken({ 
+  name: "ContainerWide", 
+  pattern: /container-wide/ 
 });
 
-export const Grid = createToken({
-  name: "Grid",
-  pattern: /grid(?:-[a-zA-Z0-9-]*)?/
+export const ContainerFull = createToken({ 
+  name: "ContainerFull", 
+  pattern: /container-full/ 
 });
 
-export const Container = createToken({
-  name: "Container",
-  pattern: /container(?:-[a-zA-Z0-9-]*)?/
+export const Container = createToken({ 
+  name: "Container", 
+  pattern: /container/,
+  longer_alt: ContainerNarrow
+});
+
+// Stack Layouts (Vertical)
+export const Stack = createToken({ 
+  name: "Stack", 
+  pattern: /stack/ 
+});
+
+export const StackTight = createToken({ 
+  name: "StackTight", 
+  pattern: /stack-tight/ 
+});
+
+export const StackLoose = createToken({ 
+  name: "StackLoose", 
+  pattern: /stack-loose/ 
+});
+
+// Row Layouts (Horizontal)
+export const RowStart = createToken({ 
+  name: "RowStart", 
+  pattern: /row-start/ 
+});
+
+export const RowCenter = createToken({ 
+  name: "RowCenter", 
+  pattern: /row-center/ 
+});
+
+export const RowBetween = createToken({ 
+  name: "RowBetween", 
+  pattern: /row-between/ 
+});
+
+export const RowEnd = createToken({ 
+  name: "RowEnd", 
+  pattern: /row-end/ 
+});
+
+// Grid Layouts
+export const Grid2 = createToken({ 
+  name: "Grid2", 
+  pattern: /grid-2/ 
+});
+
+export const Grid3 = createToken({ 
+  name: "Grid3", 
+  pattern: /grid-3/ 
+});
+
+export const Grid4 = createToken({ 
+  name: "Grid4", 
+  pattern: /grid-4/ 
+});
+
+export const GridAuto = createToken({ 
+  name: "GridAuto", 
+  pattern: /grid-auto/ 
+});
+
+// Card Layouts
+export const Card = createToken({ 
+  name: "Card", 
+  pattern: /card/ 
+});
+
+export const CardCompact = createToken({ 
+  name: "CardCompact", 
+  pattern: /card-compact/ 
+});
+
+export const CardFeature = createToken({ 
+  name: "CardFeature", 
+  pattern: /card-feature/ 
+});
+
+// Special Layouts
+export const Header = createToken({ 
+  name: "Header", 
+  pattern: /header/ 
+});
+
+export const Sidebar = createToken({ 
+  name: "Sidebar", 
+  pattern: /sidebar/ 
+});
+
+// Structural Elements (now part of layouts)
+export const List = createToken({ 
+  name: "List", 
+  pattern: /list/
+});
+
+export const Navigator = createToken({
+  name: "Navigator",
+  pattern: /navigator/
+});
+
+export const UnorderedListItem = createToken({
+  name: "UnorderedListItem",
+  pattern: /-\s+[^\n\r]+/
+});
+
+export const FAB = createToken({
+  name: "FAB",
+  pattern: /fab\{([^}]+)\}\(([^)]+)\)/
+});
+
+export const Separator = createToken({
+  name: "Separator", 
+  pattern: /---/ 
 });

@@ -47,7 +47,7 @@ screen NeutralTheme:
   # Neutral Theme Example  
   > Clean and minimal grayscale design
   
-  container:
+  container-narrow:
     @[Switch to Neutral]
     > The neutral theme uses pure grayscale colors for a timeless, clean appearance.
 
@@ -55,7 +55,7 @@ screen StoneTheme:
   # Stone Theme Example
   > Warm and natural earth tones
   
-  container:
+  container-narrow:
     @[Switch to Stone]
     > The stone theme incorporates subtle warm undertones for a more organic feel.`;
 

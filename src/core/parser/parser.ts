@@ -7,10 +7,15 @@ import {
   Screen, Modal, Drawer,
   // Primitives
   Button, Link, Image, Heading, Text, Paragraph, MutedText, Note, Quote,
-  // Layouts
-  Row, Col, Grid, Container,
+  // Canonical Layouts
+  ContainerNarrow, ContainerWide, ContainerFull, Container,
+  Stack, StackTight, StackLoose,
+  RowStart, RowCenter, RowBetween, RowEnd,
+  Grid2, Grid3, Grid4, GridAuto,
+  Card, CardCompact, CardFeature,
+  Header, Sidebar,
   // Structures
-  List, Card, Header, Navigator, UnorderedListItem, FAB, Separator,
+  List, Navigator, UnorderedListItem, FAB, Separator,
   // Inputs
   Input, RadioOption, Checkbox,
   // Components
@@ -172,15 +177,10 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.imageElement) },
       { ALT: () => this.SUBRULE(this.headingElement) },
       { ALT: () => this.SUBRULE(this.textElement) },
-      // Layouts
-      { ALT: () => this.SUBRULE(this.rowElement) },
-      { ALT: () => this.SUBRULE(this.columnElement) },
-      { ALT: () => this.SUBRULE(this.gridElement) },
-      { ALT: () => this.SUBRULE(this.containerElement) },
+      // Canonical Layouts
+      { ALT: () => this.SUBRULE(this.layoutElement) },
       // Structures
       { ALT: () => this.SUBRULE(this.listElement) },
-      { ALT: () => this.SUBRULE(this.cardElement) },
-      { ALT: () => this.SUBRULE(this.headerElement) },
       { ALT: () => this.SUBRULE(this.navigatorElement) },
       { ALT: () => this.SUBRULE(this.unorderedListElement) },
       { ALT: () => this.SUBRULE(this.fabElement) },
@@ -222,60 +222,39 @@ export class UiDslParser extends CstParser {
 
   // ===== LAYOUT ELEMENT RULES =====
 
-  rowElement = this.RULE("rowElement", () => {
-    this.CONSUME(Row);
-    this.containerWithOptionalContent();
-  });
-
-  columnElement = this.RULE("columnElement", () => {
-    this.CONSUME(Col);
-    this.containerWithOptionalContent();
-  });
-
-  gridElement = this.RULE("gridElement", () => {
-    this.CONSUME(Grid);
-    this.containerWithOptionalContent();
-  });
-
-  containerElement = this.RULE("containerElement", () => {
-    this.CONSUME(Container);
+  layoutElement = this.RULE("layoutElement", () => {
+    this.OR([
+      // Containers
+      { ALT: () => this.CONSUME(ContainerNarrow) },
+      { ALT: () => this.CONSUME(ContainerWide) },
+      { ALT: () => this.CONSUME(ContainerFull) },
+      { ALT: () => this.CONSUME(Container) },
+      // Stacks
+      { ALT: () => this.CONSUME(StackTight) },
+      { ALT: () => this.CONSUME(StackLoose) },
+      { ALT: () => this.CONSUME(Stack) },
+      // Rows
+      { ALT: () => this.CONSUME(RowStart) },
+      { ALT: () => this.CONSUME(RowCenter) },
+      { ALT: () => this.CONSUME(RowBetween) },
+      { ALT: () => this.CONSUME(RowEnd) },
+      // Grids
+      { ALT: () => this.CONSUME(Grid2) },
+      { ALT: () => this.CONSUME(Grid3) },
+      { ALT: () => this.CONSUME(Grid4) },
+      { ALT: () => this.CONSUME(GridAuto) },
+      // Cards
+      { ALT: () => this.CONSUME(CardCompact) },
+      { ALT: () => this.CONSUME(CardFeature) },
+      { ALT: () => this.CONSUME(Card) },
+      // Special
+      { ALT: () => this.CONSUME(Header) },
+      { ALT: () => this.CONSUME(Sidebar) },
+    ]);
     this.containerWithOptionalContent();
   });
 
   // ===== STRUCTURE ELEMENT RULES =====
-
-  cardElement = this.RULE("cardElement", () => {
-    this.CONSUME(Card);
-    this.CONSUME(Colon);
-    this.OPTION(() => {
-      this.CONSUME(Indent);
-      this.AT_LEAST_ONE(() => {
-        this.SUBRULE(this.element);
-      });
-      this.OPTION2(() => {
-        this.CONSUME(Outdent);
-      });
-    });
-  });
-
-  headerElement = this.RULE("headerElement", () => {
-    this.CONSUME(Header);
-    this.CONSUME(Colon);
-    this.OPTION(() => {
-      this.CONSUME(Indent);
-      this.AT_LEAST_ONE(() => {
-        this.SUBRULE(this.element);
-      });
-      this.OPTION2(() => {
-        this.CONSUME(Outdent);
-      });
-    });
-  });
-
-  navigatorElement = this.RULE("navigatorElement", () => {
-    this.CONSUME(Navigator);
-    this.listWithOptionalContent();
-  });
 
   listElement = this.RULE("listElement", () => {
     this.CONSUME(List);
@@ -284,17 +263,19 @@ export class UiDslParser extends CstParser {
       this.CONSUME(ComponentInstanceWithProps, { LABEL: "componentName" });
     });
     this.OPTION2(() => {
-      this.CONSUME(Colon);
-    });
-    this.OPTION3(() => {
       this.CONSUME(Indent);
       this.AT_LEAST_ONE(() => {
         this.CONSUME(UnorderedListItem);
       });
-      this.OPTION4(() => {
+      this.OPTION3(() => {
         this.CONSUME(Outdent);
       });
     });
+  });
+
+  navigatorElement = this.RULE("navigatorElement", () => {
+    this.CONSUME(Navigator);
+    this.listWithOptionalContent();
   });
 
   // Standalone list element rules for individual list items

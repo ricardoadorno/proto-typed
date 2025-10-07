@@ -11,25 +11,19 @@ import {
   buildInputElement,
   buildRadioButtonGroup,
   buildCheckboxElement,
-  // Layout builders
-  buildContainerElement,
-  buildRowElement,
-  buildColumnElement,
-  buildGridElement,
-  // Content builders
+  // Layout builders (includes all structural elements)
+  buildLayoutElement,
   buildListElement,
-  buildCardElement,
-  buildSeparatorElement,
   buildUnorderedListElement,
+  buildNavigatorElement,
+  buildFABElement,
+  buildSeparatorElement,
+  buildNavItemElement,
   // Navigation builders
   buildScreen,
   buildComponent,
   buildModal,
   buildDrawer,
-  buildHeaderElement,
-  buildNavigatorElement,
-  buildFABElement,
-  buildNavItemElement,
   buildComponentInstanceElement,
   // Styles builders
   buildStyles,
@@ -85,9 +79,8 @@ export function createAstBuilder(parserInstance: UiDslParser) {
     // We just need to find which element type is present and visit it
     const elementTypes = [
       'componentInstanceElement', 'buttonElement', 'linkElement', 'imageElement', 
-      'headingElement', 'textElement', 'rowElement', 'columnElement', 'gridElement', 
-      'containerElement', 'listElement', 'cardElement', 'headerElement', 
-      'navigatorElement', 'unorderedListElement', 
+      'headingElement', 'textElement', 'layoutElement',
+      'listElement', 'navigatorElement', 'unorderedListElement', 
       'fabElement', 'separatorElement', 'inputElement', 'radioButtonGroup', 
       'checkboxElement'
     ];
@@ -172,34 +165,14 @@ export function createAstBuilder(parserInstance: UiDslParser) {
 
   // ===== LAYOUT ELEMENT RULES =====
 
-  rowElement(ctx: Context) {
-    return buildRowElement(ctx, this);
-  }  
-  
-  columnElement(ctx: Context) {
-    return buildColumnElement(ctx, this);
-  }  
-
-  gridElement(ctx: Context) {
-    return buildGridElement(ctx, this);
-  }
-
-  containerElement(ctx: Context) {
-    return buildContainerElement(ctx, this);
+  layoutElement(ctx: Context) {
+    return buildLayoutElement(ctx, this);
   }
 
   // ===== STRUCTURE ELEMENT RULES =====
 
   listElement(ctx: Context) {
     return buildListElement(ctx);
-  }
-
-  cardElement(ctx: Context) {
-    return buildCardElement(ctx, this);
-  }
-
-  headerElement(ctx: Context) {
-    return buildHeaderElement(ctx, this);
   }
 
   navigatorElement(ctx: Context) {

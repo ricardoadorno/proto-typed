@@ -1,9 +1,9 @@
 /**
  * Structure element builders for AST construction
- * Handles lists, cards, separators, headers, navigators, and FAB elements
+ * Handles lists, separators, navigators, and FAB elements
  */
 
-import { parseNavigatorItem, parseListItem, parseLayoutModifiers } from './core.builders';
+import { parseNavigatorItem, parseListItem } from './core.builders';
 
 type Context = {
   [key: string]: any;
@@ -84,33 +84,6 @@ export function buildListElement(ctx: Context) {
 }
 
 /**
- * Build card element from context
- */
-export function buildCardElement(ctx: Context, visitor: any) {
-  const elements = [];
-  
-  // Extract modifiers from the Card token
-  const cardToken = ctx.Card[0];
-  const modifiers = parseLayoutModifiers(cardToken.image);
-
-  if (ctx.element && ctx.element.length > 0) {
-    for (const el of ctx.element) {
-      const elementAst = visitor.visit(el);
-      if (elementAst) {
-        elements.push(elementAst);
-      }
-    }
-  }
-
-  return {
-    type: "Card",
-    id: "", // ID will be generated later
-    props: modifiers,
-    children: elements
-  };
-}
-
-/**
  * Build separator element from context
  */
 export function buildSeparatorElement(_ctx: Context) {
@@ -140,31 +113,6 @@ export function buildUnorderedListElement(ctx: Context) {
       text: content
     },
     children: []
-  };
-}/**
- * Build header element from context
- */
-export function buildHeaderElement(ctx: Context, visitor: any) {
-  const elements = [];
-  
-  // Extract modifiers from the Header token
-  const headerToken = ctx.Header[0];
-  const modifiers = parseLayoutModifiers(headerToken.image);
-
-  if (ctx.element && ctx.element.length > 0) {
-    for (const el of ctx.element) {
-      const elementAst = visitor.visit(el);
-      if (elementAst) {
-        elements.push(elementAst);
-      }
-    }
-  }
-
-  return {
-    type: "Header",
-    id: "", // ID will be generated later
-    props: modifiers,
-    children: elements
   };
 }
 

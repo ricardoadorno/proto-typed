@@ -3,11 +3,9 @@ component LoginForm:
   ___:Username{Enter your username}
   ___*:Password{Enter your password}
   
-  row:
+  stack:
     [X] Remember me
-  col:
     @[Login]
-  row:
     #[Forgot Password](ForgotPassword)
 
 screen Login:

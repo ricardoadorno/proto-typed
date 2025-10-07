@@ -34,22 +34,19 @@ screen Mob:
   card:
     ## Features
     > Explore our amazing features
-    - Real-time notifications
-    - Offline support
-    - Cloud sync
+    list:
+      - Real-time notifications
+      - Offline support
+      - Cloud sync
     @[Get Started](MessagesScreen)
   
   card:
     ## Quick Actions
-    row:
-      col:
-        @[📧 Messages](MessagesScreen)
-      col:
-        @[📊 Analytics](ProfileScreen)    row:
-      col:
-        @[⚙️ Settings](SettingsScreen)
-      col:
-        @[❓ Help](SettingsScreen)
+    grid-2:
+      @[📧 Messages](MessagesScreen)
+      @[📊 Analytics](ProfileScreen)
+      @[⚙️ Settings](SettingsScreen)
+      @[❓ Help](SettingsScreen)
 
   navigator:
     - Home | 🏠 | MobileApp

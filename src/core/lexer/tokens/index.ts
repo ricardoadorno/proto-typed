@@ -2,8 +2,15 @@
 import { WhiteSpace, NewLine, BlankLine, Colon, Identifier } from './core.tokens';
 import { Screen, Modal, Drawer } from './views.tokens';
 import { Button, Link, Image, Heading, Text, Paragraph, MutedText, Note, Quote } from './primitives.tokens';
-import { Row, Col, Grid, Container } from './layouts.tokens';
-import { List, Card, Header, Navigator, UnorderedListItem, FAB, Separator } from './structures.tokens';
+import { 
+  ContainerNarrow, ContainerWide, ContainerFull, Container,
+  Stack, StackTight, StackLoose,
+  RowStart, RowCenter, RowBetween, RowEnd,
+  Grid2, Grid3, Grid4, GridAuto,
+  Card, CardCompact, CardFeature,
+  Header, Sidebar,
+  List, Navigator, UnorderedListItem, FAB, Separator
+} from './layouts.tokens';
 import { Input, RadioOption, Checkbox } from './inputs.tokens';
 import { Component, ComponentInstance, ComponentInstanceWithProps, PropVariable } from './components.tokens';
 import { Styles, CssProperty } from './styles.tokens';
@@ -33,16 +40,40 @@ export {
   Note,
   Quote,
   
-  // Layouts
-  Row,
-  Col,
-  Grid,
+  // Layouts - Containers
+  ContainerNarrow,
+  ContainerWide,
+  ContainerFull,
   Container,
   
-  // Structures
-  List,
+  // Layouts - Stacks
+  Stack,
+  StackTight,
+  StackLoose,
+  
+  // Layouts - Rows
+  RowStart,
+  RowCenter,
+  RowBetween,
+  RowEnd,
+  
+  // Layouts - Grids
+  Grid2,
+  Grid3,
+  Grid4,
+  GridAuto,
+  
+  // Layouts - Cards
   Card,
+  CardCompact,
+  CardFeature,
+  
+  // Layouts - Special
   Header,
+  Sidebar,
+  
+  // Layouts - Structural Elements  
+  List,
   Navigator,
   UnorderedListItem,
   FAB,
@@ -89,13 +120,28 @@ export const allTokens = [
   Text,
   Note,
   Quote,
-  Row,
-  Col,
-  Grid,
-  Container,
-  List,
+  // Canonical layout tokens
+  ContainerNarrow,
+  ContainerWide,
+  ContainerFull,
+  Container, // After specific container patterns
+  StackTight, // More specific patterns first
+  StackLoose,
+  Stack,
+  RowStart,
+  RowCenter,
+  RowBetween,
+  RowEnd,
+  Grid2,
+  Grid3,
+  Grid4,
+  GridAuto,
+  CardCompact, // More specific patterns first
+  CardFeature,
   Card,
   Header,
+  Sidebar,
+  List,
   Navigator,
   UnorderedListItem, // Must come after other tokens to avoid conflicts
   Separator,

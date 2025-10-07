@@ -12,11 +12,8 @@ export * from './views.builders';
 // Primitives (text, buttons, links, images)
 export * from './primitives.builders';
 
-// Layouts (containers, rows, columns, grids)
+// Layouts (containers, rows, grids, cards, lists, navigator, etc - all layout & structural elements)
 export * from './layouts.builders';
-
-// Structures (lists, cards, navigation, separators)
-export * from './structures.builders';
 
 // Inputs (forms, checkboxes, radio buttons)
 export * from './inputs.builders';

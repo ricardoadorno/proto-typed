@@ -17,22 +17,15 @@ export {
   renderMutedText 
 } from './primitives.node';
 
-// Layout tokens
+// Layout tokens (includes all layout & structural elements)
 export { 
-  renderRow, 
-  renderCol, 
-  renderGrid, 
-  renderContainer, 
-  renderSeparator 
-} from './layouts.node';
-
-// Structure tokens
-export { 
+  renderLayout,
   renderList, 
   renderListItem, 
-  renderCard, 
-  renderHeader 
-} from './structures.node';
+  renderSeparator,
+  renderFAB,
+  renderNavigator
+} from './layouts.node';
 
 // Input tokens
 export { 

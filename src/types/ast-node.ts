@@ -16,16 +16,9 @@ export type NodeType =
   | 'Note'
   | 'Quote'
   
-  // Layouts (from layouts.tokens.ts)
-  | 'Row'
-  | 'Col'
-  | 'Grid'
-  | 'Container'
-  
-  // Structures (from structures.tokens.ts)
+  // Layouts (from layouts.tokens.ts - canonical presets + structural elements)
+  | 'Layout' // Canonical layout presets (container-narrow, stack, row-center, grid-3, card, header, etc.)
   | 'List'
-  | 'Card'
-  | 'Header'
   | 'Navigator'
   | 'UnorderedListItem'
   | 'FAB'
@@ -49,8 +42,32 @@ export type NodeType =
   // Core (from core.tokens.ts)
   | 'Identifier';
 
-// Define layout modifier properties
+// Canonical layout types
+export type LayoutType =
+  | 'container'
+  | 'container-narrow'
+  | 'container-wide'
+  | 'container-full'
+  | 'stack'
+  | 'stack-tight'
+  | 'stack-loose'
+  | 'row-start'
+  | 'row-center'
+  | 'row-between'
+  | 'row-end'
+  | 'grid-2'
+  | 'grid-3'
+  | 'grid-4'
+  | 'grid-auto'
+  | 'card'
+  | 'card-compact'
+  | 'card-feature'
+  | 'header'
+  | 'sidebar';
+
+// Define layout modifier properties (legacy - kept for backward compatibility)
 export interface LayoutProps {
+  layoutType?: LayoutType; // New canonical layout type
   width?: string;
   height?: string;
   justify?: 'start' | 'end' | 'center' | 'between' | 'around' | 'evenly';

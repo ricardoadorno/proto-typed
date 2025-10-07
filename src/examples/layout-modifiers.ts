@@ -1,39 +1,44 @@
 export const layoutModifiersExample = `screen LayoutModifiers:
-  # Layout Modifiers Demo
-  > This example demonstrates the new compact modifier syntax for layout elements.
+  # Canonical Layout Presets Demo
+  > This example demonstrates the new canonical layout syntax.
 
-  container-w75-center-center-p8:
-    > Container with 75% width, centered content, padding 8
+  container-wide:
+    > Wide container with max-width 7xl and auto margins
     
-    row-h100-between-center-m4:
-      > Row with 100% height, space-between justification, centered alignment, margin 4
+    row-between:
+      > Row with space-between justification
       @[Button 1]
       @[Button 2]
       @[Button 3]
     
-    grid-center-center-p4:
-      > Grid with centered content and padding 4
+    grid-3:
+      > Grid with 3 equal columns and default gap
       
-      col-w50-start-stretch-p2-m1:
-        > Column 50% width, flex-start justify, stretch align
+      card:
+        > Card with default padding
         > Text content 1
         @[Action 1]
       
-      col-w50-end-baseline-p2-m1:
-        > Column 50% width, flex-end justify, baseline align
+      card-compact:
+        > Card with minimal padding
         > Text content 2
         @[Action 2]
-    
-    row-wfull-around-center-py4-mx2:
-      > Row with full width, space-around, padding Y-axis 4, margin X-axis 2
       
-      container-wauto-center-center-p2:
-        > Auto-width container with centered content
+      card-feature:
+        > Featured card with large padding
+        > Text content 3
+        @[Action 3]
+    
+    row-center:
+      > Row with centered content
+      
+      container-narrow:
+        > Narrow container for focused content
         # Nested Content
-        > This shows how modifiers work with nested layouts
+        > This shows how canonical layouts work with nesting
         
-      col-h100-evenly-stretch-px6:
-        > Column with full height, space-evenly, padding X-axis 6
+      stack:
+        > Vertical stack with default gap
         > Item 1
         > Item 2
         > Item 3
@@ -41,125 +46,98 @@ export const layoutModifiersExample = `screen LayoutModifiers:
   ---
   
   # Complex Layout Example
-  > Advanced layout with multiple modifier combinations
+  > Advanced layout with canonical presets
   
-  grid-wfull-center-start-p6-m4:
-    row-h50-between-center-p4:
-      col-w33-center-center-p2-m1:
-        # Card 1
-        > Content for card 1
+  container-full:
+    header:
+      row-between:
+        # App Header
+        @[Menu]
+    
+    grid-2:
+      card:
+        ## Column 1
+        stack-tight:
+          > Tight vertical spacing
+          > Line 1
+          > Line 2
+          > Line 3
+      
+      card:
+        ## Column 2
+        stack-loose:
+          > Loose vertical spacing
+          > Line 1
+          > Line 2
+          > Line 3
         @[More Info]
-        
-      col-w33-center-center-p2-m1:
-        # Card 2  
-        > Content for card 2
+    
+    grid-4:
+      card:
+        # Grid Item 1  
+        > Auto-fit responsive grid
         @[Learn More]
         
-      col-w33-center-center-p2-m1:
-        # Card 3
-        > Content for card 3
+      card:
+        # Grid Item 2
+        > Content adapts to screen size
         @[Discover]
+        
+      card:
+        # Grid Item 3
+        > Maintains minimum width
+        @[Explore]
+        
+      card:
+        # Grid Item 4
+        > Flexible columns
+        @[View More]
     
-    container-wfull-stretch-stretch-py8:
-      > Full-width footer container with stretch alignment
-      row-center-center-px4:
+    container-wide:
+      > Wide content footer area
+      row-center:
         #[Documentation]
         #[Support]
         #[Contact]
         
   ---
   
-  # Directional Spacing Examples
-  > Demonstrating all padding and margin directions
+  # All Canonical Layouts Reference
+  > Complete catalog of available layouts
   
-  row-wfull-center-center-p4:
-    col-wauto-pl8-pr2-pt4-pb1:
-      > Left padding 8, right 2, top 4, bottom 1
-      @[Asymmetric Padding]
-      
-    col-wauto-ml4-mr2-mt1-mb3:
-      > Margin left 4, right 2, top 1, bottom 3
-      @[Directional Margins]
-      
-    col-wauto-px6-py3-ml2-mr2:
-      > Combined: padding X/Y with margin left/right
-      @[Mixed Spacing]
-      
-  container-center-center-pt8-pb4-pl6-pr6:
-    # Fine-Grained Control
-    > Top padding 8, bottom 4, left/right 6
+  container-narrow:
+    # Container Layouts
+    > container-narrow: max-w-2xl (articles, forms)
+    > container-wide: max-w-7xl (dashboards)
+    > container-full: w-full (full width)
     
-    row-wfull-between-center-mt4-mb2:
-      col-wauto-pr3-pl1:
-        > Right padding 3, left 1
-        @[Left Card]
-        
-      col-wauto-pl3-pr1:
-        > Left padding 3, right 1  
-        @[Right Card]
-        
-  ---
-  
-  # Grid Columns and Gap Examples
-  > Demonstrating grid-cols-[1-12] and gap modifiers
-  
-  grid-cols3-gap4-p6:
-    > 3-column grid with gap 4 and padding 6
-    container-p4:
-      # Card 1
-      > First column content
-    container-p4:
-      # Card 2  
-      > Second column content
-    container-p4:
-      # Card 3
-      > Third column content
-      
-  grid-cols6-gap2-center-center-m4:
-    > 6-column grid with small gap, centered
-    col-p2:
-      @[Item 1]
-    col-p2:
-      @[Item 2]
-    col-p2:
-      @[Item 3]
-    col-p2:
-      @[Item 4]
-    col-p2:
-      @[Item 5]
-    col-p2:
-      @[Item 6]
-      
-  container-w75-center-center-p8:
-    # Responsive Grid Examples
+    # Stack Layouts (Vertical)
+    stack:
+      > stack: flex-col gap-4 (default)
+      > stack-tight: flex-col gap-2 (minimal)
+      > stack-loose: flex-col gap-8 (spacious)
     
-    grid-cols12-gap1-py4:
-      > 12-column grid with minimal gap
-      col-p1: > 1
-      col-p1: > 2
-      col-p1: > 3
-      col-p1: > 4
-      col-p1: > 5
-      col-p1: > 6
-      col-p1: > 7
-      col-p1: > 8
-      col-p1: > 9
-      col-p1: > 10
-      col-p1: > 11
-      col-p1: > 12
-      
-    grid-cols4-gap6-mt6:
-      > 4-column grid with large gap
-      container-center-center-p4:
-        # Quarter 1
-        > Large spaced content
-      container-center-center-p4:
-        # Quarter 2
-        > Large spaced content
-      container-center-center-p4:
-        # Quarter 3
-        > Large spaced content
-      container-center-center-p4:
-        # Quarter 4
-        > Large spaced content
+    # Row Layouts (Horizontal)
+    > row-start: items-center gap-4 (left-aligned)
+    > row-center: items-center justify-center gap-4
+    > row-between: items-center justify-between
+    > row-end: items-center justify-end gap-4 (right-aligned)
+    
+    # Grid Layouts
+    > grid-2: 2 columns with gap-4
+    > grid-3: 3 columns with gap-4
+    > grid-4: 4 columns with gap-4
+    > grid-auto: responsive auto-fit columns
+    
+    # Card Layouts
+    card:
+      > card: border p-6 (default)
+    card-compact:
+      > card-compact: border p-4 (minimal padding)
+    card-feature:
+      > card-feature: border-2 p-8 shadow-lg (prominent)
+    
+    # Special Layouts
+    > header: sticky top-0 border-b px-4 py-3
+    > sidebar: h-full border-r p-4
 `;

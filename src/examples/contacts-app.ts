@@ -4,19 +4,29 @@ const contactsAppExample = `styles:
 
 
 component ContactCard:
-  card-p4-m2:
-    row-between-center:
-      col-gap1:
+  card:
+    row-between:
+      stack-tight:
         >> %name
         >>> %email
-      row:
-        @@@+[i-Edit](EditContact)
+      @@@+[i-Edit](EditContact)
+
+
+component MenuItem:
+  #[%label](%destination)
+
+
+component GroupItem:
+  stack-tight:
+    #[%name](Contacts)
+    >>> %count members
 
 
 screen Contacts:
-  header-h100-between-p4:
-    >> My Contacts
-    @@@_[i-Menu](MainDrawer)
+  header:
+    row-between:
+      >> My Contacts
+      @@@_[i-Menu](MainDrawer)
 
     > Your contacts organized in one place
 
@@ -34,7 +44,7 @@ screen Contacts:
 
 
 modal CreateContact:
-  card-p6:
+  card:
     ## New Contact
     >>> Fill contact information
 
@@ -55,13 +65,13 @@ modal CreateContact:
     [X] Add to favorites
     [ ] Sync with cloud
 
-    row-between-p4:
+    row-between:
       @@-[Cancel](-1)
       @@[i-Save Save](Contacts)
 
 
 modal ConfirmDelete:
-  card-p6:
+  card:
     ### Delete Contact?
     > This action cannot be undone
 
@@ -69,26 +79,26 @@ modal ConfirmDelete:
 
     "> Consider archiving instead of deleting
 
-    row-between-p4:
+    row-between:
       @@+[Cancel](-1)
       @@=[i-Trash Delete](Contacts)
 
 
 drawer MainDrawer:
-  col-p6-gap4:
+  stack:
     ![App Logo](https://via.placeholder.com/150x50)
     
     ###### Main Menu
 
-    list:
-      - #[i-Users Contacts](Contacts)
-      - #[i-Star Favorites](Favorites)
-      - #[i-Folder Groups](Groups)
-      - #[i-Settings Settings](Settings)
+    list $MenuItem:
+      - Contacts | Contacts
+      - Favorites | Favorites
+      - Groups | Groups
+      - Settings | Settings
 
     ---
 
-    card-p4:
+    card:
       >> Premium Features
       >>> Unlock advanced tools
       @@[i-Crown Upgrade](Premium)
@@ -99,12 +109,12 @@ drawer MainDrawer:
 
 
 screen Favorites:
-  header-p4:
+  header:
     ## ⭐ Favorites
     @[i-Menu](MainDrawer)
 
-  container-wfull-center-p8:
-    col-center-gap4:
+  container:
+    stack:
       ![Star](https://via.placeholder.com/100)
       
       > No favorites yet
@@ -114,52 +124,52 @@ screen Favorites:
       @@[i-ArrowLeft Back](Contacts)
 
   navigator:
-    - i-Users Contacts | Contacts
-    - i-Star Favorites | Favorites
-    - i-Settings Settings | Settings
+    - i-Users | Contacts
+    - i-Star | Favorites
+    - i-Settings | Settings
 
 
 screen Groups:
-  header-p4:
+  header:
     ## Groups
     @[i-Menu](MainDrawer)
 
-  col-p4:
+  stack:
     > Organize contacts by groups
 
-    list:
-      - #[Family](Contacts) >>> 5 members
-      - #[Work](Contacts) >>> 12 members
-      - #[Friends](Contacts) >>> 8 members
+    list $GroupItem:
+      - Family | 5
+      - Work | 12
+      - Friends | 8
 
     ---
 
     @@[i-Plus New Group](Contacts)
 
   navigator:
-    - i-Users Contacts | Contacts
-    - i-Star Favorites | Favorites
-    - i-Settings Settings | Settings
+    - i-Users | Contacts
+    - i-Star | Favorites
+    - i-Settings | Settings
 
 
 screen Settings:
-  header-p4:
+  header:
     ## Settings
     @[i-Menu](MainDrawer)
 
-  col-p4:
-    card-p4-m2:
+  stack:
+    card:
       #### Account
       
-      list:
-        - #[Sync Settings](Contacts)
-        - #[Backup Settings](Contacts)
-        - #[Import Contacts](ImportScreen)
-        - #[Export Contacts](ExportScreen)
+      list $MenuItem:
+        - Sync Settings | Contacts
+        - Backup Settings | Contacts
+        - Import Contacts | ImportScreen
+        - Export Contacts | ExportScreen
 
     ---
 
-    card-p4-m2:
+    card:
       #### Preferences
       
       [X] Dark mode
@@ -168,37 +178,37 @@ screen Settings:
 
     ---
 
-    row-center-p4:
+    row-center:
       @@=[Clear Cache](Contacts)
 
   navigator:
-    - i-Users Contacts | Contacts
-    - i-Star Favorites | Favorites
-    - i-Settings Settings | Settings
+    - i-Users | Contacts
+    - i-Star | Favorites
+    - i-Settings | Settings
 
 
 screen ImportScreen:
-  header-p4:
+  header:
     ### Import Contacts
     @_[i-ArrowLeft](Settings)
 
-  col-p4:
+  stack:
     > Import from other sources
 
-    list:
-      - #[i-FileText CSV File](Settings)
-      - #[i-Smartphone Google](Settings)
-      - #[i-Cloud iCloud](Settings)
+    list $MenuItem:
+      - CSV File | Settings
+      - Google | Settings
+      - iCloud | Settings
 
     *> Existing contacts won't be replaced
 
 
 screen ExportScreen:
-  header-p4:
+  header:
     ### Export Contacts
     @_[i-ArrowLeft](Settings)
 
-  col-p4:
+  stack:
     > Export for backup
 
     (X) CSV
@@ -216,12 +226,12 @@ screen ExportScreen:
 
 
 screen Premium:
-  header-p4:
+  header:
     ### 👑 Premium
     @_[i-ArrowLeft](-1)
 
-  container-wfull-center-p8:
-    col-center-gap4:
+  container:
+    stack:
       ![Crown](https://via.placeholder.com/100)
       
       ## Unlock Premium
@@ -230,11 +240,11 @@ screen Premium:
 
       ---
 
-      grid-cols2-gap3:
-        card-p4:
+      grid-2:
+        card:
           >> ∞
           >>> Unlimited contacts
-        card-p4:
+        card:
           >> 🔄
           >>> Real-time sync
 

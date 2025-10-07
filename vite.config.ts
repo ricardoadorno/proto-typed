@@ -10,4 +10,7 @@ export default defineConfig({
     sourcemap: true
   },
   base: '/proto-typed/',
+  server: {
+    open: true
+  }
 })
