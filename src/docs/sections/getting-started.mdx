@@ -26,13 +26,13 @@ Proto-Typed é uma ferramenta de prototipagem rápida com DSL customizada. Use o
 
 ```dsl
 screen Home:
-  container-p8:
+  container:
     # Bem-vindo ao Proto-Typed
     > Ferramenta de prototipagem rápida
     @[Ver Detalhes](Details)
 
 screen Details:
-  container-p8:
+  container:
     ## Detalhes
     > Conteúdo da segunda tela
     @[Voltar](Home)
@@ -48,13 +48,13 @@ screen Details:
 
 ```dsl
 component Card:
-  card-p6:
+  card:
     # Título do Card
     > Conteúdo reutilizável
     @[Ação](action)
 
 screen Dashboard:
-  container-p8:
+  container:
     $Card
     $Card
     $Card
@@ -70,19 +70,19 @@ screen Dashboard:
 
 ```dsl
 screen Dashboard:
-  container-p8:
+  container:
     # Dashboard
     
-    grid-cols3-gap4:
-      card-p6:
+    grid-3:
+      card:
         ## Usuários
         # 1,234
       
-      card-p6:
+      card:
         ## Vendas
         # R$ 45K
       
-      card-p6:
+      card:
         ## Conversão
         # 23.5%
 ```
@@ -97,15 +97,19 @@ screen Dashboard:
 
 ```dsl
 screen Login:
-  container-p8-center:
-    card-p8:
+<DslExample title="Login" description="Inputs e botões">
+
+```dsl
+screen Login:
+  container:
+    card:
       # Login
       
-      ___:Email{seu@email.com}
-      ___*:Senha{Digite sua senha}
+      ___email: Email{seu@email.com}
+      ___password: Senha{Digite sua senha}
       
-      @[i-LogIn Entrar](login)
-      @@+[Esqueci senha](recover)
+      @[Entrar](login)
+      @outline[Esqueci senha](recover)
 ```
 
 </DslExample>
@@ -115,10 +119,9 @@ screen Login:
 ## Dicas Rápidas
 
 - ✅ Use **2 espaços** para indentação
-- ✅ Modifique layouts com `-`: `container-p8`, `row-gap4`, `grid-cols3`
-- ✅ Botões: `@` (grande), `@@` (médio), `@@@` (pequeno)
-- ✅ Variantes: `@_` ghost, `@+` outline, `@=` destrutivo
-- ✅ Ícones: `{nome-icone}` após texto do botão
+- ✅ Layouts canônicos: `container`, `stack-tight`, `row-center`, `grid-3`
+- ✅ Botões: `@[Texto]` ou `@secondary-lg[Texto]` (variante + tamanho)
+- ✅ Inputs: `___email:`, `___password:`, `___textarea:` (tipos declarativos)
 - ✅ Preview atualiza em tempo real!
 
 ---

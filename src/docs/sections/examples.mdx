@@ -12,16 +12,16 @@ Exemplos práticos para acelerar sua prototipagem.
 
 ```dsl
 screen Login:
-  container-p8-center:
-    card-p8:
+  container:
+    card:
       # Bem-vindo de Volta
       
-      ___:Email{seu@email.com}
-      ___*:Senha{Digite sua senha}
+      ___email: Email{seu@email.com}
+      ___password: Senha{Digite sua senha}
       
       [X] Lembrar de mim
       
-      @[i-LogIn Entrar](login)
+      @[Entrar](login)
       
       >>> #[Esqueci minha senha](recover) | #[Criar conta](register)
 ```
@@ -36,30 +36,30 @@ screen Login:
 
 ```dsl
 screen Dashboard:
-  header-between-p4:
+  header:
     # Dashboard
-    @@@_[i-RefreshCw Atualizar](refresh)
+    @ghost[Atualizar](refresh)
   
-  container-p8:
-    grid-cols3-gap4:
-      card-p6-center:
+  container:
+    grid-3:
+      card:
         >>> Usuários
         # 1,234
         >> +12% vs mês anterior
       
-      card-p6-center:
+      card:
         >>> Receita
         # R$ 45K
         >> +8% vs mês anterior
       
-      card-p6-center:
+      card:
         >>> Conversão
         # 23.5%
         >> -2% vs mês anterior
     
     ---
     
-    card-p6:
+    card:
       ## Atividade Recente
       list:
         - Novo usuário cadastrado há 2 min
@@ -67,9 +67,9 @@ screen Dashboard:
         - Sistema atualizado há 1 hora
   
   navigator:
-    - i-Home Dashboard | Dashboard
-    - i-Users Usuários | Users
-    - i-Settings Config | Settings
+    - Dashboard | Dashboard
+    - Usuários | Users
+    - Config | Settings
 ```
 
 </DslExample>
@@ -82,29 +82,29 @@ screen Dashboard:
 
 ```dsl
 screen Profile:
-  container-p8:
-    card-p6-center:
+  container:
+    card:
       ![Avatar](https://via.placeholder.com/150)
       # João Silva
       >> Designer & Developer
       >>> São Paulo, Brasil
       
-      row-gap4-center:
-        @+[i-UserPlus Seguir](follow)
-        @@_[i-Mail Mensagem](message)
+      row-center:
+        @outline[Seguir](follow)
+        @ghost[Mensagem](message)
     
     ---
     
-    row-around:
-      col-center:
+    row-between:
+      stack:
         # 1,234
         >>> Seguidores
       
-      col-center:
+      stack:
         # 567
         >>> Seguindo
       
-      col-center:
+      stack:
         # 89
         >>> Posts
     
@@ -129,37 +129,37 @@ screen Profile:
 
 ```dsl
 screen Shop:
-  header-between-p4:
+  header:
     # Loja
-    row-gap2:
-      @@@_[i-Search Busca](search)
-      @@@_[i-ShoppingCart Carrinho](cart)
+    row-end:
+      @ghost[Busca](search)
+      @ghost[Carrinho](cart)
   
-  container-p8:
-    grid-cols3-gap4:
-      card-p4:
+  container:
+    grid-3:
+      card:
         ![Produto](https://via.placeholder.com/200)
         ## Camiseta Básica
         >> R$ 49,90
-        @[i-ShoppingCart Comprar](buy)
+        @[Comprar](buy)
       
-      card-p4:
+      card:
         ![Produto](https://via.placeholder.com/200)
         ## Calça Jeans
         >> R$ 129,90
-        @[i-ShoppingCart Comprar](buy)
+        @[Comprar](buy)
       
-      card-p4:
+      card:
         ![Produto](https://via.placeholder.com/200)
         ## Tênis Sport
         >> R$ 199,90
-        @[i-ShoppingCart Comprar](buy)
+        @[Comprar](buy)
   
   navigator:
-    - i-Home Início | Shop
-    - i-Search Buscar | Search
-    - i-ShoppingCart Carrinho | Cart
-    - i-User Perfil | Profile
+    - Início | Shop
+    - Buscar | Search
+    - Carrinho | Cart
+    - Perfil | Profile
 ```
 
 </DslExample>
@@ -172,39 +172,40 @@ screen Shop:
 
 ```dsl
 modal NewTask:
-  card-p8:
+  card:
     # Nova Tarefa
-    ___:Título{Nome da tarefa}
-    ___:Prioridade{Selecione}[Alta | Média | Baixa]
-    row-gap4:
-      @[i-Plus Criar](create)
-      @@+[Cancelar](close)
+    ___: Título{Nome da tarefa}
+    ___: Prioridade{Selecione}[Alta | Média | Baixa]
+    row-between:
+      @[Criar](create)
+      @outline[Cancelar](close)
 
 screen Tasks:
-  header-between-p4:
+  header:
     # Tarefas
-    @@@[i-Plus Nova](NewTask)
+    @ghost-sm[Nova](NewTask)
   
-  container-p8:
+  container:
     ## Hoje
     list:
-      - [X] Fazer compras @@@_[i-Edit Editar](edit)
-      - [ ] Limpar casa @@@_[i-Edit Editar](edit)
-      - [ ] Estudar DSL @@@_[i-Edit Editar](edit)
+      - [X] Fazer compras | @ghost-xs[Editar](edit)
+      - [ ] Limpar casa | @ghost-xs[Editar](edit)
+      - [ ] Estudar DSL | @ghost-xs[Editar](edit)
     
     ---
     
     ## Amanhã
     list:
-      - [ ] Reunião 10h @@@_[i-Edit Editar](edit)
-      - [ ] Academia 18h @@@_[i-Edit Editar](edit)
+      - [ ] Reunião 10h | @ghost-xs[Editar](edit)
+      - [ ] Academia 18h | @ghost-xs[Editar](edit)
   
-  fab[i-Plus](NewTask)
+  fab:
+    - + | NewTask
   
   navigator:
-    - i-CheckSquare Hoje | Tasks
-    - i-Calendar Semana | Week
-    - i-Archive Concluídas | Done
+    - Hoje | Tasks
+    - Semana | Week
+    - Concluídas | Done
 ```
 
 </DslExample>
@@ -217,44 +218,44 @@ screen Tasks:
 
 ```dsl
 screen Step1:
-  container-p8:
+  container:
     # Passo 1 de 3
     >>> Dados Pessoais
     
-    ___:Nome Completo{Seu nome}
-    ___:Email{email@exemplo.com}
-    ___:Telefone{(00) 00000-0000}
+    ___: Nome Completo{Seu nome}
+    ___email: Email{email@exemplo.com}
+    ___: Telefone{(00) 00000-0000}
     
-    @[i-ArrowRight Próximo: Endereço](Step2)
+    @[Próximo: Endereço](Step2)
 
 screen Step2:
-  container-p8:
+  container:
     # Passo 2 de 3
     >>> Endereço
     
-    ___:CEP{00000-000}
-    ___:Rua{Nome da rua}
-    ___:Número{123}
-    ___:Estado{Selecione}[SP | RJ | MG]
+    ___: CEP{00000-000}
+    ___: Rua{Nome da rua}
+    ___number: Número{123}
+    ___: Estado{Selecione}[SP | RJ | MG]
     
-    row-gap4:
-      @@+[Voltar](Step1)
-      @[i-ArrowRight Próximo: Confirmação](Step3)
+    row-between:
+      @outline[Voltar](Step1)
+      @[Próximo: Confirmação](Step3)
 
 screen Step3:
-  container-p8:
+  container:
     # Passo 3 de 3
     >>> Revisão
     
-    card-p6:
+    card:
       ## Seus Dados
       > Nome: João Silva
       > Email: joao@email.com
       > Endereço: Rua ABC, 123 - SP
     
-    row-gap4:
-      @@+[Voltar](Step2)
-      @[i-Check Finalizar](Success)
+    row-between:
+      @outline[Voltar](Step2)
+      @success[Finalizar](Success)
 ```
 
 </DslExample>
@@ -267,33 +268,34 @@ screen Step3:
 
 ```dsl
 drawer Menu:
-  container-p8:
+  container:
     # Menu
     list:
-      - i-User Perfil | Profile
-      - i-Settings Configurações | Settings
-      - i-HelpCircle Ajuda | Help
+      - Perfil | Profile
+      - Configurações | Settings
+      - Ajuda | Help
     ---
-    @_[i-LogOut Sair](logout)
+    @ghost[Sair](logout)
 
 screen Chats:
-  header-between-p4:
-    @@@_[i-Menu Menu](Menu)
+  header:
+    @ghost[Menu](Menu)
     # Mensagens
-    @@@_[i-Plus Nova](NewChat)
+    @ghost[Nova](NewChat)
   
-  container-p8:
+  container:
     list:
-      - João Silva >>> há 2 min @[Abrir](ChatJoao)
-      - Maria Santos >>> há 1 hora @[Abrir](ChatMaria)
-      - Pedro Costa >>> ontem @[Abrir](ChatPedro)
+      - João Silva | há 2 min | @[Abrir](ChatJoao)
+      - Maria Santos | há 1 hora | @[Abrir](ChatMaria)
+      - Pedro Costa | ontem | @[Abrir](ChatPedro)
   
-  fab[i-Plus](NewChat)
+  fab:
+    - + | NewChat
   
   navigator:
-    - i-MessageCircle Chats | Chats
-    - i-Users Contatos | Contacts
-    - i-User Perfil | Profile
+    - Chats | Chats
+    - Contatos | Contacts
+    - Perfil | Profile
 ```
 
 </DslExample>

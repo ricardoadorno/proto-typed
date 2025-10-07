@@ -21,7 +21,7 @@ component Hero:
   @[Ação](action)
 
 screen Home:
-  container-p8:
+  container:
     $Hero
 ```
 
@@ -43,18 +43,18 @@ Use `%nomeDaProp` dentro do componente para criar placeholders que serão substi
 
 **Sintaxe de props:** `- valor1 | valor2 | valor3`
 
-<DslExample title="Componente com Props" description="Interpola\u00e7\u00e3o de valores">
+<DslExample title="Componente com Props" description="Interpolação de valores">
 
 ```dsl
 component UserCard:
-  card-p4:
+  card:
     ## %name
     > Email: %email
     > Telefone: %phone
     @[Ver Perfil](Profile)
 
 screen Users:
-  container-p8:
+  container:
     $UserCard:
       - João Silva | joao@email.com | (11) 99999-1111
     
@@ -72,18 +72,18 @@ Combine `list` com componente para gerar múltiplas instâncias.
 
 **Sintaxe:** `list $ComponenteName:`
 
-<DslExample title="Lista de Componentes" description="M\u00faltiplas inst\u00e2ncias">
+<DslExample title="Lista de Componentes" description="Múltiplas instâncias">
 
 ```dsl
 component ContactCard:
-  card-p4-m2:
+  card:
     # %name
     >> %role
     >>> %email
-    @@@+[i-Mail Contato](mailto:%email)
+    @[Contato](mailto:%email)
 
 screen Team:
-  container-p8:
+  container:
     # Nossa Equipe
     
     list $ContactCard:
@@ -100,19 +100,19 @@ screen Team:
 
 ### Card de Produto
 
-<DslExample title="Produto Reutiliz\u00e1vel" description="Componente de produto">
+<DslExample title="Produto Reutilizável" description="Componente de produto">
 
 ```dsl
 component ProductCard:
-  card-p4:
+  card:
     ![%image](https://via.placeholder.com/200)
     ## %name
     >> %price
-    @[i-ShoppingCart Comprar](buy)
+    @[Comprar](buy)
 
 screen Shop:
-  container-p8:
-    grid-cols3-gap4:
+  container:
+    grid-3:
       $ProductCard:
         - Produto A | R$ 99,00 | produto-a.jpg
       
@@ -125,28 +125,28 @@ screen Shop:
 
 </DslExample>
 
-### Estat\u00edstica/M\u00e9trica
+### Estatística/Métrica
 
-<DslExample title="Card de M\u00e9trica" description="Dashboard com componentes">
+<DslExample title="Card de Métrica" description="Dashboard com componentes">
 
 ```dsl
 component StatCard:
-  card-p6-center:
+  card:
     >>> %label
     # %value
     >> %change
 
 screen Analytics:
-  container-p8:
-    grid-cols4-gap4:
+  container:
+    grid-4:
       $StatCard:
-        - Usu\u00e1rios | 1,234 | +12%
+        - Usuários | 1,234 | +12%
       
       $StatCard:
         - Vendas | R$ 45K | +8%
       
       $StatCard:
-        - Convers\u00e3o | 23.5% | -2%
+        - Conversão | 23.5% | -2%
       
       $StatCard:
         - Receita | R$ 98K | +15%
@@ -154,27 +154,27 @@ screen Analytics:
 
 </DslExample>
 
-### Notifica\u00e7\u00e3o
+### Notificação
 
-<DslExample title="Lista de Notifica\u00e7\u00f5es" description="Componente com a\u00e7\u00e3o">
+<DslExample title="Lista de Notificações" description="Componente com ação">
 
 ```dsl
 component Notification:
-  card-p4-m2:
+  card:
     row-between:
-      col:
+      stack:
         >> %title
         >>> %time
-      @@@_[i-X X](dismiss)
+      @ghost[X](dismiss)
 
 screen Notifications:
-  container-p8:
-    # Notifica\u00e7\u00f5es
+  container:
+    # Notificações
     
     list $Notification:
-      - Nova mensagem de Jo\u00e3o | h\u00e1 2 min
-      - Pedido #1234 confirmado | h\u00e1 1 hora
-      - Atualiza\u00e7\u00e3o dispon\u00edvel | h\u00e1 3 horas
+      - Nova mensagem de João | há 2 min
+      - Pedido #1234 confirmado | há 1 hora
+      - Atualização disponível | há 3 horas
 ```
 
 </DslExample>
@@ -183,27 +183,27 @@ screen Notifications:
 
 ## Props Complexas
 
-Você pode usar props em qualquer lugar: texto, \u00edcones, a\u00e7\u00f5es, URLs.
+Você pode usar props em qualquer lugar: texto, ícones, ações, URLs.
 
-<DslExample title="Props Avan\u00e7adas" description="Props em m\u00faltiplos contextos">
+<DslExample title="Props Avançadas" description="Props em múltiplos contextos">
 
 ```dsl
 component ActionCard:
-  card-p4:
+  card:
     # %title
     > %description
     
-    row-gap2:
-      @[%actionLabel]{%icon}(%actionTarget)
-      @@+[Cancelar](cancel)
+    row-start:
+      @[%actionLabel](%actionTarget)
+      @secondary[Cancelar](cancel)
 
 screen Actions:
-  container-p8:
+  container:
     $ActionCard:
-      - Deletar Conta | Esta a\u00e7\u00e3o \u00e9 irrevers\u00edvel | Confirmar | trash | delete
+      - Deletar Conta | Esta ação é irreversível | Confirmar | delete
     
     $ActionCard:
-      - Fazer Upgrade | Melhore sua experi\u00eancia | Upgrade | arrow-up | UpgradePlan
+      - Fazer Upgrade | Melhore sua experiência | Upgrade | UpgradePlan
 ```
 
 </DslExample>
@@ -214,21 +214,21 @@ screen Actions:
 
 Componentes podem conter outros componentes.
 
-<DslExample title="Componentes Aninhados" description="Composi\u00e7\u00e3o de componentes">
+<DslExample title="Componentes Aninhados" description="Composição de componentes">
 
 ```dsl
 component Badge:
   >>> %text
 
 component ProfileHeader:
-  card-p6:
+  card:
     # %name
     $Badge:
       - %role
     >> %bio
 
 screen Profile:
-  container-p8:
+  container:
     $ProfileHeader:
       - João Silva | Desenvolvedor | Apaixonado por código limpo
 ```
@@ -237,7 +237,7 @@ screen Profile:
 
 ---
 
-## Boas Pr\u00e1ticas
+## Boas Práticas
 
 ### Nomes Descritivos
 Use nomes claros para componentes e props:
@@ -253,7 +253,7 @@ component Card:
   >> %metadata
 
 $Card:
-  - T\u00edtulo | Descri\u00e7\u00e3o | Metadata
+  - Título | Descrição | Metadata
 ```
 
 ### Componentes Pequenos

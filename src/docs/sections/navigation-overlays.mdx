@@ -2,16 +2,11 @@
 
 import { DslExample } from "../../components/docs";
 
-Overlays nomeados para dialogs e menus laterais.    ---
-    
-    @_[i-log-out Sair](logout)
+Overlays nomeados para dialogs e menus laterais.
 
-screen App:
-  header-between-p4:
-    row-gap2:
-      @@@_[i-menu Menu](SideNav)
-      # Minha App
-    @@@_[i-user Perfil](Profile)## Modal
+---
+
+## Modal
 
 **Sintaxe:** `modal NomeDoModal:`
 
@@ -21,15 +16,15 @@ Dialogs centralizados para conteúdo temporário.
 
 ```dsl
 modal Help:
-  card-p8-center:
+  card:
     # Precisa de Ajuda?
     > Entre em contato conosco
-    ___:Email{seu@email.com}
+    ___email: Email{seu@email.com}
     @[Enviar](send)
-    @@_[Fechar](close)
+    @ghost[Fechar](close)
 
 screen Home:
-  container-p8:
+  container:
     # Início
     @[Abrir Ajuda](Help)
 ```
@@ -48,7 +43,7 @@ Menu lateral deslizante.
 
 ```dsl
 drawer Menu:
-  container-p8:
+  container:
     # Menu
     
     list:
@@ -59,14 +54,14 @@ drawer Menu:
     
     ---
     
-    @=[Sair](logout)
+    @destructive[Sair](logout)
 
 screen Home:
-  header-between-p4:
-    @@@_[i-menu Menu](Menu)
+  header:
+    @ghost[Menu](Menu)
     # App
   
-  container-p8:
+  container:
     > Conteúdo principal
 ```
 
@@ -97,15 +92,23 @@ modal ConfirmDelete:
     # Confirmar Exclusão
     > Esta ação não pode ser desfeita.
     
-    row-gap4-center:
-      @=[i-Trash Excluir](confirmDelete)
-      @@+[Cancelar](close)
+<DslExample title="Modal de Confirmação" heightClassName="h-56">
+
+```dsl
+modal ConfirmDelete:
+  card:
+    # Confirmar Exclusão
+    > Esta ação não pode ser desfeita.
+    
+    row-between:
+      @destructive[Excluir](confirmDelete)
+      @outline[Cancelar](close)
 
 screen Items:
-  container-p8:
+  container:
     list:
-      - Item 1 @@@=[Deletar](ConfirmDelete)
-      - Item 2 @@@=[Deletar](ConfirmDelete)
+      - Item 1 | @destructive-xs[Deletar](ConfirmDelete)
+      - Item 2 | @destructive-xs[Deletar](ConfirmDelete)
 ```
 
 </DslExample>
@@ -116,7 +119,7 @@ screen Items:
 
 ```dsl
 drawer SideNav:
-  container-p8:
+  container:
     # Navegação
     
     >>> usuário@email.com
@@ -124,23 +127,22 @@ drawer SideNav:
     ---
     
     list:
-      - i-Home Início | Home
-      - i-User Perfil | Profile
-      - i-Settings Configurações | Settings
-      - i-HelpCircle Ajuda | Help
+      - Início | Home
+      - Perfil | Profile
+      - Configurações | Settings
+      - Ajuda | Help
     
     ---
     
-    @_[i-log-out Sair](logout)
+    @ghost[Sair](logout)
 
 screen App:
-  header-between-p4:
-    row-gap2:
-      @@@_[i-menu Menu](SideNav)
-      # Minha App
-    @@@_[i-user Perfil](Profile)
+  header:
+    @ghost[Menu](SideNav)
+    # Minha App
+    @ghost[Perfil](Profile)
   
-  container-p8:
+  container:
     # Dashboard
     > Conteúdo principal
 ```
@@ -153,28 +155,29 @@ screen App:
 
 ```dsl
 modal NewTask:
-  card-p8:
+  card:
     # Nova Tarefa
     
-    ___:Título{Nome da tarefa}
-    ___:Descrição{Detalhes}
-    ___:Prioridade{Selecione}[Alta | Média | Baixa]
+    ___: Título{Nome da tarefa}
+    ___textarea: Descrição{Detalhes}
+    ___: Prioridade{Selecione}[Alta | Média | Baixa]
     
-    row-gap4:
-      @[i-Plus Criar](create)
-      @@+[Cancelar](close)
+    row-between:
+      @[Criar](create)
+      @outline[Cancelar](close)
 
 screen Tasks:
-  container-p8:
-    header-between-p4:
+  container:
+    header:
       # Tarefas
-      @@@[i-Plus Nova](NewTask)
+      @ghost[Nova](NewTask)
     
     list:
       - Tarefa 1
       - Tarefa 2
   
-  fab[i-Plus](NewTask)
+  fab:
+    - + | NewTask
 ```
 
 </DslExample>

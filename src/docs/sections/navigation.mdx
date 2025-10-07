@@ -16,20 +16,20 @@ Cada tela é uma view separada que pode ser acessada via navegação.
 
 ```dsl
 screen Home:
-  container-p8:
+  container:
     # Bem-vindo
     > Tela inicial da aplicação
     @[Ver Perfil](Profile)
     @[Configurações](Settings)
 
 screen Profile:
-  container-p8:
+  container:
     # Perfil
     > Informações do usuário
     @[Voltar](Home)
 
 screen Settings:
-  container-p8:
+  container:
     # Configurações
     @[Voltar](Home)
 ```
@@ -58,7 +58,7 @@ screen Settings:
 
 ```dsl
 screen Docs:
-  container-p8:
+  container:
     # Documentação
     
     > Leia mais sobre #[componentes](Components) e #[layouts](Layouts)
@@ -78,25 +78,25 @@ Use `navigator:` para criar barra de navegação inferior (mobile).
 
 ```dsl
 screen Home:
-  container-p8:
+  container:
     # Início
     > Conteúdo principal
   
   navigator:
-    - i-Home Início | Home
-    - i-Search Buscar | Search
-    - i-User Perfil | Profile
-    - i-Settings Config | Settings
+    - Início | Home
+    - Buscar | Search
+    - Perfil | Profile
+    - Config | Settings
 
 screen Search:
-  container-p8:
+  container:
     # Buscar
   
   navigator:
-    - i-Home Início | Home
-    - i-Search Buscar | Search
-    - i-User Perfil | Profile
-    - i-Settings Config | Settings
+    - Início | Home
+    - Buscar | Search
+    - Perfil | Profile
+    - Config | Settings
 ```
 
 </DslExample>
@@ -138,7 +138,7 @@ screen Step3:
       @[Finalizar](Success)
 
 screen Success:
-  container-p8-center:
+  container:
     # ✓ Sucesso!
     > Cadastro concluído
     @[Ir ao Dashboard](Dashboard)
@@ -156,17 +156,17 @@ screen Success:
 
 ```dsl
 screen Feed:
-  container-p8:
+  container:
     # Feed
     list:
       - Post 1
       - Post 2
   
   navigator:
-    - i-Home Feed | Feed
-    - i-Compass Explorar | Explore
-    - i-Bell Notificações | Notifications
-    - i-User Perfil | Profile
+    - Feed | Feed
+    - Explorar | Explore
+    - Notificações | Notifications
+    - Perfil | Profile
 ```
 
 </DslExample>
@@ -177,14 +177,14 @@ screen Feed:
 
 ```dsl
 screen App:
-  header-between-p4:
+  header:
     # Minha App
-    row-gap2:
-      @@@_[i-Home Início](Home)
-      @@@_[i-Book Docs](Docs)
-      @@@_[i-User Perfil](Profile)
+    row-end:
+      @ghost[Início](Home)
+      @ghost[Docs](Docs)
+      @ghost[Perfil](Profile)
   
-  container-p8:
+  container:
     # Conteúdo
 ```
 

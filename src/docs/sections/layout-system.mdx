@@ -2,65 +2,98 @@
 
 import { DslExample } from "../../components/docs";
 
-Organize elementos com containers, rows, cols e grids. Use **modificadores inline** para customizar.
+Organize elementos com **layouts canônicos pré-configurados**. Cada layout tem classes Tailwind e estilo shadcn predefinidos.
+
+**Importante:** Não há mais modificadores inline. Use layouts semânticos como `row-center`, `stack-tight`, `container-narrow`.
 
 ---
 
 ## Container
 
-**Sintaxe:** `container:` ou `container-{modificadores}:`
+Centraliza conteúdo com max-width apropriada.
 
-Centraliza conteúdo com padding.
+**Variações:**
+- `container:` → Container padrão
+- `container-narrow:` → Container estreito (sm)
+- `container-wide:` → Container largo (lg)
+- `container-full:` → Largura total
 
-<DslExample title="Container" description="Wrapper centralizado">
+<DslExample title="Containers" description="Wrappers centralizados">
 
 ```dsl
 screen ContainerExample:
-  container-p8:
-    # Conteúdo Centralizado
-    > O container organiza e centraliza o conteúdo.
+  container:
+    # Container Padrão
+    > Conteúdo centralizado com max-width.
+  
+  container-narrow:
+    # Container Estreito
+    > Ideal para texto e formulários.
+  
+  container-wide:
+    # Container Largo
+    > Para dashboards e conteúdo rico.
 ```
 
 </DslExample>
 
 ---
 
-## Row (Linha)
+## Stack (Vertical)
 
-**Sintaxe:** `row:` ou `row-{modificadores}:`
+Organiza elementos verticalmente com gap.
 
-Organiza elementos horizontalmente (flexbox).
+**Variações:**
+- `stack:` → Stack padrão (gap-4)
+- `stack-tight:` → Stack com gap pequeno (gap-2)
+- `stack-loose:` → Stack com gap grande (gap-8)
+- `stack-flush:` → Sem gap
 
-<DslExample title="Row" description="Layout horizontal">
+<DslExample title="Stacks" description="Layout vertical">
 
 ```dsl
-screen RowExample:
-  container-p8:
-    row-gap4:
+screen StackExample:
+  container:
+    # Stack Padrão
+    stack:
       @[Botão 1](action)
       @[Botão 2](action)
       @[Botão 3](action)
+    
+    # Stack Tight
+    stack-tight:
+      > Item 1
+      > Item 2
+      > Item 3
 ```
 
 </DslExample>
 
 ---
 
-## Col (Coluna)
+## Row (Horizontal)
 
-**Sintaxe:** `col:` ou `col-{modificadores}:`
+Organiza elementos horizontalmente.
 
-Organiza elementos verticalmente (flexbox).
+**Variações:**
+- `row-start:` → Alinhado ao início
+- `row-center:` → Centralizado
+- `row-between:` → Espaçamento entre elementos
+- `row-end:` → Alinhado ao fim
 
-<DslExample title="Col" description="Layout vertical">
+<DslExample title="Rows" description="Layout horizontal">
 
 ```dsl
-screen ColExample:
-  container-p8:
-    col-gap4:
-      @[Ação 1](action)
-      @[Ação 2](action)
-      @[Ação 3](action)
+screen RowExample:
+  container:
+    row-center:
+      @[Botão 1](action)
+      @[Botão 2](action)
+      @[Botão 3](action)
+    
+    row-between:
+      @[Esquerda](left)
+      @[Direita](right)
 ```
 
 </DslExample>
@@ -69,21 +102,25 @@ screen ColExample:
 
 ## Grid
 
-**Sintaxe:** `grid:` ou `grid-{modificadores}:`
+Layout em grade com colunas predefinidas.
 
-Layout em grade com colunas.
+**Variações:**
+- `grid-2:` → 2 colunas
+- `grid-3:` → 3 colunas
+- `grid-4:` → 4 colunas
+- `grid-auto:` → Auto-fit responsivo
 
-<DslExample title="Grid" description="Layout em grade">
+<DslExample title="Grids" description="Layout em grade">
 
 ```dsl
 screen GridExample:
-  container-p8:
-    grid-cols3-gap4:
-      card-p4:
+  container:
+    grid-3:
+      card:
         ## Item 1
-      card-p4:
+      card:
         ## Item 2
-      card-p4:
+      card:
         ## Item 3
 ```
 
@@ -91,46 +128,72 @@ screen GridExample:
 
 ---
 
-## Modificadores Inline
+## Card
 
-Adicione modificadores com `-` após o elemento. Exemplos:
+Container com borda, sombra e padding.
 
-**Tamanho:**
-- `w50`, `w75`, `wfull`, `wauto`
-- `h100`, `hfull`, `hauto`
+**Variações:**
+- `card:` → Card padrão
+- `card-compact:` → Card com menos padding
+- `card-feature:` → Card destacado
 
-**Spacing:**
-- `p4`, `p8` (padding)
-- `px4`, `py8` (padding horizontal/vertical)
-- `m4`, `m8` (margin)
-- `gap2`, `gap4` (espaçamento entre filhos)
-
-**Alinhamento:**
-- `center`, `start`, `end` (align-items)
-- `between`, `around`, `evenly` (justify-content)
-
-**Grid:**
-- `cols2`, `cols3`, `cols4` (número de colunas)
-
-### Exemplos de Modificadores
-
-<DslExample title="Modificadores" description="Customização inline">
+<DslExample title="Cards" description="Containers destacados">
 
 ```dsl
-screen ModifiersExample:
-  row-between-center-p4:
-    > Espaço entre elementos
-    @[Ação](action)
+screen CardExample:
+  container:
+    grid-2:
+      card:
+        ## Card Padrão
+        > Padding normal
+      
+      card-compact:
+        ## Card Compacto
+        > Menos padding
+```
+
+</DslExample>
+
+---
+
+## Header
+
+Cabeçalho fixo no topo.
+
+<DslExample title="Header" description="Cabeçalho de página">
+
+```dsl
+screen App:
+  header:
+    # Minha App
+    @ghost[Menu](menu)
   
-  col-w50-center-p8:
-    # Coluna 50% de largura
-    > Centralizada
+  container:
+    # Conteúdo Principal
+    > Lorem ipsum dolor sit amet
+```
+
+</DslExample>
+
+---
+
+## Sidebar
+
+Layout de barra lateral.
+
+<DslExample title="Sidebar" description="Navegação lateral">
+
+```dsl
+screen AppLayout:
+  sidebar:
+    # Menu
+    list:
+      - Home | Home
+      - Settings | Settings
   
-  grid-cols2-gap8-p4:
-    card:
-      > Grid item 1
-    card:
-      > Grid item 2
+  container:
+    # Conteúdo
+    > Área principal
 ```
 
 </DslExample>
@@ -145,19 +208,19 @@ screen ModifiersExample:
 
 ```dsl
 screen Dashboard:
-  container-p8:
+  container:
     # Dashboard
     
-    grid-cols3-gap4:
-      card-p6:
+    grid-3:
+      card:
         ## Usuários
         >>> 1,234
       
-      card-p6:
+      card:
         ## Vendas
         >>> R$ 45,678
       
-      card-p6:
+      card:
         ## Conversão
         >>> 23.5%
 ```
@@ -166,52 +229,32 @@ screen Dashboard:
 
 ### Header com Ações
 
-<DslExample title="Header" description="Row com alinhamento">
+<DslExample title="Header" description="Cabeçalho com navegação">
 
 ```dsl
 screen AppHeader:
-  header-between-p4:
+  header:
     # Minha App
-    row-gap2:
-      @@@_[i-Search Busca](search)
-      @@@_[i-User Perfil](profile)
+    row-end:
+      @ghost[Busca](search)
+      @ghost[Perfil](profile)
 ```
 
 </DslExample>
 
-### Sidebar + Conteúdo
-
-<DslExample title="Layout 2 Colunas" description="Sidebar e main">
-
-```dsl
-screen AppLayout:
-  row-hfull:
-    col-w25-p4:
-      # Menu
-      > Home
-      > Perfil
-      > Configurações
-    
-    col-w75-p8:
-      # Conteúdo Principal
-      > Área de conteúdo
-```
-
-</DslExample>
-
-### Form Grid
+### Form Layout
 
 <DslExample title="Formulário em Grid" description="2 colunas de inputs">
 
 ```dsl
 screen FormGrid:
-  container-p8:
-    grid-cols2-gap4:
-      ___:Nome{Nome}
-      ___:Email{Email}
+  container:
+    grid-2:
+      ___: Nome{Nome}
+      ___email: Email{Email}
       
-      ___:Telefone{Telefone}
-      ___:CEP{CEP}
+      ___: Telefone{Telefone}
+      ___: CEP{CEP}
     
     @[Enviar](submit)
 ```
@@ -220,40 +263,21 @@ screen FormGrid:
 
 ---
 
-## Combinando Layouts
+## Layouts Disponíveis
 
-<DslExample title="Layout Complexo" description="Nested layouts">
-
-```dsl
-screen ComplexLayout:
-  container-p8:
-    row-gap8:
-      col-w50:
-        card-p6:
-          # Card Esquerdo
-          > Conteúdo aqui
-          
-          row-gap2:
-            @@[Ação 1](action)
-            @@[Ação 2](action)
-      
-      col-w50:
-        card-p6:
-          # Card Direito
-          > Mais conteúdo
-          
-          grid-cols2-gap2:
-            @@@[A](a)
-            @@@[B](b)
-            @@@[C](c)
-            @@@[D](d)
-```
-
-</DslExample>
-
----
-
-## Referência de Modificadores
+| Layout | Variações | Descrição |
+|--------|-----------|-----------|
+| **Container** | `container`, `container-narrow`, `container-wide`, `container-full` | Wrappers centralizados |
+| **Stack** | `stack`, `stack-tight`, `stack-loose`, `stack-flush` | Vertical com gap |
+| **Row** | `row-start`, `row-center`, `row-between`, `row-end` | Horizontal |
+| **Grid** | `grid-2`, `grid-3`, `grid-4`, `grid-auto` | Grade de colunas |
+| **Card** | `card`, `card-compact`, `card-feature` | Containers destacados |
+| **Header** | `header` | Cabeçalho fixo |
+| **Sidebar** | `sidebar` | Navegação lateral |
+| **List** | `list` | Lista de itens |
+| **Navigator** | `navigator` | Navegação inferior |
+| **Fab** | `fab` | Botão flutuante |
+| **Separator** | `---` | Linha divisória |
 
 | Categoria | Modificadores | Exemplos |
 |-----------|---------------|----------|

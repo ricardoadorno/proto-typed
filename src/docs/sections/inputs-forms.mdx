@@ -2,7 +2,9 @@
 
 import { DslExample } from "../../components/docs";
 
-**Sintaxe básica:** `___:Label{Placeholder}`
+**Sintaxe básica:** `___: Label{Placeholder}`
+
+**Com tipo:** `___<tipo>: Label{Placeholder}`
 
 ---
 
@@ -12,33 +14,63 @@ import { DslExample } from "../../components/docs";
 
 ```dsl
 screen FormBasic:
-  container-p8:
-    ___:Nome{Digite seu nome}
-    ___:Email{seu@email.com}
-    ___:Telefone{(00) 00000-0000}
+  container:
+    stack:
+      ___: Nome{Digite seu nome}
+      ___: Email{seu@email.com}
+      ___: Telefone{(00) 00000-0000}
 ```
 
 </DslExample>
 
 ---
 
-## Modificadores
+## Tipos de Input
 
-| Modificador | Sintaxe | Uso |
-|-------------|---------|-----|
-| Senha | `___*:` | Texto mascarado |
-| Desabilitado | `___-:` | Somente leitura |
+**Sintaxe:** `___<tipo>:` (opcional, padrão é text)
 
-<DslExample title="Modificadores" description="Senha e desabilitado">
+| Tipo | Sintaxe | Descrição |
+|------|---------|-----------|
+| Text | `___:` | Texto simples (padrão) |
+| Email | `___email:` | Email com validação |
+| Password | `___password:` | Texto mascarado |
+| Date | `___date:` | Seletor de data |
+| Number | `___number:` | Apenas números |
+| Textarea | `___textarea:` | Texto multi-linha |
+
+<DslExample title="Tipos de Input" description="Inputs especializados">
 
 ```dsl
-screen LoginForm:
-  card-p6:
-    ___:Email{seu@email.com}
-    ___*:Senha{Digite sua senha}
-    ___-:ID{user-12345}
+screen InputTypes:
+  card:
+    # Formulário
     
-    @[Entrar](login)
+    ___: Nome{Digite seu nome}
+    ___email: Email{seu@email.com}
+    ___password: Senha{Digite sua senha}
+    ___date: Data de Nascimento{Selecione}
+    ___number: Idade{0}
+    ___textarea: Mensagem{Digite sua mensagem}
+```
+
+</DslExample>
+
+---
+
+## Atributos Adicionais
+
+**Sintaxe:** `| atributos` após o input
+
+<DslExample title="Atributos" description="Required, placeholder, etc">
+
+```dsl
+screen FormAttributes:
+  card:
+    # Cadastro
+    
+    ___email: Email{seu@email.com} | required
+    ___password: Senha{Mínimo 8 caracteres} | required minlength="8"
+    ___: CPF{000.000.000-00} | required pattern="[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}"
 ```
 
 </DslExample>
@@ -47,15 +79,16 @@ screen LoginForm:
 
 ## Select (Dropdown)
 
-**Sintaxe:** `___:Label{Placeholder}[Opção1 | Opção2 | Opção3]`
+**Sintaxe:** `___: Label{Placeholder}[Opção1 | Opção2 | Opção3]`
 
 <DslExample title="Select" description="Menu com opções">
 
 ```dsl
 screen AddressForm:
-  container-p8:
-    ___:Estado{Selecione}[SP | RJ | MG | RS | PR]
-    ___:País{Selecione}[Brasil | Argentina | Chile]
+  container:
+    stack:
+      ___: Estado{Selecione}[SP | RJ | MG | RS | PR]
+      ___: País{Selecione}[Brasil | Argentina | Chile]
 ```
 
 </DslExample>
@@ -114,19 +147,19 @@ screen Survey:
 
 ```dsl
 screen Registration:
-  container-p8:
-    card-p8:
+  container:
+    card:
       # Criar Conta
       
-      ___:Nome Completo{João Silva}
-      ___:Email{joao@exemplo.com}
-      ___*:Senha{Mínimo 8 caracteres}
-      ___*:Confirmar Senha{Digite novamente}
+      ___: Nome Completo{João Silva}
+      ___email: Email{joao@exemplo.com}
+      ___password: Senha{Mínimo 8 caracteres}
+      ___password: Confirmar Senha{Digite novamente}
       
       ---
       
-      ___:País{Selecione}[Brasil | Portugal | Outro]
-      ___:Estado{Selecione}[SP | RJ | MG]
+      ___: País{Selecione}[Brasil | Portugal | Outro]
+      ___: Estado{Selecione}[SP | RJ | MG]
       
       ---
       
@@ -138,9 +171,9 @@ screen Registration:
       [X] Aceito emails
       [X] Aceito termos
       
-      row-gap4:
-        @[i-UserPlus Criar Conta](register)
-        @@+[Cancelar](cancel)
+      row-between:
+        @[Criar Conta](register)
+        @outline[Cancelar](cancel)
 ```
 
 </DslExample>
@@ -155,16 +188,16 @@ screen Registration:
 
 ```dsl
 screen Login:
-  container-center:
-    card-p8:
+  container:
+    card:
       # Bem-vindo
       
-      ___:Email{Digite seu email}
-      ___*:Senha{Sua senha}
+      ___email: Email{Digite seu email}
+      ___password: Senha{Sua senha}
       
       [X] Lembrar de mim
       
-      @[i-LogIn Entrar](login)
+      @[Entrar](login)
       
       >>> #[Esqueci minha senha](recover)
 ```
@@ -177,16 +210,17 @@ screen Login:
 
 ```dsl
 screen Search:
-  container-p8:
-    ___:Buscar{Nome do produto}
-    
-    ___:Categoria{Todas}[Eletrônicos | Roupas | Livros]
-    ___:Ordenar{Relevância}[Preço | Avaliação | Vendas]
-    
-    [X] Frete Grátis
-    [ ] Em Promoção
-    
-    @[i-Search Buscar](search)
+  container:
+    stack:
+      ___: Buscar{Nome do produto}
+      
+      ___: Categoria{Todas}[Eletrônicos | Roupas | Livros]
+      ___: Ordenar{Relevância}[Preço | Avaliação | Vendas]
+      
+      [X] Frete Grátis
+      [ ] Em Promoção
+      
+      @[Buscar](search)
 ```
 
 </DslExample>
@@ -197,22 +231,22 @@ screen Search:
 
 ```dsl
 screen ProductForm:
-  container-p8:
-    grid-cols2-gap4:
-      ___:Nome{Camiseta Básica}
-      ___:SKU{ABC-123}
+  container:
+    grid-2:
+      ___: Nome{Camiseta Básica}
+      ___: SKU{ABC-123}
       
-      ___:Preço{R$ 0,00}
-      ___:Estoque{0}
+      ___number: Preço{0}
+      ___number: Estoque{0}
       
-      ___:Categoria{Selecione}[Roupas | Acessórios]
-      ___:Marca{Selecione}[Nike | Adidas]
+      ___: Categoria{Selecione}[Roupas | Acessórios]
+      ___: Marca{Selecione}[Nike | Adidas]
     
-    ___:Descrição{Descrição do produto}
+    ___textarea: Descrição{Descrição do produto}
     
     [X] Produto ativo
     
-    @[i-Save Salvar](save)
+    @[Salvar](save)
 ```
 
 </DslExample>

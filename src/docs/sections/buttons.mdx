@@ -4,82 +4,84 @@ import { DslExample } from "../../components/docs";
 
 **Sintaxe:** `@[Texto](ação)`
 
-**Com modificadores:** `@{variante}[Texto](ação)` ou `@{variante}[i-Ícone Texto](ação)`
-
----
-
-## Tamanhos
-
-| Símbolo | Tamanho |
-|---------|----------|
-| `@` | Grande |
-| `@@` | Médio |
-| `@@@` | Pequeno |
-
-<DslExample title="Tamanhos" description="3 tamanhos disponíveis">
-
-```dsl
-screen ButtonSizes:
-  container-p8-center:
-    @[Grande](action)
-    @@[Médio](action)
-    @@@[Pequeno](action)
-```
-
-</DslExample>
+**Com variante e tamanho:** `@<variante>-<tamanho>[Texto](ação)`
 
 ---
 
 ## Variantes
 
-| Modificador | Nome | Uso |
-|-------------|------|-----|
-| _(nenhum)_ | Padrão | Ação primária |
-| `_` | Ghost | Ação discreta |
-| `+` | Outline | Ação secundária |
-| `-` | Secondary | Estilo alternativo |
-| `=` | Destructive | Deletar/remover |
-| `!` | Warning | Atenção/confirmação |
+**Sintaxe:** `@<variante>[Texto]` (opcional, padrão é primary)
 
-<DslExample title="Variantes" description="6 estilos visuais">
+| Variante | Sintaxe | Uso |
+|----------|---------|-----|
+| Primary | `@primary` ou `@` | Ação primária (padrão) |
+| Secondary | `@secondary` | Ação secundária |
+| Outline | `@outline` | Ação com borda |
+| Ghost | `@ghost` | Ação discreta |
+| Destructive | `@destructive` | Deletar/remover |
+| Link | `@link` | Estilo de link |
+| Success | `@success` | Confirmação positiva |
+| Warning | `@warning` | Atenção/alerta |
+
+<DslExample title="Variantes" description="8 estilos visuais">
 
 ```dsl
 screen ButtonVariants:
-  container-p8:
-    row-gap4:
-      @[Padrão](action)
-      @_[Ghost](action)
-      @+[Outline](action)
-    
-    row-gap4:
-      @-[Secundário](action)
-      @=[Deletar](delete)
-      @![Aviso](warning)
+  container:
+    stack:
+      @[Primary](action)
+      @secondary[Secondary](action)
+      @outline[Outline](action)
+      @ghost[Ghost](action)
+      @destructive[Destructive](delete)
+      @link[Link](action)
+      @success[Success](action)
+      @warning[Warning](warning)
 ```
 
 </DslExample>
 
 ---
 
-## Ícones
+## Tamanhos
 
-**Sintaxe:** `i-NomeIcone` antes do texto (separado por espaço)
+**Sintaxe:** `-<tamanho>` após a variante (opcional, padrão é md)
 
-**Biblioteca:** [Lucide Icons](https://lucide.dev)
+| Tamanho | Sintaxe |
+|---------|---------|
+| Extra Small | `-xs` |
+| Small | `-sm` |
+| Medium | `-md` (padrão) |
+| Large | `-lg` |
 
-<DslExample title="Botões com Ícones" description="Adicionar ícones">
+<DslExample title="Tamanhos" description="4 tamanhos disponíveis">
 
 ```dsl
-screen IconButtons:
-  container-p8:
-    row-gap4:
-      @[i-Save Salvar](save)
-      @[i-Edit Editar](edit)
-      @[i-Share Compartilhar](share)
-    
-    row-gap4:
-      @@+[i-Download Download](download)
-      @@@=[i-Trash2 Excluir](delete)
+screen ButtonSizes:
+  container:
+    stack:
+      @-xs[Extra Small](action)
+      @-sm[Small](action)
+      @-md[Medium](action)
+      @-lg[Large](action)
+```
+
+</DslExample>
+
+---
+
+## Combinando Variante e Tamanho
+
+<DslExample title="Variantes + Tamanhos" description="Combinações possíveis">
+
+```dsl
+screen ButtonCombinations:
+  container:
+    stack:
+      @secondary-lg[Secondary Large](action)
+      @outline-sm[Outline Small](action)
+      @ghost-xs[Ghost Extra Small](action)
+      @destructive-lg[Delete Large](delete)
 ```
 
 </DslExample>
@@ -99,13 +101,14 @@ screen IconButtons:
 
 ```dsl
 screen Home:
-  container-p8:
-    @[Ir para Dashboard](Dashboard)
-    @[Abrir GitHub](https://github.com)
-    @[Mostrar Mensagem](alert('Clicado!'))
+  container:
+    stack:
+      @[Ir para Dashboard](Dashboard)
+      @[Abrir GitHub](https://github.com)
+      @[Mostrar Mensagem](alert('Clicado!'))
 
 screen Dashboard:
-  container-p8:
+  container:
     # Dashboard
     @[Voltar](Home)
 ```
@@ -122,14 +125,14 @@ screen Dashboard:
 
 ```dsl
 screen FormExample:
-  card-p6:
+  card:
     # Cadastro
-    ___:Nome{Digite seu nome}
-    ___:Email{email@exemplo.com}
+    ___: Nome{Digite seu nome}
+    ___email: Email{email@exemplo.com}
     
-    row-gap4:
-      @[i-UserPlus Cadastrar](register)
-      @@+[Cancelar](cancel)
+    row-between:
+      @[Cadastrar](register)
+      @outline[Cancelar](cancel)
 ```
 
 </DslExample>
@@ -140,14 +143,14 @@ screen FormExample:
 
 ```dsl
 screen ProductCard:
-  card-p4:
+  card:
     ![Produto](https://via.placeholder.com/200)
     ## Produto XYZ
     >> R$ 99,90
     
     row-between:
-      @-[Detalhes](ProductDetail)
-      @@[i-ShoppingCart Comprar](buy)
+      @secondary[Detalhes](ProductDetail)
+      @[Comprar](buy)
 ```
 
 </DslExample>
@@ -158,14 +161,14 @@ screen ProductCard:
 
 ```dsl
 screen DeleteConfirm:
-  container-p8-center:
-    card-p6:
+  container:
+    card:
       # Confirmar Exclusão
       > Esta ação não pode ser desfeita.
       
-      row-gap4:
-        @=[i-Trash Excluir Permanentemente](delete)
-        @@+[Cancelar](cancel)
+      row-between:
+        @destructive[Excluir Permanentemente](delete)
+        @outline[Cancelar](cancel)
 ```
 
 </DslExample>
