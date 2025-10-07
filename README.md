@@ -114,22 +114,32 @@ drawer Menu:
 
 ### Buttons
 
-Size: `@` (large), `@@` (medium), `@@@` (small)  
-Variants: `_` (ghost), `+` (outline), `-` (secondary), `=` (destructive), `!` (warning)
+Pattern: `@<variant>?-<size>?\[text\]\(action\)`
+
+**Variants** (optional, defaults to primary):
+- `@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@link`, `@success`, `@warning`
+
+**Sizes** (optional, defaults to md):
+- `-xs`, `-sm`, `-md`, `-lg`
 
 ```dsl
 @[Large Default](action)
-@@+[Medium Outline](action)
-@@@=[Small Delete](action)
-@[With Icon]{icon-name}(action)
+@secondary-lg[Medium Outline](action)
+@outline-sm[Small Cancel](action)
+@destructive[Delete](delete)
 ```
 
 ### Forms
 
+Pattern: `___<type>?: Label{placeholder}[options] | attributes`
+
+**Input Types**: `email`, `password`, `date`, `number`, `textarea`
+
 ```dsl
-___:Email{Enter email}
-___*:Password{Enter password}
-___:Country{Select}[USA | Canada | Mexico]
+___: Email{Enter email}
+___email: Email{Enter email}
+___password: Password{Enter password}
+___: Country{Select}[USA | Canada | Mexico]
 
 [X] Checked checkbox
 [ ] Unchecked checkbox
@@ -139,29 +149,26 @@ ___:Country{Select}[USA | Canada | Mexico]
 
 ### Layouts
 
-All layouts support inline modifiers:
+Canonical preset layouts with predefined Tailwind classes and shadcn styling:
 
 ```dsl
-row-w50-center-p4:
-  @[Button 1]
-  @[Button 2]
-
-col-h100-start-m2:
-  > Content in column
-
-grid-cols3-gap4:
-  card:
-    # Item 1
-  card:
-    # Item 2
-  card:
-    # Item 3
-
-container-wfull-center-p8:
-  # Centered content
+container:          → Standard container
+container-narrow:   → Narrow container
+stack:              → Vertical stack (gap-4)
+stack-tight:        → Tight vertical stack (gap-2)
+row-center:         → Centered horizontal row
+row-between:        → Row with space-between
+grid-2:             → 2-column grid
+grid-3:             → 3-column grid
+card:               → Standard card
+card-compact:       → Compact card
+header:             → Page header
+sidebar:            → Sidebar layout
+list:               → List container
+navigator:          → Bottom navigation
+fab:                → Floating action button
+---                 → Separator
 ```
-
-**Modifiers**: `w[num]`, `h[num]`, `wfull`, `hfull`, `center`, `start`, `end`, `p[num]`, `m[num]`, `gap[num]`, `cols[1-12]`
 
 ### Components with Props
 
@@ -193,15 +200,16 @@ Props are pipe-separated (`|`) and interpolated with `%propName`.
 ### Mobile Components
 
 ```dsl
-header-h100-center:
+header:
   # App Name
-  @_[Menu](menu)
+  @ghost[Menu](menu)
 
 navigator:
-  - [Home]{home}(Home)
-  - [Profile]{user}(Profile)
+  - Home | Home
+  - Profile | Profile
 
-fab{plus}(addItem)
+fab:
+  - + | addItem
 ```
 ## Complete Example
 
@@ -209,36 +217,36 @@ Here's a full app with navigation, components, modals, and lists:
 
 ```dsl
 component Header:
-  header-h100-center:
+  header:
     # TaskApp
-    @_[Menu](MainMenu)
+    @ghost[Menu](MainMenu)
 
 modal ConfirmDelete:
   # Delete Task?
   > This action cannot be undone
-  @=[Delete](delete)
-  @-[Cancel](close)
+  @destructive[Delete](delete)
+  @secondary[Cancel](close)
 
 drawer MainMenu:
   # Menu
   list:
-    - [Dashboard](Dashboard)
-    - [Tasks](Tasks)
-    - [Settings](Settings)
+    - Dashboard | Dashboard
+    - Tasks | Tasks
+    - Settings | Settings
 
 screen Dashboard:
   $Header
   
-  container-wfull-center-p8:
-    card-p6:
+  container:
+    card:
       ## Welcome Back
       > You have 5 tasks pending
     
-    row-between-center-m4:
-      card-w50-p4:
+    row-between:
+      card:
         ### Active
         > 12 tasks
-      card-w50-p4:
+      card:
         ### Completed
         > 48 tasks
 
@@ -248,14 +256,14 @@ screen Tasks:
   @[Add Task](AddTask)
   
   list:
-    - Setup Project{Due: Today}@+[Edit](edit)@=[Delete](ConfirmDelete)
-    - Review Code{Due: Tomorrow}@+[Edit](edit)@=[Delete](ConfirmDelete)
-    - Deploy App{Due: Friday}@+[Edit](edit)@=[Delete](ConfirmDelete)
+    - Setup Project | Due: Today | @outline[Edit](edit) | @destructive[Delete](ConfirmDelete)
+    - Review Code | Due: Tomorrow | @outline[Edit](edit) | @destructive[Delete](ConfirmDelete)
+    - Deploy App | Due: Friday | @outline[Edit](edit) | @destructive[Delete](ConfirmDelete)
   
   navigator:
-    - [Dashboard]{home}(Dashboard)
-    - [Tasks]{check-square}(Tasks)
-    - [Settings]{settings}(Settings)
+    - Dashboard | Dashboard
+    - Tasks | Tasks
+    - Settings | Settings
 ```
 
 ## Architecture

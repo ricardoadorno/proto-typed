@@ -44,26 +44,30 @@ drawer DrawerName:
 ```
 
 #### **Buttons** (`primitives.tokens.ts`)
-Pattern: `(@{1,3})([_+\-=!]?)\[text\](?:\{icon\})?(?:\(action\))?`
+Pattern: `@<variant>?-<size>?\[text\]\(action\)`
 
-**Size** (@ count):
-- `@[Text]` → Large
-- `@@[Text]` → Medium  
-- `@@@[Text]` → Small
+**Variants** (optional, defaults to primary):
+- `@primary[Text]` → Primary (default)
+- `@secondary[Text]` → Secondary
+- `@outline[Text]` → Outline
+- `@ghost[Text]` → Ghost
+- `@destructive[Text]` → Destructive
+- `@link[Text]` → Link
+- `@success[Text]` → Success
+- `@warning[Text]` → Warning
 
-**Variants** (symbol after @):
-- `@[Default]` → Default
-- `@_[Ghost]` → Ghost
-- `@+[Outline]` → Outline
-- `@-[Secondary]` → Secondary
-- `@=[Delete]` → Destructive
-- `@![Warning]` → Warning
+**Sizes** (optional, defaults to md):
+- `-xs` → Extra Small
+- `-sm` → Small
+- `-md` → Medium (default)
+- `-lg` → Large
 
 **Examples**:
 ```
-@[Click Me](action)
-@@+[Medium Outline]{icon}(action)
-@@@=[Small Delete](delete)
+@[Click Me](action)              → Primary, medium
+@secondary-lg[Submit](submit)    → Secondary, large
+@outline-sm[Cancel](close)       → Outline, small
+@destructive[Delete](delete)     → Destructive, medium
 ```
 
 #### **Links & Images** (`primitives.tokens.ts`)
@@ -73,67 +77,86 @@ Pattern: `(@{1,3})([_+\-=!]?)\[text\](?:\{icon\})?(?:\(action\))?`
 ```
 
 #### **Layout Elements** (`layouts.tokens.ts`)
-All support **inline modifiers** with dash-separated syntax:
+Canonical preset layouts with predefined Tailwind classes and shadcn styling.
 
+**Containers**:
 ```
-row-w50-center-p4:
-col-h100-start-m2:
-grid-cols3-gap4-p2:
-container-wfull-center-stretch-p8:
-```
-
-**Available Modifiers**:
-- **Size**: `w[num]`, `h[num]`, `wfull`, `hfull`, `wauto`, `hauto`
-- **Justify**: `start`, `end`, `center`, `between`, `around`, `evenly`
-- **Align**: `start`, `end`, `center`, `stretch`, `baseline`
-- **Padding**: `p[num]`, `px[num]`, `py[num]`, `pl[num]`, `pr[num]`, `pt[num]`, `pb[num]`
-- **Margin**: `m[num]`, `mx[num]`, `my[num]`, `ml[num]`, `mr[num]`, `mt[num]`, `mb[num]`
-- **Grid**: `gap[num]`, `cols[1-12]`
-
-#### **Structures** (`structures.tokens.ts`)
-```
-list:
-  - Simple item
-  - Complex item with content
-
-card:
-card-w75-p4:
-header:
-header-h100-center:
-navigator:
-  - icon text | destination
-  - Home | HomeScreen
-  - i-Settings Config | Settings
-fab:
-  - icon | destination
-  - + | CreateScreen
-  - i-Plus Add | CreateScreen
----  (separator)
+container:          → Standard container with max-width
+container-narrow:   → Narrow container (sm max-width)
+container-wide:     → Wide container (lg max-width)
+container-full:     → Full-width container
 ```
 
-**Navigator Format**:
-- **Two parts**: `- text | destination` → Text without icon
-- **Three parts**: `- text | icon | destination` → Text with icon prefix
-- **Icon-first**: `- i-Home Home | HomeScreen` → Icon name (i-Home) + label (Home) as text
+**Stacks** (Vertical flow):
+```
+stack:              → Standard vertical stack (gap-4)
+stack-tight:        → Tight vertical stack (gap-2)
+stack-loose:        → Loose vertical stack (gap-8)
+stack-flush:        → No gap vertical stack
+```
 
-**Fab Format**:
-- **Two parts**: `- icon | destination` → Icon and navigation target
-- Icon can be text (emoji/character) or Lucide icon name (i-Plus)
-- Example: `- + | CreateScreen` or `- i-Plus | CreateScreen`
+**Rows** (Horizontal flow):
+```
+row-start:          → Row with items at start
+row-center:         → Row with items centered
+row-between:        → Row with space-between
+row-end:            → Row with items at end
+```
+
+**Grids**:
+```
+grid-2:             → 2-column grid
+grid-3:             → 3-column grid
+grid-4:             → 4-column grid
+grid-auto:          → Auto-fit grid
+```
+
+**Cards**:
+```
+card:               → Standard card with padding
+card-compact:       → Compact card (less padding)
+card-feature:       → Feature card (more prominent)
+```
+
+**Special**:
+```
+header:             → Page header layout
+sidebar:            → Sidebar layout
+list:               → List container
+navigator:          → Bottom navigation bar
+fab:                → Floating action button
+```
+
+**Separator**:
+```
+---                 → Horizontal separator
+```
 
 #### **Forms** (`inputs.tokens.ts`)
-Pattern: `___[\*\-]?(?::Label)?(?:\{Placeholder\})?(?:\[Options\])?`
+Pattern: `___<type>?: Label{placeholder}[options] | attributes`
 
+**Input Types** (optional, defaults to text):
+- `email`, `password`, `date`, `number`, `textarea`
+
+**Format**:
 ```
-___:Email{Enter email}
-___*:Password{Enter password}
-___-:Disabled{Can't edit}
-___:Country{Select}[USA | Canada | Mexico]
+___: Label{placeholder}                    → Text input
+___email: Email{Enter email}               → Email input
+___password: Password{Enter password}      → Password input
+___date: Date{Select date}                 → Date picker
+___number: Quantity{Enter number}          → Number input
+___textarea: Message{Type message}         → Textarea
+___: Country{Select}[USA | Canada | Mexico] → Select dropdown
 
-[X] Checked checkbox
-[ ] Unchecked checkbox
-(X) Selected radio
-( ) Unselected radio
+[X] Checked checkbox label
+[ ] Unchecked checkbox label
+(X) Selected radio label
+( ) Unselected radio label
+```
+
+**Attributes** (optional, pipe-separated):
+```
+___: Email{Enter email} | required placeholder="Email address"
 ```
 
 #### **Components** (`components.tokens.ts`)
@@ -418,17 +441,24 @@ const RENDERERS: Record<NodeType, typeof _render> = {
    - Add to `NodeType` union
    - Define props interface if needed
 
-### Layout Modifier Parsing
+### Layout System
 
-**IMPORTANT**: Layout modifiers are **inline** (not attributes). Parse from token image string.
+**IMPORTANT**: Layouts are now **canonical presets** - no inline modifiers or dynamic parsing.
 
-Example from `layouts.builders.ts`:
+Each layout token represents a complete, pre-configured layout with predefined Tailwind classes and shadcn styling. Instead of modifiers like `row-w50-center-p4`, you use semantic layout names like `row-center`, `stack-tight`, `container-narrow`.
+
+**Migration Example**:
 ```typescript
-const rowToken = ctx.Row[0];
-const modifiers = parseLayoutModifiers(rowToken.image);
-// rowToken.image = "row-w50-center-p4"
-// modifiers = { width: "50", justify: "center", padding: "4" }
+// OLD (with modifiers - NO LONGER SUPPORTED)
+row-w50-center-p4:
+  content
+
+// NEW (canonical presets)
+row-center:
+  content
 ```
+
+**No parsing needed** - layout tokens map directly to predefined CSS classes in the renderer.
 
 ### Component Props System
 
@@ -622,14 +652,16 @@ export function renderNewElement(node: AstNode): string {
 ### DO NOT
 - ❌ Create test files unless explicitly requested
 - ❌ Reference StringLiteral token (doesn't exist)
-- ❌ Use attribute syntax for layout modifiers (they're inline)
+- ❌ Use inline modifiers for layouts (use canonical presets instead)
+- ❌ Use old button syntax with @ count and symbols
 - ❌ Use light color Tailwind classes
 - ❌ Make assumptions - check `src/core/` implementation first
 
 ### ALWAYS
 - ✅ Read token implementation before modifying syntax
-- ✅ Use inline modifiers for layouts: `row-w50-center-p4:`
-- ✅ Use @ count for button size, symbol for variant
+- ✅ Use canonical layout presets: `row-center`, `stack-tight`, `container-narrow`
+- ✅ Use variant and size modifiers for buttons: `@secondary-lg[Text]`
+- ✅ Use declarative input types: `___email:`, `___password:`, `___textarea:`
 - ✅ Validate with running app, not tests
 - ✅ Ask user for feedback on functionality
 
@@ -640,30 +672,30 @@ export function renderNewElement(node: AstNode): string {
 ### Complete Screen Example
 ```
 screen Dashboard:
-  header-h100-center-p4:
+  header:
     # Dashboard
-    @_[Settings](Settings)
+    @ghost[Settings](Settings)
   
-  container-wfull-center-p8:
-    row-between-center-m4:
-      col-w50-start-p2:
+  container:
+    row-between:
+      card:
         ## User Stats
         > Total Users: 1,234
         @[View Details](Users)
       
-      col-w50-end-p2:
+      card:
         ## Revenue
         >>> Last updated: 5 mins ago
-        @+[Refresh](Refresh)
+        @outline[Refresh](Refresh)
     
     list:
       - Recent activity item
       - Another update
   
   navigator:
-    - i-Home Dashboard | Dashboard
-    - i-Users Users | Users
-    - i-Settings Settings | Settings
+    - Home | Dashboard
+    - Users | Users
+    - Settings | Settings
   
   fab:
     - + | CreateItem
@@ -672,11 +704,11 @@ screen Dashboard:
 ### Component with Props Example
 ```
 component ContactCard:
-  card-p4-m2:
+  card:
     # %name
     > Email: %email
     > Phone: %phone
-    @@[Call](PhoneView)
+    @secondary[Call](PhoneView)
 
 screen Contacts:
   list $ContactCard:
