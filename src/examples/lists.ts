@@ -8,8 +8,8 @@ component UserList:
         # %name
         > %phone
         > %email
-        @+[Edit](%editAction)
-        @=[Delete](%deleteAction)
+        @outline[Edit](%editAction)
+        @destructive[Delete](%deleteAction)
 
 screen ListExamples:
   # List Examples
@@ -51,10 +51,10 @@ screen ListExamples:
     > Real-world task list with various actions and button variants
 
     list:
-      - [Task](TaskDetail)Setup Development Environment{Configure local development}[Start](start)@_[Skip](skip)
-      - [Task](TaskDetail)Review Code Changes{Pull request #123}@+[Approve](approve)@![Request Changes](changes)@_[Comment](comment)
-      - [Task](TaskDetail)Deploy to Production{Release v2.1.0}@+[Deploy](deploy)@=[Rollback](rollback)
-      - [Meeting](MeetingDetail)Team Standup{Daily sync meeting}[Join](join)@-[Reschedule](reschedule)
+      - [Task](TaskDetail)Setup Development Environment{Configure local development}[Start](start)@ghost[Skip](skip)
+      - [Task](TaskDetail)Review Code Changes{Pull request #123}@outline[Approve](approve)@warning[Request Changes](changes)@ghost[Comment](comment)
+      - [Task](TaskDetail)Deploy to Production{Release v2.1.0}@outline[Deploy](deploy)@destructive[Rollback](rollback)
+      - [Meeting](MeetingDetail)Team Standup{Daily sync meeting}[Join](join)@secondary[Reschedule](reschedule)
 
   card:
     ## Contact List Example
@@ -81,24 +81,24 @@ screen ListExamples:
 
     list:
       - Default buttons[Save](save)[Edit](edit)
-      - Ghost buttons@_[Delete](delete)@_[Cancel](cancel)
-      - Outline buttons@+[Approve](approve)@+[Review](review)
-      - Secondary buttons@-[Archive](archive)@-[Hide](hide)
-      - Destructive buttons@=[Remove](remove)@=[Destroy](destroy)
-      - Warning buttons@![Caution](caution)@![Alert](alert)
-      - Mixed variants[Normal](normal)@_[Ghost](ghost)@+[Outline](outline)@=[Danger](danger)
+      - Ghost buttons@ghost[Delete](delete)@ghost[Cancel](cancel)
+      - Outline buttons@outline[Approve](approve)@outline[Review](review)
+      - Secondary buttons@secondary[Archive](archive)@secondary[Hide](hide)
+      - Destructive buttons@destructive[Remove](remove)@destructive[Destroy](destroy)
+      - Warning buttons@warning[Caution](caution)@warning[Alert](alert)
+      - Mixed variants[Normal](normal)@ghost[Ghost](ghost)@outline[Outline](outline)@destructive[Danger](danger)
 
   card:
     ## Notification List
     > System notifications with actions
 
     list:
-      - [Notification](NotificationDetail)New Message{From: team@company.com}[Mark Read](read)@=[Delete](delete)
-      - System Update Available{Version 2.1.0 is ready}@+[Update Now](update)@_[Later](later)
-      - [Alert](AlertDetail)Security Alert{Unusual login detected}@![Review](review)@_[Dismiss](dismiss)
-      - Welcome to proto-typed!{Getting started guide}[Start Tutorial](tutorial)@_[Skip](skip)
+      - [Notification](NotificationDetail)New Message{From: team@company.com}[Mark Read](read)@destructive[Delete](delete)
+      - System Update Available{Version 2.1.0 is ready}@outline[Update Now](update)@ghost[Later](later)
+      - [Alert](AlertDetail)Security Alert{Unusual login detected}@warning[Review](review)@ghost[Dismiss](dismiss)
+      - Welcome to proto-typed!{Getting started guide}[Start Tutorial](tutorial)@ghost[Skip](skip)
 
-  @[Back to Examples](ExamplesList)
+  @primary[Back to Examples](ExamplesList)
 `;
 
 export default listsExample;

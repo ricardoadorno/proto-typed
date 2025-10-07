@@ -27,7 +27,7 @@ screen TestScreen:
     
   container:
     > FAB navigation worked!
-    @[Go Back](TestFAB)
+    @primary[Go Back](TestFAB)
     
   fab{←}(TestFAB)
 `;

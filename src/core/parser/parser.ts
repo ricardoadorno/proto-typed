@@ -5,8 +5,13 @@ import {
   Identifier, Colon,
   // Views  
   Screen, Modal, Drawer,
-  // Primitives
-  Button, Link, Image, Heading, Text, Paragraph, MutedText, Note, Quote,
+  // Primitives - Buttons
+  ButtonPrimary, ButtonSecondary, ButtonOutline, ButtonGhost, ButtonDestructive,
+  ButtonLink, ButtonSuccess, ButtonWarning, ButtonMarker,
+  ButtonSizeXs, ButtonSizeSm, ButtonSizeMd, ButtonSizeLg,
+  ButtonLabel, ButtonAction,
+  // Primitives - Other
+  Link, Image, Heading, Text, Paragraph, MutedText, Note, Quote,
   // Canonical Layouts
   ContainerNarrow, ContainerWide, ContainerFull, Container,
   Stack, StackTight, StackLoose,
@@ -17,7 +22,8 @@ import {
   // Structures
   List, Navigator, UnorderedListItem, FAB, Separator,
   // Inputs
-  Input, RadioOption, Checkbox,
+  Input,
+  RadioOption, Checkbox,
   // Components
   Component, ComponentInstance, ComponentInstanceWithProps,
   // Styles
@@ -209,7 +215,36 @@ export class UiDslParser extends CstParser {
   });
 
   buttonElement = this.RULE("buttonElement", () => {
-    this.CONSUME(Button);
+    // Parse button variant (or default marker)
+    this.OR([
+      { ALT: () => this.CONSUME(ButtonPrimary) },
+      { ALT: () => this.CONSUME(ButtonSecondary) },
+      { ALT: () => this.CONSUME(ButtonOutline) },
+      { ALT: () => this.CONSUME(ButtonGhost) },
+      { ALT: () => this.CONSUME(ButtonDestructive) },
+      { ALT: () => this.CONSUME(ButtonLink) },
+      { ALT: () => this.CONSUME(ButtonSuccess) },
+      { ALT: () => this.CONSUME(ButtonWarning) },
+      { ALT: () => this.CONSUME(ButtonMarker) } // Default: primary
+    ]);
+    
+    // Parse optional size
+    this.OPTION(() => {
+      this.OR2([
+        { ALT: () => this.CONSUME(ButtonSizeXs) },
+        { ALT: () => this.CONSUME(ButtonSizeSm) },
+        { ALT: () => this.CONSUME(ButtonSizeMd) },
+        { ALT: () => this.CONSUME(ButtonSizeLg) }
+      ]);
+    });
+    
+    // Parse required label
+    this.CONSUME(ButtonLabel);
+    
+    // Parse optional action
+    this.OPTION2(() => {
+      this.CONSUME(ButtonAction);
+    });
   });
 
   linkElement = this.RULE("linkElement", () => {

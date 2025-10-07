@@ -10,21 +10,21 @@ export const componentPropsDemo = `component ContactItem:
     # %name
     > Phone: %phone
     > Email: %email
-    @[Call](call-%phone)
-    @[Email](mailto-%email)
+    @primary[Call](call-%phone)
+    @secondary[Email](mailto-%email)
 
 component ProductItem:
   card:
     # %title
     > Price: R$ %price
     > %description
-    @[Buy Now](buy-%id)
+    @primary[Buy Now](buy-%id)
 
 component TaskItem:
   container:
     > %title - Status: %status
     > Due: %deadline
-    @[Complete](complete-%id)
+    @success[Complete](complete-%id)
 
 screen ComponentPropsDemo:
   # Component Props & Lists Demo

@@ -9,7 +9,7 @@ component ContactCard:
       stack-tight:
         >> %name
         >>> %email
-      @@@+[i-Edit](EditContact)
+      @outline-sm[i-Edit](EditContact)
 
 
 component MenuItem:
@@ -25,7 +25,7 @@ component GroupItem:
 screen Contacts:
   header:
     >> My Contacts
-    @@@_[i-Menu](MainDrawer)
+    @ghost-sm[i-Menu](MainDrawer)
   container:
     > Your contacts organized in one place
     list $ContactCard:
@@ -46,10 +46,10 @@ modal CreateContact:
     ## New Contact
     >>> Fill contact information
 
-    ___*:Full Name{Enter name}
-    ___*:Email{email@example.com}
-    ___:Phone{(11) 99999-9999}
-    ___-:ID{Auto-generated}
+    ___: Full Name{Enter name} | required
+    ___email: Email{email@example.com} | required
+    ___: Phone{(11) 99999-9999}
+    ___: ID{Auto-generated} | disabled
 
     ---
 
@@ -64,8 +64,8 @@ modal CreateContact:
     [ ] Sync with cloud
 
     row-between:
-      @@-[Cancel](-1)
-      @@[i-Save Save](Contacts)
+      @secondary-md[Cancel](-1)
+      @primary-md[i-Save Save](Contacts)
 
 
 modal ConfirmDelete:
@@ -78,8 +78,8 @@ modal ConfirmDelete:
     "> Consider archiving instead of deleting
 
     row-between:
-      @@+[Cancel](-1)
-      @@=[i-Trash Delete](Contacts)
+      @outline-md[Cancel](-1)
+      @destructive-md[i-Trash Delete](Contacts)
 
 
 drawer MainDrawer:
@@ -99,17 +99,17 @@ drawer MainDrawer:
     card:
       >> Premium Features
       >>> Unlock advanced tools
-      @@[i-Crown Upgrade](Premium)
+      @primary-md[i-Crown Upgrade](Premium)
 
     ---
 
-    @@=[i-LogOut Sign Out](Contacts)
+    @destructive-md[i-LogOut Sign Out](Contacts)
 
 
 screen Favorites:
   header:
     ## ⭐ Favorites
-    @[i-Menu](MainDrawer)
+    @primary[i-Menu](MainDrawer)
 
   container:
     stack:
@@ -119,7 +119,7 @@ screen Favorites:
       
       *> Tap the star icon to add contacts
 
-      @@[i-ArrowLeft Back](Contacts)
+      @primary-md[i-ArrowLeft Back](Contacts)
 
   navigator:
     - i-Users | Contacts
@@ -130,7 +130,7 @@ screen Favorites:
 screen Groups:
   header:
     ## Groups
-    @[i-Menu](MainDrawer)
+    @primary[i-Menu](MainDrawer)
 
   stack:
     > Organize contacts by groups
@@ -142,7 +142,7 @@ screen Groups:
 
     ---
 
-    @@[i-Plus New Group](Contacts)
+    @primary-md[i-Plus New Group](Contacts)
 
   navigator:
     - i-Users | Contacts
@@ -153,7 +153,7 @@ screen Groups:
 screen Settings:
   header:
     ## Settings
-    @[i-Menu](MainDrawer)
+    @primary[i-Menu](MainDrawer)
 
   stack:
     card:
@@ -177,7 +177,7 @@ screen Settings:
     ---
 
     row-center:
-      @@=[Clear Cache](Contacts)
+      @destructive-md[Clear Cache](Contacts)
 
   navigator:
     - i-Users | Contacts
@@ -188,7 +188,7 @@ screen Settings:
 screen ImportScreen:
   header:
     ### Import Contacts
-    @_[i-ArrowLeft](Settings)
+    @ghost[i-ArrowLeft](Settings)
 
   stack:
     > Import from other sources
@@ -204,7 +204,7 @@ screen ImportScreen:
 screen ExportScreen:
   header:
     ### Export Contacts
-    @_[i-ArrowLeft](Settings)
+    @ghost[i-ArrowLeft](Settings)
 
   stack:
     > Export for backup
@@ -220,13 +220,13 @@ screen ExportScreen:
 
     ---
 
-    @@[i-Download Export Now](Settings)
+    @primary-md[i-Download Export Now](Settings)
 
 
 screen Premium:
   header:
     ### 👑 Premium
-    @_[i-ArrowLeft](-1)
+    @ghost[i-ArrowLeft](-1)
 
   container:
     stack:
@@ -253,8 +253,8 @@ screen Premium:
 
       ---
 
-      @@[i-Crown Subscribe](Contacts)
-      @_[Maybe Later](-1)
+      @primary-md[i-Crown Subscribe](Contacts)
+      @ghost[Maybe Later](-1)
 
 `;
 

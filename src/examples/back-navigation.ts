@@ -8,29 +8,29 @@ screen Home:
     # Tela Principal
     > Bem-vindo ao sistema de navegação com histórico!
     
-    @[Ir para Página 1](Page1)
-    @[Ir para Página 2](Page2)
-    @[Ir para Configurações](Settings)
+    @primary[Ir para Página 1](Page1)
+    @primary[Ir para Página 2](Page2)
+    @primary[Ir para Configurações](Settings)
 
 screen Page1:
   col:
     # Página 1
     > Esta é a primeira página do exemplo.
     
-    @[Ir para Página 2](Page2)
-    @[Ir para Configurações](Settings)
-    @[Voltar](-1)
-    @[Ir para Home](Home)
+    @primary[Ir para Página 2](Page2)
+    @primary[Ir para Configurações](Settings)
+    @secondary[Voltar](-1)
+    @outline[Ir para Home](Home)
 
 screen Page2:
   col:
     # Página 2
     > Esta é a segunda página do exemplo.
     
-    @[Ir para Página 1](Page1)
-    @[Ir para Configurações](Settings)
-    @[Voltar](-1)
-    @[Ir para Home](Home)
+    @primary[Ir para Página 1](Page1)
+    @primary[Ir para Configurações](Settings)
+    @secondary[Voltar](-1)
+    @outline[Ir para Home](Home)
 
 screen Settings:
   col:
@@ -43,10 +43,10 @@ screen Settings:
       [ ] Modo escuro
       [ ] Som ativado
     
-    @[Ir para Página 1](Page1)
-    @[Ir para Página 2](Page2)
-    @[Voltar](-1)
-    @[Ir para Home](Home)
+    @primary[Ir para Página 1](Page1)
+    @primary[Ir para Página 2](Page2)
+    @secondary[Voltar](-1)
+    @outline[Ir para Home](Home)
 `;
 
 export default backNavigationExample;

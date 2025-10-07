@@ -1,11 +1,11 @@
 const login = `
 component LoginForm:
-  ___:Username{Enter your username}
-  ___*:Password{Enter your password}
+  ___: Username{Enter your username}
+  ___password: Password{Enter your password}
   
   stack:
     [X] Remember me
-    @[Login]
+    @primary[Login]
     #[Forgot Password](ForgotPassword)
 
 screen Login:
@@ -22,12 +22,12 @@ screen Signup:
   # Create a New Account
   > Join us today! Fill out the form below to create your account.
   card:
-    ___:Username{Choose a username}
-    ___:Email{Your email address}
-    ___*:Password{Create a password}
-    ___*:Confirm Password{Confirm your password}
+    ___: Username{Choose a username}
+    ___email: Email{Your email address}
+    ___password: Password{Create a password}
+    ___password: Confirm Password{Confirm your password}
     
-    @[Sign Up]
+    @primary[Sign Up]
     #[Login](Login)
 
 screen ForgotPassword:
@@ -37,9 +37,9 @@ screen ForgotPassword:
   card:
     # Password Recovery
     > Enter your email address below to receive a password reset link.
-    ___*:Email{Your registered email address}
-    @[Send Reset Link]
-    #[Back to Login](-1)
+    ___email: Email{Your registered email address}
+    @primary[Send Reset Link]
+    @link[Back to Login](-1)
 `
 
 

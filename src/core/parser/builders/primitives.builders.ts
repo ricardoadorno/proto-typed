@@ -87,40 +87,39 @@ export function buildTextElement(ctx: Context) {
  * Build button element from context
  */
 export function buildButtonElement(ctx: Context) {
-  const buttonText = ctx.Button[0].image;
-  let text = '', icon = '', action = '', variant = 'default', size = 'large';
+  let variant = 'primary'; // Default variant
+  let size = 'md'; // Default size
+  let text = '';
+  let action = '';
 
-  // Updated pattern to match @{1,3}[variant][text]{icon}(action) - captures size, variant symbol
-  const markdownMatch = buttonText.match(/(@{1,3})([_+\-=!]?)\[([^\]]+)\](?:\{([^}]+)\})?(?:\(([^)]+)\))?/);
-  const dslMatch = buttonText.match(/button\s+\["([^"]*)"\]\s+([^\n\r]+)/);
+  // Determine variant from which token is present
+  if (ctx.ButtonPrimary) variant = 'primary';
+  else if (ctx.ButtonSecondary) variant = 'secondary';
+  else if (ctx.ButtonOutline) variant = 'outline';
+  else if (ctx.ButtonGhost) variant = 'ghost';
+  else if (ctx.ButtonDestructive) variant = 'destructive';
+  else if (ctx.ButtonLink) variant = 'link';
+  else if (ctx.ButtonSuccess) variant = 'success';
+  else if (ctx.ButtonWarning) variant = 'warning';
+  else if (ctx.ButtonMarker) variant = 'primary'; // Default marker maps to primary
 
-  if (markdownMatch) {
-    const sizeSymbols = markdownMatch[1];
-    const variantSymbol = markdownMatch[2];
-    text = markdownMatch[3];
-    icon = markdownMatch[4] || ''; // Icon is optional
-    action = markdownMatch[5] || ''; // Action is optional
-    
-    // Map number of @ symbols to size
-    switch (sizeSymbols.length) {
-      case 1: size = 'large'; break;    // @ = large (default)
-      case 2: size = 'medium'; break;   // @@ = medium
-      case 3: size = 'small'; break;    // @@@ = small
-      default: size = 'large'; break;
-    }
-    
-    // Map variant symbols to variant names
-    switch (variantSymbol) {
-      case '_': variant = 'ghost'; break;
-      case '+': variant = 'outline'; break;
-      case '-': variant = 'secondary'; break;
-      case '=': variant = 'destructive'; break;
-      case '!': variant = 'warning'; break;
-      default: variant = 'default'; break;
-    }
-  } else if (dslMatch) {
-    action = dslMatch[1];
-    text = dslMatch[2];
+  // Determine size from which token is present
+  if (ctx.ButtonSizeXs) size = 'xs';
+  else if (ctx.ButtonSizeSm) size = 'sm';
+  else if (ctx.ButtonSizeMd) size = 'md';
+  else if (ctx.ButtonSizeLg) size = 'lg';
+  // Otherwise keep default 'md'
+
+  // Extract label text from ButtonLabel token
+  if (ctx.ButtonLabel && ctx.ButtonLabel[0]) {
+    const labelMatch = ctx.ButtonLabel[0].image.match(/\[([^\]]+)\]/);
+    text = labelMatch ? labelMatch[1] : '';
+  }
+
+  // Extract action from ButtonAction token (optional)
+  if (ctx.ButtonAction && ctx.ButtonAction[0]) {
+    const actionMatch = ctx.ButtonAction[0].image.match(/\(([^)]+)\)/);
+    action = actionMatch ? actionMatch[1] : '';
   }
 
   return {
@@ -129,7 +128,6 @@ export function buildButtonElement(ctx: Context) {
     props: {
       action,
       text,
-      icon,
       variant,
       size
     },

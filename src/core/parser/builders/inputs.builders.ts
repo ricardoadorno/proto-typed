@@ -11,59 +11,74 @@ type Context = {
  * Build input element from context
  */
 export function buildInputElement(ctx: Context) {
-  // Handle new input format
-  if (ctx.Input) {
-    const inputText = ctx.Input[0].image;
-    
-    const isPassword = inputText.includes('___*');
-    const isDisabled = inputText.includes('___-');
-    
-    // Extract optional label if present
-    const labelMatch = inputText.match(/:([^{(\[]+)(?=\{|\(|\[|$)/);
-    // Extract optional placeholder if present
-    const placeholderMatch = inputText.match(/\{([^}]+)\}/);
-    
-    // Extract optional type or options if present
-    const contentMatch = inputText.match(/\[([^\]]*)\]/);
-    const content = contentMatch ? contentMatch[1].trim() : '';
-    
-    // Default props that will always be included
-    const props: any = {
-      inputType: isPassword ? 'password' : 'text',
-      disabled: isDisabled,
-      label: labelMatch ? labelMatch[1].trim() : '',
-      placeholder: placeholderMatch ? placeholderMatch[1] : ''
-    };
-
-    // Check if content contains options (indicates select field)
-    if (content && content.includes('|')) {
-      // This is a select field with options
-      const options = content.split('|').map((opt: string) => opt.trim()).filter((opt: string) => opt.length > 0);
-      
-      return {
-        type: "Select",
-        id: "", // ID will be generated later
-        props: {
-          ...props,
-          selectType: 'select',
-          options
-        },
-        children: []
-      };
-    } else if (content) {
-      // Single content, could be a type or validation rule
-      props.inputType = content;
-    }
-
-    return {
-      type: "Input",
-      id: "", // ID will be generated later
-      props,
-      children: []
-    };
+  if (!ctx.Input || !ctx.Input[0]) {
+    return null;
   }
 
-  return null;
+  const inputToken = ctx.Input[0];
+  const inputText = inputToken.image;
+  
+  // Pattern: ___<type>: Label{placeholder}[options] | attributes
+  const match = inputText.match(/___(?:(email|password|date|number|textarea))?:\s*([^{\[\|\n\r]+)(?:\{([^}]+)\})?(?:\[([^\]]+)\])?(?:\s*\|\s*(.+))?/);
+  
+  if (!match) {
+    return null;
+  }
+
+  const [, typeMatch, labelMatch, placeholderMatch, optionsMatch, attributesMatch] = match;
+  
+  let kind = typeMatch || 'text'; // Default to text if no type specified
+  const label = labelMatch ? labelMatch.trim() : '';
+  const attributes: Record<string, any> = {};
+  const flags: Record<string, boolean> = {};
+
+  // Add placeholder if present
+  if (placeholderMatch) {
+    attributes.placeholder = placeholderMatch.trim();
+  }
+
+  // Check if it's a select (has options)
+  let isSelect = false;
+  if (optionsMatch) {
+    isSelect = true;
+    attributes.options = optionsMatch.split('|').map((opt: string) => opt.trim());
+  }
+
+  // Parse pipe-separated attributes
+  if (attributesMatch) {
+    const attrParts = attributesMatch.split('|').map((s: string) => s.trim());
+    
+    attrParts.forEach((part: string) => {
+      // Check if it's a flag (no colon)
+      if (/^(required|disabled|readonly|clearable|multiple|reveal-toggle)$/.test(part)) {
+        if (part === 'required') flags.required = true;
+        else if (part === 'disabled') flags.disabled = true;
+        else if (part === 'readonly') flags.readonly = true;
+        else if (part === 'clearable') flags.clearable = true;
+        else if (part === 'multiple') flags.multiple = true;
+        else if (part === 'reveal-toggle') flags.revealToggle = true;
+      } else {
+        // It's a key: value attribute
+        const attrMatch = part.match(/([a-z]+):\s*(.+)/);
+        if (attrMatch) {
+          const [, key, value] = attrMatch;
+          attributes[key.trim()] = value.trim();
+        }
+      }
+    });
+  }
+
+  return {
+    type: isSelect ? 'Select' : 'Input',
+    id: "", // ID will be generated later
+    props: {
+      kind: isSelect ? 'select' : kind,
+      label,
+      attributes,
+      flags
+    },
+    children: []
+  };
 }
 
 /**

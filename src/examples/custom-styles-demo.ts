@@ -16,11 +16,11 @@ screen StylesDemo:
     card:
       ## Current
       > The slate theme provides a sophisticated blue-gray color palette that's easy on the eyes.
-      @[Primary Button]
-      @_[Ghost Button]
-      @+[Outline Button]
-      @-[Secondary Button]
-      @=[Destructive Button]
+      @primary[Primary Button]
+      @ghost[Ghost Button]
+      @outline[Outline Button]
+      @secondary[Secondary Button]
+      @destructive[Destructive Button]
     
     card:
       ## Theme Features
@@ -48,7 +48,7 @@ screen NeutralTheme:
   > Clean and minimal grayscale design
   
   container-narrow:
-    @[Switch to Neutral]
+    @primary[Switch to Neutral]
     > The neutral theme uses pure grayscale colors for a timeless, clean appearance.
 
 screen StoneTheme:
@@ -56,7 +56,7 @@ screen StoneTheme:
   > Warm and natural earth tones
   
   container-narrow:
-    @[Switch to Stone]
+    @primary[Switch to Stone]
     > The stone theme incorporates subtle warm undertones for a more organic feel.`;
 
 export default customStylesDemo;

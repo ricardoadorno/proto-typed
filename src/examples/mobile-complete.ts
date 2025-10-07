@@ -20,13 +20,13 @@ drawer MyDrawer:
   #[Help](SettingsScreen)
   > ❓ Get help
   
-  @[Logout](MobileApp)
+  @destructive[Logout](MobileApp)
   > 💪 Sign out
 
 screen Mob:
   header:
     # My App
-    @[Menu](MyDrawer)
+    @primary[Menu](MyDrawer)
 
   # Welcome to Mobile App
   > This is a complete mobile application example
@@ -38,15 +38,15 @@ screen Mob:
       - Real-time notifications
       - Offline support
       - Cloud sync
-    @[Get Started](MessagesScreen)
+    @primary[Get Started](MessagesScreen)
   
   card:
     ## Quick Actions
     grid-2:
-      @[📧 Messages](MessagesScreen)
-      @[📊 Analytics](ProfileScreen)
-      @[⚙️ Settings](SettingsScreen)
-      @[❓ Help](SettingsScreen)
+      @primary[📧 Messages](MessagesScreen)
+      @primary[📊 Analytics](ProfileScreen)
+      @secondary[⚙️ Settings](SettingsScreen)
+      @outline[❓ Help](SettingsScreen)
 
   navigator:
     - Home | 🏠 | MobileApp
@@ -78,14 +78,14 @@ screen Mob:
     #[Help](SettingsScreen)
     > ❓ Get help
     
-    @[Logout](MobileApp)
+    @destructive[Logout](MobileApp)
     > 🚪 Sign out
 
 screen MessagesScreen:
   header:
-    @_[CircleArrowLeft](MobileApp)
+    @ghost[CircleArrowLeft](MobileApp)
     # Messages
-    @[Search]{🔍}
+    @primary[Search]{🔍}
   > Your conversations
 
   navigator:
@@ -97,9 +97,9 @@ screen MessagesScreen:
 
 screen ProfileScreen:
   header:
-    @_[CircleArrowLeft](MobileApp)
+    @ghost[CircleArrowLeft](MobileApp)
     # Profile
-    @[Edit]{✏️}
+    @primary[Edit]{✏️}
 
   card:
     ![Profile Picture](https://via.placeholder.com/100x100)
@@ -119,8 +119,8 @@ screen ProfileScreen:
     [X] Push notifications
     [X] Email updates
     [ ] SMS alerts
-    ___:Theme{Choose theme}[Light | Dark | Auto]
-    @[Save Changes]
+    ___: Theme{Choose theme}[Light | Dark | Auto]
+    @primary[Save Changes]
 
   navigator:
     - Home | 🏠 | MobileApp
@@ -131,7 +131,7 @@ screen ProfileScreen:
 
 screen SettingsScreen:
   header:
-    @_[CircleArrowLeft](MobileApp)
+    @ghost[CircleArrowLeft](MobileApp)
     # Settings
 
   card:
@@ -146,8 +146,8 @@ screen SettingsScreen:
     [X] Dark mode
     [X] Push notifications
     [ ] Location services
-    ___:Language{Select language}[English | Spanish | French | German]
-    ___:Timezone{Select timezone}[UTC | EST | PST | CET]
+    ___: Language{Select language}[English | Spanish | French | German]
+    ___: Timezone{Select timezone}[UTC | EST | PST | CET]
     
   card:
     ## Support
@@ -158,8 +158,8 @@ screen SettingsScreen:
     
   card:
     ## Account Actions
-    @[Export Data]
-    @[Delete Account](MobileApp)
+    @primary[Export Data]
+    @destructive[Delete Account](MobileApp)
 
   navigator:
     - Home | 🏠 | MobileApp

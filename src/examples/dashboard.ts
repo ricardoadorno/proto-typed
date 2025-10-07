@@ -11,7 +11,7 @@ screen Dashboard:
           - Total Users: 1,245
           - Active Sessions: 423
           - Conversion Rate: 8.5%
-        @[View Details]
+        @primary[View Details]
     
     card:
         ## Reports
@@ -20,8 +20,8 @@ screen Dashboard:
           - Monthly Summary
           - User Activity
           - Performance Metrics
-        ___:Report Type{Select report type}[Monthly | Weekly | Daily | Custom]
-        @[Generate Report]
+        ___: Report Type{Select report type}[Monthly | Weekly | Daily | Custom]
+        @primary[Generate Report]
         
   card:
     ## Recent Activity
@@ -35,9 +35,9 @@ screen Dashboard:
     card:
         ## Quick Actions
         stack:
-          @[New Post]
-          @[Settings]
-          @[Help]
+          @primary[New Post]
+          @secondary[Settings]
+          @outline[Help]
     
     card:
         ## Notifications
@@ -45,7 +45,7 @@ screen Dashboard:
           [X] Enable email alerts
           [X] Enable browser notifications
           [ ] Enable SMS alerts
-          ___:Notification Frequency{Set frequency}[Immediate | Hourly | Daily | Weekly]
+          ___: Notification Frequency{Set frequency}[Immediate | Hourly | Daily | Weekly]
 `;
 
 export default dashboardExample;
