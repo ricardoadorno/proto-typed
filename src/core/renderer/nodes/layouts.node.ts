@@ -2,7 +2,7 @@ import { AstNode } from '../../../types/ast-node';
 import { elementStyles, getListInlineStyles, getUnorderedListInlineStyles, getFabInlineStyles, getNavigatorInlineStyles } from './styles/styles';
 import { findComponentDefinitions, substitutePropsInElement } from './components.node';
 import { NavigationMediator } from '../infrastructure/navigation-mediator';
-import { isLucideIcon, getLucideSvg } from '../../../utils/icon-utils';
+import { isLucideIcon, getLucideSvg, renderTextWithIcons } from '../../../utils/icon-utils';
 
 /**
  * Canonical Layout Presets
@@ -189,35 +189,28 @@ export function renderNavigator(node: AstNode): string {
     // Generate navigation action if destination is provided
     const navigationAttrs = destination ? NavigationMediator.generateNavigationAttributes(destination) : '';
     
-    // Helper function to render text or icon
-    const renderTextOrIcon = (content: string, className: string, extraStyle: string = '') => {
-      if (!content) return '';
-      
-      if (isLucideIcon(content)) {
-        // It's a Lucide icon name, render as SVG
-        const svgContent = getLucideSvg(content);
-        return `<div class="${className}" style="${extraStyle}">${svgContent}</div>`;
-      } else {
-        // It's regular text (could be emoji or text)
-        return `<div class="${className}" style="${extraStyle}">${content}</div>`;
-      }
-    };
-    
     // Build content based on what's available
     let content = '';
     
     if (icon && text) {
       // Both icon and text - stack them vertically
+      // Icon is always just an icon reference (no embedded text)
+      const iconHtml = isLucideIcon(icon) ? getLucideSvg(icon) : icon;
+      // Text might have embedded icons, so use renderTextWithIcons
+      const textHtml = renderTextWithIcons(text);
+      
       content = `
-        ${renderTextOrIcon(icon, elementStyles.navItemIcon)}
-        ${renderTextOrIcon(text, elementStyles.navItemLabel)}
+        <div class="${elementStyles.navItemIcon}">${iconHtml}</div>
+        <div class="${elementStyles.navItemLabel}">${textHtml}</div>
       `;
     } else if (icon) {
-      // Only icon - center it
-      content = renderTextOrIcon(icon, elementStyles.navItemIcon, 'margin-bottom: 0;');
+      // Only icon - center it (no embedded icons expected here)
+      const iconHtml = isLucideIcon(icon) ? getLucideSvg(icon) : icon;
+      content = `<div class="${elementStyles.navItemIcon}" style="margin-bottom: 0;">${iconHtml}</div>`;
     } else if (text) {
-      // Only text - center it
-      content = renderTextOrIcon(text, elementStyles.navItemLabel, 'margin-top: 0;');
+      // Only text - might have embedded icons
+      const textHtml = renderTextWithIcons(text);
+      content = `<div class="${elementStyles.navItemLabel}" style="margin-top: 0;">${textHtml}</div>`;
     }
     
     return `

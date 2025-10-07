@@ -1,6 +1,6 @@
 import { AstNode } from '../../../types/ast-node';
 import { elementStyles, getButtonClasses, getButtonInlineStyles, getHeadingInlineStyles, getParagraphInlineStyles, getLinkInlineStyles } from './styles/styles';
-import { isLucideIcon, getLucideSvg } from '../../../utils/icon-utils';
+import { isLucideIcon, getLucideSvg, renderTextWithIcons } from '../../../utils/icon-utils';
 import { NavigationMediator } from '../infrastructure/navigation-mediator';
 
 /**
@@ -15,7 +15,7 @@ export function renderButton(node: AstNode): string {
   const buttonClasses = `${getButtonClasses(variant, size)}`;
   const buttonInlineStyles = getButtonInlineStyles(variant || 'primary');
   
-  // If there's an icon, show icon + text or just icon
+  // Strategy 1: Explicit icon prop (legacy support)
   if (icon) {
     if (isLucideIcon(icon)) {
       const iconSvg = getLucideSvg(icon);
@@ -23,13 +23,14 @@ export function renderButton(node: AstNode): string {
     }
   }
   
-  // Check if the button text is a Lucide icon name
-  if (isLucideIcon(buttonText)) {
-    const iconSvg = getLucideSvg(buttonText);
-    return `<button class="${buttonClasses}" style="${buttonInlineStyles}" ${buttonNavAttrs}>${iconSvg}</button>`;
-  }
+  // Strategy 2: Use the global renderTextWithIcons utility
+  // This handles any combination:
+  // - "i-home" -> icon only
+  // - "i-home Dashboard" -> icon + text
+  // - "Click i-plus here" -> text + icon + text
+  const renderedContent = renderTextWithIcons(buttonText);
   
-  return `<button class="${buttonClasses}" style="${buttonInlineStyles}" ${buttonNavAttrs}>${buttonText}</button>`;
+  return `<button class="${buttonClasses}" style="${buttonInlineStyles}" ${buttonNavAttrs}>${renderedContent}</button>`;
 }
 
 /**
@@ -43,7 +44,10 @@ export function renderLink(node: AstNode): string {
   const linkNavAttrs = NavigationMediator.generateNavigationAttributes(destination);
   const linkHref = NavigationMediator.generateHrefAttribute(destination);
 
-  return `<a class="${elementStyles.link}" style="${getLinkInlineStyles()}" ${linkHref} ${linkNavAttrs}>${linkText}</a>`;
+  // Support inline icons in link text
+  const renderedContent = renderTextWithIcons(linkText);
+
+  return `<a class="${elementStyles.link}" style="${getLinkInlineStyles()}" ${linkHref} ${linkNavAttrs}>${renderedContent}</a>`;
 }
 
 /**
@@ -62,11 +66,15 @@ export function renderImage(node: AstNode): string {
 export function renderHeading(node: AstNode): string {
   const props = node.props as any;
   const level = props?.level || 1;
+  const content = props?.content || '';
   
   // Use header-specific styles when in header context
   const headingStyles = elementStyles.heading[level as keyof typeof elementStyles.heading] || elementStyles.heading[1];
   
-  return `<h${level} class="${headingStyles}" style="${getHeadingInlineStyles()}">${props?.content || ''}</h${level}>`;
+  // Support inline icons in heading text
+  const renderedContent = renderTextWithIcons(content);
+  
+  return `<h${level} class="${headingStyles}" style="${getHeadingInlineStyles()}">${renderedContent}</h${level}>`;
 }
 
 /**
@@ -82,8 +90,12 @@ export function renderText(node: AstNode): string {
   
   const textClasses = elementStyles.paragraph[effectiveVariant];
   const inlineStyles = getParagraphInlineStyles(effectiveVariant);
+  const content = props?.content || '';
   
-  return `<span class="${textClasses}" style="${inlineStyles}">${props?.content || ''}</span>`;
+  // Support inline icons in text content
+  const renderedContent = renderTextWithIcons(content);
+  
+  return `<span class="${textClasses}" style="${inlineStyles}">${renderedContent}</span>`;
 }
 
 /**
@@ -99,8 +111,12 @@ export function renderParagraph(node: AstNode): string {
   
   const paragraphClasses = elementStyles.paragraph[effectiveVariant];
   const inlineStyles = getParagraphInlineStyles(effectiveVariant);
+  const content = props?.content || '';
   
-  return `<p class="${paragraphClasses}" style="${inlineStyles}">${props?.content || ''}</p>`;
+  // Support inline icons in paragraph content
+  const renderedContent = renderTextWithIcons(content);
+  
+  return `<p class="${paragraphClasses}" style="${inlineStyles}">${renderedContent}</p>`;
 }
 
 /**
@@ -116,6 +132,10 @@ export function renderMutedText(node: AstNode): string {
   
   const mutedClasses = elementStyles.paragraph[effectiveVariant];
   const inlineStyles = getParagraphInlineStyles(effectiveVariant);
+  const content = props?.content || '';
   
-  return `<span class="${mutedClasses}" style="${inlineStyles}">${props?.content || ''}</span>`;
+  // Support inline icons in muted text content
+  const renderedContent = renderTextWithIcons(content);
+  
+  return `<span class="${mutedClasses}" style="${inlineStyles}">${renderedContent}</span>`;
 }

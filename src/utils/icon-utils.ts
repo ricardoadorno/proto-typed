@@ -62,6 +62,7 @@ export function getLucideSvg(iconName: string): string {
     svg.setAttribute('stroke-width', '2');
     svg.setAttribute('stroke-linecap', 'round');
     svg.setAttribute('stroke-linejoin', 'round');
+    svg.setAttribute('style', 'margin-left: 0.5rem; margin-right: 0.5rem;');
     svg.classList.add('inline-block');
     
     // Add the icon paths - Lucide icons are arrays of [tagName, attributes]
@@ -85,4 +86,142 @@ export function getLucideSvg(iconName: string): string {
     console.warn(`Error rendering Lucide icon ${actualIconName} (from ${iconName}):`, error);
     return '';
   }
+}
+
+/**
+ * Interface for parsed text with icons
+ */
+export interface TextWithIconParts {
+  /** Whether the text contains any icons */
+  hasIcons: boolean;
+  /** The original text */
+  originalText: string;
+  /** Parts of the text: either plain text or icon references */
+  parts: Array<{ type: 'text' | 'icon'; content: string }>;
+}
+
+/**
+ * Parse text to detect icons in the format 'i-iconname'
+ * This can detect icons anywhere in the text:
+ * - "i-home" -> icon only
+ * - "i-home Dashboard" -> icon + text
+ * - "Click i-plus to add" -> text + icon + text
+ * 
+ * @param text - The text to parse
+ * @returns Parsed structure with icon and text parts
+ */
+export function parseTextWithIcons(text: string): TextWithIconParts {
+  if (!text || typeof text !== 'string') {
+    return {
+      hasIcons: false,
+      originalText: text || '',
+      parts: text ? [{ type: 'text', content: text }] : []
+    };
+  }
+
+  // Regex to match icon pattern: i-<iconname>
+  // Word boundary ensures we match complete icon names
+  const iconPattern = /\b(i-[a-zA-Z][a-zA-Z0-9-]*)\b/g;
+  
+  const parts: Array<{ type: 'text' | 'icon'; content: string }> = [];
+  let lastIndex = 0;
+  let hasIcons = false;
+  let match: RegExpExecArray | null;
+
+  while ((match = iconPattern.exec(text)) !== null) {
+    const iconName = match[1];
+    
+    // Validate that this is actually a Lucide icon
+    if (isLucideIcon(iconName)) {
+      hasIcons = true;
+      
+      // Add text before the icon (if any)
+      if (match.index > lastIndex) {
+        const textBefore = text.substring(lastIndex, match.index);
+        if (textBefore) {
+          parts.push({ type: 'text', content: textBefore });
+        }
+      }
+      
+      // Add the icon
+      parts.push({ type: 'icon', content: iconName });
+      
+      lastIndex = match.index + match[0].length;
+    }
+  }
+  
+  // Add remaining text after the last icon (if any)
+  if (lastIndex < text.length) {
+    const remainingText = text.substring(lastIndex);
+    if (remainingText) {
+      parts.push({ type: 'text', content: remainingText });
+    }
+  }
+  
+  // If no icons found, return the whole text as a single text part
+  if (!hasIcons) {
+    return {
+      hasIcons: false,
+      originalText: text,
+      parts: [{ type: 'text', content: text }]
+    };
+  }
+
+  return {
+    hasIcons: true,
+    originalText: text,
+    parts
+  };
+}
+
+/**
+ * Convert text with embedded icon references (i-iconname) to HTML with SVG icons
+ * This handles any combination of text and icons:
+ * - "i-home" -> <svg>...</svg>
+ * - "i-home Dashboard" -> <svg>...</svg> Dashboard
+ * - "Click i-plus to add" -> Click <svg>...</svg> to add
+ * 
+ * @param text - The text to process
+ * @param options - Rendering options
+ * @returns HTML string with icons replaced by SVG elements
+ */
+export function renderTextWithIcons(
+  text: string,
+  options: {
+    /** Wrap the output in a span element (default: false) */
+    wrapInSpan?: boolean;
+    /** Additional CSS classes for the wrapper span */
+    wrapperClass?: string;
+    /** Additional inline styles for the wrapper span */
+    wrapperStyle?: string;
+  } = {}
+): string {
+  const parsed = parseTextWithIcons(text);
+  
+  // If no icons, return the original text
+  if (!parsed.hasIcons) {
+    if (options.wrapInSpan) {
+      const classAttr = options.wrapperClass ? ` class="${options.wrapperClass}"` : '';
+      const styleAttr = options.wrapperStyle ? ` style="${options.wrapperStyle}"` : '';
+      return `<span${classAttr}${styleAttr}>${text}</span>`;
+    }
+    return text;
+  }
+  
+  // Build HTML from parts
+  const html = parsed.parts.map(part => {
+    if (part.type === 'icon') {
+      return getLucideSvg(part.content);
+    }
+    return part.content;
+  }).join('');
+  
+  // Wrap in span if requested
+  if (options.wrapInSpan) {
+    const classAttr = options.wrapperClass ? ` class="${options.wrapperClass}"` : '';
+    const styleAttr = options.wrapperStyle ? ` style="${options.wrapperStyle}"` : '';
+    return `<span${classAttr}${styleAttr}>${html}</span>`;
+  }
+  
+  return html;
 }
