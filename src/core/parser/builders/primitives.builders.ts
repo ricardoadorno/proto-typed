@@ -104,10 +104,10 @@ export function buildButtonElement(ctx: Context) {
   else if (ctx.ButtonMarker) variant = 'primary'; // Default marker maps to primary
 
   // Determine size from which token is present
-  if (ctx.ButtonSizeXs) size = 'xs';
-  else if (ctx.ButtonSizeSm) size = 'sm';
-  else if (ctx.ButtonSizeMd) size = 'md';
-  else if (ctx.ButtonSizeLg) size = 'lg';
+  if (ctx.ButtonSizeXs) size = 'extra-small';
+  else if (ctx.ButtonSizeSm) size = 'small';
+  else if (ctx.ButtonSizeMd) size = 'medium'
+  else if (ctx.ButtonSizeLg) size = 'large';
   // Otherwise keep default 'md'
 
   // Extract label text from ButtonLabel token

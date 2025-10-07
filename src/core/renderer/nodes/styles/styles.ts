@@ -16,7 +16,8 @@ export const elementStyles = {
   // Button sizes - fixed width and height for consistent appearance
   buttonLarge: 'w-32 h-12 text-base',   // 128x48px
   buttonMedium: 'w-24 h-10 text-sm',    // 96x40px
-  buttonSmall: 'w-8 h-8 text-xs',       // 32x32px (quadrado para ícones)
+  buttonSmall: 'w-8 h-8 text-xs bg-red-500',       // 32x32px (quadrado para ícones)
+  buttonExtraSmall: 'w-6 h-6 text-xs', // 24x24px (quadrado para ícones)
   
   // Form elements - using base classes only
   input: 'w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors',
@@ -117,6 +118,8 @@ export function getButtonClasses(variant?: string, size?: string): string {
   // Get size class
   let sizeClass = '';
   switch (size) {
+    case 'extra-small':
+      sizeClass = elementStyles.buttonExtraSmall;
     case 'small':
       sizeClass = elementStyles.buttonSmall;
       break;
