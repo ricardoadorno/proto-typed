@@ -38,7 +38,8 @@ screen Contacts:
     - i-Star | Favorites
     - i-Settings | Settings
 
-  fab{+}(CreateContact)
+  fab:
+    - + | CreateContact
 
 
 modal CreateContact:

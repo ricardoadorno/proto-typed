@@ -181,35 +181,40 @@ export function buildNavigatorElement(ctx: Context) {
 }
 
 /**
- * Build FAB (Floating Action Button) element from context
+ * Build Fab (Floating Action Button) element from context
+ * Pattern: fab:
+ *   - icon | destination
  */
 export function buildFABElement(ctx: Context) {
-  const fabText = ctx.FAB[0].image;
-  
-  // Parse fab{icon}(action) pattern
-  const match = fabText.match(/fab\{([^}]+)\}\(([^)]+)\)/);
-  
-  if (match) {
-    const icon = match[1];
-    const action = match[2];
+  const items: any[] = [];
+
+  // Parse Fab item (should be single UnorderedListItem)
+  if (ctx.UnorderedListItem && ctx.UnorderedListItem.length > 0) {
+    const itemText = ctx.UnorderedListItem[0].image;
     
-    return {
-      type: "FAB",
-      id: "", // ID will be generated later
-      props: {
-        icon,
-        action
-      },
-      children: []
-    };
+    // Parse "- icon | destination" pattern
+    const parts = itemText.replace(/^-\s*/, '').split('|').map((s: string) => s.trim());
+    
+    if (parts.length >= 2) {
+      items.push({
+        icon: parts[0],
+        destination: parts[1]
+      });
+    } else if (parts.length === 1) {
+      // Only icon provided, no destination
+      items.push({
+        icon: parts[0],
+        destination: ''
+      });
+    }
   }
-  
+
   return {
-    type: "FAB",
+    type: "Fab",
     id: "", // ID will be generated later
     props: {
-      icon: "plus",
-      action: ""
+      icon: items[0]?.icon || 'plus',
+      destination: items[0]?.destination || ''
     },
     children: []
   };

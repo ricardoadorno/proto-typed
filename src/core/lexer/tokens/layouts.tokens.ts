@@ -135,14 +135,14 @@ export const Navigator = createToken({
   pattern: /navigator/
 });
 
+export const Fab = createToken({
+  name: "Fab",
+  pattern: /fab/
+});
+
 export const UnorderedListItem = createToken({
   name: "UnorderedListItem",
   pattern: /-\s+[^\n\r]+/
-});
-
-export const FAB = createToken({
-  name: "FAB",
-  pattern: /fab\{([^}]+)\}\(([^)]+)\)/
 });
 
 export const Separator = createToken({

@@ -15,7 +15,7 @@ import {
   Grid2, Grid3, Grid4, GridAuto,
   Card, CardCompact, CardFeature,
   Header, Sidebar,
-  List, Navigator, UnorderedListItem, FAB, Separator
+  List, Navigator, UnorderedListItem, Fab, Separator
 } from './layouts.tokens';
 import { 
   Input,
@@ -102,7 +102,7 @@ export {
   List,
   Navigator,
   UnorderedListItem,
-  FAB,
+  Fab,
   Separator,
   
   // Inputs
@@ -135,7 +135,7 @@ export const allTokens = [
   ComponentInstanceWithProps, // Must come before ComponentInstance for correct matching
   ComponentInstance,
   PropVariable,
-  FAB,
+  Fab,
   // Input tokens - RadioOption and Checkbox must come BEFORE Input for correct matching
   RadioOption,
   Checkbox,

@@ -55,7 +55,8 @@ screen Mob:
     - Profile | 👤 | ProfileScreen
     - More | ⋯ | SettingsScreen
     
-  fab{+}(MessagesScreen)
+  fab:
+    - + | MessagesScreen
 
   drawer MyDrawer:
     > ## App Menu

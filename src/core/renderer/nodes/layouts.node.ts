@@ -157,20 +157,23 @@ export function renderSeparator(): string {
 }
 
 /**
- * Render FAB (Floating Action Button) element
+ * Render Fab (Floating Action Button) element
  */
 export function renderFAB(node: AstNode): string {
   const props = node.props as any;
   const icon = props?.icon || 'plus';
-  const action = props?.action || '';
+  const destination = props?.destination || '';
   
   // Generate navigation attributes using NavigationMediator
-  const navAttrs = NavigationMediator.generateNavigationAttributes(action);
+  const navAttrs = NavigationMediator.generateNavigationAttributes(destination);
+  
+  // Handle icon rendering - can be lucide icon or text
+  const iconHtml = isLucideIcon(icon) ? getLucideSvg(icon) : renderTextWithIcons(icon);
   
   return `
     <div class="${elementStyles.fabContainer}">
       <button class="${elementStyles.fab}" style="${getFabInlineStyles()}" ${navAttrs}>
-        ${icon}
+        ${iconHtml}
       </button>
     </div>
   `;

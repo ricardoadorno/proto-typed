@@ -58,13 +58,12 @@ export function registerDSLLanguage(monaco: Monaco) {
         // Pattern: exact preset names (no modifiers)
         // ========================================
         [/\b(container-narrow|container-wide|container-full|container)\b/, 'keyword.layout'],
-        [/\b(stack-flush| | requiredstack-tight|stack-loose|stack)\b/, 'keyword.layout'],
+        [/\b(stack-flush|stack-tight|stack-loose|stack)\b/, 'keyword.layout'],
         [/\b(row-start|row-center|row-between|row-end)\b/, 'keyword.layout'],
         [/\b(grid-2|grid-3|grid-4|grid-auto)\b/, 'keyword.layout'],
         [/\b(card-compact|card-feature|card)\b/, 'keyword.layout'],
         [/\b(sidebar)\b/, 'keyword.layout'],
-        [/\b(navigator|list)\b/, 'keyword.layout'],
-        [/fab\{[\w-]+\}\([\w-]+\)/, 'keyword.layout'],  // fab{icon}(action)
+        [/\b(navigator|list|fab)\b/, 'keyword.layout'],
 
         // ========================================
         // STRUCTURES (header and separator)

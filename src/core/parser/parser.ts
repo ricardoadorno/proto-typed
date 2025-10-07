@@ -20,7 +20,7 @@ import {
   Card, CardCompact, CardFeature,
   Header, Sidebar,
   // Structures
-  List, Navigator, UnorderedListItem, FAB, Separator,
+  List, Navigator, UnorderedListItem, Fab, Separator,
   // Inputs
   Input,
   RadioOption, Checkbox,
@@ -314,13 +314,14 @@ export class UiDslParser extends CstParser {
     this.listWithOptionalContent();
   });
 
+  fabElement = this.RULE("fabElement", () => {
+    this.CONSUME(Fab);
+    this.listWithOptionalContent();
+  });
+
   // Standalone list element rules for individual list items
   unorderedListElement = this.RULE("unorderedListElement", () => {
     this.CONSUME(UnorderedListItem);
-  });
-
-  fabElement = this.RULE("fabElement", () => {
-    this.CONSUME(FAB);
   });
 
   separatorElement = this.RULE("separatorElement", () => {

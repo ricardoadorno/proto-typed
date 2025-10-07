@@ -90,11 +90,11 @@ function generateLayoutClasses(screen: AstNode): string[] {
   
   const hasHeader = screen.children?.some((element: any) => element.type === 'Header') || false;
   const hasNavigator = screen.children?.some((element: any) => element.type === 'Navigator') || false;
-  const hasFAB = screen.children?.some((element: any) => element.type === 'FAB') || false;
+  const hasFab = screen.children?.some((element: any) => element.type === 'Fab') || false;
   
   if (hasHeader) layoutClasses.push('has-header');
   if (hasNavigator) layoutClasses.push('has-navigator');
-  if (hasFAB) layoutClasses.push('has-fab');
+  if (hasFab) layoutClasses.push('has-fab');
   
   return layoutClasses;
 }
@@ -104,11 +104,11 @@ function generateLayoutClasses(screen: AstNode): string[] {
  */
 function separateScreenElements(screen: AstNode) {
   const headerElements = screen.children?.filter((element: any) => element.type === 'Header') || [];
-  const fabElements = screen.children?.filter((element: any) => element.type === 'FAB') || [];
+  const fabElements = screen.children?.filter((element: any) => element.type === 'Fab') || [];
   const navigatorElements = screen.children?.filter((element: any) => element.type === 'Navigator') || [];
   const contentElements = screen.children?.filter((element: any) => 
     element.type !== 'Header' && 
-    element.type !== 'FAB' && 
+    element.type !== 'Fab' && 
     element.type !== 'Navigator' &&
     // Exclude named modals and drawers (they'll be rendered globally)
     !(element.type === 'Modal' && (element.props as any)?.name) &&

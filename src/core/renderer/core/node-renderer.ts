@@ -65,7 +65,7 @@ const RENDERERS: Record<NodeType, typeof _render> = {
   List: (n, ctx) => renderList(n, ctx, _render),
   UnorderedListItem: (n) => renderListItem(n),
   Navigator: (n) => renderNavigator(n),
-  FAB: (n) => renderFAB(n),
+  Fab: (n) => renderFAB(n),
   Separator: () => renderSeparator(),
 
   // Inputs

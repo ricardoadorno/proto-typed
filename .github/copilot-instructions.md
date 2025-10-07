@@ -104,7 +104,10 @@ navigator:
   - icon text | destination
   - Home | HomeScreen
   - i-Settings Config | Settings
-fab{icon}(action)
+fab:
+  - icon | destination
+  - + | CreateScreen
+  - i-Plus Add | CreateScreen
 ---  (separator)
 ```
 
@@ -112,6 +115,11 @@ fab{icon}(action)
 - **Two parts**: `- text | destination` → Text without icon
 - **Three parts**: `- text | icon | destination` → Text with icon prefix
 - **Icon-first**: `- i-Home Home | HomeScreen` → Icon name (i-Home) + label (Home) as text
+
+**Fab Format**:
+- **Two parts**: `- icon | destination` → Icon and navigation target
+- Icon can be text (emoji/character) or Lucide icon name (i-Plus)
+- Example: `- + | CreateScreen` or `- i-Plus | CreateScreen`
 
 #### **Forms** (`inputs.tokens.ts`)
 Pattern: `___[\*\-]?(?::Label)?(?:\{Placeholder\})?(?:\[Options\])?`
@@ -273,7 +281,7 @@ const RENDERERS: Record<NodeType, typeof _render> = {
   - `renderAllScreens(screens, currentScreen)` - Preview mode rendering
   - `renderScreenForDocument(screen, index, currentScreen)` - Document export
   - `renderGlobalElements(routeManager)` - Modals/Drawers rendering
-  - `generateLayoutClasses(screen)` - Detect header/navigator/FAB presence
+  - `generateLayoutClasses(screen)` - Detect header/navigator/Fab presence
 - **Pattern**: Utility functions used by top-level adapters
 
 ### Node Renderers Layer
@@ -283,7 +291,7 @@ const RENDERERS: Record<NodeType, typeof _render> = {
 - **views.node.ts**: Screen, Modal, Drawer with visibility management
 - **primitives.node.ts**: Button (with icon support), Link, Image, Heading, Text/Paragraph
 - **layouts.node.ts**: Row, Col, Grid, Container with modifier parsing
-- **structures.node.ts**: List, Card, Header, Navigator, FAB, Separator
+- **structures.node.ts**: List, Card, Header, Navigator, Fab, Separator
 - **inputs.node.ts**: Input (text/password/select), Checkbox, Radio
 - **components.node.ts**: Component definition storage and instantiation
 
@@ -656,6 +664,9 @@ screen Dashboard:
     - i-Home Dashboard | Dashboard
     - i-Users Users | Users
     - i-Settings Settings | Settings
+  
+  fab:
+    - + | CreateItem
 ```
 
 ### Component with Props Example

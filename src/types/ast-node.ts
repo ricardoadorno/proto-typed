@@ -21,7 +21,7 @@ export type NodeType =
   | 'List'
   | 'Navigator'
   | 'UnorderedListItem'
-  | 'FAB'
+  | 'Fab'
   | 'Separator'
   
   // Inputs (from inputs.tokens.ts)
