@@ -14,7 +14,7 @@ import {
   Link, Image, Heading, Text, Paragraph, MutedText, Note, Quote,
   // Canonical Layouts
   ContainerNarrow, ContainerWide, ContainerFull, Container,
-  Stack, StackTight, StackLoose,
+  Stack, StackTight, StackLoose, StackFlush,
   RowStart, RowCenter, RowBetween, RowEnd,
   Grid2, Grid3, Grid4, GridAuto,
   Card, CardCompact, CardFeature,
@@ -268,6 +268,7 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.CONSUME(StackTight) },
       { ALT: () => this.CONSUME(StackLoose) },
       { ALT: () => this.CONSUME(Stack) },
+      { ALT: () => this.CONSUME(StackFlush) },
       // Rows
       { ALT: () => this.CONSUME(RowStart) },
       { ALT: () => this.CONSUME(RowCenter) },

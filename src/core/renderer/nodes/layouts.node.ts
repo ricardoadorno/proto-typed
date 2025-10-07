@@ -19,6 +19,7 @@ const LAYOUT_PRESETS: Record<string, string> = {
   'stack': 'flex flex-col gap-4',
   'stack-tight': 'flex flex-col gap-2',
   'stack-loose': 'flex flex-col gap-8',
+  'stack-flush': 'flex flex-col',
   
   // Rows (Horizontal)
   'row-start': 'flex items-center gap-4',

@@ -10,7 +10,7 @@ import {
 } from './primitives.tokens';
 import { 
   ContainerNarrow, ContainerWide, ContainerFull, Container,
-  Stack, StackTight, StackLoose,
+  Stack, StackTight, StackLoose, StackFlush,
   RowStart, RowCenter, RowBetween, RowEnd,
   Grid2, Grid3, Grid4, GridAuto,
   Card, CardCompact, CardFeature,
@@ -75,6 +75,7 @@ export {
   Stack,
   StackTight,
   StackLoose,
+  StackFlush,
   
   // Layouts - Rows
   RowStart,
@@ -170,6 +171,7 @@ export const allTokens = [
   Container, // After specific container patterns
   StackTight, // More specific patterns first
   StackLoose,
+  StackFlush,
   Stack,
   RowStart,
   RowCenter,

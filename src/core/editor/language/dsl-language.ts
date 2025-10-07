@@ -53,19 +53,24 @@ export function registerDSLLanguage(monaco: Monaco) {
         [/--[\w-]+/, 'variable.css'],          // --custom-property
 
         // ========================================
-        // LAYOUTS (row, col, grid, container with modifiers)
-        // Pattern: element-modifier1-modifier2:
+        // LAYOUTS (Canonical Presets)
+        // Containers, Stacks, Rows, Grids, Cards, Special layouts
+        // Pattern: exact preset names (no modifiers)
         // ========================================
-        [/\b(row|col|grid|container|navigator|fab)(?:-[\w\d]+)*:/, 'keyword.layout'],
-        [/fab\{[\w-]+\}\([\w-]+\)/, 'keyword.layout'],  // fab{icon}(action) - same color as layouts
+        [/\b(container-narrow|container-wide|container-full|container)\b/, 'keyword.layout'],
+        [/\b(stack-flush| | requiredstack-tight|stack-loose|stack)\b/, 'keyword.layout'],
+        [/\b(row-start|row-center|row-between|row-end)\b/, 'keyword.layout'],
+        [/\b(grid-2|grid-3|grid-4|grid-auto)\b/, 'keyword.layout'],
+        [/\b(card-compact|card-feature|card)\b/, 'keyword.layout'],
+        [/\b(sidebar)\b/, 'keyword.layout'],
+        [/\b(navigator|list)\b/, 'keyword.layout'],
+        [/fab\{[\w-]+\}\([\w-]+\)/, 'keyword.layout'],  // fab{icon}(action)
 
         // ========================================
-        // STRUCTURES (list, card, header)
-        // Note: navigator removed from keyword highlighting
+        // STRUCTURES (header and separator)
+        // Note: list, card, navigator moved to layouts section
         // ========================================
-        [/^\s*header(?:-[\w\d]+)*:/, 'keyword.structure'],     // header at start
-        [/\b(card)(?:-[\w\d]+)*:/, 'keyword.structure'],
-        [/\blist(?:\s+\$\w+)?:/, 'keyword.structure'],  // list: or list $Component:
+        [/\b(header)\b/, 'keyword.structure'],
         [/^\s*---+/, 'delimiter.separator'],      // --- separator
 
         // ========================================
@@ -80,9 +85,12 @@ export function registerDSLLanguage(monaco: Monaco) {
 
         // ========================================
         // BUTTONS
-        // Pattern: (@{1,3})([_+\-=!]?)\[text\](?:\{icon\})?(?:\(action\))?
+        // New system: @variant-size[text](action)
+        // Variants: @primary, @secondary, @outline, @ghost, @destructive, @link, @success, @warning
+        // Sizes: -xs, -sm, -md, -lg (optional, default is md)
         // ========================================
-        [/@{1,3}[_+\-=!]?(?=\[)/, 'keyword.button'],
+        [/@(primary|secondary|outline|ghost|destructive|link|success|warning)(?:-(xs|sm|md|lg))?(?=\[)/, 'keyword.button'],
+        [/@(?=\[)/, 'keyword.button'],  // Default button (no variant specified)
 
         // ========================================
         // ROUTE REFERENCES in Links/Buttons
@@ -101,7 +109,14 @@ export function registerDSLLanguage(monaco: Monaco) {
         // FORMS
         // Radio buttons only at start of line (with optional whitespace)
         // ========================================
-        [/___[*-]?:/, 'keyword.input'],        // ___, ___*, ___-
+        // FORMS
+        // Radio buttons only at start of line (with optional whitespace)
+        // Highlight specific input labels: Email, Password, Date, Number (case-insensitive, allow common misspellings)
+        [/___(?:email)\b/i, 'keyword.input.email'],
+        [/___(?:password)\b/i, 'keyword.input.password'],
+        [/___(?:date)\b/i, 'keyword.input.date'],
+        [/___(?:number)\b/i, 'keyword.input.number'],
+        [/___/, 'keyword.input'],        // ___, ___*, ___-
         [/\[[X\s]\]/, 'keyword.checkbox'],     // [X], [ ]
         [/^\s*\([X\s]\)/, 'keyword.radio'],    // (X), ( ) at start of line only
 

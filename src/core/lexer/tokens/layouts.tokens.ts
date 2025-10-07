@@ -50,6 +50,11 @@ export const StackLoose = createToken({
   pattern: /stack-loose/ 
 });
 
+export const StackFlush = createToken({
+  name: "StackFlush",
+  pattern: /stack-flush/
+});
+
 // Row Layouts (Horizontal)
 export const RowStart = createToken({ 
   name: "RowStart", 

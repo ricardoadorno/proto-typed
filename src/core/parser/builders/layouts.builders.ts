@@ -28,6 +28,7 @@ export function buildLayoutElement(ctx: Context, visitor: any) {
   else if (ctx.Stack) layoutType = 'stack';
   else if (ctx.StackTight) layoutType = 'stack-tight';
   else if (ctx.StackLoose) layoutType = 'stack-loose';
+  else if (ctx.StackFlush) layoutType = 'stack-flush';
   // Rows
   else if (ctx.RowStart) layoutType = 'row-start';
   else if (ctx.RowCenter) layoutType = 'row-center';
