@@ -21,7 +21,7 @@ screen Login:
       
       [X] Lembrar de mim
       
-      @[Entrar]{log-in}(login)
+      @[i-LogIn Entrar](login)
       
       >>> #[Esqueci minha senha](recover) | #[Criar conta](register)
 ```
@@ -38,7 +38,7 @@ screen Login:
 screen Dashboard:
   header-between-p4:
     # Dashboard
-    @@@_[Atualizar]{refresh-cw}(refresh)
+    @@@_[i-RefreshCw Atualizar](refresh)
   
   container-p8:
     grid-cols3-gap4:
@@ -90,8 +90,8 @@ screen Profile:
       >>> São Paulo, Brasil
       
       row-gap4-center:
-        @+[Seguir]{user-plus}(follow)
-        @@_[Mensagem]{mail}(message)
+        @+[i-UserPlus Seguir](follow)
+        @@_[i-Mail Mensagem](message)
     
     ---
     
@@ -132,8 +132,8 @@ screen Shop:
   header-between-p4:
     # Loja
     row-gap2:
-      @@@_[Busca]{search}(search)
-      @@@_[Carrinho]{shopping-cart}(cart)
+      @@@_[i-Search Busca](search)
+      @@@_[i-ShoppingCart Carrinho](cart)
   
   container-p8:
     grid-cols3-gap4:
@@ -141,19 +141,19 @@ screen Shop:
         ![Produto](https://via.placeholder.com/200)
         ## Camiseta Básica
         >> R$ 49,90
-        @[Comprar]{shopping-cart}(buy)
+        @[i-ShoppingCart Comprar](buy)
       
       card-p4:
         ![Produto](https://via.placeholder.com/200)
         ## Calça Jeans
         >> R$ 129,90
-        @[Comprar]{shopping-cart}(buy)
+        @[i-ShoppingCart Comprar](buy)
       
       card-p4:
         ![Produto](https://via.placeholder.com/200)
         ## Tênis Sport
         >> R$ 199,90
-        @[Comprar]{shopping-cart}(buy)
+        @[i-ShoppingCart Comprar](buy)
   
   navigator:
     - i-Home Início | Shop
@@ -177,29 +177,29 @@ modal NewTask:
     ___:Título{Nome da tarefa}
     ___:Prioridade{Selecione}[Alta | Média | Baixa]
     row-gap4:
-      @[Criar]{plus}(create)
+      @[i-Plus Criar](create)
       @@+[Cancelar](close)
 
 screen Tasks:
   header-between-p4:
     # Tarefas
-    @@@[Nova]{plus}(NewTask)
+    @@@[i-Plus Nova](NewTask)
   
   container-p8:
     ## Hoje
     list:
-      - [X] Fazer compras @@@_[Editar]{edit}(edit)
-      - [ ] Limpar casa @@@_[Editar]{edit}(edit)
-      - [ ] Estudar DSL @@@_[Editar]{edit}(edit)
+      - [X] Fazer compras @@@_[i-Edit Editar](edit)
+      - [ ] Limpar casa @@@_[i-Edit Editar](edit)
+      - [ ] Estudar DSL @@@_[i-Edit Editar](edit)
     
     ---
     
     ## Amanhã
     list:
-      - [ ] Reunião 10h @@@_[Editar]{edit}(edit)
-      - [ ] Academia 18h @@@_[Editar]{edit}(edit)
+      - [ ] Reunião 10h @@@_[i-Edit Editar](edit)
+      - [ ] Academia 18h @@@_[i-Edit Editar](edit)
   
-  fab{plus}(NewTask)
+  fab[i-Plus](NewTask)
   
   navigator:
     - i-CheckSquare Hoje | Tasks
@@ -225,7 +225,7 @@ screen Step1:
     ___:Email{email@exemplo.com}
     ___:Telefone{(00) 00000-0000}
     
-    @[Próximo: Endereço]{arrow-right}(Step2)
+    @[i-ArrowRight Próximo: Endereço](Step2)
 
 screen Step2:
   container-p8:
@@ -239,7 +239,7 @@ screen Step2:
     
     row-gap4:
       @@+[Voltar](Step1)
-      @[Próximo: Confirmação]{arrow-right}(Step3)
+      @[i-ArrowRight Próximo: Confirmação](Step3)
 
 screen Step3:
   container-p8:
@@ -254,7 +254,7 @@ screen Step3:
     
     row-gap4:
       @@+[Voltar](Step2)
-      @[Finalizar]{check}(Success)
+      @[i-Check Finalizar](Success)
 ```
 
 </DslExample>
@@ -274,13 +274,13 @@ drawer Menu:
       - i-Settings Configurações | Settings
       - i-HelpCircle Ajuda | Help
     ---
-    @_[Sair]{log-out}(logout)
+    @_[i-LogOut Sair](logout)
 
 screen Chats:
   header-between-p4:
-    @@@_[Menu]{menu}(Menu)
+    @@@_[i-Menu Menu](Menu)
     # Mensagens
-    @@@_[Nova]{plus}(NewChat)
+    @@@_[i-Plus Nova](NewChat)
   
   container-p8:
     list:
@@ -288,7 +288,7 @@ screen Chats:
       - Maria Santos >>> há 1 hora @[Abrir](ChatMaria)
       - Pedro Costa >>> ontem @[Abrir](ChatPedro)
   
-  fab{plus}(NewChat)
+  fab[i-Plus](NewChat)
   
   navigator:
     - i-MessageCircle Chats | Chats

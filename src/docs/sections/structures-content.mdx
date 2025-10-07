@@ -1,8 +1,8 @@
-# Estruturas de Conte\u00fado
+# Estruturas de Conteúdo
 
 import { DslExample } from "../../components/docs";
 
-Elementos estruturais para organizar conte\u00fado: listas, cards, headers, navegadores, FABs e separadores.
+Elementos estruturais para organizar conteúdo: listas, cards, headers, navegadores, FABs e separadores.
 
 ---
 
@@ -77,22 +77,22 @@ screen Dashboard:
 
 ## Header
 
-**Sintaxe:** `header:` ou `header-{modificadores}:`
+**Sintaxe:** `header:` ou `header-modifiers:`
 
-Cabe\u00e7alho fixo no topo da tela.
+Cabeçalho fixo no topo da tela.
 
-<DslExample title="Header" description="Cabe\u00e7alho da aplica\u00e7\u00e3o">
+<DslExample title="Header" description="Cabeçalho com ações">
 
 ```dsl
 screen App:
   header-between-p4:
     # Minha App
     row-gap2:
-      @@@_[Busca]{search}(search)
-      @@@_[Perfil]{user}(profile)
+      @@@_[i-Search Busca](search)
+      @@@_[i-User Perfil](profile)
   
   container-p8:
-    # Conte\u00fado Principal
+    # Conteúdo Principal
     > Lorem ipsum dolor sit amet
 ```
 
@@ -139,11 +139,11 @@ screen Search:
 
 ## FAB (Floating Action Button)
 
-**Sintaxe:** `fab{icone}(a\u00e7\u00e3o)`
+**Sintaxe:** `fab[i-NomeIcone](acao)`
 
-Bot\u00e3o flutuante fixo no canto inferior direito.
+Botão flutuante fixo no canto inferior direito.
 
-<DslExample title="FAB" description="A\u00e7\u00e3o prim\u00e1ria flutuante">
+<DslExample title="FAB" description="Botão de ação primária">
 
 ```dsl
 screen Messages:
@@ -151,18 +151,11 @@ screen Messages:
     # Mensagens
     
     list:
-      - Conversa com Jo\u00e3o
+      - Conversa com João
       - Conversa com Maria
       - Conversa com Pedro
   
-  fab{plus}(NewMessage)
-
-screen NewMessage:
-  container-p8:
-    # Nova Mensagem
-    ___:Para{Destinat\u00e1rio}
-    ___:Mensagem{Digite aqui}
-    @[Enviar](send)
+  fab[i-Plus](NewMessage)
 ```
 
 </DslExample>
@@ -209,7 +202,7 @@ screen Profile:
 screen TaskApp:
   header-between-p4:
     # Tarefas
-    @@@_[Filtro]{filter}(filter)
+    @@@_[i-Filter Filtro](filter)
   
   container-p8:
     list:
@@ -220,29 +213,29 @@ screen TaskApp:
   navigator:
     - i-Home Hoje | TaskApp
     - i-Calendar Semana | Week
-    - i-CheckSquare Conclu\u00eddas | Done
+    - i-CheckSquare Concluídas | Done
   
-  fab{plus}(NewTask)
+  fab[i-Plus](NewTask)
 ```
 
 </DslExample>
 
 ### Dashboard Empresarial
 
-<DslExample title="Dashboard com Cards" description="Grid de m\u00e9tricas">
+<DslExample title="Dashboard com Cards" description="Grid de métricas">
 
 ```dsl
 screen BusinessDashboard:
   header-between-p4:
     # Dashboard
-    @@@_[Atualizar]{refresh-cw}(refresh)
+    @@@_[i-RefreshCw Atualizar](refresh)
   
   container-p8:
     grid-cols3-gap4:
       card-p6-center:
         >>> Receita
         # R$ 145K
-        >> +23% vs m\u00eas anterior
+        >> +23% vs mês anterior
       
       card-p6-center:
         >>> Clientes
@@ -250,9 +243,9 @@ screen BusinessDashboard:
         >> +156 novos
       
       card-p6-center:
-        >>> Taxa Convers\u00e3o
+        >>> Taxa Conversão
         # 18.5%
-        >> -2.3% vs m\u00eas anterior
+        >> -2.3% vs mês anterior
     
     ---
     
@@ -267,7 +260,7 @@ screen BusinessDashboard:
 
 ### Perfil Social
 
-<DslExample title="Perfil com Se\u00e7\u00f5es" description="Separadores e conte\u00fado rico">
+<DslExample title="Perfil com Seções" description="Separadores e conteúdo rico">
 
 ```dsl
 screen SocialProfile:
@@ -276,15 +269,15 @@ screen SocialProfile:
       ![Avatar](https://via.placeholder.com/150)
       # @joaosilva
       >> Designer & Developer
-      >>> S\u00e3o Paulo, Brasil
+      >>> São Paulo, Brasil
       
       row-gap4-center:
-        @+[Seguir]{user-plus}(follow)
-        @@_[Mensagem]{mail}(message)
+        @+[i-UserPlus Seguir](follow)
+        @@_[i-Mail Mensagem](message)
     
     ---
     
-    ## Estat\u00edsticas
+    ## Estatísticas
     row-around:
       col-center:
         # 1,234
@@ -301,7 +294,7 @@ screen SocialProfile:
     ---
     
     ## Sobre
-    > Apaixonado por design e tecnologia. Criando produtos digitais incr\u00edveis.
+    > Apaixonado por design e tecnologia. Criando produtos digitais incríveis.
     
     ---
     

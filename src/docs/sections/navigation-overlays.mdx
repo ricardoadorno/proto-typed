@@ -2,11 +2,16 @@
 
 import { DslExample } from "../../components/docs";
 
-Overlays nomeados para dialogs e menus laterais.
+Overlays nomeados para dialogs e menus laterais.    ---
+    
+    @_[i-log-out Sair](logout)
 
----
-
-## Modal
+screen App:
+  header-between-p4:
+    row-gap2:
+      @@@_[i-menu Menu](SideNav)
+      # Minha App
+    @@@_[i-user Perfil](Profile)## Modal
 
 **Sintaxe:** `modal NomeDoModal:`
 
@@ -58,7 +63,7 @@ drawer Menu:
 
 screen Home:
   header-between-p4:
-    @@@_[Menu]{menu}(Menu)
+    @@@_[i-menu Menu](Menu)
     # App
   
   container-p8:
@@ -93,7 +98,7 @@ modal ConfirmDelete:
     > Esta ação não pode ser desfeita.
     
     row-gap4-center:
-      @=[Excluir]{trash}(confirmDelete)
+      @=[i-Trash Excluir](confirmDelete)
       @@+[Cancelar](close)
 
 screen Items:
@@ -126,14 +131,14 @@ drawer SideNav:
     
     ---
     
-    @_[Sair]{log-out}(logout)
+    @_[i-log-out Sair](logout)
 
 screen App:
   header-between-p4:
     row-gap2:
-      @@@_[Menu]{menu}(SideNav)
+      @@@_[i-menu Menu](SideNav)
       # Minha App
-    @@@_[Perfil]{user}(Profile)
+    @@@_[i-user Perfil](Profile)
   
   container-p8:
     # Dashboard
@@ -156,20 +161,20 @@ modal NewTask:
     ___:Prioridade{Selecione}[Alta | Média | Baixa]
     
     row-gap4:
-      @[Criar]{plus}(create)
+      @[i-Plus Criar](create)
       @@+[Cancelar](close)
 
 screen Tasks:
   container-p8:
     header-between-p4:
       # Tarefas
-      @@@[Nova]{plus}(NewTask)
+      @@@[i-Plus Nova](NewTask)
     
     list:
       - Tarefa 1
       - Tarefa 2
   
-  fab{plus}(NewTask)
+  fab[i-Plus](NewTask)
 ```
 
 </DslExample>

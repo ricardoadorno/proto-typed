@@ -60,7 +60,7 @@ Referência rápida de todos os elementos do DSL.
 - Destructive: `@=[Texto](ação)`
 - Warning: `@![Texto](ação)`
 
-**Com ícone:** `@[Texto]{icone}(ação)`
+**Com ícone:** `@[i-NomeIcone Texto](ação)``
 
 ### Links e Imagens
 
@@ -73,7 +73,7 @@ Referência rápida de todos os elementos do DSL.
 @[Primário](action)
 @_[Ghost](action)
 @+[Outline](action)
-@=[Deletar]{trash}(delete)
+@=[i-Trash Deletar](delete)
 
 #[Link Externo](https://exemplo.com)
 ![Logo](https://placehold.co/200x60)
@@ -138,7 +138,7 @@ list:
 
 - Separador: `---`
 - Navigator: `navigator:` + itens com formato especial
-- FAB: `fab{icone}(ação)`
+- FAB: `fab[i-NomeIcone](ação)`
 
 <DslExample title="Estruturas" heightClassName="h-56">
 
@@ -157,7 +157,7 @@ screen App:
     - i-Home Início | Home
     - i-User Perfil | Profile
   
-  fab{plus}(NewItem)
+  fab[i-Plus](NewItem)
 ```
 
 </DslExample>

@@ -1,12 +1,15 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { parseAndBuildAst } from '../../core/parser/parse-and-build-ast';
 import { astToHtmlStringPreview } from '../../core/renderer/ast-to-html-string-preview';
+import { routeManagerGateway } from '../../core/renderer/infrastructure/route-manager-gateway';
+import { customPropertiesManager } from '../../core/renderer/core/theme-manager';
 
 interface DslMiniPreviewProps {
     code: string;
     title?: string;
     heightClassName?: string; // e.g. "h-64"
     autoWrapScreen?: boolean; // wrap snippets that don't declare a screen
+    theme?: string; // optional theme name to sync with customPropertiesManager
 }
 
 function indentLines(text: string, spaces = 2): string {
@@ -29,6 +32,7 @@ export function DslMiniPreview({
     code,
     heightClassName = 'h-64',
     autoWrapScreen = true,
+    theme,
 }: DslMiniPreviewProps) {
     const [html, setHtml] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
@@ -36,6 +40,13 @@ export function DslMiniPreview({
     const containerRef = useRef<HTMLDivElement | null>(null);
 
     const source = useMemo(() => (autoWrapScreen ? maybeWrap(code) : code), [code, autoWrapScreen]);
+
+    // Sync theme changes with the theme manager (like App.tsx does)
+    useEffect(() => {
+        if (theme) {
+            customPropertiesManager.setExternalTheme(theme);
+        }
+    }, [theme]);
 
     const compile = useCallback(async () => {
         if (!source.trim()) {
@@ -45,6 +56,18 @@ export function DslMiniPreview({
         }
         try {
             const ast = parseAndBuildAst(source);
+
+            // Initialize routes with routeManagerGateway
+            routeManagerGateway.initialize(ast, { currentScreen });
+
+            // Get first screen if no currentScreen is set
+            if (!currentScreen) {
+                const metadata = routeManagerGateway.getRouteMetadata();
+                if (metadata.screens.length > 0) {
+                    setCurrentScreen(metadata.screens[0].name);
+                }
+            }
+
             const rendered = astToHtmlStringPreview(ast, { currentScreen });
             setHtml(rendered);
             setError(null);
@@ -59,42 +82,20 @@ export function DslMiniPreview({
         return () => clearTimeout(id);
     }, [compile]);
 
-    const handleClick = (e: React.MouseEvent) => {
-        const root = containerRef.current;
-        if (!root) return;
-
-        // Support new data-nav pattern
-        const target = (e.target as Element).closest('[data-nav]');
-        if (target) {
-            e.preventDefault();
-            const navValue = target.getAttribute('data-nav');
-            const navType = target.getAttribute('data-nav-type');
-            if (navValue && navType === 'internal') {
-                setCurrentScreen(navValue);
-                root.querySelectorAll('.screen').forEach((el) => {
-                    (el as HTMLElement).style.display = 'none';
-                });
-                const targetScreen = root.querySelector(`#${navValue}-screen`);
-                if (targetScreen) (targetScreen as HTMLElement).style.display = 'block';
-            }
-            return;
-        }
-
-        // Legacy support for data-screen-link anchors
-        const t = e.target as HTMLElement;
-        if (t instanceof HTMLAnchorElement && t.hasAttribute('data-screen-link')) {
-            e.preventDefault();
-            const screenName = t.getAttribute('data-screen-link');
-            if (screenName) {
+    // Set navigation handlers before creating click handler
+    useEffect(() => {
+        routeManagerGateway.setHandlers({
+            onScreenNavigation: (screenName: string) => {
                 setCurrentScreen(screenName);
-                root.querySelectorAll('.screen').forEach((el) => {
-                    (el as HTMLElement).style.display = 'none';
-                });
-                const targetScreen = root.querySelector(`#${screenName}-screen`);
-                if (targetScreen) (targetScreen as HTMLElement).style.display = 'block';
-            }
-        }
-    };
+            },
+        });
+    }, []);
+
+    // Use routeManagerGateway's navigation handler (like App.tsx does)
+    const handleClick = useMemo(
+        () => routeManagerGateway.createClickHandler(),
+        []
+    );
 
     return (
         <>

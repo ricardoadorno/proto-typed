@@ -8,7 +8,7 @@ Sistema de ícones usando **Lucide Icons** (https://lucide.dev).
 
 ## Como Funciona
 
-Ícones são adicionados usando `{nome-icone}` em elementos que suportam ícones.
+Ícones são adicionados usando o prefixo `i-` seguido do nome do ícone.
 
 **Biblioteca:** [Lucide Icons](https://lucide.dev) - mais de 1000 ícones disponíveis
 
@@ -18,9 +18,9 @@ Sistema de ícones usando **Lucide Icons** (https://lucide.dev).
 
 | Elemento | Sintaxe | Exemplo |
 |----------|---------|---------|
-| Botões | `{icone}` após texto | `@[Salvar]{save}(action)` |
+| Botões | `i-Icone` antes do texto | `@[i-Save Salvar](action)` |
 | Navigator | `i-NomeIcone` antes do texto | `- i-Home Início \| Home` |
-| FAB | `{icone}` após `fab` | `fab{plus}(NewItem)` |
+| FAB | `i-Icone` entre colchetes | `fab[i-Plus](NewItem)` |
 
 ---
 
@@ -32,14 +32,14 @@ Sistema de ícones usando **Lucide Icons** (https://lucide.dev).
 screen IconButtons:
   container-p8:
     row-gap4:
-      @[Salvar]{save}(save)
-      @[Editar]{edit}(edit)
-      @[Compartilhar]{share}(share)
-      @[Deletar]{trash-2}(delete)
+      @[i-Save Salvar](save)
+      @[i-Edit Editar](edit)
+      @[i-Share Compartilhar](share)
+      @[i-Trash2 Deletar](delete)
     
     row-gap4:
-      @@+[Download]{download}(download)
-      @@@_[Configurações]{settings}(settings)
+      @@+[i-Download Download](download)
+      @@@_[i-Settings Configurações](settings)
 ```
 
 </DslExample>
@@ -80,7 +80,7 @@ screen Messages:
       - Conversa com João
       - Conversa com Maria
   
-  fab{plus}(NewMessage)
+  fab[i-Plus](NewMessage)
 ```
 
 </DslExample>
@@ -91,22 +91,22 @@ screen Messages:
 
 | Nome | Ícone | Uso Comum |
 |------|-------|-----------|
-| `home` | 🏠 | Tela inicial |
-| `search` | 🔍 | Busca |
-| `user` | 👤 | Perfil |
-| `settings` | ⚙️ | Configurações |
-| `plus` | ➕ | Adicionar |
-| `trash-2` | 🗑️ | Deletar |
-| `edit` | ✏️ | Editar |
-| `save` | 💾 | Salvar |
-| `share` | 📤 | Compartilhar |
-| `download` | ⬇️ | Download |
-| `mail` | 📧 | Email |
-| `bell` | 🔔 | Notificações |
-| `check` | ✓ | Confirmar |
-| `x` | ✕ | Fechar |
+| `Home` | 🏠 | Tela inicial |
+| `Search` | 🔍 | Busca |
+| `User` | 👤 | Perfil |
+| `Settings` | ⚙️ | Configurações |
+| `Plus` | ➕ | Adicionar |
+| `Trash2` | 🗑️ | Deletar |
+| `Edit` | ✏️ | Editar |
+| `Save` | 💾 | Salvar |
+| `Share` | 📤 | Compartilhar |
+| `Download` | ⬇️ | Download |
+| `Mail` | 📧 | Email |
+| `Bell` | 🔔 | Notificações |
+| `Check` | ✓ | Confirmar |
+| `X` | ✕ | Fechar |
 
-**Importante:** Nomes são **case-sensitive** - use exatamente como no Lucide.
+**Importante:** Nomes usam **PascalCase** - primeira letra maiúscula.
 
 ---
 
@@ -121,9 +121,9 @@ screen Editor:
   header-between-p4:
     # Editor
     row-gap2:
-      @@@_[Salvar]{save}(save)
-      @@@_[Desfazer]{undo}(undo)
-      @@@_[Refazer]{redo}(redo)
+      @@@_[i-Save Salvar](save)
+      @@@_[i-Undo Desfazer](undo)
+      @@@_[i-Redo Refazer](redo)
 ```
 
 </DslExample>
@@ -136,8 +136,8 @@ screen Editor:
 screen Tasks:
   container-p8:
     list:
-      - Fazer compras @[Concluir]{check}(complete) @@@_[Editar]{edit}(edit)
-      - Estudar DSL @[Concluir]{check}(complete) @@@=[Deletar]{trash}(delete)
+      - Fazer compras @[i-Check Concluir](complete) @@@_[i-Edit Editar](edit)
+      - Estudar DSL @[i-Check Concluir](complete) @@@=[i-Trash Deletar](delete)
 ```
 
 </DslExample>

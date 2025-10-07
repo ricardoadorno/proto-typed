@@ -80,7 +80,7 @@ component ContactCard:
     # %name
     >> %role
     >>> %email
-    @@@+[Contato]{mail}(mailto:%email)
+    @@@+[i-Mail Contato](mailto:%email)
 
 screen Team:
   container-p8:
@@ -108,7 +108,7 @@ component ProductCard:
     ![%image](https://via.placeholder.com/200)
     ## %name
     >> %price
-    @[Comprar]{shopping-cart}(buy)
+    @[i-ShoppingCart Comprar](buy)
 
 screen Shop:
   container-p8:
@@ -165,7 +165,7 @@ component Notification:
       col:
         >> %title
         >>> %time
-      @@@_[X]{x}(dismiss)
+      @@@_[i-X X](dismiss)
 
 screen Notifications:
   container-p8:

@@ -4,7 +4,7 @@ import { DslExample } from "../../components/docs";
 
 **Sintaxe:** `@[Texto](ação)`
 
-**Com modificadores:** `@{variante}[Texto]{ícone}(ação)`
+**Com modificadores:** `@{variante}[Texto](ação)` ou `@{variante}[i-Ícone Texto](ação)`
 
 ---
 
@@ -63,7 +63,7 @@ screen ButtonVariants:
 
 ## Ícones
 
-**Sintaxe:** `{nome-icone}` após o texto
+**Sintaxe:** `i-NomeIcone` antes do texto (separado por espaço)
 
 **Biblioteca:** [Lucide Icons](https://lucide.dev)
 
@@ -73,13 +73,13 @@ screen ButtonVariants:
 screen IconButtons:
   container-p8:
     row-gap4:
-      @[Salvar]{save}(save)
-      @[Editar]{edit}(edit)
-      @[Compartilhar]{share}(share)
+      @[i-Save Salvar](save)
+      @[i-Edit Editar](edit)
+      @[i-Share Compartilhar](share)
     
     row-gap4:
-      @@+[Download]{download}(download)
-      @@@=[Excluir]{trash-2}(delete)
+      @@+[i-Download Download](download)
+      @@@=[i-Trash2 Excluir](delete)
 ```
 
 </DslExample>
@@ -128,7 +128,7 @@ screen FormExample:
     ___:Email{email@exemplo.com}
     
     row-gap4:
-      @[Cadastrar]{user-plus}(register)
+      @[i-UserPlus Cadastrar](register)
       @@+[Cancelar](cancel)
 ```
 
@@ -147,7 +147,7 @@ screen ProductCard:
     
     row-between:
       @-[Detalhes](ProductDetail)
-      @@[Comprar]{shopping-cart}(buy)
+      @@[i-ShoppingCart Comprar](buy)
 ```
 
 </DslExample>
@@ -164,7 +164,7 @@ screen DeleteConfirm:
       > Esta ação não pode ser desfeita.
       
       row-gap4:
-        @=[Excluir Permanentemente]{trash}(delete)
+        @=[i-Trash Excluir Permanentemente](delete)
         @@+[Cancelar](cancel)
 ```
 
