@@ -20,10 +20,12 @@ export const BlankLine = createToken({
 
 export const Colon = createToken({ 
   name: "Colon", 
-  pattern: /:/ 
+  pattern: /:/,
+  label: ":"
 });
 
 export const Identifier = createToken({ 
   name: "Identifier", 
-  pattern: /[^\s\n\r:{}[\](\)]+/ 
+  pattern: /[^\s\n\r:{}[\](\)]+/,
+  label: "name"
 });

@@ -79,12 +79,14 @@ export const Indent = createToken({
   name: "Indent",
   line_breaks: false,
   pattern: matchIndent,
+  label: "indentation (spaces)"
 });
 
 export const Outdent = createToken({
   name: "Outdent",
   line_breaks: false,
   pattern: matchOutdent,
+  label: "outdentation (dedent)"
 });
 
 

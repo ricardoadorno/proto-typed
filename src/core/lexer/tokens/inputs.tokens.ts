@@ -6,16 +6,19 @@ import { createToken } from "chevrotain";
 // Captures the entire input declaration in one token
 export const Input = createToken({ 
   name: "Input", 
-  pattern: /___(?:(email|password|date|number|textarea))?:\s*([^{\[\|\n\r]+)(?:\{([^}]+)\})?(?:\[([^\]]+)\])?(?:\s*\|\s*([^\n\r]+))?/
+  pattern: /___(?:(email|password|date|number|textarea))?:\s*([^{\[\|\n\r]+)(?:\{([^}]+)\})?(?:\[([^\]]+)\])?(?:\s*\|\s*([^\n\r]+))?/,
+  label: "___: Label{placeholder}"
 });
 
 // Radio and checkbox tokens (unchanged)
 export const RadioOption = createToken({
   name: "RadioOption",
-  pattern: /\([xX ]?\)\s*([^\n\r]+)/
+  pattern: /\([xX ]?\)\s*([^\n\r]+)/,
+  label: "(X) radio option"
 });
 
 export const Checkbox = createToken({ 
   name: "Checkbox", 
-  pattern: /\[([ xX]?)\](?:\s*([^\n\r]+))?/ 
+  pattern: /\[([ xX]?)\](?:\s*([^\n\r]+))?/,
+  label: "[X] checkbox"
 });
