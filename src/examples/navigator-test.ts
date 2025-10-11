@@ -1,48 +1,32 @@
 export const navigatorTest = `
 screen NavigatorTest:
-  # Navigator Examples
-  > Testing different navigator formats with Lucide icons
+  container:
+    # Navigator Examples
+    > Testing different navigator formats with Lucide icons
 
-  # Three-part format with Lucide icons
-  > Complete format with text, Lucide icon names (with 'i-' prefix) and destination:
-  
-  navigator:
-    - Home | i-home | HomeScreen
-    - Search | i-search | SearchScreen 
-    - Messages | i-message-circle | MessagesScreen
-    - Profile | i-user | ProfileScreen
+    # Three-part format with Lucide icons
+    > Complete format with text, Lucide icon names (with 'i-' prefix) and destination:
 
-  ---
+    ---
 
-  # Three-part format with emoji icons
-  > Complete format with text, emoji icons and destination:
-  
-  navigator:
-    - Home | 🏠 | HomeScreen
-    - Search | 🔍 | SearchScreen 
-    - Messages | 💬 | MessagesScreen
-    - Profile | 👤 | ProfileScreen
+    # Three-part format with emoji icons
+    > Complete format with text, emoji icons and destination:
 
-  ---
+    ---
 
-  # Two-part format (text | destination)
-  > Simple format with just text and destination:
-  
-  navigator:
-    - Dashboard | DashboardScreen
-    - Settings | SettingsScreen
-    - About | AboutScreen
+    # Two-part format (text | destination)
+    > Simple format with just text and destination:
 
-  ---
+    ---
 
-  # Mixed format with Lucide and emoji
-  > Mixing different formats and icon types (Lucide icons need 'i-' prefix):
-  
-  navigator:
-    - Home | i-home | HomeScreen
-    - Settings | ⚙️ | SettingsScreen
-    - Profile | i-user | ProfileScreen
-    - Help | HelpScreen
+    # Mixed format with Lucide and emoji
+    > Mixing different formats and icon types (Lucide icons need 'i-' prefix):
+
+    navigator:
+      - Home | i-home | HomeScreen
+      - Settings | ⚙️ | SettingsScreen
+      - Profile | i-user | ProfileScreen
+      - Help | HelpScreen
 
 screen HomeScreen:
   # Home Screen

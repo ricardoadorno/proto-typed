@@ -114,6 +114,8 @@ export function buildButtonElement(ctx: Context, visitor: any) {
 
   // Validate variant
   variant = validateButtonVariant(visitor, variant, line, column);
+  
+  size = validateButtonSize(visitor, size, line, column);
 
   // Determine size from which token is present
   if (ctx.ButtonSizeXs) size = 'extra-small';
@@ -123,7 +125,6 @@ export function buildButtonElement(ctx: Context, visitor: any) {
   // Otherwise keep default 'md'
 
   // Validate size
-  size = validateButtonSize(visitor, size, line, column);
 
   // Extract label text from ButtonLabel token
   if (ctx.ButtonLabel && ctx.ButtonLabel[0]) {
