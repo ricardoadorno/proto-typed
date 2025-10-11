@@ -51,7 +51,7 @@ export function ExampleModal() {
             // Use provided code or fall back to example code
             const codeToUse = codeToCompile ?? example.code;
             const ast = parseAndBuildAst(codeToUse);
-            const html = astToHtmlStringPreview(ast, { currentScreen });
+            const { html } = astToHtmlStringPreview(ast, { currentScreen });
             setCompiledOutput(html);
         } catch (error) {
             console.error("Error compiling example:", error);

@@ -36,6 +36,10 @@ export class UiDslParser extends CstParser {
   constructor() {
     super([Indent, Outdent, ...allTokens], {
       nodeLocationTracking: "full",
+      // Enable automatic error recovery - parser will try to continue after errors
+      recoveryEnabled: true,
+      // Maximum lookahead for better error recovery (default is 4)
+      maxLookahead: 3,
     });
     this.performSelfAnalysis();
   }

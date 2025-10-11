@@ -45,9 +45,13 @@ export function createAstBuilder(parserInstance: UiDslParser) {
   const BaseUiDslCstVisitor = parserInstance.getBaseCstVisitorConstructorWithDefaults();
 
   class AstBuilder extends BaseUiDslCstVisitor {
+    __builderErrors?: any[];  // Type annotation for error collection
+    
     constructor() {
       super();
       this.validateVisitor();
+      // Initialize error collection array for builder validation
+      this.__builderErrors = [];
     }
 
   // ===== CORE PROGRAM RULES =====
@@ -152,7 +156,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
   }
 
   buttonElement(ctx: Context) {
-    return buildButtonElement(ctx);
+    return buildButtonElement(ctx, this);
   }
 
   linkElement(ctx: Context) {
@@ -199,7 +203,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
   // ===== INPUT ELEMENT RULES =====
 
   inputElement(ctx: Context) {
-    return buildInputElement(ctx);
+    return buildInputElement(ctx, this);
   }
 
   radioButtonGroup(ctx: Context) {

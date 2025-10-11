@@ -1,4 +1,6 @@
 import { AstNode, NodeType } from '../../../types/ast-node';
+import { ProtoError } from '../../../types/errors';
+import { safeRender } from './safe-render';
 
 // Import all node renderers from the modular organization
 import { 
@@ -33,7 +35,32 @@ import {
   renderComponentInstance 
 } from '../nodes/components.node';
 
+/**
+ * Global error collection for rendering phase
+ * Similar to builder errors, these are collected during rendering
+ */
+let renderErrors: ProtoError[] = [];
 
+/**
+ * Reset render errors (call before starting new render)
+ */
+export function resetRenderErrors(): void {
+  renderErrors = [];
+}
+
+/**
+ * Get collected render errors
+ */
+export function getRenderErrors(): ProtoError[] {
+  return renderErrors;
+}
+
+/**
+ * Add a render error to the collection
+ */
+export function addRenderError(error: ProtoError): void {
+  renderErrors.push(error);
+}
 
 let _render = (node: AstNode, ctx?: string) => renderNode(node, ctx)
 
@@ -90,7 +117,13 @@ export function renderNode(node: AstNode, context?: string): string {
     console.warn(`Unknown node type: ${node.type}`);
     return '';
   }
-  return renderer(node, context);
+
+  // Wrap renderer call with safeRender to catch errors
+  return safeRender(
+    () => renderer(node, context),
+    node,
+    renderErrors
+  );
 }
 
 

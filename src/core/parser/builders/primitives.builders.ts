@@ -3,6 +3,8 @@
  * Handles typography, buttons, links, images, and icons
  */
 
+import { validateButtonVariant, validateButtonSize, validateRequiredProps } from './builder-validation';
+
 type Context = {
   [key: string]: any;
 };
@@ -86,11 +88,18 @@ export function buildTextElement(ctx: Context) {
 /**
  * Build button element from context
  */
-export function buildButtonElement(ctx: Context) {
+export function buildButtonElement(ctx: Context, visitor: any) {
   let variant = 'primary'; // Default variant
   let size = 'md'; // Default size
   let text = '';
   let action = '';
+
+  // Get token for line/column info
+  const buttonToken = ctx.ButtonPrimary?.[0] || ctx.ButtonSecondary?.[0] || 
+                      ctx.ButtonOutline?.[0] || ctx.ButtonGhost?.[0] ||
+                      ctx.ButtonMarker?.[0];
+  const line = buttonToken?.startLine;
+  const column = buttonToken?.startColumn;
 
   // Determine variant from which token is present
   if (ctx.ButtonPrimary) variant = 'primary';
@@ -103,12 +112,18 @@ export function buildButtonElement(ctx: Context) {
   else if (ctx.ButtonWarning) variant = 'warning';
   else if (ctx.ButtonMarker) variant = 'primary'; // Default marker maps to primary
 
+  // Validate variant
+  variant = validateButtonVariant(visitor, variant, line, column);
+
   // Determine size from which token is present
   if (ctx.ButtonSizeXs) size = 'extra-small';
   else if (ctx.ButtonSizeSm) size = 'small';
   else if (ctx.ButtonSizeMd) size = 'medium'
   else if (ctx.ButtonSizeLg) size = 'large';
   // Otherwise keep default 'md'
+
+  // Validate size
+  size = validateButtonSize(visitor, size, line, column);
 
   // Extract label text from ButtonLabel token
   if (ctx.ButtonLabel && ctx.ButtonLabel[0]) {
@@ -121,6 +136,9 @@ export function buildButtonElement(ctx: Context) {
     const actionMatch = ctx.ButtonAction[0].image.match(/\(([^)]+)\)/);
     action = actionMatch ? actionMatch[1] : '';
   }
+
+  // Validate required props
+  validateRequiredProps(visitor, { text }, ['text'], 'Button', line, column);
 
   return {
     type: "Button",

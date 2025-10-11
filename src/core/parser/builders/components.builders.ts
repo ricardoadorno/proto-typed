@@ -4,6 +4,7 @@
  */
 
 import type { CstNode } from "chevrotain";
+import { validateComponentName } from './builder-validation';
 
 type Context = {
   [key: string]: any;
@@ -13,7 +14,14 @@ type Context = {
  * Build component element from context
  */
 export function buildComponent(ctx: Context, visitor: any) {
-  const name = ctx.name[0].image;
+  const nameToken = ctx.name[0];
+  const name = nameToken.image;
+  const line = nameToken.startLine;
+  const column = nameToken.startColumn;
+  
+  // Validate component name format
+  validateComponentName(visitor, name, line, column);
+  
   const children = ctx.element ? ctx.element.map((el: CstNode) => visitor.visit(el)) : [];
 
   return {

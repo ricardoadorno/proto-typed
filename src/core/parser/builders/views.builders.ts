@@ -4,6 +4,7 @@
  */
 
 import type { CstNode } from "chevrotain";
+import { validateViewName } from './builder-validation';
 
 type Context = {
   [key: string]: any;
@@ -13,7 +14,14 @@ type Context = {
  * Build screen element from context
  */
 export function buildScreen(ctx: Context, visitor: any) {
-  const name = ctx.name[0].image;
+  const nameToken = ctx.name[0];
+  const name = nameToken.image;
+  const line = nameToken.startLine;
+  const column = nameToken.startColumn;
+  
+  // Validate screen name format
+  validateViewName(visitor, name, 'Screen', line, column);
+  
   const children = ctx.element ? ctx.element.map((el: CstNode) => visitor.visit(el)) : [];
 
   return {
@@ -28,7 +36,14 @@ export function buildScreen(ctx: Context, visitor: any) {
  * Build modal element from context
  */
 export function buildModal(ctx: Context, visitor: any) {
-  const name = ctx.name[0].image;
+  const nameToken = ctx.name[0];
+  const name = nameToken.image;
+  const line = nameToken.startLine;
+  const column = nameToken.startColumn;
+  
+  // Validate modal name format
+  validateViewName(visitor, name, 'Modal', line, column);
+  
   const children = ctx.element ? ctx.element.map((el: CstNode) => visitor.visit(el)) : [];
 
   return {
@@ -43,7 +58,14 @@ export function buildModal(ctx: Context, visitor: any) {
  * Build drawer element from context
  */
 export function buildDrawer(ctx: Context, visitor: any) {
-  const name = ctx.name[0].image;
+  const nameToken = ctx.name[0];
+  const name = nameToken.image;
+  const line = nameToken.startLine;
+  const column = nameToken.startColumn;
+  
+  // Validate drawer name format
+  validateViewName(visitor, name, 'Drawer', line, column);
+  
   const children = ctx.element ? ctx.element.map((el: CstNode) => visitor.visit(el)) : [];
 
   return {

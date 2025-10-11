@@ -28,7 +28,6 @@ export default function App() {
         astResultJson,
         renderedHtml,
         error,
-        parsedErrors,
         metadata,
         handleParse,
         navigateToScreen,
@@ -108,7 +107,6 @@ export default function App() {
                         <DSLEditor
                             value={input}
                             onChange={(value) => setInput(value || "")}
-                            errors={parsedErrors}
                         />
                     </EditorPanel>
                     <ErrorTerminal error={error} code={input} />

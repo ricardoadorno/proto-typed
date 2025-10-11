@@ -69,7 +69,7 @@ export function DslMiniPreview({
             }
 
             const rendered = astToHtmlStringPreview(ast, { currentScreen });
-            setHtml(rendered);
+            setHtml(rendered.html);
             setError(null);
         } catch (e: any) {
             setError(e?.message ?? 'Failed to render DSL');

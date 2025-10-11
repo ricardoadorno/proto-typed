@@ -2,12 +2,12 @@
  * DSL Editor Component
  * 
  * Monaco Editor configured specifically for the proto-typed DSL.
- * Integrates syntax highlighting, IntelliSense, and error markers.
+ * Integrates syntax highlighting, IntelliSense, and error markers via ErrorBus.
  * 
  * Features:
  * - Real-time syntax highlighting with custom theme
  * - Context-aware completions (IntelliSense)
- * - Error markers with suggestions
+ * - Error markers from ErrorBus integration
  * - Auto-indentation and bracket matching
  * 
  * Usage:
@@ -15,7 +15,6 @@
  * <DSLEditor
  *   value={code}
  *   onChange={handleChange}
- *   errors={parseErrors}
  *   theme="proto-typed-dark"
  * />
  * ```
@@ -26,47 +25,12 @@ import { useMonacoDSL } from '../hooks/use-monaco-dsl';
 import { getDSLEditorOptions } from '../index';
 import { DSL_LANGUAGE_ID } from '../constants';
 import { LoadingSpinner } from '../../../components/ui';
-import { ParsedError } from '../../../types/errors';
-import { useEffect, useRef } from 'react';
-import { Monaco } from '@monaco-editor/react';
 
 interface DSLEditorProps {
     value: string;
     onChange: (value: string | undefined) => void;
     height?: string;
     theme?: string;
-    errors?: ParsedError[];
-}
-
-/**
- * Update Monaco editor error markers for a specific editor instance
- * 
- * Converts ParsedError objects into Monaco markers with proper positioning
- * and enhanced messages including suggestions.
- */
-function updateErrorMarkers(monaco: Monaco, editor: any, errors: ParsedError[]) {
-    if (!editor) return;
-
-    const model = editor.getModel();
-    if (!model) return;
-
-    const markers = errors.map(error => {
-        const line = error.location?.line || 1;
-        const column = error.location?.column || 1;
-        const lineLength = model.getLineLength(line);
-
-        return {
-            startLineNumber: line,
-            endLineNumber: line,
-            startColumn: column,
-            endColumn: Math.min(column + 10, lineLength + 1),
-            message: `${error.title}: ${error.message}${error.suggestion ? `\n💡 ${error.suggestion}` : ''}`,
-            severity: monaco.MarkerSeverity.Error,
-            source: 'DSL Parser'
-        };
-    });
-
-    monaco.editor.setModelMarkers(model, 'dsl-parser', markers);
 }
 
 /**
@@ -77,24 +41,11 @@ export function DSLEditor({
     onChange,
     height = "100%",
     theme = "proto-typed-dark",
-    errors = []
 }: DSLEditorProps) {
-    const { monaco, isInitialized, error } = useMonacoDSL();
-    const editorRef = useRef<any>(null);
+    const { isInitialized, error, handleEditorMount } = useMonacoDSL();
 
-    // Update error markers when errors change
-    useEffect(() => {
-        if (monaco && editorRef.current && isInitialized) {
-            updateErrorMarkers(monaco, editorRef.current, errors);
-        }
-    }, [monaco, errors, isInitialized]);
-
-    const handleEditorDidMount = (editor: any, monacoInstance: Monaco) => {
-        editorRef.current = editor;
-        // Set initial error markers if any exist
-        if (errors.length > 0) {
-            updateErrorMarkers(monacoInstance, editor, errors);
-        }
+    const handleEditorDidMount = (editor: any) => {
+        handleEditorMount(editor);
     };
 
     if (error) {

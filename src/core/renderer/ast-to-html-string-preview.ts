@@ -1,16 +1,31 @@
 import { AstNode } from '../../types/ast-node';
 import { RenderOptions } from '../../types/render';
+import { ProtoError } from '../../types/errors';
 import { routeManager } from './core/route-manager';
 import { customPropertiesManager } from './core/theme-manager';
+import { resetRenderErrors, getRenderErrors } from './core/node-renderer';
 import { setComponentDefinitions } from './nodes/components.node';
 import { renderAllScreens, renderGlobalElements } from './infrastructure/html-render-helper';
 
 /**
+ * Result of rendering with errors collected
+ */
+export interface RenderResult {
+  html: string;
+  errors: ProtoError[];
+}
+
+/**
  * Convert AST to HTML string representation with pagination for in-app preview
  * This version treats the container div as the "body" by adding appropriate styles
+ * 
+ * @returns Object with html string and collected render errors
  */
-export function astToHtmlStringPreview(ast: AstNode | AstNode[], options: RenderOptions = {}): string {
+export function astToHtmlStringPreview(ast: AstNode | AstNode[], options: RenderOptions = {}): RenderResult {
   try {
+    // Reset render errors before starting
+    resetRenderErrors();
+    
     // Reset and process custom properties for this preview
     customPropertiesManager.reset();
     
@@ -32,12 +47,15 @@ export function astToHtmlStringPreview(ast: AstNode | AstNode[], options: Render
       currentScreen: options.currentScreen || undefined
     });
 
-    const result = generatePreviewHtml(context);
+    const html = generatePreviewHtml(context);
+    
+    // Collect render errors after rendering
+    const errors = getRenderErrors();
     
     // Clear route context after rendering
     routeManager.clearRouteContext();
     
-    return result;
+    return { html, errors };
   } catch (error: any) {
     // Clear route context on error
     routeManager.clearRouteContext();

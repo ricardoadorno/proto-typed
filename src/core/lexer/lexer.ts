@@ -111,10 +111,12 @@ export function tokenize(text: string) {
       indentStack.pop();
     }
   
-    if (lexResult.errors.length > 0) {
-      throw new Error("Lexer errors detected: " + 
-        JSON.stringify(lexResult.errors, null, 2));
-    }
+    // Don't throw - return errors for graceful handling by parser
+    // This allows error recovery and prevents crashes
+    // if (lexResult.errors.length > 0) {
+    //   throw new Error("Lexer errors detected: " + 
+    //     JSON.stringify(lexResult.errors, null, 2));
+    // }
 
     return lexResult;
 }

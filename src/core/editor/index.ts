@@ -17,7 +17,10 @@
  * ```tsx
  * import { DSLEditor } from '@/core/editor';
  * 
- * <DSLEditor value={code} onChange={setCode} errors={errors} />
+ *  * @example
+ * ```tsx
+ * <DSLEditor value={code} onChange={setCode} />
+ * ```
  * ```
  */
 
@@ -74,6 +77,19 @@ export function getDSLEditorOptions() {
     autoIndent: "full" as const,
     formatOnPaste: true,
     formatOnType: true,
+    // CRITICAL: Enable glyph margin for error markers icons
+    glyphMargin: true,
+    // Enable line decorations for inline markers
+    lineDecorationsWidth: 10,
+    // Enable folding (useful for complex structures)
+    folding: true,
+    // Enable overview ruler to show error positions
+    overviewRulerLanes: 3,
+    // Ensure hover is enabled to show error messages
+    hover: {
+      enabled: true,
+      delay: 300,
+    },
     suggest: {
       showKeywords: true,
       showSnippets: true,

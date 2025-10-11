@@ -6,6 +6,9 @@
 // Core utilities
 export * from './core.builders';
 
+// Builder validation helpers
+export * from './builder-validation';
+
 // Views (screens, modals, drawers)
 export * from './views.builders';
 

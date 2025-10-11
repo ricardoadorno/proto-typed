@@ -3,6 +3,8 @@
  * Handles inputs, selects, radio buttons, and checkboxes
  */
 
+import { validateInputType, validateRequiredProps } from './builder-validation';
+
 type Context = {
   [key: string]: any;
 };
@@ -10,13 +12,15 @@ type Context = {
 /**
  * Build input element from context
  */
-export function buildInputElement(ctx: Context) {
+export function buildInputElement(ctx: Context, visitor: any) {
   if (!ctx.Input || !ctx.Input[0]) {
     return null;
   }
 
   const inputToken = ctx.Input[0];
   const inputText = inputToken.image;
+  const line = inputToken.startLine;
+  const column = inputToken.startColumn;
   
   // Pattern: ___<type>: Label{placeholder}[options] | attributes
   const match = inputText.match(/___(?:(email|password|date|number|textarea))?:\s*([^{\[\|\n\r]+)(?:\{([^}]+)\})?(?:\[([^\]]+)\])?(?:\s*\|\s*(.+))?/);
@@ -31,6 +35,9 @@ export function buildInputElement(ctx: Context) {
   const label = labelMatch ? labelMatch.trim() : '';
   const attributes: Record<string, any> = {};
   const flags: Record<string, boolean> = {};
+
+  // Validate input type
+  kind = validateInputType(visitor, kind, line, column);
 
   // Add placeholder if present
   if (placeholderMatch) {
@@ -67,6 +74,9 @@ export function buildInputElement(ctx: Context) {
       }
     });
   }
+
+  // Validate required props
+  validateRequiredProps(visitor, { label }, ['label'], 'Input', line, column);
 
   return {
     type: isSelect ? 'Select' : 'Input',

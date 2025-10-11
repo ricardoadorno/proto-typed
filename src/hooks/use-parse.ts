@@ -1,18 +1,18 @@
 import { useState, useCallback } from 'react';
 import { parseAndBuildAst } from '../core/parser/parse-and-build-ast';
 import { AstNode } from '../types/ast-node';
-import { parseChevrotainError } from '../utils/error-parser';
-import { ParsedError } from '../types/errors';
 import { astToHtmlStringPreview } from '../core/renderer/ast-to-html-string-preview';
 import { routeManagerGateway } from '../core/renderer/infrastructure/route-manager-gateway';
 import { RouteMetadata } from '../types/routing';
+import { ErrorBus } from '../core/error-bus';
+import type { ProtoError } from '../types/errors';
+import { ERROR_CODES, sanitizeErrorMessage } from '../types/errors';
 
 interface UseParseResult {
   ast: AstNode[] | AstNode;
   astResultJson: string;
   renderedHtml: string;
   error: string | null;
-  parsedErrors: ParsedError[];
   currentScreen: string | null;
   metadata: RouteMetadata | null;
   isLoading: boolean;
@@ -26,7 +26,6 @@ export const useParse = (): UseParseResult => {
   const [astResultJson, setAstResultJson] = useState<string>('');
   const [renderedHtml, setRenderedHtml] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-  const [parsedErrors, setParsedErrors] = useState<ParsedError[]>([]);
   const [currentScreen, setCurrentScreen] = useState<string | null>(null);
   const [metadata, setMetadata] = useState<RouteMetadata | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -37,8 +36,9 @@ export const useParse = (): UseParseResult => {
       setAstResultJson('');
       setRenderedHtml('');
       setError(null);
-      setParsedErrors([]);
       setCurrentScreen(null);
+      // Clear ErrorBus for empty input
+      ErrorBus.get().clear();
       // Set empty metadata for case zero
       setMetadata({
         screens: [],
@@ -57,10 +57,20 @@ export const useParse = (): UseParseResult => {
 
     setIsLoading(true);
     setError(null);
-    setParsedErrors([]);
+    
+    // Clear previous errors from ErrorBus before parsing
+    ErrorBus.get().clear();
+    const collectedErrors: ProtoError[] = [];
     
     try {
       const parsedAst = parseAndBuildAst(input);
+      
+      // Extract errors collected during parsing (if any)
+      if ((parsedAst as any).__errors) {
+        const parsingErrors = (parsedAst as any).__errors as ProtoError[];
+        collectedErrors.push(...parsingErrors);
+        delete (parsedAst as any).__errors; // Clean up temporary property
+      }
       
       // Initialize routes with parsed AST to generate metadata
       routeManagerGateway.initialize(parsedAst);
@@ -85,15 +95,26 @@ export const useParse = (): UseParseResult => {
       }
       
       // Generate rendered HTML with the determined screen
-      const htmlString = astToHtmlStringPreview(parsedAst, { currentScreen: newCurrentScreen || undefined });
+      const renderResult = astToHtmlStringPreview(parsedAst, { currentScreen: newCurrentScreen || undefined });
+      
+      // Extract render errors (if any)
+      if (renderResult.errors && renderResult.errors.length > 0) {
+        collectedErrors.push(...renderResult.errors);
+      }
 
       // Register navigation handlers so clicks inside the rendered preview update React state
       routeManagerGateway.setHandlers({
         onScreenNavigation: (screenName: string) => {
           // Re-render HTML for the new current screen
-            const updatedHtml = astToHtmlStringPreview(parsedAst, { currentScreen: screenName });
-            setRenderedHtml(updatedHtml);
+            const updatedRenderResult = astToHtmlStringPreview(parsedAst, { currentScreen: screenName });
+            setRenderedHtml(updatedRenderResult.html);
             setCurrentScreen(screenName);
+            
+            // Emit render errors from navigation re-render
+            if (updatedRenderResult.errors && updatedRenderResult.errors.length > 0) {
+              ErrorBus.get().bulk(updatedRenderResult.errors);
+            }
+            
             // Refresh metadata (includes history and current screen info)
             const updatedMetadata = routeManagerGateway.getRouteMetadata();
             setMetadata(updatedMetadata);
@@ -101,9 +122,15 @@ export const useParse = (): UseParseResult => {
         onBackNavigation: () => {
           const meta = routeManagerGateway.getRouteMetadata();
           const current = meta.currentScreen || null;
-          const updatedHtml = astToHtmlStringPreview(parsedAst, { currentScreen: current || undefined });
-          setRenderedHtml(updatedHtml);
+          const updatedRenderResult = astToHtmlStringPreview(parsedAst, { currentScreen: current || undefined });
+          setRenderedHtml(updatedRenderResult.html);
           setCurrentScreen(current);
+          
+          // Emit render errors from back navigation re-render
+          if (updatedRenderResult.errors && updatedRenderResult.errors.length > 0) {
+            ErrorBus.get().bulk(updatedRenderResult.errors);
+          }
+          
           setMetadata(meta);
         }
       });
@@ -111,22 +138,35 @@ export const useParse = (): UseParseResult => {
       setCurrentScreen(newCurrentScreen);
       setAst(parsedAst);
       setAstResultJson(JSON.stringify(parsedAst, null, 2));
-      setRenderedHtml(htmlString);
+      setRenderedHtml(renderResult.html);
       setMetadata(newMetadata);
       setError(null);
-      setParsedErrors([]);
     } catch (err: any) {
       const errorMessage = err.message || 'An error occurred during parsing';
-      const parsedError = parseChevrotainError(errorMessage);
+      
+      // Convert to ProtoError for ErrorBus
+      const protoError: ProtoError = {
+        stage: 'parser',
+        severity: 'fatal',
+        line: 1,
+        column: 1,
+        code: ERROR_CODES.PARSE_UNEXPECTED_TOKEN,
+        message: sanitizeErrorMessage(errorMessage),
+      };
+      collectedErrors.push(protoError);
       
       setAst([]);
       setAstResultJson('');
       setRenderedHtml('');
       setError(errorMessage);
-      setParsedErrors([parsedError]);
       setCurrentScreen(null);
       setMetadata(null);
     } finally {
+      // Emit all collected errors to ErrorBus
+      if (collectedErrors.length > 0) {
+        ErrorBus.get().bulk(collectedErrors);
+      }
+      
       setIsLoading(false);
     }
   }, [currentScreen]);
@@ -145,7 +185,6 @@ export const useParse = (): UseParseResult => {
     astResultJson,
     renderedHtml,
     error,
-    parsedErrors,
     currentScreen,
     metadata,
     isLoading,
