@@ -120,6 +120,7 @@ export function getButtonClasses(variant?: string, size?: string): string {
   switch (size) {
     case 'extra-small':
       sizeClass = elementStyles.buttonExtraSmall;
+      break;
     case 'small':
       sizeClass = elementStyles.buttonSmall;
       break;

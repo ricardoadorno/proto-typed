@@ -214,7 +214,7 @@ export function suggestInputType(input: string): string | null {
  * Formata hint de sugestão para exibição
  */
 export function formatSuggestionHint(
-  invalidValue: string,
+  _invalidValue: string,
   suggestion: string
 ): string {
   return `Did you mean "${suggestion}"?`;
