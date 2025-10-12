@@ -11,9 +11,8 @@ import {
     PreviewDevice,
     EditorPanel,
     PreviewPanel,
-    ErrorTerminal
 } from './components/ui';
-import { exportDocument } from './utils';
+import { exportDocument, withBase } from './utils';
 import { exampleConfigs } from './examples';
 import { astToHtmlDocument } from './core/renderer/ast-to-html-document';
 import { customPropertiesManager } from './core/renderer/core/theme-manager';
@@ -26,7 +25,6 @@ export default function App() {
         ast,
         astResultJson,
         renderedHtml,
-        error,
         metadata,
         handleParse,
         navigateToScreen,
@@ -67,15 +65,15 @@ export default function App() {
         handleParse(input);
     }, [selectedTheme, input, handleParse]);
 
-    return (<div className="min-h-full bg-gradient-to-br from-slate-900 to-slate-800 pb-8">
-        <div className="w-full">
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6">
+    return (<div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 pb-8">
+        <div className="w-full h-full">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 md:gap-6 lg:gap-8 p-4 md:p-6 h-full">
                 {/* Editor Panel */}
-                <div className="flex flex-col space-y-4 md:space-y-6 order-2 xl:order-1">
+                <div className="flex flex-col space-y-4 md:space-y-6 order-2 xl:order-1 h-full">
                     <div className="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-4 md:p-6">
 
                         <AppHeader />
-                        <a href="/docs" className="text-sm text-blue-400 hover:underline mb-4 inline-block">
+                        <a href={withBase("/docs")} className="text-sm text-blue-400 hover:underline mb-4 inline-block">
                             View Documentation
                         </a>
 
@@ -102,23 +100,25 @@ export default function App() {
                             />
                         </div>
                     </div>
-                    <EditorPanel>
-                        <DSLEditor
-                            value={input}
-                            onChange={(value) => setInput(value || "")}
-                        />
-                    </EditorPanel>
-                    <ErrorTerminal error={error} code={input} />
-
+                    <div className="flex-1 min-h-0">
+                        <EditorPanel>
+                            <DSLEditor
+                                value={input}
+                                onChange={(value) => setInput(value || "")}
+                            />
+                        </EditorPanel>
+                    </div>
                 </div>
 
                 {/* Preview Panel */}
-                <div className="flex flex-col order-1 xl:order-2">
+                <div className="flex flex-col order-1 xl:order-2 h-full">
                     <PreviewPanel metadata={metadata} onNavigateToScreen={navigateToScreen} />
 
-                    <PreviewDevice deviceType={uiStyle}>
-                        {renderScreen()}
-                    </PreviewDevice>
+                    <div className="flex-1 min-h-0">
+                        <PreviewDevice deviceType={uiStyle}>
+                            {renderScreen()}
+                        </PreviewDevice>
+                    </div>
                 </div>
             </div>
         </div>

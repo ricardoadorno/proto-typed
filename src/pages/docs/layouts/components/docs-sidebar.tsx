@@ -1,10 +1,11 @@
 import { usePageContext } from "vike-react/usePageContext";
 import toc from "../../../../docs/toc";
+import { withBase } from "../../../../utils";
 
 export function DocsSidebar() {
     const pageContext = usePageContext();
     const currentPath = pageContext.urlPathname;
-    const isActive = (path: string) => currentPath === path;
+    const isActive = (path: string) => currentPath === withBase(path);
 
     return (
         <div className="bg-gray-800 p-4 rounded-lg shadow-md">
@@ -17,7 +18,7 @@ export function DocsSidebar() {
                             {section.items.map((item) => (
                                 <li key={item.path}>
                                     <a
-                                        href={item.path}
+                                        href={withBase(item.path)}
                                         className={`text-sm transition-colors ${isActive(item.path) ? "text-blue-400" : "hover:text-blue-400"}`}
                                     >
                                         {item.label}

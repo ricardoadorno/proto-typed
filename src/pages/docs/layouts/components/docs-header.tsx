@@ -1,4 +1,5 @@
 import { AppHeader } from "../../../../components/ui";
+import { withBase } from "../../../../utils";
 
 export function DocsHeader() {
 
@@ -9,7 +10,7 @@ export function DocsHeader() {
                 description="Learn how to create interactive prototypes with our DSL"
             />
             <div className="mt-4 flex items-center space-x-6 text-sm text-gray-400">
-                <a href="/" className="hover:text-blue-400 transition-colors">
+                <a href={withBase("/")} className="hover:text-blue-400 transition-colors">
                     ← Back to Editor
                 </a>
             </div>
