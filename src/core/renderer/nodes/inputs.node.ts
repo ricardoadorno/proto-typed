@@ -9,10 +9,10 @@ export function renderInput(node: AstNode): string {
   let inputHtml = '';
   
   if (inputProps?.label) {
-    inputHtml += `<label class="${elementStyles.label}" style="${getLabelInlineStyles()}">${inputProps.label}:${inputProps.required ? ' <span style="color: var(--destructive);">*</span>' : ''}\n`;
+    inputHtml += `<label class="${elementStyles.label}" style="${getLabelInlineStyles()}">${inputProps.label}:${inputProps.flags?.required ? ' <span style="color: var(--destructive);">*</span>' : ''}\n`;
   }
   
-  inputHtml += `  <input class="${elementStyles.input}" style="${getInputInlineStyles()}" placeholder="${inputProps?.placeholder || ''}" />`;
+  inputHtml += `  <input type="${inputProps.kind}" class="${elementStyles.input}" style="${getInputInlineStyles()}" placeholder="${inputProps?.attributes?.placeholder || ''}" />`;
 
   if (inputProps?.label) {
     inputHtml += '\n</label>';
