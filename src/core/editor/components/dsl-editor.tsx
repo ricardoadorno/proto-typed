@@ -28,7 +28,7 @@ import { LoadingSpinner } from '../../../components/ui';
 
 interface DSLEditorProps {
     value: string;
-    onChange: (value: string | undefined) => void;
+    onChange?: (value: string | undefined) => void;
     height?: string;
     theme?: string;
 }

@@ -2,9 +2,10 @@
 
 import { DslExample } from "../../components/docs";
 
-Organize elementos com **layouts canônicos pré-configurados**. Cada layout tem classes Tailwind e estilo shadcn predefinidos.
 
-**Importante:** Não há mais modificadores inline. Use layouts semânticos como `row-center`, `stack-tight`, `container-narrow`.
+Organize elementos com **layouts canônicos pré-configurados**. Cada layout representa um preset sem modificadores dinâmicos.
+
+**Importante:** Não há mais modificadores inline. Use apenas layouts semânticos como `row-center`, `stack-tight`, `container-narrow`, `grid-3`, etc.
 
 ---
 
@@ -279,13 +280,5 @@ screen FormGrid:
 | **Fab** | `fab` | Botão flutuante |
 | **Separator** | `---` | Linha divisória |
 
-| Categoria | Modificadores | Exemplos |
-|-----------|---------------|----------|
-| **Largura** | `w{num}`, `wfull`, `wauto` | `w25`, `w50`, `w75`, `wfull` |
-| **Altura** | `h{num}`, `hfull`, `hauto` | `h100`, `hfull` |
-| **Padding** | `p{num}`, `px{num}`, `py{num}` | `p4`, `p8`, `px6`, `py4` |
-| **Margin** | `m{num}`, `mx{num}`, `my{num}` | `m4`, `mx8` |
-| **Gap** | `gap{num}` | `gap2`, `gap4`, `gap8` |
-| **Justify** | `start`, `end`, `center`, `between`, `around`, `evenly` | `between`, `center` |
-| **Align** | `start`, `end`, `center`, `stretch` | `center`, `start` |
-| **Grid** | `cols{1-12}` | `cols2`, `cols3`, `cols4` |
+
+> **Atenção:** Modificadores dinâmicos como `row-w50-center-p4` **não são mais suportados**. Use apenas os layouts canônicos listados acima.

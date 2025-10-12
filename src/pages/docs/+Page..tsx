@@ -14,14 +14,6 @@ export default function Docs() {
         const Mdx = current.MdxComponent;
         return (
             <article className="mx-auto max-w-4xl space-y-8">
-                <header className="space-y-3">
-                    <h1 className="text-3xl md:text-4xl font-semibold tracking-tight bg-gradient-to-r from-gray-100 via-gray-200 to-gray-300 bg-clip-text text-transparent">{current.title}</h1>
-                    {current.excerpt && (
-                        <p className="text-gray-400 text-sm md:text-base leading-relaxed">{current.excerpt}</p>
-                    )}
-                    <div className="border-t border-gray-800/80" />
-                </header>
-
                 {Mdx ? (
                     <section className="prose prose-invert max-w-none prose-h1:text-2xl prose-h2:text-xl prose-h3:text-lg prose-p:text-gray-300 prose-a:text-blue-400 hover:prose-a:text-blue-300 prose-strong:text-gray-100 prose-code:text-gray-200 prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800 prose-pre:rounded-lg prose-pre:p-4 prose-pre:shadow-lg prose-li:marker:text-gray-500">
                         <MDXProvider>

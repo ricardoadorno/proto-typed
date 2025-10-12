@@ -60,30 +60,31 @@ Container com borda e sombra para agrupar conte\u00fado.
 screen Dashboard:
   container-p8:
     grid-cols2-gap4:
-      card-p6:
-        ## Usu\u00e1rios Ativos
-        # 1,234
-        >>> +12% este m\u00eas
-      
-      card-p6:
-        ## Receita Total
-        # R$ 45,678
-        >>> +8% este m\u00eas
-```
 
-</DslExample>
+      ## Card
 
----
+      **Sintaxe:** `card:`
 
-## Header
+      Container com borda, sombra e padding para agrupar conteúdo. Use apenas os presets: `card`, `card-compact`, `card-feature`.
 
-**Sintaxe:** `header:` ou `header-modifiers:`
+      <DslExample title="Cards" description="Containers destacados">
 
-Cabeçalho fixo no topo da tela.
+      ```dsl
+      screen Dashboard:
+        container:
+          grid-2:
+            card:
+              ## Usuários Ativos
+              # 1,234
+              >>> +12% este mês
+            card:
+              ## Receita Total
+              # R$ 45,678
+              >>> +8% este mês
+      ```
 
-<DslExample title="Header" description="Cabeçalho com ações">
-
-```dsl
+      </DslExample>
+    <DslExample>
 screen App:
   header-between-p4:
     # Minha App
@@ -100,25 +101,25 @@ screen App:
 
 ---
 
-## Navigator
 
-**Sintaxe:** `navigator:` seguido de itens com formato `- texto | destino`
+## Header
 
-Barra de navegação inferior fixa.
+**Sintaxe:** `header:`
 
-<DslExample title="Navigator" description="Navegação inferior">
+Cabeçalho fixo no topo da tela.
+
+<DslExample title="Header" description="Cabeçalho com ações">
 
 ```dsl
-screen Home:
+screen App:
+  header:
+    # Minha App
+    row-center:
+      @ghost[Busca](search)
+      @ghost[Perfil](profile)
   container:
-    # Bem-vindo
-    > Conteúdo da tela
-  
-  navigator:
-    - Home | Home
-    - Search | Search
-    - Profile | Profile
-    - Settings | Settings
+    # Conteúdo Principal
+    > Lorem ipsum dolor sit amet
 ```
 
 </DslExample>

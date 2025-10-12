@@ -1,14 +1,16 @@
+
 # Primitivos
 
 import { DslExample } from "../../components/docs";
 
-Elementos básicos de texto e mídia.
+Elementos básicos de texto, links e imagens para compor interfaces.
 
 ---
 
+
 ## Títulos
 
-**Sintaxe:** `#` até `######` (H1 a H6)
+**Sintaxe:** `#` até `######` (níveis 1 a 6)
 
 <DslExample title="Títulos" description="6 níveis de hierarquia">
 
@@ -25,20 +27,22 @@ screen TypographyDemo:
 
 </DslExample>
 
+
 **Quando usar:**
-- `#` para títulos principais de telas (H1)
-- `##` para seções importantes (H2)
-- `###` a `######` para subsecções e categorias
+- `#` para título principal da tela
+- `##` para seções importantes
+- `###` a `######` para subsecções
 
 ---
+
 
 ## Textos
 
 | Sintaxe | Uso |
-|---------|-----|
-| `>` | Parágrafo principal |
-| `>>` | Texto secundário |
-| `>>>` | Texto sutil (metadados, timestamps) |
+|---------|-----------------------------|
+| `>`     | Parágrafo principal         |
+| `>>`    | Texto secundário           |
+| `>>>`   | Texto sutil/metadados      |
 
 <DslExample title="Textos" description="3 níveis de hierarquia">
 
@@ -55,12 +59,13 @@ screen TextLevels:
 
 ---
 
+
 ## Notas e Citações
 
-| Sintaxe | Uso |
-|---------|-----|
-| `*>` | Notas, avisos, destaques |
-| `">` | Citações, depoimentos |
+| Sintaxe | Uso                  |
+|---------|----------------------|
+| `*>`    | Nota, aviso, destaque|
+| `">`    | Citação, depoimento  |
 
 <DslExample title="Notas e Citações" description="Destaques especiais">
 
@@ -80,9 +85,10 @@ screen NotesAndQuotes:
 
 ---
 
+
 ## Imagens
 
-**Sintaxe:** `![alt text](url)`
+**Sintaxe:** `![Texto alternativo](url)`
 
 <DslExample title="Imagens" description="Adicionar elementos visuais">
 
@@ -102,12 +108,13 @@ screen ImageExample:
 
 ---
 
+
 ## Links
 
-**Sintaxe:** `#[texto](destino)`
+**Sintaxe:** `#[Texto](destino)`
 
 **Tipos de destino:**
-- Tela interna: `#[Perfil](ProfileScreen)`
+- Tela interna: `#[Dashboard](Dashboard)`
 - URL externa: `#[Google](https://google.com)`
 - Email: `#[Contato](mailto:email@exemplo.com)`
 
@@ -131,6 +138,7 @@ screen LinksDemo:
 </DslExample>
 
 ---
+
 
 ## Exemplo Completo
 

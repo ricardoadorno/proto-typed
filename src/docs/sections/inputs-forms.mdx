@@ -1,10 +1,11 @@
+
 # Formulários e Inputs
 
 import { DslExample } from "../../components/docs";
 
-**Sintaxe básica:** `___: Label{Placeholder}`
+**Sintaxe principal:** `___: Label{placeholder}`
 
-**Com tipo:** `___<tipo>: Label{Placeholder}`
+**Com tipo:** `___<tipo>: Label{placeholder}`
 
 ---
 
@@ -29,14 +30,14 @@ screen FormBasic:
 
 **Sintaxe:** `___<tipo>:` (opcional, padrão é text)
 
-| Tipo | Sintaxe | Descrição |
-|------|---------|-----------|
-| Text | `___:` | Texto simples (padrão) |
-| Email | `___email:` | Email com validação |
-| Password | `___password:` | Texto mascarado |
-| Date | `___date:` | Seletor de data |
-| Number | `___number:` | Apenas números |
-| Textarea | `___textarea:` | Texto multi-linha |
+| Tipo     | Sintaxe           | Descrição           |
+|----------|-------------------|---------------------|
+| Text     | `___:`            | Texto simples       |
+| Email    | `___email:`       | Email com validação |
+| Password | `___password:`    | Texto mascarado     |
+| Date     | `___date:`        | Seletor de data     |
+| Number   | `___number:`      | Apenas números      |
+| Textarea | `___textarea:`    | Texto multi-linha   |
 
 <DslExample title="Tipos de Input" description="Inputs especializados">
 
@@ -44,7 +45,6 @@ screen FormBasic:
 screen InputTypes:
   card:
     # Formulário
-    
     ___: Nome{Digite seu nome}
     ___email: Email{seu@email.com}
     ___password: Senha{Digite sua senha}
@@ -67,7 +67,6 @@ screen InputTypes:
 screen FormAttributes:
   card:
     # Cadastro
-    
     ___email: Email{seu@email.com} | required
     ___password: Senha{Mínimo 8 caracteres} | required minlength="8"
     ___: CPF{000.000.000-00} | required pattern="[0-9]{3}\.[0-9]{3}\.[0-9]{3}-[0-9]{2}"
@@ -79,7 +78,7 @@ screen FormAttributes:
 
 ## Select (Dropdown)
 
-**Sintaxe:** `___: Label{Placeholder}[Opção1 | Opção2 | Opção3]`
+**Sintaxe:** `___: Label{placeholder}[Opção1 | Opção2 | Opção3]`
 
 <DslExample title="Select" description="Menu com opções">
 
@@ -98,16 +97,15 @@ screen AddressForm:
 ## Checkboxes
 
 **Sintaxe:**
-- `[X]` → Marcado
-- `[ ]` → Desmarcado
+- `[X] Label` → Marcado
+- `[ ] Label` → Desmarcado
 
 <DslExample title="Checkboxes" description="Seleção múltipla">
 
 ```dsl
 screen Preferences:
-  card-p6:
+  card:
     # Notificações
-    
     [X] Receber emails
     [X] Notificações push
     [ ] SMS urgentes
@@ -121,16 +119,15 @@ screen Preferences:
 ## Radio Buttons
 
 **Sintaxe:**
-- `(X)` → Selecionado
-- `( )` → Não selecionado
+- `(X) Label` → Selecionado
+- `( ) Label` → Não selecionado
 
 <DslExample title="Radio Buttons" description="Seleção única">
 
 ```dsl
 screen Survey:
-  card-p6:
+  card:
     # Avaliação
-    
     (X) Excelente
     ( ) Bom
     ( ) Regular
@@ -150,27 +147,20 @@ screen Registration:
   container:
     card:
       # Criar Conta
-      
       ___: Nome Completo{João Silva}
       ___email: Email{joao@exemplo.com}
       ___password: Senha{Mínimo 8 caracteres}
       ___password: Confirmar Senha{Digite novamente}
-      
       ---
-      
       ___: País{Selecione}[Brasil | Portugal | Outro]
       ___: Estado{Selecione}[SP | RJ | MG]
-      
       ---
-      
       > Tipo de conta:
       (X) Pessoa Física
       ( ) Pessoa Jurídica
-      
       > Notificações:
       [X] Aceito emails
       [X] Aceito termos
-      
       row-between:
         @[Criar Conta](register)
         @outline[Cancelar](cancel)
@@ -191,14 +181,10 @@ screen Login:
   container:
     card:
       # Bem-vindo
-      
       ___email: Email{Digite seu email}
       ___password: Senha{Sua senha}
-      
       [X] Lembrar de mim
-      
       @[Entrar](login)
-      
       >>> #[Esqueci minha senha](recover)
 ```
 
@@ -213,13 +199,10 @@ screen Search:
   container:
     stack:
       ___: Buscar{Nome do produto}
-      
       ___: Categoria{Todas}[Eletrônicos | Roupas | Livros]
       ___: Ordenar{Relevância}[Preço | Avaliação | Vendas]
-      
       [X] Frete Grátis
       [ ] Em Promoção
-      
       @[Buscar](search)
 ```
 
@@ -235,17 +218,12 @@ screen ProductForm:
     grid-2:
       ___: Nome{Camiseta Básica}
       ___: SKU{ABC-123}
-      
       ___number: Preço{0}
       ___number: Estoque{0}
-      
       ___: Categoria{Selecione}[Roupas | Acessórios]
       ___: Marca{Selecione}[Nike | Adidas]
-    
     ___textarea: Descrição{Descrição do produto}
-    
     [X] Produto ativo
-    
     @[Salvar](save)
 ```
 

@@ -1,8 +1,9 @@
+
 # Componentes e Props
 
 import { DslExample } from "../../components/docs";
 
-Crie blocos reutilizáveis de UI com suporte a props dinâmicas.
+Crie blocos reutilizáveis de UI com suporte a props dinâmicas e listas de dados.
 
 ---
 
@@ -10,15 +11,16 @@ Crie blocos reutilizáveis de UI com suporte a props dinâmicas.
 
 **Sintaxe:** `component NomeDoComponente:`
 
-Declare um componente com conteúdo que será reutilizado.
+Declare um componente com conteúdo reutilizável. Use `%nomeDaProp` para variáveis dinâmicas.
 
 <DslExample title="Declarar Componente" description="Componente simples">
 
 ```dsl
 component Hero:
-  # Olá!
-  > Este é um componente reutilizável
-  @[Ação](action)
+  card:
+    # Olá!
+    > Este é um componente reutilizável
+    @[Ação](action)
 
 screen Home:
   container:
@@ -29,19 +31,24 @@ screen Home:
 
 ---
 
-## Uso
+## Instanciando Componentes
 
-**Sintaxe:** `$NomeDoComponente`
+**Sintaxe:** `$NomeDoComponente` ou `$NomeDoComponente:` com props
 
-Instancie um componente usando `$` antes do nome.
+Instancie um componente usando `$` antes do nome. Para passar props, use `- valor1 | valor2 | ...`.
 
 ---
 
-## Props
+## Props Dinâmicas
 
-Use `%nomeDaProp` dentro do componente para criar placeholders que serão substituídos.
+Use `%nomeDaProp` dentro do componente para criar variáveis que serão substituídas pelos valores passados.
 
-**Sintaxe de props:** `- valor1 | valor2 | valor3`
+**Sintaxe de props:**
+
+```dsl
+$Componente:
+  - valor1 | valor2 | valor3
+```
 
 <DslExample title="Componente com Props" description="Interpolação de valores">
 
@@ -57,7 +64,6 @@ screen Users:
   container:
     $UserCard:
       - João Silva | joao@email.com | (11) 99999-1111
-    
     $UserCard:
       - Maria Santos | maria@email.com | (11) 99999-2222
 ```
@@ -66,11 +72,17 @@ screen Users:
 
 ---
 
-## Lista de Componentes
+## Listas de Componentes
 
-Combine `list` com componente para gerar múltiplas instâncias.
+Combine `list $Componente:` para gerar múltiplas instâncias a partir de dados.
 
-**Sintaxe:** `list $ComponenteName:`
+**Sintaxe:**
+
+```dsl
+list $Componente:
+  - valor1 | valor2 | valor3
+  - valor4 | valor5 | valor6
+```
 
 <DslExample title="Lista de Componentes" description="Múltiplas instâncias">
 
@@ -85,7 +97,6 @@ component ContactCard:
 screen Team:
   container:
     # Nossa Equipe
-    
     list $ContactCard:
       - João Silva | CEO | joao@empresa.com
       - Maria Santos | CTO | maria@empresa.com
@@ -115,10 +126,8 @@ screen Shop:
     grid-3:
       $ProductCard:
         - Produto A | R$ 99,00 | produto-a.jpg
-      
       $ProductCard:
         - Produto B | R$ 149,00 | produto-b.jpg
-      
       $ProductCard:
         - Produto C | R$ 199,00 | produto-c.jpg
 ```
@@ -141,13 +150,10 @@ screen Analytics:
     grid-4:
       $StatCard:
         - Usuários | 1,234 | +12%
-      
       $StatCard:
         - Vendas | R$ 45K | +8%
-      
       $StatCard:
         - Conversão | 23.5% | -2%
-      
       $StatCard:
         - Receita | R$ 98K | +15%
 ```
@@ -170,7 +176,6 @@ component Notification:
 screen Notifications:
   container:
     # Notificações
-    
     list $Notification:
       - Nova mensagem de João | há 2 min
       - Pedido #1234 confirmado | há 1 hora
@@ -181,7 +186,7 @@ screen Notifications:
 
 ---
 
-## Props Complexas
+## Props Avançadas
 
 Você pode usar props em qualquer lugar: texto, ícones, ações, URLs.
 
@@ -192,7 +197,6 @@ component ActionCard:
   card:
     # %title
     > %description
-    
     row-start:
       @[%actionLabel](%actionTarget)
       @secondary[Cancelar](cancel)
@@ -201,7 +205,6 @@ screen Actions:
   container:
     $ActionCard:
       - Deletar Conta | Esta ação é irreversível | Confirmar | delete
-    
     $ActionCard:
       - Fazer Upgrade | Melhore sua experiência | Upgrade | UpgradePlan
 ```
@@ -210,9 +213,9 @@ screen Actions:
 
 ---
 
-## Aninhamento
+## Componentes Aninhados
 
-Componentes podem conter outros componentes.
+Componentes podem conter outros componentes, inclusive listas.
 
 <DslExample title="Componentes Aninhados" description="Composição de componentes">
 
@@ -259,4 +262,5 @@ $Card:
 ### Componentes Pequenos
 Prefira componentes pequenos e focados:
 - ✅ `Badge`, `StatCard`, `Notification`
+- ❌ `SuperMegaComplexCard` com 20 props
 - ❌ `SuperMegaComplexCard` com 20 props
