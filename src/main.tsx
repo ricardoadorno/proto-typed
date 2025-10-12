@@ -1,8 +1,12 @@
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import './assets/index.css'
-import { RouterProvider } from 'react-router-dom'
-import router from './router.tsx'
+import App from './App';
 
-createRoot(document.getElementById('root')!).render(
-  <RouterProvider router={router} />
-)
+const container = document.getElementById('root')!;
+
+// Use hydration for SSG, regular render for CSR
+if (container.innerHTML) {
+  hydrateRoot(container, <App />);
+} else {
+  createRoot(container).render(<App />);
+}

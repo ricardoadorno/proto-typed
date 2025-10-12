@@ -1,7 +1,7 @@
-import { Outlet } from 'react-router-dom';
+import type { ReactNode } from 'react';
 import { DocsHeader, DocsSidebar, DocsFooter } from "./components";
 
-export function DocsLayout() {
+export function DocsLayout({ children }: { children: ReactNode }) {
 
     return (
         <div className="min-h-screen bg-gray-900 text-gray-200 p-6">
@@ -20,7 +20,7 @@ export function DocsLayout() {
                     <div className="col-span-9">
                         <div className="bg-gray-800 p-6 rounded-lg shadow-md">
                             <div className="prose prose-invert max-w-none">
-                                <Outlet />
+                                {children}
                             </div>
                         </div>
                     </div>

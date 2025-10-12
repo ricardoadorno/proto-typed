@@ -13,17 +13,19 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@mdx-js/react": "^3.0.1",
     "@monaco-editor/react": "^4.7.0",
     "chevrotain": "^11.0.3",
     "lucide": "^0.513.0",
-  "marked": "^13.0.3",
-  "@mdx-js/react": "^3.0.1",
+    "marked": "^13.0.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.9.1"
+    "vike": "^0.4.242",
+    "vike-react": "^0.6.9"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
+    "@mdx-js/rollup": "^3.0.1",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.8",
     "@testing-library/jest-dom": "^6.6.3",
@@ -40,7 +42,6 @@
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.26.1",
     "vite": "^6.3.1",
-    "@mdx-js/rollup": "^3.0.1",
     "vitest": "^3.1.2"
   }
 }

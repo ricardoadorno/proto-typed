@@ -1,9 +1,9 @@
-import { Link, useLocation } from "react-router-dom";
+import { usePageContext } from "vike-react/usePageContext";
 import toc from "../../../../docs/toc";
 
 export function DocsSidebar() {
-    const location = useLocation();
-    const currentPath = location.pathname;
+    const pageContext = usePageContext();
+    const currentPath = pageContext.urlPathname;
     const isActive = (path: string) => currentPath === path;
 
     return (
@@ -16,12 +16,12 @@ export function DocsSidebar() {
                         <ul className="space-y-2">
                             {section.items.map((item) => (
                                 <li key={item.path}>
-                                    <Link
-                                        to={item.path}
+                                    <a
+                                        href={item.path}
                                         className={`text-sm transition-colors ${isActive(item.path) ? "text-blue-400" : "hover:text-blue-400"}`}
                                     >
                                         {item.label}
-                                    </Link>
+                                    </a>
                                 </li>
                             ))}
                         </ul>

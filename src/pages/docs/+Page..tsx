@@ -1,9 +1,10 @@
-import { Link, useLocation } from "react-router-dom";
+import { usePageContext } from "vike-react/usePageContext";
 import toc, { type TocContent } from "../../docs/toc";
 import { MDXProvider } from "@mdx-js/react";
 
 export default function Docs() {
-    const { pathname } = useLocation();
+    const pageContext = usePageContext();
+    const pathname = pageContext.urlPathname;
 
     const contents: TocContent[] = toc.contents ?? [];
     const current = contents.find(p => p.path === pathname);
@@ -40,7 +41,7 @@ export default function Docs() {
                         key={content.path}
                         className="group rounded-xl border border-gray-700/60 bg-gray-900/40 p-5 hover:border-gray-600 hover:bg-gray-900/60 transition-colors shadow-sm hover:shadow-md hover:shadow-black/20"
                     >
-                        <Link to={content.path} className="block">
+                        <a href={content.path} className="block">
                             <h2 className="text-lg font-semibold text-gray-100 flex items-center justify-between">
                                 <span>{content.title}</span>
                                 <span className="text-gray-500 group-hover:text-gray-400 transition">→</span>
@@ -48,7 +49,7 @@ export default function Docs() {
                             {content.excerpt && (
                                 <p className="text-gray-400 text-sm mt-2">{content.excerpt}</p>
                             )}
-                        </Link>
+                        </a>
                     </li>
                 ))}
             </ul>
