@@ -15,8 +15,9 @@ export const ComponentInstance = createToken({
 
 export const ComponentInstanceWithProps = createToken({
   name: "ComponentInstanceWithProps",
-  pattern: /\$([^\s\n\r:]+):/,
-  label: "$ComponentName:"
+  // Matches: $Foo: bar | zirt  -> group1 = Foo, group2 = "bar | zirt" (rest of the line)
+  pattern: /\$([^\s\n\r:]+)\s*:\s*([^\n\r]+)/,
+  label: "$ComponentName:props"
 });
 
 export const PropVariable = createToken({
