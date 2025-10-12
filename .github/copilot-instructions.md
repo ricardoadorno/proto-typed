@@ -97,7 +97,7 @@ stack-flush:        → No gap vertical stack
 
 **Rows** (Horizontal flow):
 ```
-row-start:          → Row with items at start
+row:          → Row with items at start
 row-center:         → Row with items centered
 row-between:        → Row with space-between
 row-end:            → Row with items at end

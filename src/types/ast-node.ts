@@ -28,6 +28,7 @@ export type NodeType =
   | 'Input'
   | 'RadioOption'
   | 'Checkbox'
+  | 'Select'
   
   // Components (from components.tokens.ts)
   | 'Component'

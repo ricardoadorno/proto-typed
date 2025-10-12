@@ -28,7 +28,8 @@ import {
 import { 
   renderInput, 
   renderRadioGroup, 
-  renderCheckbox 
+  renderCheckbox, 
+  renderSelect
 } from '../nodes/inputs.node';
 import { 
   renderComponent, 
@@ -99,6 +100,7 @@ const RENDERERS: Record<NodeType, typeof _render> = {
   Input: (n) => renderInput(n),
   RadioOption: (n) => renderRadioGroup(n),
   Checkbox: (n) => renderCheckbox(n),
+  Select: (n) => renderSelect(n),
 
   // Style / meta nodes (no direct HTML output)
   Styles: () => '',

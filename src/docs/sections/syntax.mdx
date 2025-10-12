@@ -33,13 +33,14 @@ Referência rápida de todos os elementos do DSL.
 <DslExample title="Tipografia" heightClassName="h-56">
 
 ```dsl
-# Título Principal
-## Seção
-> Parágrafo principal
->> Texto secundário
->>> Metadados
-*> Nota importante
-"> Citação
+screen Example:
+  # Título Principal
+  ## Seção
+  > Parágrafo principal
+  >> Texto secundário
+  >>> Metadados
+  *> Nota importante
+  "> Citação
 ```
 
 </DslExample>
@@ -70,13 +71,14 @@ Referência rápida de todos os elementos do DSL.
 <DslExample title="Interativos" heightClassName="h-48">
 
 ```dsl
-@[Primário](action)
-@_[Ghost](action)
-@+[Outline](action)
-@=[i-Trash Deletar](delete)
+screen Actions:
+  @[Primário](action)
+  @ghost[Ghost](action)
+  @outline[Outline](action)
+  @destructive[i-Trash Deletar](delete)
 
-#[Link Externo](https://exemplo.com)
-![Logo](https://placehold.co/200x60)
+  #[Link Externo](https://exemplo.com)
+  ![Logo](https://placehold.co/200x60)
 ```
 
 </DslExample>
@@ -103,19 +105,18 @@ Referência rápida de todos os elementos do DSL.
 <DslExample title="Layout" heightClassName="h-48">
 
 ```dsl
-container-p8:
-  row-gap4-center:
-    col-w50:
-      card-p6:
-        > Card 1
-    col-w50:
-      card-p6:
-        > Card 2
-  
-  grid-cols3-gap4:
-    > Item 1
-    > Item 2
-    > Item 3
+screen Actions:
+  container:
+    row-between:
+      row-start:
+        > link 1
+        > link 2
+      stack:
+        > link 3
+
+    row-center:
+      card:
+        ## Card Centralizado
 ```
 
 </DslExample>
@@ -218,7 +219,7 @@ $Nome:
 
 ```dsl
 component UserCard:
-  card-p4:
+  card:
     ## %name
     >> %email
 

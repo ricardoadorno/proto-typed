@@ -115,6 +115,7 @@ export function registerDSLLanguage(monaco: Monaco) {
         [/___(?:password)\b/i, 'keyword.input.password'],
         [/___(?:date)\b/i, 'keyword.input.date'],
         [/___(?:number)\b/i, 'keyword.input.number'],
+        [/___(?:textarea)\b/i, 'keyword.input.textarea'],
         [/___/, 'keyword.input'],        // ___, ___*, ___-
         [/\[[X\s]\]/, 'keyword.checkbox'],     // [X], [ ]
         [/^\s*\([X\s]\)/, 'keyword.radio'],    // (X), ( ) at start of line only

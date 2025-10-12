@@ -30,16 +30,15 @@ Sistema de ícones usando **Lucide Icons** (https://lucide.dev).
 
 ```dsl
 screen IconButtons:
-  container-p8:
-    row-gap4:
+  container:
+    row-start:
       @[i-Save Salvar](save)
       @[i-Edit Editar](edit)
       @[i-Share Compartilhar](share)
       @[i-Trash2 Deletar](delete)
-    
-    row-gap4:
-      @@+[i-Download Download](download)
-      @@@_[i-Settings Configurações](settings)
+    row-start:
+      @[i-Download Download](download)
+      @[i-Settings Configurações](settings)
 ```
 
 </DslExample>
@@ -52,35 +51,14 @@ screen IconButtons:
 
 ```dsl
 screen Home:
-  container-p8:
+  container:
     # Início
     > Conteúdo da tela
-  
   navigator:
     - i-Home Início | Home
     - i-Search Buscar | Search
     - i-User Perfil | Profile
     - i-Settings Config | Settings
-```
-
-</DslExample>
-
----
-
-## FAB com Ícone
-
-<DslExample title="Floating Action Button" heightClassName="h-48">
-
-```dsl
-screen Messages:
-  container-p8:
-    # Mensagens
-    
-    list:
-      - Conversa com João
-      - Conversa com Maria
-  
-  fab[i-Plus](NewMessage)
 ```
 
 </DslExample>
@@ -118,26 +96,12 @@ screen Messages:
 
 ```dsl
 screen Editor:
-  header-between-p4:
+  header:
     # Editor
-    row-gap2:
-      @@@_[i-Save Salvar](save)
-      @@@_[i-Undo Desfazer](undo)
-      @@@_[i-Redo Refazer](redo)
+    row-start:
+      @[i-Undo Desfazer](undo)
+      @[i-Redo Refazer](redo)
 ```
 
 </DslExample>
 
-### Lista com Ações
-
-<DslExample title="Lista com Botões de Ação" heightClassName="h-48">
-
-```dsl
-screen Tasks:
-  container-p8:
-    list:
-      - Fazer compras @[i-Check Concluir](complete) @@@_[i-Edit Editar](edit)
-      - Estudar DSL @[i-Check Concluir](complete) @@@=[i-Trash Deletar](delete)
-```
-
-</DslExample>

@@ -12,7 +12,14 @@ export function renderInput(node: AstNode): string {
     inputHtml += `<label class="${elementStyles.label}" style="${getLabelInlineStyles()}">${inputProps.label}:${inputProps.flags?.required ? ' <span style="color: var(--destructive);">*</span>' : ''}\n`;
   }
   
+  if(inputProps?.kind === 'textarea') {
+    inputHtml += `  <textarea class="${elementStyles.textarea}"
+    cols="${inputProps?.attributes?.cols || 30}"
+    rows="${inputProps?.attributes?.rows || 10}"
+    style="${getInputInlineStyles()}" placeholder="${inputProps?.attributes?.placeholder || ''}"></textarea>`;
+  } else  {
   inputHtml += `  <input type="${inputProps.kind}" class="${elementStyles.input}" style="${getInputInlineStyles()}" placeholder="${inputProps?.attributes?.placeholder || ''}" />`;
+  }
 
   if (inputProps?.label) {
     inputHtml += '\n</label>';
@@ -49,7 +56,7 @@ export function renderSelect(node: AstNode): string {
     selectHtml += `<label class="${elementStyles.label}" style="${getLabelInlineStyles()}">${selectProps.label}:${selectProps.required ? ' <span style="color: var(--destructive);">*</span>' : ''}\n`;
   }
   
-  const selectOptions = (selectProps?.options || [])
+  const selectOptions = (selectProps?.attributes?.options || [])
     .map((option: string) => `<option value="${option}">${option}</option>`)
     .join('\n');
     
