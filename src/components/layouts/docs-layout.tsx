@@ -3,7 +3,7 @@ import { useState, type ReactNode } from 'react';
 import DocsHeader from './components/docs-header';
 import DocsSidebar from './components/docs-sidebar';
 import DocsFooter from './components/docs-footer';
-import toc from '@/docs/toc';
+import toc from '@/utils/toc';
 export function DocsLayout({ children }: { children: ReactNode }) {
 
     const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
