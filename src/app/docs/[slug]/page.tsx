@@ -25,7 +25,7 @@ export default async function PostPage({ params }: Props) {
         },
         options: {
             mdxOptions: {
-                remarkPlugins: [remarkGfm], // 👈 habilita sintaxe estilo GitHub
+                remarkPlugins: [remarkGfm],
             },
         },
     })

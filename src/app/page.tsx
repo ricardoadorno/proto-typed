@@ -18,6 +18,7 @@ import { exportDocument } from '../utils';
 import { exampleConfigs } from '../examples';
 import { astToHtmlDocument } from '../core/renderer/ast-to-html-document';
 import { customPropertiesManager } from '../core/renderer/core/theme-manager';
+import { withBaseUrl } from '@/utils/with-base-url';
 
 export default function App() {
   const [input, setInput] = useState(exampleConfigs[0].code || "");
@@ -75,7 +76,7 @@ export default function App() {
           <div className="bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-4 md:p-6">
 
             <AppHeader />
-            <a href="/docs" className="text-sm text-blue-400 hover:underline mb-4 inline-block">
+            <a href={withBaseUrl('docs')} className="text-sm text-blue-400 hover:underline mb-4 inline-block">
               View Documentation
             </a>
 

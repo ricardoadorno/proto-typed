@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import Link from 'next/link'
+import { withBaseUrl } from '@/utils/with-base-url'
 
 interface Doc {
     slug: string
@@ -23,15 +23,15 @@ export default function DocsSidebar({ docs }: { docs: Doc[] }) {
             <ul className="space-y-2">
                 {docs.map((doc) => (
                     <li key={doc.slug}>
-                        <Link
-                            href={`/docs/${doc.slug}`}
+                        <a
+                            href={withBaseUrl(`/docs/${doc.slug}`)}
                             className={`block text-sm px-3 py-2 rounded-md transition-colors ${isActive(doc.slug)
                                 ? 'bg-gray-700 text-blue-400'
                                 : 'text-gray-300 hover:text-blue-400 hover:bg-gray-700/40'
                                 }`}
                         >
                             {doc.title}
-                        </Link>
+                        </a>
                     </li>
                 ))}
             </ul>
