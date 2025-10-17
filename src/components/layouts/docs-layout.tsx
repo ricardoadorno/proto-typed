@@ -1,6 +1,9 @@
+'use client';
 import { useState, type ReactNode } from 'react';
-import { DocsHeader, DocsSidebar, DocsFooter } from "./components";
-
+import DocsHeader from './components/docs-header';
+import DocsSidebar from './components/docs-sidebar';
+import DocsFooter from './components/docs-footer';
+import toc from '@/docs/toc';
 export function DocsLayout({ children }: { children: ReactNode }) {
 
     const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -48,7 +51,7 @@ export function DocsLayout({ children }: { children: ReactNode }) {
                                     X
                                 </button>
                             </div>
-                            <DocsSidebar />
+                            <DocsSidebar docs={toc} />
                         </div>
                     </div>
                 )}
@@ -58,7 +61,7 @@ export function DocsLayout({ children }: { children: ReactNode }) {
 
                     <div className="col-span-3 hidden md:block">
                         <div className="sticky top-6 max-h-[80vh] overflow-auto transition-all">
-                            <DocsSidebar />
+                            <DocsSidebar docs={toc} />
                         </div>
                     </div>
                     {/* Main content */}

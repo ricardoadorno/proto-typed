@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, ReactNode } from 'react';
 import { useParse } from '../../hooks/use-parse';
 import { DSLEditor } from '../../core/editor';
@@ -9,7 +11,7 @@ interface DslExampleProps {
     children?: ReactNode;
 }
 
-export function DslExample({
+export default function DslExample({
     title = 'Example',
     description,
     children,
@@ -125,4 +127,3 @@ export function DslExample({
     );
 }
 
-export default DslExample;

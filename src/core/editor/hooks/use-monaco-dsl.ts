@@ -23,7 +23,6 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useMonaco } from '@monaco-editor/react';
-import * as monaco from 'monaco-editor';
 import { initializeMonacoDSL } from '../index';
 import { ErrorBus } from '../../error-bus';
 import type { ProtoError, Severity } from '../../../types/errors';
@@ -126,19 +125,26 @@ function formatErrorMessage(err: ProtoError): string {
   return msg;
 }
 
+export enum MarkerSeverity {
+    Hint = 1,
+    Info = 2,
+    Warning = 4,
+    Error = 8
+}
+
 /**
  * Converts Proto-Typed Severity to Monaco MarkerSeverity
  */
-function toMonacoSeverity(severity: Severity): monaco.MarkerSeverity {
+function toMonacoSeverity(severity: Severity): MarkerSeverity {
   switch (severity) {
     case 'fatal':
     case 'error':
-      return monaco.MarkerSeverity.Error;
+      return MarkerSeverity.Error;
     case 'warning':
-      return monaco.MarkerSeverity.Warning;
+      return MarkerSeverity.Warning;
     case 'info':
-      return monaco.MarkerSeverity.Info;
+      return MarkerSeverity.Info;
     default:
-      return monaco.MarkerSeverity.Hint;
+      return MarkerSeverity.Hint;
   }
 }

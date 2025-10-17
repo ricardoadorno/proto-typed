@@ -50,7 +50,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3 # Ação oficial para fazer upload do artefato
         with:
           # Pasta que contém os arquivos estáticos do build (dist/client para Vike SSG)
-          path: './dist/client'
+          path: './out'
 
       # Passo 7: Deploy no GitHub Pages
       - name: Deploy to GitHub Pages

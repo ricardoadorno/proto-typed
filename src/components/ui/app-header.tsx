@@ -1,4 +1,3 @@
-import { withBase } from "../../utils";
 
 interface AppHeaderProps {
     title?: string;
@@ -13,7 +12,7 @@ export function AppHeader({
         <div className="flex items-center justify-between mb-6">
             <div>
                 <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    <img src={withBase("/logo.svg")} alt="Logo" className="inline h-8 w-8 mr-2 -mt-1" />
+                    <img src={"/logo.svg"} alt="Logo" className="inline h-8 w-8 mr-2 -mt-1" />
                     {title}
                 </h1>
                 {description && (
