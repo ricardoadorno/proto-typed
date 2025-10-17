@@ -1,3 +1,4 @@
+"use client";
 import { ErrorDisplay } from './error-display';
 import { useState } from 'react';
 
@@ -58,7 +59,7 @@ export function ErrorTerminal({ error, code }: ErrorTerminalProps) {
                 <div className="bg-slate-900">
                     {/* Custom Error Display for Terminal */}
                     <div className="p-2">
-                        <ErrorDisplay error={error} code={code} compact={true} />
+                        {/* <ErrorDisplay error={error} code={code} compact={true} /> */}
                     </div>
                 </div>
             )}

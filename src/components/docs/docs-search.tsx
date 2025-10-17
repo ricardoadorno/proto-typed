@@ -1,0 +1,106 @@
+"use client"
+
+import { useCallback, useEffect, useMemo, useState } from "react"
+import { CommandIcon } from "lucide-react"
+
+import {
+  Badge,
+  Button,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/ui"
+import { withBaseUrl } from "@/utils/with-base-url"
+import type { DocItem, DocSection } from "@/utils/toc"
+
+interface DocsSearchProps {
+  sections: DocSection[]
+}
+
+export function DocsSearch({ sections }: DocsSearchProps) {
+  const [open, setOpen] = useState(false)
+
+  const items = useMemo(
+    () =>
+      sections.map((section) => ({
+        label: section.title,
+        items: section.items,
+      })),
+    [sections]
+  )
+
+  const handleOpen = useCallback(() => setOpen(true), [])
+  const handleClose = useCallback(() => setOpen(false), [])
+
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault()
+        setOpen((value) => !value)
+      }
+    }
+
+    window.addEventListener("keydown", handler)
+    return () => window.removeEventListener("keydown", handler)
+  }, [])
+
+  const handleSelect = (doc: DocItem) => {
+    setOpen(false)
+    const href = withBaseUrl(`/docs/${doc.slug}`)
+    window.location.href = href
+  }
+
+  return (
+    <>
+      <Button
+        onClick={handleOpen}
+        variant="secondary"
+        className="flex w-full items-center justify-between rounded-xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-4 py-3 text-left text-sm text-[var(--fg-secondary)] shadow-sm transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-light)] sm:w-[320px]"
+      >
+        <span>Buscar tópicos, componentes...</span>
+        <span className="flex items-center gap-1 rounded-lg border border-[var(--border-muted)] px-2 py-1 text-[10px] uppercase tracking-[0.32em] text-[var(--fg-secondary)]">
+          <CommandIcon className="h-3 w-3" />K
+        </span>
+      </Button>
+      <CommandDialog open={open} onOpenChange={setOpen} searchPlaceholder="Buscar na documentação">
+        <CommandList>
+          <CommandEmpty>Nenhum resultado.</CommandEmpty>
+          {items.map((group) => (
+            <CommandGroup key={group.label} heading={group.label}>
+              {group.items.map((doc) => (
+                <CommandItem
+                  key={doc.slug}
+                  value={`${group.label} ${doc.title}`.toLowerCase()}
+                  onSelect={() => handleSelect(doc)}
+                  className="flex items-center gap-3 rounded-lg px-3 py-2"
+                >
+                  <Badge variant="outline" className="text-[10px]">
+                    {group.label}
+                  </Badge>
+                  <span className="text-[var(--fg-primary)]">{doc.title}</span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          ))}
+          <CommandSeparator />
+          <CommandGroup heading="Atalhos">
+            <CommandItem disabled className="justify-between">
+              Abrir busca
+              <CommandShortcut>⌘K</CommandShortcut>
+            </CommandItem>
+            <CommandItem disabled className="justify-between">
+              Ir para editor
+              <CommandShortcut>G E</CommandShortcut>
+            </CommandItem>
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
+    </>
+  )
+}
+
+export default DocsSearch

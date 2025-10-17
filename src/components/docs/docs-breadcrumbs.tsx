@@ -1,0 +1,56 @@
+import Link from "next/link"
+
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui"
+import { withBaseUrl } from "@/utils/with-base-url"
+
+export interface BreadcrumbSegment {
+  label: string
+  href?: string
+}
+
+interface DocsBreadcrumbsProps {
+  trail: BreadcrumbSegment[]
+}
+
+export function DocsBreadcrumbs({ trail }: DocsBreadcrumbsProps) {
+  if (!trail.length) {
+    return null
+  }
+
+  const displayTrail = trail.length > 4 ? [trail[0], { label: "…" }, ...trail.slice(-3)] : trail
+
+  return (
+    <Breadcrumb aria-label="Breadcrumb" className="w-full">
+      <BreadcrumbList>
+        {displayTrail.map((segment, index) => {
+          const isLast = index === displayTrail.length - 1
+          return (
+            <BreadcrumbItem key={`${segment.label}-${index}`} className="flex items-center gap-2">
+              {segment.href && !isLast ? (
+                <BreadcrumbLink asChild className="text-xs">
+                  <Link href={withBaseUrl(segment.href)}>{segment.label}</Link>
+                </BreadcrumbLink>
+              ) : isLast ? (
+                <BreadcrumbPage className="text-xs">{segment.label}</BreadcrumbPage>
+              ) : (
+                <BreadcrumbPage className="text-xs text-[var(--fg-secondary)]">
+                  {segment.label}
+                </BreadcrumbPage>
+              )}
+              {!isLast ? <BreadcrumbSeparator>›</BreadcrumbSeparator> : null}
+            </BreadcrumbItem>
+          )
+        })}
+      </BreadcrumbList>
+    </Breadcrumb>
+  )
+}
+
+export default DocsBreadcrumbs

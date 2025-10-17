@@ -1,84 +1,94 @@
-'use client';
-import { useState, type ReactNode } from 'react';
-import DocsHeader from './components/docs-header';
-import DocsSidebar from './components/docs-sidebar';
-import DocsFooter from './components/docs-footer';
-import toc from '@/utils/toc';
+"use client"
+
+import type { ReactNode } from "react"
+import { useEffect, useState } from "react"
+
+import DocsFooter from "./components/docs-footer"
+import DocsHeader from "./components/docs-header"
+import DocsSidebar from "./components/docs-sidebar"
+import docSections from "@/utils/toc"
+import {
+  Button,
+  ScrollArea,
+  Separator,
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui"
+import { cn } from "@/lib/utils"
+
+const THEME_STORAGE_KEY = "proto.docs.theme"
+
 export function DocsLayout({ children }: { children: ReactNode }) {
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
+  const [theme, setTheme] = useState<"dark" | "light">("dark")
 
-    const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    const stored = localStorage.getItem(THEME_STORAGE_KEY)
+    if (stored === "dark" || stored === "light") {
+      setTheme(stored)
+    }
+  }, [])
 
-    return (
-        <div className="min-h-screen bg-gray-900 text-gray-200 p-6">
-            <div className="max-w-7xl mx-auto">
-                {/* Header with navigation */}
-                <DocsHeader />
-                <div className="md:hidden fixed top-6 right-6 z-50">
-                    {/* Icon button for menu (fixed top-right on mobile) */}
-                    <button
-                        type="button"
-                        className="inline-flex items-center px-3 py-2 bg-blue-600 rounded-md cursor-pointer gap-2 shadow-md"
-                        onClick={() => setMobileSidebarOpen(true)}
-                        aria-label="Abrir menu de navegação"
-                    >
-                        {/* Menu icon (Lucide or Heroicons) */}
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                        <span className="sr-only">Menu</span>
-                    </button>
-                </div>
+  useEffect(() => {
+    if (typeof window === "undefined") return
+    localStorage.setItem(THEME_STORAGE_KEY, theme)
+  }, [theme])
 
-                {mobileSidebarOpen && (
-                    <div className="fixed inset-0 z-40">
-                        {/* Overlay */}
-                        <div
-                            className="fixed inset-0 bg-black/50 transition-opacity opacity-100 pointer-events-auto"
-                            onClick={() => setMobileSidebarOpen(false)}
-                            aria-label="Fechar menu de navegação"
-                        ></div>
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"))
+  }
 
-                        {/* Panel */}
-                        <div className="fixed left-0 top-0 h-full w-64 overflow-auto bg-gray-800 p-4 transition-transform">
-                            <div className="flex items-center justify-between mb-4">
-                                <span className="font-medium">Navegação</span>
-                                <button
-                                    type="button"
-                                    className="inline-flex items-center px-2 py-1 bg-gray-700 rounded-md cursor-pointer"
-                                    onClick={() => setMobileSidebarOpen(false)}
-                                    aria-label="Fechar menu de navegação"
-                                >
-                                    X
-                                </button>
-                            </div>
-                            <DocsSidebar docs={toc} />
-                        </div>
-                    </div>
-                )}
+  return (
+    <div className={cn("docs-theme", theme === "light" && "docs-theme--light")}>
+      <div className="min-h-screen bg-[var(--bg-main)] text-[var(--fg-primary)]">
+        <DocsHeader
+          theme={theme}
+          onThemeToggle={toggleTheme}
+          onOpenSidebar={() => setMobileSidebarOpen(true)}
+        />
 
-                {/* Main content area */}
-                <div className="grid grid-cols-12 gap-6">
+        <div className="mx-auto flex w-full max-w-[1360px] gap-10 px-6 pb-16 pt-10 sm:px-8 lg:px-12 xl:pt-12">
+          <aside className="hidden w-[280px] flex-shrink-0 xl:block">
+            <ScrollArea className="sticky top-24 max-h-[calc(100vh-120px)] rounded-xl border border-[var(--border-muted)] bg-[var(--bg-surface)] shadow-[0_1px_18px_rgba(0,0,0,0.18)]">
+              <div className="p-4">
+                <DocsSidebar sections={docSections} />
+              </div>
+            </ScrollArea>
+          </aside>
 
-                    <div className="col-span-3 hidden md:block">
-                        <div className="sticky top-6 max-h-[80vh] overflow-auto transition-all">
-                            <DocsSidebar docs={toc} />
-                        </div>
-                    </div>
-                    {/* Main content */}
-                    <div className="col-span-12 md:col-span-9">
-                        <div className="bg-gray-800 p-6 rounded-lg shadow-md">
-                            <div className="prose prose-invert max-w-none">
-                                {children}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Footer */}
-                <DocsFooter />
-            </div>
+          <main className="flex w-full flex-1 flex-col gap-16">
+            {children}
+            <Separator className="border-[var(--border-muted)]" />
+            <DocsFooter />
+          </main>
         </div>
-    );
+
+        <Sheet open={mobileSidebarOpen} onOpenChange={setMobileSidebarOpen}>
+          <SheetContent side="right" className="w-[85%] max-w-[360px] border-l border-[var(--border-muted)]">
+            <SheetHeader className="text-left">
+              <SheetTitle className="text-[var(--fg-primary)]">Navegação</SheetTitle>
+            </SheetHeader>
+            <div className="mt-4 flex flex-1 flex-col gap-4">
+              <ScrollArea className="h-full pr-3">
+                <DocsSidebar sections={docSections} onNavigate={() => setMobileSidebarOpen(false)} />
+              </ScrollArea>
+            </div>
+            <div className="mt-4 flex justify-end">
+              <SheetClose asChild>
+                <Button variant="ghost" size="sm">
+                  Fechar
+                </Button>
+              </SheetClose>
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
+    </div>
+  )
 }
 
-export default DocsLayout;
+export default DocsLayout

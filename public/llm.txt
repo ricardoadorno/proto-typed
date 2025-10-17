@@ -1,0 +1,26 @@
+# proto-typed
+
+> proto-typed é uma DSL leve para prototipar interfaces com preview em tempo real.
+
+## Sumário (Docs Disponíveis)
+
+- **Introdução**  
+  O que é proto-typed, visão geral e casos de uso.
+
+- **Instalação & Uso Básico**  
+  Como rodar localmente, abrir o editor e ver o preview.
+
+- **DSL (Sintaxe Básica)**  
+  Regras de visão (`screen`, `modal`, `drawer`), comandos de tipografia, botões, layouts, componentes e propriedades.
+
+- **Temas & Estilos**  
+  Uso de CSS vars / tokens semânticos, dark mode, sobrescrita de estilos.
+
+- **Arquitetura Interna (Resumo)**  
+  Pipeline: Lexer → Parser → AST → Renderer; partes como ThemeManager, RouteManager, e como o renderer consome a AST.
+
+- **Referência**  
+  Sintaxe completa (tokens + exemplos), estrutura AST e APIs de render.
+
+- **Contribuição & Projeto**  
+  Guia rápido de contribuição, changelog e licença.
