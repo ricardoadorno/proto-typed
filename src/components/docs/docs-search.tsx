@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useMemo, useState } from "react"
+import { useRouter } from "next/navigation"
 import { CommandIcon } from "lucide-react"
 
 import {
@@ -23,6 +24,7 @@ interface DocsSearchProps {
 
 export function DocsSearch({ sections }: DocsSearchProps) {
   const [open, setOpen] = useState(false)
+  const router = useRouter()
 
   const items = useMemo(
     () =>
@@ -34,8 +36,6 @@ export function DocsSearch({ sections }: DocsSearchProps) {
   )
 
   const handleOpen = useCallback(() => setOpen(true), [])
-  const handleClose = useCallback(() => setOpen(false), [])
-
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
@@ -50,8 +50,7 @@ export function DocsSearch({ sections }: DocsSearchProps) {
 
   const handleSelect = (doc: DocItem) => {
     setOpen(false)
-    const href = (`/docs/${doc.slug}`)
-    window.location.href = href
+    router.push(`/docs/${doc.slug}`)
   }
 
   return (

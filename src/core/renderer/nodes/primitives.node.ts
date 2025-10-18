@@ -2,6 +2,7 @@ import { AstNode } from '../../../types/ast-node';
 import { elementStyles, getButtonClasses, getButtonInlineStyles, getHeadingInlineStyles, getParagraphInlineStyles, getLinkInlineStyles } from './styles/styles';
 import { isLucideIcon, getLucideSvg, renderTextWithIcons } from '../../../utils/icon-utils';
 import { NavigationMediator } from '../infrastructure/navigation-mediator';
+import { withAssetPath } from '../../../utils/base-path';
 
 /**
  * Render button element
@@ -57,7 +58,8 @@ export function renderImage(node: AstNode): string {
   const props = node.props as any;
   const src = props?.src || '';
   const alt = props?.alt || '';
-  return `<img src="${src}" alt="${alt}" class="${elementStyles.image}" />`;
+  const resolvedSrc = withAssetPath(src);
+  return `<img src="${resolvedSrc}" alt="${alt}" class="${elementStyles.image}" />`;
 }
 
 /**

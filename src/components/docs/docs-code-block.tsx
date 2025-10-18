@@ -6,6 +6,7 @@ import { toast } from "sonner"
 
 import { Button, ScrollArea, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui"
 import { cn } from "@/lib/utils"
+import { withBasePath } from "@/utils/base-path"
 
 interface DocsCodeBlockProps extends React.ComponentPropsWithoutRef<"pre"> {
   "data-title"?: string
@@ -57,7 +58,7 @@ export function DocsCodeBlock({ children, className, ...rest }: DocsCodeBlockPro
     metaFromChild ??
     language.toUpperCase()
 
-  const playgroundHref = dataPlayground
+  const playgroundHref = dataPlayground ? withBasePath(dataPlayground) : undefined
 
   const [copied, setCopied] = React.useState(false)
 

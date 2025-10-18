@@ -1,9 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
-import { CommandIcon, MenuIcon, MoonIcon, SunIcon, UserIcon } from "lucide-react"
+import { CommandIcon, MenuIcon, MoonIcon, SunIcon } from "lucide-react"
 
 import {
   Button,
@@ -30,6 +30,7 @@ import { cn } from "@/lib/utils"
 import { useTheme } from 'next-themes'
 import DocsSearch from '@/components/docs/docs-search'
 import docSections from '@/utils/toc'
+import { withAssetPath } from '@/utils/base-path'
 
 const navItems = [
   { label: "Playground", href: "/" },
@@ -93,7 +94,7 @@ export function DocsHeader({ onOpenSidebar }: DocsHeaderProps) {
           className="flex items-center gap-3 text-sm font-semibold text-[var(--fg-primary)] transition-colors hover:text-[var(--accent-light)]"
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-md bg-[linear-gradient(135deg,rgba(124,58,237,0.15)_0%,rgba(34,211,238,0.15)_100%)] text-lg font-bold text-white shadow-[0_12px_32px_rgba(124,58,237,0.45)]">
-            <img src={("logo.svg")} alt="Logo" />
+            <img src={withAssetPath("/logo.svg")} alt="Logo" />
           </span>
           <span className="hidden text-base sm:inline tracking-tight">proto-typed</span>
         </Link>
