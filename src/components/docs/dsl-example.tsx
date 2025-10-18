@@ -133,12 +133,8 @@ export default function DslExample({
 
   return (
     <section className="space-y-6">
-      <header className="flex flex-col gap-3">
-        <div className="flex flex-wrap items-center gap-3">
-          <h4 className="text-lg font-semibold text-[var(--fg-primary)]">{title}</h4>
-        </div>
-        {description ? <p className="max-w-2xl text-sm text-[var(--fg-secondary)]">{description}</p> : null}
-      </header>
+      <h3 className="text-lg font-semibold text-[var(--fg-primary)]">{title}</h3>
+      {description ? <p className="max-w-2xl text-sm text-[var(--fg-secondary)]">{description}</p> : null}
 
       <div>
         <div className="hidden gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">

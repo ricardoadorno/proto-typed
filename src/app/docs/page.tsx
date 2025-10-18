@@ -35,6 +35,7 @@ export default function DocsHomePage() {
 
           <div className="relative z-10 grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_320px] lg:items-start">
             <div className="space-y-6">
+              <img src={withBaseUrl("/logo.svg")} alt="Proto-typed" className="h-80 w-auto absolute -z-10 left-10 bottom-15 opacity-15" />
               <Badge
                 variant="outline"
                 className="w-fit border-[color:rgba(139,92,246,0.32)] bg-[color:rgba(139,92,246,0.12)] text-[10px] uppercase tracking-[0.32em] text-[var(--accent)]"
