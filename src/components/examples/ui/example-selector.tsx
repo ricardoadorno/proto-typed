@@ -1,4 +1,5 @@
 import { Example } from '../types';
+import { cn } from "@/lib/utils";
 
 interface ExampleSelectorProps {
     examples: Example[];
@@ -16,10 +17,12 @@ export function ExampleSelector({ examples, selectedExample, onExampleChange }: 
                 <button
                     key={index}
                     onClick={() => onExampleChange(index)}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${selectedExample === index
-                        ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
-                        : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
-                        }`}
+                    className={cn(
+                        "rounded-xl border px-3 py-2 text-sm font-medium transition-all",
+                        selectedExample === index
+                            ? "border-[var(--brand-400)] bg-[color:rgba(139,92,246,0.16)] text-[var(--fg-primary)] shadow-[0_12px_36px_rgba(124,58,237,0.32)]"
+                            : "border-[var(--border-muted)] bg-[var(--bg-raised)] text-[var(--fg-secondary)] hover:border-[var(--brand-400)] hover:bg-[color:rgba(139,92,246,0.12)] hover:text-[var(--accent)]"
+                    )}
                 >
                     {example.name}
                 </button>

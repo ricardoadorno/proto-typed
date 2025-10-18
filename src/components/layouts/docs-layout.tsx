@@ -51,16 +51,16 @@ export function DocsLayout({ children }: { children: ReactNode }) {
           onOpenSidebar={() => setMobileSidebarOpen(true)}
         />
 
-        <div className="mx-auto flex w-full max-w-[1360px] gap-10 px-6 pb-16 pt-10 sm:px-8 lg:px-12 xl:pt-12">
-          <aside className="hidden w-[280px] flex-shrink-0 xl:block">
-            <ScrollArea className="sticky top-24 max-h-[calc(100vh-120px)] rounded-xl border border-[var(--border-muted)] bg-[var(--bg-surface)] shadow-[0_1px_18px_rgba(0,0,0,0.18)]">
-              <div className="p-4">
+        <div className="mx-auto flex w-full max-w-[1360px] gap-8 px-4 pb-20 pt-10 sm:px-6 lg:px-10 xl:gap-12 xl:pt-14">
+          <aside className="sticky top-28 hidden h-[calc(100vh-130px)] w-[240px] flex-shrink-0 xl:block">
+            <ScrollArea className="h-full rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-surface)] shadow-[0_6px_24px_rgba(0,0,0,0.28)]">
+              <div className="px-4 py-5">
                 <DocsSidebar sections={docSections} />
               </div>
             </ScrollArea>
           </aside>
 
-          <main className="flex w-full flex-1 flex-col gap-16">
+          <main className="flex w-full min-w-0 flex-1 flex-col gap-16">
             {children}
             <Separator className="border-[var(--border-muted)]" />
             <DocsFooter />
@@ -68,18 +68,23 @@ export function DocsLayout({ children }: { children: ReactNode }) {
         </div>
 
         <Sheet open={mobileSidebarOpen} onOpenChange={setMobileSidebarOpen}>
-          <SheetContent side="right" className="w-[85%] max-w-[360px] border-l border-[var(--border-muted)]">
+          <SheetContent
+            side="left"
+            className="w-[90%] max-w-[340px] border-r border-[var(--border-muted)] bg-[var(--bg-surface)]"
+          >
             <SheetHeader className="text-left">
-              <SheetTitle className="text-[var(--fg-primary)]">Navegação</SheetTitle>
+              <SheetTitle className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--fg-secondary)]">
+                Navegação
+              </SheetTitle>
             </SheetHeader>
             <div className="mt-4 flex flex-1 flex-col gap-4">
-              <ScrollArea className="h-full pr-3">
+              <ScrollArea className="h-full pr-2">
                 <DocsSidebar sections={docSections} onNavigate={() => setMobileSidebarOpen(false)} />
               </ScrollArea>
             </div>
             <div className="mt-4 flex justify-end">
               <SheetClose asChild>
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" className="text-[var(--fg-secondary)] hover:text-[var(--accent)]">
                   Fechar
                 </Button>
               </SheetClose>

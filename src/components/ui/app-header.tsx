@@ -9,22 +9,22 @@ export function AppHeader({
     description = "Create interactive prototypes with our powerful DSL"
 }: AppHeaderProps) {
     return (
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6 flex items-center justify-between">
             <div>
-                <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    <img src={"/logo.svg"} alt="Logo" className="inline h-8 w-8 mr-2 -mt-1" />
+                <h1 className="bg-[linear-gradient(135deg,#7c3aed_0%,#22d3ee_100%)] bg-clip-text text-3xl font-bold text-transparent">
+                    <img src={"/logo.svg"} alt="Logo" className="mr-2 -mt-1 inline h-8 w-8" />
                     {title}
                 </h1>
                 {description && (
-                    <p className="text-slate-600 dark:text-slate-300 mt-2">
+                    <p className="mt-2 text-sm text-[var(--fg-secondary)]">
                         {description}
                     </p>
                 )}
             </div>
-            <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-red-400 rounded-full"></div>
-                <div className="w-3 h-3 bg-yellow-400 rounded-full"></div>
-                <div className="w-3 h-3 bg-green-400 rounded-full"></div>
+            <div className="flex items-center gap-2">
+                <div className="h-3 w-3 rounded-full bg-[var(--danger)]"></div>
+                <div className="h-3 w-3 rounded-full bg-[var(--warning)]"></div>
+                <div className="h-3 w-3 rounded-full bg-[var(--brand-400)]"></div>
             </div>
         </div>
     );

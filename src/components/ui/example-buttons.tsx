@@ -10,12 +10,12 @@ interface ExampleButtonsProps {
 
 export function ExampleButtons({ examples, onExampleSelect }: ExampleButtonsProps) {
     return (
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="mb-4 flex flex-wrap gap-2">
             {examples.map((example, index) => (
                 <button
                     key={index}
                     onClick={() => onExampleSelect(example.code)}
-                    className="px-3 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors duration-200 text-sm font-medium"
+                    className="rounded-xl border border-[var(--border-muted)] bg-[var(--bg-raised)] px-3 py-2 text-sm font-medium text-[var(--fg-secondary)] transition-all hover:border-[var(--brand-400)] hover:bg-[color:rgba(139,92,246,0.12)] hover:text-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-400)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-surface)]"
                 >
                     {example.label}
                 </button>

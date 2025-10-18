@@ -58,11 +58,11 @@ export function DocsSearch({ sections }: DocsSearchProps) {
     <>
       <Button
         onClick={handleOpen}
-        variant="secondary"
-        className="flex w-full items-center justify-between rounded-xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-4 py-3 text-left text-sm text-[var(--fg-secondary)] shadow-sm transition-colors hover:border-[var(--accent)] hover:text-[var(--accent-light)] sm:w-[320px]"
+        variant="outline"
+        className="flex w-full items-center justify-between rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-4 py-3 text-left text-sm text-[var(--fg-secondary)] shadow-[0_6px_18px_rgba(0,0,0,0.24)] transition-colors hover:border-[var(--brand-400)] hover:bg-[color:rgba(139,92,246,0.08)] hover:text-[var(--accent-light)] sm:w-[320px]"
       >
         <span>Buscar tópicos, componentes...</span>
-        <span className="flex items-center gap-1 rounded-lg border border-[var(--border-muted)] px-2 py-1 text-[10px] uppercase tracking-[0.32em] text-[var(--fg-secondary)]">
+        <span className="flex items-center gap-1 rounded-lg border border-[var(--border-muted)] bg-[var(--bg-raised)] px-2 py-1 text-[10px] uppercase tracking-[0.32em] text-[var(--fg-secondary)]">
           <CommandIcon className="h-3 w-3" />K
         </span>
       </Button>
@@ -78,7 +78,10 @@ export function DocsSearch({ sections }: DocsSearchProps) {
                   onSelect={() => handleSelect(doc)}
                   className="flex items-center gap-3 rounded-lg px-3 py-2"
                 >
-                  <Badge variant="outline" className="text-[10px]">
+                  <Badge
+                    variant="outline"
+                    className="border-[color:rgba(139,92,246,0.24)] bg-[color:rgba(139,92,246,0.08)] text-[10px] text-[var(--accent)]"
+                  >
                     {group.label}
                   </Badge>
                   <span className="text-[var(--fg-primary)]">{doc.title}</span>

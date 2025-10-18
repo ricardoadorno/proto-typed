@@ -17,15 +17,16 @@ const tabs: Tab[] = [
  */
 export function ExampleTabs({ activeTab, onTabChange }: { activeTab: string; onTabChange: (tab: string) => void }) {
     return (
-        <div className="flex flex-wrap gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
+        <div className="flex flex-wrap gap-2 rounded-2xl bg-[var(--bg-raised)] p-1">
             {tabs.map(tab => (
                 <button
                     key={tab.id}
                     onClick={() => onTabChange(tab.id)}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 font-medium ${activeTab === tab.id
-                        ? 'bg-slate-700 text-blue-400 shadow-md'
-                        : 'text-slate-400 hover:text-slate-200'
-                        }`}
+                    className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-all ${
+                        activeTab === tab.id
+                            ? 'border border-[var(--brand-400)] bg-[color:rgba(139,92,246,0.18)] text-[var(--fg-primary)] shadow-[0_12px_32px_rgba(124,58,237,0.28)]'
+                            : 'border border-transparent text-[var(--fg-secondary)] hover:border-[var(--brand-400)] hover:bg-[color:rgba(139,92,246,0.12)] hover:text-[var(--accent)]'
+                    }`}
                 >
                     <span className="text-lg">{tab.icon}</span>
                     <span>{tab.name}</span>

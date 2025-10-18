@@ -53,13 +53,13 @@ export function LivePreview({ code, onScreenChange }: Omit<ExamplePreviewProps, 
 
     return (
         <div className="space-y-3">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-2">
                 <span className="text-lg">👁️</span>
-                <h4 className="text-lg font-semibold text-slate-800 dark:text-white">Live Preview</h4>
+                <h4 className="text-lg font-semibold text-[var(--fg-primary)]">Live Preview</h4>
             </div>
 
             <div
-                className="bg-slate-800 border border-slate-600 rounded-lg p-4 h-96 overflow-auto shadow-inner"
+                className="h-96 overflow-auto rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-raised)] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
                 onClick={handleClick}
             >
                 <div dangerouslySetInnerHTML={{ __html: code }} />

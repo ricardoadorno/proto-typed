@@ -15,14 +15,14 @@ export function ThemeSelector({
     onChange
 }: ThemeSelectorProps) {
     return (
-        <div className="mb-4">
-            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+        <div className="space-y-2">
+            <label className="block text-xs font-semibold uppercase tracking-[0.28em] text-[var(--fg-secondary)]">
                 Theme
             </label>
             <select
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white"
+                className="w-full rounded-xl border border-[var(--border-muted)] bg-[var(--bg-raised)] px-3 py-2 text-sm text-[var(--fg-primary)] shadow-sm transition-all focus-visible:border-[var(--brand-400)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-300)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-surface)]"
             >
                 {themeOptions.map((option) => (
                     <option key={option.value} value={option.value}>

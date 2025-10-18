@@ -1,36 +1,93 @@
 import Link from "next/link"
 
-import { Button } from "@/components/ui"
+import { Separator } from "@/components/ui"
 import { withBaseUrl } from "@/utils/with-base-url"
 
+const footerColumns = [
+  {
+    title: "Comece rápido",
+    links: [
+      { label: "Introdução", href: "/docs/getting-started" },
+      { label: "Pilares do Proto", href: "/docs/principles" },
+      { label: "Roadmap", href: "/changelog" },
+    ],
+  },
+  {
+    title: "Explorar",
+    links: [
+      { label: "Playground", href: "/playground" },
+      { label: "Templates", href: "/templates" },
+      { label: "Componentes", href: "/docs/components" },
+    ],
+  },
+  {
+    title: "Recursos",
+    links: [
+      { label: "Design Tokens", href: "/docs/design-tokens" },
+      { label: "Guia de DSL", href: "/docs/dsl" },
+      { label: "Exemplos", href: "/docs/examples" },
+    ],
+  },
+  {
+    title: "Comunidade",
+    links: [
+      { label: "GitHub", href: "https://github.com/" },
+      { label: "Discord", href: "https://discord.gg/" },
+      { label: "Status", href: "/status" },
+    ],
+  },
+]
+
+const appVersion = process.env.NEXT_PUBLIC_APP_VERSION ?? "v0.1.0"
+
 export function DocsFooter() {
+  const currentYear = new Date().getFullYear()
+
   return (
-    <footer className="mt-12 rounded-xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-6 py-8 text-sm text-[var(--fg-secondary)] shadow-[0_1px_12px_rgba(0,0,0,0.14)]">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <p className="text-[var(--fg-primary)]">Proto-Typed Docs · {new Date().getFullYear()}</p>
-          <p className="mt-1 max-w-xl text-sm leading-relaxed">
-            Construído para guiar designers e desenvolvedores a criarem protótipos Vue de forma ágil, clara e
-            colaborativa.
-          </p>
-        </div>
-        <div className="flex items-center gap-3 text-xs uppercase tracking-[0.24em]">
-          <Button
-            asChild
-            variant="ghost"
-            className="rounded-full border border-transparent px-4 py-2 tracking-[0.3em] text-[var(--fg-secondary)] hover:border-[var(--accent)] hover:text-[var(--accent-light)]"
+    <footer className="mt-12 rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-6 py-8 text-sm text-[var(--fg-secondary)] shadow-[0_6px_24px_rgba(0,0,0,0.22)] sm:px-8">
+      <Separator className="mb-8 border-[var(--border-muted)]" />
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        {footerColumns.map((column) => (
+          <div key={column.title} className="space-y-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--fg-secondary)]">
+              {column.title}
+            </p>
+            <ul className="space-y-2">
+              {column.links.map((link) => {
+                const href = withBaseUrl(link.href)
+                const isExternal = href.startsWith("http")
+                return (
+                  <li key={link.label}>
+                    <Link
+                      href={href}
+                      className="text-sm text-[var(--fg-secondary)] transition-colors hover:text-[var(--accent-light)]"
+                      {...(isExternal ? { target: "_blank", rel: "noreferrer" } : undefined)}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-10 flex flex-col gap-3 border-t border-[var(--border-muted)] pt-6 text-xs uppercase tracking-[0.24em] text-[var(--fg-secondary)] sm:flex-row sm:items-center sm:justify-between">
+        <span className="flex items-center gap-2 text-[10px] uppercase tracking-[0.32em] text-[var(--fg-secondary)]">
+          © {currentYear} proto-typed · {appVersion}
+        </span>
+        <div className="flex items-center gap-3">
+          <span className="flex items-center gap-2">
+            Status
+            <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-[#22c55e]" aria-hidden />
+          </span>
+          <Link
+            href={withBaseUrl("/docs/changelog")}
+            className="text-[10px] tracking-[0.28em] text-[var(--fg-secondary)] transition-colors hover:text-[var(--accent-light)]"
           >
-            <Link href={withBaseUrl("/")}>Editor</Link>
-          </Button>
-          <Button
-            asChild
-            variant="ghost"
-            className="rounded-full border border-transparent px-4 py-2 tracking-[0.3em] text-[var(--fg-secondary)] hover:border-[var(--accent)] hover:text-[var(--accent-light)]"
-          >
-            <Link href="https://github.com/" target="_blank" rel="noreferrer">
-              GitHub
-            </Link>
-          </Button>
+            Changelog
+          </Link>
         </div>
       </div>
     </footer>

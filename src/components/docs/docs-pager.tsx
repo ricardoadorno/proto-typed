@@ -59,10 +59,9 @@ function PagerCard({ direction, title, label, href }: PagerCardProps) {
     return (
         <Button
             asChild
-            variant="secondary"
+            variant="ghost"
             className={cn(
-                "group flex flex-1 items-center justify-between gap-6 rounded-xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-5 py-5 text-left transition-transform duration-200 hover:-translate-y-1 hover:border-[var(--accent)] hover:bg-[var(--surface-hover)]",
-                "focus-visible:ring-[var(--accent-light)]"
+                "group flex flex-1 items-center justify-between gap-6 rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-5 py-5 text-left transition-all duration-200 hover:-translate-y-1 hover:border-[var(--brand-400)] hover:bg-[color:rgba(139,92,246,0.08)] focus-visible:ring-[var(--brand-400)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-main)]",
             )}
         >
             <Link href={href}>
@@ -74,7 +73,7 @@ function PagerCard({ direction, title, label, href }: PagerCardProps) {
                 </div>
                 <Icon
                     className={cn(
-                        "h-5 w-5 text-[var(--accent)] transition-transform duration-200",
+                        "h-5 w-5 text-[var(--brand-300)] transition-transform duration-200",
                         isPrev ? "group-hover:-translate-x-1" : "group-hover:translate-x-1"
                     )}
                 />

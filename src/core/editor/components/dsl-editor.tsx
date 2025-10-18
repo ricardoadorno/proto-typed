@@ -31,6 +31,7 @@ interface DSLEditorProps {
     onChange?: (value: string | undefined) => void;
     height?: string;
     theme?: string;
+    onEditorReady?: (editor: any) => void;
 }
 
 /**
@@ -41,11 +42,13 @@ export function DSLEditor({
     onChange,
     height = "100%",
     theme = "proto-typed-dark",
+    onEditorReady,
 }: DSLEditorProps) {
     const { isInitialized, error, handleEditorMount } = useMonacoDSL();
 
     const handleEditorDidMount = (editor: any) => {
         handleEditorMount(editor);
+        onEditorReady?.(editor);
     };
 
     if (error) {

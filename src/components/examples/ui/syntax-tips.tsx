@@ -47,18 +47,18 @@ export function SyntaxTips({ activeTab }: SyntaxTipsProps) {
     const currentTips = tips[activeTab as keyof typeof tips] || [];
 
     return (
-        <div className="bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-xl p-6">
-            <div className="flex items-center space-x-3 mb-4">
-                <div className="w-1 h-6 bg-gradient-to-b from-green-500 to-emerald-500 rounded-full"></div>
-                <h3 className="text-xl font-semibold text-slate-800 dark:text-white">Syntax Tips</h3>
+        <div className="rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-surface)] p-6 shadow-[0_18px_48px_rgba(12,14,24,0.28)]">
+            <div className="mb-4 flex items-center gap-3">
+                <div className="h-8 w-1 rounded-full bg-[linear-gradient(180deg,#8b5cf6_0%,#22d3ee_100%)]" />
+                <h3 className="text-xl font-semibold text-[var(--fg-primary)]">Syntax Tips</h3>
             </div>
 
-            <ul className="space-y-2 text-slate-700 dark:text-slate-300">
+            <ul className="space-y-2 text-[var(--fg-secondary)]">
                 {currentTips.map((tip, index) => (
-                    <li key={index} className="flex items-start space-x-2">
-                        <span className="text-blue-500 mt-1">•</span>
+                    <li key={index} className="flex items-start gap-2">
+                        <span className="mt-1 text-[var(--brand-400)]">•</span>
                         <div>
-                            <strong>{tip.label}:</strong> {tip.description}
+                            <strong className="text-[var(--fg-primary)]">{tip.label}:</strong> {tip.description}
                         </div>
                     </li>
                 ))}

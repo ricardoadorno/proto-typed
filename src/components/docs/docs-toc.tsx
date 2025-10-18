@@ -86,7 +86,7 @@ export function DocsToc({ items }: DocsTocProps) {
     }
 
     const TocList = () => (
-        <ul className="space-y-2">
+        <ul className="space-y-1.5">
             {items.map((item) => {
                 const isActive = activeId === item.slug
                 return (
@@ -95,10 +95,10 @@ export function DocsToc({ items }: DocsTocProps) {
                             href={`#${item.slug}`}
                             onClick={() => setIsMobileOpen(false)}
                             className={cn(
-                                'flex items-center gap-3 rounded-md border-l-2 border-transparent px-3 py-2 text-sm text-[var(--fg-secondary)] transition-colors hover:border-[var(--accent-light)] hover:text-[var(--accent-light)]',
+                                'flex items-center gap-2 rounded-md border-l-2 border-transparent px-3 py-1.5 text-sm text-[var(--fg-secondary)] transition-colors hover:border-[var(--brand-300)] hover:text-[var(--accent-light)]',
                                 item.level === 3 && 'pl-6 text-xs uppercase tracking-[0.18em]',
                                 isActive &&
-                                    'border-[var(--accent)] bg-[var(--surface-press)] text-[var(--accent)]'
+                                    'border-[var(--brand-400)] bg-[color:rgba(139,92,246,0.12)] text-[var(--accent)]'
                             )}
                         >
                             <span className="truncate">{item.title}</span>
@@ -111,8 +111,8 @@ export function DocsToc({ items }: DocsTocProps) {
 
     return (
         <div className="xl:sticky xl:top-24">
-            <div className="hidden w-[260px] rounded-lg border border-[var(--border-muted)] bg-[var(--bg-surface)] px-4 py-5 shadow-[0_1px_12px_rgba(0,0,0,0.16)] xl:block">
-                <p className="mb-4 text-xs font-semibold uppercase tracking-[0.26em] text-[var(--fg-secondary)]">
+            <div className="hidden w-[224px] rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-4 py-5 shadow-[0_6px_24px_rgba(0,0,0,0.18)] xl:block">
+                <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--fg-secondary)]">
                     Nesta página
                 </p>
                 <ScrollArea className="max-h-[70vh] pr-1 text-sm">
@@ -121,8 +121,8 @@ export function DocsToc({ items }: DocsTocProps) {
             </div>
             <div className="xl:hidden">
                 <Button
-                    variant="secondary"
-                    className="flex w-full items-center justify-between rounded-lg px-4 py-2 text-sm text-[var(--fg-primary)]"
+                    variant="outline"
+                    className="flex w-full items-center justify-between rounded-lg border-[var(--border-muted)] bg-[var(--bg-surface)] px-4 py-2 text-sm text-[var(--fg-primary)]"
                     onClick={() => setIsMobileOpen((prev) => !prev)}
                 >
                     Nesta página
@@ -134,7 +134,7 @@ export function DocsToc({ items }: DocsTocProps) {
                     />
                 </Button>
                 {isMobileOpen && (
-                    <div className="mt-3 rounded-lg border border-[var(--border-muted)] bg-[var(--bg-surface)] px-3 py-4 shadow-[0_1px_12px_rgba(0,0,0,0.18)]">
+                    <div className="mt-3 rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-3 py-4 shadow-[0_6px_18px_rgba(0,0,0,0.18)]">
                         <TocList />
                     </div>
                 )}
