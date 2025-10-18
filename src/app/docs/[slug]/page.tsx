@@ -140,9 +140,7 @@ export default async function PostPage({ params }: Props) {
                     </div>
                     <DocsPager prev={prev} next={next} />
                 </article>
-                <div className="xl:self-start">
-                    <DocsToc items={tocItems} />
-                </div>
+                <DocsToc items={tocItems} />
             </div>
         </div>
     )

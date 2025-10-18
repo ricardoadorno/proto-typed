@@ -21,7 +21,7 @@ export default function DocsSidebar({ sections, onNavigate }: DocsSidebarProps) 
     <nav aria-label="Navegação da documentação" className="flex flex-col gap-6 text-sm">
       <div className="flex items-center justify-between px-2">
         <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--fg-secondary)]">
-          Conteúdo
+          Guia
         </p>
         <span className="rounded-full bg-[color:rgba(139,92,246,0.12)] px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.24em] text-[var(--accent)]">
           Docs

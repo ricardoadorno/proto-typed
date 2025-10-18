@@ -61,7 +61,7 @@ function PagerCard({ direction, title, label, href }: PagerCardProps) {
             asChild
             variant="ghost"
             className={cn(
-                "group flex flex-1 items-center justify-between gap-6 rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-5 py-5 text-left transition-all duration-200 hover:-translate-y-1 hover:border-[var(--brand-400)] hover:bg-[color:rgba(139,92,246,0.08)] focus-visible:ring-[var(--brand-400)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-main)]",
+                "group flex flex-1 items-center justify-between gap-6 rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-8 py-8 text-left transition-all duration-200 hover:-translate-y-1 hover:border-[var(--brand-400)] hover:bg-[color:rgba(139,92,246,0.08)] focus-visible:ring-[var(--brand-400)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-main)]",
             )}
         >
             <Link href={href}>

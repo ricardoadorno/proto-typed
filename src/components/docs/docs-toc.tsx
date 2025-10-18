@@ -98,7 +98,7 @@ export function DocsToc({ items }: DocsTocProps) {
                                 'flex items-center gap-2 rounded-md border-l-2 border-transparent px-3 py-1.5 text-sm text-[var(--fg-secondary)] transition-colors hover:border-[var(--brand-300)] hover:text-[var(--accent-light)]',
                                 item.level === 3 && 'pl-6 text-xs uppercase tracking-[0.18em]',
                                 isActive &&
-                                    'border-[var(--brand-400)] bg-[color:rgba(139,92,246,0.12)] text-[var(--accent)]'
+                                'border-[var(--brand-400)] bg-[color:rgba(139,92,246,0.12)] text-[var(--accent)]'
                             )}
                         >
                             <span className="truncate">{item.title}</span>
@@ -111,7 +111,8 @@ export function DocsToc({ items }: DocsTocProps) {
 
     return (
         <div className="xl:sticky xl:top-24">
-            <div className="hidden w-[224px] rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-4 py-5 shadow-[0_6px_24px_rgba(0,0,0,0.18)] xl:block">
+            {/* Desktop */}
+            <div className="hidden w-[224px] xl:block">
                 <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--fg-secondary)]">
                     Nesta página
                 </p>
@@ -119,6 +120,8 @@ export function DocsToc({ items }: DocsTocProps) {
                     <TocList />
                 </ScrollArea>
             </div>
+
+            {/* Mobile */}
             <div className="xl:hidden">
                 <Button
                     variant="outline"
@@ -133,6 +136,7 @@ export function DocsToc({ items }: DocsTocProps) {
                         )}
                     />
                 </Button>
+
                 {isMobileOpen && (
                     <div className="mt-3 rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-3 py-4 shadow-[0_6px_18px_rgba(0,0,0,0.18)]">
                         <TocList />
@@ -140,6 +144,7 @@ export function DocsToc({ items }: DocsTocProps) {
                 )}
             </div>
         </div>
+
     )
 }
 
