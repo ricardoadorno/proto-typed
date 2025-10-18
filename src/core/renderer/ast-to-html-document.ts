@@ -119,7 +119,7 @@ ${allVariables}
     .screen { transition: background 0.3s; }
   </style>
 </head>
-<body class="min-h-screen bg-background text-foreground pb-8">  ${screensHtml}${globalElementsHtml}  ${scripts.darkModeScript}
+<body class="min-h-screen">  ${screensHtml}${globalElementsHtml}  ${scripts.darkModeScript}
   ${scripts.lucideInitScript}  <script>
     ${navigationScript}
   </script>

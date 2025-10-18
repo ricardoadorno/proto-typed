@@ -24,7 +24,7 @@
  * ```
  */
 
-import { Monaco } from '@monaco-editor/react';
+import { EditorProps, Monaco } from '@monaco-editor/react';
 import { registerDSLCompletionProvider } from './completion/dsl-completion';
 import { registerDSLLanguage } from './language/dsl-language';
 import { registerDSLTheme } from './theme/dsl-theme';
@@ -59,7 +59,7 @@ export function initializeMonacoDSL(monaco: Monaco) {
  * 
  * @returns Monaco editor options object
  */
-export function getDSLEditorOptions() {
+export function getDSLEditorOptions(props: Partial<EditorProps['options']> = {}) {
   return {
     fontSize: 14,
     minimap: { enabled: false },
@@ -117,5 +117,6 @@ export function getDSLEditorOptions() {
       showUsers: true,
       showIssues: true,
     },
+    ...props,
   };
 }

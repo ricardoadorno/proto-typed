@@ -99,8 +99,9 @@ ${allVariables}
     </style>` : '';
   
   // Return wrapped HTML for preview with only theme-based styling
-  return `${scopedStyles}<div data-preview-container="true">
-
+  return `
+  <div data-preview-container="true" class="h-full w-full overflow-auto">
+    ${scopedStyles}
     ${screensHtml}
     ${globalElementsHtml}
 

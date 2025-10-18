@@ -39,7 +39,7 @@ const LAYOUT_PRESETS: Record<string, string> = {
   'card-feature': 'border-2 rounded-xl p-8 shadow-lg',
   
   // Special
-  'header': 'sticky top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md px-6 py-4 flex items-center justify-between min-h-[72px]',
+  'header': 'sticky top-0 left-0 right-0 z-10 bg-background px-6  flex items-center justify-between min-h-[4rem] border-b border-border',
   'sidebar': 'h-full fixed border-r p-4 pt-8'
 };
 

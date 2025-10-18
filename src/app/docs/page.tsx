@@ -1,7 +1,6 @@
 import Link from "next/link"
 import { ArrowRightIcon, CompassIcon, SparklesIcon, Wand2Icon } from "lucide-react"
 
-import DocsSearch from "@/components/docs/docs-search"
 import {
   Badge,
   Button,
@@ -13,10 +12,8 @@ import {
   CardTitle,
   Separator,
 } from "@/components/ui"
-import docSections, { flatDocs } from "@/utils/toc"
+import docSections from "@/utils/toc"
 import { withBaseUrl } from "@/utils/with-base-url"
-import DocsHeader from '@/components/layouts/components/docs-header'
-import DocsFooter from '@/components/layouts/components/docs-footer'
 
 const primaryDoc = docSections[0]?.items[0]
 
@@ -75,7 +72,6 @@ export default function DocsHomePage() {
             </div>
 
             <div className="flex w-full max-w-sm flex-col gap-4">
-              <DocsSearch sections={docSections} />
               <Card className="border-[color:rgba(139,92,246,0.24)] bg-[color:rgba(21,23,28,0.96)] shadow-[0_18px_60px_rgba(20,18,30,0.45)]">
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2 text-xs uppercase tracking-[0.32em] text-[var(--accent)]">

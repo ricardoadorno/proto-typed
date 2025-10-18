@@ -63,7 +63,7 @@ component Card:
     @[Ação](action)
 
 screen Dashboard:
-  container:
+  stack:
     $Card
     $Card
     $Card
@@ -81,16 +81,16 @@ screen Dashboard:
 screen Dashboard:
   container:
     # Dashboard
-    grid-3:
+    grid-2:
       card:
-        ## Usuários
-        # 1,234
+        #### Usuários
+        >> 1,234
       card:
-        ## Vendas
-        # R$ 45K
+        #### Vendas
+        >> R$ 45K
       card:
-        ## Conversão
-        # 23.5%
+        #### Conversão
+        >> 23.5%
 ```
 
 </DslExample>
@@ -108,8 +108,9 @@ screen Login:
       # Login
       ___email: Email{seu@email.com}
       ___password: Senha{Digite sua senha}
-      @[Entrar](login)
-      @outline[Esqueci senha](recover)
+      row-center:
+        @[Entrar](login)
+        #[Esqueci senha](recover)
 ```
 
 </DslExample>

@@ -119,7 +119,7 @@ export default function PlaygroundPage() {
                         key={screen.id}
                         size="sm"
                         variant="secondary"
-                        className="rounded-full border border-transparent px-3 py-1 text-xs  text-[var(--fg-secondary)] hover:border-[var(--brand-400)] hover:text-[var(--accent)]"
+                        className="rounded-full border border-transparent  text-xs  text-[var(--fg-secondary)] hover:border-[var(--brand-400)] hover:text-[var(--accent)]"
                         onClick={() => navigateToScreen(screen.name)}
                       >
                         {screen.name}
@@ -133,6 +133,8 @@ export default function PlaygroundPage() {
             <CardContent className="p-0">
               <PreviewDevice deviceType="iphone-x" zoom={110}>
                 <div
+                  className="h-full overflow-auto"
+                  style={{ containerType: 'inline-size' }}
                   dangerouslySetInnerHTML={{ __html: renderedHtml }}
                   onClick={createClickHandler()}
                 />

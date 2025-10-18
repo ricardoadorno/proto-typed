@@ -123,7 +123,7 @@ export default async function PostPage({ params }: Props) {
     )
 
     const breadcrumbs = [
-        { label: 'Docs', href: '/docs/getting-started' },
+        { label: 'Docs', href: '/docs' },
         ...(section ? [{ label: section.title }] : []),
         { label: pageTitle },
     ]

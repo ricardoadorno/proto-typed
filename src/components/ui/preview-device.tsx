@@ -40,17 +40,8 @@ function IPhoneMockup({ children, zoom }: { children: React.ReactNode; zoom: num
                 <div className="absolute left-[3px] top-[3px] h-1.5 w-1.5 rounded-full bg-[color:rgba(139,92,246,0.8)] shadow-[inset_0_-1px_2px_rgba(0,0,0,0.25)]"></div>
             </div>
 
-            {/* Content */}
-            <div
-                className="h-full w-full overflow-auto bg-[var(--bg-main)]"
-                style={{
-                    containerType: 'inline-size',
-                    transform: `scale(${zoom / 100})`,
-                    transformOrigin: 'top center',
-                }}
-            >
-                <div className="min-h-full min-w-full">{children}</div>
-            </div>
+
+            {children}
         </div>
     );
 }

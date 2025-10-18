@@ -62,27 +62,24 @@ export const elementStyles = {
   // List items - using base classes only
   simpleListItem: 'flex justify-between items-center p-3 shadow-sm hover:shadow-md transition-shadow duration-200',
   
-  // Mobile components using CSS variables
-  header: 'sticky top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border px-6 py-4 flex items-center justify-between min-h-[72px]',
-  headerTitle: 'text-xl md:text-2xl font-bold text-foreground truncate mr-4 mb-0',
-  navigator: 'sticky bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border flex flex-row justify-around py-2 z-50 w-full shadow-2xl',
+  navigator: 'sticky bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border flex flex-row justify-around py-2 z-20 w-full shadow-2xl',
   navItem: 'flex flex-col items-center justify-center py-2 px-3 text-xs font-medium text-muted-foreground hover:text-primary active:text-primary/80 transition-all duration-200 rounded-[--radius] hover:bg-accent min-w-[60px]',
   navItemIcon: 'mb-1 text-lg',
   navItemLabel: 'text-xs font-medium',
 
   // FAB using CSS variables
-  fab: 'w-14 h-14 rounded-full bg-primary shadow-2xl flex items-center justify-center text-xl font-bold text-primary-foreground z-40',
-  fabContainer: 'sticky bottom-20 right-6 left-auto z-40 flex flex-col items-end justify-end p-0 pb-4 ml-auto w-auto',
+  fab: 'absolute w-14 h-14 rounded-full bg-primary shadow-2xl flex items-center justify-center text-xl font-bold text-primary-foreground z-20',
+  fabContainer: 'sticky bottom-20 mr-5 z-20 flex flex-col items-end justify-end p-0  ml-auto w-auto',
   fabItemsList: 'mb-8 space-y-6 opacity-0 transform translate-y-4 pointer-events-none',
   fabItem: 'flex items-center justify-end',
   fabItemBtn: 'w-12 h-12 mb-3 rounded-full bg-secondary flex items-center justify-center text-lg text-secondary-foreground shadow-lg',
   fabItemLabel: 'mr-3 bg-popover text-popover-foreground px-3 py-1 rounded-[--radius] text-sm font-medium shadow-lg whitespace-nowrap',
 
   // Modal and drawer using CSS variables
-  modalBackdrop: 'modal-backdrop absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-50',
+  modalBackdrop: 'modal-backdrop absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-20',
   modalContent: 'modal-content bg-card rounded-[--radius] shadow-xl max-w-md w-full mx-4 p-6 relative border border-border',
   modalClose: 'modal-close absolute top-4 right-4 text-muted-foreground hover:text-foreground w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent transition-colors',
-  drawer: 'drawer absolute top-0 left-0 z-40 w-64 h-full bg-card border-r border-border shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out',
+  drawer: 'drawer absolute top-0 left-0 z-20 w-64 h-full bg-card border-r border-border shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out',
 
   // Utility using CSS variables
   separator: 'my-6 border-border',

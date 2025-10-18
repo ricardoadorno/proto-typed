@@ -20,7 +20,7 @@
  * ```
  */
 
-import { Editor } from '@monaco-editor/react';
+import { Editor, EditorProps } from '@monaco-editor/react';
 import { useMonacoDSL } from '../hooks/use-monaco-dsl';
 import { getDSLEditorOptions } from '../index';
 import { DSL_LANGUAGE_ID } from '../constants';
@@ -32,6 +32,7 @@ interface DSLEditorProps {
     height?: string;
     theme?: string;
     onEditorReady?: (editor: any) => void;
+    options?: Partial<EditorProps['options']>;
 }
 
 /**
@@ -43,6 +44,7 @@ export function DSLEditor({
     height = "100%",
     theme = "proto-typed-dark",
     onEditorReady,
+    options = {},
 }: DSLEditorProps) {
     const { isInitialized, error, handleEditorMount } = useMonacoDSL();
 
@@ -77,7 +79,7 @@ export function DSLEditor({
             theme={theme}
             value={value}
             onChange={onChange}
-            options={getDSLEditorOptions()}
+            options={getDSLEditorOptions(options)}
             onMount={handleEditorDidMount}
         />
     );

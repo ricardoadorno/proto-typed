@@ -16,10 +16,9 @@ function renderScreen(config: ScreenRenderConfig): string {
   
   const screenName = (screen.props as any)?.name || ''; // Nome original preservado
   const style = getScreenVisibilityStyle(screenName, index, currentScreen);
-  const layoutClasses = generateLayoutClasses(screen);
   const { headerElements, fabElements, navigatorElements, contentElements } = separateScreenElements(screen);
   
-  const headerHtml = headerElements.map((element: any) => renderNode(element)).join('\n') || '';
+  const headerHtml = headerElements.map((element: any) => renderNode(element)).join('\n') || "<span class='block h-12'></span>";
   const contentHtml = contentElements
     .filter((element: any) => element != null)
     .map((element: any) => renderNode(element))
@@ -28,10 +27,10 @@ function renderScreen(config: ScreenRenderConfig): string {
   const navigatorHtml = navigatorElements.map((element: any) => renderNode(element)).join('\n') || '';
 
   return `
-  <div id="${screenName}-screen" class="screen container ${screenName} ${layoutClasses.join(' ')} flex flex-col min-h-screen relative" ${style}>
+  <div id="${screenName}-screen" class="relative overflow-hidden h-full" ${style}>
       ${headerHtml}
-      <div class="min-h-[812px] flex-1 py-10 relative">
-        ${contentHtml}
+      <div class="h-full overflow-auto">
+      ${contentHtml}
       </div>
       ${fabHtml}
       ${navigatorHtml}
@@ -61,7 +60,6 @@ export function renderScreenForDocument(screen: AstNode, index: number, currentS
   const style = currentScreen
     ? (screenName === currentScreen ? '' : 'style="display:none"')
     : (index === 0 ? '' : 'style="display:none"');
-  const layoutClasses = generateLayoutClasses(screen);
 
   const elementsHtml = screen.children
     ?.filter((element: any) => {
@@ -77,26 +75,9 @@ export function renderScreenForDocument(screen: AstNode, index: number, currentS
 
   // Add Tailwind container and screen classes, and id for navigation
   return `
-  <div id="${screenName}-screen" data-screen="${screenName}" class="screen container mx-auto ${screenName} ${layoutClasses.join(' ')}" ${style}>
+  <div id="${screenName}-screen" data-screen="${screenName}" class="relative"  ${style}>
       ${elementsHtml}
   </div>`;
-}
-
-/**
- * Generate layout classes for a screen based on its elements
- */
-function generateLayoutClasses(screen: AstNode): string[] {
-  const layoutClasses: string[] = [];
-  
-  const hasHeader = screen.children?.some((element: any) => element.type === 'Header') || false;
-  const hasNavigator = screen.children?.some((element: any) => element.type === 'Navigator') || false;
-  const hasFab = screen.children?.some((element: any) => element.type === 'Fab') || false;
-  
-  if (hasHeader) layoutClasses.push('has-header');
-  if (hasNavigator) layoutClasses.push('has-navigator');
-  if (hasFab) layoutClasses.push('has-fab');
-  
-  return layoutClasses;
 }
 
 /**

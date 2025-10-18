@@ -28,6 +28,8 @@ import {
 import { cn } from "@/lib/utils"
 import { withBaseUrl } from "@/utils/with-base-url"
 import { useTheme } from 'next-themes'
+import DocsSearch from '@/components/docs/docs-search'
+import docSections from '@/utils/toc'
 
 const navItems = [
   { label: "Playground", href: "/" },
@@ -138,6 +140,8 @@ export function DocsHeader({ onOpenSidebar }: DocsHeaderProps) {
 
 
         <div className="ml-auto flex items-center gap-2">
+          <DocsSearch sections={docSections} />
+
           <TooltipProvider delayDuration={200}>
             <Tooltip>
               <TooltipTrigger asChild>
