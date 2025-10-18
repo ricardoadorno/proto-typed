@@ -91,6 +91,7 @@ export default async function PostPage({ params }: Props) {
     const { content } = await compileMDX({
         source,
         components: {
+            DslPreview: DslExample,
             DslExample,
             ...mdxComponents,
         },

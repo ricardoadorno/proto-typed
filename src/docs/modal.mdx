@@ -1,0 +1,54 @@
+# Modal
+
+## O que é
+Janela sobreposta usada para interações rápidas como confirmações, formulários curtos ou mensagens pontuais.
+
+## Sintaxe
+```proto
+modal NomeDoModal:
+  card:
+    # Conteúdo
+```
+
+Exemplo
+<DslPreview>
+```dsl
+modal ConfirmDelete:
+  card:
+    # Confirmar exclusão
+    > Esta ação não pode ser desfeita.
+
+    row-end:
+      @ghost[Cancelar](close)
+      @destructive[Excluir](deleteItem)
+
+screen Files:
+  container:
+    # Arquivos
+    stack:
+      @[Excluir](ConfirmDelete)
+```
+</DslPreview>
+
+## Variações e Props
+| Prop | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `NomeDoModal` | string | Identificador chamado por botões/links | `modal HelpCenter:` |
+| `card` | layout | Escolhe framing visual interno | `card:` |
+| `close` | ação | Use `(close)` para encerrar modal via botão | `@ghost[Fechar](close)` |
+| `form` | padrão | Inputs dentro do modal funcionam como em telas comuns | `___email: Email{...}` |
+| `multi-screen` | fluxo | Combine com `screen` usando navegação mista para journeys híbridas | `@[Ver detalhes](DetailScreen)` |
+
+## Boas práticas
+- Mantenha modals focados em uma única decisão ou formulário curto.
+- Garanta sempre uma ação de saída segura (`@ghost[Cancelar](close)`).
+- Use `card` para manter consistência visual com o restante da interface.
+
+## Erros comuns
+⚠ Esquecer de ligar modal a um trigger deixa o componente inacessível.
+⚠ Colocar muito conteúdo dentro do modal gera scroll excessivo.
+
+## Veja também
+- [Drawer](./drawer)
+- [Button](./button)
+- [Modal Flow](./modal-flow)

@@ -1,0 +1,54 @@
+# Component Definition
+
+## O que é
+Como declarar componentes reutilizáveis para encapsular blocos de interface e aplicá-los em múltiplas telas.
+
+## Sintaxe
+```proto
+component NomeDoComponente:
+  card:
+    # Estrutura
+```
+
+Exemplo
+<DslPreview>
+```dsl
+component Hero:
+  container-narrow:
+    # %title
+    > %subtitle
+    @[Call to action](%action)
+
+screen Home:
+  container:
+    $Hero:
+      - Bem-vindo ao Proto-Typed | Crie protótipos rápidos | Dashboard
+
+screen Dashboard:
+  container:
+    # Painel principal
+```
+</DslPreview>
+
+## Variações e Props
+| Prop | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `NomeDoComponente` | string | Identificador usado para instanciar com `$` | `component Hero:` |
+| `%variavel` | placeholder | Marca valores dinâmicos utilizados nas instâncias | `%title` |
+| `layout interno` | bloco | Combine layouts como `card`, `stack`, `grid` | `card:` |
+| `default content` | literal | Texto fixo pode coexistir com props dinâmicas | `> Criado por %author` |
+| `instância` | fluxo | Utilize `$Hero` em qualquer tela ou componente | `$Hero` |
+
+## Boas práticas
+- Nomeie componentes com substantivos descritivos (`Hero`, `FeatureCard`).
+- Declare componentes próximos das telas que os utilizam para facilitar leitura.
+- Limite cada componente a uma responsabilidade visual clara.
+
+## Erros comuns
+⚠ Usar nomes de componente iniciados com minúscula quebra a convenção do parser.
+⚠ Esquecer de declarar `%` antes de uma prop impede a interpolação na instância.
+
+## Veja também
+- [Component Props](./component-props)
+- [Component List](./component-list)
+- [Component Composition](./component-composition)

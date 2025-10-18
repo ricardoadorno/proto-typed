@@ -1,0 +1,52 @@
+# Stack
+
+## O que é
+Empilhamento vertical de elementos com espaçamento controlado para organizar conteúdo sequencial.
+
+## Sintaxe
+```proto
+stack-variation:
+  > Item 1
+  > Item 2
+```
+
+Exemplo
+<DslPreview>
+```dsl
+screen Tasks:
+  container:
+    # Minhas tarefas
+
+    stack:
+      > Revisar backlog
+      > Grooming com o time
+      > Apresentar demo
+
+    stack-tight:
+      >> Subtarefas imediatas
+      >> Atualizar documentação
+      >> Fechar PRs pendentes
+```
+</DslPreview>
+
+## Variações e Props
+| Variação | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `stack` | layout | Espaçamento padrão (gap médio) entre itens | `stack:` |
+| `stack-tight` | layout | Gap reduzido para conteúdo compacto | `stack-tight:` |
+| `stack-loose` | layout | Gap amplo para seções amplas | `stack-loose:` |
+| `stack-flush` | layout | Remove gap para agrupar elementos | `stack-flush:` |
+
+## Boas práticas
+- Agrupe itens com relação direta (texto + ação) dentro da mesma stack.
+- Combine `stack-tight` com tipografia sutil (`>>`, `>>>`) para listas densas.
+- Use `stack-loose` para separar blocos grandes dentro de um mesmo container.
+
+## Erros comuns
+⚠ Aninhar `stack` dentro de `stack` sem propósito cria espaços inconsistentes.
+⚠ Usar `stack-flush` com componentes que já possuem padding pode gerar sobreposição visual.
+
+## Veja também
+- [Row](./row)
+- [Card](./card)
+- [Component Composition](./component-composition)

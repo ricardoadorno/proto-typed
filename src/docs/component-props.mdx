@@ -1,0 +1,51 @@
+# Component Props
+
+## O que é
+Parâmetros e interpolação de valores usados para personalizar componentes declarados com `%` placeholders.
+
+## Sintaxe
+```proto
+$Componente:
+  - valor1 | valor2 | valor3
+```
+
+Exemplo
+<DslPreview>
+```dsl
+component UserCard:
+  card:
+    ## %name
+    >> %role
+    >>> %email
+    @[Ver perfil](mailto:%email)
+
+screen Team:
+  container:
+    list $UserCard:
+      - Ana Souza | Product Manager | ana@empresa.com
+      - Bruno Lima | Engineering Manager | bruno@empresa.com
+```
+</DslPreview>
+
+## Variações e Props
+| Conceito | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `%placeholder` | token | Marca posição para interpolar valores ao instanciar | `%name` |
+| `lista de props` | dados | Define valores com `- valor1 | valor2` | `- João | Designer` |
+| `props múltiplas` | fluxo | Instancie o mesmo componente várias vezes com dados diferentes | `list $UserCard:` |
+| `props opcionais` | convenção | Deixe colunas vazias para valores opcionais | `- Nome | | email@...` |
+| `ações` | string | Preencha destinos e rótulos usando props | `@[Abrir](%target)` |
+
+## Boas práticas
+- Mantenha a ordem dos valores igual à ordem dos `%placeholders` para evitar confusão.
+- Quando trabalhar com muitas colunas, alinhe dados usando múltiplas linhas em `list`.
+- Use nomes de props descritivos (`%balance`, `%ctaLabel`) para facilitar leitura.
+
+## Erros comuns
+⚠ Adicionar mais valores do que placeholders causa descartes silenciosos.
+⚠ Usar `,` ao invés de `|` para separar valores impede o parse das props.
+
+## Veja também
+- [Component Definition](./component-definition)
+- [Component List](./component-list)
+- [Card](./card)

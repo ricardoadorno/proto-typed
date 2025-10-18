@@ -1,0 +1,84 @@
+# Navigator
+
+## O que é
+Menu de abas/tabs para alternar entre telas, normalmente exibido como barra inferior em contextos mobile.
+
+## Sintaxe
+```proto
+navigator:
+  - Rótulo | NomeDaTela
+```
+
+Exemplo
+<DslPreview>
+```dsl
+screen Feed:
+  container:
+    # Feed
+    list:
+      - Atualização do time de produto
+      - Release 1.2 publicado
+      - Convite para o meetup
+
+  navigator:
+    - i-Home Início | Feed
+    - i-Search Explorar | Explore
+    - i-Bell Notificações | Notifications
+    - i-User Perfil | Profile
+
+screen Explore:
+  container:
+    # Explorar
+    > Descubra conteúdos recomendados.
+  navigator:
+    - i-Home Início | Feed
+    - i-Search Explorar | Explore
+    - i-Bell Notificações | Notifications
+    - i-User Perfil | Profile
+
+screen Notifications:
+  container:
+    # Notificações
+    list:
+      - Bruno comentou sua tarefa
+      - Novo deploy disponível
+  navigator:
+    - i-Home Início | Feed
+    - i-Search Explorar | Explore
+    - i-Bell Notificações | Notifications
+    - i-User Perfil | Profile
+
+screen Profile:
+  container:
+    # Perfil
+    > Ajuste preferências e dados pessoais.
+  navigator:
+    - i-Home Início | Feed
+    - i-Search Explorar | Explore
+    - i-Bell Notificações | Notifications
+    - i-User Perfil | Profile
+```
+</DslPreview>
+
+## Variações e Props
+| Prop | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `label` | string | Texto visível da aba | `- Início | Home` |
+| `icon` | string | Prefixe com `i-` para reforçar a identificação visual | `- i-Home Início | Home` |
+| `target` | string | Nome da tela navegável associada ao item | `- Explorar | Explore` |
+| `duplicate` | fluxo | Repita o mesmo `navigator` em todas as telas do conjunto | `navigator:` |
+| `order` | fluxo | Organize itens por prioridade de uso (esquerda → direita) | `- Perfil | Profile` |
+
+## Boas práticas
+- Repita o `navigator` em todas as telas relacionadas para manter a navegação consistente.
+- Use ícones (`i-`) para reforçar o reconhecimento rápido das abas.
+- Limite a barra a 3–5 itens para evitar overflow em dispositivos menores.
+
+## Erros comuns
+⚠ Omitir o `navigator` em uma tela quebra a continuidade visual da barra.
+⚠ Usar nomes de tela inexistentes impede a navegação e gera erro no runtime.
+
+## Veja também
+- [Screen](./screen)
+- [Icon](./icon)
+- [Dashboard](./dashboard)

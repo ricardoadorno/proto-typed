@@ -1,0 +1,57 @@
+# Row
+
+## O que é
+Distribuição horizontal de elementos para alinhar ações, métricas ou conteúdo paralelo na mesma linha.
+
+## Sintaxe
+```proto
+row-variation:
+  @[Ação](destino)
+  @[Outra](destino)
+```
+
+Exemplo
+<DslPreview>
+```dsl
+screen Billing:
+  container:
+    # Assinatura atual
+
+    row-between:
+      stack:
+        >> Plano Pro
+        >>> Renovação em 30/09
+      @[Alterar plano](ChangePlan)
+
+    row-start:
+      card:
+        ## Receita
+        >> R$ 12.340
+      card:
+        ## Assinaturas
+        >> 1.204 ativas
+```
+</DslPreview>
+
+## Variações e Props
+| Variação | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `row` | layout | Alinha itens ao início no sentido horizontal | `row:` |
+| `row-center` | layout | Centraliza os itens na linha | `row-center:` |
+| `row-between` | layout | Espaça itens ocupando extremos com gap automático | `row-between:` |
+| `row-end` | layout | Alinha itens ao final | `row-end:` |
+| `row-start` | layout | Força alinhamento à esquerda em contextos específicos | `row-start:` |
+
+## Boas práticas
+- Combine `row-between` com `stack` internas para alinhar texto e ações.
+- Utilize `row` dentro de `card` para apresentar métricas lado a lado.
+- Ajuste o número de itens para evitar quebra de linha em telas menores.
+
+## Erros comuns
+⚠ Colocar blocos muito largos em uma mesma `row` causa overflow visual.
+⚠ Misturar `row` com `grid` no mesmo nível pode dificultar o ritmo responsivo.
+
+## Veja também
+- [Stack](./stack)
+- [Grid](./grid)
+- [Screen](./screen)

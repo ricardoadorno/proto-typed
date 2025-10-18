@@ -1,0 +1,49 @@
+# Icon
+
+## O que é
+Ícones embutidos e simbologia visual para reforçar ações, navegação e status dentro das telas.
+
+## Sintaxe
+```proto
+i-IconName Conteúdo
+```
+
+Exemplo
+<DslPreview>
+```dsl
+screen Settings:
+  container:
+    # Preferências
+    list:
+      - i-User Perfil | Profile
+      - i-Bell Notificações | Notifications
+      - i-Shield Segurança | Security
+
+    stack:
+      @[i-Save Salvar alterações](saveSettings)
+      @ghost[i-LogOut Sair](logout)
+```
+</DslPreview>
+
+## Variações e Props
+| Prop | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `icon` | string | Nome do ícone baseado em [Lucide](https://lucide.dev) (PascalCase) | `i-ClipboardList` |
+| `position` | string | Prefixe com `i-` antes do texto ou dentro de `fab[...]` | `fab[i-Plus](NewItem)` |
+| `size` | string | Ajusta tamanho junto ao componente hospedeiro (`@-lg`, `fab-lg`) | `@-lg[i-Download Exportar](...)` |
+| `status` | combinação | Combine com cores/variants de botão para transmitir significado | `@destructive[i-Trash2 Excluir](delete)` |
+| `standalone` | elemento | Use `list` ou `row` para mostrar ícone isolado com legenda | `i-Check Completo` |
+
+## Boas práticas
+- Use ícones para reforçar significado, não substituir texto crítico.
+- Prefira nomes oficiais da biblioteca Lucide e verifique disponibilidade antes de usar.
+- Combine ícones com variantes compatíveis (ex.: `@ghost` para ações secundárias discretas).
+
+## Erros comuns
+⚠ Usar nomes com letras minúsculas (`i-home`) gera erros de resolução.
+⚠ Repetir muitos ícones iguais na mesma tela reduz o valor semântico.
+
+## Veja também
+- [Button](./button)
+- [Navigator](./navigator)
+- [FAB](./fab)

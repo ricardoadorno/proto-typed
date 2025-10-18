@@ -1,0 +1,59 @@
+# List
+
+## O que é
+Coleção de elementos repetidos organizada em linhas, útil para menus, coleções e dados tabulares simples.
+
+## Sintaxe
+```proto
+list:
+  - Item simples
+  - Outro item | Detalhe
+```
+
+Exemplo
+<DslPreview>
+```dsl
+screen TeamDirectory:
+  container:
+    # Equipe
+    list:
+      - Ana Souza
+      - Bruno Lima
+      - Carla Dias
+
+    ---
+
+    list $MemberCard:
+      - João Silva | Backend | joao@empresa.com
+      - Maria Moraes | Mobile | maria@empresa.com
+
+component MemberCard:
+  card-compact:
+    ## %name
+    >> %role
+    >>> %email
+    @[Enviar mensagem](mailto:%email)
+```
+</DslPreview>
+
+## Variações e Props
+| Variação | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `list` | layout | Lista vertical padrão com marcadores sutis | `list:` |
+| `list $Component` | binding | Gera cada linha a partir de componente customizado | `list $MemberCard:` |
+| `- valor1 | valor2` | dados | Separa colunas por `|` dentro do item | `- Plano Pro | R$ 79` |
+| `---` | separador | Insere linha divisória dentro de `list` | `---` |
+
+## Boas práticas
+- Use `list $Component` para manter consistência quando precisar de markup complexo.
+- Separe colunas com `|` para simular tabelas sem perder simplicidade.
+- Combine listas com `drawer` ou `modal` para exibir detalhes sob demanda.
+
+## Erros comuns
+⚠ Misturar `list` com `grid` para a mesma informação quebra a hierarquia visual.
+⚠ Esquecer de definir componentes usados em `list $Componente` gera erro de parse.
+
+## Veja também
+- [Component List](./component-list)
+- [Drawer Detail](./drawer-detail)
+- [Navigator](./navigator)

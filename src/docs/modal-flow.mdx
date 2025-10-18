@@ -1,0 +1,45 @@
+# Modal Flow
+
+## Objetivo
+Orquestrar um fluxo de navegação usando modal e ações rápidas para guiar o usuário por etapas críticas sem trocar de tela principal.
+
+## Exemplo completo
+<DslPreview>
+```dsl
+modal ConfirmInvite:
+  card:
+    # Enviar convite?
+    > Confirme o envio para o colaborador selecionado.
+    row-end:
+      @ghost[Cancelar](close)
+      @[Enviar convite](SuccessInvite)
+
+modal SuccessInvite:
+  card:
+    # Convite enviado!
+    > O usuário receberá um email com instruções de acesso.
+    @[Fechar](close)
+
+screen Team:
+  container:
+    # Equipe
+
+    card:
+      ## Convites recentes
+
+  fab:
+    - i-Plus | ConfirmInvite
+```
+</DslPreview>
+
+## O que aprender
+- Como encadear modais usando ações (`action`) para feedback imediato.
+- Como reutilizar o mesmo modal a partir de listas e FAB.
+- Como manter o foco do usuário em um único contexto durante etapas críticas.
+
+## Variações
+- Versão com passo adicional para revisão antes do envio (`modal ReviewInvite`).
+- Versão com captura de dados diretamente no modal (campos `___email`, `___role`).
+
+## Próximos passos
+→ Veja também [Modal](./modal) e [FAB](./fab).

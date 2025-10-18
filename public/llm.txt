@@ -1,26 +1,81 @@
-# proto-typed
+# Proto-Typed – AI Reference Guide
 
-> proto-typed é uma DSL leve para prototipar interfaces com preview em tempo real.
+> Proto-Typed é uma DSL para prototipar interfaces com preview em tempo real. Esta página oferece um índice clicável e o contexto técnico necessário para que uma LLM localize a informação certa com rapidez.
 
-## Sumário (Docs Disponíveis)
+## Como navegar
 
-- **Introdução**  
-  O que é proto-typed, visão geral e casos de uso.
+Todas as páginas de documentação vivem em `https://proto-typed.dev/docs/{slug}`. Os slugs são definidos em `src/utils/toc.ts` e os arquivos `.mdx` ficam em `src/docs/{slug}.mdx`.
 
-- **Instalação & Uso Básico**  
-  Como rodar localmente, abrir o editor e ver o preview.
+- Cada página começa com o título e um sumário (“O que é”, “Sintaxe”, “Variações”, “Boas práticas”, “Erros comuns”, “Veja também”).
+- Exemplos usam `<DslPreview>` com blocos ```dsl para garantir que o parser consiga compilar o snippet.
+- As páginas Cookbook (login, dashboard etc.) usam o modelo de guia com Objetivo, Exemplo completo e Variações.
+- `docs-2.md` descreve o template completo, regras de escrita e exemplos de conteúdo válido.
 
-- **DSL (Sintaxe Básica)**  
-  Regras de visão (`screen`, `modal`, `drawer`), comandos de tipografia, botões, layouts, componentes e propriedades.
+## Arquitetura (atalhos úteis)
 
-- **Temas & Estilos**  
-  Uso de CSS vars / tokens semânticos, dark mode, sobrescrita de estilos.
+- Lexer & Tokens: `src/core/lexer/tokens/*.ts`
+- Parser & Builders: `src/core/parser/parser.ts`, `src/core/parser/builders`
+- Renderer: `src/core/renderer/nodes/*`
+- Preview HTML: `src/core/renderer/ast-to-html-string-preview.ts`
+- Monaco Highlight: `src/core/editor/language/dsl-language.ts`
+- TOC & navegação: `src/utils/toc.ts`, `src/app/docs/[slug]/page.tsx`
 
-- **Arquitetura Interna (Resumo)**  
-  Pipeline: Lexer → Parser → AST → Renderer; partes como ThemeManager, RouteManager, e como o renderer consome a AST.
+## DSL suportada (resumo rápido)
 
-- **Referência**  
-  Sintaxe completa (tokens + exemplos), estrutura AST e APIs de render.
+- Views: `screen`, `modal`, `drawer`
+- Layouts: `container`, `container-narrow`, `container-wide`, `container-full`, `stack`, `stack-tight`, `stack-loose`, `stack-flush`, `row`, `row-start`, `row-center`, `row-between`, `row-end`, `grid-2`, `grid-3`, `grid-4`, `grid-auto`, `card`, `card-compact`, `card-feature`, `list`, `navigator`, `fab`, `---`
+- Tipografia: `#` a `######`, `>`, `>>`, `>>>`, `*>`, `">`
+- Botões: `@variant-size[Texto](Destino)` (variants `primary`, `secondary`, `outline`, `ghost`, `destructive`, `link`, `success`, `warning`; sizes `-xs`, `-sm`, `-md`, `-lg`)
+- Links: `#[Texto](Destino)`
+- Inputs inline: `___type: Label{placeholder}[opções] | atributos` (tipos oficiais `text`, `email`, `password`, `number`, `date`, `textarea`)
+- Checkbox/Radio: `[X] Label`, `( ) Label`
+- Componentes: `component Nome:`, `$Nome`, `$Nome: - valor1 | valor2`
+- Estilos: bloco `styles:` com CSS custom properties
 
-- **Contribuição & Projeto**  
-  Guia rápido de contribuição, changelog e licença.
+Tokens como `container-center`, `stack-lg`, `grid-list`, `card-p8` não existem; a documentação deve evitar ou corrigir menções a eles.
+
+## Índice de Documentos
+
+### Primitives
+
+- [Text](https://proto-typed.dev/docs/text)
+- [Button](https://proto-typed.dev/docs/button)
+- [Input](https://proto-typed.dev/docs/input)
+- [Icon](https://proto-typed.dev/docs/icon)
+- [Link](https://proto-typed.dev/docs/link)
+
+### Layouts
+
+- [Container](https://proto-typed.dev/docs/container)
+- [Stack](https://proto-typed.dev/docs/stack)
+- [Row](https://proto-typed.dev/docs/row)
+- [Grid](https://proto-typed.dev/docs/grid)
+- [Card](https://proto-typed.dev/docs/card)
+- [List](https://proto-typed.dev/docs/list)
+
+### Views & Navigation
+
+- [Screen](https://proto-typed.dev/docs/screen)
+- [Modal](https://proto-typed.dev/docs/modal)
+- [Drawer](https://proto-typed.dev/docs/drawer)
+- [Navigator](https://proto-typed.dev/docs/navigator)
+- [Floating Action Button (FAB)](https://proto-typed.dev/docs/fab)
+
+### Components
+
+- [Component Definition](https://proto-typed.dev/docs/component-definition)
+- [Component Props](https://proto-typed.dev/docs/component-props)
+- [Component List](https://proto-typed.dev/docs/component-list)
+- [Component Composition](https://proto-typed.dev/docs/component-composition)
+
+### Themes & Styles
+
+- [Styles Block](https://proto-typed.dev/docs/styles-block)
+- [Themes](https://proto-typed.dev/docs/themes)
+
+### Cookbook
+
+- [Login Screen](https://proto-typed.dev/docs/login-screen)
+- [Dashboard](https://proto-typed.dev/docs/dashboard)
+- [Drawer Detail](https://proto-typed.dev/docs/drawer-detail)
+- [Modal Flow](https://proto-typed.dev/docs/modal-flow)

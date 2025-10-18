@@ -1,0 +1,51 @@
+# Text
+
+## O que é
+Títulos e parágrafos básicos da interface para estruturar conteúdo informativo com hierarquia clara.
+
+## Sintaxe
+```proto
+# Título Principal
+> Texto principal da interface
+>> Texto secundário ou complementar
+>>> Texto sutil para metadados
+```
+
+Exemplo
+<DslPreview>
+```dsl
+screen Article:
+  container:
+    # Relatório Semanal
+    > Resultados da última sprint foram positivos.
+    >> Concentre-se nas metas de satisfação do usuário.
+    >>> Atualizado em 18/09 às 09:30
+
+    *> Lembre-se de compartilhar este relatório com o time.
+    "> "Uma boa comunicação deixa o time alinhado." — Liderança
+```
+</DslPreview>
+
+## Variações e Props
+| Token | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `#` a `######` | heading | Define níveis de título de 1 a 6 | `### Lista de tarefas`
+| `>` | paragraph | Parágrafo principal com peso visual | `> Texto principal`
+| `>>` | paragraph | Texto secundário com menor destaque | `>> Complemento`
+| `>>>` | paragraph | Texto sutil para notas e metadados | `>>> Atualizado ontem`
+| `*>` | callout | Nota com destaque visual | `*> Aviso importante`
+| `">` | quote | Citação ou depoimento | `"> Feedback do cliente`
+
+## Boas práticas
+- Use apenas um `#` por tela para o título principal.
+- Combine `>`, `>>` e `>>>` para reforçar hierarquia visual de conteúdo.
+- Aproveite notas (`*>`) para destacar ações críticas ou mensagens de atenção.
+
+## Erros comuns
+⚠ Usar múltiplos `#` na mesma tela deixa a hierarquia confusa.
+⚠ Esquecer de fechar espaços em branco pode quebrar o ritmo de leitura.
+
+## Veja também
+- [Button](./button)
+- [Styles Block](./styles-block)
+- [Screen](./screen)

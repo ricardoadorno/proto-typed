@@ -1,0 +1,60 @@
+# Drawer Detail
+
+## Objetivo
+Demonstrar como abrir um drawer com detalhes dinâmicos mantendo a tela principal visível para referência rápida.
+
+## Exemplo completo
+<DslPreview>
+```dsl
+component InfoRow:
+  row-between:
+    >> %label
+    >>> %value
+
+drawer CustomerDetail:
+  container:
+    # Detalhes do cliente
+    >>> Informações resumidas da conta selecionada.
+
+    list $InfoRow:
+      - Status | Em negociação
+      - Valor estimado | R$ 180K
+      - Próximo passo | Apresentar proposta final
+
+    card:
+      ## Observações
+      > Atualize o CRM após a reunião com o cliente.
+
+    @[Marcar follow-up](scheduleFollowUp)
+    @ghost[Fechar](close)
+
+component CustomerRow:
+  card-compact:
+    row-between:
+      stack:
+        ## %name
+        >>> %company
+        >>> Último contato: %lastContact
+      @ghost[i-ChevronRight Ver detalhes](CustomerDetail)
+
+screen Accounts:
+  container:
+    # Contas estratégicas
+    list $CustomerRow:
+      - Ana Souza | Proto Labs | Ontem
+      - Bruno Lima | NextWave | 3 dias atrás
+      - Carla Dias | FutureSoft | 7 dias atrás
+```
+</DslPreview>
+
+## O que aprender
+- Como passar props para o drawer a partir da linha selecionada.
+- Como usar `card-compact` para manter as linhas leves e clicáveis.
+- Como reaproveitar componentes (`CustomerRow`) tanto na lista quanto no drawer.
+
+## Variações
+- Versão com tabs dentro do drawer para separar informações (Visão geral, Atividades, Notas).
+- Versão integrada a formulário permitindo editar dados diretamente no drawer.
+
+## Próximos passos
+→ Veja também [Drawer](./drawer) e [Component List](./component-list).

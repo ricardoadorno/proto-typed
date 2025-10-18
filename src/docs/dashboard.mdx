@@ -1,0 +1,73 @@
+# Dashboard
+
+## Objetivo
+Construir um layout principal com cards, métricas e navegação para visualizar indicadores da aplicação.
+
+## Exemplo completo
+<DslPreview>
+```dsl
+component MetricCard:
+  card:
+    >>> %label
+    # %value
+    >> %trend
+
+screen Dashboard:
+  header:
+    # Painel de Operações
+    row-end:
+      @ghost[i-Refresh Atualizar](refresh)
+      @ghost[i-Filter Filtros](FilterDrawer)
+
+  container-wide:
+    grid-4 $MetricCard:
+      - Receita MRR | R$ 92K | +8%
+      - Usuários ativos | 12.304 | +12%
+      - Churn | 3.2% | -0.6%
+      - NPS | 45 | +3 pts
+
+    grid-2:
+      card:
+        ## Pipeline
+        list:
+          - Descoberta | 12 deals
+          - Negociação | 5 deals
+          - Fechamento | 3 deals
+      card:
+        ## Últimas atualizações
+        list:
+          - Deploy 1.2 liberado
+          - Sprint 34 finalizada
+          - Bug crítico resolvido
+
+  fab:
+    - i-Plus Nova métrica | NewMetric
+
+drawer FilterDrawer:
+  container:
+    # Filtros do painel
+    ___select: Intervalo{7 dias | 14 dias | 30 dias}
+    ___select: Equipe{Todos | Produto | Engenharia | CS}
+    @ghost[Aplicar](close)
+
+modal NewMetric:
+  card:
+    # Registrar métrica manual
+    ___: Título{Nome da métrica}
+    ___number: Valor{0}
+    @[Salvar](saveMetric)
+    @ghost[Cancelar](close)
+```
+</DslPreview>
+
+## O que aprender
+- Como combinar `header`, `grid` e `card` para apresentar KPIs.
+- Como anexar drawers e modais para filtragem e criação de dados.
+- Como reutilizar componentes (`MetricCard`) para manter consistência visual.
+
+## Variações
+- Versão mobile priorizando `list $MetricCard` com scroll vertical.
+- Versão temática usando `styles:` para aplicar brand colors da empresa.
+
+## Próximos passos
+→ Veja também [List](./list) e [Drawer Detail](./drawer-detail).

@@ -1,0 +1,61 @@
+# Drawer
+
+## O que é
+Painel lateral com contexto persistente usado para navegação complementar, filtros e detalhes rápidos sem sair da tela principal.
+
+## Sintaxe
+```proto
+drawer NomeDoDrawer:
+  container:
+    # Conteúdo
+```
+
+Exemplo
+<DslPreview>
+```dsl
+drawer FilterPanel:
+  container:
+    # Filtros
+    ___:Consulta{Buscar}
+    ___:Status[Todos | Ativo | Arquivado]
+    ___:Responsável[Ana | Bruno | Carla]
+    @ghost[Limpar](clearFilters)
+
+screen Projects:
+  header:
+    # Projetos
+    @ghost[i-Filter Filtros](FilterPanel)
+
+  container:
+    grid-2:
+      card:
+        ## Lançamento do app
+        >> Em andamento
+      card:
+        ## Campanha Outubro
+        >> Aguardando aprovação
+```
+</DslPreview>
+
+## Variações e Props
+| Prop | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `NomeDoDrawer` | string | Identificador usado como destino | `drawer SideMenu:` |
+| `container` | layout | Estrutura padrão interna; pode ser trocada por `stack` etc. | `container:` |
+| `header` | bloco | Combine com títulos e botões dentro do drawer | `# Menu` |
+| `close` | ação | Use `(close)` para encerrar via botão/link | `@ghost[Fechar](close)` |
+| `list` | conteúdo | Listas dentro do drawer funcionam como menu lateral | `list:` |
+
+## Boas práticas
+- Exiba o drawer apenas quando houver espaço para mostrar detalhes sem tirar o usuário da tela atual.
+- Use listas e links curtos para navegação lateral persistente.
+- Ofereça sempre um botão de fechar ou ação que retorne ao contexto principal.
+
+## Erros comuns
+⚠ Usar drawer para ações críticas pode escondê-las do usuário.
+⚠ Esquecer o fechamento explícito força o usuário a clicar fora repetidamente.
+
+## Veja também
+- [Navigator](./navigator)
+- [Drawer Detail](./drawer-detail)
+- [Screen](./screen)

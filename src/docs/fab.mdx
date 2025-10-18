@@ -1,0 +1,64 @@
+# Floating Action Button (FAB)
+
+## O que é
+Botão flutuante de ação global usado para acionar tarefas importantes a partir de qualquer ponto da tela.
+
+## Sintaxe
+```proto
+fab:
+  - i-Icone | Destino
+```
+
+Exemplo
+<DslPreview>
+```dsl
+modal NewTask:
+  card:
+    # Nova tarefa
+    ___: Título{Nome da tarefa}
+    ___textarea: Descrição{Detalhes}
+    row-end:
+      @ghost[Cancelar](close)
+      @[Criar](createTask)
+
+screen Tasks:
+  container:
+    # Tarefas
+    list:
+      - Revisar backlog
+      - Atualizar roadmap
+      - Preparar release
+
+  fab:
+    - i-Plus | NewTask
+
+drawer FilterDrawer:
+  container:
+    # Filtrar tarefas
+    ___select: Status{Todos | Em andamento | Concluído}
+    ___select: Responsável{Ana | Bruno | Carla}
+    @ghost[Fechar](close)
+```
+</DslPreview>
+
+## Variações e Props
+| Prop | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `icon` | string | Ícone exibido dentro do FAB (prefixado com `i-`) | `- i-Plus | NewTask` |
+| `destination` | string | Nome da tela, modal ou drawer acionado | `- i-Plus | NewTask` |
+| `multiple` | layout | Declare mais entradas para oferecer ações secundárias | `fab:` com várias linhas |
+| `position` | padrão | FAB é fixado no canto inferior direito automaticamente | `fab:` |
+
+## Boas práticas
+- Mantenha o número de ações flutuantes pequeno (até duas) para evitar poluição visual.
+- Use ícones intuitivos (`i-Plus`, `i-Edit`, `i-Filter`) para reforçar o contexto da ação.
+- Combine FAB com modals ou drawers quando a ação abrir formulários rápidos.
+
+## Erros comuns
+⚠ Definir um FAB sem destino válido não executa nenhuma ação.
+⚠ Criar FAB redundante com botões já visíveis pode confundir o usuário.
+
+## Veja também
+- [Modal](./modal)
+- [Drawer](./drawer)
+- [Button](./button)

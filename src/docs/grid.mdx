@@ -1,0 +1,64 @@
+# Grid
+
+## O que é
+Grade responsiva de múltiplas colunas usada para distribuir cartões, métricas e resumos de maneira consistente.
+
+## Sintaxe
+```proto
+grid-columns:
+  card:
+    # Item
+```
+
+Exemplo
+<DslPreview>
+```dsl
+screen Analytics:
+  container-wide:
+    # Indicadores principais
+
+    grid-3:
+      card:
+        >> Usuários ativos
+        # 12.304
+      card:
+        >> Conversão
+        # 23.5%
+      card:
+        >> Receita mensal
+        # R$ 92K
+
+    grid-auto:
+      card:
+        ## Atualizações recentes
+        > Sprint concluída.
+      card:
+        ## Eventos
+        > Demo com clientes.
+      card:
+        ## Próximos passos
+        > Planejar roadmap.
+```
+</DslPreview>
+
+## Variações e Props
+| Variação | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `grid-2` | layout | Grade fixa com 2 colunas | `grid-2:` |
+| `grid-3` | layout | Grade fixa com 3 colunas | `grid-3:` |
+| `grid-4` | layout | Grade fixa com 4 colunas | `grid-4:` |
+| `grid-auto` | layout | Distribuição automática baseada no espaço disponível | `grid-auto:` |
+
+## Boas práticas
+- Envolva `grid` em `container-wide` para maximizar o espaço horizontal.
+- Mantenha itens da mesma altura usando componentes consistentes (`card`).
+- Combine grids com filtros (`row-between`) para criar dashboards exploráveis.
+
+## Erros comuns
+⚠ Misturar cards com alturas muito diferentes prejudica a leitura da grade.
+⚠ Usar `grid-4` em telas com pouco conteúdo deixa os cartões vazios.
+
+## Veja também
+- [Card](./card)
+- [Container](./container)
+- [Dashboard](./dashboard)

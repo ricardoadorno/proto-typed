@@ -1,0 +1,53 @@
+# Styles Block
+
+## O que é
+Declaração de variáveis de estilo e tokens globais usando o bloco `styles:` para personalizar cores, tipografia e espaçamento.
+
+## Sintaxe
+```proto
+styles:
+  --token: valor;
+```
+
+Exemplo
+<DslPreview>
+```dsl
+styles:
+  --accent: oklch(0.72 0.18 240);
+  --radius: 1rem;
+  --brand-font: 'Inter', sans-serif;
+
+screen BrandDemo:
+  container:
+    # Tema com identidade própria
+    > Ajustamos cores e tipografia via bloco de estilos.
+
+    card:
+      ## Componente destacado
+      > Todo card, botão e input herda as novas variáveis.
+      @[Explorar novidades](Dashboard)
+```
+</DslPreview>
+
+## Variações e Props
+| Token | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `--accent` | cor | Define cor de destaque usada em links e badges | `--accent: oklch(...);` |
+| `--primary` | cor | Ajusta cor principal de botões e CTAs | `--primary: #0f172a;` |
+| `--foreground` | cor | Controla cor principal de texto | `--foreground: #f8fafc;` |
+| `--radius` | unidade | Define arredondamento global de componentes | `--radius: 0.75rem;` |
+| `--spacing-*` | unidade | Crie tokens customizados para espaçamento | `--spacing-card: 2rem;` |
+
+## Boas práticas
+- Declare o bloco `styles:` uma única vez por arquivo para evitar sobreposição difícil de rastrear.
+- Prefira valores em OKLCH para cores, garantindo contraste consistente.
+- Controle apenas tokens necessários e aproveite o tema base para o restante.
+
+## Erros comuns
+⚠ Omitir `;` ao final de cada linha impede o CSS de aplicar corretamente.
+⚠ Alterar `--background` para cores muito escuras exige revisar `--foreground` para manter contraste.
+
+## Veja também
+- [Themes](./themes)
+- [Button](./button)
+- [Dashboard](./dashboard)

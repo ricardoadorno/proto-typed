@@ -1,0 +1,61 @@
+# Themes
+
+## O que é
+Temas padrão e personalização visual baseados em paletas OKLCH disponíveis diretamente no editor Proto-Typed.
+
+## Sintaxe
+```proto
+styles:
+  --primary: oklch(...);
+```
+
+Exemplo
+<DslPreview>
+```dsl
+styles:
+  --primary: oklch(0.68 0.15 210);
+  --primary-foreground: oklch(0.98 0 0);
+  --muted: oklch(0.22 0.02 240);
+  --card: oklch(0.16 0.03 245);
+
+screen Pricing:
+  container:
+    # Escolha seu plano
+    grid-3:
+      card:
+        ## Starter
+        >> Ideal para equipes pequenas
+        @[Começar grátis](start)
+      card-feature:
+        ## Business
+        *> Mais controle e integrações
+        @[Assinar Business](upgrade)
+      card:
+        ## Enterprise
+        >> Entre em contato com vendas
+        @[Falar com time](contact)
+```
+</DslPreview>
+
+## Variações e Props
+| Token | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| Tema base | preset | Selecionado via UI: `zinc`, `blue`, `violet`, etc. | Editor de temas |
+| `--primary` | cor | Cor principal aplicada em botões e links | `--primary: oklch(...)` |
+| `--secondary` | cor | Cor secundária para ações alternativas | `--secondary: oklch(...)` |
+| `--muted` | cor | Fundo sutil usado em notas e divisões | `--muted: oklch(...)` |
+| `--radius` | unidade | Ajusta arredondamento global do tema | `--radius: 0.75rem;` |
+
+## Boas práticas
+- Comece escolhendo um tema base no editor e sobrescreva apenas os tokens necessários.
+- Garanta contraste AA entre `--foreground` e `--background` após personalizar cores.
+- Utilize o preview lado a lado para validar a aparência em múltiplos componentes.
+
+## Erros comuns
+⚠ Alterar apenas `--primary` sem ajustar `--primary-foreground` pode reduzir legibilidade.
+⚠ Sobrescrever muitos tokens sem documentação dificulta manutenção do design system.
+
+## Veja também
+- [Styles Block](./styles-block)
+- [Card](./card)
+- [Button](./button)

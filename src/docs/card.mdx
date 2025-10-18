@@ -1,0 +1,59 @@
+# Card
+
+## O que é
+Bloco visual com fundo, bordas e padding usado para agrupar conteúdo relacionado e criar seções destacadas.
+
+## Sintaxe
+```proto
+card-variation:
+  # Conteúdo
+  > Descrição
+```
+
+Exemplo
+<DslPreview>
+```dsl
+screen ProductOverview:
+  container:
+    grid-3:
+      card:
+        ![Produto A](https://via.placeholder.com/160)
+        ## Starter
+        >> R$ 29/mês
+        @[Assinar](subscribeStarter)
+
+      card-compact:
+        ![Produto B](https://via.placeholder.com/160)
+        ## Business
+        >> R$ 79/mês
+        @[Assinar](subscribeBusiness)
+
+      card-feature:
+        ![Produto C](https://via.placeholder.com/160)
+        ## Enterprise
+        *> Suporte dedicado
+        @[Falar com vendas](contactSales)
+```
+</DslPreview>
+
+## Variações e Props
+| Variação | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `card` | layout | Card padrão com padding médio | `card:` |
+| `card-compact` | layout | Menos padding, ideal para listas densas | `card-compact:` |
+| `card-feature` | layout | Destaque com borda/gradiente para planos premium | `card-feature:` |
+| `card-outline` | layout | Card com borda discreta e sem sombra | `card-outline:` |
+
+## Boas práticas
+- Combine `card` com `grid` para apresentar múltiplos itens padronizados.
+- Use `card-feature` para chamar atenção a um item premium ou CTA específico.
+- Preparar `stack` internos mantém espaçamento consistente dentro do card.
+
+## Erros comuns
+⚠ Inserir cards diretamente dentro de `row` estreita pode causar cortes horizontais.
+⚠ Misturar variações sem um padrão visual claro reduz a hierarquia.
+
+## Veja também
+- [Grid](./grid)
+- [List](./list)
+- [Component Composition](./component-composition)

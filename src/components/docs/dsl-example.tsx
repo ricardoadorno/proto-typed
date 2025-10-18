@@ -15,18 +15,17 @@ import {
   TabsTrigger,
 } from "@/components/ui"
 
-interface DslExampleProps {
+export interface DslPreviewProps {
   title?: string
   description?: string
   children?: ReactNode
 }
 
-
-export default function DslExample({
+export function DslPreview({
   title = "Example",
   description,
   children,
-}: DslExampleProps) {
+}: DslPreviewProps) {
   const [copied, setCopied] = useState(false)
 
   const extractTextFromChildren = (node: ReactNode): string => {
@@ -163,3 +162,6 @@ export default function DslExample({
   )
 }
 
+export const DslExample = DslPreview
+
+export default DslPreview

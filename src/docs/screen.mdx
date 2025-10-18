@@ -1,0 +1,76 @@
+# Screen
+
+## O que é
+Define uma tela navegável (view principal) que pode ser chamada por botões, links ou navegadores.
+
+## Sintaxe
+```proto
+screen NomeDaTela:
+  container:
+    # Conteúdo
+```
+
+Exemplo
+<DslPreview>
+```dsl
+screen Home:
+  header:
+    # Proto-Typed Demo
+    @ghost[i-User Perfil](Profile)
+
+  container:
+    > Bem-vindo! Escolha um fluxo para explorar.
+    row:
+      @[Abrir tarefas](Tasks)
+      @[Ver relatórios](Reports)
+
+screen Tasks:
+  container:
+    # Tarefas de Hoje
+    list:
+      - Refinar backlog | 10:00
+      - Revisar PRs | 14:00
+    @[Voltar para home](Home)
+
+screen Reports:
+  container-wide:
+    # Relatórios
+    grid-2:
+      card:
+        ## Execução
+        > Última sprint completa.
+      card:
+        ## Bugs
+        > 3 regressões abertas.
+    @ghost[Voltar](Home)
+
+screen Profile:
+  container:
+    # Perfil
+    > Dados pessoais e preferências.
+    @ghost[Fechar](-1)
+```
+</DslPreview>
+
+## Variações e Props
+| Prop | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `NomeDaTela` | string | Identificador usado na navegação interna | `screen Dashboard:` |
+| `layout` | bloco | Combine com `header`, `container`, `grid`, etc. | `header:` |
+| `start` | rotas | Defina tela inicial chamando-a primeiro ou referenciada no fluxo | `screen Home:` |
+| `action` | interação | Navegue entre telas com botões/links (`@[...](ScreenName)`) | `@[Ir para Tasks](Tasks)` |
+| `overlay` | integração | Chamadas a `modal` ou `drawer` podem ser feitas de qualquer screen | `@[Filtros](FiltersDrawer)` |
+
+## Boas práticas
+- Nomeie telas com substantivos claros (`Dashboard`, `Settings`, `Profile`).
+- Organize a hierarquia interna usando layouts semânticos (container, grid, list).
+- Garanta um caminho óbvio de retorno (`@ghost[Voltar](-1)` ou link para Home).
+
+## Erros comuns
+⚠ Definir telas duplicadas com o mesmo nome causa conflito.
+⚠ Esquecer de incluir um layout interno deixa a página sem espaçamento.
+
+## Veja também
+- [Navigator](./navigator)
+- [Modal](./modal)
+- [Login Screen](./login-screen)

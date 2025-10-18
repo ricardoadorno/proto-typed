@@ -1,0 +1,56 @@
+# Button
+
+## O que é
+Botões de ação com variantes e destinos, usados para interações primárias, secundárias e fluxos de navegação entre telas.
+
+## Sintaxe
+```proto
+@variant-size[Texto do botão](Destino)
+```
+
+Exemplo
+<DslPreview>
+```dsl
+screen Home:
+  container:
+    # Bem-vindo ao Proto-Typed
+    > Gerencie sua conta com ações rápidas.
+
+    stack:
+      @[Criar Tarefa](TaskForm)
+      @secondary[Ver Relatórios](Reports)
+      @outline-lg[i-Download Exportar CSV](exportCsv)
+
+screen TaskForm:
+  container:
+    # Nova Tarefa
+    ___: Título{Nome da tarefa}
+    ___textarea: Descrição{Detalhes}
+    row-end:
+      @ghost[Cancelar](-1)
+      @[Salvar](saveTask)
+```
+</DslPreview>
+
+## Variações e Props
+| Prop | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `variant` | string | Controla estilo visual (`primary` é padrão) | `@secondary[Label](destino)`
+| `size` | string | Ajusta altura e padding (`xs`, `sm`, `md`, `lg`) | `@-xs[...]`
+| `icon` | string | Prefixa ícone usando sintaxe `i-IconName` | `@[i-Send Enviar](send)`
+| `action` | string | Destino de navegação, link externo ou comando | `(Dashboard)`, `(https://...)`, `(alert('ok'))`
+| `back` | especial | Usar `(-1)` para voltar à tela anterior | `@ghost[Voltar](-1)`
+
+## Boas práticas
+- Reserve `@` ou `@primary` para a ação principal de cada fluxo.
+- Combine variantes (`@secondary`, `@outline`) para reforçar hierarquia entre ações.
+- Adicione ícones (`i-`) apenas quando reforçarem a intenção do botão.
+
+## Erros comuns
+⚠ Omitir parênteses no destino (`(Destino)`) impede a navegação.
+⚠ Misturar muitas variantes na mesma tela gera ruído visual.
+
+## Veja também
+- [Text](./text)
+- [Icon](./icon)
+- [Screen](./screen)

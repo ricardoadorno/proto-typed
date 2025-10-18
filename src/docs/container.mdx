@@ -1,0 +1,54 @@
+# Container
+
+## O que é
+Bloco base de largura controlada e espaçamento que centraliza o conteúdo da tela de acordo com o contexto desejado.
+
+## Sintaxe
+```proto
+container-variation:
+  # Conteúdo
+```
+
+Exemplo
+<DslPreview>
+```dsl
+screen LayoutShowcase:
+  container:
+    # Container padrão
+    > Ideal para a maioria das telas.
+
+  container-narrow:
+    # Container estreito
+    > Use para formulários ou textos longos.
+
+  container-wide:
+    # Container largo
+    > Destacado para dashboards e cards.
+
+  container-full:
+    # Container cheio
+    > Usa toda a largura disponível, respeitando o padding global.
+```
+</DslPreview>
+
+## Variações e Props
+| Variação | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `container` | layout | Largura padrão responsiva com max-width média | `container:` |
+| `container-narrow` | layout | Limita a largura para foco em texto ou formulários | `container-narrow:` |
+| `container-wide` | layout | Aumenta a largura disponível para conteúdos ricos | `container-wide:` |
+| `container-full` | layout | Ocupa 100% da largura, seguindo padding global | `container-full:` |
+
+## Boas práticas
+- Combine `container` com `stack` ou `grid` para estruturar o interior sem perder alinhamento.
+- Use variações estreitas em fluxos de foco único, como login ou wizard.
+- Prefira `container-full` apenas quando o layout interno tratar espaçamentos manualmente.
+
+## Erros comuns
+⚠ Empilhar vários `container` sem necessidade cria gaps desnecessários.
+⚠ Misturar `container-wide` com grids densas pode gerar linhas muito longas.
+
+## Veja também
+- [Stack](./stack)
+- [Grid](./grid)
+- [Dashboard](./dashboard)

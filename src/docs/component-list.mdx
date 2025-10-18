@@ -1,0 +1,53 @@
+# Component List
+
+## O que é
+Renderização repetitiva com `$Component` dentro de listas para gerar múltiplas instâncias a partir de dados tabulares.
+
+## Sintaxe
+```proto
+list $Componente:
+  - valor1 | valor2
+  - valor3 | valor4
+```
+
+Exemplo
+<DslPreview>
+```dsl
+component MetricCard:
+  card:
+    >>> %label
+    # %value
+    >> %trend
+
+screen Analytics:
+  container-wide:
+    # Indicadores
+    list $MetricCard:
+      - Novos usuários | 1.204 | +12%
+      - Receita MRR | R$ 92K | +8%
+      - Churn | 3.2% | -0.6%
+```
+</DslPreview>
+
+## Variações e Props
+| Variação | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `list $Component` | binding | Cria lista baseada em componente com props | `list $MetricCard:` |
+| `layout wrapper` | layout | Envolva `list` com `container` ou `card` para contexto visual | `card:` + `list $MetricCard:` |
+| `dados dinâmicos` | fluxo | Alimente via `- valor | valor` diretamente na DSL | `- João | Designer` |
+| `interpolação` | props | `%placeholder` recebe valores por coluna | `%value` |
+| `component inline` | organização | Defina o componente no mesmo arquivo para leitura rápida | `component MetricCard:` |
+
+## Boas práticas
+- Agrupe `list $Component` imediatamente abaixo do componente responsável para clareza.
+- Utilize listas para dados com mesma estrutura visual (cards de métricas, pessoas, produtos).
+- Combine com `filters` em telas para atualizar dados sem duplicar layout.
+
+## Erros comuns
+⚠ Declarar `list $Componente` antes do componente gera erro de compilação.
+⚠ Misturar quantidades diferentes de colunas entre linhas deixa props desalinhadas.
+
+## Veja também
+- [Component Props](./component-props)
+- [Grid](./grid)
+- [Dashboard](./dashboard)

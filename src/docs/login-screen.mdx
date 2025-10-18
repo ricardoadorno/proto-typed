@@ -1,0 +1,49 @@
+# Login Screen
+
+## Objetivo
+Criar uma tela de login funcional com campos de autenticação, acessos rápidos e ação clara para entrar na aplicação.
+
+## Exemplo completo
+<DslPreview>
+```dsl
+screen Login:
+  container:
+    card:
+      # Acesse sua conta
+      > Use suas credenciais corporativas para continuar.
+
+      stack:
+        ___email: E-mail{seu@empresa.com}
+        ___password: Senha{mínimo 8 caracteres}
+        [X] Lembrar de mim
+
+      @[Entrar](Dashboard)
+      @ghost[Esqueci minha senha](Recover)
+      #[Criar conta](Signup)
+
+screen Recover:
+  container:
+    # Recuperar senha
+    ___email: E-mail cadastrado{seu@empresa.com}
+    @[Enviar instruções](sendReset)
+    @ghost[Voltar](Login)
+
+screen Signup:
+  container:
+    # Criar conta
+    > Fluxo simples para novos usuários.
+    @[Começar](SignupForm)
+```
+</DslPreview>
+
+## O que aprender
+- Como estruturar formulários com `container` e `card`.
+- Como oferecer caminhos de recuperação e cadastro a partir da mesma tela.
+- Como utilizar botões primários e secundários para orientar o fluxo.
+
+## Variações
+- Versão com autenticação em dois fatores adicionando modal de código temporário.
+- Versão simplificada com login social (`@[Entrar com Google](connectGoogle)`).
+
+## Próximos passos
+→ Veja também [Dashboard](./dashboard) e [Modal Flow](./modal-flow).

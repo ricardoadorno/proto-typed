@@ -1,0 +1,56 @@
+# Input
+
+## O que é
+Campos de texto, senha e seleção para coletar dados do usuário por meio da DSL Proto-Typed.
+
+## Sintaxe
+```proto
+___type: Rótulo{placeholder}
+```
+
+Exemplo
+<DslPreview>
+```dsl
+screen Signup:
+  container:
+    # Criar Conta
+    > Preencha os campos para continuar.
+
+    card:
+      stack:
+        ___: Nome completo{Seu nome}
+        ___email: Email{email@exemplo.com}
+        ___password: Senha{Mínimo 8 caracteres}
+        ___date: Data de nascimento{Selecione}
+        ___: Plano{Selecione}[Starter | Pro | Enterprise]
+        [X] Aceito os termos de uso
+        ( ) Quero receber novidades por email
+
+      row-end:
+        @ghost[Cancelar](-1)
+        @[Criar conta](submitSignup)
+```
+</DslPreview>
+
+## Variações e Props
+| Prop | Tipo | Descrição | Exemplo |
+| --- | --- | --- | --- |
+| `type` | string | Define o comportamento do campo (`text`, `email`, `password`, `number`, `date`, `textarea`) | `___password: Senha`
+| `attributes` | lista | Atributos extras após `|` (ex.: `required`, `minlength="8"`) | `___email: Email
+| `options` | lista | Conjunto de valores para `select`, `checkbox` ou `radio` | `&#123;Plano A | Plano B&#125;`
+| `state` | literal | Usa `[X]`/`[ ]` (checkbox) e `(X)`/`( )` (radio) para estado inicial | `[X] Aceito os termos`
+| `layout` | container | Organiza campos em `stack`, `row` ou `grid` para melhor leitura | `stack:`
+
+## Boas práticas
+- Agrupe campos relacionados em `card` ou `stack` para reforçar contexto.
+- Marque campos obrigatórios usando texto adicional (`> Campo obrigatório`).
+- Prefira `select` ou `radio` quando existirem poucas opções válidas.
+
+## Erros comuns
+⚠ Repetir o mesmo rótulo gera conflitos na identificação do campo.
+⚠ Esquecer de separar opções por `|` em selects impede o parse correto.
+
+## Veja também
+- [Button](./button)
+- [Stack](./stack)
+- [Login Screen](./login-screen)
