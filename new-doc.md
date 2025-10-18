@@ -1,4 +1,4 @@
-SUPER PROMPT — proto-typed (Docs + Playground) codex resume 0199f49c-e4e6-7f60-9708-29a7e0f2174d
+SUPER PROMPT — proto-typed (Docs + Playground) 
 
 Papel do agente: engenheiro front-end sênior.
 Stack obrigatória: Next 15, React, TailwindCSS, shadcn/ui (Radix).
