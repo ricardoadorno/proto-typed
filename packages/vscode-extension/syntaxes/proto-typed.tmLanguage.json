@@ -1,0 +1,170 @@
+{
+  "scopeName": "source.proto-typed",
+  "name": "Proto-Typed DSL",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#views" },
+    { "include": "#components" },
+    { "include": "#styles" },
+    { "include": "#layouts" },
+    { "include": "#structures" },
+    { "include": "#typography" },
+    { "include": "#buttons" },
+    { "include": "#routes" },
+    { "include": "#links" },
+    { "include": "#forms" },
+    { "include": "#icons" },
+    { "include": "#lists" },
+    { "include": "#separators" },
+    { "include": "#delimiters" },
+    { "include": "#strings" },
+    { "include": "#whitespace" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.proto-typed",
+          "match": "//.*$"
+        }
+      ]
+    },
+    "views": {
+      "patterns": [
+        {
+          "name": "meta.view.definition.proto-typed",
+          "match": "^(screen|modal|drawer)(\\s+)([A-Za-z_][\\w-]*)(:)",
+          "captures": {
+            "1": { "name": "keyword.view" },
+            "3": { "name": "entity.name.view" },
+            "4": { "name": "delimiter.colon" }
+          }
+        }
+      ]
+    },
+    "components": {
+      "patterns": [
+        {
+          "name": "meta.component.definition.proto-typed",
+          "match": "^(component)(\\s+)([A-Za-z_][\\w-]*)(:)",
+          "captures": {
+            "1": { "name": "keyword.component" },
+            "3": { "name": "entity.name.component" },
+            "4": { "name": "delimiter.colon" }
+          }
+        },
+        { "name": "variable.component", "match": "\\$[A-Z][\\w-]*" },
+        { "name": "variable.prop", "match": "%[A-Za-z_][\\w-]*" }
+      ]
+    },
+    "styles": {
+      "patterns": [
+        {
+          "name": "meta.styles.block.proto-typed",
+          "match": "^\\s*(styles)(:)",
+          "captures": {
+            "1": { "name": "keyword.styles" },
+            "2": { "name": "delimiter.colon" }
+          }
+        },
+        { "name": "variable.css", "match": "--[A-Za-z][\\w-]*" }
+      ]
+    },
+    "layouts": {
+      "patterns": [
+        {
+          "name": "keyword.layout",
+          "match": "\\b(container-narrow|container-wide|container-full|container|stack-flush|stack-tight|stack-loose|stack|row-start|row-center|row-between|row-end|grid-2|grid-3|grid-4|grid-auto|card-compact|card-feature|card|sidebar|navigator|list|fab)\\b"
+        }
+      ]
+    },
+    "structures": {
+      "patterns": [
+        { "name": "keyword.structure", "match": "\\bheader\\b" }
+      ]
+    },
+    "typography": {
+      "patterns": [
+        { "name": "markup.heading", "match": "^\\s*#{1,6}\\s+.*$" },
+        { "name": "markup.muted", "match": "^\\s*>>>\\s.*$" },
+        { "name": "markup.text", "match": "^\\s*>>\\s.*$" },
+        { "name": "markup.note", "match": "^\\s*\\*>\\s.*$" },
+        { "name": "markup.paragraph", "match": "^\\s*>\\s.*$" },
+        { "name": "markup.quote", "match": "^\\s*>\\s.*$" }
+      ]
+    },
+    "buttons": {
+      "patterns": [
+        {
+          "name": "keyword.button",
+          "match": "@(primary|secondary|outline|ghost|destructive|link|success|warning)(?:-(xs|sm|md|lg))?(?=\\[)"
+        },
+        { "name": "keyword.button", "match": "@(?=\\[)" }
+      ]
+    },
+    "routes": {
+      "patterns": [
+        {
+          "name": "meta.route.reference.proto-typed",
+          "match": "\\]\\(([A-Z][\\w-]*)\\)",
+          "captures": {
+            "1": { "name": "entity.name.view" }
+          }
+        }
+      ]
+    },
+    "links": {
+      "patterns": [
+        { "name": "keyword.link", "match": "#(?=\\[)" },
+        { "name": "keyword.image", "match": "!(?=\\[)" }
+      ]
+    },
+    "forms": {
+      "patterns": [
+        { "name": "keyword.input.email", "match": "(?i:___(?:email)\\b)" },
+        { "name": "keyword.input.password", "match": "(?i:___(?:password)\\b)" },
+        { "name": "keyword.input.date", "match": "(?i:___(?:date)\\b)" },
+        { "name": "keyword.input.number", "match": "(?i:___(?:number)\\b)" },
+        { "name": "keyword.input.textarea", "match": "(?i:___(?:textarea)\\b)" },
+        { "name": "keyword.input", "match": "___[*-]?" },
+        { "name": "keyword.checkbox", "match": "\\[[Xx\\s]\\]" },
+        { "name": "keyword.radio", "match": "^\\s*\\([Xx\\s]\\)" }
+      ]
+    },
+    "icons": {
+      "patterns": [
+        { "name": "entity.name.icon", "match": "\\bi-[A-Z][\\w-]*\\b" }
+      ]
+    },
+    "lists": {
+      "patterns": [
+        { "name": "markup.list", "match": "^\\s*-\\s+" }
+      ]
+    },
+    "separators": {
+      "patterns": [
+        { "name": "delimiter.separator", "match": "^\\s*---+$" }
+      ]
+    },
+    "delimiters": {
+      "patterns": [
+        { "name": "delimiter.pipe", "match": "\\|" },
+        { "name": "delimiter.bracket", "match": "[\\[\\]]" },
+        { "name": "delimiter.brace", "match": "[{}]" },
+        { "name": "delimiter.colon", "match": ":" }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        { "name": "string.quoted.double", "match": "\"([^\"\\\\]|\\\\.)*\"" },
+        { "name": "string.quoted.single", "match": "'([^'\\\\]|\\\\.)*'" }
+      ]
+    },
+    "whitespace": {
+      "patterns": [
+        { "name": "white", "match": "[\t ]+" },
+        { "name": "white", "match": "\\r?\\n" }
+      ]
+    }
+  }
+}

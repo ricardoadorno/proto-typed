@@ -1,12 +1,15 @@
 import { useState, useCallback } from 'react';
-import { parseAndBuildAst } from '../core/parser/parse-and-build-ast';
-import { AstNode } from '../types/ast-node';
-import { astToHtmlStringPreview } from '../core/renderer/ast-to-html-string-preview';
-import { routeManagerGateway } from '../core/renderer/infrastructure/route-manager-gateway';
-import { RouteMetadata } from '../types/routing';
-import { ErrorBus } from '../core/error-bus';
-import type { ProtoError } from '../types/errors';
-import { ERROR_CODES, sanitizeErrorMessage } from '../types/errors';
+import {
+  parseAndBuildAst,
+  astToHtmlStringPreview,
+  routeManagerGateway,
+  ErrorBus,
+  type AstNode,
+  type RouteMetadata,
+  type ProtoError,
+  ERROR_CODES,
+  sanitizeErrorMessage
+} from '@proto-typed/core';
 
 interface UseParseResult {
   ast: AstNode[] | AstNode;

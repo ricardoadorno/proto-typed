@@ -22,7 +22,7 @@ import { DSLEditor } from "@/core/editor";
 import { useParse } from "@/hooks/use-parse";
 import { exampleConfigs } from "@/examples";
 import { exportDocument } from "@/utils/export-document";
-import { astToHtmlDocument } from "@/core/renderer/ast-to-html-document";
+import { astToHtmlDocument } from "@proto-typed/core";
 import { withBaseUrl } from "@/utils/with-base-url";
 import { cn } from "@/lib/utils";
 

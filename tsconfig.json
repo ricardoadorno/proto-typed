@@ -20,7 +20,10 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@proto-typed/core": ["packages/core/src/index.ts"],
+      "@proto-typed/cli": ["packages/cli/src/cli.ts"],
+      "proto-typed-vscode": ["packages/vscode-extension/src/extension.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "next.config.mjs"],

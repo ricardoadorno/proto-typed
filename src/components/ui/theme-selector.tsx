@@ -1,4 +1,4 @@
-import { availableThemes } from '../../core/themes/theme-definitions';
+import { availableThemes } from '@proto-typed/core';
 
 interface ThemeSelectorProps {
     value: string;

@@ -1,0 +1,78 @@
+{
+  "name": "proto-typed-vscode",
+  "displayName": "Proto-Typed",
+  "publisher": "seuPublisher",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onLanguage:proto-typed-dsl",
+    "onCommand:protoTyped.preview"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "proto-typed-dsl",
+        "aliases": [
+          "Proto-Typed DSL",
+          "proto-typed-dsl"
+        ],
+        "extensions": [
+          ".pty"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "protoTyped.preview",
+        "title": "Proto-Typed: Preview",
+        "icon": {
+          "light": "media/preview-light.svg",
+          "dark": "media/preview-dark.svg"
+        }
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "protoTyped.preview",
+          "group": "navigation",
+          "when": "resourceLangId == 'proto-typed-dsl'"
+
+        }
+      ]
+    },
+    "grammars": [
+      {
+        "language": "proto-typed-dsl",
+        "scopeName": "source.proto-typed",
+        "path": "./syntaxes/proto-typed.tmLanguage.json"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "pnpm run build:extension && pnpm run build:webview",
+    "build:extension": "esbuild src/extension.ts --bundle --outfile=out/extension.js --platform=node --external:vscode --format=cjs",
+    "build:webview": "esbuild media/webview-app.tsx --bundle --outfile=media/webview.js --platform=browser --format=iife --global-name=ProtoTypedPreview --define:process.env.NODE_ENV=\"'production'\"",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.0",
+    "typescript": "^5.6.0",
+    "@types/vscode": "^1.95.0",
+    "eslint": "^9.0.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4"
+  },
+  "dependencies": {
+    "@proto-typed/core": "workspace:*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
