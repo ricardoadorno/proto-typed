@@ -19,6 +19,7 @@ export default function DocsSidebar({ sections, onNavigate }: DocsSidebarProps) 
 
   return (
     <nav aria-label="Navegação da documentação" className="flex flex-col gap-6 text-sm">
+      <a href={withBaseUrl("/llm.txt")} >LLM Text Docs</a>
       <div className="flex items-center justify-between px-2">
         <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--fg-secondary)]">
           Guia
