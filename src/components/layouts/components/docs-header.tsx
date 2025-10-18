@@ -26,7 +26,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui"
 import { cn } from "@/lib/utils"
-import { withBaseUrl } from "@/utils/with-base-url"
+import { withBaseUrl, withPublicUrl } from "@/utils/with-base-url"
 import { useTheme } from 'next-themes'
 import DocsSearch from '@/components/docs/docs-search'
 import docSections from '@/utils/toc'
@@ -93,7 +93,7 @@ export function DocsHeader({ onOpenSidebar }: DocsHeaderProps) {
           className="flex items-center gap-3 text-sm font-semibold text-[var(--fg-primary)] transition-colors hover:text-[var(--accent-light)]"
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-md bg-[linear-gradient(135deg,rgba(124,58,237,0.15)_0%,rgba(34,211,238,0.15)_100%)] text-lg font-bold text-white shadow-[0_12px_32px_rgba(124,58,237,0.45)]">
-            <img src={withBaseUrl("/logo.svg")} alt="Logo" />
+            <img src={withPublicUrl("/logo.svg")} alt="Logo" />
           </span>
           <span className="hidden text-base sm:inline tracking-tight">proto-typed</span>
         </Link>

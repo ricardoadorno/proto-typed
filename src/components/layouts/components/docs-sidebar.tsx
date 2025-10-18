@@ -6,7 +6,7 @@ import { useMemo } from "react"
 
 import { cn } from "@/lib/utils"
 import type { DocSection } from "@/utils/toc"
-import { withBaseUrl } from "@/utils/with-base-url"
+import { withBaseUrl, withPublicUrl } from "@/utils/with-base-url"
 
 interface DocsSidebarProps {
   sections: DocSection[]
@@ -19,7 +19,7 @@ export default function DocsSidebar({ sections, onNavigate }: DocsSidebarProps) 
 
   return (
     <nav aria-label="Navegação da documentação" className="flex flex-col gap-6 text-sm">
-      <a href={withBaseUrl("/llm.txt")} >LLM Text Docs</a>
+      <a href={withPublicUrl("/llm.txt")} >LLM Text Docs</a>
       <div className="flex items-center justify-between px-2">
         <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--fg-secondary)]">
           Guia
