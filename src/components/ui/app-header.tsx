@@ -1,4 +1,4 @@
-import { withPublicUrl } from '@/utils/with-base-url';
+
 
 interface AppHeaderProps {
     title?: string;
@@ -13,7 +13,7 @@ export function AppHeader({
         <div className="mb-6 flex items-center justify-between">
             <div>
                 <h1 className="bg-[linear-gradient(135deg,#7c3aed_0%,#22d3ee_100%)] bg-clip-text text-3xl font-bold text-transparent">
-                    <img src={withPublicUrl("/logo.svg")} alt="Logo" className="mr-2 -mt-1 inline h-8 w-8" />
+                    <img src={("/logo.svg")} alt="Logo" className="mr-2 -mt-1 inline h-8 w-8" />
                     {title}
                 </h1>
                 {description && (

@@ -4,7 +4,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react"
 import { Button } from "@/components/ui"
 import { cn } from "@/lib/utils"
 import type { DocItem } from "@/utils/toc"
-import { withBaseUrl } from "@/utils/with-base-url"
+
 
 interface DocsPagerProps {
     prev?: DocItem | null
@@ -26,7 +26,7 @@ export function DocsPager({ prev, next }: DocsPagerProps) {
                     direction="prev"
                     label="Anterior"
                     title={prev.title}
-                    href={withBaseUrl(`/docs/${prev.slug}`)}
+                    href={(`/docs/${prev.slug}`)}
                 />
             ) : (
                 <div className="hidden flex-1 md:block" />
@@ -36,7 +36,7 @@ export function DocsPager({ prev, next }: DocsPagerProps) {
                     direction="next"
                     label="Próximo"
                     title={next.title}
-                    href={withBaseUrl(`/docs/${next.slug}`)}
+                    href={(`/docs/${next.slug}`)}
                 />
             ) : (
                 <div className="hidden flex-1 md:block" />

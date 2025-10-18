@@ -330,3 +330,39 @@ button {
     }
 }
 
+@layer utilities {
+    .bg-grid-soft {
+        background-image:
+            linear-gradient(to right, rgba(139, 92, 246, 0.08) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(34, 211, 238, 0.06) 1px, transparent 1px);
+        background-size: 32px 32px;
+    }
+
+    .mask-radial-fade {
+        mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.82) 0%, transparent 72%);
+    }
+
+    .shadow-aurora {
+        box-shadow: 0 36px 120px rgba(24, 20, 48, 0.36);
+    }
+
+    .landing-spotlight {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .landing-spotlight::before {
+        content: "";
+        position: absolute;
+        inset: -35%;
+        background: radial-gradient(circle at center, rgba(139, 92, 246, 0.32), transparent 65%);
+        filter: blur(40px);
+        opacity: 0.85;
+    }
+
+    .landing-spotlight > * {
+        position: relative;
+        z-index: 1;
+    }
+}
+

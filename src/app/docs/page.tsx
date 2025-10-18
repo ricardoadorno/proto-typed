@@ -13,7 +13,6 @@ import {
   Separator,
 } from "@/components/ui"
 import docSections from "@/utils/toc"
-import { withBaseUrl, withPublicUrl } from "@/utils/with-base-url"
 
 const primaryDoc = docSections[0]?.items[0]
 
@@ -35,7 +34,7 @@ export default function DocsHomePage() {
 
           <div className="relative z-10 grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_320px] lg:items-start">
             <div className="space-y-6">
-              <img src={withPublicUrl("/logo.svg")} alt="Proto-typed" className="h-80 w-auto absolute -z-10 left-10 bottom-15 opacity-15" />
+              <img src={("/logo.svg")} alt="Proto-typed" className="h-80 w-auto absolute -z-10 left-10 bottom-15 opacity-15" />
               <Badge
                 variant="outline"
                 className="w-fit border-[color:rgba(139,92,246,0.32)] bg-[color:rgba(139,92,246,0.12)] text-[10px] uppercase tracking-[0.32em] text-[var(--accent)]"
@@ -52,7 +51,7 @@ export default function DocsHomePage() {
               <div className="flex flex-wrap gap-3 pt-2">
                 {primaryDoc ? (
                   <Button asChild size="lg" className="gap-2">
-                    <Link href={withBaseUrl(`/docs/${primaryDoc.slug}`)}>
+                    <Link href={(`/docs/${primaryDoc.slug}`)}>
                       <SparklesIcon className="h-5 w-5" />
                       Começar agora
                     </Link>
@@ -64,7 +63,7 @@ export default function DocsHomePage() {
                   size="lg"
                   className="gap-2 border-[var(--border-muted)] text-[var(--fg-secondary)] hover:text-[var(--accent-light)]"
                 >
-                  <Link href={withBaseUrl("/playground")}>
+                  <Link href={("/playground")}>
                     <CompassIcon className="h-5 w-5" />
                     Ir para o playground
                   </Link>
@@ -109,7 +108,7 @@ export default function DocsHomePage() {
                 variant="outline"
                 className="border-[color:rgba(139,92,246,0.24)] bg-[color:rgba(139,92,246,0.08)] px-4 py-2 text-[10px] uppercase tracking-[0.28em] text-[var(--accent)] transition-colors hover:bg-[color:rgba(139,92,246,0.12)]"
               >
-                <Link href={withBaseUrl(`/docs/${doc.slug}`)}>{doc.title}</Link>
+                <Link href={(`/docs/${doc.slug}`)}>{doc.title}</Link>
               </Badge>
             ))}
           </div>
@@ -141,7 +140,7 @@ export default function DocsHomePage() {
                   {section.items.slice(0, 4).map((item) => (
                     <Link
                       key={item.slug}
-                      href={withBaseUrl(`/docs/${item.slug}`)}
+                      href={(`/docs/${item.slug}`)}
                       className="group flex items-center justify-between gap-3 rounded-lg border border-transparent px-3 py-2 text-sm text-[var(--fg-secondary)] transition-colors hover:border-[var(--brand-400)] hover:bg-[color:rgba(139,92,246,0.08)] hover:text-[var(--accent-light)]"
                     >
                       <span>{item.title}</span>
@@ -152,7 +151,7 @@ export default function DocsHomePage() {
                 <CardFooter className="pt-0">
                   {section.items[0] ? (
                     <Button asChild variant="ghost" className="gap-2 text-[var(--accent-light)]">
-                      <Link href={withBaseUrl(`/docs/${section.items[0].slug}`)}>
+                      <Link href={(`/docs/${section.items[0].slug}`)}>
                         Abrir primeiro tópico
                         <ArrowRightIcon className="h-4 w-4" />
                       </Link>

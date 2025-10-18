@@ -8,7 +8,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui"
-import { withBaseUrl } from "@/utils/with-base-url"
 
 export interface BreadcrumbSegment {
   label: string
@@ -38,7 +37,7 @@ export function DocsBreadcrumbs({ trail }: DocsBreadcrumbsProps) {
                   asChild
                   className="uppercase tracking-[0.32em] text-[var(--fg-secondary)] transition-colors hover:text-[var(--accent-light)]"
                 >
-                  <Link href={withBaseUrl(segment.href)}>{segment.label}</Link>
+                  <Link href={(segment.href)}>{segment.label}</Link>
                 </BreadcrumbLink>
               ) : isLast ? (
                 <BreadcrumbPage className="uppercase tracking-[0.32em] text-[var(--accent-light)]">

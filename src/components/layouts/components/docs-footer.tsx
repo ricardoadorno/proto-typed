@@ -1,7 +1,7 @@
 import Link from "next/link"
 
 import { Separator } from "@/components/ui"
-import { withBaseUrl } from "@/utils/with-base-url"
+
 
 const footerColumns = [
   {
@@ -54,7 +54,7 @@ export function DocsFooter() {
             </p>
             <ul className="space-y-2">
               {column.links.map((link) => {
-                const href = withBaseUrl(link.href)
+                const href = (link.href)
                 const isExternal = href.startsWith("http")
                 return (
                   <li key={link.label}>
@@ -83,7 +83,7 @@ export function DocsFooter() {
             <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-[#22c55e]" aria-hidden />
           </span>
           <Link
-            href={withBaseUrl("/docs/changelog")}
+            href={("/docs/changelog")}
             className="text-[10px] tracking-[0.28em] text-[var(--fg-secondary)] transition-colors hover:text-[var(--accent-light)]"
           >
             Changelog

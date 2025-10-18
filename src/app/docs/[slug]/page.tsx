@@ -133,7 +133,7 @@ export default async function PostPage({ params }: Props) {
             <DocsBreadcrumbs trail={breadcrumbs} />
             <div className="grid gap-12 xl:grid-cols-[minmax(0,1fr)_224px] xl:items-start">
                 <article className="flex w-full flex-col gap-12">
-                    <div className="rounded-3xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-6 py-10 shadow-[0_18px_60px_rgba(16,18,26,0.35)] sm:px-10">
+                    <div className="rounded-3xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-6 py-10 shadow-[0_18px_60px_rgba(16,18,26,0.35)] sm:px-5">
                         <DocHeadingProvider>
                             <div className="docs-prose">{content}</div>
                         </DocHeadingProvider>

@@ -14,7 +14,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui"
-import { withBaseUrl } from "@/utils/with-base-url"
+
 import type { DocItem, DocSection } from "@/utils/toc"
 
 interface DocsSearchProps {
@@ -50,7 +50,7 @@ export function DocsSearch({ sections }: DocsSearchProps) {
 
   const handleSelect = (doc: DocItem) => {
     setOpen(false)
-    const href = withBaseUrl(`/docs/${doc.slug}`)
+    const href = (`/docs/${doc.slug}`)
     window.location.href = href
   }
 

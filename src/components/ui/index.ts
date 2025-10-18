@@ -59,6 +59,7 @@ export {
 } from './card';
 export { Badge } from './badge';
 export { Input } from './input';
+export { GlowCard } from './glow-card';
 export {
     Command,
     CommandDialog,
@@ -79,3 +80,4 @@ export {
     DialogDescription,
     DialogClose,
 } from './dialog';
+export { SectionHeader } from './section-header';

@@ -23,7 +23,6 @@ import { useParse } from "@/hooks/use-parse";
 import { exampleConfigs } from "@/examples";
 import { exportDocument } from "@/utils/export-document";
 import { astToHtmlDocument } from "@/core/renderer/ast-to-html-document";
-import { withBaseUrl } from "@/utils/with-base-url";
 import { availableThemes } from '@/core/themes/theme-definitions';
 import { SimpleSelect } from '@/components/ui/select';
 import { customPropertiesManager } from '@/core/renderer/core/theme-manager';
@@ -74,7 +73,7 @@ export default function PlaygroundPage() {
             />
             <div className="flex flex-wrap items-center gap-3">
               <Button asChild>
-                <Link href={withBaseUrl("/docs/getting-started")}>Ver documentação</Link>
+                <Link target="_blank" href={("/docs")}>Ver documentação</Link>
               </Button>
 
               <Button onClick={handleExport} variant="ghost" className="gap-2 border border-[var(--border-muted)] text-[var(--fg-secondary)] hover:border-[var(--brand-400)] hover:text-[var(--accent)]">
