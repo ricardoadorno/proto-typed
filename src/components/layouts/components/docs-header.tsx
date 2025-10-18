@@ -102,7 +102,7 @@ export function DocsHeader({ theme, onThemeToggle, onOpenSidebar, commandGroups 
       className={cn(
         "sticky top-0 z-40 w-full border-b border-[var(--border-muted)] bg-[color:rgba(14,15,18,0.88)] backdrop-blur-xl transition-shadow duration-300 supports-[backdrop-filter]:bg-[color:rgba(14,15,18,0.72)]",
         theme === "light" &&
-          "!bg-[color:rgba(245,246,252,0.92)] supports-[backdrop-filter]:!bg-[color:rgba(245,246,252,0.82)]"
+        "!bg-[color:rgba(245,246,252,0.92)] supports-[backdrop-filter]:!bg-[color:rgba(245,246,252,0.82)]"
       )}
       style={scrolled ? { boxShadow: "var(--shadow)" } : undefined}
     >
@@ -111,8 +111,8 @@ export function DocsHeader({ theme, onThemeToggle, onOpenSidebar, commandGroups 
           href={resolveHref("/")}
           className="flex items-center gap-3 text-sm font-semibold text-[var(--fg-primary)] transition-colors hover:text-[var(--accent-light)]"
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-md bg-[linear-gradient(135deg,#7c3aed_0%,#22d3ee_100%)] text-lg font-bold text-white shadow-[0_12px_32px_rgba(124,58,237,0.45)]">
-            P
+          <span className="flex h-9 w-9 items-center justify-center rounded-md bg-[linear-gradient(135deg,rgba(124,58,237,0.15)_0%,rgba(34,211,238,0.15)_100%)] text-lg font-bold text-white shadow-[0_12px_32px_rgba(124,58,237,0.45)]">
+            <img src={withBaseUrl("/logo.svg")} alt="Logo" />
           </span>
           <span className="hidden text-base sm:inline tracking-tight">proto-typed</span>
         </Link>
