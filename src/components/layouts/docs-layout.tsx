@@ -18,6 +18,8 @@ import {
   SheetTitle,
 } from "@/components/ui"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import SidebarMobile from "./components/sidebar-mobile"
+import { navItems } from "@/utils/constants"
 
 const localStorageKey = "docs-sidebar-collapsed"
 
@@ -37,9 +39,9 @@ export function DocsLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-[var(--bg-main)] text-[var(--fg-primary)] transition-all duration-300">
-      <DocsHeader onOpenSidebar={() => setMobileSidebarOpen(true)} />
+      <DocsHeader onOpenSidebar={() => setMobileSidebarOpen(true)}  />
 
-      <div className="mx-auto flex w-full max-w-[1360px] px-4 pb-20 pt-10 sm:px-6 lg:px-0 xl:pt-14">
+      <div className="mx-auto flex gap- w-full max-w-[1360px] px-4 pb-20 pt-10 sm:px-6 lg:px-0 xl:pt-14">
         {/* SIDEBAR (desktop) */}
         <aside
           className={`relative hidden xl:flex flex-col flex-shrink-0 transition-all duration-300 ease-in-out ${
@@ -72,35 +74,9 @@ export function DocsLayout({ children }: { children: ReactNode }) {
         </main>
       </div>
 
-      {/* SIDEBAR MOBILE */}
-      <Sheet open={mobileSidebarOpen} onOpenChange={setMobileSidebarOpen}>
-        <SheetContent
-          side="left"
-          className="w-[90%] max-w-[340px] border-r border-[var(--border-muted)] bg-[var(--bg-surface)]"
-        >
-          <SheetHeader className="text-left">
-            <SheetTitle className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--fg-secondary)]">
-              Navegação
-            </SheetTitle>
-          </SheetHeader>
-          <div className="mt-4 flex flex-1 flex-col gap-4">
-            <ScrollArea className="h-full pr-2">
-              <DocsSidebar sections={docSections} onNavigate={() => setMobileSidebarOpen(false)} />
-            </ScrollArea>
-          </div>
-          <div className="mt-4 flex justify-end">
-            <SheetClose asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-[var(--fg-secondary)] hover:text-[var(--accent)]"
-              >
-                Fechar
-              </Button>
-            </SheetClose>
-          </div>
-        </SheetContent>
-      </Sheet>
+      <SidebarMobile mobileSidebarOpen={mobileSidebarOpen} setMobileSidebarOpen={setMobileSidebarOpen}>
+            <DocsSidebar sections={docSections} onNavigate={() => setMobileSidebarOpen(false)} />
+      </SidebarMobile>
     </div>
   )
 }

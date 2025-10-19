@@ -547,7 +547,7 @@ export default function PrinciplesPage() {
               Abra o editor, descreva uma tela e veja o protótipo surgir. Depois, itere com sua equipe — e com sua IA.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              {heroCtas.splice(0, 2).map((cta) => {
+              {heroCtas.slice(0, 2).map((cta) => {
                 const Icon = cta.icon;
                 const href = cta.href;
                 return (

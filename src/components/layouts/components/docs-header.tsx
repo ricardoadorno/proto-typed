@@ -31,14 +31,9 @@ import { useTheme } from 'next-themes'
 import DocsSearch from '@/components/docs/docs-search'
 import docSections from '@/utils/toc'
 import { withAssetPath } from '@/utils/base-path'
+import { navItems } from "@/utils/constants"
 
-const navItems = [
-  { label: "Playground", href: "/" },
-  { label: "Docs", href: "/docs" },
-  { label: "Filosofia", href: "/principles" },
-  // { label: "Templates", href: "/templates" },
-  // { label: "Changelog", href: "/changelog" },
-].map((item) => ({ ...item, href: (item.href) }))
+
 
 type CommandGroupItem = {
   label: string
@@ -88,12 +83,12 @@ export function DocsHeader({ onOpenSidebar }: DocsHeaderProps) {
       )}
       style={scrolled ? { boxShadow: "var(--shadow)" } : undefined}
     >
-      <div className="mx-auto flex h-16 max-w-[1280px] items-center gap-6 px-4 sm:px-6 lg:px-10">
+      <div className="mx-auto flex justify-between min-h-16 w-full max-w-[1280px] flex-wrap items-space gap-4 px-4 py-4 sm:gap-6 ">
         <Link
           href={resolveHref("/")}
           className="flex items-center gap-3 text-sm font-semibold text-[var(--fg-primary)] transition-colors hover:text-[var(--accent-light)]"
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-md bg-[linear-gradient(135deg,rgba(124,58,237,0.15)_0%,rgba(34,211,238,0.15)_100%)] text-lg font-bold text-white shadow-[0_12px_32px_rgba(124,58,237,0.45)]">
+          <span className="flex h-9 w-9 items-center justify-center rounded-md bg-[linear-gradient(135deg,rgba(124,58,237,0.45)_0%,rgba(124,58,237,0.15)_50%)] text-lg font-bold text-white shadow-[0_12px_32px_rgba(124,58,237,0.45)]">
             <img src={withAssetPath("/logo.svg")} alt="Logo" />
           </span>
           <span className="hidden text-base sm:inline tracking-tight">proto-typed</span>
@@ -113,11 +108,8 @@ export function DocsHeader({ onOpenSidebar }: DocsHeaderProps) {
                       aria-current={isActive ? "page" : undefined}
                       data-active={isActive ? "true" : undefined}
                       className={cn(
-                        // base do link
                         "relative rounded-md px-3 py-2 text-sm font-medium text-[var(--fg-secondary)] outline-none transition-colors duration-200",
-                        // cor de hover e ativa
                         "hover:text-[var(--accent-light)] data-[active=true]:text-[var(--accent)]",
-                        // linha animada usando pseudo-elemento
                         "after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:bg-[var(--accent)] after:transition-transform after:duration-200",
                         "hover:after:scale-x-100 data-[active=true]:after:scale-x-100"
                       )}
@@ -135,31 +127,32 @@ export function DocsHeader({ onOpenSidebar }: DocsHeaderProps) {
 
 
 
+          <div className="flex items-center justify-end gap-2 md:justify-start">
+          <div className="w-full md:w-auto md:min-w-[280px] md:max-w-[320px]">
+            <DocsSearch sections={docSections} />
+          </div>
+            <TooltipProvider delayDuration={200}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Alternar tema"
+                    onClick={onThemeToggle}
+                    className="text-[var(--fg-secondary)] transition-transform duration-300 hover:text-[var(--accent)]"
+                  >
+                    {theme === "light" ? (
+                      <MoonIcon className="h-5 w-5" />
+                    ) : (
+                      <SunIcon className="h-5 w-5 transition-transform duration-300 hover:rotate-180" />
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Alternar tema</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
 
 
-        <div className="ml-auto flex items-center gap-2">
-          <DocsSearch sections={docSections} />
-
-          <TooltipProvider delayDuration={200}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label="Alternar tema"
-                  onClick={onThemeToggle}
-                  className="transition-transform duration-300 text-[var(--fg-secondary)] hover:text-[var(--accent)]"
-                >
-                  {theme === "light" ? (
-                    <MoonIcon className="h-5 w-5" />
-                  ) : (
-                    <SunIcon className="h-5 w-5 transition-transform duration-300 hover:rotate-180" />
-                  )}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Alternar tema</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
           <Button
             variant="ghost"
             size="icon"
@@ -169,18 +162,19 @@ export function DocsHeader({ onOpenSidebar }: DocsHeaderProps) {
           >
             <MenuIcon className="h-5 w-5" />
           </Button>
-          <Link
-            target="_blank"
-            href={"https://github.com/ricardoadorno/proto-typed"}
-            aria-label="Ir para o GitHub"
-          >
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-[var(--fg-secondary)] hover:text-[var(--accent)] transition-transform duration-300 group"
-              aria-hidden={false}
+
+            <Link
+              target="_blank"
+              href={"https://github.com/ricardoadorno/proto-typed"}
+              aria-label="Ir para o GitHub"
             >
-              <svg
+              <Button
+                variant="ghost"
+                size="icon"
+                className="group text-[var(--fg-secondary)] transition-transform duration-300 hover:text-[var(--accent)]"
+                aria-hidden={false}
+              >
+                <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"

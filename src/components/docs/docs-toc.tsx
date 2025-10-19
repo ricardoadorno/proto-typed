@@ -123,25 +123,28 @@ export function DocsToc({ items }: DocsTocProps) {
     )
 
     return (
-        <div className="xl:sticky xl:top-24 transition-all duration-300 ease-in-out">
+        <div className="relative flex flex-col gap-4 transition-all duration-300 ease-in-out xl:sticky xl:top-24 xl:flex-none">
             {/* Desktop */}
 
             <button
               onClick={() => handleCollapseChange(!isCollapsed)}
-              className="absolute -right-3 top-1/2 flex h-6 w-6 items-center justify-center rounded-full border border-[var(--border-muted)] bg-[var(--bg-surface)] shadow-sm hover:text-[var(--accent)] transition"
+              className="absolute -right-3 top-1/2 hidden h-6 w-6 items-center justify-center rounded-full border border-[var(--border-muted)] bg-[var(--bg-surface)] shadow-sm transition hover:text-[var(--accent)] xl:flex"
               aria-label={isCollapsed ? "Mostrar toc" : "Esconder toc"}
+              aria-expanded={isCollapsed}
             >
               {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
             </button>
             
-            {isCollapsed && <div className="hidden w-[224px] xl:block ">
+            {isCollapsed && (
+                <div className="hidden w-full max-w-[240px] xl:block xl:w-[240px]">
                 <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--fg-secondary)]">
                     Nesta página
                 </p>
                 <ScrollArea className="max-h-[70vh] pr-1 text-sm">
                     <TocList />
                 </ScrollArea>
-            </div>}
+                </div>
+            )}
 
             {/* Mobile */}
             <div className="xl:hidden">

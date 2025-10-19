@@ -1,81 +1,64 @@
-# Proto-Typed – AI Reference Guide
+# Proto-Typed – Guia de Navegação para LLMs
 
-> Proto-Typed é uma DSL para prototipar interfaces com preview em tempo real. Esta página oferece um índice clicável e o contexto técnico necessário para que uma LLM localize a informação certa com rapidez.
+Use este arquivo como mapa da documentação. Sempre que possível, responda apontando o link correspondente em `https://proto-typed.dev/docs/{slug}` (ou `/docs/{slug}` em ambiente local).
 
-## Como navegar
+## Passos rápidos
 
-Todas as páginas de documentação vivem em `https://proto-typed.dev/docs/{slug}`. Os slugs são definidos em `src/utils/toc.ts` e os arquivos `.mdx` ficam em `src/docs/{slug}.mdx`.
+1. Comece pela página índice `/docs` para contexto geral.
+2. Cada slug listado abaixo possui o conteúdo completo em Markdown/MDX.
+3. Priorize a seção correspondente antes de recorrer a outras fontes.
 
-- Cada página começa com o título e um sumário (“O que é”, “Sintaxe”, “Variações”, “Boas práticas”, “Erros comuns”, “Veja também”).
-- Exemplos usam `<DslPreview>` com blocos ```dsl para garantir que o parser consiga compilar o snippet.
-- As páginas Cookbook (login, dashboard etc.) usam o modelo de guia com Objetivo, Exemplo completo e Variações.
-- `docs-2.md` descreve o template completo, regras de escrita e exemplos de conteúdo válido.
+## Índice principal
 
-## Arquitetura (atalhos úteis)
+### Sintaxe e fluxo
+- [Sintaxe básica](https://proto-typed.dev/docs/syntax)
+- [Telas (screen)](https://proto-typed.dev/docs/screen)
+- [Fluxo de navegação](https://proto-typed.dev/docs/flow)
 
-- Lexer & Tokens: `src/core/lexer/tokens/*.ts`
-- Parser & Builders: `src/core/parser/parser.ts`, `src/core/parser/builders`
-- Renderer: `src/core/renderer/nodes/*`
-- Preview HTML: `src/core/renderer/ast-to-html-string-preview.ts`
-- Monaco Highlight: `src/core/editor/language/dsl-language.ts`
-- TOC & navegação: `src/utils/toc.ts`, `src/app/docs/[slug]/page.tsx`
-
-## DSL suportada (resumo rápido)
-
-- Views: `screen`, `modal`, `drawer`
-- Layouts: `container`, `container-narrow`, `container-wide`, `container-full`, `stack`, `stack-tight`, `stack-loose`, `stack-flush`, `row`, `row-start`, `row-center`, `row-between`, `row-end`, `grid-2`, `grid-3`, `grid-4`, `grid-auto`, `card`, `card-compact`, `card-feature`, `list`, `navigator`, `fab`, `---`
-- Tipografia: `#` a `######`, `>`, `>>`, `>>>`, `*>`, `">`
-- Botões: `@variant-size[Texto](Destino)` (variants `primary`, `secondary`, `outline`, `ghost`, `destructive`, `link`, `success`, `warning`; sizes `-xs`, `-sm`, `-md`, `-lg`)
-- Links: `#[Texto](Destino)`
-- Inputs inline: `___type: Label{placeholder}[opções] | atributos` (tipos oficiais `text`, `email`, `password`, `number`, `date`, `textarea`)
-- Checkbox/Radio: `[X] Label`, `( ) Label`
-- Componentes: `component Nome:`, `$Nome`, `$Nome: - valor1 | valor2`
-- Estilos: bloco `styles:` com CSS custom properties
-
-Tokens como `container-center`, `stack-lg`, `grid-list`, `card-p8` não existem; a documentação deve evitar ou corrigir menções a eles.
-
-## Índice de Documentos
-
-### Primitives
-
-- [Text](https://proto-typed.dev/docs/text)
-- [Button](https://proto-typed.dev/docs/button)
-- [Input](https://proto-typed.dev/docs/input)
-- [Icon](https://proto-typed.dev/docs/icon)
+### Primitivos de interface
+- [Texto](https://proto-typed.dev/docs/text)
+- [Ícone](https://proto-typed.dev/docs/icon)
+- [Botão](https://proto-typed.dev/docs/button)
+- [Campo de entrada](https://proto-typed.dev/docs/input)
 - [Link](https://proto-typed.dev/docs/link)
 
-### Layouts
-
+### Layout e estrutura
 - [Container](https://proto-typed.dev/docs/container)
 - [Stack](https://proto-typed.dev/docs/stack)
-- [Row](https://proto-typed.dev/docs/row)
-- [Grid](https://proto-typed.dev/docs/grid)
+- [Linha (row)](https://proto-typed.dev/docs/row)
+- [Grade (grid)](https://proto-typed.dev/docs/grid)
 - [Card](https://proto-typed.dev/docs/card)
-- [List](https://proto-typed.dev/docs/list)
+- [Lista](https://proto-typed.dev/docs/list)
 
-### Views & Navigation
-
-- [Screen](https://proto-typed.dev/docs/screen)
+### Navegação e interações
+- [Navegador](https://proto-typed.dev/docs/navigator)
 - [Modal](https://proto-typed.dev/docs/modal)
 - [Drawer](https://proto-typed.dev/docs/drawer)
-- [Navigator](https://proto-typed.dev/docs/navigator)
-- [Floating Action Button (FAB)](https://proto-typed.dev/docs/fab)
+- [Botão flutuante (FAB)](https://proto-typed.dev/docs/fab)
 
-### Components
+### Componentes e reuso
+- [Definição de componente](https://proto-typed.dev/docs/component-definition)
+- [Propriedades de componente](https://proto-typed.dev/docs/component-props)
+- [Lista de componentes](https://proto-typed.dev/docs/component-list)
+- [Composição de componentes](https://proto-typed.dev/docs/component-composition)
 
-- [Component Definition](https://proto-typed.dev/docs/component-definition)
-- [Component Props](https://proto-typed.dev/docs/component-props)
-- [Component List](https://proto-typed.dev/docs/component-list)
-- [Component Composition](https://proto-typed.dev/docs/component-composition)
+### Temas e estilos
+- [Bloco de estilos](https://proto-typed.dev/docs/styles-block)
+- [Temas](https://proto-typed.dev/docs/themes)
 
-### Themes & Styles
+### Padrões e boas práticas
+- [Nomeação e consistência](https://proto-typed.dev/docs/naming)
+- [Diretrizes de composição](https://proto-typed.dev/docs/composition-guidelines)
+- [Erros comuns](https://proto-typed.dev/docs/error-patterns)
 
-- [Styles Block](https://proto-typed.dev/docs/styles-block)
-- [Themes](https://proto-typed.dev/docs/themes)
-
-### Cookbook
-
-- [Login Screen](https://proto-typed.dev/docs/login-screen)
+### Exemplos e cookbook
+- [Tela de login](https://proto-typed.dev/docs/login-screen)
 - [Dashboard](https://proto-typed.dev/docs/dashboard)
-- [Drawer Detail](https://proto-typed.dev/docs/drawer-detail)
-- [Modal Flow](https://proto-typed.dev/docs/modal-flow)
+- [Detalhe no drawer](https://proto-typed.dev/docs/drawer-detail)
+- [Fluxo com modal](https://proto-typed.dev/docs/modal-flow)
+- [Listagem de cards](https://proto-typed.dev/docs/list-cards)
+
+## Observações rápidas
+
+- Todos os exemplos de código usam blocos ` ```dsl `.
+- Mantenha a resposta focada e referencie explicitamente o slug relevante.

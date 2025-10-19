@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
-import { CommandIcon } from "lucide-react"
+import { CommandIcon, Search } from "lucide-react"
 
 import {
   Badge,
@@ -58,12 +58,16 @@ export function DocsSearch({ sections }: DocsSearchProps) {
       <Button
         onClick={handleOpen}
         variant="outline"
-        className="flex w-full items-center justify-between rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-4 py-3 text-left text-sm text-[var(--fg-secondary)] shadow-[0_6px_18px_rgba(0,0,0,0.24)] transition-colors hover:border-[var(--brand-400)] hover:bg-[color:rgba(139,92,246,0.08)] hover:text-[var(--accent-light)] sm:w-[320px]"
+        className="hidden md:flex w-full items-center justify-between rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-surface)] px-4 py-3 text-left text-sm text-[var(--fg-secondary)] shadow-[0_6px_18px_rgba(0,0,0,0.24)] transition-colors hover:border-[var(--brand-400)] hover:bg-[color:rgba(139,92,246,0.08)] hover:text-[var(--accent-light)] sm:w-[320px]"
       >
         <span>Buscar tópicos, componentes...</span>
         <span className="flex items-center gap-1 rounded-lg border border-[var(--border-muted)] bg-[var(--bg-raised)] px-2 py-1 text-[10px] uppercase tracking-[0.32em] text-[var(--fg-secondary)]">
+          <Search className="h-3 w-3" />
           <CommandIcon className="h-3 w-3" />K
         </span>
+      </Button>
+      <Button variant="ghost" onClick={handleOpen} className="p-2 md:hidden">
+        <Search className="h-5 w-5 text-[var(--fg-secondary)]" />
       </Button>
       <CommandDialog open={open} onOpenChange={setOpen} searchPlaceholder="Buscar na documentação">
         <CommandList>

@@ -50,7 +50,7 @@ export default function PlaygroundPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-main)] text-[var(--fg-primary)]">
-      <DocsHeader />
+      <DocsHeader  />
       <main className="mx-auto flex w-full max-w-[1320px] flex-col gap-12 px-4 pb-16 pt-10 sm:px-6 lg:px-10">
         <h1 className="text-4xl font-semibold leading-tight text-[var(--fg-primary)] sm:text-5xl">
           Playground
