@@ -54,9 +54,30 @@ export function DslPreview({
   const rawText = extractTextFromChildren(children)
   const resolvedCode = removeBackticksAndDsl(rawText)
 
+  const ensureScreenDeclaration = (code: string): string => {
+    const trimmed = code.trim()
+    if (!trimmed) {
+      return `screen Default:\n  container:\n    # Preview vazio\n    > Adicione blocos para visualizar o resultado.`
+    }
+
+    const hasScreen = /\bscreen\s+\w+/i.test(trimmed)
+    if (hasScreen) {
+      return trimmed
+    }
+
+    const indented = trimmed
+      .split(/\r?\n/)
+      .map((line) => (line ? `    ${line}` : line))
+      .join("\n")
+
+    return `screen Default:\n  container:\n${indented}`
+  }
+
+  const normalizedCode = ensureScreenDeclaration(resolvedCode)
+
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(resolvedCode)
+      await navigator.clipboard.writeText(normalizedCode)
       setCopied(true)
       setTimeout(() => setCopied(false), 1500)
     } catch {
@@ -67,8 +88,8 @@ export function DslPreview({
   const { renderedHtml, createClickHandler, handleParse } = useParse()
 
   useEffect(() => {
-    if (resolvedCode) handleParse(resolvedCode)
-  }, [resolvedCode, handleParse])
+    if (normalizedCode) handleParse(normalizedCode)
+  }, [normalizedCode, handleParse])
 
   const renderScreen = () => {
     return (
@@ -109,7 +130,7 @@ export function DslPreview({
         </Button>
       </div>
       <div className="flex-1 min-h-0">
-        <DSLEditor value={resolvedCode} options={{
+        <DSLEditor value={normalizedCode} options={{
           lineNumbers: "off", glyphMargin: false, stickyScroll: {
             enabled: false
           },
