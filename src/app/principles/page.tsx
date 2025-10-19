@@ -28,6 +28,7 @@ import {
   SectionHeader,
   Separator,
 } from "@/components/ui";
+import { withAssetPath } from "@/utils/base-path";
 
 const heroCtas = [
   { label: "Experimentar", href: "/playground", icon: SparklesIcon },
@@ -200,9 +201,10 @@ const codeExample = `screen Dashboard:
 
 export default function PrinciplesPage() {
   return (
-    <div className="min-h-screen bg-[var(--bg-main)] text-[var(--fg-primary)]">
+    <div className=" min-h-screen bg-[var(--bg-main)] text-[var(--fg-primary)]">
       <DocsHeader />
       <main className="relative mx-auto flex w-full max-w-6xl flex-col gap-20 px-4 pb-24 pt-12 sm:px-6 lg:px-10">
+
         <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 mx-auto h-[720px] w-[min(1180px,90%)] bg-grid-soft opacity-70 mask-radial-fade" />
 
         <section className="landing-spotlight relative overflow-hidden rounded-[36px] border border-[var(--border-muted)] bg-[var(--bg-surface)]/95 px-6 py-16 shadow-aurora sm:px-10">
@@ -266,9 +268,6 @@ export default function PrinciplesPage() {
                 </div>
                 <Separator className="border-[var(--border-muted)]/70" />
                 <div className="space-y-4">
-                  <span className="text-xs font-semibold uppercase tracking-[0.32em] text-[var(--accent)]">
-                    Como funciona
-                  </span>
                   <div className="space-y-3">
                     {flowSteps.map((step) => {
                       const Icon = step.icon;
@@ -315,7 +314,7 @@ export default function PrinciplesPage() {
               </div>
             </GlowCard>
             <GlowCard hoverLift={false}>
-              <h3 className="text-xl font-semibold text-[var(--fg-primary)]">O que é (sem jargões)</h3>
+              <h3 className="text-xl font-semibold text-[var(--fg-primary)]">O que é </h3>
               <div className="space-y-4 text-base leading-relaxed text-[var(--fg-secondary)]">
                 <p>
                   Proto-Typed é um formato textual de interface. Você descreve conteúdo, estrutura e ações; ele gera um
@@ -548,7 +547,7 @@ export default function PrinciplesPage() {
               Abra o editor, descreva uma tela e veja o protótipo surgir. Depois, itere com sua equipe — e com sua IA.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              {heroCtas.map((cta) => {
+              {heroCtas.splice(0, 2).map((cta) => {
                 const Icon = cta.icon;
                 const href = cta.href;
                 return (

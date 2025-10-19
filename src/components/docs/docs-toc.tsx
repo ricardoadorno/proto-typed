@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react"
-import { ChevronDownIcon } from "lucide-react"
+import { ChevronDownIcon, ChevronLeft, ChevronRight } from "lucide-react"
 
 import { Button, ScrollArea } from "@/components/ui"
 import { cn } from "@/lib/utils"
@@ -16,9 +16,22 @@ interface DocsTocProps {
     items: TocItem[]
 }
 
+const localStorageKey = "docs-toc-collapsed"
+
 export function DocsToc({ items }: DocsTocProps) {
     const [activeId, setActiveId] = useState<string | null>(null)
     const [isMobileOpen, setIsMobileOpen] = useState(false)
+    const [isCollapsed, setIsCollapsed] = useState(true)
+
+    useEffect(() => {
+        const storedValue = localStorage.getItem(localStorageKey)
+        if (storedValue !== null) setIsCollapsed(storedValue === "true");
+    }, [])
+
+    const handleCollapseChange = (collapsed: boolean) => {
+        setIsCollapsed(collapsed)
+        localStorage.setItem(localStorageKey, collapsed.toString())
+    }
 
     useEffect(() => {
         if (!items.length || typeof window === 'undefined') {
@@ -110,16 +123,25 @@ export function DocsToc({ items }: DocsTocProps) {
     )
 
     return (
-        <div className="xl:sticky xl:top-24">
+        <div className="xl:sticky xl:top-24 transition-all duration-300 ease-in-out">
             {/* Desktop */}
-            <div className="hidden w-[224px] xl:block">
+
+            <button
+              onClick={() => handleCollapseChange(!isCollapsed)}
+              className="absolute -right-3 top-1/2 flex h-6 w-6 items-center justify-center rounded-full border border-[var(--border-muted)] bg-[var(--bg-surface)] shadow-sm hover:text-[var(--accent)] transition"
+              aria-label={isCollapsed ? "Mostrar toc" : "Esconder toc"}
+            >
+              {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+            </button>
+            
+            {isCollapsed && <div className="hidden w-[224px] xl:block ">
                 <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--fg-secondary)]">
                     Nesta página
                 </p>
                 <ScrollArea className="max-h-[70vh] pr-1 text-sm">
                     <TocList />
                 </ScrollArea>
-            </div>
+            </div>}
 
             {/* Mobile */}
             <div className="xl:hidden">

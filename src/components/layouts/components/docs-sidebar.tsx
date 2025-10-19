@@ -21,14 +21,14 @@ export default function DocsSidebar({ sections, onNavigate }: DocsSidebarProps) 
   return (
     <nav aria-label="Navegação da documentação" className="flex flex-col gap-6 text-sm">
       <a href={withAssetPath("/llm.txt")}>LLM Text Docs</a>
-      <div className="flex items-center justify-between px-2">
+      <a className="flex items-center justify-between px-2" href={withAssetPath("/docs")}>
         <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-[var(--fg-secondary)]">
           Guia
         </p>
         <span className="rounded-full bg-[color:rgba(139,92,246,0.12)] px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.24em] text-[var(--accent)]">
           Docs
         </span>
-      </div>
+      </a>
       <div className="space-y-6">
         {sections.map((section) => (
           <div key={section.title} className="space-y-3">
