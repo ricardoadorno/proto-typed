@@ -1,70 +1,186 @@
 # Floating Action Button (FAB)
+O FAB mantém uma ação global sempre disponível, flutuando sobre o conteúdo para acelerar tarefas recorrentes.
 
-## O que é
-Botão flutuante fixado sobre o conteúdo que expõe uma ação global importante — como criar registros ou abrir painéis rápidos.
+## Quando usar
+- Destacar a ação mais frequente da tela em cenários mobile ou responsivos.
+- Oferecer atalhos globais, como criar registros ou abrir filtros relevantes.
+- Complementar dashboards e listas quando o CTA principal não cabe no cabeçalho.
+- Ativar drawers ou modais rápidos sem perder o contexto atual.
 
-## Capacidades
-- Declarar FAB com um item (`- i-Icon | Destino`) ou várias ações (múltiplas linhas).
-- Acionar telas, modais ou drawers, usando nome do destino na segunda coluna.
-- Complementar a UI com ícones da biblioteca Lucide (`i-Plus`, `i-Filter`).
-- Aparecer em qualquer `screen`, normalmente após blocos principais.
-
-## Sintaxe
-- `fab:`
-- `- i-Plus | NovaTela`
-- `- i-Filter | FilterDrawer`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| Linha `- i-Icon | Destino` | Registrar ação | `Destino` pode ser `Screen`, `Modal` ou `Drawer`. |
-| Múltiplas linhas | Menu flutuante | A primeira ação é a principal; demais são secundárias. |
-| Ícone (`i-`) | Indicação visual | Utilize nomes válidos da biblioteca Lucide. |
-
-## Casos de uso
-- `fab:` com apenas `i-Plus` para criar itens rapidamente.
-- `fab:` com `i-Filter` abrindo um `drawer` com filtros avançados.
-- `fab:` em mobile para destacar a ação principal do fluxo.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+## Exemplo básico
+<DslPreview title="FAB com ação principal única">
 ```dsl
 screen Tasks:
   container:
     # Tarefas
     list:
-      - Revisar backlog | @[Editar](TaskForm)
-      - Preparar release | @[Editar](TaskForm)
+      - Revisar backlog
+      - Preparar release
 
   fab:
     - i-Plus | TaskForm
 ```
 </DslPreview>
+Por quê: mantém a criação de tarefas ao alcance sem competir com o conteúdo da tela.
 
-<DslPreview title="Exemplo 2">
+## Variantes
+<DslPreview title="FAB com múltiplas ações">
 ```dsl
+fab:
+  - i-Plus | TaskForm
+  - i-Filter | FilterDrawer
+```
+</DslPreview>
+Quando usar: oferecer atalho principal e opções secundárias relacionadas.
+Por quê: agrupa ações de mesmo contexto sem sobrecarregar o FAB.
+
+<DslPreview title="FAB acionando modal de confirmação">
+```dsl
+fab:
+  - i-Check | ConfirmRelease
+
+modal ConfirmRelease:
+  card:
+    ## Publicar release?
+    > Confirme para notificar o time.
+    row-end:
+      @ghost[Cancelar](close)
+      @success[Publicar](publishRelease)
+```
+</DslPreview>
+Quando usar: reforçar ações globais que precisam de confirmação antes de executar.
+Por quê: evita execuções irreversíveis ao intercalar feedback imediato.
+
+<DslPreview title="FAB abrindo drawer contextual">
+```dsl
+fab:
+  - i-Filter | FilterDrawer
+
 drawer FilterDrawer:
   container:
     # Filtros avançados
     ___select: Status{Todos | Em andamento | Concluído}
-    ___select: Responsável{Ana | Bruno | Carla}
     row-end:
       @ghost[Cancelar](close)
-      @primary[Aplicar filtros](applyFilters)
+      @[Aplicar](applyFilters)
+```
+</DslPreview>
+Quando usar: expor ajustes rápidos mantendo os dados principais visíveis.
+Por quê: o drawer permite ajustes inline sem mudar de tela.
 
-screen Dashboard:
+## Composição (usando com outros)
+- **FAB + Button principal** — CTA fixo convive com ações locais em cards.
+- **FAB + Drawer** — abre filtros ou detalhes sem redirecionar.
+- **FAB + Modal** — valida comandos críticos antes de prosseguir.
+
+<DslPreview title="Lista com FAB de criação">
+```dsl
+screen Leads:
   container:
-    # Visão geral
-    > Use o FAB para abrir filtros ou criar ações rápidas.
+    # Leads recentes
+    list:
+      - Sofia Lima | Marketing
+      - Gilberto Ramos | Vendas
+
+  fab:
+    - i-Plus | LeadForm
+```
+</DslPreview>
+Por quê: a tela exibe dados passivamente e o FAB garante criação rápida.
+
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `itens` | lista `- i-Icon | Destino` | — | Cada linha define ação com ícone e destino alvo. | Sim |
+| `ícone` | token `i-` | — | Ícone exibido no botão flutuante. | Sim |
+| `destino` | slug/ação | — | Tela, modal ou drawer aberto ao tocar. | Sim |
+| `ordem` | prioridade | — | Primeira linha é a ação principal; demais seguem ordem decrescente. | Não |
+
+## Erros comuns (Do/Don’t)
+**Não faça — repetir a mesma ação do cabeçalho**
+<DslPreview title="❌ Errado — CTA duplicado">
+```dsl
+screen Tasks:
+  header:
+    @[Nova tarefa](TaskForm)
 
   fab:
     - i-Plus | TaskForm
-    - i-Filter | FilterDrawer
 ```
 </DslPreview>
 
-## Veja também
-- [Button](./button)
-- [Drawer](./drawer)
-- [Navigator](./navigator)
+Faça — diferencie ação do FAB
+<DslPreview title="✅ Correto — CTA complementar">
+```dsl
+screen Tasks:
+  header:
+    @[Nova tarefa](TaskForm)
+
+  fab:
+    - i-Filter | FilterDrawer
+```
+</DslPreview>
+Por quê: o FAB deve adicionar valor extra, não duplicar o CTA já disponível.
+
+**Não faça — listar ações sem relação entre si**
+<DslPreview title="❌ Errado — FAB com ações desconexas">
+```dsl
+fab:
+  - i-Plus | TaskForm
+  - i-Settings | ThemeDrawer
+  - i-Download | ExportModal
+```
+</DslPreview>
+
+Faça — agrupe somente ações complementares
+<DslPreview title="✅ Correto — Foco em filtros e criação">
+```dsl
+fab:
+  - i-Plus | TaskForm
+  - i-Filter | FilterDrawer
+```
+</DslPreview>
+Por quê: ações relacionadas reduzem dúvida sobre o objetivo do FAB.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Button`](./button): ações locais dentro do conteúdo.
+- [`Drawer`](./drawer): painéis laterais acionados pelo FAB.
+- [`Modal`](./modal): confirmações ou formulários rápidos.
+- [`Dashboard`](./dashboard): guia com uso frequente de FAB em telas analíticas.
+
+### Composições recomendadas
+- **FAB + Drawer** → filtros e detalhes avançados sem sair da tela.
+- **FAB + Modal** → confirmação rápida de ações globais.
+- **FAB + List** → mantém criação acessível enquanto percorre itens.
+
+<DslPreview title="FAB abrindo filtros no dashboard">
+```dsl
+screen Dashboard:
+  container-wide:
+    # Visão Geral
+    grid-3:
+      card:
+        ## Leads
+        # 1.240
+      card:
+        ## Conversões
+        # 134
+      card:
+        ## Receita
+        # R$ 87K
+
+  fab:
+    - i-Filter | FilterDrawer
+
+drawer FilterDrawer:
+  container:
+    # Ajustar filtros
+    ___select: Período{7 dias | 30 dias | 90 dias}
+    row-end:
+      @ghost[Cancelar](close)
+      @[Aplicar](applyFilters)
+```
+</DslPreview>
+Por quê: facilita ajustes enquanto mantém os indicadores à vista.

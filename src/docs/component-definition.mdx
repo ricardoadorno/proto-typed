@@ -1,41 +1,9 @@
 # Component Definition
+## Por que importa
+Componentes definidos com `component Nome:` concentram estrutura, estilo e comportamento visual em um só lugar. Eles evitam duplicação, facilitam manutenção e garantem consistência em telas complexas.
 
-## O que é
-Declaração de um componente reutilizável (`component Nome:`) que encapsula layout e lógica visual para ser instanciado com `$Nome`.
-
-## Capacidades
-- Definir estrutura base usando qualquer layout (card, stack, row, grid).
-- Inserir placeholders `%prop` interpolados quando o componente é utilizado.
-- Reaproveitar o mesmo componente em múltiplas telas e listas.
-- Agrupar conteúdo complexo em um bloco único para manutenção mais simples.
-
-## Sintaxe
-- `component Hero:`
-- `card:`
-- `# %title`
-- `> %subtitle`
-- `@[Ação](%destination)`
-- `screen Home:`
-- `container:`
-- `$Hero:`
-- `- Bem-vindo | Conecte-se rapidamente | Dashboard`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `component Nome:` | Declaração | Nome em PascalCase. |
-| `%prop` | Placeholder | Recebe valores passados na instância. |
-| `$Nome` | Instância simples | Usa conteúdo fixo definido no componente. |
-| `$Nome:` + lista | Instância com props | Cada linha `-` envia valores separados por `|`. |
-
-## Casos de uso
-- Criar cards padrão para produtos, métricas ou contatos.
-- Centralizar o layout de uma linha de lista e reaproveitar via `list $Nome:`.
-- Isolar seções hero (título, descrição, CTA) repetidas em diversas telas.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+## Forma canônica (sintaxe mínima)
+<DslPreview title="Definição e instância básica">
 ```dsl
 component HeroBanner:
   card:
@@ -45,24 +13,20 @@ component HeroBanner:
 
 screen Home:
   container:
-    # Bem-vindo(a)
     $HeroBanner:
       - Prototipe mais rápido | Construa telas em minutos | Guides
-
-screen Guides:
-  container:
-    # Biblioteca de guias
-    > Explore fluxos prontos para acelerar a prototipagem.
 ```
 </DslPreview>
+Por quê: demonstra o ciclo completo — declarar o componente e instanciá-lo com dados via lista.
 
-<DslPreview title="Exemplo 2">
+## Padrões de uso
+<DslPreview title="Componentes para vitrines de métricas">
 ```dsl
 component MetricCard:
   card:
     ## %label
     # %value
-    >> %trend
+    >>> %trend
 
 screen Dashboard:
   container-wide:
@@ -75,8 +39,123 @@ screen Dashboard:
         - Satisfação | 92% | +3%
 ```
 </DslPreview>
+Quando usar: replicar o mesmo layout com dados diferentes em dashboards e relatórios.
+Por quê: reduz manutenção ao trocar apenas os valores, não o markup.
 
-## Veja também
-- [Component Props](./component-props)
-- [Component List](./component-list)
-- [Component Composition](./component-composition)
+<DslPreview title="Componente para linhas de lista">
+```dsl
+component TaskRow:
+  row-between:
+    stack-tight:
+      > %title
+      >>> %due
+    @[Detalhar](%action)
+
+list $TaskRow:
+  - Atualizar roadmap | Até 22/09 | show:roadmap
+  - Revisar backlog | Até 24/09 | show:backlog
+```
+</DslPreview>
+Quando usar: padronizar linhas de lista que exigem múltiplos campos e ações.
+Por quê: encapsula lógica de exibição e mantém consistência em toda a lista.
+
+<DslPreview title="Componente com fallback interno">
+```dsl
+component EmptyState:
+  card:
+    ## %title
+    > %message
+    row-center:
+      @[Criar primeiro item](%action)
+
+screen Leads:
+  container:
+    $EmptyState:
+      - Nenhum lead ainda
+      - Comece registrando contatos da equipe comercial.
+      - LeadForm
+```
+</DslPreview>
+Quando usar: oferecer vazio padrão para diferentes contextos sem reescrever layout.
+Por quê: padroniza estados vazios com mensagem, ação e visual coerentes.
+
+## Erros comuns (Do/Don’t)
+**Não faça — esquecer de declarar o componente antes da instância**
+<DslPreview title="❌ Errado — Instância sem definição">
+```dsl
+screen Home:
+  container:
+    $HeroBanner:
+      - Bem-vindo | Explore recursos | Dashboard
+```
+</DslPreview>
+
+Faça — defina antes de usar
+<DslPreview title="✅ Correto — Declaração + uso">
+```dsl
+component HeroBanner:
+  card:
+    ## %title
+    > %subtitle
+
+screen Home:
+  container:
+    $HeroBanner:
+      - Bem-vindo | Explore recursos
+```
+</DslPreview>
+Por quê: a instância precisa conhecer a estrutura para interpolar `%props`.
+
+**Não faça — desalinha número de valores e `%props`**
+<DslPreview title="❌ Errado — Props faltando">
+```dsl
+component PlanCard:
+  card:
+    ## %title
+    > %description
+    >> %price
+
+$PlanCard:
+  - Plano Pro | Experiência completa
+```
+</DslPreview>
+
+Faça — mantenha ordem e quantidade coerentes
+<DslPreview title="✅ Correto — Props completos">
+```dsl
+$PlanCard:
+  - Plano Pro | Experiência completa | R$ 89/mês
+```
+</DslPreview>
+Por quê: a ordem dos valores precisa corresponder a cada `%prop` declarado.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Component Props`](./component-props): detalha interpolação e manipulação de `%props`.
+- [`Component List`](./component-list): gera coleções a partir de componentes.
+- [`Component Composition`](./component-composition): orienta como combinar componentes entre si.
+- [`List`](./list): alimenta componentes com dados tabulares.
+
+### Composições recomendadas
+- **Component Definition + List** → repete um layout para cada item de dados.
+- **Component Definition + Grid** → monta vitrines e dashboards reutilizáveis.
+- **Component Definition + Modal** → cria modais padronizados para confirmação ou formulários.
+
+<DslPreview title="Componentes reutilizados em grid">
+```dsl
+component InsightCard:
+  card:
+    ## %title
+    > %description
+
+grid-3:
+  $InsightCard:
+    - Roadmap atualizado | Planeje entregas do próximo trimestre.
+  $InsightCard:
+    - Métricas principais | Avalie o desempenho semanal.
+  $InsightCard:
+    - Alertas críticos | Priorize correções urgentes.
+```
+</DslPreview>
+Por quê: garante consistência visual mesmo ao distribuir conteúdo em diferentes layouts.

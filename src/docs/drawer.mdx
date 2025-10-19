@@ -1,57 +1,14 @@
 # Drawer
+Drawers exibem painéis laterais sobre a tela atual para oferecer filtros, detalhes ou ações auxiliares sem quebrar o contexto.
 
-## O que é
-Painel lateral que desliza sobre a interface para exibir menus, filtros ou detalhes sem abandonar a tela atual.
+## Quando usar
+- Expor filtros avançados enquanto a tela principal permanece visível.
+- Mostrar detalhes de um item selecionado sem navegar para outra rota.
+- Oferecer menus contextuais quando o espaço horizontal está disponível.
+- Complementar fluxos que precisam de feedback rápido após uma ação principal.
 
-## Capacidades
-- Declarar `drawer Nome:` acionado por botões/links (`@[Abrir filtros](Nome)`).
-- Conter listas, formulários e botões de confirmação/cancelamento.
-- Integrar com `list` para criar menus ou `stack` para agrupar controles.
-- Fechar com `@ghost[Fechar](close)` ou navegando para outra tela.
-
-## Sintaxe
-- `drawer FilterDrawer:`
-- `container:`
-- `# Filtros`
-- `___select: Status{Todos | Ativo | Inativo}`
-- `@ghost[Fechar](close)`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `drawer Nome:` | Define painel lateral | Nome em PascalCase. |
-| Conteúdo interno | Slot | Normalmente `container` ou `stack`. |
-
-## Casos de uso
-- Menu lateral com listagem de telas (`drawer MainMenu`).
-- Painel de filtros complementando um dashboard.
-- Exibir detalhes de um item escolhido sem sair da tela principal.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
-```dsl
-drawer MainMenu:
-  container:
-    # Menu
-    list:
-      - Dashboard | Dashboard
-      - Tarefas | Tasks
-      - Configurações | Settings
-
-screen Tasks:
-  header:
-    # Minhas tarefas
-    @ghost[i-Menu Menu](MainMenu)
-
-  container:
-    list:
-      - Revisar backlog
-      - Preparar release
-```
-</DslPreview>
-
-<DslPreview title="Exemplo 2">
+## Exemplo básico
+<DslPreview title="Drawer de filtros em dashboard">
 ```dsl
 drawer FilterDrawer:
   container:
@@ -60,7 +17,7 @@ drawer FilterDrawer:
     ___select: Responsável{Ana | Bruno | Carla}
     row-end:
       @ghost[Cancelar](close)
-      @primary[Aplicar filtros](applyFilters)
+      @[Aplicar filtros](applyFilters)
 
 screen Dashboard:
   container-wide:
@@ -68,18 +25,167 @@ screen Dashboard:
     @[Abrir filtros](FilterDrawer)
     grid-3:
       card:
-        ## Leads captados
+        ## Leads
         # 1.240
       card:
         ## Conversões
         # 134
       card:
-        ## Net Promoter Score
-        # 72
+        ## Receita
+        # R$ 87K
+```
+</DslPreview>
+Por quê: mantém indicadores visíveis enquanto a pessoa ajusta critérios no painel lateral.
+
+## Variantes
+<DslPreview title="Drawer com stack para configurações">
+```dsl
+drawer SettingsDrawer:
+  stack-loose:
+    # Configurações rápidas
+    ___switch: Notificações{Ativado}
+    ___switch: Modo escuro{Ativado}
+    row-end:
+      @ghost[Fechar](close)
+      @[Salvar ajustes](saveSettings)
+```
+</DslPreview>
+Quando usar: organizar controles simples com espaçamento consistente.
+Por quê: distribui ajustes rápidos no painel sem poluir a tela principal.
+
+<DslPreview title="Drawer com lista resumida">
+```dsl
+drawer SummaryDrawer:
+  card:
+    ## Histórico
+    list:
+      - Pedido #3021 | Hoje 10h
+      - Pedido #3018 | Ontem 16h
+```
+</DslPreview>
+Quando usar: apresentar resumos curtos que complementam a tela principal.
+Por quê: mantém contexto rápido à mão enquanto a tela principal segue visível.
+
+<DslPreview title="Drawer com formulário contextual">
+```dsl
+drawer NoteDrawer:
+  container:
+    # Adicionar nota
+    ___textarea: Comentário{Descreva o contexto}
+    row-end:
+      @ghost[Cancelar](close)
+      @success[Salvar nota](saveNote)
+```
+</DslPreview>
+Quando usar: capturar entradas rápidas enquanto a pessoa analisa outro conteúdo.
+Por quê: o drawer oferece formulário breve sem interromper a navegação atual.
+
+## Composição (usando com outros)
+- **Drawer + Button** — aciona o painel a partir de CTAs contextuais.
+- **Drawer + List** — apresenta coleções resumidas com ações fora da lista.
+- **Drawer + Screen principal** — mantém fluxo contínuo sem redirecionar.
+
+<DslPreview title="Tela com drawer de detalhes">
+```dsl
+screen Accounts:
+  container-wide:
+    # Contas ativas
+    list:
+      - Grupo Norte | @[Ver detalhes](AccountDrawer)
+      - Grupo Sul | @[Ver detalhes](AccountDrawer)
+
+drawer AccountDrawer:
+  card:
+    ## Grupo Norte
+    > Dados atualizados do cliente.
+    row-end:
+      @ghost[Fechar](close)
+      @[Editar conta](AccountEdit)
+```
+</DslPreview>
+Por quê: permite investigar dados sem sair da lista principal.
+
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `nome` | identificador | — | Define o slug do drawer (PascalCase recomendado). | Sim |
+| `conteúdo interno` | blocos DSL | — | Recebe stacks, containers, cards, listas e formulários. | Sim |
+| `ações de fechamento` | botões | — | Normalmente `@ghost[Fechar](close)` ou `@ghost[Cancelar](-1)`. | Sim |
+| `acionadores` | botões/links | — | Elementos que chamam o drawer (`@[Abrir](DrawerName)`). | Sim |
+
+## Erros comuns (Do/Don’t)
+**Não faça — menus com `list` e links diretos**
+<DslPreview title="❌ Errado — Lista com links navegáveis">
+```dsl
+drawer MainMenu:
+  list:
+    - #[Dashboard](Dashboard)
+    - #[Relatórios](Reports)
 ```
 </DslPreview>
 
-## Veja também
-- [Modal](./modal)
-- [Navigator](./navigator)
-- [Drawer Detail](./drawer-detail)
+Faça — use `navigator` ou botões fora de `list`
+<DslPreview title="✅ Correto — Navegação estruturada">
+```dsl
+drawer MainMenu:
+  navigator Menu:
+    - Dashboard | Dashboard
+    - Relatórios | Reports
+```
+</DslPreview>
+Por quê: menus interativos devem usar `navigator` para manter semântica correta.
+
+**Não faça — misturar `close` e `-1` no mesmo drawer**
+<DslPreview title="❌ Errado — Fechamentos inconsistentes">
+```dsl
+drawer ConfirmDrawer:
+  row-end:
+    @ghost[Cancelar](-1)
+    @[Salvar](close)
+```
+</DslPreview>
+
+Faça — escolha um padrão de fechamento
+<DslPreview title="✅ Correto — Padrão consistente">
+```dsl
+drawer ConfirmDrawer:
+  row-end:
+    @ghost[Cancelar](close)
+    @[Salvar](saveDrawer)
+```
+</DslPreview>
+Por quê: manter um único padrão evita confusão sobre o comportamento do fechamento.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Modal`](./modal): variação sobreposta para confirmações rápidas.
+- [`Navigator`](./navigator): constrói menus e abas para navegação lateral.
+- [`Drawer Detail`](./drawer-detail): guia com receita completa para detalhes no drawer.
+- [`Button`](./button): principal acionador para abrir drawers.
+
+### Composições recomendadas
+- **Drawer + Button** → painel acionado sob demanda mantendo contexto.
+- **Drawer + List** → exibe resumos enquanto a tela principal fica visível.
+- **Drawer + Modal** → combine quando precisar confirmar ações iniciadas no drawer.
+
+<DslPreview title="Fluxo drawer + modal">
+```dsl
+drawer BillingDrawer:
+  card:
+    ## Atualizar plano
+    > Escolha o plano desejado e confirme a mudança.
+    row-end:
+      @ghost[Cancelar](close)
+      @[Avançar](ConfirmBilling)
+
+modal ConfirmBilling:
+  card:
+    # Confirmar atualização
+    > A alteração entra em vigor imediatamente.
+    row-end:
+      @ghost[Voltar](close)
+      @success[Confirmar](applyBilling)
+```
+</DslPreview>
+Por quê: inicia ajustes no drawer e confirma em modal separado para reforçar a decisão.

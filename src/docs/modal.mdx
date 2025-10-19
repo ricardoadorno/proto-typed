@@ -1,37 +1,14 @@
 # Modal
+Modais sobrepõem a tela atual para confirmar ações, exibir mensagens críticas ou coletar dados rápidos sem sair do fluxo.
 
-## O que é
-Overlay que aparece sobre a tela atual para capturar confirmações, formulários curtos ou mensagens importantes.
+## Quando usar
+- Confirmar operações destrutivas antes de prosseguir.
+- Capturar informações curtas, como convites, comentários ou aprovações.
+- Exibir mensagens importantes que exigem atenção imediata.
+- Dar continuidade a um fluxo iniciado por um botão, drawer ou FAB.
 
-## Capacidades
-- Declarar `modal Nome:` acessível por botões/links (`@[Abrir modal](Nome)`).
-- Conter qualquer conteúdo válido: `card`, `stack`, inputs e botões.
-- Fechar explicitamente com ações `@ghost[Cancelar](close)` ou navegando para outra tela.
-- Integrar com `list`, `component` ou `fab` para fluxos contextuais.
-
-## Sintaxe
-- `modal ConfirmDelete:`
-- `card:`
-- `# Confirmar exclusão`
-- `> Esta ação não pode ser desfeita.`
-- `row-end:`
-- `@ghost[Cancelar](close)`
-- `@destructive[Excluir](delete)`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `modal Nome:` | Define overlay | Nome inicia com letra maiúscula. |
-| Conteúdo interno | Slot | Normalmente envolve `card` para padronizar padding. |
-
-## Casos de uso
-- Confirmar ações destrutivas (`modal ConfirmDelete`).
-- Capturar dados rápidos (ex.: formulário de convite com 1–2 campos).
-- Exibir mensagens e etapas adicionais sem navegar para outra tela.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+## Exemplo básico
+<DslPreview title="Modal de confirmação">
 ```dsl
 modal ConfirmDelete:
   card:
@@ -44,34 +21,162 @@ modal ConfirmDelete:
 screen DangerZone:
   container:
     # Configurações avançadas
-    card:
-      *> Ao excluir, todos os dados serão removidos.
-      @destructive[Excluir conta](ConfirmDelete)
+    @destructive[Excluir conta](ConfirmDelete)
 ```
 </DslPreview>
+Por quê: bloqueia o fluxo até que a pessoa confirme ou cancele a operação sensível.
 
-<DslPreview title="Exemplo 2">
+## Variantes
+<DslPreview title="Modal com formulário curto">
 ```dsl
 modal InviteMember:
   card:
-    # Convidar novo membro
-    ___email: E-mail{usuario@empresa.com} | required
+    ## Convidar nova pessoa
+    ___email: E-mail{nome@empresa.com} | required
     row-end:
       @ghost[Cancelar](close)
       @success[Enviar convite](sendInvite)
+```
+</DslPreview>
+Quando usar: coletar poucos dados sem redirecionar para outra tela.
+Por quê: mantém o formulário rápido e focado na tarefa atômica.
 
-screen Team:
-  container:
-    # Equipe
+<DslPreview title="Modal informativo">
+```dsl
+modal ReleaseNotes:
+  card:
+    ## Novidades da versão
     list:
-      - Ana Souza | Product Manager
-      - Bruno Lima | Engineering Manager
+      - Novo dashboard de métricas
+      - Melhorias no fluxo de onboarding
+    row-end:
+      @[Entendi](close)
+```
+</DslPreview>
+Quando usar: comunicar atualizações ou avisos breves com confirmação explícita.
+Por quê: garante leitura obrigatória antes de fechar a mensagem.
 
-    @[Adicionar membro](InviteMember)
+<DslPreview title="Modal encadeado a um drawer">
+```dsl
+drawer BillingDrawer:
+  card:
+    ## Atualizar plano
+    @[Avançar](ConfirmBilling)
+
+modal ConfirmBilling:
+  card:
+    ## Confirmar atualização
+    > A alteração será aplicada imediatamente.
+    row-end:
+      @ghost[Voltar](close)
+      @success[Confirmar](applyBilling)
+```
+</DslPreview>
+Quando usar: complementar outro overlay com uma confirmação final.
+Por quê: separa ajustes e confirmação para reduzir erros em alterações críticas.
+
+## Composição (usando com outros)
+- **Modal + Button** — principal acionador para confirmações.
+- **Modal + Drawer** — fluxos em duas etapas com painel lateral e confirmação.
+- **Modal + Component Definition** — reutiliza layouts de mensagem ou formulário.
+
+<DslPreview title="Fluxo de aprovação em modal">
+```dsl
+component ApprovalModal:
+  card:
+    ## %title
+    > %message
+    row-end:
+      @ghost[Cancelar](close)
+      @success[Aprovar](%action)
+
+modal ApproveBudget:
+  $ApprovalModal:
+    - Aprovar orçamento
+    - Confirme o orçamento para seguir com a contratação.
+    - approveBudget
+```
+</DslPreview>
+Por quê: encapsula a estrutura do modal e reaproveita com dados diferentes.
+
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `nome` | identificador | — | Slug do modal (PascalCase recomendado). | Sim |
+| `conteúdo interno` | blocos DSL | — | Normalmente envolve `card` para garantir padding. | Sim |
+| `ações` | botões | — | Deve incluir opção de fechar (`close` ou `-1`). | Sim |
+| `acionadores` | botões/links/FAB | — | Elementos que abrem o modal (`@[Abrir](ModalName)`). | Sim |
+
+## Erros comuns (Do/Don’t)
+**Não faça — omitir ação de fechamento**
+<DslPreview title="❌ Errado — Sem botão de fechar">
+```dsl
+modal InfoModal:
+  card:
+    # Aviso importante
+    > Leia atentamente antes de continuar.
 ```
 </DslPreview>
 
-## Veja também
-- [Drawer](./drawer)
-- [Button](./button)
-- [Modal Flow](./modal-flow)
+Faça — adicione fechamento explícito
+<DslPreview title="✅ Correto — Botão de fechar presente">
+```dsl
+modal InfoModal:
+  card:
+    # Aviso importante
+    > Leia atentamente antes de continuar.
+    row-end:
+      @[Entendi](close)
+```
+</DslPreview>
+Por quê: modais precisam de uma ação clara que devolva o controle à pessoa usuária.
+
+**Não faça — misturar `close` e `-1`**
+<DslPreview title="❌ Errado — Fechamentos inconsistentes">
+```dsl
+modal ConfirmAction:
+  row-end:
+    @ghost[Cancelar](-1)
+    @[Confirmar](close)
+```
+</DslPreview>
+
+Faça — mantenha padrão único
+<DslPreview title="✅ Correto — Fechamento consistente">
+```dsl
+modal ConfirmAction:
+  row-end:
+    @ghost[Cancelar](close)
+    @[Confirmar](applyAction)
+```
+</DslPreview>
+Por quê: adotar um padrão único evita comportamento imprevisível ao fechar o modal.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Drawer`](./drawer): alternativa lateral para fluxos complementares.
+- [`Button`](./button): elemento mais comum para abrir modais.
+- [`Modal Flow`](./modal-flow): guia completo para encadear múltiplos modais.
+- [`Fab`](./fab): acionador global que pode abrir modais.
+
+### Composições recomendadas
+- **Modal + Button destrutivo** → confirma ações críticas antes de executá-las.
+- **Modal + Drawer** → etapa final após ajustes em painel lateral.
+- **Modal + Component Definition** → mensagens padronizadas reaproveitáveis.
+
+<DslPreview title="Modal confirmado por botão destrutivo">
+```dsl
+row-end:
+  @destructive[Excluir conta](ConfirmDelete)
+
+modal ConfirmDelete:
+  card:
+    ## Confirmar exclusão
+    > Essa ação não pode ser desfeita.
+    row-end:
+      @ghost[Cancelar](close)
+      @destructive[Excluir agora](deleteTenant)
+```
+</DslPreview>
+Por quê: CTA destrutivo abre modal que reforça o risco antes da execução.

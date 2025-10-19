@@ -1,78 +1,192 @@
 # Navigator
+Navigators montam menus fixos para alternar rapidamente entre telas relacionadas, mantendo a experiência alinhada.
 
-## O que é
-Menu fixo (geralmente inferior em mobile) que permite alternar rapidamente entre telas relacionadas.
+## Quando usar
+- Construir navegação inferior em apps mobile.
+- Alternar entre seções principais que compartilham layout base.
+- Destacar até cinco destinos que precisam estar sempre acessíveis.
+- Complementar headers simples quando abas ou drawer não fazem sentido.
 
-## Capacidades
-- Declarar barra de navegação com `navigator:` seguido de itens `- Texto | Destino` (com ou sem ícones).
-- Suportar ícones Lucide (`i-Home`, `i-User`) ao lado do texto.
-- Integrar com qualquer `screen` para manter navegação consistente entre seções.
-
-## Sintaxe
-- `navigator:`
-- `- Home | Home`
-- `- i-List Tarefas | Tasks`
-- `- Config | Settings`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `navigator:` | Cria barra | Repetir em cada tela do grupo para consistência. |
-| `- Texto | Destino` | Item de navegação | `Destino` deve ser tela existente. |
-| `- i-Icon Texto | Destino` | Item com ícone | Usar nomes Lucide válidos. |
-
-## Casos de uso
-- `navigator:` em telas principais de um app mobile (Home, Tarefas, Configurações).
-- `navigator:` combinando ícones para facilitar reconhecimento rápido.
-- Adicionar navegação inferior a dashboards com múltiplas subseções.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+## Exemplo básico
+<DslPreview title="Navigator replicado em telas do mesmo fluxo">
 ```dsl
 screen Home:
   container:
     # Início
-    > Explore as métricas e tarefas recentes.
+    > Acompanhe indicadores e novidades.
 
-  navigator:
+  navigator MainNav:
     - i-Home Início | Home
     - i-List Tarefas | Tasks
-    - i-Settings Config | Settings
+    - i-Settings Configurações | Settings
 
 screen Tasks:
   container:
     # Tarefas
     list:
       - Revisar backlog
-      - Preparar release
+      - Preparar demo
 
-  navigator:
+  navigator MainNav:
     - i-Home Início | Home
     - i-List Tarefas | Tasks
-    - i-Settings Config | Settings
+    - i-Settings Configurações | Settings
 ```
 </DslPreview>
+Por quê: replica o mesmo menu em cada tela do grupo para garantir consistência.
 
-<DslPreview title="Exemplo 2">
+## Variantes
+<DslPreview title="Navigator sem ícones">
 ```dsl
-screen Settings:
-  container-narrow:
-    # Configurações
-    ___email: E-mail{usuario@empresa.com}
-    ___password: Senha{••••••••}
-    row-end:
-      @ghost[Cancelar](-1)
-      @primary[Salvar alterações](saveSettings)
+navigator:
+  - Home | Home
+  - Métricas | Dashboard
+  - Configurações | Settings
+```
+</DslPreview>
+Quando usar: priorizar textos curtos quando os ícones não agregam contexto.
+Por quê: reduz ruído visual e favorece leitura rápida dos rótulos.
+
+<DslPreview title="Navigator com ícones Lucide">
+```dsl
+navigator:
+  - i-Home Início | Home
+  - i-List Tarefas | Tasks
+  - i-BarChart Métricas | Dashboard
+```
+</DslPreview>
+Quando usar: acelerar reconhecimento visual dos destinos principais.
+Por quê: ajuda a localizar telas frequentes apenas pelo símbolo.
+
+<DslPreview title="Navigator com destaque para três telas">
+```dsl
+navigator:
+  - i-Home Visão geral | Dashboard
+  - i-Users Equipe | Team
+  - i-Settings Ajustes | Settings
+```
+</DslPreview>
+Quando usar: destacar as telas mais relevantes de um fluxo reduzido.
+Por quê: três itens mantêm foco no essencial sem sobrecarregar o menu.
+
+## Composição (usando com outros)
+- **Navigator + Container** — mantém conteúdo alinhado com navegação fixa.
+- **Navigator + Screen** — aplicado em cada tela do grupo para consistência.
+- **Navigator + Fab** — combina navegação persistente com ação global.
+
+<DslPreview title="Navigator com FAB complementar">
+```dsl
+screen Dashboard:
+  container:
+    # Visão geral
+    > Use o menu inferior para navegar entre seções.
+
+  fab:
+    - i-Plus | TaskForm
 
   navigator:
-    - i-Home Início | Home
+    - i-Home Dashboard | Dashboard
     - i-List Tarefas | Tasks
-    - i-Settings Config | Settings
+    - i-Settings Configurações | Settings
+```
+</DslPreview>
+Por quê: mantém navegação fixa enquanto o FAB oferece atalhos de ação.
+
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `navigator` | bloco | — | Declara menu com itens linha a linha. | Sim |
+| `itens` | `- label | Destino` | — | Cada entrada aponta para tela existente. | Sim |
+| `ícones` | token `i-` | — | Opcional para reforçar a identificação visual. | Não |
+| `nome` | identificador | — | Opcional após `navigator` para documentar o menu. | Não |
+
+## Erros comuns (Do/Don’t)
+**Não faça — variar itens entre telas do mesmo grupo**
+<DslPreview title="❌ Errado — Menu inconsistente">
+```dsl
+screen Home:
+  navigator:
+    - Home | Home
+    - Tarefas | Tasks
+
+screen Tasks:
+  navigator:
+    - Home | Home
+    - Config | Settings
 ```
 </DslPreview>
 
-## Veja também
-- [Button](./button)
-- [Screen](./screen)
-- [Fab](./fab)
+Faça — mantenha o mesmo conjunto em todas as telas
+<DslPreview title="✅ Correto — Itens alinhados">
+```dsl
+screen Home:
+  navigator:
+    - Home | Home
+    - Tarefas | Tasks
+    - Config | Settings
+
+screen Tasks:
+  navigator:
+    - Home | Home
+    - Tarefas | Tasks
+    - Config | Settings
+```
+</DslPreview>
+Por quê: consistência evita que a pessoa perca destinos ao alternar telas.
+
+**Não faça — substituir navigator por `list` em menus fixos**
+<DslPreview title="❌ Errado — Lista usada como menu">
+```dsl
+list:
+  - Dashboard
+  - Tarefas
+  - Configurações
+```
+</DslPreview>
+
+Faça — use `navigator` para controles de navegação
+<DslPreview title="✅ Correto — Menu com navigator">
+```dsl
+navigator:
+  - Dashboard | Dashboard
+  - Tarefas | Tasks
+  - Configurações | Settings
+```
+</DslPreview>
+Por quê: `navigator` aplica semântica e comportamento apropriados para menus.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Screen`](./screen): destino principal de cada item do menu.
+- [`Button`](./button): ações locais que complementam a navegação.
+- [`Fab`](./fab): atalho global coexistindo com menus fixos.
+- [`Drawer`](./drawer): alternativa lateral para navegação contextual.
+
+### Composições recomendadas
+- **Navigator + Fab** → navegação persistente com ação global.
+- **Navigator + Container** → conteúdo central alinhado ao menu inferior.
+- **Navigator + Drawer** → menu inferior + painel lateral para contexto extra.
+
+<DslPreview title="Navigator e drawer combinados">
+```dsl
+screen Projects:
+  container:
+    # Projetos
+    list:
+      - Novo site
+      - Aplicativo mobile
+
+  navigator:
+    - Projetos | Projects
+    - Equipe | Team
+    - Configurações | Settings
+
+  drawer Filters:
+    container:
+      # Filtrar projetos
+      ___select: Status{Todos | Ativo | Concluído}
+      @[Aplicar filtros](applyFilters)
+```
+</DslPreview>
+Por quê: navigator cuida da navegação global enquanto o drawer filtra o conteúdo atual.

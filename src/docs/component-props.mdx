@@ -1,58 +1,54 @@
 # Component Props
+## Por que importa
+Props conectam dados dinâmicos à estrutura do componente, permitindo reaproveitar o mesmo layout com conteúdos diferentes. O posicionamento consistente evita duplicação e erros em coleções.
 
-## O que é
-Mecanismo para passar valores dinâmicos a componentes via linhas com pipes (`- valor1 | valor2`) e placeholders `%prop` no template.
-
-## Capacidades
-- Substituir `%prop` por valores posicionais definidos na instância.
-- Trabalhar com múltiplas colunas em `list $Component:` ou instâncias individuais `$Component:`.
-- Combinar props com ações, ícones e textos dentro do componente.
-
-## Sintaxe
-- `component UserCard:`
-- `card:`
-- `## %name`
-- `>> %email`
-- `@[Contato](mailto:%email)`
-- `screen Team:`
-- `list $UserCard:`
-- `- Ana Souza | ana@empresa.com`
-- `- Bruno Lima | bruno@empresa.com`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `%prop` | Placeholder | Define posição da informação na instância. |
-| `$Componente:` | Instância com props | Cada linha `-` mapeia para os `%props`. |
-| `list $Componente:` | Coleção | Usa várias linhas de dados. |
-
-## Casos de uso
-- Criar cards reutilizáveis com dados dinâmicos (usuários, produtos, métricas).
-- Montar listas repetitivas em `list $Component:` sem duplicar markup.
-- Gerar dashboards com múltiplas props (título, valor, tendência).
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+## Forma canônica (sintaxe mínima)
+<DslPreview title="Template com dois `%props`">
 ```dsl
 component UserCard:
   card:
     ## %name
-    >> %role
-    >>> %email
-    @[Enviar mensagem](mailto:%email)
+    >> %email
 
-screen Team:
-  container:
-    # Nossa equipe
-    list $UserCard:
-      - Ana Souza | Product Manager | ana@empresa.com
-      - Bruno Lima | Engineering Manager | bruno@empresa.com
-      - Carla Dias | UX Designer | carla@empresa.com
+$UserCard:
+  - Ana Souza | ana@empresa.com
 ```
 </DslPreview>
+Por quê: demonstra como cada valor separado por `|` preenche o `%prop` correspondente.
 
-<DslPreview title="Exemplo 2">
+## Padrões de uso
+<DslPreview title="Props em listas">
+```dsl
+component TaskRow:
+  row-between:
+    > %title
+    >>> %due
+
+list $TaskRow:
+  - Revisar backlog | 22/09
+  - Preparar demo | 25/09
+```
+</DslPreview>
+Quando usar: gerar linhas repetidas com dados que mudam a cada item.
+Por quê: cria coleções extensíveis sem duplicar estrutura manualmente.
+
+<DslPreview title="Props com ações">
+```dsl
+component ActionCard:
+  card:
+    ## %title
+    > %description
+    row-end:
+      @[Abrir](%action)
+
+$ActionCard:
+  - Configurar integrações | Ajuste APIs conectadas | Integrations
+```
+</DslPreview>
+Quando usar: parametrizar destinos de botões e textos no mesmo componente.
+Por quê: facilita ajustes futuros do fluxo trocando somente os valores usados nas props.
+
+<DslPreview title="Props com percentuais e tendências">
 ```dsl
 component MetricCard:
   card:
@@ -60,19 +56,91 @@ component MetricCard:
     # %value
     >> %trend
 
-screen Dashboard:
-  container-wide:
-    grid-3:
-      $MetricCard:
-        - Leads | 1.240 | +8%
-      $MetricCard:
-        - Conversões | 134 | +5%
-      $MetricCard:
-        - Satisfação | 92% | +3%
+grid-3:
+  $MetricCard:
+    - Leads captados | 1.240 | +8%
+  $MetricCard:
+    - Conversões | 134 | +5%
+  $MetricCard:
+    - Satisfação | 92% | +3%
+```
+</DslPreview>
+Quando usar: atualizar métricas com múltiplos campos sem alterar o layout.
+Por quê: mantém a apresentação das métricas alinhada mesmo com novos dados.
+
+## Erros comuns (Do/Don’t)
+**Não faça — usar `%prop` não declarado na instância**
+<DslPreview title="❌ Errado — Valor extra sem placeholder">
+```dsl
+component HeroBanner:
+  card:
+    ## %title
+    > %subtitle
+
+$HeroBanner:
+  - Prototipe rápido | Construa telas em minutos | Dashboard
 ```
 </DslPreview>
 
-## Veja também
-- [Component Definition](./component-definition)
-- [Component List](./component-list)
-- [Component Composition](./component-composition)
+Faça — ajuste a estrutura ou remova o valor excedente
+<DslPreview title="✅ Correto — Props alinhados">
+```dsl
+$HeroBanner:
+  - Prototipe rápido | Construa telas em minutos
+```
+</DslPreview>
+Por quê: valores extras ficam sem destino, gerando inconsistências na renderização.
+
+**Não faça — reutilizar `%prop` para propósitos diferentes**
+<DslPreview title="❌ Errado — `%title` usado como label e ação">
+```dsl
+component QuickLink:
+  card:
+    ## %title
+    @[Abrir %title](%title)
+```
+</DslPreview>
+
+Faça — crie props específicos para cada papel
+<DslPreview title="✅ Correto — Props separados">
+```dsl
+component QuickLink:
+  card:
+    ## %label
+    @[Abrir %label](%action)
+```
+</DslPreview>
+Por quê: separar props mantém clareza semântica e facilita ajustes futuros.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Component Definition`](./component-definition): ensina a estruturar o componente que receberá props.
+- [`Component List`](./component-list): renderiza coleções de componentes com dados tabulares.
+- [`Component Composition`](./component-composition): combina componentes parametrizados entre si.
+- [`List`](./list): fornece dados em formato `- valor | valor` para alimentar props.
+
+### Composições recomendadas
+- **Component Props + List** → coleções dinâmicas sem duplicar layout.
+- **Component Props + Grid** → dashboards com métricas parametrizadas.
+- **Component Props + Modal** → formularios ou confirmações reaproveitados.
+
+<DslPreview title="Props aplicados em modal reutilizável">
+```dsl
+component ConfirmationModal:
+  card:
+    ## %title
+    > %message
+    row-end:
+      @ghost[Cancelar](close)
+      @success[%cta](%action)
+
+modal ConfirmInvite:
+  $ConfirmationModal:
+    - Confirmar convite
+    - Confirme para enviar o convite ao time.
+    - Enviar convite
+    - sendInvite
+```
+</DslPreview>
+Por quê: parametriza título, mensagem e ações mantendo uma única estrutura de modal.

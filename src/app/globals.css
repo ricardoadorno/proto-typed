@@ -113,6 +113,7 @@ button {
     --accent: var(--brand-500);
     --accent-light: var(--brand-400);
     --warning: #f59e0b;
+    --attention: #f97316;
     --danger: #ef4444;
     --info: #3b82f6;
     --success: #16a34a;
@@ -170,6 +171,7 @@ button {
     --accent: var(--brand-400);
     --accent-light: var(--brand-300);
     --warning: #f59e0b;
+    --attention: #fb923c;
     --danger: #ef4444;
     --info: #60a5fa;
     --success: #22c55e;

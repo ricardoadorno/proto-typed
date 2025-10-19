@@ -1,42 +1,26 @@
 # Themes
+## Por que importa
+Temas adaptam o produto à identidade visual da marca, garantindo contraste adequado e experiência consistente em todas as telas. Ajustar tokens core evita intervenção manual em cada componente.
 
-## O que é
-Abordagem para personalizar o tema global da aplicação ajustando tokens fornecidos pelo sistema (`--primary`, `--muted`, `--radius`).
+## Forma canônica (sintaxe mínima)
+<DslPreview title="Tema customizado no bloco de estilos">
+```dsl
+styles:
+  --primary: oklch(0.68 0.15 210);
+  --primary-foreground: oklch(0.98 0 0);
+  --background: oklch(0.14 0.01 240);
+  --foreground: oklch(0.95 0 0);
+```
+</DslPreview>
+Por quê: define cores principais e de texto, base para qualquer variação temática.
 
-## Capacidades
-- Sobrescrever cores padrão definidas pela engine para adaptar à identidade visual.
-- Ajustar tipografia (contrastando `--foreground`, `--muted`), espaçamentos e radius.
-- Combinar com `styles:` para tokens customizados e usar em componentes.
-
-## Sintaxe
-- `styles:`
-- `--primary: oklch(0.68 0.15 210);`
-- `--primary-foreground: oklch(0.98 0 0);`
-- `--muted: oklch(0.22 0.02 240);`
-- `--card: oklch(0.16 0.03 245);`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `--primary`, `--primary-foreground` | Cores primárias | Ajustam botões e CTAs principais. |
-| `--secondary`, `--muted` | Cores auxiliares | Influenciam cards, notas, planos de fundo. |
-| `--radius` | Borda global | Afeta cards, botões e inputs. |
-| Tokens custom | Extensão | Podem ser usados em componentes com CSS inline. |
-
-## Casos de uso
-- Aplicar paleta da marca aos botões e títulos.
-- Criar temas escuros ou de alto contraste ajustando `--background`, `--foreground`.
-- Reaproveitar o mesmo bloco de estilos em várias telas.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+## Padrões de uso
+<DslPreview title="Paleta da marca aplicada a planos de assinatura">
 ```dsl
 styles:
   --primary: oklch(0.7 0.15 220);
-  --primary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.22 0.02 250);
-  --card: oklch(0.16 0.03 245);
+  --accent: oklch(0.68 0.18 250);
+  --radius: 0.75rem;
 
 screen Pricing:
   container:
@@ -53,8 +37,36 @@ screen Pricing:
         @[Falar com vendas](contact)
 ```
 </DslPreview>
+Quando usar: alinhar botões, cards e raio às diretrizes da marca.
+Por quê: assegura que elementos críticos sigam o branding aprovado.
 
-<DslPreview title="Exemplo 2">
+<DslPreview title="Tema escuro com contraste garantido">
+```dsl
+styles:
+  --background: oklch(0.13 0.02 250);
+  --foreground: oklch(0.95 0 0);
+  --card: oklch(0.18 0.03 250);
+  --muted: oklch(0.32 0.04 250);
+
+screen DarkDashboard:
+  container-wide:
+    # Métricas noturnas
+    grid-3:
+      card:
+        ## Leads
+        # 1.240
+      card:
+        ## Conversões
+        # 134
+      card:
+        ## Satisfação
+        # 92%
+```
+</DslPreview>
+Quando usar: oferecer modo escuro ou alto contraste sem alterar cada componente.
+Por quê: melhora acessibilidade e cansaço visual com poucas mudanças.
+
+<DslPreview title="Tokens customizados combinados com componentes">
 ```dsl
 styles:
   --brand-header: #0b132b;
@@ -72,8 +84,83 @@ screen Landing:
       - Proto-Typed | Ajuste o tema com CSS variables | Signup
 ```
 </DslPreview>
+Quando usar: criar tokens específicos e referenciá-los dentro de componentes compostos.
+Por quê: facilita reaproveitamento dos mesmos valores em diferentes blocos.
 
-## Veja também
-- [Styles Block](./styles-block)
-- [Button](./button)
-- [Card](./card)
+## Erros comuns (Do/Don’t)
+**Não faça — alterar tokens diretamente no componente**
+<DslPreview title="❌ Errado — Estilo local sem tema">
+```dsl
+card:
+  ## Configurações
+  --primary: #2563eb;
+  > Ajustes rápidos.
+```
+</DslPreview>
+
+Faça — centralize no tema
+<DslPreview title="✅ Correto — Token global aplicado">
+```dsl
+styles:
+  --primary: #2563eb;
+
+card:
+  ## Configurações
+  > Ajustes rápidos.
+```
+</DslPreview>
+Por quê: tokens globais evitam divergências entre telas.
+
+**Não faça — escolher cores sem contraste adequado**
+<DslPreview title="❌ Errado — Baixo contraste">
+```dsl
+styles:
+  --background: oklch(0.9 0.01 240);
+  --foreground: oklch(0.88 0.01 240);
+```
+</DslPreview>
+
+Faça — valide contraste mínimo
+<DslPreview title="✅ Correto — Contraste forte">
+```dsl
+styles:
+  --background: oklch(0.14 0.01 240);
+  --foreground: oklch(0.95 0 0);
+```
+</DslPreview>
+Por quê: contraste insuficiente compromete leitura e acessibilidade.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Styles Block`](./styles-block): local onde os tokens são declarados.
+- [`Button`](./button): responde diretamente às variáveis de cor.
+- [`Card`](./card): utiliza tokens de fundo e raio do tema.
+- [`Dashboard`](./dashboard): demonstra a aplicação de temas em telas analíticas.
+
+### Composições recomendadas
+- **Themes + Styles Block** → separa tokens padrão e variações específicas.
+- **Themes + Component Composition** → garante consistência em componentes complexos.
+- **Themes + Modal** → controla contraste em overlays.
+
+<DslPreview title="Tema aplicado junto com componente composto">
+```dsl
+styles:
+  --primary: #1f2937;
+  --primary-foreground: #f8fafc;
+
+component HeroBanner:
+  card:
+    ## %title
+    > %subtitle
+    @[Começar agora](%action)
+
+screen Home:
+  container:
+    $HeroBanner:
+      - Lançamento do novo tema
+      - Ajuste tokens para alinhar com a marca.
+      - ThemeGuide
+```
+</DslPreview>
+Por quê: o tema global define aparência enquanto o componente compõe conteúdo reutilizável.

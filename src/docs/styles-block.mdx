@@ -1,47 +1,39 @@
 # Styles Block
+## Por que importa
+O bloco `styles:` centraliza tokens de cor, tipografia e espaçamento. Ajustes feitos aqui propagam para todo o DSL, garantindo identidade visual consistente e facilitando a manutenção de temas.
 
-## O que é
-Bloco `styles:` que permite definir e sobrescrever CSS custom properties utilizadas pelo renderer (cores, espaçamentos, fontes).
-
-## Capacidades
-- Declarar variáveis como `--primary`, `--accent`, `--radius` para personalizar tema.\n+- Criar tokens próprios (`--brand-color`, `--spacing-card`) e reutilizar no layout.\n+- Aplicar estilos globais que afetam botões, cards e tipografia.
-
-## Sintaxe
-- `styles:`
-- `--primary: oklch(0.68 0.15 210);`
-- `--primary-foreground: oklch(0.98 0 0);`
-- `--radius: 0.75rem;`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `styles:` | Início do bloco | Válido no topo do arquivo DSL. |
-| `--token: valor;` | Propriedade CSS | Deve terminar com `;`. |
-
-## Casos de uso
-- Ajustar cores primárias e secundárias de acordo com a identidade da marca.\n+- Configurar `--radius` para alterar bordas de componentes.\n+- Definir tokens customizados reutilizados em componentes (`--brand-color`). 
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+## Forma canônica (sintaxe mínima)
+<DslPreview title="Bloco de estilos básico">
 ```dsl
 styles:
-  --primary: oklch(0.7 0.15 220);
+  --primary: oklch(0.70 0.15 220);
   --primary-foreground: oklch(0.98 0 0);
-  --accent: oklch(0.68 0.18 250);
+```
+</DslPreview>
+Por quê: define o conjunto mínimo de variáveis para controlar a cor primária e seu contraste.
+
+## Padrões de uso
+<DslPreview title="Personalização de cores e raio">
+```dsl
+styles:
+  --primary: oklch(0.68 0.15 210);
+  --primary-foreground: oklch(0.98 0 0);
+  --accent: oklch(0.74 0.14 280);
   --radius: 0.75rem;
 
 screen CustomTheme:
   container:
-    # Tema personalizado
-    > Botões e cards usam as variáveis definidas no bloco.
+    # Tema adaptado
+    > Botões e cards refletem os tokens configurados.
     row:
       @[Ação principal](Action)
       @secondary[Secundário](Secondary)
 ```
 </DslPreview>
+Quando usar: alinhar a interface à identidade de marca ajustando tokens globais.
+Por quê: todas as telas refletem imediatamente as novas cores e raios.
 
-<DslPreview title="Exemplo 2">
+<DslPreview title="Tokens customizados reutilizáveis">
 ```dsl
 styles:
   --brand-color: #0f172a;
@@ -51,16 +43,95 @@ component Hero:
   card:
     ## %title
     > %subtitle
-    @[Começar agora](%destination)
+    row-end:
+      @[Começar agora](%destination)
+```
+</DslPreview>
+Quando usar: criar variáveis específicas que serão utilizadas em múltiplos componentes.
+Por quê: tokens customizados evitam repetir valores hexadecimais ou medidas locais.
 
-screen Landing:
+<DslPreview title="Combinação com temas">
+```dsl
+styles:
+  --primary: var(--theme-primary);
+  --secondary: var(--theme-secondary);
+
+screen ThemedDashboard:
   container:
-    $Hero:
-      - Proto-Typed | Construa protótipos com velocidade | Signup
+    # Dashboard temático
+    > As cores respondem ao tema ativo.
+```
+</DslPreview>
+Quando usar: integrar o bloco de estilos com estratégias definidas em `themes`.
+Por quê: permite alternar paletas completas apenas trocando os valores de tema.
+
+## Erros comuns (Do/Don’t)
+**Não faça — definir tokens espalhados fora de `styles:`**
+<DslPreview title="❌ Errado — Token fora do bloco">
+```dsl
+component Hero:
+  card:
+    --brand-color: #0f172a;
+    ## %title
 ```
 </DslPreview>
 
-## Veja também
-- [Themes](./themes)
-- [Button](./button)
-- [Card](./card)
+Faça — centralize no bloco de estilos
+<DslPreview title="✅ Correto — Token global">
+```dsl
+styles:
+  --brand-color: #0f172a;
+
+component Hero:
+  card:
+    ## %title
+    >>> Usa var(--brand-color) no tema.
+```
+</DslPreview>
+Por quê: manter tokens no `styles:` evita divergências e facilita auditoria.
+
+**Não faça — esquecer `;` ao final de cada linha**
+<DslPreview title="❌ Errado — Sintaxe incompleta">
+```dsl
+styles:
+  --primary: #1f2937
+```
+</DslPreview>
+
+Faça — finalize cada propriedade corretamente
+<DslPreview title="✅ Correto — Linha terminada">
+```dsl
+styles:
+  --primary: #1f2937;
+```
+</DslPreview>
+Por quê: o parser requer `;` para reconhecer cada declaração.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Themes`](./themes): amplia personalização com múltiplos conjuntos de tokens.
+- [`Button`](./button): responde diretamente a cores e raios definidos no bloco.
+- [`Card`](./card): utiliza variáveis de espaçamento e cor globais.
+- [`Dashboard`](./dashboard): demonstra aplicação prática de temas customizados.
+
+### Composições recomendadas
+- **Styles Block + Themes** → controla variações de marca em ambientes diferentes.
+- **Styles Block + Component Composition** → usa tokens customizados em componentes complexos.
+- **Styles Block + Modal** → garante contraste adequado em overlays.
+
+<DslPreview title="Estilos aplicados em modal">
+```dsl
+styles:
+  --modal-background: #0f172a;
+  --modal-foreground: #f8fafc;
+
+modal DarkModal:
+  card:
+    ## Atenção
+    > Overlays usam tokens customizados definidos no bloco.
+    row-end:
+      @[Entendi](close)
+```
+</DslPreview>
+Por quê: o bloco garante contraste certo entre fundo e texto do modal.

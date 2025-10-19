@@ -1,47 +1,22 @@
 # Login Screen
+## Pré-requisitos
+- Conhecer `input` para campos de e-mail e senha.
+- Definir rotas de suporte como recuperação de senha ou cadastro.
+- Configurar ações de navegação (`@[Entrar]`, `@ghost[Esqueci]`) para conduzir o fluxo.
 
-## O que é
-Guia cookbook que monta uma tela de autenticação completa com inputs, botões de ação e links auxiliares.
+## Passo a passo
+1. Estruture a tela com `container` e `card` para delimitar o formulário.
+2. Adicione campos obrigatórios (`___email`, `___password`) com placeholders claros e validações.
+3. Crie links auxiliares para recuperação e criação de conta.
+4. Configure o botão principal para redirecionar ao dashboard ou próxima etapa segura.
 
-## Capacidades
-- Organizar formulário em `container` e `card` com `stack` interna.
-- Validar campos essenciais (`___email`, `___password`) e ativar ações (`@[Entrar]`).
-- Fornecer fluxos paralelos (recuperar senha, criar conta) com botões e links.
-- Reutilizar a mesma tela em conjunto com modais ou dashboards.
-
-## Sintaxe
-- `screen Login:`
-- `container:`
-- `card:`
-- `___email: Email{seu@dominio.com}`
-- `___password: Senha{••••}`
-- `[X] Lembrar de mim`
-- `row-end:`
-- `@ghost[Esqueci a senha](Recover)`
-- `@[Entrar](Dashboard)`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `screen Login` | Tela principal | Exibe formulário e CTAs. |
-| Inputs (`___email`, `___password`) | Captura dados | Podem receber `required` nos atributos. |
-| Links auxiliares | Navegação | Use `@ghost` ou `#[...]` para rotas secundárias. |
-| CTA principal | Botão `@` | Direciona para dashboard ou próxima etapa. |
-
-## Casos de uso
-- Tela inicial de acesso para apps internos ou SaaS.
-- Workflow com recuperação de senha via outra `screen`. 
-- Encadeamento com `modal` de autenticação em dois fatores.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+<DslPreview title="Tela de login completa">
 ```dsl
 screen Login:
   container:
     # Acesse sua conta
     card:
-      stack:
+      stack-loose:
         ___email: E-mail{usuario@empresa.com} | required
         ___password: Senha{Mínimo 8 caracteres} | required minlength="8"
         [X] Permanecer conectado
@@ -55,33 +30,32 @@ screen Recover:
     # Recuperar senha
     ___email: E-mail cadastrado{usuario@empresa.com} | required
     row-end:
-      @ghost[Cancelar](-1)
+      @ghost[Cancelar](Login)
       @[Enviar instruções](sendReset)
 
 screen Signup:
   container-narrow:
     # Criar conta
-    stack:
+    stack-loose:
       ___: Nome completo{Seu nome}
-      ___email: E-mail{email@empresa.com}
-      ___password: Senha{••••••••} | minlength="8"
+      ___email: E-mail{email@empresa.com} | required
+      ___password: Senha{Mínimo 8 caracteres} | required minlength="8"
     row-end:
       @ghost[Voltar](Login)
       @primary[Começar agora](createAccount)
 ```
 </DslPreview>
+Por quê: organiza credenciais, links auxiliares e fluxos de suporte em uma única experiência.
 
-<DslPreview title="Exemplo 2">
-```dsl
-screen Dashboard:
-  container:
-    # Bem-vindo(a)
-    > Você entrou com sucesso.
-    @[Voltar ao login](Login)
-```
-</DslPreview>
+## Depuração rápida
+- Botão principal não navega → confirme o slug `Dashboard` no destino.
+- Placeholder ausente → garanta `{placeholder}` em todos os inputs.
+- Validação mínima ignorada → inclua `required` ou atributos como `minlength="8"`.
+- Link de recuperação não retorna → ajuste `@ghost[Cancelar](Login)` para voltar à tela de login.
+- Checkbox desalinhado → coloque `[X]` dentro do mesmo `stack` dos inputs.
 
-## Veja também
-- [Input](./input)
-- [Button](./button)
-- [Modal Flow](./modal-flow)
+## Próximos passos
+- Revise [`Input`](./input) para cobrir campos adicionais (2FA, selects).
+- Explore [`Modal Flow`](./modal-flow) se precisar autenticação em múltiplas etapas.
+- Consulte [`Button`](./button) para definir variantes coerentes nas ações.
+- Avalie [`Themes`](./themes) para aplicar branding à tela de login.

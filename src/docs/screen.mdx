@@ -1,73 +1,47 @@
 # Screen
+## Por que importa
+`screen Nome:` é a unidade navegável da DSL. Cada tela organiza conteúdo, conecta fluxos e serve como destino para botões, links ou navegadores. Estruturar telas corretamente garante navegação previsível e manutenção simples.
 
-## O que é
-Elemento raiz que define uma tela navegável. Cada `screen Nome:` cria um destino acessível por botões e links internos.
-
-## Capacidades
-- Declarar múltiplas telas no mesmo arquivo DSL (`screen Home`, `screen Dashboard`).
-- Encapsular qualquer combinação de layouts (`container`, `stack`, `grid`) e componentes.
-- Trabalhar com navegação via botões (`@[Ir para Dashboard](Dashboard)`) ou links (`#[Voltar](Home)`).
-- Carregar modais/drawers complementares referenciando seus nomes.
-
-## Sintaxe
-- `screen NomeDaTela:`
-- `container:`
-- `# Cabeçalho`
-- `> Conteúdo`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `screen Nome:` | Define uma view | Nome inicia com letra maiúscula. |
-| Corpo da tela | Slot | Recebe layouts, componentes e exemplos DSL. |
-
-## Casos de uso
-- `screen Home:` Tela inicial com lista de atalhos e CTA principal.
-- `screen Dashboard:` Visão analítica com `grid` e cards.
-- `screen Settings:` Preferências com formulários e navegação auxiliar.
-- `screen` + `modal/drawer:` Fluxos multi-etapas acionados por botões.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+## Forma canônica (sintaxe mínima)
+<DslPreview title="Tela com container principal">
 ```dsl
 screen Home:
   container:
     # Bem-vindo
     > Escolha uma ação para começar.
-
-    row-between:
-      @[Criar tarefa](TaskForm)
-      @secondary[Ver dashboard](Dashboard)
-
-    list:
-      - Checklist diário | @[Abrir](DailyChecklist)
-      - Exportar relatórios | @[Download CSV](https://example.com/report.csv)
-
-screen TaskForm:
-  container:
-    # Nova tarefa
-    ___: Título{Nome da tarefa}
-    ___textarea: Descrição{Detalhes}
-    row-end:
-      @ghost[Cancelar](-1)
-      @[Salvar](saveTask)
-
-modal ConfirmDelete:
-  card:
-    # Confirmar exclusão
-    > Esta ação não pode ser desfeita.
-    row-end:
-      @ghost[Voltar](close)
-      @destructive[Excluir agora](deleteTask)
 ```
 </DslPreview>
+Por quê: define uma tela com layout centralizado e hierarquia textual básica.
 
-<DslPreview title="Exemplo 2">
+## Padrões de uso
+<DslPreview title="Screen com fluxos complementares">
+```dsl
+screen Tasks:
+  container:
+    # Tarefas
+    list:
+      - Revisar backlog
+      - Preparar demo
+    row-end:
+      @[Criar tarefa](TaskForm)
+
+modal TaskForm:
+  card:
+    ## Nova tarefa
+    ___: Título{Nome da tarefa}
+    row-end:
+      @ghost[Cancelar](close)
+      @[Salvar](saveTask)
+```
+</DslPreview>
+Quando usar: acionar modais a partir da tela principal sem perder contexto.
+Por quê: mantém foco na tarefa atual enquanto resolve ações complementares.
+
+<DslPreview title="Screen com múltiplos containers">
 ```dsl
 screen Dashboard:
   container-wide:
-    # Visão geral
+    # Indicadores
     grid-3:
       card:
         ## Leads
@@ -79,23 +53,120 @@ screen Dashboard:
         ## Satisfação
         # 92%
 
+  container-narrow:
+    card:
+      ## Próximas ações
+      list:
+        - Revisar backlog
+        - Agendar retrospectiva
+```
+</DslPreview>
+Quando usar: combinar colunas diferentes na mesma tela mantendo alinhamento consistente.
+Por quê: distribui o conteúdo em zonas claras (visualização ampla x ações complementares).
+
+<DslPreview title="Screen com navigator persistente">
+```dsl
+screen Settings:
+  container-narrow:
+    # Configurações
+    ___email: E-mail{nome@empresa.com}
+    row-end:
+      @ghost[Cancelar](-1)
+      @[Salvar alterações](saveSettings)
+
   navigator:
     - Home | Home
     - Dashboard | Dashboard
     - Configurações | Settings
+```
+</DslPreview>
+Quando usar: replicar menu inferior em todas as telas do grupo.
+Por quê: promove navegação previsível entre seções irmãs.
 
-screen Settings:
-  container-narrow:
+## Erros comuns (Do/Don’t)
+**Não faça — declarar telas com o mesmo nome**
+<DslPreview title="❌ Errado — Duplicação de slug">
+```dsl
+screen Dashboard:
+  container:
+    # Métricas
+
+screen Dashboard:
+  container:
     # Configurações
-    ___email: E-mail{usuario@empresa.com}
-    ___password: Senha{••••••••}
-    row-end:
-      @ghost[Cancelar](-1)
-      @primary[Salvar alterações](saveSettings)
 ```
 </DslPreview>
 
-## Veja também
-- [Modal](./modal)
-- [Drawer](./drawer)
-- [Navigator](./navigator)
+Faça — escolha nomes únicos
+<DslPreview title="✅ Correto — Nomes distintos">
+```dsl
+screen Dashboard:
+  container:
+    # Métricas
+
+screen Settings:
+  container:
+    # Configurações
+```
+</DslPreview>
+Por quê: slugs duplicados quebram navegação e confundem acionadores.
+
+**Não faça — deixar tela sem estrutura principal**
+<DslPreview title="❌ Errado — Conteúdo solto">
+```dsl
+screen Home:
+  # Bem-vindo
+  > Escolha uma opção.
+```
+</DslPreview>
+
+Faça — envolva conteúdo em layouts apropriados
+<DslPreview title="✅ Correto — Uso de container">
+```dsl
+screen Home:
+  container:
+    # Bem-vindo
+    > Escolha uma opção.
+```
+</DslPreview>
+Por quê: layouts (`container`, `stack`, `card`) controlam largura, espaçamento e responsividade.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Navigator`](./navigator): organiza menus que apontam para diferentes screens.
+- [`Modal`](./modal): complementa telas com confirmações e formulários rápidos.
+- [`Drawer`](./drawer): oferece painéis laterais dentro da mesma tela.
+- [`Container`](./container): layout principal aplicado dentro de screens.
+
+### Composições recomendadas
+- **Screen + Container** → base para qualquer conteúdo navegável.
+- **Screen + Modal/Drawer** → fluxos complementares sem trocar de tela.
+- **Screen + Navigator** → navegação persistente entre seções principais.
+
+<DslPreview title="Screen com drawer e modal integrados">
+```dsl
+screen Accounts:
+  container-wide:
+    # Contas
+    list:
+      - Grupo Norte | @[Ver detalhes](AccountDrawer)
+
+drawer AccountDrawer:
+  card:
+    ## Grupo Norte
+    > Revise dados de faturamento.
+    row-end:
+      @ghost[Fechar](close)
+      @[Editar conta](EditAccount)
+
+modal EditAccount:
+  card:
+    ## Editar conta
+    ___: Nome{Grupo Norte}
+    row-end:
+      @ghost[Cancelar](close)
+      @success[Salvar](saveAccount)
+```
+</DslPreview>
+Por quê: combina tela principal, drawer e modal para dar continuidade ao fluxo sem perder contexto.

@@ -1,54 +1,16 @@
 # Dashboard
+## Pré-requisitos
+- Conhecer `container`, `grid` e `card` para estruturar conteúdo.
+- Ter componentes básicos como `MetricCard` ou `TaskRow` definidos.
+- Entender acionadores de `drawer` e `modal` para filtros e entrada de dados.
 
-## O que é
-Guia cookbook que mostra um layout de painel com métricas, cards e filtros usando os blocos básicos da DSL.
+## Passo a passo
+1. Defina o cabeçalho da tela com título e ações de atualização ou filtro.
+2. Estruture a área principal com `container-wide` e `grid-3` para métricas críticas.
+3. Adicione seções auxiliares em `grid-2` ou `container-narrow` para listas e tarefas.
+4. Crie overlays auxiliares (`drawer` para filtros, `modal` para criação rápida) e vincule-os ao FAB.
 
-## Capacidades
-- Combinar `grid-3` para métricas, `card` para listas e `fab` para ações rápidas.
-- Integrar `drawer` de filtros e `modal` para criação de dados.
-- Demonstrar navegação complementar via `navigator` ou botões inline.
-
-## Sintaxe
-screen Dashboard:
-  container-wide:
-    grid-3:
-      card:
-        ## Métrica A
-        # 120
-      card:
-        ## Métrica B
-        # 85
-
-  fab:
-    - i-Plus | NewMetric
-
-drawer FilterDrawer:
-  container:
-    ___:Intervalo[7 dias | 30 dias]
-    @primary[Aplicar](applyFilters)
-
-modal NewMetric:
-  card:
-    ___:Título
-    ___number: Valor{0}
-    @[Salvar](saveMetric)
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `screen Dashboard` | Tela principal | Centraliza cards e métricas. |
-| `grid-3` | Painel de métricas | Cada coluna recebe um `card`. |
-| `drawer FilterDrawer` | Filtros complementares | Abre por botão ou FAB. |
-| `modal NewMetric` | Criação rápida | Coleta dados para nova métrica. |
-| `fab` | Ação global | Acesso rápido ao modal de criação. |
-
-## Casos de uso
-- Painel de indicadores com métricas resumidas e listas contextuais.
-- Botão flutuante para registrar novas métricas ou filtros rápidos.
-- Drawer para aplicar filtros por período, time ou segmento.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+<DslPreview title="Estrutura completa do dashboard">
 ```dsl
 component MetricCard:
   card:
@@ -108,25 +70,17 @@ modal NewMetric:
       @[Salvar](saveMetric)
 ```
 </DslPreview>
+Por quê: combina header, métricas, listas de apoio e overlays para um painel completo.
 
-<DslPreview title="Exemplo 2">
-```dsl
-screen DashboardMobile:
-  container:
-    # Versão compacta
-    list:
-      - Leads | 1.240
-      - Conversões | 134
-      - Satisfação | 92%
+## Depuração rápida
+- Métricas desalinhadas → verifique se todos os cards estão dentro do mesmo `grid-*`.
+- Filtros não fecham → confirme que o drawer usa `@ghost[Cancelar](close)` ou ação equivalente.
+- FAB não abre modal → valide o slug `NewMetric` em ambos os pontos.
+- Listas com ações inline → mova botões para `row-end` e mantenha `list` apenas com texto.
+- Cards muito largos → ajuste o container para `container-wide` ou reduza para `grid-2`.
 
-  navigator:
-    - Home | Home
-    - Dashboard | Dashboard
-    - Config | Settings
-```
-</DslPreview>
-
-## Veja também
-- [Grid](./grid)
-- [Drawer](./drawer)
-- [Modal](./modal)
+## Próximos passos
+- Consulte [`Grid`](./grid) para ajustar layouts responsivos.
+- Revise [`Drawer`](./drawer) e [`Modal`](./modal) ao aprimorar overlays.
+- Explore [`Component Composition`](./component-composition) para modularizar seções.
+- Estude [`Themes`](./themes) caso precise adequar paleta ao branding.

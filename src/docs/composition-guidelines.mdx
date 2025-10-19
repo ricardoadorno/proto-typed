@@ -1,0 +1,189 @@
+# Diretrizes de composição
+
+## Por que importa
+Compor elementos corretamente garante experiências coerentes: blocos ficam compreensíveis, CTA têm hierarquia clara e layouts permanecem responsivos. As diretrizes reduzem retrabalho e previnem conflitos visuais ao combinar componentes.
+
+## Forma canônica (sintaxe mínima)
+<DslPreview title="Composição entre container, stack e row">
+```dsl
+screen Overview:
+  container:
+    stack-loose:
+      card:
+        ## Próxima reunião
+        > Detalhes do encontro semanal.
+      row-end:
+        @ghost[Cancelar](close)
+        @[Confirmar presença](ConfirmAttendance)
+```
+</DslPreview>
+Por quê: ilustra a combinação básica de layouts verticais e horizontais mantendo espaçamento e hierarquia.
+
+<Attention title="Layouts não usam hífen como marcador">
+Ao gerar DSL — manualmente ou via LLM — mantenha filhos de layouts (`stack`, `row`, `card`, `container`) apenas por indentação. O prefixo `-` é reservado para `list`, `navigator` e `fab`; usar hífen em outros blocos cria nós inválidos e confunde quem mantém o código.
+</Attention>
+
+## Padrões de uso
+<DslPreview title="Row-between + Stack para cabeçalhos ricos">
+```dsl
+row-between:
+  stack-tight:
+    ## Plano Pro
+    >>> Renovação em 30/09
+  @[Atualizar plano](UpdatePlan)
+```
+</DslPreview>
+Quando usar: apresentar contexto textual e CTA principal na mesma faixa.
+Por quê: distribui responsabilidades entre blocos sem criar aninhamentos desnecessários.
+
+<DslPreview title="List + Component Definition para coleções">
+```dsl
+component TaskRow:
+  row-between:
+    > %title
+    >>> %due
+
+list $TaskRow:
+  - Revisar backlog | 22/09
+  - Preparar demo | 25/09
+```
+</DslPreview>
+Quando usar: repetir estrutura de item com dados variáveis.
+Por quê: garante consistência visual e facilita futuras composições (ex.: colocar em cards).
+
+<DslPreview title="Card + Row-end para rodapés de ação">
+```dsl
+card:
+  ## Revisar entrega
+  > Confirme o status com o time.
+  row-end:
+    @ghost[Cancelar](close)
+    @[Marcar como concluído](CompleteTask)
+```
+</DslPreview>
+Quando usar: fechar blocos com opções de saída e avanço organizadas.
+Por quê: o rodapé separado evita confusão com o conteúdo principal do card.
+
+## Erros comuns (Do/Don’t)
+**Não faça — aninhar layouts equivalentes**
+<DslPreview title="❌ Errado — Card dentro de card">
+```dsl
+card:
+  card:
+    ## Conteúdo duplicado
+```
+</DslPreview>
+
+Faça — opte por stack para agrupar conteúdo interno
+<DslPreview title="✅ Correto — Stack dentro do card">
+```dsl
+card:
+  stack:
+    ## Primeiro bloco
+    ## Segundo bloco
+```
+</DslPreview>
+Por quê: evita bordas repetidas e mantém a hierarquia visual limpa.
+
+**Não faça — prefixar itens de layout com `-`**
+<DslPreview title="❌ Errado — Stack com sintaxe de lista">
+```dsl
+stack:
+  - ## Título
+  - > Descrição
+```
+</DslPreview>
+
+Faça — listar elementos diretamente pela indentação
+<DslPreview title="✅ Correto — Stack com itens alinhados">
+```dsl
+stack:
+  ## Título
+  > Descrição
+```
+</DslPreview>
+Por quê: apenas `list`, `navigator` e `fab` usam `-`; layouts consideram os filhos pela indentação.
+
+**Não faça — misturar lista com ações inline**
+<DslPreview title="❌ Errado — Botões dentro de list">
+```dsl
+list:
+  - Revisar backlog @[Abrir](Backlog)
+```
+</DslPreview>
+
+Faça — isole ações em blocos apropriados
+<DslPreview title="✅ Correto — Ações no rodapé">
+```dsl
+list:
+  - Revisar backlog
+row-end:
+  @[Abrir backlog](Backlog)
+```
+</DslPreview>
+Por quê: respeita a função textual da lista e preserva acessibilidade.
+
+**Não faça — criar loops de navegação sem retorno**
+<DslPreview title="❌ Errado — Fluxo sem saída">
+```dsl
+screen Dashboard:
+  container:
+    @[Abrir modal](StatsModal)
+
+modal StatsModal:
+  card:
+    ## Estatísticas
+    @[Continuar](StatsModal)
+```
+</DslPreview>
+
+Faça — ofereça fechamento e retorno ao contexto
+<DslPreview title="✅ Correto — Fluxo encerrado">
+```dsl
+modal StatsModal:
+  card:
+    ## Estatísticas
+    row-end:
+      @ghost[Fechar](close)
+      @[Ir para métricas](Dashboard)
+```
+</DslPreview>
+Por quê: evita bloqueios e garante que a composição sustente o fluxo esperado.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Component Composition`](./component-composition): aprofunda combinações entre componentes.
+- [`Row`](./row): base para alinhar ações horizontais.
+- [`Stack`](./stack): empilha conteúdos mantendo espaçamento controlado.
+- [`List`](./list): catálogo textual usado em diversas composições.
+
+### Composições recomendadas
+- **Diretrizes de composição + Component Composition** → estruturas escaláveis com componentes auxiliares.
+- **Diretrizes de composição + Screen** → telas coerentes com hierarquia clara.
+- **Diretrizes de composição + Drawer Detail** → detalhes laterais alinhados com listas principais.
+
+<DslPreview title="Tela aplicando múltiplas diretrizes">
+```dsl
+screen Projects:
+  container-wide:
+    row-between:
+      stack-tight:
+        # Projetos ativos
+        >>> Atualizado hoje às 10h
+      @[Criar projeto](ProjectForm)
+
+    list:
+      - Protótipo mobile
+      - Migration backend
+
+  drawer ProjectDetail:
+    card:
+      ## Protótipo mobile
+      > Status em desenvolvimento
+      row-end:
+        @ghost[Fechar](close)
+        @[Abrir tarefas](Dashboard)
+```
+</DslPreview>
+Por quê: combina row-between, list e drawer seguindo as boas práticas descritas.

@@ -1,71 +1,143 @@
 # Icon
+Ícones (`i-Nome`) reforçam significado visual de ações, listas e títulos sem quebrar o fluxo textual.
 
-## O que é
-Tokens de ícones (`i-IconName`) usados para reforçar ações e significados visuais em botões, listas e layouts Proto-Typed.
+## Quando usar
+- Complementar botões e links com um sinal visual imediato.
+- Diferenciar itens em listas ou navegadores com pistas visuais consistentes.
+- Indicar status em cards e mensagens sem adicionar textos redundantes.
+- Apoiar FABs e ações destacadas em telas responsivas.
 
-## Capacidades
-- Inserir um ícone ao lado de textos em botões, listas e headings (`@[i-Download Exportar](...)`).
-- Combinar com labels inline em `list`, `navigator`, `fab` ou `row`.
-- Utilizar qualquer ícone da biblioteca Lucide referenciando o nome em PascalCase (`i-Download`, `i-Settings`).
-- Misturar múltiplos ícones e texto na mesma linha através de tipografia padrão.
-
-## Sintaxe
-- `@[i-Download Exportar CSV](https://...)`
-- `- i-Home Dashboard | Dashboard`
-- `> i-Check Concluído`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `i-IconName` | Icone inline | Deve existir na biblioteca Lucide (PascalCase). |
-| Uso com botões | Prefixo visual | Adicione antes do label dentro de `[ ]`. |
-| Uso em listas/navigator | Indicador de item | Posicione antes do texto do item. |
-| Tipografia | Decoração | Puede aparecer em títulos, parágrafos e notas. |
-
-## Casos de uso
-- `@[i-Plus Nova tarefa](TaskForm)` — Comunicação visual de “adicionar”.
-- `list:` com `i-Home`, `i-Settings` — Menus e atalhos com ícones consistentes.
-- `> i-Info` — Notas informativas dentro de cards.
-- `fab:` — Complementar ações flutuantes com ícones claros.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+## Exemplo básico
+<DslPreview title="Ícones em botões e lista">
 ```dsl
 screen Shortcuts:
   container:
     # Atalhos rápidos
     list:
       - i-Home Dashboard | Dashboard
-      - i-Calendar Agenda | Calendar
-      - i-Settings Preferências | Settings
+      - i-Calendar Agenda | Agenda
 
     row-start:
       @[i-Plus Nova tarefa](TaskForm)
-      @outline[i-Download Exportar CSV](https://example.com/report.csv)
+      @outline[i-Download Exportar CSV](ExportCSV)
 ```
 </DslPreview>
+Por quê: combina pistas visuais e texto para acelerar o reconhecimento da ação.
 
-<DslPreview title="Exemplo 2">
+## Variantes
+<DslPreview title="Ícone em parágrafo informativo">
 ```dsl
-screen Status:
-  container:
-    # Status da implantação
-    card:
-      *> i-Info A implantação está em andamento.
-      stack-tight:
-        > i-Check Build concluída
-        > i-Check Testes rodando
-        > i-Clock Monitorando métricas
+card:
+  *> i-Info A implantação está em andamento.
+```
+</DslPreview>
+Quando usar: destacar avisos sem recorrer a blocos adicionais.
+Por quê: adiciona ênfase visual sem precisar de layouts extras.
 
-    navigator:
-      - i-Home Início | Home
-      - i-Server Deploys | Deploys
-      - i-AlertCircle Logs | Logs
+<DslPreview title="Ícone em navigator">
+```dsl
+navigator Menu:
+  - i-Home Início | Home
+  - i-Server Deploys | Deploys
+  - i-AlertCircle Logs | Logs
+```
+</DslPreview>
+Quando usar: guiar navegação com pistas imediatas sobre cada aba.
+Por quê: acelera a identificação dos destinos ao percorrer o menu.
+
+<DslPreview title="Ícone em FAB">
+```dsl
+fab:
+  - i-Plus | TaskForm
+  - i-Filter | FilterDrawer
+```
+</DslPreview>
+Quando usar: diferenciar ações globais no FAB mantendo o layout limpo.
+Por quê: o ícone sintetiza a finalidade de cada ação sem texto adicional.
+
+## Composição (usando com outros)
+- **Icon + Button** — reforça intenção do CTA.
+- **Icon + List** — transforma listas em atalhos visuais.
+- **Icon + Card** — sinaliza status sem poluir títulos.
+
+<DslPreview title="Card com ícones de status">
+```dsl
+card:
+  ## Status da implantação
+  stack-tight:
+    > i-Check Build concluída
+    > i-Check Testes finalizados
+    > i-AlertCircle Acompanhar logs
+```
+</DslPreview>
+Por quê: permite acompanhar estados rapidamente dentro de um bloco resumido.
+
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `token` | string `i-Nome` | — | Nome do ícone disponível na biblioteca Lucide. | Sim |
+| `posição` | inline | — | Inserido antes do texto do botão, lista ou título. | Não |
+| `semântica` | contexto | — | Escolha ícones que reforcem a mensagem sem ambiguidade. | Sim |
+
+## Erros comuns (Do/Don’t)
+**Não faça — usar ícone sem prefixo `i-`**
+<DslPreview title="❌ Errado — Token incompleto">
+```dsl
+@[Download Exportar CSV](ExportCSV)
 ```
 </DslPreview>
 
-## Veja também
-- [Button](./button)
-- [List](./list)
-- [Navigator](./navigator)
+Faça — sempre prefixe com `i-`
+<DslPreview title="✅ Correto — Token válido">
+```dsl
+@[i-Download Exportar CSV](ExportCSV)
+```
+</DslPreview>
+Por quê: o prefixo `i-` identifica o recurso na biblioteca de ícones.
+
+**Não faça — empilhar muitos ícones sem texto**
+<DslPreview title="❌ Errado — Ícones isolados">
+```dsl
+row:
+  > i-AlertTriangle
+  > i-AlertTriangle
+  > i-AlertTriangle
+```
+</DslPreview>
+
+Faça — combine ícone com texto claro
+<DslPreview title="✅ Correto — Contexto explícito">
+```dsl
+row:
+  > i-AlertTriangle Alertas críticos
+```
+</DslPreview>
+Por quê: o texto garante acessibilidade e evita interpretações ambíguas.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Button`](./button): usa ícones para reforçar propósito de ações.
+- [`List`](./list): incorpora ícones como marcadores visuais.
+- [`Navigator`](./navigator): abastece menus e abas com ícones.
+- [`Fab`](./fab): depende de ícones para diferenciar ações flutuantes.
+
+### Composições recomendadas
+- **Icon + Button** → CTA com sinalização visual imediata.
+- **Icon + List** → atalhos com leitura rápida.
+- **Icon + Navigator** → menus contextualizados por ícones.
+
+<DslPreview title="Navigator com ícones e conteúdo">
+```dsl
+screen Settings:
+  navigator Menu:
+    - i-User Perfil | Profile
+    - i-Shield Segurança | Security
+    - i-Bell Notificações | Notifications
+
+  container:
+    # Perfil
+    > Atualize dados pessoais e preferências.
+```
+</DslPreview>
+Por quê: associa ícones à seção correspondente e acelera a orientação do usuário.

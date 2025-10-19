@@ -1,98 +1,133 @@
 # Link
+Links (`#[Texto](Destino)`) criam navegação inline para telas, modais ou URLs externas sem quebrar o fluxo de leitura.
 
-## O que é
-Elemento de navegação inline que cria hyperlinks para telas internas, modais, drawers ou URLs externas usando `#[Texto](Destino)`.
+## Quando usar
+- Referenciar telas ou recursos secundários dentro de parágrafos e listas.
+- Direcionar para artigos, e-mails ou telefones externos ao ambiente Proto-Typed.
+- Oferecer caminhos alternativos enquanto o CTA principal permanece em botões.
+- Conectar seções relacionadas quando um `navigator` não é necessário.
 
-## Capacidades
-- Navegar para outras telas Proto-Typed (`#[Ir para Dashboard](Dashboard)`).
-- Abrir modais ou drawers existentes (`#[Abrir filtros](FilterDrawer)`).
-- Disparar links externos, e-mail ou telefone (`https://…`, `mailto:…`, `tel:`).
-- Ser utilizado dentro de parágrafos, listas e tabelas sem quebrar o fluxo textual.
-
-## Sintaxe válida
-- `#[Internal](ScreenName)`
-- `#[Ajuda](HelpCenter)`
-- `#[Visitar site](https://proto-typed.dev)`
-- `#[Contato](mailto:time@empresa.com)`
-
-## Sintaxe inválida
-- `@[Label](Screen)` → usa `@`, não `#`.
-- `#[Texto sem destino]` → precisa de `(Destino)`.
-- `#[Texto](screen com espaço)` → nomes de tela não têm espaços.
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `#[Texto](Screen)` | Navegação interna | Destino deve coincidir com nome de `screen`, `modal` ou `drawer`. |
-| `#[Texto](https://...)` | Link externo | Abre a URL no navegador. |
-| `#[Texto](mailto:...)` / `tel:` | Contato direto | Usa protocolo de e-mail/telefone. |
-| Conteúdo inline | Slot | Pode envolver ícones (`i-`) e ênfases (`**`). |
-
-## Casos de uso
-- `#[Ver detalhes](DetailScreen)` — Link contextual dentro de cards ou listas.
-- `#[Suporte](mailto:help@empresa.com)` — Canal rápido de ajuda.
-- `#[Documentação](https://proto-typed.dev/docs)` — Referenciar material externo.
-- `#[Voltar para o início](Home)` — Fornecer caminhos de navegação secundária.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+## Exemplo básico
+<DslPreview title="Links em texto de suporte">
 ```dsl
 screen HelpCenter:
   container:
     # Central de ajuda
-    > Consulte a #[Documentação oficial](https://proto-typed.dev/docs) para um guia completo.
-
-    stack:
-      card:
-        ## Problemas comuns?
-        #[Abrir troubleshooting](Troubleshooting)
-      card:
-        ## Fale com a gente
-        #[Enviar e-mail](mailto:suporte@proto-typed.dev)
-
-screen Troubleshooting:
-  container:
-    # Resolução de problemas
-    > #[Voltar ao help center](HelpCenter)
+    > Consulte a #[documentação oficial](https://proto-typed.dev/docs) para um panorama completo.
 
     card:
-      ## Erro de autenticação
-      >> Revise suas credenciais ou #[Redefina a senha](RecoverPassword)
+      ## Precisa redefinir senha?
+      >> Acesse a #[tela de recuperação](RecoverPassword) e siga os passos.
 ```
 </DslPreview>
+Por quê: mantém a leitura fluida e oferece navegação contextual.
 
-<DslPreview title="Exemplo 2">
+## Variantes
+<DslPreview title="Link interno para screen">
+```dsl
+#[Ver detalhes](DetailScreen)
+```
+</DslPreview>
+Quando usar: apontar para telas existentes no fluxo principal.
+Por quê: mantém a navegação coesa sem depender de botões.
+
+<DslPreview title="Link externo">
+```dsl
+#[Abrir documentação](https://proto-typed.dev/docs)
+```
+</DslPreview>
+Quando usar: referenciar recursos hospedados fora do produto.
+Por quê: direciona para documentação ou sites externos preservando contexto.
+
+<DslPreview title="Link para contato rápido">
+```dsl
+#[Enviar e-mail](mailto:suporte@empresa.com)
+```
+</DslPreview>
+Quando usar: disponibilizar canais diretos de suporte ou contato comercial.
+Por quê: ativa protocolos específicos (e-mail, telefone) com um clique.
+
+## Composição (usando com outros)
+- **Link + Card** — oferece contextos adicionais dentro de blocos informativos.
+- **Link + List** — transforma itens em atalhos sem necessidade de botões.
+- **Link + Drawer** — agrupa links em painéis laterais de referência.
+
+<DslPreview title="Drawer com links rápidos">
 ```dsl
 drawer QuickLinks:
   container:
     # Links rápidos
-    stack:
-      card-compact:
-        ## Dashboard
-        #[Abrir dashboard](Dashboard)
-      card-compact:
-        ## Time
-        #[Ver equipe](TeamScreen)
-      card-compact:
-        ## Configurações
-        #[Preferências](Settings)
+    stack-tight:
+      #[Dashboard](Dashboard)
+      #[Equipe](Team)
+      #[Configurações](Settings)
 
 screen HeaderDemo:
   header:
     # Proto-Typed
     row-end:
-      #[Docs](https://proto-typed.dev/docs)
       #[Abrir links rápidos](QuickLinks)
+```
+</DslPreview>
+Por quê: agrupa atalhos sem sobrecarregar o cabeçalho com botões.
 
-screen TeamScreen:
-  container:
-    # Equipe
-    > #[Voltar ao início](HeaderDemo)
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `label` | string | — | Texto exibido entre `#[ ]`. | Sim |
+| `destino` | slug ou URL | — | Tela, modal, drawer ou endereço externo. | Sim |
+| `protocolo` | `https://`, `mailto:`, `tel:` | `https://` | Determina a ação para links externos. | Não |
+| `ícone inline` | token `i-` | — | Opcional antes do texto para reforçar o contexto. | Não |
+
+## Erros comuns (Do/Don’t)
+**Não faça — usar `@` em vez de `#`**
+<DslPreview title="❌ Errado — Botão no lugar de link">
+```dsl
+@[Ver detalhes](DetailScreen)
 ```
 </DslPreview>
 
-## Veja também
-- [Button](./button)
-- [Screen](./screen)
-- [Navigator](./navigator)
+Faça — utilize `#` para navegação inline
+<DslPreview title="✅ Correto — Link contextual">
+```dsl
+#[Ver detalhes](DetailScreen)
+```
+</DslPreview>
+Por quê: `@` executa ações; `#` referencia destinos sem comportamento de botão.
+
+**Não faça — deixar o destino vazio**
+<DslPreview title="❌ Errado — Link sem destino">
+```dsl
+#[Leia mais]()
+```
+</DslPreview>
+
+Faça — informe o slug ou URL válido
+<DslPreview title="✅ Correto — Destino declarado">
+```dsl
+#[Leia mais](Guides)
+```
+</DslPreview>
+Por quê: cada link precisa apontar para um destino existente para evitar erros de navegação.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Button`](./button): ações que executam lógica ou abrem fluxos.
+- [`Navigator`](./navigator): navegação estruturada por abas ou menus.
+- [`Drawer`](./drawer): agrupa links de referência lateralmente.
+- [`Screen`](./screen): destino mais comum para links internos.
+
+### Composições recomendadas
+- **Link + Card** → blocos informativos com referências adicionais.
+- **Link + List** → coleções de atalhos sem usar botões.
+- **Link + Drawer** → catálogos laterais de documentação ou suporte.
+
+<DslPreview title="Card com links complementares">
+```dsl
+card:
+  ## Recursos
+  > Explore a #[lista de componentes](ComponentList) e a #[guia de composição](ComponentComposition) para aprofundar o uso.
+```
+</DslPreview>
+Por quê: oferece caminhos de estudo sem sobrecarregar o bloco principal.

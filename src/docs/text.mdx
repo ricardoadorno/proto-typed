@@ -1,74 +1,147 @@
 # Text
+Textos estruturam títulos, parágrafos, notas e citações, definindo hierarquia e tom da interface.
 
-## O que é
-Elemento de tipografia responsável por títulos, parágrafos, notas e citações dentro das telas Proto-Typed.
+## Quando usar
+- Comunicar propósito de telas com títulos e parágrafos introdutórios.
+- Destacar avisos ou dicas em notas (`*>`) dentro de cards e modais.
+- Registrar metadados ou mensagens de apoio com níveis secundários (`>>`, `>>>`).
+- Compartilhar depoimentos ou feedback usando citações (`">`).
 
-## Capacidades
-- Declarar hierarquia de títulos com `#` a `######` para estruturar seções da interface.
-- Produzir parágrafos de diferentes pesos: `>`, `>>`, `>>>`.
-- Destacar informações com notas (`*>`) e registrar depoimentos com citações (`">`).
-- Combinar conteúdo textual com layout (`container`, `stack`, `card`) e elementos de ação como `button`.
-- Inserir ícones embutidos (ex.: `i-Check`) ao lado de textos usando a sintaxe padrão da DSL.
-
-## Sintaxe
-- `# Heading principal`
-- `## Subtítulo`
-- `> Parágrafo principal`
-- `>> Texto de apoio`
-- `>>> Texto sutil ou metadado`
-- `*> Nota importante`
-- `"> Citação com autoria`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `# … ######` | Títulos (H1–H6) | Use apenas um `#` por tela para o título principal. |
-| `>` | Parágrafo principal | Ideal para copy primária ou introduções. |
-| `>>` | Texto secundário | Complementa informações principais. |
-| `>>>` | Texto sutil | Metadados, timestamps ou labels discretos. |
-| `*>` | Nota/Callout | Destaca alertas, dicas e avisos. |
-| `">` | Citação | Exibe depoimentos ou referências. |
-
-## Casos de uso
-- `> Overview: Utilize parágrafos principais para contextualizar dashboards e relatórios.`
-- `*> Nota: Destaque checklists ou avisos críticos dentro de um card.`
-- `"> Citação: Traga feedback de usuários ou mensagens de confirmação.`
-- `>>> Metadado: Registre data/hora de última atualização de um bloco.`
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+## Exemplo básico
+<DslPreview title="Seção textual completa">
 ```dsl
 screen ReportIntro:
   container:
-    # Relatório Semanal
-    > Acompanhe os resultados obtidos na última sprint.
-    >> Principais métricas disponíveis abaixo.
-    >>> Atualizado em 18/09 às 09:30
+    # Relatório semanal
+    > Acompanhe os resultados da última sprint.
+    >> Principais métricas estão logo abaixo.
+    >>> Atualizado em 18/09 às 09:30.
 
     card:
       *> Próxima revisão em 7 dias.
-      @link[Baixar PDF](https://example.com/report.pdf)
+      @[Abrir dashboard](Dashboard)
 ```
 </DslPreview>
+Por quê: apresenta contexto, metadados e ação em blocos claramente hierarquizados.
 
-<DslPreview title="Exemplo 2">
+## Variantes
+<DslPreview title="Notas e citações">
 ```dsl
-screen Testimonials:
-  container:
-    # Feedback de Clientes
-    card:
-      "> Proto-Typed ajudou a reduzir nosso tempo de prototipagem. — Squad A
-    card:
-      "> A DSL é simples e consistente com o time de design. — Squad B
+card:
+  *> Lembre-se de validar os dados antes de compartilhar.
+  "> Proto-Typed reduziu nosso tempo de prototipagem. — Squad A
+```
+</DslPreview>
+Quando usar: destacar alertas e registrar feedback com formato diferenciado.
+Por quê: a formatação especial chama atenção sem exigir componentes extras.
 
-    stack:
-      >> Continue explorando os exemplos no Cookbook.
-      @[Ver Dashboard](Dashboard)
+<DslPreview title="Metadados sutis">
+```dsl
+card:
+  ## Status do projeto
+  > Conclua a etapa de handoff ainda hoje.
+  >>> Atualizado por Ana às 10h12.
+```
+</DslPreview>
+Quando usar: oferecer informações de suporte sem competir com o conteúdo principal.
+Por quê: o nível `>>>` mantém o dado presente, porém discreto.
+
+<DslPreview title="Títulos hierárquicos">
+```dsl
+container:
+  # Visão geral
+  ## Métricas principais
+  ### Funil de aquisição
+```
+</DslPreview>
+Quando usar: organizar o conteúdo em seções aninhadas com clareza.
+Por quê: hierarquia visível ajuda a pessoa usuária a escanear a página rapidamente.
+
+## Composição (usando com outros)
+- **Text + Card** — adiciona contexto e notas antes de ações.
+- **Text + Stack** — empilha mensagens com espaçamento controlado.
+- **Text + Button** — combina instrução e ação em sequência lógica.
+
+<DslPreview title="Card com texto e ação">
+```dsl
+card:
+  ## Próxima entrega
+  > Revise o backlog com o time antes da reunião.
+  row-end:
+    @[Abrir planejamento](Planning)
+```
+</DslPreview>
+Por quê: explica o contexto e oferece o próximo passo em um único bloco.
+
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `# … ######` | títulos | — | Define hierarquia de seções (use um `#` por tela). | Não |
+| `>`, `>>`, `>>>` | parágrafos | — | Parágrafos principal, secundário e metadado. | Não |
+| `*>` | nota | — | Realça alertas, dicas e mensagens importantes. | Não |
+| `">` | citação | — | Registra depoimentos ou mensagens destacadas. | Não |
+
+## Erros comuns (Do/Don’t)
+**Não faça — usar mais de um título principal por tela**
+<DslPreview title="❌ Errado — Dois `#` na mesma tela">
+```dsl
+screen Summary:
+  container:
+    # Resumo
+    # Detalhes
 ```
 </DslPreview>
 
-## Veja também
-- [Button](./button)
-- [Container](./container)
-- [Styles Block](./styles-block)
+Faça — distribua hierarquia com subtítulos
+<DslPreview title="✅ Correto — Uso de subtítulos">
+```dsl
+screen Summary:
+  container:
+    # Resumo
+    ## Detalhes
+```
+</DslPreview>
+Por quê: apenas um `#` mantém foco e previne conflitos de acessibilidade.
+
+**Não faça — misturar ações dentro de citações**
+<DslPreview title="❌ Errado — Citação com botão">
+```dsl
+card:
+  "> Proto-Typed agiliza entregas. @[Saiba mais](Guides)
+```
+</DslPreview>
+
+Faça — separe ação do bloco textual
+<DslPreview title="✅ Correto — Citação e ação organizadas">
+```dsl
+card:
+  "> Proto-Typed agiliza entregas.
+  row-end:
+    @[Saiba mais](Guides)
+```
+</DslPreview>
+Por quê: cada bloco textual deve manter propósito único; ações ficam em rows ou botões próprios.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Card`](./card): envolve texto com títulos e ações.
+- [`Stack`](./stack): controla espaçamento entre blocos textuais.
+- [`Button`](./button): ações ligadas ao conteúdo textual.
+- [`Styles Block`](./styles-block): customiza tipografia global.
+
+### Composições recomendadas
+- **Text + Card + Row-end** → explicações seguidas de ação direta.
+- **Text + Stack** → storytelling linear com espaçamento definido.
+- **Text + Styles Block** → ajustes de tipografia alinhados ao branding.
+
+<DslPreview title="Texto guiando ação">
+```dsl
+card:
+  ## Atualize o status
+  > Garanta que o time tenha visibilidade do progresso.
+  row-end:
+    @[Atualizar agora](UpdateStatus)
+```
+</DslPreview>
+Por quê: orienta a pessoa usuária e apresenta o CTA associado imediatamente.

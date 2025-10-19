@@ -1,44 +1,21 @@
 # Modal Flow
+## Pré-requisitos
+- Dominar a criação de `modal` com ações de fechamento consistentes.
+- Mapear o slug de cada etapa (`ConfirmInvite`, `SuccessInvite`) para garantir encadeamento.
+- Possuir elementos acionadores (botões, FAB ou list) apontando para o primeiro modal.
 
-## O que é
-Padrão de fluxo que coordena múltiplos modais para confirmar ações ou exibir etapas sequenciais sem trocar de tela.
+## Passo a passo
+1. Declare o modal de confirmação com contexto claro e opções de seguir ou cancelar.
+2. Crie o modal de feedback (sucesso ou erro) que será aberto após a confirmação.
+3. Garanta que o CTA do primeiro modal abra o segundo (`@[Confirmar](SuccessInvite)`).
+4. Adicione botões ou FABs na tela principal apontando para a etapa inicial do fluxo.
 
-## Capacidades
-- Encadear modais (`modal Confirm`, `modal Sucesso`) acionados por botões ou FAB.\n+- Reutilizar o mesmo modal a partir de diferentes pontos (lista, card, FAB).\n+- Direcionar usuários rapidamente por confirmações e feedbacks sem sair da `screen` atual.
-
-## Sintaxe
-- `modal ConfirmInvite:`
-- `card:`
-- `# Enviar convite?`
-- `row-end:`
-- `@ghost[Cancelar](close)`
-- `@[Enviar convite](SuccessInvite)`
-- `modal SuccessInvite:`
-- `card:`
-- `# Convite enviado!`
-- `@[Fechar](close)`
-- `screen Team:`
-- `container:`
-- `@[Convidar membro](ConfirmInvite)`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `modal Confirm...` | Etapa de confirmação | Deve oferecer ação de saída segura (`close`). |
-| `modal Success...` | Feedback rápido | Pode exibir CTA secundário ou apenas fechar. |
-| Botões de acionamento | Entrada do fluxo | Aparecem em `list`, `card`, `fab`, etc. |
-
-## Casos de uso
-- Confirmar convites ou compartilhamentos antes de enviar.\n+- Alertar usuários sobre ações destrutivas antes da execução.\n+- Mostrar feedback positivo/erro logo após a confirmação.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+<DslPreview title="Fluxo completo com dois modais encadeados">
 ```dsl
 modal ConfirmInvite:
   card:
     # Enviar convite?
-    > Confirme o envio para o colaborador selecionado.
+    > Confirme o envio para a pessoa selecionada.
     row-end:
       @ghost[Cancelar](close)
       @[Enviar convite](SuccessInvite)
@@ -46,8 +23,9 @@ modal ConfirmInvite:
 modal SuccessInvite:
   card:
     # Convite enviado!
-    > O usuário receberá um email com instruções de acesso.
-    @[Fechar](close)
+    > O usuário receberá um e-mail com instruções de acesso.
+    row-end:
+      @[Fechar](close)
 
 screen Team:
   container:
@@ -55,40 +33,26 @@ screen Team:
     card:
       ## Convites recentes
       list:
-        - Thiago Martins | Enviado em 16/09 | @[Reenviar](ConfirmInvite)
-        - Laura Mendes | Pendente | @[Enviar agora](ConfirmInvite)
+        - Thiago Martins | Enviado em 16/09
+        - Laura Mendes | Pendente
+    row-end:
+      @[Convidar membro](ConfirmInvite)
 
   fab:
     - i-Plus | ConfirmInvite
 ```
 </DslPreview>
+Por quê: a tela inicia o fluxo, o primeiro modal confirma a ação e o segundo entrega feedback imediato.
 
-<DslPreview title="Exemplo 2">
-```dsl
-modal ConfirmDelete:
-  card:
-    # Confirmar exclusão
-    > Esta ação não pode ser desfeita.
-    row-end:
-      @ghost[Cancelar](close)
-      @destructive[Excluir](SuccessDelete)
+## Depuração rápida
+- Segundo modal não abre → verifique se o CTA do primeiro modal usa o slug correto (`SuccessInvite`).
+- Fluxo não fecha → garanta `@[Fechar](close)` em todas as saídas do último modal.
+- FAB não dispara → confirme que o slug acionado é o primeiro modal da cadeia.
+- Mensagem repetida → consolide textos no modal de sucesso e evite duplicar no card.
+- Usuária presa na confirmação → ofereça sempre um botão de retorno (`@ghost[Cancelar](close)`).
 
-modal SuccessDelete:
-  card:
-    # Registro removido
-    > Os dados foram apagados com sucesso.
-    @[Fechar](close)
-
-screen DangerZone:
-  container:
-    # Zona de risco
-    list:
-      - Deletar workspace | @[Remover](ConfirmDelete)
-      - Revogar acesso | @[Revogar](ConfirmDelete)
-```
-</DslPreview>
-
-## Veja também
-- [Modal](./modal)
-- [Drawer Detail](./drawer-detail)
-- [Fab](./fab)
+## Próximos passos
+- Aprofunde-se em [`Modal`](./modal) para explorar variantes de conteúdo.
+- Combine com [`Drawer`](./drawer) quando o fluxo começar em painel lateral.
+- Utilize [`Fab`](./fab) para ações globais que iniciam o fluxo modal.
+- Consulte [`Component Composition`](./component-composition) se precisar reutilizar estrutura de modais.

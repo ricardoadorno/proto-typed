@@ -1,69 +1,64 @@
 # Card
+Cards agrupam conteúdo relacionado em blocos autônomos com espaçamento consistente e foco visual.
 
-## O que é
-Contêiner com bordas e padding que agrupa conteúdo relacionado, ideal para destacar informações em blocos autônomos.
+## Quando usar
+- Destacar um conjunto de informações que precisam ser lidas em grupo.
+- Criar vitrines de métricas, planos ou ações prioritárias.
+- Organizar entradas curtas (formularios rápidos, filtros) mantendo bordas e padding.
+- Servir como base para componentes reutilizáveis apresentando o mesmo layout.
 
-## Capacidades
-- Criar cartões padrão (`card`), compactos (`card-compact`) e destacados (`card-feature`).
-- Empilhar tipografia, botões, listas e qualquer elemento do DSL mantendo espaçamento interno.
-- Aninhar outros layouts (`stack`, `row`) sem perder a aparência consistente.
-- Servir como componente base para `component` reutilizáveis.
-
-## Sintaxe
-card:
-  ## Destaque
-  > Texto principal
-  @[Ação](Destino)
-
-card-compact:
-  > Item compacto
-
-card-feature:
-  ## Plano premium
-  *> Benefício exclusivo
-  @[Falar com vendas](Contact)
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `card` | Padrão | Padding médio, borda simples. |
-| `card-compact` | Compacto | Menos padding para listas densas. |
-| `card-feature` | Destaque | Borda reforçada/gradiente para CTAs premium. |
-| Conteúdo interno | Slot | Recebe qualquer elemento do DSL (texto, botões, listas). |
-
-## Casos de uso
-- `card:` Informações chave com título, texto e CTA.
-- `card-compact:` Listagens densas ou múltiplos mini cards em uma grade.
-- `card-feature:` Destacar plano premium, anúncio ou seções hero secundárias.
-- `card + stack:` Organizar formulários curtos com botões alinhados.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+## Exemplo básico
+<DslPreview title="Card com informação e ação">
 ```dsl
-screen Pricing:
-  container:
-    # Planos disponíveis
-    grid-3:
-      card:
-        ## Starter
-        >> Para equipes pequenas.
-        @[Começar grátis](Signup)
-
-      card-compact:
-        ## Adicionais
-        list:
-          - Integrar com Slack
-          - Exportar CSV
-          - Suporte prioritário
-
-      card-feature:
-        ## Enterprise
-        *> Atendimento dedicado e SLA personalizado.
-        @[Falar com vendas](Contact)
+card:
+  ## Plano Pro
+  > Recursos completos para times em crescimento.
+  row-end:
+    @[Assinar agora](Checkout)
 ```
 </DslPreview>
+Por quê: destaca um bloco de conteúdo com CTA direto e espaçamento equilibrado.
 
-<DslPreview title="Exemplo 2">
+## Variantes
+<DslPreview title="Card padrão para blocos gerais">
+```dsl
+card:
+  ## Atualização semanal
+  >> Consolidado das métricas do time.
+```
+</DslPreview>
+Quando usar: comunique conteúdo recorrente com leitura confortável.
+Por quê: o espaçamento padrão equilibra texto e respiros visuais.
+
+<DslPreview title="Card compacto para listas densas">
+```dsl
+card-compact:
+  ## Próximas tarefas
+  list:
+    - Validar protótipo
+    - Revisar copy do email
+```
+</DslPreview>
+Quando usar: agrupe itens curtos em pouco espaço.
+Por quê: a variante reduz padding sem comprometer a legibilidade.
+
+<DslPreview title="Card destaque com foco em conversão">
+```dsl
+card-feature:
+  ## Enterprise
+  *> Atendimento dedicado e SLA personalizado.
+  @[Falar com vendas](ContactSales)
+```
+</DslPreview>
+Quando usar: direcionar atenção para ofertas premium ou ações críticas.
+Por quê: o estilo realçado cria foco imediato para CTAs estratégicos.
+
+## Composição (usando com outros)
+- **Card + Stack** — combina múltiplas seções verticais sem perder espaçamento.
+- **Card + Grid** — cria vitrines com cards repetidos para métricas ou planos.
+- **Card + Component Definition** — estabelece um layout reutilizável com dados variáveis.
+
+<DslPreview title="Grid de cards reutilizáveis">
 ```dsl
 component MetricCard:
   card:
@@ -72,28 +67,96 @@ component MetricCard:
     >> %description
 
 screen Dashboard:
-  container-wide:
-    # Indicadores principais
+  container:
     grid-3:
       $MetricCard:
-        - Leads | 1.240 | Captação nas últimas 24h
+        - Leads | 1.240 | Últimas 24h
       $MetricCard:
-        - Conversões | 134 | Fechamentos semanais
+        - Conversões | 134 | Semana atual
       $MetricCard:
         - Satisfação | 92% | Pesquisa pós-release
+```
+</DslPreview>
+Por quê: reaproveita um layout consistente em diferentes dados sem duplicação.
 
-    card:
-      ## Próximas ações
-      list:
-        - Revisar backlog | Hoje às 17h
-        - Preparar release | Amanhã às 10h
-      row-end:
-        @ghost[Cancelar](close)
-        @[Adicionar tarefa](TaskForm)
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `variante` | enum (`card`, `card-compact`, `card-feature`) | `card` | Ajusta padding, contraste e hierarquia visual. | Não |
+| `conteúdo interno` | blocos DSL | — | Recebe textos, listas, botões, componentes. | Sim |
+| `stack/row` internos | layout | — | Controla distribuição de itens dentro do card. | Não |
+| `component` wrapper | referência | — | Permite transformar o card em componente reutilizável (`component`/`$`). | Não |
+
+## Erros comuns (Do/Don’t)
+**Não faça — aninhar `card` dentro de `card`**
+<DslPreview title="❌ Errado — Card dentro de card">
+```dsl
+card:
+  ## Alertas
+  card:
+    > Estoque baixo
 ```
 </DslPreview>
 
-## Veja também
-- [Container](./container)
-- [Grid](./grid)
-- [Component Definition](./component-definition)
+Faça — use `stack` para hierarquia interna
+<DslPreview title="✅ Correto — Stack dentro do card">
+```dsl
+card:
+  ## Alertas
+  stack:
+    > Estoque baixo
+    > Pagamentos pendentes
+```
+</DslPreview>
+Por quê: `stack` mantém espaçamento vertical sem quebrar o padrão visual do card.
+
+**Não faça — misturar ações com lista textual**
+<DslPreview title="❌ Errado — Ações dentro de list">
+```dsl
+card:
+  ## Próximos passos
+  list:
+    - #[Revisar backlog](Backlog)
+    - #[Planejar sprint](Planning)
+```
+</DslPreview>
+
+Faça — separe itens e ações no rodapé
+<DslPreview title="✅ Correto — Lista + ações alinhadas">
+```dsl
+card:
+  ## Próximos passos
+  list:
+    - Revisar backlog
+    - Planejar sprint
+  row-end:
+    @[Abrir backlog](Backlog)
+    @secondary[Planejar sprint](Planning)
+```
+</DslPreview>
+Por quê: listas aceitam apenas texto; botões e links ficam em blocos de ação dedicados.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Container`](./container): delimita largura antes de empilhar cards.
+- [`Stack`](./stack): organiza conteúdo vertical dentro do card.
+- [`Grid`](./grid): distribui múltiplos cards em layouts responsivos.
+- [`Component Definition`](./component-definition): transforma cards em componentes reutilizáveis.
+
+### Composições recomendadas
+- **Card + Grid** → vitrine de métricas ou planos com espaçamento uniforme.
+- **Card + Row-end** → agrupa ações em rodapés consistentes.
+- **Card + Component List** → renderiza cards dinâmicos com dados de coleção.
+
+<DslPreview title="Card com ações alinhadas">
+```dsl
+card:
+  ## Status do pedido
+  > Atualize o andamento e notifique clientes.
+  row-end:
+    @ghost[Cancelar](-1)
+    @[Atualizar status](UpdateStatus)
+```
+</DslPreview>
+Por quê: mantém CTA principal e opção de saída em posição previsível.

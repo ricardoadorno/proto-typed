@@ -39,6 +39,7 @@ export const mdxComponents = {
   table: Table,
   a: Anchor,
   Callout: (props: ComponentPropsWithoutRef<typeof Alert>) => <Alert {...props} />,
+  Attention: (props: ComponentPropsWithoutRef<typeof Alert>) => <Alert variant="attention" {...props} />,
   Tip: (props: ComponentPropsWithoutRef<typeof Alert>) => <Alert variant="tip" {...props} />,
   Warning: (props: ComponentPropsWithoutRef<typeof Alert>) => <Alert variant="warning" {...props} />,
   Danger: (props: ComponentPropsWithoutRef<typeof Alert>) => <Alert variant="danger" {...props} />,

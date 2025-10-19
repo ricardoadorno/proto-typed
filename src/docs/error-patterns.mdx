@@ -1,0 +1,154 @@
+# Erros comuns
+
+## Por que importa
+Conhecer os anti-padrões mais recorrentes evita retrabalho, reduz bugs de navegação e mantém a experiência coerente em todas as telas. Um catálogo claro acelera revisões e dá segurança para evoluir a DSL sem quebrar fluxos existentes.
+
+## Forma canônica (sintaxe mínima)
+<DslPreview title="Separar itens textuais de ações">
+```dsl
+card:
+  ## Próximos passos
+  list:
+    - Revisar backlog
+    - Preparar release
+  row-end:
+    @ghost[Cancelar](close)
+    @[Abrir planejamento](Planning)
+```
+</DslPreview>
+Por quê: destaca que `list:` abriga apenas texto, enquanto ações ficam em blocos dedicados como `row-end`.
+
+## Padrões de uso
+<DslPreview title="Destacar ações destrutivas">
+```dsl
+row-end:
+  @ghost[Cancelar](close)
+  @destructive[Excluir conta](ConfirmDelete)
+```
+</DslPreview>
+Quando usar: qualquer operação que remova dados ou interrompa fluxos críticos.
+Por quê: a variante destrutiva comunica risco e ajuda a prevenir cliques acidentais.
+
+<DslPreview title="Navigator consistente entre telas irmãs">
+```dsl
+screen Home:
+  navigator:
+    - Home | Home
+    - Tarefas | Tasks
+    - Configurações | Settings
+
+screen Tasks:
+  navigator:
+    - Home | Home
+    - Tarefas | Tasks
+    - Configurações | Settings
+```
+</DslPreview>
+Quando usar: grupos de telas que compartilham o mesmo menu persistente.
+Por quê: manter itens idênticos evita destinos ocultos e reduz confusão ao alternar telas.
+
+<DslPreview title="Overlays com caminho de saída claro">
+```dsl
+drawer Filters:
+  card:
+    ## Ajustar filtros
+    row-end:
+      @ghost[Cancelar](close)
+      @[Aplicar](applyFilters)
+```
+</DslPreview>
+Quando usar: sempre que um drawer ou modal assumir o foco da interação.
+Por quê: o botão de fechar garante retorno imediato ao contexto original.
+
+## Erros comuns (Do/Don’t)
+**Não faça — links dentro de `list:`**
+<DslPreview title="❌ Errado — Links na lista">
+```dsl
+card:
+  ## Tarefas
+  list:
+    - Revisar backlog #[Abrir](Backlog)
+```
+</DslPreview>
+
+Faça — mova ações para blocos de apoio
+<DslPreview title="✅ Correto — Ações fora da lista">
+```dsl
+card:
+  ## Tarefas
+  list:
+    - Revisar backlog
+  row-end:
+    @[Abrir backlog](Backlog)
+```
+</DslPreview>
+Por quê: `list:` aceita apenas texto; botões e links devem ficar em rows ou navigator.
+
+**Não faça — overlay sem fechamento consistente**
+<DslPreview title="❌ Errado — Drawer sem saída">
+```dsl
+drawer Filters:
+  card:
+    ## Filtros
+    @[Aplicar](applyFilters)
+```
+</DslPreview>
+
+Faça — disponibilize cancelar e confirmar
+<DslPreview title="✅ Correto — Drawer com retorno">
+```dsl
+drawer Filters:
+  card:
+    ## Filtros
+    row-end:
+      @ghost[Cancelar](close)
+      @[Aplicar](applyFilters)
+```
+</DslPreview>
+Por quê: oferecer saída explícita evita bloqueios e mantém o fluxo previsível.
+
+**Não faça — misturar `close` e `-1` em um mesmo fluxo**
+<DslPreview title="❌ Errado — Fechamentos mistos">
+```dsl
+modal ConfirmAction:
+  row-end:
+    @ghost[Cancelar](-1)
+    @[Confirmar](close)
+```
+</DslPreview>
+
+Faça — adote um padrão único
+<DslPreview title="✅ Correto — Fechamento consistente">
+```dsl
+modal ConfirmAction:
+  row-end:
+    @ghost[Cancelar](close)
+    @[Confirmar](applyAction)
+```
+</DslPreview>
+Por quê: consistência reduz dúvidas sobre o resultado de cada botão.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Sintaxe básica`](./syntax): reforça regras de estrutura que evitam anti-padrões.
+- [`Diretrizes de composição`](./composition-guidelines): orienta combinações seguras entre blocos.
+- [`Component Composition`](./component-composition): mostra como reutilizar layouts sem introduzir erros.
+- [`Flow`](./flow): garante navegação coerente ao aplicar correções.
+
+### Composições recomendadas
+- **Erros comuns + Component Definition** → componentes reaproveitados já chegam corrigidos.
+- **Erros comuns + Navigator** → valida menus persistentes antes da publicação.
+- **Erros comuns + Modal Flow** → revê confirmações encadeadas para evitar bloqueios.
+
+<DslPreview title="Checklist final de revisão">
+```dsl
+card:
+  ## Antes de publicar
+  list:
+    - Conferir lista sem ações inline.
+    - Garantir overlays com botões de fechamento.
+    - Verificar consistência dos destinos de navegação.
+```
+</DslPreview>
+Por quê: padroniza a inspeção e evita que anti-padrões sejam enviados para produção.

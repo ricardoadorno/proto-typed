@@ -1,96 +1,194 @@
 # Component Composition
+## Por que importa
+Compor componentes permite criar layouts complexos a partir de blocos menores, mantendo coesão visual e facilitando manutenção. O padrão garante que mudanças estruturais sejam aplicadas em um único ponto e repercutam em todo o sistema.
 
-## O que é
-Padrão para criar componentes complexos a partir de componentes menores, reutilizando seções e repassando props através de múltiplos níveis.
-
-## Capacidades
-- Encadear componentes (`component HeaderBar` dentro de `component ProjectSection`).
-- Reaproveitar layouts e props em diferentes contextos.
-- Organizar código em “pedaços” lógicos para manutenção facilitada.
-
-## Sintaxe
-- `component HeaderBar:`
-- `header:`
-- `# %title`
-- `row-end:`
-- `@ghost[i-Search Buscar](Search)`
-- `component ProjectSection:`
-- `container:`
-- `$HeaderBar:`
-- `- Projetos`
-- `grid-3 $ProjectCard:`
-- `- ...`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| Componentes utilitários | Reuso local | Encapsulam partes repetidas (ex.: `HeaderBar`). |
-| Componentes principais | Seção completa | Combinam utilitários e layouts. |
-| `%props` compartilhados | Dados reutilizados | Permitem repassar valores para subcomponentes. |
-
-## Casos de uso
-- Criar seções compostas (header + grid) reaproveitadas em diferentes telas.
-- Dividir componentes extensos em blocos utilitários (`HeaderBar`, `ActionCard`).
-- Montar dashboards e catálogos com estrutura consistente.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+## Forma canônica (sintaxe mínima)
+<DslPreview title="Componente maior reutilizando um auxiliar">
 ```dsl
 component HeaderBar:
-  header:
-    # %title
-    row-end:
-      @ghost[i-Search Buscar](Search)
-      @ghost[i-Settings Config](Settings)
+  row-between:
+    > %title
+    @[Ação principal](%action)
 
+component Section:
+  container:
+    $HeaderBar:
+      - Projetos ativos | NewProject
+    stack-loose:
+      > %description
+
+screen Dashboard:
+  $Section:
+    - Revisão semanal das iniciativas
+```
+</DslPreview>
+Por quê: mostra como um componente principal reaproveita outro componente passando dados específicos.
+
+## Padrões de uso
+<DslPreview title="Seção com header e grid de cards">
+```dsl
 component ProjectCard:
   card:
     ## %name
     >>> %owner
-    > %description
+    > %status
     @[Abrir](%destination)
 
 component ProjectSection:
   container:
-    $HeaderBar:
-      - Projetos ativos
+    row-between:
+      # %title
+      @[Criar projeto](%action)
     grid-3 $ProjectCard:
-      - Lançamento app mobile | Ana Souza | Status: Em QA | ProjectDetails
-      - Campanha Q4 | Bruno Lima | Planejamento finalizando | CampaignPlan
-      - Pesquisa usuários | Carla Dias | Entrevistas marcadas | ResearchBoard
+      - Nova plataforma | Ana Souza | Em QA | ProjectDetail
+      - Pesquisa usuários | Carla Dias | Em discovery | ResearchBoard
 
 screen Dashboard:
-  $ProjectSection
+  $ProjectSection:
+    - Projetos ativos
+    - ProjectForm
 ```
 </DslPreview>
+Quando usar: agrupar header, ações e coleção de cards em uma única unidade reaproveitável.
+Por quê: uma única mudança reflete em todas as telas que usam a seção composta.
 
-<DslPreview title="Exemplo 2">
+<DslPreview title="Componentes auxiliares para slots complexos">
 ```dsl
-component ActionCard:
+component EmptyState:
   card:
     ## %title
-    > %description
-    row-end:
-      @secondary[Detalhes](%destination)
+    > %message
+    row-center:
+      @[Criar item](%action)
 
-component HomeSection:
+component Module:
   container:
-    # %sectionTitle
+    # %moduleTitle
     stack:
-      $ActionCard:
-        - Iniciar tour | Conheça o produto em minutos | Tour
-      $ActionCard:
-        - Ver exemplos | Aprenda com protótipos prontos | Examples
+      $EmptyState:
+        - Nenhum lead
+        - Comece registrando contatos.
+        - LeadForm
 
-screen Home:
+screen Leads:
+  $Module:
+    - Leads
+```
+</DslPreview>
+Quando usar: encapsular estados vazios e reutilizá-los em diferentes módulos.
+Por quê: mantém linguagem consistente de empty state em todo o produto.
+
+<DslPreview title="Componente composto dentro de list">
+```dsl
+component TaskRow:
+  row-between:
+    stack-tight:
+      > %title
+      >>> %due
+    @[Detalhar](%action)
+
+component TaskSection:
   container:
-    $HomeSection:
-      - Comece agora
+    # %title
+    list $TaskRow:
+      - Revisar backlog | 22/09 | show:backlog
+      - Preparar demo | 25/09 | show:demo
+
+screen Tasks:
+  $TaskSection:
+    - Tarefas da semana
+```
+</DslPreview>
+Quando usar: separar responsabilidades entre componente de seção e componente de linha.
+Por quê: facilita evoluções isoladas de layout sem quebrar a lista principal.
+
+## Erros comuns (Do/Don’t)
+**Não faça — duplicar a mesma estrutura em múltiplos componentes**
+<DslPreview title="❌ Errado — Cabeçalhos replicados">
+```dsl
+component DashboardHeader:
+  row-between:
+    # Projetos ativos
+    @[Criar projeto](ProjectForm)
+
+component ProjectsHeader:
+  row-between:
+    # Projetos ativos
+    @[Criar projeto](ProjectForm)
 ```
 </DslPreview>
 
-## Veja também
-- [Component Definition](./component-definition)
-- [Component Props](./component-props)
-- [Component List](./component-list)
+Faça — crie componente utilitário compartilhado
+<DslPreview title="✅ Correto — Cabeçalho reutilizável">
+```dsl
+component SectionHeader:
+  row-between:
+    # %title
+    @[Criar projeto](%action)
+```
+</DslPreview>
+Por quê: centralizar estruturas idênticas reduz divergências e esforço de manutenção.
+
+**Não faça — passar props sem propagar para subcomponentes**
+<DslPreview title="❌ Errado — Valor ignorado">
+```dsl
+component Section:
+  container:
+    $SectionHeader:
+      - %title
+      - %action
+```
+</DslPreview>
+
+Faça — garanta que cada nível repasse os dados corretamente
+<DslPreview title="✅ Correto — Props encadeados">
+```dsl
+component Section:
+  container:
+    $SectionHeader:
+      - %title
+      - %action
+
+screen Dashboard:
+  $Section:
+    - Projetos ativos
+    - ProjectForm
+```
+</DslPreview>
+Por quê: componentes intermediários precisam repassar os dados esperados pelos utilitários que encapsulam.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Component Definition`](./component-definition): base de cada bloco reutilizável.
+- [`Component Props`](./component-props): gerenciamento de dados passados entre componentes.
+- [`Component List`](./component-list): listas alimentadas por componentes compostos.
+- [`Dashboard`](./dashboard): guia que demonstra composições avançadas.
+
+### Composições recomendadas
+- **Component Composition + Grid** → seções completas com vitrines reutilizáveis.
+- **Component Composition + Modal** → reutiliza cabeçalhos e conteúdos em sobreposições.
+- **Component Composition + Drawer** → painéis laterais complexos com subcomponentes.
+
+<DslPreview title="Componente composto aplicado em drawer">
+```dsl
+component DrawerHeader:
+  row-between:
+    ## %title
+    @ghost[Fechar](close)
+
+component DetailsDrawer:
+  card:
+    $DrawerHeader:
+      - Detalhes do cliente
+    stack-loose:
+      > %summary
+      @[Abrir perfil](%action)
+
+drawer CustomerDetails:
+  $DetailsDrawer:
+    - Revise as informações antes de avançar.
+    - CustomerProfile
+```
+</DslPreview>
+Por quê: combina cabeçalho reutilizável e conteúdo customizado dentro do drawer.

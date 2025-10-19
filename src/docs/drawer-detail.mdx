@@ -1,46 +1,16 @@
 # Drawer Detail
+## Pré-requisitos
+- Ter domínio de `drawer` para abertura e fechamento via ações.
+- Definir componentes de linha (`component CustomerRow`) com `%props`.
+- Conhecer `list $Componente:` para alimentar o drawer com dados dinâmicos.
 
-## O que é
-Padrão cookbook que mostra como exibir detalhes de um item dentro de um `drawer`, mantendo a lista principal visível.
+## Passo a passo
+1. Crie um componente de linha (`CustomerRow`) com CTA que abre o drawer.
+2. Declare o `drawer CustomerDetail` recebendo props como nome, empresa e último contato.
+3. Alimente a lista principal com `list $CustomerRow:` usando valores separados por `|`.
+4. Adicione ações internas (follow-up, fechar) dentro do drawer para manter o fluxo completo.
 
-## Capacidades
-- Abrir `drawer CustomerDetail` a partir de `list` com componentes.
-- Passar props para o drawer usando componentes (`component CustomerRow`).
-- Combinar com ações (`@ghost`, `@success`) para manipular dados diretamente dentro do painel.
-
-## Sintaxe
-- `drawer CustomerDetail:`
-- `container:`
-- `# %name`
-- `>> %company`
-- `>>> Último contato: %lastContact`
-- `screen Accounts:`
-- `list $CustomerRow:`
-- `- Ana Souza | Proto Labs | Ontem`
-- `component CustomerRow:`
-- `card-compact:`
-- `row-between:`
-- `stack:`
-- `## %name`
-- `>>> %company`
-- `@ghost[i-ChevronRight Ver detalhes](CustomerDetail)`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `drawer CustomerDetail` | Painel de detalhes | Recebe dados via props. |
-| `component CustomerRow` | Item da lista | Define o layout de cada linha. |
-| `list $CustomerRow` | Coleção de registros | Cada linha passa valores por `|`. |
-| Ações internas | Botões do drawer | Permitem agendar follow-up ou fechar. |
-
-## Casos de uso
-- Visualizar dados de clientes sem sair da lista principal.
-- Adicionar ações rápidas (agendar follow-up, atualizar status) no próprio drawer.
-- Reaproveitar o mesmo componente de linha em múltiplas telas.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+<DslPreview title="Fluxo completo de lista + drawer de detalhes">
 ```dsl
 component InfoRow:
   row-between:
@@ -60,15 +30,16 @@ drawer CustomerDetail:
 
     card:
       ## Observações
-      > Atualize o CRM após a reunião com o cliente.
+      > Atualize o CRM após a reunião.
 
-    @[Marcar follow-up](scheduleFollowUp)
-    @ghost[Fechar](close)
+    row-end:
+      @ghost[Fechar](close)
+      @success[Marcar follow-up](scheduleFollowUp)
 
 component CustomerRow:
   card-compact:
     row-between:
-      stack:
+      stack-tight:
         ## %name
         >>> %company
         >>> Último contato: %lastContact
@@ -83,23 +54,17 @@ screen Accounts:
       - Carla Dias | FutureSoft | 7 dias atrás
 ```
 </DslPreview>
+Por quê: mantém a lista principal visível enquanto o drawer exibe detalhes e ações contextuais.
 
-<DslPreview title="Exemplo 2">
-```dsl
-screen Dashboard:
-  container:
-    # Pipeline
-    list:
-      - Discover | @[Abrir detalhes](CustomerDetail)
-      - Negotiation | @[Abrir detalhes](CustomerDetail)
-      - Closing | @[Abrir detalhes](CustomerDetail)
+## Depuração rápida
+- Drawer não abre → verifique se o CTA aponta para `CustomerDetail` exatamente.
+- Props não aparecem → valide a ordem dos valores nas linhas da lista.
+- Ações internas não fecham → use `@ghost[Fechar](close)` ou `@ghost[Cancelar](close)`.
+- Overflow de conteúdo → aplique `container` ou `stack` dentro do drawer para controlar espaçamento.
+- Lista com ações inline → mova botões para dentro do componente ou para `row-end`.
 
-  fab:
-    - i-Plus | CustomerDetail
-```
-</DslPreview>
-
-## Veja também
-- [Drawer](./drawer)
-- [List](./list)
-- [Component List](./component-list)
+## Próximos passos
+- Reforce fundamentos em [`Drawer`](./drawer) e [`List`](./list).
+- Explore [`Component List`](./component-list) para catálogos maiores.
+- Estude [`Modal`](./modal) caso precise confirmar ações iniciadas no drawer.
+- Avalie [`Component Composition`](./component-composition) para dividir o drawer em subcomponentes.

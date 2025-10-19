@@ -1,100 +1,157 @@
 # Stack
+Stacks empilham elementos verticalmente, controlando o espaçamento entre blocos de conteúdo.
 
-## O que é
-Layout vertical que empilha elementos com espaçamentos configurados, ideal para formular grupos de conteúdo sequencial.
+## Quando usar
+- Organizar títulos, textos e ações em sequência lógica.
+- Montar formulários com múltiplos campos e botões alinhados.
+- Alternar densidade de leitura com variantes `tight`, `loose` e `flush`.
+- Agrupar componentes reutilizáveis mantendo hierarquia visual coesa.
 
-## Capacidades
-- Empilhar componentes e textos com `stack`, `stack-tight`, `stack-loose`, `stack-flush`.
-- Combinar com qualquer outro layout (container, card, list) mantendo a hierarquia visual.
-- Ajustar densidade do conteúdo (tight para listas curtas, loose para blocos separados).
-- Acomodar botões, inputs, headings e componentes reutilizáveis.
+## Exemplo básico
+<DslPreview title="Stack em card de orientações">
+```dsl
+card:
+  ## Próximos passos
+  stack-loose:
+    > Revise o backlog com o time.
+    > Confirme o plano da sprint.
+    @[Abrir planejamento](Planning)
+```
+</DslPreview>
+Por quê: combina textos e ação em blocos verticais com espaçamento confortável.
 
-## Sintaxe
+<Attention title="Evite hífens automáticos em layouts">
+Mesmo que um LLM sugira `-` antes de cada linha, `stack`, `row`, `card` e demais layouts esperam apenas filhos indentados. Use hífen somente em `list`, `navigator` e `fab` para impedir que a sintaxe gere nós inválidos.
+</Attention>
+
+## Variantes
+<DslPreview title="Stack padrão">
+```dsl
 stack:
-  > Primeira etapa
-  > Segunda etapa
+  > Valide os requisitos
+  > Ajuste o cronograma
+  @[Abrir checklist](Checklist)
+```
+</DslPreview>
+Quando usar: organizar conteúdos variados com espaçamento mediano.
+Por quê: equilibra textos, inputs e ações sem gerar blocos soltos.
 
+<DslPreview title="Stack-tight para itens curtos">
+```dsl
 stack-tight:
-  @[Ação rápida](Action)
-  @[Outra ação](Another)
+  [X] Definir objetivo
+  [ ] Validar protótipo
+  [ ] Preparar release
+```
+</DslPreview>
+Quando usar: agrupar itens curtos ou checklists sem perder legibilidade.
+Por quê: o gap reduzido aproxima conteúdos relacionados e acelera leitura.
 
-stack-loose:
-  card:
-    ## Próximo passo
-  card:
-    ## Seguinte
-
+<DslPreview title="Stack-flush para cards compactos">
+```dsl
 stack-flush:
   card-compact:
-    > Notificação
+    > Última atualização em 18/09.
   card-compact:
-    > Atualização
+    > Reunião agendada para amanhã.
+```
+</DslPreview>
+Quando usar: empilhar elementos que já possuem padding próprio.
+Por quê: evita espaçamento duplo quando os componentes internos já trazem margem.
 
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `stack` | Gap padrão | Uso geral para cards, seções e formulários. |
-| `stack-tight` | Gap reduzido | Ótimo para texto compacto ou checklists. |
-| `stack-loose` | Gap amplo | Separa blocos grandes ou chamadas de atenção. |
-| `stack-flush` | Sem gap | Útil para agrupar elementos com espaçamento próprio. |
-| Conteúdo interno | Slot | Aceita qualquer elemento do DSL (botões, inputs, cards, etc.). |
+## Composição (usando com outros)
+- **Stack + Card** — coloca conteúdos sequenciais dentro de um bloco estruturado.
+- **Stack + Row** — mistura distribuição vertical e horizontal na mesma área.
+- **Stack + Component Definition** — reutiliza blocos padronizados em várias telas.
 
-## Casos de uso
-- `stack:` Agrupar título, parágrafo e CTA dentro de um card.
-- `stack-tight:` Organizar itens de checklist com botões inline.
-- `stack-loose:` Separar seções de um formulário longo sem usar múltiplos cards.
-- `stack-flush:` Empilhar componentes que já possuem padding (ex.: múltiplos cards compactos).
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+<DslPreview title="Formulário com stack e row">
 ```dsl
-screen Checklist:
-  container:
-    # Checklist diário
-    stack-tight:
-      [X] Atualizar backlog
-      [ ] Revisar PRs críticos
-      row-between:
-        > Preparar relatório
-        @outline[Marcar como feito](markDone)
+card:
+  ## Atualizar perfil
+  stack-loose:
+    ___: Nome completo{Digite seu nome}
+    ___email: E-mail{nome@empresa.com}
+    ___textarea: Bio{Conte sobre seu trabalho}
+  row-end:
+    @ghost[Cancelar](close)
+    @[Salvar mudanças](saveProfile)
+```
+</DslPreview>
+Por quê: separa campos verticalmente e alinha ações no rodapé.
 
-    stack-loose:
-      card:
-        ## Próximos passos
-        >> Agendar review com o time de produto.
-      card:
-        ## Links úteis
-        >> #[Documentação](https://proto-typed.dev/docs)
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `stack` | layout vertical | `stack` | Empilha elementos com espaçamento padrão. | Não |
+| `stack-tight`, `stack-loose`, `stack-flush` | variações | — | Ajustam densidade entre itens (compacto, amplo, sem gap). | Não |
+| `conteúdo interno` | blocos DSL | — | Itens empilhados, como textos, inputs e componentes. | Sim |
+
+## Erros comuns (Do/Don’t)
+**Não faça — usar stack para alinhar elementos horizontais**
+<DslPreview title="❌ Errado — Stack com botões lado a lado">
+```dsl
+stack:
+  @[Cancelar](close)
+  @[Salvar](saveForm)
 ```
 </DslPreview>
 
-<DslPreview title="Exemplo 2">
+Faça — utilize `row-end` para ações laterais
+<DslPreview title="✅ Correto — Ações horizontais">
 ```dsl
-component ActionCard:
+stack:
+  > Ajuste as preferências antes de salvar.
+  row-end:
+    @ghost[Cancelar](close)
+    @[Salvar](saveForm)
+```
+</DslPreview>
+Por quê: stacks tratam a ordem vertical; rows cuidam de alinhamento horizontal.
+
+**Não faça — combinar `stack-tight` com conteúdos muito extensos**
+<DslPreview title="❌ Errado — Textos longos sem respiro">
+```dsl
+stack-tight:
+  > Atualize relatórios de todas as squads com detalhes completos.
+  > Documente aprendizados em um relatório amplo para todo o time.
+```
+</DslPreview>
+
+Faça — use `stack-loose` para blocos maiores
+<DslPreview title="✅ Correto — Espaço adequado">
+```dsl
+stack-loose:
+  > Atualize relatórios de todas as squads com detalhes completos.
+  > Documente aprendizados em um relatório amplo para todo o time.
+```
+</DslPreview>
+Por quê: conteúdo amplo precisa de espaçamento maior para manter a leitura confortável.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Row`](./row): complementa stacks quando é preciso alinhar ações na horizontal.
+- [`Card`](./card): envolve stacks com título e contexto.
+- [`Container`](./container): estrutura principal antes de incluir stacks.
+- [`Component Definition`](./component-definition): cria blocos reutilizáveis empilhados.
+
+### Composições recomendadas
+- **Stack + Row-end** → formulários com ações alinhadas.
+- **Stack + Card + List** → seções de conteúdo com resumos textuais.
+- **Stack + Component Definition** → layouts reutilizáveis com dados variáveis.
+
+<DslPreview title="Stack com componente reutilizável">
+```dsl
+component Insight:
   card:
     ## %title
     > %description
-    row-end:
-      @secondary[Detalhes](%destination)
 
-screen Initiatives:
-  container:
-    # Iniciativas em andamento
-    stack:
-      $ActionCard:
-        - Onboarding automatizado | Simplificar cadastro de novos clientes | Onboarding
-      $ActionCard:
-        - Dashboard financeiro | Consolidar KPIs em um só lugar | FinanceDashboard
-
-    stack-flush:
-      card-compact:
-        *> Última atualização em 18/09 às 12h.
-      card-compact:
-        *> Reunião de acompanhamento amanhã às 10h.
+stack-loose:
+  $Insight:
+    - Roadmap atualizado | Planeje entregas para o próximo trimestre.
+  $Insight:
+    - Métricas semanais | Revise KPIs antes da reunião de status.
 ```
 </DslPreview>
-
-## Veja também
-- [Container](./container)
-- [Row](./row)
-- [Card](./card)
+Por quê: evita duplicação ao empilhar componentes com dados diferentes.

@@ -1,12 +1,13 @@
 "use client"
 
 import * as React from "react"
-import { AlertTriangle, Info, Lightbulb, Octagon } from "lucide-react"
+import { AlertTriangle, Info, Lightbulb, Megaphone, Octagon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
 const ICONS = {
   info: Info,
+  attention: Megaphone,
   tip: Lightbulb,
   warning: AlertTriangle,
   danger: Octagon,
@@ -16,6 +17,7 @@ type AlertVariant = keyof typeof ICONS
 
 const variantStyles: Record<AlertVariant, string> = {
   info: "border-[var(--info)] bg-[color:rgba(96,165,250,0.12)] text-[var(--info)]",
+  attention: "border-[var(--attention)] bg-[color:rgba(249,115,22,0.12)] text-[var(--attention)]",
   tip: "border-[var(--brand-400)] bg-[color:rgba(139,92,246,0.14)] text-[var(--brand-300)]",
   warning: "border-[var(--warning)] bg-[color:rgba(245,158,11,0.14)] text-[var(--warning)]",
   danger: "border-[var(--danger)] bg-[color:rgba(239,68,68,0.16)] text-[var(--danger)]",

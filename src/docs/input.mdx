@@ -1,86 +1,149 @@
 # Input
+Campos de entrada coletam dados estruturados, suportando textos, opções, números e confirmações dentro do Proto-Typed.
 
-## O que é
-Tokens de formulário usados para capturar dados do usuário em campos de texto, e-mail, senha, números, datas ou áreas de texto.
+## Quando usar
+- Capturar informações essenciais em formulários, checklists e configurações.
+- Validar formatos específicos como e-mail, senha ou data com sintaxe declarativa.
+- Permitir descrições longas sem sair da tela principal (`___textarea`).
+- Confirmar consentimentos ou escolhas únicas com checkboxes e radios.
 
-## Capacidades
-- Declarar campos com `___type?: Label{placeholder}`.
-- Definir placeholders, opções (`[Opção A | Opção B]`) e atributos adicionais após `|`.
-- Registrar checkboxes `[X] Label` e radios `( ) Label` diretamente na DSL.
-- Compor formulários em `card`, `stack` ou `grid`, alinhando botões com `row-end`.
-
-## Sintaxe
-- `___: Nome{Seu nome}`
-- `___email: Email{email@dominio.com}`
-- `___password: Senha{mínimo 8 caracteres} | required minlength="8"`
-- `___number: Quantidade{0}`
-- `___date: Data{Selecione}`
-- `___textarea: Descrição{Detalhes adicionais}`
-- `[X] Aceito os termos`
-- `( ) Plano mensal`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `___` (text) | Campo padrão | Texto livre. |
-| `___email`, `___password`, `___number`, `___date`, `___textarea` | Tipos específicos | Validam formato ou ampliam área de edição. |
-| `[X] / [ ]` | Checkbox | Estado inicial definido pela presença do `X`. |
-| `(X) / ( )` | Radio | Agrupar radios consecutivos para seleção única. |
-| Atributos pós `|` | Customização | `required`, `minlength="8"`, `placeholder` extra. |
-
-## Casos de uso
-- `___email:` Capturar credenciais de login ou contato.
-- `___textarea:` Receber descrições longas e feedbacks.
-- `___number:` Registrar quantidades, estimativas ou valores.
-- `[X] Aceito os termos` / `( ) Plano mensal`: Confirmar consentimentos e escolhas exclusivas.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+## Exemplo básico
+<DslPreview title="Formulário com campos variados">
 ```dsl
 screen Signup:
-  container:
-    # Criar conta
+  container-narrow:
     card:
-      stack:
-        ___: Nome completo{Seu nome}
+      ## Criar conta
+      stack-loose:
+        ___: Nome completo{Seu nome} | required
         ___email: E-mail{usuario@empresa.com} | required
         ___password: Senha{Mínimo 8 caracteres} | required minlength="8"
-        ___date: Início da assinatura{Selecione}
-        ___textarea: Objetivos{Descreva como pretende usar o produto}
-        [X] Aceito os termos de uso
-
+        ___date: Início da assinatura{Selecione uma data}
+        ___textarea: Objetivos{Conte como pretende usar o produto}
+        [X] Aceito os termos e políticas
       row-end:
         @ghost[Cancelar](-1)
         @[Criar conta](submitSignup)
 ```
 </DslPreview>
+Por quê: reúne diferentes tipos de entrada em um fluxo compacto e completo.
 
-<DslPreview title="Exemplo 2">
+## Variantes
+<DslPreview title="Select com opções declaradas">
 ```dsl
-component OptionRow:
-  row-between:
-    > %label
-    @[Selecionar](%action)
+___select: Status{Em análise | Aprovado | Reprovado}
+```
+</DslPreview>
+Quando usar: limitar a escolha a um conjunto predeterminado.
+Por quê: evita entradas inválidas ao restringir alternativas disponíveis.
 
-screen Billing:
-  container-narrow:
-    # Configurar plano
-    list $OptionRow:
-      - Plano Starter | choose:starter
-      - Plano Business | choose:business
+<DslPreview title="Checkbox para confirmação">
+```dsl
+[X] Receber novidades por e-mail
+```
+</DslPreview>
+Quando usar: capturar consentimentos que podem ser marcados ou desmarcados.
+Por quê: reflete decisões binárias mantendo controle manual da pessoa usuária.
 
-    stack-tight:
-      (X) Cobrança mensal
-      ( ) Cobrança anual
+<DslPreview title="Radios agrupados">
+```dsl
+(X) Cobrança mensal
+( ) Cobrança anual
+```
+</DslPreview>
+Quando usar: exigir seleção exclusiva entre opções mutuamente excludentes.
+Por quê: garante que apenas uma alternativa seja escolhida por vez.
 
+## Composição (usando com outros)
+- **Input + Card** — agrupa os campos em bloco com título e ações.
+- **Input + Stack** — garante espaçamento vertical consistente entre campos.
+- **Input + Row-end** — alinha botões de submissão e cancelamento.
+
+<DslPreview title="Formulário modular com stack">
+```dsl
+component BillingForm:
+  card:
+    ## Configurar plano
+    stack-loose:
+      ___select: Plano{Starter | Pro | Enterprise}
+      ___number: Assentos{5} | min="1"
+      ___textarea: Observações{Detalhes adicionais}
     row-end:
       @ghost[Cancelar](-1)
       @primary[Salvar alterações](savePlan)
 ```
 </DslPreview>
+Por quê: reutiliza o formulário em diferentes telas mantendo layout padronizado.
 
-## Veja também
-- [Button](./button)
-- [Stack](./stack)
-- [Login Screen](./login-screen)
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `tipo` | token (`___`, `___email`, `___password`, `___select`, `___textarea`, etc.) | `___` | Determina validação e apresentação do campo. | Sim |
+| `label` | string | — | Texto exibido antes da entrada. | Sim |
+| `placeholder` | string entre `{}` | — | Exemplo ou instrução contextual do campo. | Sim |
+| `atributos` | chave/valor após `|` | — | Complementa com `required`, `minlength`, `min`, `max`, entre outros. | Não |
+| `opções` | lista `opção A | opção B` | — | Define itens de selects ou radios. | Não |
+
+## Erros comuns (Do/Don’t)
+**Não faça — omitir placeholder significativo**
+<DslPreview title="❌ Errado — Placeholder vazio">
+```dsl
+___email: E-mail{}
+```
+</DslPreview>
+
+Faça — descreva o formato esperado
+<DslPreview title="✅ Correto — Placeholder claro">
+```dsl
+___email: E-mail{nome@empresa.com}
+```
+</DslPreview>
+Por quê: placeholders orientam a digitação e reduzem erros no envio.
+
+**Não faça — misturar radios separados por outros elementos**
+<DslPreview title="❌ Errado — Radios interrompidos">
+```dsl
+(X) Mensal
+card:
+  > Desconto disponível
+( ) Anual
+```
+</DslPreview>
+
+Faça — mantenha radios consecutivos
+<DslPreview title="✅ Correto — Seleção agrupada">
+```dsl
+stack-tight:
+  (X) Mensal
+  ( ) Anual
+```
+</DslPreview>
+Por quê: radios precisam estar juntos para comunicar que fazem parte do mesmo grupo.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Stack`](./stack): controla espaçamento entre campos de formulário.
+- [`Card`](./card): envolve formulários com título e ações.
+- [`Button`](./button): aciona envio ou cancelamento dos dados.
+- [`Login Screen`](./login-screen): guia com fluxo completo de autenticação.
+
+### Composições recomendadas
+- **Input + Stack + Row-end** → formulários lineares com ações claras.
+- **Input + Card + Modal** → capturar informações rápidas sem sair da tela.
+- **Input + Component Definition** → reutilizar formulários em diferentes contextos.
+
+<DslPreview title="Formulário em modal">
+```dsl
+modal InviteModal:
+  card:
+    ## Convidar pessoa
+    stack-tight:
+      ___: Nome completo{Digite o nome}
+      ___email: E-mail{nome@empresa.com}
+    row-end:
+      @ghost[Cancelar](close)
+      @success[Enviar convite](sendInvite)
+```
+</DslPreview>
+Por quê: permite coletar dados essenciais sem abandonar a tela principal.

@@ -1,0 +1,157 @@
+# Sintaxe básica
+
+## Por que importa
+A DSL do Proto-Typed define telas de forma declarativa: indentação, dois-pontos e blocos nomeados controlam hierarquia e fluxo. Dominar a sintaxe evita erros estruturais e garante que componentes, containers e ações se comportem como esperado em tempo de execução.
+
+## Forma canônica (sintaxe mínima)
+<DslPreview title="Estrutura de tela com blocos aninhados">
+```dsl
+screen Home:
+  container:
+    # Título principal
+    > Parágrafo introdutório.
+    row-end:
+      @[Ação primária](NextStep)
+```
+</DslPreview>
+Por quê: ilustra identação obrigatória, uso de dois-pontos e blocos nomeados para organizar o conteúdo.
+
+<Attention title="Indentação primeiro, hífen apenas em listas">
+LLMs costumam inserir `-` para listar filhos de qualquer bloco, mas a DSL só aceita esse marcador em `list`, `navigator` e `fab`. Para layouts e componentes use apenas indentação; isso evita nós fantasmas e mantém a leitura clara para quem dá manutenção.
+</Attention>
+
+## Padrões de uso
+<DslPreview title="Declarar múltiplos blocos de topo">
+```dsl
+screen Home:
+  container:
+    # Visão geral
+    > Contexto inicial.
+
+modal HelpModal:
+  card:
+    ## Precisa de ajuda?
+    > Revise os guias disponíveis.
+    @[Fechar](close)
+```
+</DslPreview>
+Quando usar: agrupar tela principal e overlays relacionados no mesmo arquivo.
+Por quê: mantém contexto de navegação próximo e facilita manutenção de fluxos completos.
+
+<DslPreview title="Componentes reutilizáveis com indentação consistente">
+```dsl
+component MetricCard:
+  card:
+    ## %title
+    # %value
+
+screen Dashboard:
+  container-wide:
+    grid-3:
+      $MetricCard:
+        - Leads | 1.240
+      $MetricCard:
+        - Conversões | 134
+```
+</DslPreview>
+Quando usar: separar layout genérico dos dados que variam.
+Por quê: a sintaxe de componente + instância reduz duplicação mantendo alinhamento correto.
+
+<DslPreview title="Listas textuais sem ações inline">
+```dsl
+list:
+  - Planejar release
+  - Revisar backlog
+  - Atualizar métricas
+row-end:
+  @[Abrir planejamento](Planning)
+```
+</DslPreview>
+Quando usar: apresentar itens somente textuais e agrupar as ações em blocos adequados.
+Por quê: respeita a regra da DSL que restringe `list` a conteúdo textual puro.
+
+## Erros comuns (Do/Don’t)
+**Não faça — omitir dois-pontos após blocos**
+<DslPreview title="❌ Errado — Bloco sem dois-pontos">
+```dsl
+screen Home
+  container:
+    # Visão
+```
+</DslPreview>
+
+Faça — finalize blocos sempre com `:`
+<DslPreview title="✅ Correto — Dois-pontos obrigatório">
+```dsl
+screen Home:
+  container:
+    # Visão
+```
+</DslPreview>
+Por quê: o parser depende do `:` para reconhecer o início do bloco.
+
+**Não faça — misturar indentação de espaços e tabs**
+<DslPreview title="❌ Errado — Indentação inconsistente">
+```dsl
+screen Home:
+<TAB>container:
+    # Visão
+```
+</DslPreview>
+
+Faça — use somente espaços para identar
+<DslPreview title="✅ Correto — Indentação uniforme">
+```dsl
+screen Home:
+  container:
+    # Visão
+```
+</DslPreview>
+Por quê: indentação inconsistente gera nós desalinhados e erros de renderização.
+
+**Não faça — usar camelCase em blocos reservados**
+<DslPreview title="❌ Errado — Nome não padrão">
+```dsl
+screen homeDashboard:
+  container:
+    # Conteúdo
+```
+</DslPreview>
+
+Faça — seguir convenções TitleCase para telas
+<DslPreview title="✅ Correto — Nome padrão de tela">
+```dsl
+screen HomeDashboard:
+  container:
+    # Conteúdo
+```
+</DslPreview>
+Por quê: a engine conecta ações usando nomes exatos; seguir TitleCase evita referências quebradas.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Screen`](./screen): define o contêiner principal da hierarquia.
+- [`Flow`](./flow): organiza a navegação entre telas declaradas.
+- [`Component Definition`](./component-definition): detalha criação de blocos reutilizáveis.
+- [`Text`](./text): descreve hierarquia tipográfica dentro dos blocos.
+
+### Composições recomendadas
+- **Sintaxe básica + Screen** → garante telas válidas antes de pensar em estilo.
+- **Sintaxe básica + Component Definition** → aplica padrões consistentes em coleções.
+- **Sintaxe básica + Flow** → conecta telas respeitando nomes e indentação.
+
+<DslPreview title="Tela com navegação correta">
+```dsl
+screen Home:
+  container:
+    # Início
+    @[Ir para detalhes](Detail)
+
+screen Detail:
+  container:
+    # Detalhes
+    @[Voltar ao início](Home)
+```
+</DslPreview>
+Por quê: mostra uso correto de nomes TitleCase e indentação para navegação bidirecional.

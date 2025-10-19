@@ -1,99 +1,151 @@
 # Row
+Rows alinham elementos horizontalmente, controlando distribuição e espaçamento entre ações, títulos e métricas.
 
-## O que é
-Layout horizontal que posiciona elementos lado a lado, permitindo alinhar conteúdo, ações e métricas na mesma faixa.
+## Quando usar
+- Exibir botões lado a lado com espaçamento uniforme.
+- Criar cabeçalhos com título à esquerda e ação à direita.
+- Centralizar mensagens ou estados vazios na horizontal.
+- Agrupar ações de confirmação no rodapé de cards e modais.
 
-## Capacidades
-- Distribuir itens com alinhamentos diferentes: `row`, `row-start`, `row-center`, `row-between`, `row-end`.
-- Combinar com `stack` internas para criar seções com título + botões no mesmo eixo.
-- Suportar itens de tamanhos variados (cards, botões, inputs) mantendo espaçamento uniforme.
-- Integrar CTAs com layout responsivo dentro de `card`, `container` ou `screen`.
+## Exemplo básico
+<DslPreview title="Rodapé de card com ações alinhadas">
+```dsl
+card:
+  ## Pedido #3021
+  > Atualize o status ou cancele a operação.
+  row-end:
+    @ghost[Cancelar](-1)
+    @[Atualizar pedido](UpdateOrder)
+```
+</DslPreview>
+Por quê: concentra as ações relacionadas ao bloco em uma mesma faixa horizontal.
 
-## Sintaxe
+## Variantes
+<DslPreview title="Row padrão">
+```dsl
 row:
-  @[Criar tarefa](TaskForm)
-  @[Ver relatórios](Reports)
+  @[Exportar CSV](ExportCSV)
+  @[Compartilhar relatório](ShareReport)
+```
+</DslPreview>
+Quando usar: alinhar ações no início do container com espaçamento consistente.
+Por quê: garante distância uniforme entre botões adjacentes.
 
+<DslPreview title="Row-between para título + ação">
+```dsl
 row-between:
-  stack:
-    > Plano Pro
+  stack-tight:
+    ## Plano Pro
     >>> Renovação em 30/09
   @[Alterar plano](ChangePlan)
+```
+</DslPreview>
+Quando usar: distribuir elementos nos extremos mantendo equilíbrio visual.
+Por quê: separa foco textual da ação sem exigir colunas extras.
 
+<DslPreview title="Row-center para estados">
+```dsl
 row-center:
-  @[Solicitar ajuda](Support)
-  @[Abrir guia](Guides)
+  @outline[i-Refresh Tentar novamente](Retry)
+```
+</DslPreview>
+Quando usar: centralizar ações em estados vazios ou mensagens temporárias.
+Por quê: chama atenção para a ação de recuperação em telas sem conteúdo.
 
-row-end:
-  @ghost[Cancelar](-1)
-  @[Salvar](saveTask)
+## Composição (usando com outros)
+- **Row + Stack** — combina textos e ações vertical/horizontal na mesma seção.
+- **Row + Card** — posiciona footers com botões consistentes.
+- **Row + Modal** — alinha ações finais de confirmação ou cancelamento.
 
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `row` | Alinhamento padrão (start) | Usa gap consistente entre itens. |
-| `row-start` | Força alinhamento à esquerda | Útil em headers com múltiplos botões. |
-| `row-center` | Centraliza conteúdo | Ideal para estados vazios ou loaders horizontais. |
-| `row-between` | Espaça extremos | Perfeito para título + ação lateral. |
-| `row-end` | Alinha à direita | Facilita footers de cards com botões. |
-| Conteúdo interno | Slot | Aceita qualquer elemento (botões, cards, textos, inputs). |
-
-## Casos de uso
-- `row-between:` Criar cabeçalhos com título à esquerda e botão à direita.
-- `row-center:` Posicionar indicadores ou loaders no centro da tela.
-- `row:` Exibir múltiplos cards com informações relacionadas lado a lado.
-- `row-end:` Agrupar botões de confirmação/cancelamento no rodapé de um modal.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+<DslPreview title="Header com row-between e stack interno">
 ```dsl
 screen Subscription:
   container:
-    # Assinatura atual
-
     row-between:
-      stack:
-        ## Plano Pro
-        >>> Renovação em 30/09
+      stack-tight:
+        # Assinatura atual
+        >> Ajuste a cobrança conforme necessário.
       @[Alterar plano](ChangePlan)
+```
+</DslPreview>
+Por quê: entrega contexto textual e ação no mesmo nível hierárquico.
 
-    row:
-      card:
-        ## Usuários ativos
-        # 1.204
-      card:
-        ## Espaço utilizado
-        # 78%
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `row` | alinhamento padrão | `row` | Alinha itens na horizontal com espaçamento uniforme. | Não |
+| `row-start`, `row-center`, `row-between`, `row-end` | variações | — | Controlam alinhamento inicial, central, distribuído ou à direita. | Não |
+| `conteúdo interno` | blocos DSL | — | Botões, cards, textos ou componentes posicionados na mesma linha. | Sim |
 
-    row-end:
-      @ghost[Cancelar](-1)
-      @primary[Atualizar faturamento](BillingForm)
+## Erros comuns (Do/Don’t)
+**Não faça — encadear `row-between` e `row` sem necessidade**
+<DslPreview title="❌ Errado — Row redundante">
+```dsl
+row-between:
+  stack:
+    ## Plano Pro
+    >>> Renovação em 30/09
+  row:
+    @[Alterar plano](ChangePlan)
 ```
 </DslPreview>
 
-<DslPreview title="Exemplo 2">
+Faça — use apenas um `row-between`
+<DslPreview title="✅ Correto — Distribuição direta">
 ```dsl
-screen EmptyState:
-  container:
-    stack-loose:
-      # Nada por aqui ainda
-      >> Comece criando um registro ou importando dados existentes.
+row-between:
+  stack-tight:
+    ## Plano Pro
+    >>> Renovação em 30/09
+  @[Alterar plano](ChangePlan)
+```
+</DslPreview>
+Por quê: evitar rows aninhados mantém o layout previsível e simples de manter.
 
-      row-center:
-        @primary[Adicionar item](CreateItem)
-        @outline[Importar CSV](ImportModal)
+**Não faça — agrupar botões sem `row`**
+<DslPreview title="❌ Errado — Botões empilhados sem alinhamento">
+```dsl
+card:
+  ## Configurações
+  @[Cancelar](close)
+  @[Salvar](saveSettings)
+```
+</DslPreview>
 
-modal ImportModal:
+Faça — alinhe ações em `row-end`
+<DslPreview title="✅ Correto — Ações alinhadas">
+```dsl
+card:
+  ## Configurações
+  row-end:
+    @ghost[Cancelar](close)
+    @[Salvar](saveSettings)
+```
+</DslPreview>
+Por quê: rows garantem espaçamento consistente e hierarquia clara entre ações.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Stack`](./stack): organiza conteúdos verticais antes de distribuí-los em uma row.
+- [`Card`](./card): usa rows em rodapés e cabeçalhos.
+- [`Modal`](./modal): alinhamento padrão para botões de confirmação.
+- [`Button`](./button): elemento mais comum dentro de rows.
+
+### Composições recomendadas
+- **Row + Card** → rodapé com ações agrupadas.
+- **Row-between + Stack** → cabeçalhos com contexto e CTA.
+- **Row-end + Modal** → confirmações com foco na ação principal.
+
+<DslPreview title="Modal com row-end">
+```dsl
+modal ConfirmAction:
   card:
-    # Importar CSV
-    ___file: Selecione um arquivo{}
+    ## Aprovar orçamento?
+    > Essa aprovação notifica todo o time.
     row-end:
       @ghost[Cancelar](close)
-      @primary[Enviar](uploadFile)
+      @success[Aprovar](approveBudget)
 ```
 </DslPreview>
-
-## Veja também
-- [Stack](./stack)
-- [Card](./card)
-- [Screen](./screen)
+Por quê: row-end destaca a ação principal sem perder a opção de cancelamento.

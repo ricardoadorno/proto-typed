@@ -1,99 +1,198 @@
 # Grid
+Grades distribuem elementos em colunas equilibradas, garantindo alinhamento consistente e leitura responsiva.
 
-## O que é
-Layout em grade responsável por distribuir elementos em colunas, garantindo alinhamento consistente e responsividade.
+## Quando usar
+- Exibir múltiplos cards ou componentes com largura semelhante.
+- Montar dashboards com métricas organizadas por colunas.
+- Oferecer comparações lado a lado sem recorrer a tabelas complexas.
+- Alternar automaticamente a quantidade de colunas conforme a largura disponível.
 
-## Capacidades
-- Declarar grades fixas (`grid-2`, `grid-3`, `grid-4`) e automáticas (`grid-auto`).
-- Acomodar qualquer elemento (cards, componentes customizados, listas) mantendo espaçamento uniforme.
-- Combinar com `container` ou `card` para criar dashboards e catálogos.
-- Adaptar-se a diferentes larguras sem exigir modificadores adicionais.
-
-## Sintaxe
-- `grid-2:`
-- `card:`
-- `# Item A`
-- `card:`
-- `# Item B`
-- `grid-auto:`
-- `card:`
-- `# Item responsivo`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `grid-2` | 2 colunas fixas | Ideal para painéis e listagens curtas. |
-| `grid-3` | 3 colunas | Padrão para dashboards e métricas. |
-| `grid-4` | 4 colunas | Use quando houver espaço amplo/desktops. |
-| `grid-auto` | Auto-fit | Ajusta número de colunas conforme largura disponível. |
-| Conteúdo interno | Slot | Normalmente `card`, `component`, `list`, etc. |
-
-## Casos de uso
-- `grid-3:` Exibir métricas principais com cards individuais.
-- `grid-2:` Comparar planos, features ou cards com detalhes.
-- `grid-auto:` Listar coleções de itens que devem “quebrar” responsivamente.
-- `grid-4:` Mostrar thumbnails ou indicadores em telas largas.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+## Exemplo básico
+<DslPreview title="Grid com métricas em três colunas">
 ```dsl
 screen Analytics:
   container-wide:
     # Indicadores principais
-
     grid-3:
       card:
         ## Usuários ativos
         # 12.304
       card:
         ## Conversão
-        # 23.5%
+        # 23,5%
       card:
         ## NPS
         # 72
-
-    grid-2:
-      card:
-        ## Últimas releases
-        list:
-          - v1.4.0 | 12/09
-          - v1.3.2 | 28/08
-      card:
-        ## Próximos marcos
-        list:
-          - Pesquisa usuários | Outubro
-          - Revisão monetização | Novembro
 ```
 </DslPreview>
+Por quê: apresenta métricas equilibradas com alinhamento previsível.
 
-<DslPreview title="Exemplo 2">
+## Variantes
+<DslPreview title="Grid-2 para comparações">
 ```dsl
-component FeatureCard:
+grid-2:
+  card:
+    ## Plano Starter
+    > Ideal para equipes pequenas.
+  card:
+    ## Plano Pro
+    > Recursos avançados e suporte prioritário.
+```
+</DslPreview>
+Quando usar: comparar conteúdos em duas colunas com foco equilibrado.
+Por quê: dois slots mantêm equilíbrio entre leitura e respiro visual.
+
+<DslPreview title="Grid-auto para coleções flexíveis">
+```dsl
+grid-auto:
+  card:
+    ## Destaque 1
+    > Ajusta automaticamente a largura.
+  card:
+    ## Destaque 2
+    > Se adapta ao espaço restante.
+  card:
+    ## Destaque 3
+    > Quebra para a linha seguinte conforme necessário.
+```
+</DslPreview>
+Quando usar: distribuir itens com largura dinâmica sem definir número fixo de colunas.
+Por quê: o ajuste automático evita colunas quebradas em telas menores.
+
+<DslPreview title="Grid-4 em telas amplas">
+```dsl
+grid-4:
+  card:
+    ## Insight 1
+  card:
+    ## Insight 2
+  card:
+    ## Insight 3
+  card:
+    ## Insight 4
+```
+</DslPreview>
+Quando usar: dashboards extensos em desktop que pedem quatro colunas alinhadas.
+Por quê: aproveita a largura máxima disponível mantendo proporções iguais.
+
+## Composição (usando com outros)
+- **Grid + Card** — cada célula mantém espaçamento interno consistente.
+- **Grid + Component Definition** — renderiza coleções dinâmicas com dados variáveis.
+- **Grid + Container-wide** — garante espaço lateral para múltiplas colunas.
+
+<DslPreview title="Grid com componentes reutilizáveis">
+```dsl
+component MetricCard:
   card:
     ## %title
-    > %description
-    @[Saiba mais](%destination)
+    # %value
+    >> %description
 
-screen ProductHighlights:
-  container:
-    # Destaques do produto
-    grid-auto:
-      $FeatureCard:
-        - Lançamento rápido | Monte protótipos em minutos | QuickStart
-      $FeatureCard:
-        - Time alinhado | Documentação sempre sincronizada | Guides
-      $FeatureCard:
-        - Exportar facilmente | Gere relatórios com um clique | Reports
+screen Dashboard:
+  container-wide:
+    grid-3:
+      $MetricCard:
+        - Leads | 1.240 | Últimas 24h
+      $MetricCard:
+        - Conversões | 134 | Semana atual
+      $MetricCard:
+        - Receita | R$ 87K | Base mensal
+```
+</DslPreview>
+Por quê: padroniza o layout das métricas reduzindo repetição de código.
 
-  container:
-    row-end:
-      @outline[Ver roadmap](Roadmap)
-      @[Começar agora](Signup)
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `variante` | enum (`grid-2`, `grid-3`, `grid-4`, `grid-auto`) | `grid-3` | Define número de colunas ou ajuste automático. | Não |
+| `conteúdo interno` | blocos DSL | — | Cards, componentes e layouts renderizados nas células. | Sim |
+| `container` suporte | layout | — | Recomenda-se envolver a grid em `container` ou `container-wide`. | Não |
+
+## Erros comuns (Do/Don’t)
+**Não faça — usar `grid-4` em largura estreita**
+<DslPreview title="❌ Errado — Quatro colunas espremidas">
+```dsl
+container-narrow:
+  grid-4:
+    card:
+      ## Item 1
+    card:
+      ## Item 2
+    card:
+      ## Item 3
+    card:
+      ## Item 4
 ```
 </DslPreview>
 
-## Veja também
-- [Container](./container)
-- [Card](./card)
-- [Dashboard](./dashboard)
+Faça — ajuste colunas ao espaço disponível
+<DslPreview title="✅ Correto — Grid proporcional">
+```dsl
+container-narrow:
+  grid-2:
+    card:
+      ## Item 1
+    card:
+      ## Item 2
+```
+</DslPreview>
+Por quê: a quantidade de colunas deve respeitar a largura do container para preservar a legibilidade.
+
+**Não faça — usar grid para conteúdos que exigem ordem linear**
+<DslPreview title="❌ Errado — Checklist em grid">
+```dsl
+grid-3:
+  card:
+    ## Passo 1
+  card:
+    ## Passo 2
+  card:
+    ## Passo 3
+```
+</DslPreview>
+
+Faça — utilize `stack` para sequências
+<DslPreview title="✅ Correto — Sequência em stack">
+```dsl
+stack-loose:
+  card:
+    ## Passo 1
+  card:
+    ## Passo 2
+  card:
+    ## Passo 3
+```
+</DslPreview>
+Por quê: fluxos sequenciais exigem leitura de cima para baixo para evitar confusão.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Container`](./container): delimita a largura antes de aplicar a grid.
+- [`Card`](./card): elemento mais comum em células de grade.
+- [`Component List`](./component-list): gera grids dinâmicas com dados vindos de coleções.
+- [`Dashboard`](./dashboard): guia que explora grids em telas analíticas.
+
+### Composições recomendadas
+- **Grid + Container-wide** → dashboards com múltiplas colunas e respiro lateral.
+- **Grid + Stack interno** → células com subelementos alinhados verticalmente.
+- **Grid + Component Definition** → layouts reutilizáveis com dados variáveis.
+
+<DslPreview title="Grid com stack interno">
+```dsl
+grid-3:
+  card:
+    stack-tight:
+      ## Backlog
+      > Tarefas pendentes
+  card:
+    stack-tight:
+      ## Sprint atual
+      > Ênfase em bugs críticos
+  card:
+    stack-tight:
+      ## Roadmap
+      > Próximos lançamentos
+```
+</DslPreview>
+Por quê: stacks dentro do card mantêm alinhamento vertical sem quebrar o layout da grade.

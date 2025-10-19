@@ -1,111 +1,166 @@
 # List
+Listas organizam itens textuais em sequência vertical, servindo como ponto de partida para resumos e catálogos.
 
-## O que é
-Estrutura vertical que organiza itens em sequência, com suporte a texto simples ou instâncias de componentes reutilizáveis.
+## Quando usar
+- Exibir coleções de itens curtos com leitura rápida.
+- Estruturar resumos, agendas ou checklists sem formatação complexa.
+- Alimentar componentes repetidos (`list $Componente`) com dados tabulares.
+- Agrupar conteúdos em drawers, modais ou cards mantendo ritmo vertical.
 
-## Capacidades
-- Declarar listas básicas com `list:` + itens `-`.
-- Renderizar componentes com props usando `list $Component:`.
-- Passar dados por linha via pipes (`- valor1 | valor2`) e interpolar com `%prop`.
-- Mesclar ações inline (botões `@variant` ou links `#[...]`).
-- Combinar com `component` para criar catálogos, menus e checklists dinâmicos.
+## Exemplo básico
+<DslPreview title="Lista com ações separadas">
+```dsl
+card:
+  ## Tarefas da semana
+  list:
+    - Revisar backlog
+    - Preparar demo
+    - Atualizar documentação
+  row-end:
+    @[Criar nova tarefa](TaskForm)
+    @ghost[Ver calendário](Calendar)
+```
+</DslPreview>
+Por quê: mantém itens exclusivamente textuais e posiciona ações em bloco dedicado.
 
-## Sintaxe
-- `list:` seguido apenas de linhas `- texto simples`
-- `component Nome:` para preparar `%props`
-- `list $Nome:` com linhas `- valor1 | valor2` que preenchem `%props`
+## Variantes
+<DslPreview title="Lista simples">
+```dsl
+list:
+  - Configurar métricas
+  - Validar integrações
+  - Revisar deploy
+```
+</DslPreview>
+Quando usar: enumerar itens curtos sem propriedades adicionais.
+Por quê: apresenta conteúdos simples sem exigir componentes complexos.
 
-## Sintaxe inválida
-- `list:` com `- Item | Outro valor` (use `list $Componente` ou `card`)
-- `list:` com `- Texto @[Ação](Destino)` (envolva em `card`/`stack`)
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `list` | Lista simples | Cada item inicia com `-`. |
-| `list $Name` | Lista baseada em componente | Requer um `component Name:` declarado previamente. |
-| `- valor | valor` | Linha com props | A ordem deve corresponder aos `%props`. |
-| Conteúdo inline | Slot | Permite botões, links e formatos mistos nos itens. |
-
-## Casos de uso
-- `list:` Mostrar tarefas com status ou datas.
-- `list $Component:` Montar cards repetidos a partir de um template.
-- `list:` dentro de `drawer` ou `navigator` para menus laterais.
-- **Cuidado:** itens da lista aceitam apenas texto; para conteúdo avançado (cards, botões, múltiplas colunas) use `card`, `stack` ou `list $Componente`.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+<DslPreview title="Lista baseada em componente">
 ```dsl
 component TaskRow:
   row-between:
-    stack:
+    stack-tight:
       > %title
       >>> %due
-    row:
-      @outline-sm[i-Edit Editar](edit:%id)
-      @destructive-sm[i-Trash Remover](ConfirmDelete)
+    @outline-sm[Detalhar](%action)
 
-screen Tasks:
-  container:
-    # Tarefas da sprint
-    list $TaskRow:
-      - Atualizar documentação | Vence em 20/09 | 101
-      - Revisar backlog | Vence em 22/09 | 102
-      - Preparar demo | Vence em 25/09 | 103
-
-  container:
-    stack:
-      card-compact:
-        ## Checklist
-        @[Abrir checklist](Checklist)
-      card-compact:
-        ## Exportar relatório
-        @[Exportar CSV](https://example.com/export.csv)
+list $TaskRow:
+  - Atualizar roadmap | Até 22/09 | show:roadmap
+  - Revisar backlog | Até 24/09 | show:backlog
 ```
 </DslPreview>
+Quando usar: renderizar itens repetidos com múltiplos campos seguindo a mesma estrutura.
+Por quê: evita duplicação de markup enquanto mantém layout consistente.
 
-<DslPreview title="Exemplo 2">
+<DslPreview title="Lista compacta em drawer">
 ```dsl
-drawer QuickMenu:
+drawer QuickTips:
   container:
-    # Menu rápido
-    stack:
-      card-compact:
-        ## Dashboard
-        #[Abrir dashboard](Dashboard)
-      card-compact:
-        ## Tarefas
-        #[Ir para tarefas](Tasks)
-      card-compact:
-        ## Configurações
-        #[Abrir preferências](Settings)
+    # Dicas rápidas
+    list:
+      - Use filtros por período para refinar métricas.
+      - Combine stack e card para formular layouts.
+      - Consulte o guia de componentes antes do handoff.
+```
+</DslPreview>
+Quando usar: oferecer notas rápidas sem ocupar muito espaço.
+Por quê: o drawer traz lembretes sucintos preservando a área principal.
 
-screen Dashboard:
-  header:
-    # Proto-Typed
-    @ghost[i-Menu Menu](QuickMenu)
+## Composição (usando com outros)
+- **List + Card** — agrupa contexto e mantém itens alinhados.
+- **List + Component Definition** — transforma dados tabulares em layouts ricos.
+- **List + Drawer** — expõe listas de apoio sem sair da tela principal.
 
-  container:
-    # Visão geral
-    stack:
-      card:
-        ## Releases recentes
-        @[Ver changelog](https://example.com/changelog)
-      card:
-        ## Próxima reunião
-        @[Abrir agenda](Calendar)
+<DslPreview title="Lista com componente reutilizável">
+```dsl
+component MetricItem:
+  row-between:
+    > %label
+    >> %value
 
-modal ConfirmDelete:
-  card:
-    # Remover tarefa
-    > Esta ação não pode ser desfeita.
-    row-end:
-      @ghost[Cancelar](close)
-      @destructive[Excluir agora](deleteTask)
+card:
+  ## Indicadores
+  list $MetricItem:
+    - Leads captados | 1.240
+    - Conversões | 134
+    - Receita | R$ 87K
+```
+</DslPreview>
+Por quê: mantém consistência na apresentação de métricas recorrentes.
+
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `list` | bloco | — | Renderiza itens textuais com marcador `-`. | Sim |
+| `list $Componente` | bloco | — | Usa componente previamente declarado para cada linha. | Não |
+| `itens` | texto ou dados separados por `|` | — | Dados passados para cada item ou componente. | Sim |
+| `%props` | interpolação | — | Variáveis dentro do componente associado à lista. | Não |
+
+## Erros comuns (Do/Don’t)
+**Não faça — incluir links ou botões dentro da lista**
+<DslPreview title="❌ Errado — Ações em `list:`">
+```dsl
+list:
+  - Revisar backlog @[Editar](TaskForm)
 ```
 </DslPreview>
 
-## Veja também
-- [Component Definition](./component-definition)
-- [Button](./button)
-- [Navigator](./navigator)
+Faça — mova as ações para blocos de ação
+<DslPreview title="✅ Correto — Ações separadas">
+```dsl
+list:
+  - Revisar backlog
+  - Preparar demo
+row-end:
+  @[Editar tarefa](TaskForm)
+```
+</DslPreview>
+Por quê: `list` aceita somente texto; ações ficam em rows, cards ou navigator.
+
+**Não faça — usar `|` sem componente associado**
+<DslPreview title="❌ Errado — Pipes sem `list $Componente`">
+```dsl
+list:
+  - Plano Pro | R$ 89
+```
+</DslPreview>
+
+Faça — declare componente para receber props
+<DslPreview title="✅ Correto — Lista com componente">
+```dsl
+component PlanRow:
+  row-between:
+    > %title
+    >> %price
+
+list $PlanRow:
+  - Plano Pro | R$ 89
+```
+</DslPreview>
+Por quê: `|` indica múltiplos valores, e apenas componentes conseguem interpolar `%props`.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Component Definition`](./component-definition): define templates usados em `list $`.
+- [`Component List`](./component-list): amplia listas com dados dinâmicos.
+- [`Row`](./row): posiciona ações relacionadas à lista.
+- [`Card`](./card): delimita contexto e oferece título à lista.
+
+### Composições recomendadas
+- **List + Card + Row-end** → resumo textual com ações no rodapé.
+- **List + Component Definition** → coleções ricas baseadas em dados.
+- **List + Drawer** → notas rápidas sem navegar de tela.
+
+<DslPreview title="Lista com ações estruturadas">
+```dsl
+card:
+  ## Próximos passos
+  list:
+    - Reunir métricas da equipe
+    - Validar hipóteses com o time
+  row-end:
+    @[Abrir planejamento](Planning)
+```
+</DslPreview>
+Por quê: separa itens informativos de ações, mantendo o padrão recomendado.

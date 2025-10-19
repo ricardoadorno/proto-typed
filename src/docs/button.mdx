@@ -1,100 +1,156 @@
 # Button
+Botões disparam ações imediatas e conduzem pessoas pelos fluxos principais do Proto-Typed.
 
-## O que é
-Botões acionam navegação, comandos e interações principais dentro das telas criadas com Proto-Typed.
+## Quando usar
+- Destacar a ação mais importante da tela ou do card.
+- Guiar para telas subsequentes, modais ou drawers com contexto claro.
+- Confirmar envios e salvar formulários sem ambiguidade.
+- Oferecer caminhos de retorno com variantes mais leves (`@ghost`, `@link`).
 
-## Capacidades
-- Declarar botões com variantes (`primary`, `secondary`, `outline`, `ghost`, `destructive`, `link`, `success`, `warning`).
-- Ajustar tamanhos (`-xs`, `-sm`, `-md`, `-lg`) para adequar altura e espaçamento.
-- Encaminhar ações para telas, modais, drawers ou URLs externas (`@[Label](Destino)`).
-- Atribuir ícones embutidos (`i-Download`) antes do texto para reforçar o contexto.
-- Reagir a fluxos de confirmação (`(-1)` para voltar, chamar `modal`, `drawer` ou executar `alert('...')`).
-
-## Sintaxe
-- `@[Criar tarefa](TaskForm)`
-- `@secondary-sm[Ver relatórios](Reports)`
-- `@outline[i-Download Exportar CSV](https://example.com/report.csv)`
-- `@ghost[Voltar](-1)`
-
-
-## Variantes & Slots
-| Variante/Slot | Papel | Notas |
-| --- | --- | --- |
-| `@` / `@primary` | Ação principal | Variante padrão e mais evidente. |
-| `@secondary`, `@outline`, `@ghost` | Ações complementares | Escolha conforme hierarquia visual. |
-| `@destructive` | Operações críticas | Usar para deletar/remover. |
-| `@link`, `@success`, `@warning` | Contextuais | Link abre destinos, success/warning reforçam status. |
-| `-xs / -sm / -md / -lg` | Tamanho | Define altura/padding do botão. |
-| `[Texto]` | Label | Obrigatório; pode incluir ícone `i-Icon`. |
-| `(Destino)` | Ação | Tela (`Dashboard`), overlay (`ConfirmDelete`), link externo ou `-1` para voltar. |
-
-## Casos de uso
-- `@[Criar tarefa](TaskForm)` — CTA principal para abrir uma tela de formulário.
-- `@secondary-sm[Ver histórico](History)` — Ação complementar em um card de métricas.
-- `@outline[i-Download Exportar CSV](https://example.com/report.csv)` — Download de relatórios.
-- `@ghost[Cancelar](-1)` — Retorna à tela anterior dentro de um fluxo multi-etapas.
-- `@destructive[Excluir](ConfirmDelete)` — Dispara modal de confirmação destrutiva.
-
-## Exemplos
-<DslPreview title="Exemplo 1">
+## Exemplo básico
+<DslPreview title="Ação principal em tela de tarefas">
 ```dsl
-screen Home:
+screen Tasks:
   container:
-    # Bem-vindo ao Proto-Typed
-    > Gerencie tarefas e relatórios em um só lugar.
-
-    row-between:
-      @[Criar Tarefa](TaskForm)
-      @secondary-sm[Ver Dashboard](Dashboard)
-
-    card:
-      ## Relatório semanal
-      >> Exportar dados atualizados para o time financeiro.
-      row:
-        @outline[i-Download Exportar CSV](https://example.com/report.csv)
-        @ghost[Compartilhar](ShareModal)
-
-modal ShareModal:
-  card:
-    # Compartilhar link
-    ___: Email{usuario@empresa.com}
+    # Minhas tarefas
+    > Priorize as ações do dia.
     row-end:
-      @ghost[Cancelar](close)
-      @success[Enviar convite](sendInvite)
+      @[Criar tarefa](TaskForm)
+```
+</DslPreview>
+Por quê: apresenta CTA único alinhado ao objetivo da tela.
 
-screen TaskForm:
-  container:
-    # Nova tarefa
-    ___: Título{Nome da tarefa}
-    ___textarea: Descrição{Detalhes}
-    row-end:
-      @ghost[Cancelar](-1)
-      @[Salvar](saveTask)
+## Variantes
+<DslPreview title="Variante primária para CTA principal">
+```dsl
+row:
+  @[Publicar relatório](PublishReport)
+```
+</DslPreview>
+Quando usar: priorize a ação que move o fluxo adiante.
+Por quê: destaca o comando principal com contraste máximo.
+
+<DslPreview title="Variante secundária de apoio">
+```dsl
+row:
+  @secondary-sm[Ver histórico](History)
+```
+</DslPreview>
+Quando usar: ofereça opção complementar sem competir com o CTA principal.
+Por quê: mantém a hierarquia visual ao apresentar caminhos alternativos.
+
+<DslPreview title="Variante destrutiva para ações críticas">
+```dsl
+row-end:
+  @destructive[Excluir conta](ConfirmDelete)
+```
+</DslPreview>
+Quando usar: sinalize riscos e peça confirmação antes de executar.
+Por quê: associa o estilo destrutivo a ações de alto impacto e reduz erros.
+
+## Composição (usando com outros)
+- **Card + Button** — encapsula contexto e mantém CTA visível.
+- **Row-end + Button** — alinha múltiplas ações respeitando a hierarquia.
+- **Modal + Button** — confirma decisões sensíveis antes de concluir tarefas.
+
+<DslPreview title="Card com botões alinhados">
+```dsl
+card:
+  ## Plano mensal
+  > Controle de cobranças recorrentes.
+  row-end:
+    @ghost[Cancelar](-1)
+    @[Atualizar plano](UpdatePlan)
+```
+</DslPreview>
+Por quê: combina CTA principal e opção de saída dentro do mesmo bloco.
+
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `variante` | enum (`@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@link`, `@success`, `@warning`) | `@primary` | Define hierarquia visual da ação. | Não |
+| `tamanho` | enum (`-xs`, `-sm`, `-md`, `-lg`) | `-md` | Ajusta altura e espaçamento do botão. | Não |
+| `label` | string | — | Texto visível do botão; pode incluir ícone. | Sim |
+| `ícone` | token `i-` | — | Ícone opcional exibido antes do label. | Não |
+| `destino` | slug/rota | — | Tela, modal, drawer, ação (`-1`, `close`, `alert`). | Sim |
+
+## Erros comuns (Do/Don’t)
+**Não faça — usar `#` para acionar lógica**
+<DslPreview title="❌ Errado — Link usado como ação">
+```dsl
+row:
+  #[Enviar convite](ConfirmInvite)
 ```
 </DslPreview>
 
-<DslPreview title="Exemplo 2">
+Faça — mantenha ação com `@`
+<DslPreview title="✅ Correto — Botão com ação">
 ```dsl
-screen DangerZone:
-  container:
-    # Configurações avançadas
-    card:
-      *> Cuidado: ações abaixo são permanentes.
-      row-between:
-        @outline[Exportar backup](exportBackup)
-        @destructive[Excluir conta](ConfirmDelete)
+row:
+  @[Enviar convite](ConfirmInvite)
+```
+</DslPreview>
+Por quê: `@` executa ações no fluxo; `#` serve apenas para navegação declarativa.
+
+**Não faça — ação perigosa sem variante visível**
+<DslPreview title="❌ Errado — Exclusão sem destaque">
+```dsl
+row-end:
+  @[Excluir conta](ConfirmDelete)
+```
+</DslPreview>
+
+Faça — sinalize risco com `@destructive`
+<DslPreview title="✅ Correto — Exclusão destacada">
+```dsl
+row-end:
+  @destructive[Excluir conta](ConfirmDelete)
+```
+</DslPreview>
+Por quê: a variante destrutiva comunica o risco e reduz cliques acidentais.
+
+**Não faça — labels genéricos**
+<DslPreview title="❌ Errado — Label pouco claro">
+```dsl
+row:
+  @[Clique aqui](DownloadReport)
+```
+</DslPreview>
+
+Faça — descreva o resultado da ação
+<DslPreview title="✅ Correto — Label orientado a ação">
+```dsl
+row:
+  @[Baixar relatório](DownloadReport)
+```
+</DslPreview>
+Por quê: labels específicos ajudam a decisão rápida e evitam dúvidas.
+
+## Referências cruzadas
+
+### Relacionados
+- [`Link`](./link): navegação sem executar lógica de negócio.
+- [`Row`](./row): organiza botões lado a lado com alinhamentos.
+- [`Modal`](./modal): confirma decisões sensíveis com mensagens adicionais.
+- [`Navigator`](./navigator): estrutura caminhos alternativos por abas ou menus.
+
+### Composições recomendadas
+- **Button + Row-end** → destaca CTA principal com ações de suporte.
+- **Button + Modal** → envolve confirmações antes de alterações permanentes.
+- **Button + Navigator** → conecta telas relacionadas em fluxos guiados.
+
+<DslPreview title="Button com modal de confirmação">
+```dsl
+row-end:
+  @destructive[Excluir conta](ConfirmDelete)
 
 modal ConfirmDelete:
   card:
     # Confirmar exclusão
-    > Esta ação não pode ser desfeita.
+    > Essa ação não pode ser desfeita.
     row-end:
-      @ghost[Voltar](close)
+      @ghost[Cancelar](close)
       @destructive[Excluir agora](deleteTenant)
 ```
 </DslPreview>
-
-## Veja também
-- [Text](./text)
-- [Screen](./screen)
-- [Modal](./modal)
+Por quê: combina CTA crítico com confirmação explícita para evitar erros.
