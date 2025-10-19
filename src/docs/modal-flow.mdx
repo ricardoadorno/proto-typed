@@ -1,10 +1,39 @@
 # Modal Flow
 
-## Objetivo
-Orquestrar um fluxo de navegação usando modal e ações rápidas para guiar o usuário por etapas críticas sem trocar de tela principal.
+## O que é
+Padrão de fluxo que coordena múltiplos modais para confirmar ações ou exibir etapas sequenciais sem trocar de tela.
 
-## Exemplo completo
-<DslPreview>
+## Capacidades
+- Encadear modais (`modal Confirm`, `modal Sucesso`) acionados por botões ou FAB.\n+- Reutilizar o mesmo modal a partir de diferentes pontos (lista, card, FAB).\n+- Direcionar usuários rapidamente por confirmações e feedbacks sem sair da `screen` atual.
+
+## Sintaxe
+- `modal ConfirmInvite:`
+- `card:`
+- `# Enviar convite?`
+- `row-end:`
+- `@ghost[Cancelar](close)`
+- `@[Enviar convite](SuccessInvite)`
+- `modal SuccessInvite:`
+- `card:`
+- `# Convite enviado!`
+- `@[Fechar](close)`
+- `screen Team:`
+- `container:`
+- `@[Convidar membro](ConfirmInvite)`
+
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `modal Confirm...` | Etapa de confirmação | Deve oferecer ação de saída segura (`close`). |
+| `modal Success...` | Feedback rápido | Pode exibir CTA secundário ou apenas fechar. |
+| Botões de acionamento | Entrada do fluxo | Aparecem em `list`, `card`, `fab`, etc. |
+
+## Casos de uso
+- Confirmar convites ou compartilhamentos antes de enviar.\n+- Alertar usuários sobre ações destrutivas antes da execução.\n+- Mostrar feedback positivo/erro logo após a confirmação.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
 modal ConfirmInvite:
   card:
@@ -23,23 +52,43 @@ modal SuccessInvite:
 screen Team:
   container:
     # Equipe
-
     card:
       ## Convites recentes
+      list:
+        - Thiago Martins | Enviado em 16/09 | @[Reenviar](ConfirmInvite)
+        - Laura Mendes | Pendente | @[Enviar agora](ConfirmInvite)
 
   fab:
     - i-Plus | ConfirmInvite
 ```
 </DslPreview>
 
-## O que aprender
-- Como encadear modais usando ações (`action`) para feedback imediato.
-- Como reutilizar o mesmo modal a partir de listas e FAB.
-- Como manter o foco do usuário em um único contexto durante etapas críticas.
+<DslPreview title="Exemplo 2">
+```dsl
+modal ConfirmDelete:
+  card:
+    # Confirmar exclusão
+    > Esta ação não pode ser desfeita.
+    row-end:
+      @ghost[Cancelar](close)
+      @destructive[Excluir](SuccessDelete)
 
-## Variações
-- Versão com passo adicional para revisão antes do envio (`modal ReviewInvite`).
-- Versão com captura de dados diretamente no modal (campos `___email`, `___role`).
+modal SuccessDelete:
+  card:
+    # Registro removido
+    > Os dados foram apagados com sucesso.
+    @[Fechar](close)
 
-## Próximos passos
-→ Veja também [Modal](./modal) e [FAB](./fab).
+screen DangerZone:
+  container:
+    # Zona de risco
+    list:
+      - Deletar workspace | @[Remover](ConfirmDelete)
+      - Revogar acesso | @[Revogar](ConfirmDelete)
+```
+</DslPreview>
+
+## Veja também
+- [Modal](./modal)
+- [Drawer Detail](./drawer-detail)
+- [Fab](./fab)

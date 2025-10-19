@@ -1,53 +1,98 @@
 # Link
 
 ## O que é
-Links internos e externos com semântica clara, usados para navegar entre telas ou apontar recursos relevantes.
+Elemento de navegação inline que cria hyperlinks para telas internas, modais, drawers ou URLs externas usando `#[Texto](Destino)`.
 
-## Sintaxe
-```proto
-#[Texto do link](Destino)
-```
+## Capacidades
+- Navegar para outras telas Proto-Typed (`#[Ir para Dashboard](Dashboard)`).
+- Abrir modais ou drawers existentes (`#[Abrir filtros](FilterDrawer)`).
+- Disparar links externos, e-mail ou telefone (`https://…`, `mailto:…`, `tel:`).
+- Ser utilizado dentro de parágrafos, listas e tabelas sem quebrar o fluxo textual.
 
-Exemplo
-<DslPreview>
+## Sintaxe válida
+- `#[Internal](ScreenName)`
+- `#[Ajuda](HelpCenter)`
+- `#[Visitar site](https://proto-typed.dev)`
+- `#[Contato](mailto:time@empresa.com)`
+
+## Sintaxe inválida
+- `@[Label](Screen)` → usa `@`, não `#`.
+- `#[Texto sem destino]` → precisa de `(Destino)`.
+- `#[Texto](screen com espaço)` → nomes de tela não têm espaços.
+
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `#[Texto](Screen)` | Navegação interna | Destino deve coincidir com nome de `screen`, `modal` ou `drawer`. |
+| `#[Texto](https://...)` | Link externo | Abre a URL no navegador. |
+| `#[Texto](mailto:...)` / `tel:` | Contato direto | Usa protocolo de e-mail/telefone. |
+| Conteúdo inline | Slot | Pode envolver ícones (`i-`) e ênfases (`**`). |
+
+## Casos de uso
+- `#[Ver detalhes](DetailScreen)` — Link contextual dentro de cards ou listas.
+- `#[Suporte](mailto:help@empresa.com)` — Canal rápido de ajuda.
+- `#[Documentação](https://proto-typed.dev/docs)` — Referenciar material externo.
+- `#[Voltar para o início](Home)` — Fornecer caminhos de navegação secundária.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
-screen Support:
+screen HelpCenter:
   container:
-    # Central de Ajuda
-    > Resolva dúvidas consultando os materiais oficiais.
+    # Central de ajuda
+    > Consulte a #[Documentação oficial](https://proto-typed.dev/docs) para um guia completo.
 
     stack:
-      #[Ver FAQs](https://proto-typed.dev/faq)
-      #[Abrir Dashboard](Dashboard)
-      #[Enviar email](mailto:support@proto-typed.dev)
+      card:
+        ## Problemas comuns?
+        #[Abrir troubleshooting](Troubleshooting)
+      card:
+        ## Fale com a gente
+        #[Enviar e-mail](mailto:suporte@proto-typed.dev)
 
-screen Dashboard:
+screen Troubleshooting:
   container:
-    # Visão Geral
-    > Última sincronização em 18/09 às 10:15.
-    #[Voltar para suporte](Support)
+    # Resolução de problemas
+    > #[Voltar ao help center](HelpCenter)
+
+    card:
+      ## Erro de autenticação
+      >> Revise suas credenciais ou #[Redefina a senha](RecoverPassword)
 ```
 </DslPreview>
 
-## Variações e Props
-| Prop | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `href` | string | Destino interno (nome de tela), externo (URL) ou esquema (`mailto`, `tel`) | `#[Contato](mailto:suporte@...)` |
-| `target` | atributo | Adicione `| target="_blank"` para abrir em nova aba | `#[Ver site](https://... ) | target="_blank"` |
-| `variant` | string | Combine com estilos usando `@link` quando precisar comportamento de botão | `@link[Ajuda](Support)` |
-| `inline` | contexto | Links podem ser usados dentro de texto com markdown | `> Consulte #[Guia de estilos](Styles)` |
-| `overlay` | literal | Chamadas para modal/drawer usam o nome do overlay como destino | `#[Abrir filtros](FilterDrawer)` |
+<DslPreview title="Exemplo 2">
+```dsl
+drawer QuickLinks:
+  container:
+    # Links rápidos
+    stack:
+      card-compact:
+        ## Dashboard
+        #[Abrir dashboard](Dashboard)
+      card-compact:
+        ## Time
+        #[Ver equipe](TeamScreen)
+      card-compact:
+        ## Configurações
+        #[Preferências](Settings)
 
-## Boas práticas
-- Prefira links para navegação contextual e botões para ações primárias.
-- Indique claramente quando o link leva a recurso externo ou baixa arquivos.
-- Agrupe links relacionados em `list` para manter estrutura limpa.
+screen HeaderDemo:
+  header:
+    # Proto-Typed
+    row-end:
+      #[Docs](https://proto-typed.dev/docs)
+      #[Abrir links rápidos](QuickLinks)
 
-## Erros comuns
-⚠ Esquecer os colchetes ou parênteses quebra o link (`#[Texto](Destino)`).
-⚠ Misturar links e botões sem padrão dificulta a leitura da interface.
+screen TeamScreen:
+  container:
+    # Equipe
+    > #[Voltar ao início](HeaderDemo)
+```
+</DslPreview>
 
 ## Veja também
-- [Text](./text)
 - [Button](./button)
-- [Drawer](./drawer)
+- [Screen](./screen)
+- [Navigator](./navigator)

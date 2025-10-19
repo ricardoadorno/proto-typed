@@ -1,53 +1,76 @@
 # Component List
 
 ## O que é
-Renderização repetitiva com `$Component` dentro de listas para gerar múltiplas instâncias a partir de dados tabulares.
+Padrão que usa `list $Component:` para renderizar várias instâncias de um componente baseado em dados tabulares (pipes `|`).
+
+## Capacidades
+- Declarar `component` com `%props` e alimentá-lo via `list $Nome:`.
+- Manter cada linha de dados limpa, fácil de atualizar ou gerar automaticamente.
+- Misturar colunas com ações (`@button`, `#[Link]`) dentro do componente.
 
 ## Sintaxe
-```proto
-list $Componente:
-  - valor1 | valor2
-  - valor3 | valor4
-```
+- `component ItemRow:`
+- `row-between:`
+- `> %title`
+- `@[Detalhes](%destination)`
+- `list $ItemRow:`
+- `- Métricas | Metrics`
+- `- Usuários | Users`
 
-Exemplo
-<DslPreview>
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `component Nome` | Template | Contém `%props` usados na lista. |
+| `list $Nome` | Coleção | Cada linha `-` envia valores posicionais. |
+| `- valor1 | valor2` | Linha de dados | Ordem deve casar com `%props` declarados. |
+
+## Casos de uso
+- Listar cards, linhas de tabela ou itens de menu com dados dinâmicos.
+- Criar catálogos com dados vindo de APIs ou planilhas (fácil de sincronizar).
+- Reaproveitar o mesmo componente em dashboards e drawers.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
-component MetricCard:
+component ProjectCard:
   card:
-    >>> %label
-    # %value
-    >> %trend
+    ## %name
+    >>> %owner
+    > Status: %status
+    row-end:
+      @outline[Detalhes](%destination)
 
-screen Analytics:
-  container-wide:
-    # Indicadores
-    list $MetricCard:
-      - Novos usuários | 1.204 | +12%
-      - Receita MRR | R$ 92K | +8%
-      - Churn | 3.2% | -0.6%
+screen Projects:
+  container:
+    # Projetos ativos
+    list $ProjectCard:
+      - Nova plataforma | Ana Souza | Em QA | ProjectDetail
+      - Redesign mobile | Bruno Lima | Em desenvolvimento | MobileDetail
+      - Pesquisa usuários | Carla Dias | Em discovery | ResearchDetail
 ```
 </DslPreview>
 
-## Variações e Props
-| Variação | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `list $Component` | binding | Cria lista baseada em componente com props | `list $MetricCard:` |
-| `layout wrapper` | layout | Envolva `list` com `container` ou `card` para contexto visual | `card:` + `list $MetricCard:` |
-| `dados dinâmicos` | fluxo | Alimente via `- valor | valor` diretamente na DSL | `- João | Designer` |
-| `interpolação` | props | `%placeholder` recebe valores por coluna | `%value` |
-| `component inline` | organização | Defina o componente no mesmo arquivo para leitura rápida | `component MetricCard:` |
+<DslPreview title="Exemplo 2">
+```dsl
+component DocumentRow:
+  row-between:
+    stack:
+      > %title
+      >>> Atualizado em %updated
+    @outline[i-Download Baixar](%url)
 
-## Boas práticas
-- Agrupe `list $Component` imediatamente abaixo do componente responsável para clareza.
-- Utilize listas para dados com mesma estrutura visual (cards de métricas, pessoas, produtos).
-- Combine com `filters` em telas para atualizar dados sem duplicar layout.
-
-## Erros comuns
-⚠ Declarar `list $Componente` antes do componente gera erro de compilação.
-⚠ Misturar quantidades diferentes de colunas entre linhas deixa props desalinhadas.
+screen Files:
+  container-narrow:
+    # Arquivos disponíveis
+    list $DocumentRow:
+      - Guia rápido | 15/09 | https://example.com/quickstart.pdf
+      - Release notes | 10/09 | https://example.com/release.pdf
+      - Plano estratégico | 05/09 | https://example.com/plan.pdf
+```
+</DslPreview>
 
 ## Veja também
+- [Component Definition](./component-definition)
 - [Component Props](./component-props)
-- [Grid](./grid)
-- [Dashboard](./dashboard)
+- [List](./list)

@@ -1,10 +1,46 @@
 # Drawer Detail
 
-## Objetivo
-Demonstrar como abrir um drawer com detalhes dinâmicos mantendo a tela principal visível para referência rápida.
+## O que é
+Padrão cookbook que mostra como exibir detalhes de um item dentro de um `drawer`, mantendo a lista principal visível.
 
-## Exemplo completo
-<DslPreview>
+## Capacidades
+- Abrir `drawer CustomerDetail` a partir de `list` com componentes.
+- Passar props para o drawer usando componentes (`component CustomerRow`).
+- Combinar com ações (`@ghost`, `@success`) para manipular dados diretamente dentro do painel.
+
+## Sintaxe
+- `drawer CustomerDetail:`
+- `container:`
+- `# %name`
+- `>> %company`
+- `>>> Último contato: %lastContact`
+- `screen Accounts:`
+- `list $CustomerRow:`
+- `- Ana Souza | Proto Labs | Ontem`
+- `component CustomerRow:`
+- `card-compact:`
+- `row-between:`
+- `stack:`
+- `## %name`
+- `>>> %company`
+- `@ghost[i-ChevronRight Ver detalhes](CustomerDetail)`
+
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `drawer CustomerDetail` | Painel de detalhes | Recebe dados via props. |
+| `component CustomerRow` | Item da lista | Define o layout de cada linha. |
+| `list $CustomerRow` | Coleção de registros | Cada linha passa valores por `|`. |
+| Ações internas | Botões do drawer | Permitem agendar follow-up ou fechar. |
+
+## Casos de uso
+- Visualizar dados de clientes sem sair da lista principal.
+- Adicionar ações rápidas (agendar follow-up, atualizar status) no próprio drawer.
+- Reaproveitar o mesmo componente de linha em múltiplas telas.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
 component InfoRow:
   row-between:
@@ -13,8 +49,9 @@ component InfoRow:
 
 drawer CustomerDetail:
   container:
-    # Detalhes do cliente
-    >>> Informações resumidas da conta selecionada.
+    # %name
+    >> %company
+    >>> Último contato: %lastContact
 
     list $InfoRow:
       - Status | Em negociação
@@ -47,14 +84,22 @@ screen Accounts:
 ```
 </DslPreview>
 
-## O que aprender
-- Como passar props para o drawer a partir da linha selecionada.
-- Como usar `card-compact` para manter as linhas leves e clicáveis.
-- Como reaproveitar componentes (`CustomerRow`) tanto na lista quanto no drawer.
+<DslPreview title="Exemplo 2">
+```dsl
+screen Dashboard:
+  container:
+    # Pipeline
+    list:
+      - Discover | @[Abrir detalhes](CustomerDetail)
+      - Negotiation | @[Abrir detalhes](CustomerDetail)
+      - Closing | @[Abrir detalhes](CustomerDetail)
 
-## Variações
-- Versão com tabs dentro do drawer para separar informações (Visão geral, Atividades, Notas).
-- Versão integrada a formulário permitindo editar dados diretamente no drawer.
+  fab:
+    - i-Plus | CustomerDetail
+```
+</DslPreview>
 
-## Próximos passos
-→ Veja também [Drawer](./drawer) e [Component List](./component-list).
+## Veja também
+- [Drawer](./drawer)
+- [List](./list)
+- [Component List](./component-list)

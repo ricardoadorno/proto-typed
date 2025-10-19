@@ -1,52 +1,96 @@
 # Container
 
 ## O que é
-Bloco base de largura controlada e espaçamento que centraliza o conteúdo da tela de acordo com o contexto desejado.
+Layout base que delimita largura e padding do conteúdo, funcionando como “coluna” principal das telas Proto-Typed.
+
+## Capacidades
+- Oferecer envelopes com larguras distintas: `container`, `container-narrow`, `container-wide`, `container-full`.
+- Centralizar automaticamente o conteúdo (`mx-auto`) e aplicar espaçamentos horizontais seguros.
+- Conter qualquer outro layout ou elemento (stacks, rows, cards, formulários, botões).
+- Facilitar composição com headers, footers e grids, mantendo consistência responsiva.
 
 ## Sintaxe
-```proto
-container-variation:
-  # Conteúdo
-```
+container:
+  # Seção padrão
+  > Texto de boas-vindas
 
-Exemplo
-<DslPreview>
+container-narrow:
+  card:
+    ## Formulário focado
+
+container-wide:
+  grid-3:
+    card:
+      ## Métrica 1
+
+container-full:
+  row-end:
+    @[Ação rápida](Action)
+    @secondary[Suporte](Support)
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `container` | Largura padrão | Ideal para textos, cards e listas gerais. |
+| `container-narrow` | Coluna estreita | Use para formulários e cópia longa com foco. |
+| `container-wide` | Coluna larga | Apropriada para dashboards e grids extensos. |
+| `container-full` | 100% da largura | Depende do layout interno para definir padding. |
+| Conteúdo interno | Slot principal | Pode receber `stack`, `row`, `card` e componentes custom. |
+
+## Casos de uso
+- `container: Página base com título, texto e CTA.`\n\
+  `container:` `  # Bem-vindo` `  > Use o menu ao lado.`
+- `container-narrow: Assistir a formulários ou leitura focada.`\n\
+  `container-narrow:` `  card:` `    ## Cadastro`
+- `container-wide: Dashboards com várias colunas.`\n\
+  `container-wide:` `  grid-3:` `    card:` `      ## Métrica`
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
-screen LayoutShowcase:
+screen Overview:
   container:
-    # Container padrão
-    > Ideal para a maioria das telas.
+    # Visão Geral
+    > Use os cards abaixo para acompanhar o progresso semanal.
 
-  container-narrow:
-    # Container estreito
-    > Use para formulários ou textos longos.
+    stack-loose:
+      card:
+        ## Próxima reunião
+        >> Segunda-feira, 10h
+        @[Ver agenda](Meetings)
 
-  container-wide:
-    # Container largo
-    > Destacado para dashboards e cards.
-
-  container-full:
-    # Container cheio
-    > Usa toda a largura disponível, respeitando o padding global.
+      card:
+        ## Relatório completo
+        > Faça download do consolidado mensal.
+        @outline[i-Download Exportar PDF](https://example.com/report.pdf)
 ```
 </DslPreview>
 
-## Variações e Props
-| Variação | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `container` | layout | Largura padrão responsiva com max-width média | `container:` |
-| `container-narrow` | layout | Limita a largura para foco em texto ou formulários | `container-narrow:` |
-| `container-wide` | layout | Aumenta a largura disponível para conteúdos ricos | `container-wide:` |
-| `container-full` | layout | Ocupa 100% da largura, seguindo padding global | `container-full:` |
+<DslPreview title="Exemplo 2">
+```dsl
+screen Dashboard:
+  container-wide:
+    # Indicadores da equipe
+    grid-3:
+      card:
+        ## Tarefas concluídas
+        # 42
+      card:
+        ## Bugs críticos
+        # 3
+      card:
+        ## Satisfação
+        # 92%
 
-## Boas práticas
-- Combine `container` com `stack` ou `grid` para estruturar o interior sem perder alinhamento.
-- Use variações estreitas em fluxos de foco único, como login ou wizard.
-- Prefira `container-full` apenas quando o layout interno tratar espaçamentos manualmente.
-
-## Erros comuns
-⚠ Empilhar vários `container` sem necessidade cria gaps desnecessários.
-⚠ Misturar `container-wide` com grids densas pode gerar linhas muito longas.
+  container-narrow:
+    card:
+      ## Compartilhar relatório
+      ___email: E-mail{usuario@empresa.com}
+      row-end:
+        @ghost[Cancelar](-1)
+        @success[Enviar convite](sendInvite)
+```
+</DslPreview>
 
 ## Veja também
 - [Stack](./stack)

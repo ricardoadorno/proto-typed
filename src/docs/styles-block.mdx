@@ -1,53 +1,66 @@
 # Styles Block
 
 ## O que é
-Declaração de variáveis de estilo e tokens globais usando o bloco `styles:` para personalizar cores, tipografia e espaçamento.
+Bloco `styles:` que permite definir e sobrescrever CSS custom properties utilizadas pelo renderer (cores, espaçamentos, fontes).
+
+## Capacidades
+- Declarar variáveis como `--primary`, `--accent`, `--radius` para personalizar tema.\n+- Criar tokens próprios (`--brand-color`, `--spacing-card`) e reutilizar no layout.\n+- Aplicar estilos globais que afetam botões, cards e tipografia.
 
 ## Sintaxe
-```proto
-styles:
-  --token: valor;
-```
+- `styles:`
+- `--primary: oklch(0.68 0.15 210);`
+- `--primary-foreground: oklch(0.98 0 0);`
+- `--radius: 0.75rem;`
 
-Exemplo
-<DslPreview>
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `styles:` | Início do bloco | Válido no topo do arquivo DSL. |
+| `--token: valor;` | Propriedade CSS | Deve terminar com `;`. |
+
+## Casos de uso
+- Ajustar cores primárias e secundárias de acordo com a identidade da marca.\n+- Configurar `--radius` para alterar bordas de componentes.\n+- Definir tokens customizados reutilizados em componentes (`--brand-color`). 
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
 styles:
-  --accent: oklch(0.72 0.18 240);
-  --radius: 1rem;
-  --brand-font: 'Inter', sans-serif;
+  --primary: oklch(0.7 0.15 220);
+  --primary-foreground: oklch(0.98 0 0);
+  --accent: oklch(0.68 0.18 250);
+  --radius: 0.75rem;
 
-screen BrandDemo:
+screen CustomTheme:
   container:
-    # Tema com identidade própria
-    > Ajustamos cores e tipografia via bloco de estilos.
-
-    card:
-      ## Componente destacado
-      > Todo card, botão e input herda as novas variáveis.
-      @[Explorar novidades](Dashboard)
+    # Tema personalizado
+    > Botões e cards usam as variáveis definidas no bloco.
+    row:
+      @[Ação principal](Action)
+      @secondary[Secundário](Secondary)
 ```
 </DslPreview>
 
-## Variações e Props
-| Token | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `--accent` | cor | Define cor de destaque usada em links e badges | `--accent: oklch(...);` |
-| `--primary` | cor | Ajusta cor principal de botões e CTAs | `--primary: #0f172a;` |
-| `--foreground` | cor | Controla cor principal de texto | `--foreground: #f8fafc;` |
-| `--radius` | unidade | Define arredondamento global de componentes | `--radius: 0.75rem;` |
-| `--spacing-*` | unidade | Crie tokens customizados para espaçamento | `--spacing-card: 2rem;` |
+<DslPreview title="Exemplo 2">
+```dsl
+styles:
+  --brand-color: #0f172a;
+  --brand-subtitle: #cbd5f5;
 
-## Boas práticas
-- Declare o bloco `styles:` uma única vez por arquivo para evitar sobreposição difícil de rastrear.
-- Prefira valores em OKLCH para cores, garantindo contraste consistente.
-- Controle apenas tokens necessários e aproveite o tema base para o restante.
+component Hero:
+  card:
+    ## %title
+    > %subtitle
+    @[Começar agora](%destination)
 
-## Erros comuns
-⚠ Omitir `;` ao final de cada linha impede o CSS de aplicar corretamente.
-⚠ Alterar `--background` para cores muito escuras exige revisar `--foreground` para manter contraste.
+screen Landing:
+  container:
+    $Hero:
+      - Proto-Typed | Construa protótipos com velocidade | Signup
+```
+</DslPreview>
 
 ## Veja também
 - [Themes](./themes)
 - [Button](./button)
-- [Dashboard](./dashboard)
+- [Card](./card)

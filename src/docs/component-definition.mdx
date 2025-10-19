@@ -1,52 +1,80 @@
 # Component Definition
 
 ## O que é
-Como declarar componentes reutilizáveis para encapsular blocos de interface e aplicá-los em múltiplas telas.
+Declaração de um componente reutilizável (`component Nome:`) que encapsula layout e lógica visual para ser instanciado com `$Nome`.
+
+## Capacidades
+- Definir estrutura base usando qualquer layout (card, stack, row, grid).
+- Inserir placeholders `%prop` interpolados quando o componente é utilizado.
+- Reaproveitar o mesmo componente em múltiplas telas e listas.
+- Agrupar conteúdo complexo em um bloco único para manutenção mais simples.
 
 ## Sintaxe
-```proto
-component NomeDoComponente:
-  card:
-    # Estrutura
-```
+- `component Hero:`
+- `card:`
+- `# %title`
+- `> %subtitle`
+- `@[Ação](%destination)`
+- `screen Home:`
+- `container:`
+- `$Hero:`
+- `- Bem-vindo | Conecte-se rapidamente | Dashboard`
 
-Exemplo
-<DslPreview>
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `component Nome:` | Declaração | Nome em PascalCase. |
+| `%prop` | Placeholder | Recebe valores passados na instância. |
+| `$Nome` | Instância simples | Usa conteúdo fixo definido no componente. |
+| `$Nome:` + lista | Instância com props | Cada linha `-` envia valores separados por `|`. |
+
+## Casos de uso
+- Criar cards padrão para produtos, métricas ou contatos.
+- Centralizar o layout de uma linha de lista e reaproveitar via `list $Nome:`.
+- Isolar seções hero (título, descrição, CTA) repetidas em diversas telas.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
-component Hero:
-  container-narrow:
-    # %title
+component HeroBanner:
+  card:
+    ## %title
     > %subtitle
-    @[Call to action](%action)
+    @[Saiba mais](%destination)
 
 screen Home:
   container:
-    $Hero:
-      - Bem-vindo ao Proto-Typed | Crie protótipos rápidos | Dashboard
+    # Bem-vindo(a)
+    $HeroBanner:
+      - Prototipe mais rápido | Construa telas em minutos | Guides
 
-screen Dashboard:
+screen Guides:
   container:
-    # Painel principal
+    # Biblioteca de guias
+    > Explore fluxos prontos para acelerar a prototipagem.
 ```
 </DslPreview>
 
-## Variações e Props
-| Prop | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `NomeDoComponente` | string | Identificador usado para instanciar com `$` | `component Hero:` |
-| `%variavel` | placeholder | Marca valores dinâmicos utilizados nas instâncias | `%title` |
-| `layout interno` | bloco | Combine layouts como `card`, `stack`, `grid` | `card:` |
-| `default content` | literal | Texto fixo pode coexistir com props dinâmicas | `> Criado por %author` |
-| `instância` | fluxo | Utilize `$Hero` em qualquer tela ou componente | `$Hero` |
+<DslPreview title="Exemplo 2">
+```dsl
+component MetricCard:
+  card:
+    ## %label
+    # %value
+    >> %trend
 
-## Boas práticas
-- Nomeie componentes com substantivos descritivos (`Hero`, `FeatureCard`).
-- Declare componentes próximos das telas que os utilizam para facilitar leitura.
-- Limite cada componente a uma responsabilidade visual clara.
-
-## Erros comuns
-⚠ Usar nomes de componente iniciados com minúscula quebra a convenção do parser.
-⚠ Esquecer de declarar `%` antes de uma prop impede a interpolação na instância.
+screen Dashboard:
+  container-wide:
+    grid-3:
+      $MetricCard:
+        - Leads captados | 1.240 | +8%
+      $MetricCard:
+        - Conversões | 134 | +5%
+      $MetricCard:
+        - Satisfação | 92% | +3%
+```
+</DslPreview>
 
 ## Veja também
 - [Component Props](./component-props)

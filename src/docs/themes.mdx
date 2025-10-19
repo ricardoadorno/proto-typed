@@ -1,21 +1,41 @@
 # Themes
 
 ## O que é
-Temas padrão e personalização visual baseados em paletas OKLCH disponíveis diretamente no editor Proto-Typed.
+Abordagem para personalizar o tema global da aplicação ajustando tokens fornecidos pelo sistema (`--primary`, `--muted`, `--radius`).
+
+## Capacidades
+- Sobrescrever cores padrão definidas pela engine para adaptar à identidade visual.
+- Ajustar tipografia (contrastando `--foreground`, `--muted`), espaçamentos e radius.
+- Combinar com `styles:` para tokens customizados e usar em componentes.
 
 ## Sintaxe
-```proto
-styles:
-  --primary: oklch(...);
-```
+- `styles:`
+- `--primary: oklch(0.68 0.15 210);`
+- `--primary-foreground: oklch(0.98 0 0);`
+- `--muted: oklch(0.22 0.02 240);`
+- `--card: oklch(0.16 0.03 245);`
 
-Exemplo
-<DslPreview>
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `--primary`, `--primary-foreground` | Cores primárias | Ajustam botões e CTAs principais. |
+| `--secondary`, `--muted` | Cores auxiliares | Influenciam cards, notas, planos de fundo. |
+| `--radius` | Borda global | Afeta cards, botões e inputs. |
+| Tokens custom | Extensão | Podem ser usados em componentes com CSS inline. |
+
+## Casos de uso
+- Aplicar paleta da marca aos botões e títulos.
+- Criar temas escuros ou de alto contraste ajustando `--background`, `--foreground`.
+- Reaproveitar o mesmo bloco de estilos em várias telas.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
 styles:
-  --primary: oklch(0.68 0.15 210);
+  --primary: oklch(0.7 0.15 220);
   --primary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.22 0.02 240);
+  --muted: oklch(0.22 0.02 250);
   --card: oklch(0.16 0.03 245);
 
 screen Pricing:
@@ -24,38 +44,36 @@ screen Pricing:
     grid-3:
       card:
         ## Starter
-        >> Ideal para equipes pequenas
-        @[Começar grátis](start)
+        @[Começar grátis](Signup)
       card-feature:
         ## Business
-        *> Mais controle e integrações
         @[Assinar Business](upgrade)
       card:
         ## Enterprise
-        >> Entre em contato com vendas
-        @[Falar com time](contact)
+        @[Falar com vendas](contact)
 ```
 </DslPreview>
 
-## Variações e Props
-| Token | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| Tema base | preset | Selecionado via UI: `zinc`, `blue`, `violet`, etc. | Editor de temas |
-| `--primary` | cor | Cor principal aplicada em botões e links | `--primary: oklch(...)` |
-| `--secondary` | cor | Cor secundária para ações alternativas | `--secondary: oklch(...)` |
-| `--muted` | cor | Fundo sutil usado em notas e divisões | `--muted: oklch(...)` |
-| `--radius` | unidade | Ajusta arredondamento global do tema | `--radius: 0.75rem;` |
+<DslPreview title="Exemplo 2">
+```dsl
+styles:
+  --brand-header: #0b132b;
+  --brand-subtitle: #5bc0be;
 
-## Boas práticas
-- Comece escolhendo um tema base no editor e sobrescreva apenas os tokens necessários.
-- Garanta contraste AA entre `--foreground` e `--background` após personalizar cores.
-- Utilize o preview lado a lado para validar a aparência em múltiplos componentes.
+component Hero:
+  card:
+    ## %title
+    > %subtitle
+    @[Começar agora](%destination)
 
-## Erros comuns
-⚠ Alterar apenas `--primary` sem ajustar `--primary-foreground` pode reduzir legibilidade.
-⚠ Sobrescrever muitos tokens sem documentação dificulta manutenção do design system.
+screen Landing:
+  container:
+    $Hero:
+      - Proto-Typed | Ajuste o tema com CSS variables | Signup
+```
+</DslPreview>
 
 ## Veja também
 - [Styles Block](./styles-block)
-- [Card](./card)
 - [Button](./button)
+- [Card](./card)

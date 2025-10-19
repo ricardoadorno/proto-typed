@@ -1,52 +1,75 @@
 # Modal
 
 ## O que é
-Janela sobreposta usada para interações rápidas como confirmações, formulários curtos ou mensagens pontuais.
+Overlay que aparece sobre a tela atual para capturar confirmações, formulários curtos ou mensagens importantes.
+
+## Capacidades
+- Declarar `modal Nome:` acessível por botões/links (`@[Abrir modal](Nome)`).
+- Conter qualquer conteúdo válido: `card`, `stack`, inputs e botões.
+- Fechar explicitamente com ações `@ghost[Cancelar](close)` ou navegando para outra tela.
+- Integrar com `list`, `component` ou `fab` para fluxos contextuais.
 
 ## Sintaxe
-```proto
-modal NomeDoModal:
-  card:
-    # Conteúdo
-```
+- `modal ConfirmDelete:`
+- `card:`
+- `# Confirmar exclusão`
+- `> Esta ação não pode ser desfeita.`
+- `row-end:`
+- `@ghost[Cancelar](close)`
+- `@destructive[Excluir](delete)`
 
-Exemplo
-<DslPreview>
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `modal Nome:` | Define overlay | Nome inicia com letra maiúscula. |
+| Conteúdo interno | Slot | Normalmente envolve `card` para padronizar padding. |
+
+## Casos de uso
+- Confirmar ações destrutivas (`modal ConfirmDelete`).
+- Capturar dados rápidos (ex.: formulário de convite com 1–2 campos).
+- Exibir mensagens e etapas adicionais sem navegar para outra tela.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
 modal ConfirmDelete:
   card:
     # Confirmar exclusão
     > Esta ação não pode ser desfeita.
-
     row-end:
       @ghost[Cancelar](close)
-      @destructive[Excluir](deleteItem)
+      @destructive[Excluir agora](deleteItem)
 
-screen Files:
+screen DangerZone:
   container:
-    # Arquivos
-    stack:
-      @[Excluir](ConfirmDelete)
+    # Configurações avançadas
+    card:
+      *> Ao excluir, todos os dados serão removidos.
+      @destructive[Excluir conta](ConfirmDelete)
 ```
 </DslPreview>
 
-## Variações e Props
-| Prop | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `NomeDoModal` | string | Identificador chamado por botões/links | `modal HelpCenter:` |
-| `card` | layout | Escolhe framing visual interno | `card:` |
-| `close` | ação | Use `(close)` para encerrar modal via botão | `@ghost[Fechar](close)` |
-| `form` | padrão | Inputs dentro do modal funcionam como em telas comuns | `___email: Email{...}` |
-| `multi-screen` | fluxo | Combine com `screen` usando navegação mista para journeys híbridas | `@[Ver detalhes](DetailScreen)` |
+<DslPreview title="Exemplo 2">
+```dsl
+modal InviteMember:
+  card:
+    # Convidar novo membro
+    ___email: E-mail{usuario@empresa.com} | required
+    row-end:
+      @ghost[Cancelar](close)
+      @success[Enviar convite](sendInvite)
 
-## Boas práticas
-- Mantenha modals focados em uma única decisão ou formulário curto.
-- Garanta sempre uma ação de saída segura (`@ghost[Cancelar](close)`).
-- Use `card` para manter consistência visual com o restante da interface.
+screen Team:
+  container:
+    # Equipe
+    list:
+      - Ana Souza | Product Manager
+      - Bruno Lima | Engineering Manager
 
-## Erros comuns
-⚠ Esquecer de ligar modal a um trigger deixa o componente inacessível.
-⚠ Colocar muito conteúdo dentro do modal gera scroll excessivo.
+    @[Adicionar membro](InviteMember)
+```
+</DslPreview>
 
 ## Veja também
 - [Drawer](./drawer)

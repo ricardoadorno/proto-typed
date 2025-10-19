@@ -1,16 +1,41 @@
 # Component Composition
 
 ## O que é
-Composição e boas práticas de reuso combinando componentes menores para formar experiências completas.
+Padrão para criar componentes complexos a partir de componentes menores, reutilizando seções e repassando props através de múltiplos níveis.
+
+## Capacidades
+- Encadear componentes (`component HeaderBar` dentro de `component ProjectSection`).
+- Reaproveitar layouts e props em diferentes contextos.
+- Organizar código em “pedaços” lógicos para manutenção facilitada.
 
 ## Sintaxe
-```proto
-component Wrapper:
-  $InnerComponent
-```
+- `component HeaderBar:`
+- `header:`
+- `# %title`
+- `row-end:`
+- `@ghost[i-Search Buscar](Search)`
+- `component ProjectSection:`
+- `container:`
+- `$HeaderBar:`
+- `- Projetos`
+- `grid-3 $ProjectCard:`
+- `- ...`
 
-Exemplo
-<DslPreview>
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| Componentes utilitários | Reuso local | Encapsulam partes repetidas (ex.: `HeaderBar`). |
+| Componentes principais | Seção completa | Combinam utilitários e layouts. |
+| `%props` compartilhados | Dados reutilizados | Permitem repassar valores para subcomponentes. |
+
+## Casos de uso
+- Criar seções compostas (header + grid) reaproveitadas em diferentes telas.
+- Dividir componentes extensos em blocos utilitários (`HeaderBar`, `ActionCard`).
+- Montar dashboards e catálogos com estrutura consistente.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
 component HeaderBar:
   header:
@@ -24,42 +49,48 @@ component ProjectCard:
     ## %name
     >>> %owner
     > %description
-    @[Abrir](%target)
+    @[Abrir](%destination)
 
 component ProjectSection:
   container:
     $HeaderBar:
-      - %title
+      - Projetos ativos
     grid-3 $ProjectCard:
       - Lançamento app mobile | Ana Souza | Status: Em QA | ProjectDetails
       - Campanha Q4 | Bruno Lima | Planejamento finalizando | CampaignPlan
       - Pesquisa usuários | Carla Dias | Entrevistas marcadas | ResearchBoard
 
 screen Dashboard:
-  $ProjectSection:
-    - Projetos ativos
+  $ProjectSection
 ```
 </DslPreview>
 
-## Variações e Props
-| Conceito | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `component dentro de component` | composição | Permite reutilizar blocos inteiros | `$HeaderBar` dentro de `ProjectSection` |
-| `prop forwarding` | fluxo | Passe props do componente externo para o interno | `$ProjectSection: - Projetos ativos` |
-| `component wrapper` | padrão | Encapsule vários elementos em um único componente pai | `component ProjectSection:` |
-| `component + list` | binding | Liste componentes compostos para dashboards complexos | `grid-3 $ProjectCard:` |
-| `helper components` | organização | Crie componentes utilitários para cabeçalhos, barras e seções | `component HeaderBar:` |
+<DslPreview title="Exemplo 2">
+```dsl
+component ActionCard:
+  card:
+    ## %title
+    > %description
+    row-end:
+      @secondary[Detalhes](%destination)
 
-## Boas práticas
-- Separe componentes em níveis (layout, elemento, seção) para reduzir acoplamento.
-- Documente no código quais props são obrigatórias para cada composição.
-- Prefira composições rasas (até 3 níveis) para facilitar manutenção.
+component HomeSection:
+  container:
+    # %sectionTitle
+    stack:
+      $ActionCard:
+        - Iniciar tour | Conheça o produto em minutos | Tour
+      $ActionCard:
+        - Ver exemplos | Aprenda com protótipos prontos | Examples
 
-## Erros comuns
-⚠ Acessar props inexistentes (`%algo`) gera string vazia no preview.
-⚠ Encadear componentes sem limites pode dificultar debug do layout final.
+screen Home:
+  container:
+    $HomeSection:
+      - Comece agora
+```
+</DslPreview>
 
 ## Veja também
 - [Component Definition](./component-definition)
+- [Component Props](./component-props)
 - [Component List](./component-list)
-- [Styles Block](./styles-block)

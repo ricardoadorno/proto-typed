@@ -1,57 +1,99 @@
 # Row
 
 ## O que é
-Distribuição horizontal de elementos para alinhar ações, métricas ou conteúdo paralelo na mesma linha.
+Layout horizontal que posiciona elementos lado a lado, permitindo alinhar conteúdo, ações e métricas na mesma faixa.
+
+## Capacidades
+- Distribuir itens com alinhamentos diferentes: `row`, `row-start`, `row-center`, `row-between`, `row-end`.
+- Combinar com `stack` internas para criar seções com título + botões no mesmo eixo.
+- Suportar itens de tamanhos variados (cards, botões, inputs) mantendo espaçamento uniforme.
+- Integrar CTAs com layout responsivo dentro de `card`, `container` ou `screen`.
 
 ## Sintaxe
-```proto
-row-variation:
-  @[Ação](destino)
-  @[Outra](destino)
-```
+row:
+  @[Criar tarefa](TaskForm)
+  @[Ver relatórios](Reports)
 
-Exemplo
-<DslPreview>
+row-between:
+  stack:
+    > Plano Pro
+    >>> Renovação em 30/09
+  @[Alterar plano](ChangePlan)
+
+row-center:
+  @[Solicitar ajuda](Support)
+  @[Abrir guia](Guides)
+
+row-end:
+  @ghost[Cancelar](-1)
+  @[Salvar](saveTask)
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `row` | Alinhamento padrão (start) | Usa gap consistente entre itens. |
+| `row-start` | Força alinhamento à esquerda | Útil em headers com múltiplos botões. |
+| `row-center` | Centraliza conteúdo | Ideal para estados vazios ou loaders horizontais. |
+| `row-between` | Espaça extremos | Perfeito para título + ação lateral. |
+| `row-end` | Alinha à direita | Facilita footers de cards com botões. |
+| Conteúdo interno | Slot | Aceita qualquer elemento (botões, cards, textos, inputs). |
+
+## Casos de uso
+- `row-between:` Criar cabeçalhos com título à esquerda e botão à direita.
+- `row-center:` Posicionar indicadores ou loaders no centro da tela.
+- `row:` Exibir múltiplos cards com informações relacionadas lado a lado.
+- `row-end:` Agrupar botões de confirmação/cancelamento no rodapé de um modal.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
-screen Billing:
+screen Subscription:
   container:
     # Assinatura atual
 
     row-between:
       stack:
-        >> Plano Pro
+        ## Plano Pro
         >>> Renovação em 30/09
       @[Alterar plano](ChangePlan)
 
-    row-start:
+    row:
       card:
-        ## Receita
-        >> R$ 12.340
+        ## Usuários ativos
+        # 1.204
       card:
-        ## Assinaturas
-        >> 1.204 ativas
+        ## Espaço utilizado
+        # 78%
+
+    row-end:
+      @ghost[Cancelar](-1)
+      @primary[Atualizar faturamento](BillingForm)
 ```
 </DslPreview>
 
-## Variações e Props
-| Variação | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `row` | layout | Alinha itens ao início no sentido horizontal | `row:` |
-| `row-center` | layout | Centraliza os itens na linha | `row-center:` |
-| `row-between` | layout | Espaça itens ocupando extremos com gap automático | `row-between:` |
-| `row-end` | layout | Alinha itens ao final | `row-end:` |
-| `row-start` | layout | Força alinhamento à esquerda em contextos específicos | `row-start:` |
+<DslPreview title="Exemplo 2">
+```dsl
+screen EmptyState:
+  container:
+    stack-loose:
+      # Nada por aqui ainda
+      >> Comece criando um registro ou importando dados existentes.
 
-## Boas práticas
-- Combine `row-between` com `stack` internas para alinhar texto e ações.
-- Utilize `row` dentro de `card` para apresentar métricas lado a lado.
-- Ajuste o número de itens para evitar quebra de linha em telas menores.
+      row-center:
+        @primary[Adicionar item](CreateItem)
+        @outline[Importar CSV](ImportModal)
 
-## Erros comuns
-⚠ Colocar blocos muito largos em uma mesma `row` causa overflow visual.
-⚠ Misturar `row` com `grid` no mesmo nível pode dificultar o ritmo responsivo.
+modal ImportModal:
+  card:
+    # Importar CSV
+    ___file: Selecione um arquivo{}
+    row-end:
+      @ghost[Cancelar](close)
+      @primary[Enviar](uploadFile)
+```
+</DslPreview>
 
 ## Veja também
 - [Stack](./stack)
-- [Grid](./grid)
+- [Card](./card)
 - [Screen](./screen)

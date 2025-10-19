@@ -1,51 +1,74 @@
 # Text
 
 ## O que é
-Títulos e parágrafos básicos da interface para estruturar conteúdo informativo com hierarquia clara.
+Elemento de tipografia responsável por títulos, parágrafos, notas e citações dentro das telas Proto-Typed.
+
+## Capacidades
+- Declarar hierarquia de títulos com `#` a `######` para estruturar seções da interface.
+- Produzir parágrafos de diferentes pesos: `>`, `>>`, `>>>`.
+- Destacar informações com notas (`*>`) e registrar depoimentos com citações (`">`).
+- Combinar conteúdo textual com layout (`container`, `stack`, `card`) e elementos de ação como `button`.
+- Inserir ícones embutidos (ex.: `i-Check`) ao lado de textos usando a sintaxe padrão da DSL.
 
 ## Sintaxe
-```proto
-# Título Principal
-> Texto principal da interface
->> Texto secundário ou complementar
->>> Texto sutil para metadados
-```
+- `# Heading principal`
+- `## Subtítulo`
+- `> Parágrafo principal`
+- `>> Texto de apoio`
+- `>>> Texto sutil ou metadado`
+- `*> Nota importante`
+- `"> Citação com autoria`
 
-Exemplo
-<DslPreview>
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `# … ######` | Títulos (H1–H6) | Use apenas um `#` por tela para o título principal. |
+| `>` | Parágrafo principal | Ideal para copy primária ou introduções. |
+| `>>` | Texto secundário | Complementa informações principais. |
+| `>>>` | Texto sutil | Metadados, timestamps ou labels discretos. |
+| `*>` | Nota/Callout | Destaca alertas, dicas e avisos. |
+| `">` | Citação | Exibe depoimentos ou referências. |
+
+## Casos de uso
+- `> Overview: Utilize parágrafos principais para contextualizar dashboards e relatórios.`
+- `*> Nota: Destaque checklists ou avisos críticos dentro de um card.`
+- `"> Citação: Traga feedback de usuários ou mensagens de confirmação.`
+- `>>> Metadado: Registre data/hora de última atualização de um bloco.`
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
-screen Article:
+screen ReportIntro:
   container:
     # Relatório Semanal
-    > Resultados da última sprint foram positivos.
-    >> Concentre-se nas metas de satisfação do usuário.
+    > Acompanhe os resultados obtidos na última sprint.
+    >> Principais métricas disponíveis abaixo.
     >>> Atualizado em 18/09 às 09:30
 
-    *> Lembre-se de compartilhar este relatório com o time.
-    "> "Uma boa comunicação deixa o time alinhado." — Liderança
+    card:
+      *> Próxima revisão em 7 dias.
+      @link[Baixar PDF](https://example.com/report.pdf)
 ```
 </DslPreview>
 
-## Variações e Props
-| Token | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `#` a `######` | heading | Define níveis de título de 1 a 6 | `### Lista de tarefas`
-| `>` | paragraph | Parágrafo principal com peso visual | `> Texto principal`
-| `>>` | paragraph | Texto secundário com menor destaque | `>> Complemento`
-| `>>>` | paragraph | Texto sutil para notas e metadados | `>>> Atualizado ontem`
-| `*>` | callout | Nota com destaque visual | `*> Aviso importante`
-| `">` | quote | Citação ou depoimento | `"> Feedback do cliente`
+<DslPreview title="Exemplo 2">
+```dsl
+screen Testimonials:
+  container:
+    # Feedback de Clientes
+    card:
+      "> Proto-Typed ajudou a reduzir nosso tempo de prototipagem. — Squad A
+    card:
+      "> A DSL é simples e consistente com o time de design. — Squad B
 
-## Boas práticas
-- Use apenas um `#` por tela para o título principal.
-- Combine `>`, `>>` e `>>>` para reforçar hierarquia visual de conteúdo.
-- Aproveite notas (`*>`) para destacar ações críticas ou mensagens de atenção.
-
-## Erros comuns
-⚠ Usar múltiplos `#` na mesma tela deixa a hierarquia confusa.
-⚠ Esquecer de fechar espaços em branco pode quebrar o ritmo de leitura.
+    stack:
+      >> Continue explorando os exemplos no Cookbook.
+      @[Ver Dashboard](Dashboard)
+```
+</DslPreview>
 
 ## Veja também
 - [Button](./button)
+- [Container](./container)
 - [Styles Block](./styles-block)
-- [Screen](./screen)

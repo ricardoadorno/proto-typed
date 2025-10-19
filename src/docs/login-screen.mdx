@@ -1,49 +1,87 @@
 # Login Screen
 
-## Objetivo
-Criar uma tela de login funcional com campos de autenticação, acessos rápidos e ação clara para entrar na aplicação.
+## O que é
+Guia cookbook que monta uma tela de autenticação completa com inputs, botões de ação e links auxiliares.
 
-## Exemplo completo
-<DslPreview>
+## Capacidades
+- Organizar formulário em `container` e `card` com `stack` interna.
+- Validar campos essenciais (`___email`, `___password`) e ativar ações (`@[Entrar]`).
+- Fornecer fluxos paralelos (recuperar senha, criar conta) com botões e links.
+- Reutilizar a mesma tela em conjunto com modais ou dashboards.
+
+## Sintaxe
+- `screen Login:`
+- `container:`
+- `card:`
+- `___email: Email{seu@dominio.com}`
+- `___password: Senha{••••}`
+- `[X] Lembrar de mim`
+- `row-end:`
+- `@ghost[Esqueci a senha](Recover)`
+- `@[Entrar](Dashboard)`
+
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `screen Login` | Tela principal | Exibe formulário e CTAs. |
+| Inputs (`___email`, `___password`) | Captura dados | Podem receber `required` nos atributos. |
+| Links auxiliares | Navegação | Use `@ghost` ou `#[...]` para rotas secundárias. |
+| CTA principal | Botão `@` | Direciona para dashboard ou próxima etapa. |
+
+## Casos de uso
+- Tela inicial de acesso para apps internos ou SaaS.
+- Workflow com recuperação de senha via outra `screen`. 
+- Encadeamento com `modal` de autenticação em dois fatores.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
 screen Login:
   container:
+    # Acesse sua conta
     card:
-      # Acesse sua conta
-      > Use suas credenciais corporativas para continuar.
-
       stack:
-        ___email: E-mail{seu@empresa.com}
-        ___password: Senha{mínimo 8 caracteres}
-        [X] Lembrar de mim
+        ___email: E-mail{usuario@empresa.com} | required
+        ___password: Senha{Mínimo 8 caracteres} | required minlength="8"
+        [X] Permanecer conectado
 
-      @[Entrar](Dashboard)
-      @ghost[Esqueci minha senha](Recover)
-      #[Criar conta](Signup)
+      row-end:
+        @ghost[Esqueci a senha](Recover)
+        @[Entrar](Dashboard)
 
 screen Recover:
-  container:
+  container-narrow:
     # Recuperar senha
-    ___email: E-mail cadastrado{seu@empresa.com}
-    @[Enviar instruções](sendReset)
-    @ghost[Voltar](Login)
+    ___email: E-mail cadastrado{usuario@empresa.com} | required
+    row-end:
+      @ghost[Cancelar](-1)
+      @[Enviar instruções](sendReset)
 
 screen Signup:
-  container:
+  container-narrow:
     # Criar conta
-    > Fluxo simples para novos usuários.
-    @[Começar](SignupForm)
+    stack:
+      ___: Nome completo{Seu nome}
+      ___email: E-mail{email@empresa.com}
+      ___password: Senha{••••••••} | minlength="8"
+    row-end:
+      @ghost[Voltar](Login)
+      @primary[Começar agora](createAccount)
 ```
 </DslPreview>
 
-## O que aprender
-- Como estruturar formulários com `container` e `card`.
-- Como oferecer caminhos de recuperação e cadastro a partir da mesma tela.
-- Como utilizar botões primários e secundários para orientar o fluxo.
+<DslPreview title="Exemplo 2">
+```dsl
+screen Dashboard:
+  container:
+    # Bem-vindo(a)
+    > Você entrou com sucesso.
+    @[Voltar ao login](Login)
+```
+</DslPreview>
 
-## Variações
-- Versão com autenticação em dois fatores adicionando modal de código temporário.
-- Versão simplificada com login social (`@[Entrar com Google](connectGoogle)`).
-
-## Próximos passos
-→ Veja também [Dashboard](./dashboard) e [Modal Flow](./modal-flow).
+## Veja também
+- [Input](./input)
+- [Button](./button)
+- [Modal Flow](./modal-flow)

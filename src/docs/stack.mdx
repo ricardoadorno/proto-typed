@@ -1,52 +1,100 @@
 # Stack
 
 ## O que é
-Empilhamento vertical de elementos com espaçamento controlado para organizar conteúdo sequencial.
+Layout vertical que empilha elementos com espaçamentos configurados, ideal para formular grupos de conteúdo sequencial.
+
+## Capacidades
+- Empilhar componentes e textos com `stack`, `stack-tight`, `stack-loose`, `stack-flush`.
+- Combinar com qualquer outro layout (container, card, list) mantendo a hierarquia visual.
+- Ajustar densidade do conteúdo (tight para listas curtas, loose para blocos separados).
+- Acomodar botões, inputs, headings e componentes reutilizáveis.
 
 ## Sintaxe
-```proto
-stack-variation:
-  > Item 1
-  > Item 2
-```
+stack:
+  > Primeira etapa
+  > Segunda etapa
 
-Exemplo
-<DslPreview>
+stack-tight:
+  @[Ação rápida](Action)
+  @[Outra ação](Another)
+
+stack-loose:
+  card:
+    ## Próximo passo
+  card:
+    ## Seguinte
+
+stack-flush:
+  card-compact:
+    > Notificação
+  card-compact:
+    > Atualização
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `stack` | Gap padrão | Uso geral para cards, seções e formulários. |
+| `stack-tight` | Gap reduzido | Ótimo para texto compacto ou checklists. |
+| `stack-loose` | Gap amplo | Separa blocos grandes ou chamadas de atenção. |
+| `stack-flush` | Sem gap | Útil para agrupar elementos com espaçamento próprio. |
+| Conteúdo interno | Slot | Aceita qualquer elemento do DSL (botões, inputs, cards, etc.). |
+
+## Casos de uso
+- `stack:` Agrupar título, parágrafo e CTA dentro de um card.
+- `stack-tight:` Organizar itens de checklist com botões inline.
+- `stack-loose:` Separar seções de um formulário longo sem usar múltiplos cards.
+- `stack-flush:` Empilhar componentes que já possuem padding (ex.: múltiplos cards compactos).
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
-screen Tasks:
+screen Checklist:
   container:
-    # Minhas tarefas
-
-    stack:
-      > Revisar backlog
-      > Grooming com o time
-      > Apresentar demo
-
+    # Checklist diário
     stack-tight:
-      >> Subtarefas imediatas
-      >> Atualizar documentação
-      >> Fechar PRs pendentes
+      [X] Atualizar backlog
+      [ ] Revisar PRs críticos
+      row-between:
+        > Preparar relatório
+        @outline[Marcar como feito](markDone)
+
+    stack-loose:
+      card:
+        ## Próximos passos
+        >> Agendar review com o time de produto.
+      card:
+        ## Links úteis
+        >> #[Documentação](https://proto-typed.dev/docs)
 ```
 </DslPreview>
 
-## Variações e Props
-| Variação | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `stack` | layout | Espaçamento padrão (gap médio) entre itens | `stack:` |
-| `stack-tight` | layout | Gap reduzido para conteúdo compacto | `stack-tight:` |
-| `stack-loose` | layout | Gap amplo para seções amplas | `stack-loose:` |
-| `stack-flush` | layout | Remove gap para agrupar elementos | `stack-flush:` |
+<DslPreview title="Exemplo 2">
+```dsl
+component ActionCard:
+  card:
+    ## %title
+    > %description
+    row-end:
+      @secondary[Detalhes](%destination)
 
-## Boas práticas
-- Agrupe itens com relação direta (texto + ação) dentro da mesma stack.
-- Combine `stack-tight` com tipografia sutil (`>>`, `>>>`) para listas densas.
-- Use `stack-loose` para separar blocos grandes dentro de um mesmo container.
+screen Initiatives:
+  container:
+    # Iniciativas em andamento
+    stack:
+      $ActionCard:
+        - Onboarding automatizado | Simplificar cadastro de novos clientes | Onboarding
+      $ActionCard:
+        - Dashboard financeiro | Consolidar KPIs em um só lugar | FinanceDashboard
 
-## Erros comuns
-⚠ Aninhar `stack` dentro de `stack` sem propósito cria espaços inconsistentes.
-⚠ Usar `stack-flush` com componentes que já possuem padding pode gerar sobreposição visual.
+    stack-flush:
+      card-compact:
+        *> Última atualização em 18/09 às 12h.
+      card-compact:
+        *> Reunião de acompanhamento amanhã às 10h.
+```
+</DslPreview>
 
 ## Veja também
+- [Container](./container)
 - [Row](./row)
 - [Card](./card)
-- [Component Composition](./component-composition)

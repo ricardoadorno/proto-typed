@@ -4,7 +4,7 @@ import * as React from "react"
 import { CheckIcon, CopyIcon, ExternalLinkIcon } from "lucide-react"
 import { toast } from "sonner"
 
-import { Button, ScrollArea, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui"
+import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui"
 import { cn } from "@/lib/utils"
 import { withBasePath } from "@/utils/base-path"
 
@@ -27,12 +27,7 @@ export function DocsCodeBlock({ children, className, ...rest }: DocsCodeBlockPro
     )
   }
 
-  const {
-    ["data-title"]: dataTitle,
-    ["data-playground"]: dataPlayground,
-    ["data-language"]: dataLanguage,
-    ...preProps
-  } = rest
+  const { "data-title": dataTitle, "data-playground": dataPlayground, "data-language": dataLanguage, ...preProps } = rest
 
   const codeContent =
     typeof child.props.children === "string"
@@ -44,20 +39,13 @@ export function DocsCodeBlock({ children, className, ...rest }: DocsCodeBlockPro
   const { className: codeClassName, children: _codeChildren, ...codeProps } = child.props
   const metaFromChild =
     typeof child.props === "object" && child.props
-      ? (child.props as { ["data-meta"]?: string })["data-meta"]
+      ? (child.props as { [key: string]: string | undefined })["data-meta"]
       : undefined
 
-  const language =
-    child.props.className?.replace(/language-/, "") ??
-    dataLanguage ??
-    "text"
+  const language = child.props.className?.replace(/language-/, "") ?? dataLanguage ?? "text"
+  const languageBadge = ["proto", "dsl"].includes(language.toLowerCase()) ? "DSL" : language.toUpperCase()
 
-  const title =
-    dataTitle ??
-    child.props.metastring ??
-    metaFromChild ??
-    language.toUpperCase()
-
+  const title = dataTitle ?? child.props.metastring ?? metaFromChild ?? languageBadge
   const playgroundHref = dataPlayground ? withBasePath(dataPlayground) : undefined
 
   const [copied, setCopied] = React.useState(false)
@@ -74,32 +62,20 @@ export function DocsCodeBlock({ children, className, ...rest }: DocsCodeBlockPro
   }
 
   return (
-    <div
-      className={cn(
-        "docs-code-block group flex flex-col overflow-hidden rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-raised)] shadow-[0_18px_48px_rgba(0,0,0,0.28)]",
-        className
-      )}
-    >
-      <div className="flex items-center justify-between gap-3 border-b border-[color:rgba(139,92,246,0.16)] bg-[color:rgba(139,92,246,0.05)] px-4 py-3">
-        <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.32em] text-[var(--fg-secondary)]">
-          <span className="rounded-md bg-[color:rgba(139,92,246,0.18)] px-2 py-1 font-semibold text-[var(--fg-primary)]">
-            {title}
-          </span>
-          <span className="hidden text-[var(--fg-secondary)] sm:inline">
-            {language.toUpperCase()}
+    <figure className={cn("docs-code-block overflow-hidden rounded-xl border border-[var(--border-muted)] bg-[var(--bg-raised)]", className)}>
+      <div className="flex items-center justify-between border-b border-[var(--border-muted)] px-4 py-2 text-xs text-[var(--fg-secondary)]">
+        <div className="flex items-center gap-3">
+          <span className="font-semibold text-[var(--fg-primary)]">{title}</span>
+          <span className="hidden rounded-full bg-[color:rgba(139,92,246,0.12)] px-2 py-[2px] font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--accent)] sm:inline">
+            {languageBadge}
           </span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           {playgroundHref ? (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-[var(--fg-secondary)] hover:text-[var(--accent-light)]"
-                    asChild
-                  >
+                  <Button variant="ghost" size="icon" asChild>
                     <a href={playgroundHref} target="_blank" rel="noreferrer">
                       <ExternalLinkIcon className="h-4 w-4" />
                     </a>
@@ -113,16 +89,7 @@ export function DocsCodeBlock({ children, className, ...rest }: DocsCodeBlockPro
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleCopy}
-                  aria-label="Copiar código"
-                  className={cn(
-                    "transition-colors text-[var(--fg-secondary)] hover:text-[var(--accent-light)]",
-                    copied && "text-[var(--accent-light)]"
-                  )}
-                >
+                <Button variant="ghost" size="icon" onClick={handleCopy} aria-label="Copiar código">
                   {copied ? <CheckIcon className="h-4 w-4" /> : <CopyIcon className="h-4 w-4" />}
                 </Button>
               </TooltipTrigger>
@@ -132,16 +99,14 @@ export function DocsCodeBlock({ children, className, ...rest }: DocsCodeBlockPro
         </div>
       </div>
 
-      <ScrollArea className="max-h-[520px]">
-        <pre
-          className="relative m-0 grid w-full min-w-0 gap-2 overflow-auto bg-transparent p-6 text-sm leading-relaxed text-[rgba(231,233,239,0.92)]"
-          {...preProps}
-        >
-          <code {...codeProps} className={codeClassName}>
-            {codeContent}
-          </code>
-        </pre>
-      </ScrollArea>
-    </div>
+      <pre
+        className={cn("m-0 max-h-[520px] overflow-auto px-4 py-4 text-sm leading-relaxed text-[var(--fg-primary)]")}
+        {...preProps}
+      >
+        <code {...codeProps} className={cn("block font-mono text-[13px]", codeClassName)}>
+          {codeContent}
+        </code>
+      </pre>
+    </figure>
   )
 }

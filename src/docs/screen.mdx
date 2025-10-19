@@ -1,76 +1,101 @@
 # Screen
 
 ## O que é
-Define uma tela navegável (view principal) que pode ser chamada por botões, links ou navegadores.
+Elemento raiz que define uma tela navegável. Cada `screen Nome:` cria um destino acessível por botões e links internos.
+
+## Capacidades
+- Declarar múltiplas telas no mesmo arquivo DSL (`screen Home`, `screen Dashboard`).
+- Encapsular qualquer combinação de layouts (`container`, `stack`, `grid`) e componentes.
+- Trabalhar com navegação via botões (`@[Ir para Dashboard](Dashboard)`) ou links (`#[Voltar](Home)`).
+- Carregar modais/drawers complementares referenciando seus nomes.
 
 ## Sintaxe
-```proto
-screen NomeDaTela:
-  container:
-    # Conteúdo
-```
+- `screen NomeDaTela:`
+- `container:`
+- `# Cabeçalho`
+- `> Conteúdo`
 
-Exemplo
-<DslPreview>
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `screen Nome:` | Define uma view | Nome inicia com letra maiúscula. |
+| Corpo da tela | Slot | Recebe layouts, componentes e exemplos DSL. |
+
+## Casos de uso
+- `screen Home:` Tela inicial com lista de atalhos e CTA principal.
+- `screen Dashboard:` Visão analítica com `grid` e cards.
+- `screen Settings:` Preferências com formulários e navegação auxiliar.
+- `screen` + `modal/drawer:` Fluxos multi-etapas acionados por botões.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
 screen Home:
-  header:
-    # Proto-Typed Demo
-    @ghost[i-User Perfil](Profile)
-
   container:
-    > Bem-vindo! Escolha um fluxo para explorar.
-    row:
-      @[Abrir tarefas](Tasks)
-      @[Ver relatórios](Reports)
+    # Bem-vindo
+    > Escolha uma ação para começar.
 
-screen Tasks:
-  container:
-    # Tarefas de Hoje
+    row-between:
+      @[Criar tarefa](TaskForm)
+      @secondary[Ver dashboard](Dashboard)
+
     list:
-      - Refinar backlog | 10:00
-      - Revisar PRs | 14:00
-    @[Voltar para home](Home)
+      - Checklist diário | @[Abrir](DailyChecklist)
+      - Exportar relatórios | @[Download CSV](https://example.com/report.csv)
 
-screen Reports:
-  container-wide:
-    # Relatórios
-    grid-2:
-      card:
-        ## Execução
-        > Última sprint completa.
-      card:
-        ## Bugs
-        > 3 regressões abertas.
-    @ghost[Voltar](Home)
-
-screen Profile:
+screen TaskForm:
   container:
-    # Perfil
-    > Dados pessoais e preferências.
-    @ghost[Fechar](-1)
+    # Nova tarefa
+    ___: Título{Nome da tarefa}
+    ___textarea: Descrição{Detalhes}
+    row-end:
+      @ghost[Cancelar](-1)
+      @[Salvar](saveTask)
+
+modal ConfirmDelete:
+  card:
+    # Confirmar exclusão
+    > Esta ação não pode ser desfeita.
+    row-end:
+      @ghost[Voltar](close)
+      @destructive[Excluir agora](deleteTask)
 ```
 </DslPreview>
 
-## Variações e Props
-| Prop | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `NomeDaTela` | string | Identificador usado na navegação interna | `screen Dashboard:` |
-| `layout` | bloco | Combine com `header`, `container`, `grid`, etc. | `header:` |
-| `start` | rotas | Defina tela inicial chamando-a primeiro ou referenciada no fluxo | `screen Home:` |
-| `action` | interação | Navegue entre telas com botões/links (`@[...](ScreenName)`) | `@[Ir para Tasks](Tasks)` |
-| `overlay` | integração | Chamadas a `modal` ou `drawer` podem ser feitas de qualquer screen | `@[Filtros](FiltersDrawer)` |
+<DslPreview title="Exemplo 2">
+```dsl
+screen Dashboard:
+  container-wide:
+    # Visão geral
+    grid-3:
+      card:
+        ## Leads
+        # 1.240
+      card:
+        ## Conversões
+        # 134
+      card:
+        ## Satisfação
+        # 92%
 
-## Boas práticas
-- Nomeie telas com substantivos claros (`Dashboard`, `Settings`, `Profile`).
-- Organize a hierarquia interna usando layouts semânticos (container, grid, list).
-- Garanta um caminho óbvio de retorno (`@ghost[Voltar](-1)` ou link para Home).
+  navigator:
+    - Home | Home
+    - Dashboard | Dashboard
+    - Configurações | Settings
 
-## Erros comuns
-⚠ Definir telas duplicadas com o mesmo nome causa conflito.
-⚠ Esquecer de incluir um layout interno deixa a página sem espaçamento.
+screen Settings:
+  container-narrow:
+    # Configurações
+    ___email: E-mail{usuario@empresa.com}
+    ___password: Senha{••••••••}
+    row-end:
+      @ghost[Cancelar](-1)
+      @primary[Salvar alterações](saveSettings)
+```
+</DslPreview>
 
 ## Veja também
-- [Navigator](./navigator)
 - [Modal](./modal)
-- [Login Screen](./login-screen)
+- [Drawer](./drawer)
+- [Navigator](./navigator)

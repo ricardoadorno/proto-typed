@@ -1,10 +1,54 @@
 # Dashboard
 
-## Objetivo
-Construir um layout principal com cards, métricas e navegação para visualizar indicadores da aplicação.
+## O que é
+Guia cookbook que mostra um layout de painel com métricas, cards e filtros usando os blocos básicos da DSL.
 
-## Exemplo completo
-<DslPreview>
+## Capacidades
+- Combinar `grid-3` para métricas, `card` para listas e `fab` para ações rápidas.
+- Integrar `drawer` de filtros e `modal` para criação de dados.
+- Demonstrar navegação complementar via `navigator` ou botões inline.
+
+## Sintaxe
+screen Dashboard:
+  container-wide:
+    grid-3:
+      card:
+        ## Métrica A
+        # 120
+      card:
+        ## Métrica B
+        # 85
+
+  fab:
+    - i-Plus | NewMetric
+
+drawer FilterDrawer:
+  container:
+    ___:Intervalo[7 dias | 30 dias]
+    @primary[Aplicar](applyFilters)
+
+modal NewMetric:
+  card:
+    ___:Título
+    ___number: Valor{0}
+    @[Salvar](saveMetric)
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `screen Dashboard` | Tela principal | Centraliza cards e métricas. |
+| `grid-3` | Painel de métricas | Cada coluna recebe um `card`. |
+| `drawer FilterDrawer` | Filtros complementares | Abre por botão ou FAB. |
+| `modal NewMetric` | Criação rápida | Coleta dados para nova métrica. |
+| `fab` | Ação global | Acesso rápido ao modal de criação. |
+
+## Casos de uso
+- Painel de indicadores com métricas resumidas e listas contextuais.
+- Botão flutuante para registrar novas métricas ou filtros rápidos.
+- Drawer para aplicar filtros por período, time ou segmento.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
 component MetricCard:
   card:
@@ -20,11 +64,13 @@ screen Dashboard:
       @ghost[i-Filter Filtros](FilterDrawer)
 
   container-wide:
-    grid-4 $MetricCard:
-      - Receita MRR | R$ 92K | +8%
-      - Usuários ativos | 12.304 | +12%
-      - Churn | 3.2% | -0.6%
-      - NPS | 45 | +3 pts
+    grid-3:
+      $MetricCard:
+        - Receita MRR | R$ 92K | +8%
+      $MetricCard:
+        - Usuários ativos | 12.304 | +12%
+      $MetricCard:
+        - Churn | 3.2% | -0.6%
 
     grid-2:
       card:
@@ -41,33 +87,46 @@ screen Dashboard:
           - Bug crítico resolvido
 
   fab:
-    - i-Plus Nova métrica | NewMetric
+    - i-Plus | NewMetric
 
 drawer FilterDrawer:
   container:
     # Filtros do painel
     ___select: Intervalo{7 dias | 14 dias | 30 dias}
-    ___select: Equipe{Todos | Produto | Engenharia | CS}
-    @ghost[Aplicar](close)
+    ___select: Equipe{Todos | Produto | Engenharia | Suporte}
+    row-end:
+      @ghost[Cancelar](close)
+      @primary[Aplicar](applyFilters)
 
 modal NewMetric:
   card:
     # Registrar métrica manual
     ___: Título{Nome da métrica}
     ___number: Valor{0}
-    @[Salvar](saveMetric)
-    @ghost[Cancelar](close)
+    row-end:
+      @ghost[Cancelar](close)
+      @[Salvar](saveMetric)
 ```
 </DslPreview>
 
-## O que aprender
-- Como combinar `header`, `grid` e `card` para apresentar KPIs.
-- Como anexar drawers e modais para filtragem e criação de dados.
-- Como reutilizar componentes (`MetricCard`) para manter consistência visual.
+<DslPreview title="Exemplo 2">
+```dsl
+screen DashboardMobile:
+  container:
+    # Versão compacta
+    list:
+      - Leads | 1.240
+      - Conversões | 134
+      - Satisfação | 92%
 
-## Variações
-- Versão mobile priorizando `list $MetricCard` com scroll vertical.
-- Versão temática usando `styles:` para aplicar brand colors da empresa.
+  navigator:
+    - Home | Home
+    - Dashboard | Dashboard
+    - Config | Settings
+```
+</DslPreview>
 
-## Próximos passos
-→ Veja também [List](./list) e [Drawer Detail](./drawer-detail).
+## Veja também
+- [Grid](./grid)
+- [Drawer](./drawer)
+- [Modal](./modal)

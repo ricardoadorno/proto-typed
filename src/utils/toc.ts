@@ -11,50 +11,50 @@ export interface DocSection {
 
 export const docSections: DocSection[] = [
     {
-        title: 'Primitives',
+        title: 'Primitivos',
         items: [
-            { slug: 'text', title: 'Text', description: 'Títulos e parágrafos básicos da interface.' },
-            { slug: 'button', title: 'Button', description: 'Botões de ação com variantes e destinos.' },
-            { slug: 'input', title: 'Input', description: 'Campos de texto, senha e seleção.' },
-            { slug: 'icon', title: 'Icon', description: 'Ícones embutidos e simbologia visual.' },
+            { slug: 'text', title: 'Texto', description: 'Títulos e parágrafos básicos da interface.' },
+            { slug: 'button', title: 'Botão', description: 'Botões de ação com variantes e destinos.' },
+            { slug: 'input', title: 'Entrada', description: 'Campos de texto, senha e seleção.' },
+            { slug: 'icon', title: 'Ícone', description: 'Ícones embutidos e simbologia visual.' },
             { slug: 'link', title: 'Link', description: 'Links internos e externos com semântica clara.' },
         ],
     },
     {
-        title: 'Layouts',
+        title: 'Layout',
         items: [
             { slug: 'container', title: 'Container', description: 'Bloco base de largura controlada e espaçamento.' },
             { slug: 'stack', title: 'Stack', description: 'Empilhamento vertical de elementos com espaçamento.' },
-            { slug: 'row', title: 'Row', description: 'Distribuição horizontal de elementos.' },
-            { slug: 'grid', title: 'Grid', description: 'Grade responsiva de múltiplas colunas.' },
+            { slug: 'row', title: 'Linha', description: 'Distribuição horizontal de elementos.' },
+            { slug: 'grid', title: 'Grade', description: 'Grade responsiva de múltiplas colunas.' },
             { slug: 'card', title: 'Card', description: 'Bloco visual com fundo, bordas e padding.' },
-            { slug: 'list', title: 'List', description: 'Coleção de elementos repetidos.' },
+            { slug: 'list', title: 'Lista', description: 'Coleção de elementos repetidos.' },
         ],
     },
     {
-        title: 'Views & Navigation',
+        title: 'Visões & Navegação',
         items: [
-            { slug: 'screen', title: 'Screen', description: 'Define uma tela navegável (view principal).' },
+            { slug: 'screen', title: 'Tela', description: 'Define uma tela navegável (view principal).' },
             { slug: 'modal', title: 'Modal', description: 'Janela sobreposta usada para interações rápidas.' },
             { slug: 'drawer', title: 'Drawer', description: 'Painel lateral com contexto persistente.' },
-            { slug: 'navigator', title: 'Navigator', description: 'Menu de abas/tabs para alternar entre telas.' },
-            { slug: 'fab', title: 'Floating Action Button (FAB)', description: 'Botão flutuante de ação global.' },
+            { slug: 'navigator', title: 'Navegador', description: 'Menu de abas/tabs para alternar entre telas.' },
+            { slug: 'fab', title: 'Botão flutuante (FAB)', description: 'Botão flutuante de ação global.' },
         ],
     },
     {
-        title: 'Components',
+        title: 'Componentes',
         items: [
-            { slug: 'component-definition', title: 'Component Definition', description: 'Como declarar componentes reutilizáveis.' },
-            { slug: 'component-props', title: 'Component Props', description: 'Parâmetros e interpolação de valores.' },
-            { slug: 'component-list', title: 'Component List', description: 'Renderização repetitiva com $Component.' },
-            { slug: 'component-composition', title: 'Component Composition', description: 'Composição e boas práticas de reuso.' },
+            { slug: 'component-definition', title: 'Definição de componente', description: 'Como declarar componentes reutilizáveis.' },
+            { slug: 'component-props', title: 'Propriedades de componente', description: 'Parâmetros e interpolação de valores.' },
+            { slug: 'component-list', title: 'Lista de componentes', description: 'Renderização repetitiva com $Component.' },
+            { slug: 'component-composition', title: 'Composição de componentes', description: 'Composição e boas práticas de reuso.' },
         ],
     },
     {
-        title: 'Themes & Styles',
+        title: 'Temas & Estilos',
         items: [
-            { slug: 'styles-block', title: 'Styles Block', description: 'Declaração de variáveis de estilo e tokens.' },
-            { slug: 'themes', title: 'Themes', description: 'Temas padrão e personalização visual.' },
+            { slug: 'styles-block', title: 'Bloco de estilos', description: 'Declaração de variáveis de estilo e tokens.' },
+            { slug: 'themes', title: 'Temas', description: 'Temas padrão e personalização visual.' },
         ],
     },
     {

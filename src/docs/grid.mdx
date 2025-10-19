@@ -1,17 +1,42 @@
 # Grid
 
 ## O que é
-Grade responsiva de múltiplas colunas usada para distribuir cartões, métricas e resumos de maneira consistente.
+Layout em grade responsável por distribuir elementos em colunas, garantindo alinhamento consistente e responsividade.
+
+## Capacidades
+- Declarar grades fixas (`grid-2`, `grid-3`, `grid-4`) e automáticas (`grid-auto`).
+- Acomodar qualquer elemento (cards, componentes customizados, listas) mantendo espaçamento uniforme.
+- Combinar com `container` ou `card` para criar dashboards e catálogos.
+- Adaptar-se a diferentes larguras sem exigir modificadores adicionais.
 
 ## Sintaxe
-```proto
-grid-columns:
-  card:
-    # Item
-```
+- `grid-2:`
+- `card:`
+- `# Item A`
+- `card:`
+- `# Item B`
+- `grid-auto:`
+- `card:`
+- `# Item responsivo`
 
-Exemplo
-<DslPreview>
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `grid-2` | 2 colunas fixas | Ideal para painéis e listagens curtas. |
+| `grid-3` | 3 colunas | Padrão para dashboards e métricas. |
+| `grid-4` | 4 colunas | Use quando houver espaço amplo/desktops. |
+| `grid-auto` | Auto-fit | Ajusta número de colunas conforme largura disponível. |
+| Conteúdo interno | Slot | Normalmente `card`, `component`, `list`, etc. |
+
+## Casos de uso
+- `grid-3:` Exibir métricas principais com cards individuais.
+- `grid-2:` Comparar planos, features ou cards com detalhes.
+- `grid-auto:` Listar coleções de itens que devem “quebrar” responsivamente.
+- `grid-4:` Mostrar thumbnails ou indicadores em telas largas.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
 screen Analytics:
   container-wide:
@@ -19,46 +44,56 @@ screen Analytics:
 
     grid-3:
       card:
-        >> Usuários ativos
+        ## Usuários ativos
         # 12.304
       card:
-        >> Conversão
+        ## Conversão
         # 23.5%
       card:
-        >> Receita mensal
-        # R$ 92K
+        ## NPS
+        # 72
 
-    grid-auto:
+    grid-2:
       card:
-        ## Atualizações recentes
-        > Sprint concluída.
+        ## Últimas releases
+        list:
+          - v1.4.0 | 12/09
+          - v1.3.2 | 28/08
       card:
-        ## Eventos
-        > Demo com clientes.
-      card:
-        ## Próximos passos
-        > Planejar roadmap.
+        ## Próximos marcos
+        list:
+          - Pesquisa usuários | Outubro
+          - Revisão monetização | Novembro
 ```
 </DslPreview>
 
-## Variações e Props
-| Variação | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `grid-2` | layout | Grade fixa com 2 colunas | `grid-2:` |
-| `grid-3` | layout | Grade fixa com 3 colunas | `grid-3:` |
-| `grid-4` | layout | Grade fixa com 4 colunas | `grid-4:` |
-| `grid-auto` | layout | Distribuição automática baseada no espaço disponível | `grid-auto:` |
+<DslPreview title="Exemplo 2">
+```dsl
+component FeatureCard:
+  card:
+    ## %title
+    > %description
+    @[Saiba mais](%destination)
 
-## Boas práticas
-- Envolva `grid` em `container-wide` para maximizar o espaço horizontal.
-- Mantenha itens da mesma altura usando componentes consistentes (`card`).
-- Combine grids com filtros (`row-between`) para criar dashboards exploráveis.
+screen ProductHighlights:
+  container:
+    # Destaques do produto
+    grid-auto:
+      $FeatureCard:
+        - Lançamento rápido | Monte protótipos em minutos | QuickStart
+      $FeatureCard:
+        - Time alinhado | Documentação sempre sincronizada | Guides
+      $FeatureCard:
+        - Exportar facilmente | Gere relatórios com um clique | Reports
 
-## Erros comuns
-⚠ Misturar cards com alturas muito diferentes prejudica a leitura da grade.
-⚠ Usar `grid-4` em telas com pouco conteúdo deixa os cartões vazios.
+  container:
+    row-end:
+      @outline[Ver roadmap](Roadmap)
+      @[Começar agora](Signup)
+```
+</DslPreview>
 
 ## Veja também
-- [Card](./card)
 - [Container](./container)
+- [Card](./card)
 - [Dashboard](./dashboard)

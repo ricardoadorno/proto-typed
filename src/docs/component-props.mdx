@@ -1,51 +1,78 @@
 # Component Props
 
 ## O que é
-Parâmetros e interpolação de valores usados para personalizar componentes declarados com `%` placeholders.
+Mecanismo para passar valores dinâmicos a componentes via linhas com pipes (`- valor1 | valor2`) e placeholders `%prop` no template.
+
+## Capacidades
+- Substituir `%prop` por valores posicionais definidos na instância.
+- Trabalhar com múltiplas colunas em `list $Component:` ou instâncias individuais `$Component:`.
+- Combinar props com ações, ícones e textos dentro do componente.
 
 ## Sintaxe
-```proto
-$Componente:
-  - valor1 | valor2 | valor3
-```
+- `component UserCard:`
+- `card:`
+- `## %name`
+- `>> %email`
+- `@[Contato](mailto:%email)`
+- `screen Team:`
+- `list $UserCard:`
+- `- Ana Souza | ana@empresa.com`
+- `- Bruno Lima | bruno@empresa.com`
 
-Exemplo
-<DslPreview>
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `%prop` | Placeholder | Define posição da informação na instância. |
+| `$Componente:` | Instância com props | Cada linha `-` mapeia para os `%props`. |
+| `list $Componente:` | Coleção | Usa várias linhas de dados. |
+
+## Casos de uso
+- Criar cards reutilizáveis com dados dinâmicos (usuários, produtos, métricas).
+- Montar listas repetitivas em `list $Component:` sem duplicar markup.
+- Gerar dashboards com múltiplas props (título, valor, tendência).
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
 component UserCard:
   card:
     ## %name
     >> %role
     >>> %email
-    @[Ver perfil](mailto:%email)
+    @[Enviar mensagem](mailto:%email)
 
 screen Team:
   container:
+    # Nossa equipe
     list $UserCard:
       - Ana Souza | Product Manager | ana@empresa.com
       - Bruno Lima | Engineering Manager | bruno@empresa.com
+      - Carla Dias | UX Designer | carla@empresa.com
 ```
 </DslPreview>
 
-## Variações e Props
-| Conceito | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `%placeholder` | token | Marca posição para interpolar valores ao instanciar | `%name` |
-| `lista de props` | dados | Define valores com `- valor1 | valor2` | `- João | Designer` |
-| `props múltiplas` | fluxo | Instancie o mesmo componente várias vezes com dados diferentes | `list $UserCard:` |
-| `props opcionais` | convenção | Deixe colunas vazias para valores opcionais | `- Nome | | email@...` |
-| `ações` | string | Preencha destinos e rótulos usando props | `@[Abrir](%target)` |
+<DslPreview title="Exemplo 2">
+```dsl
+component MetricCard:
+  card:
+    >>> %label
+    # %value
+    >> %trend
 
-## Boas práticas
-- Mantenha a ordem dos valores igual à ordem dos `%placeholders` para evitar confusão.
-- Quando trabalhar com muitas colunas, alinhe dados usando múltiplas linhas em `list`.
-- Use nomes de props descritivos (`%balance`, `%ctaLabel`) para facilitar leitura.
-
-## Erros comuns
-⚠ Adicionar mais valores do que placeholders causa descartes silenciosos.
-⚠ Usar `,` ao invés de `|` para separar valores impede o parse das props.
+screen Dashboard:
+  container-wide:
+    grid-3:
+      $MetricCard:
+        - Leads | 1.240 | +8%
+      $MetricCard:
+        - Conversões | 134 | +5%
+      $MetricCard:
+        - Satisfação | 92% | +3%
+```
+</DslPreview>
 
 ## Veja também
 - [Component Definition](./component-definition)
 - [Component List](./component-list)
-- [Card](./card)
+- [Component Composition](./component-composition)

@@ -1,61 +1,85 @@
 # Drawer
 
 ## O que é
-Painel lateral com contexto persistente usado para navegação complementar, filtros e detalhes rápidos sem sair da tela principal.
+Painel lateral que desliza sobre a interface para exibir menus, filtros ou detalhes sem abandonar a tela atual.
+
+## Capacidades
+- Declarar `drawer Nome:` acionado por botões/links (`@[Abrir filtros](Nome)`).
+- Conter listas, formulários e botões de confirmação/cancelamento.
+- Integrar com `list` para criar menus ou `stack` para agrupar controles.
+- Fechar com `@ghost[Fechar](close)` ou navegando para outra tela.
 
 ## Sintaxe
-```proto
-drawer NomeDoDrawer:
-  container:
-    # Conteúdo
-```
+- `drawer FilterDrawer:`
+- `container:`
+- `# Filtros`
+- `___select: Status{Todos | Ativo | Inativo}`
+- `@ghost[Fechar](close)`
 
-Exemplo
-<DslPreview>
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `drawer Nome:` | Define painel lateral | Nome em PascalCase. |
+| Conteúdo interno | Slot | Normalmente `container` ou `stack`. |
+
+## Casos de uso
+- Menu lateral com listagem de telas (`drawer MainMenu`).
+- Painel de filtros complementando um dashboard.
+- Exibir detalhes de um item escolhido sem sair da tela principal.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
-drawer FilterPanel:
+drawer MainMenu:
   container:
-    # Filtros
-    ___:Consulta{Buscar}
-    ___:Status[Todos | Ativo | Arquivado]
-    ___:Responsável[Ana | Bruno | Carla]
-    @ghost[Limpar](clearFilters)
+    # Menu
+    list:
+      - Dashboard | Dashboard
+      - Tarefas | Tasks
+      - Configurações | Settings
 
-screen Projects:
+screen Tasks:
   header:
-    # Projetos
-    @ghost[i-Filter Filtros](FilterPanel)
+    # Minhas tarefas
+    @ghost[i-Menu Menu](MainMenu)
 
   container:
-    grid-2:
-      card:
-        ## Lançamento do app
-        >> Em andamento
-      card:
-        ## Campanha Outubro
-        >> Aguardando aprovação
+    list:
+      - Revisar backlog
+      - Preparar release
 ```
 </DslPreview>
 
-## Variações e Props
-| Prop | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `NomeDoDrawer` | string | Identificador usado como destino | `drawer SideMenu:` |
-| `container` | layout | Estrutura padrão interna; pode ser trocada por `stack` etc. | `container:` |
-| `header` | bloco | Combine com títulos e botões dentro do drawer | `# Menu` |
-| `close` | ação | Use `(close)` para encerrar via botão/link | `@ghost[Fechar](close)` |
-| `list` | conteúdo | Listas dentro do drawer funcionam como menu lateral | `list:` |
+<DslPreview title="Exemplo 2">
+```dsl
+drawer FilterDrawer:
+  container:
+    # Filtros avançados
+    ___select: Status{Todos | Em andamento | Concluído}
+    ___select: Responsável{Ana | Bruno | Carla}
+    row-end:
+      @ghost[Cancelar](close)
+      @primary[Aplicar filtros](applyFilters)
 
-## Boas práticas
-- Exiba o drawer apenas quando houver espaço para mostrar detalhes sem tirar o usuário da tela atual.
-- Use listas e links curtos para navegação lateral persistente.
-- Ofereça sempre um botão de fechar ou ação que retorne ao contexto principal.
-
-## Erros comuns
-⚠ Usar drawer para ações críticas pode escondê-las do usuário.
-⚠ Esquecer o fechamento explícito força o usuário a clicar fora repetidamente.
+screen Dashboard:
+  container-wide:
+    # Visão geral
+    @[Abrir filtros](FilterDrawer)
+    grid-3:
+      card:
+        ## Leads captados
+        # 1.240
+      card:
+        ## Conversões
+        # 134
+      card:
+        ## Net Promoter Score
+        # 72
+```
+</DslPreview>
 
 ## Veja também
+- [Modal](./modal)
 - [Navigator](./navigator)
 - [Drawer Detail](./drawer-detail)
-- [Screen](./screen)

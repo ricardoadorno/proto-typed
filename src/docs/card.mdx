@@ -1,59 +1,99 @@
 # Card
 
 ## O que é
-Bloco visual com fundo, bordas e padding usado para agrupar conteúdo relacionado e criar seções destacadas.
+Contêiner com bordas e padding que agrupa conteúdo relacionado, ideal para destacar informações em blocos autônomos.
+
+## Capacidades
+- Criar cartões padrão (`card`), compactos (`card-compact`) e destacados (`card-feature`).
+- Empilhar tipografia, botões, listas e qualquer elemento do DSL mantendo espaçamento interno.
+- Aninhar outros layouts (`stack`, `row`) sem perder a aparência consistente.
+- Servir como componente base para `component` reutilizáveis.
 
 ## Sintaxe
-```proto
-card-variation:
-  # Conteúdo
-  > Descrição
-```
+card:
+  ## Destaque
+  > Texto principal
+  @[Ação](Destino)
 
-Exemplo
-<DslPreview>
+card-compact:
+  > Item compacto
+
+card-feature:
+  ## Plano premium
+  *> Benefício exclusivo
+  @[Falar com vendas](Contact)
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `card` | Padrão | Padding médio, borda simples. |
+| `card-compact` | Compacto | Menos padding para listas densas. |
+| `card-feature` | Destaque | Borda reforçada/gradiente para CTAs premium. |
+| Conteúdo interno | Slot | Recebe qualquer elemento do DSL (texto, botões, listas). |
+
+## Casos de uso
+- `card:` Informações chave com título, texto e CTA.
+- `card-compact:` Listagens densas ou múltiplos mini cards em uma grade.
+- `card-feature:` Destacar plano premium, anúncio ou seções hero secundárias.
+- `card + stack:` Organizar formulários curtos com botões alinhados.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
-screen ProductOverview:
+screen Pricing:
   container:
+    # Planos disponíveis
     grid-3:
       card:
-        ![Produto A](https://via.placeholder.com/160)
         ## Starter
-        >> R$ 29/mês
-        @[Assinar](subscribeStarter)
+        >> Para equipes pequenas.
+        @[Começar grátis](Signup)
 
       card-compact:
-        ![Produto B](https://via.placeholder.com/160)
-        ## Business
-        >> R$ 79/mês
-        @[Assinar](subscribeBusiness)
+        ## Adicionais
+        list:
+          - Integrar com Slack
+          - Exportar CSV
+          - Suporte prioritário
 
       card-feature:
-        ![Produto C](https://via.placeholder.com/160)
         ## Enterprise
-        *> Suporte dedicado
-        @[Falar com vendas](contactSales)
+        *> Atendimento dedicado e SLA personalizado.
+        @[Falar com vendas](Contact)
 ```
 </DslPreview>
 
-## Variações e Props
-| Variação | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `card` | layout | Card padrão com padding médio | `card:` |
-| `card-compact` | layout | Menos padding, ideal para listas densas | `card-compact:` |
-| `card-feature` | layout | Destaque com borda/gradiente para planos premium | `card-feature:` |
-| `card-outline` | layout | Card com borda discreta e sem sombra | `card-outline:` |
+<DslPreview title="Exemplo 2">
+```dsl
+component MetricCard:
+  card:
+    ## %title
+    # %value
+    >> %description
 
-## Boas práticas
-- Combine `card` com `grid` para apresentar múltiplos itens padronizados.
-- Use `card-feature` para chamar atenção a um item premium ou CTA específico.
-- Preparar `stack` internos mantém espaçamento consistente dentro do card.
+screen Dashboard:
+  container-wide:
+    # Indicadores principais
+    grid-3:
+      $MetricCard:
+        - Leads | 1.240 | Captação nas últimas 24h
+      $MetricCard:
+        - Conversões | 134 | Fechamentos semanais
+      $MetricCard:
+        - Satisfação | 92% | Pesquisa pós-release
 
-## Erros comuns
-⚠ Inserir cards diretamente dentro de `row` estreita pode causar cortes horizontais.
-⚠ Misturar variações sem um padrão visual claro reduz a hierarquia.
+    card:
+      ## Próximas ações
+      list:
+        - Revisar backlog | Hoje às 17h
+        - Preparar release | Amanhã às 10h
+      row-end:
+        @ghost[Cancelar](close)
+        @[Adicionar tarefa](TaskForm)
+```
+</DslPreview>
 
 ## Veja também
+- [Container](./container)
 - [Grid](./grid)
-- [List](./list)
-- [Component Composition](./component-composition)
+- [Component Definition](./component-definition)

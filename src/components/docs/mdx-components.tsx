@@ -13,16 +13,6 @@ const Strong = ({ className, ...props }: ComponentPropsWithoutRef<"strong">) => 
   <strong className={cn("font-semibold text-[var(--fg-primary)]", className)} {...props} />
 )
 
-const InlineCode = ({ className, ...props }: ComponentPropsWithoutRef<"code">) => (
-  <code
-    className={cn(
-      "rounded-md bg-[rgba(255,255,255,0.06)] px-2 py-[2px] font-medium text-[15px] text-[var(--fg-primary)]",
-      className
-    )}
-    {...props}
-  />
-)
-
 const Table = ({ className, ...props }: ComponentPropsWithoutRef<"table">) => (
   <div className="overflow-hidden rounded-lg border border-[var(--border-muted)]">
     <table className={cn("w-full border-collapse bg-[rgba(30,30,30,0.85)] text-sm", className)} {...props} />
@@ -46,7 +36,6 @@ export const mdxComponents = {
   p: Paragraph,
   strong: Strong,
   pre: (props: ComponentPropsWithoutRef<"pre">) => <DocsCodeBlock {...props} />,
-  code: InlineCode,
   table: Table,
   a: Anchor,
   Callout: (props: ComponentPropsWithoutRef<typeof Alert>) => <Alert {...props} />,

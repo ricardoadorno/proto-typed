@@ -1,64 +1,70 @@
 # Floating Action Button (FAB)
 
 ## O que é
-Botão flutuante de ação global usado para acionar tarefas importantes a partir de qualquer ponto da tela.
+Botão flutuante fixado sobre o conteúdo que expõe uma ação global importante — como criar registros ou abrir painéis rápidos.
+
+## Capacidades
+- Declarar FAB com um item (`- i-Icon | Destino`) ou várias ações (múltiplas linhas).
+- Acionar telas, modais ou drawers, usando nome do destino na segunda coluna.
+- Complementar a UI com ícones da biblioteca Lucide (`i-Plus`, `i-Filter`).
+- Aparecer em qualquer `screen`, normalmente após blocos principais.
 
 ## Sintaxe
-```proto
-fab:
-  - i-Icone | Destino
-```
+- `fab:`
+- `- i-Plus | NovaTela`
+- `- i-Filter | FilterDrawer`
 
-Exemplo
-<DslPreview>
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| Linha `- i-Icon | Destino` | Registrar ação | `Destino` pode ser `Screen`, `Modal` ou `Drawer`. |
+| Múltiplas linhas | Menu flutuante | A primeira ação é a principal; demais são secundárias. |
+| Ícone (`i-`) | Indicação visual | Utilize nomes válidos da biblioteca Lucide. |
+
+## Casos de uso
+- `fab:` com apenas `i-Plus` para criar itens rapidamente.
+- `fab:` com `i-Filter` abrindo um `drawer` com filtros avançados.
+- `fab:` em mobile para destacar a ação principal do fluxo.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
-modal NewTask:
-  card:
-    # Nova tarefa
-    ___: Título{Nome da tarefa}
-    ___textarea: Descrição{Detalhes}
-    row-end:
-      @ghost[Cancelar](close)
-      @[Criar](createTask)
-
 screen Tasks:
   container:
     # Tarefas
     list:
-      - Revisar backlog
-      - Atualizar roadmap
-      - Preparar release
+      - Revisar backlog | @[Editar](TaskForm)
+      - Preparar release | @[Editar](TaskForm)
 
   fab:
-    - i-Plus | NewTask
-
-drawer FilterDrawer:
-  container:
-    # Filtrar tarefas
-    ___select: Status{Todos | Em andamento | Concluído}
-    ___select: Responsável{Ana | Bruno | Carla}
-    @ghost[Fechar](close)
+    - i-Plus | TaskForm
 ```
 </DslPreview>
 
-## Variações e Props
-| Prop | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `icon` | string | Ícone exibido dentro do FAB (prefixado com `i-`) | `- i-Plus | NewTask` |
-| `destination` | string | Nome da tela, modal ou drawer acionado | `- i-Plus | NewTask` |
-| `multiple` | layout | Declare mais entradas para oferecer ações secundárias | `fab:` com várias linhas |
-| `position` | padrão | FAB é fixado no canto inferior direito automaticamente | `fab:` |
+<DslPreview title="Exemplo 2">
+```dsl
+drawer FilterDrawer:
+  container:
+    # Filtros avançados
+    ___select: Status{Todos | Em andamento | Concluído}
+    ___select: Responsável{Ana | Bruno | Carla}
+    row-end:
+      @ghost[Cancelar](close)
+      @primary[Aplicar filtros](applyFilters)
 
-## Boas práticas
-- Mantenha o número de ações flutuantes pequeno (até duas) para evitar poluição visual.
-- Use ícones intuitivos (`i-Plus`, `i-Edit`, `i-Filter`) para reforçar o contexto da ação.
-- Combine FAB com modals ou drawers quando a ação abrir formulários rápidos.
+screen Dashboard:
+  container:
+    # Visão geral
+    > Use o FAB para abrir filtros ou criar ações rápidas.
 
-## Erros comuns
-⚠ Definir um FAB sem destino válido não executa nenhuma ação.
-⚠ Criar FAB redundante com botões já visíveis pode confundir o usuário.
+  fab:
+    - i-Plus | TaskForm
+    - i-Filter | FilterDrawer
+```
+</DslPreview>
 
 ## Veja também
-- [Modal](./modal)
-- [Drawer](./drawer)
 - [Button](./button)
+- [Drawer](./drawer)
+- [Navigator](./navigator)

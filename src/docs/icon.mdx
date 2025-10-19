@@ -1,49 +1,71 @@
 # Icon
 
 ## O que é
-Ícones embutidos e simbologia visual para reforçar ações, navegação e status dentro das telas.
+Tokens de ícones (`i-IconName`) usados para reforçar ações e significados visuais em botões, listas e layouts Proto-Typed.
+
+## Capacidades
+- Inserir um ícone ao lado de textos em botões, listas e headings (`@[i-Download Exportar](...)`).
+- Combinar com labels inline em `list`, `navigator`, `fab` ou `row`.
+- Utilizar qualquer ícone da biblioteca Lucide referenciando o nome em PascalCase (`i-Download`, `i-Settings`).
+- Misturar múltiplos ícones e texto na mesma linha através de tipografia padrão.
 
 ## Sintaxe
-```proto
-i-IconName Conteúdo
-```
+- `@[i-Download Exportar CSV](https://...)`
+- `- i-Home Dashboard | Dashboard`
+- `> i-Check Concluído`
 
-Exemplo
-<DslPreview>
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `i-IconName` | Icone inline | Deve existir na biblioteca Lucide (PascalCase). |
+| Uso com botões | Prefixo visual | Adicione antes do label dentro de `[ ]`. |
+| Uso em listas/navigator | Indicador de item | Posicione antes do texto do item. |
+| Tipografia | Decoração | Puede aparecer em títulos, parágrafos e notas. |
+
+## Casos de uso
+- `@[i-Plus Nova tarefa](TaskForm)` — Comunicação visual de “adicionar”.
+- `list:` com `i-Home`, `i-Settings` — Menus e atalhos com ícones consistentes.
+- `> i-Info` — Notas informativas dentro de cards.
+- `fab:` — Complementar ações flutuantes com ícones claros.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
-screen Settings:
+screen Shortcuts:
   container:
-    # Preferências
+    # Atalhos rápidos
     list:
-      - i-User Perfil | Profile
-      - i-Bell Notificações | Notifications
-      - i-Shield Segurança | Security
+      - i-Home Dashboard | Dashboard
+      - i-Calendar Agenda | Calendar
+      - i-Settings Preferências | Settings
 
-    stack:
-      @[i-Save Salvar alterações](saveSettings)
-      @ghost[i-LogOut Sair](logout)
+    row-start:
+      @[i-Plus Nova tarefa](TaskForm)
+      @outline[i-Download Exportar CSV](https://example.com/report.csv)
 ```
 </DslPreview>
 
-## Variações e Props
-| Prop | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `icon` | string | Nome do ícone baseado em [Lucide](https://lucide.dev) (PascalCase) | `i-ClipboardList` |
-| `position` | string | Prefixe com `i-` antes do texto ou dentro de `fab[...]` | `fab[i-Plus](NewItem)` |
-| `size` | string | Ajusta tamanho junto ao componente hospedeiro (`@-lg`, `fab-lg`) | `@-lg[i-Download Exportar](...)` |
-| `status` | combinação | Combine com cores/variants de botão para transmitir significado | `@destructive[i-Trash2 Excluir](delete)` |
-| `standalone` | elemento | Use `list` ou `row` para mostrar ícone isolado com legenda | `i-Check Completo` |
+<DslPreview title="Exemplo 2">
+```dsl
+screen Status:
+  container:
+    # Status da implantação
+    card:
+      *> i-Info A implantação está em andamento.
+      stack-tight:
+        > i-Check Build concluída
+        > i-Check Testes rodando
+        > i-Clock Monitorando métricas
 
-## Boas práticas
-- Use ícones para reforçar significado, não substituir texto crítico.
-- Prefira nomes oficiais da biblioteca Lucide e verifique disponibilidade antes de usar.
-- Combine ícones com variantes compatíveis (ex.: `@ghost` para ações secundárias discretas).
-
-## Erros comuns
-⚠ Usar nomes com letras minúsculas (`i-home`) gera erros de resolução.
-⚠ Repetir muitos ícones iguais na mesma tela reduz o valor semântico.
+    navigator:
+      - i-Home Início | Home
+      - i-Server Deploys | Deploys
+      - i-AlertCircle Logs | Logs
+```
+</DslPreview>
 
 ## Veja também
 - [Button](./button)
+- [List](./list)
 - [Navigator](./navigator)
-- [FAB](./fab)

@@ -1,84 +1,78 @@
 # Navigator
 
 ## O que é
-Menu de abas/tabs para alternar entre telas, normalmente exibido como barra inferior em contextos mobile.
+Menu fixo (geralmente inferior em mobile) que permite alternar rapidamente entre telas relacionadas.
+
+## Capacidades
+- Declarar barra de navegação com `navigator:` seguido de itens `- Texto | Destino` (com ou sem ícones).
+- Suportar ícones Lucide (`i-Home`, `i-User`) ao lado do texto.
+- Integrar com qualquer `screen` para manter navegação consistente entre seções.
 
 ## Sintaxe
-```proto
-navigator:
-  - Rótulo | NomeDaTela
-```
+- `navigator:`
+- `- Home | Home`
+- `- i-List Tarefas | Tasks`
+- `- Config | Settings`
 
-Exemplo
-<DslPreview>
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `navigator:` | Cria barra | Repetir em cada tela do grupo para consistência. |
+| `- Texto | Destino` | Item de navegação | `Destino` deve ser tela existente. |
+| `- i-Icon Texto | Destino` | Item com ícone | Usar nomes Lucide válidos. |
+
+## Casos de uso
+- `navigator:` em telas principais de um app mobile (Home, Tarefas, Configurações).
+- `navigator:` combinando ícones para facilitar reconhecimento rápido.
+- Adicionar navegação inferior a dashboards com múltiplas subseções.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
-screen Feed:
+screen Home:
   container:
-    # Feed
+    # Início
+    > Explore as métricas e tarefas recentes.
+
+  navigator:
+    - i-Home Início | Home
+    - i-List Tarefas | Tasks
+    - i-Settings Config | Settings
+
+screen Tasks:
+  container:
+    # Tarefas
     list:
-      - Atualização do time de produto
-      - Release 1.2 publicado
-      - Convite para o meetup
+      - Revisar backlog
+      - Preparar release
 
   navigator:
-    - i-Home Início | Feed
-    - i-Search Explorar | Explore
-    - i-Bell Notificações | Notifications
-    - i-User Perfil | Profile
-
-screen Explore:
-  container:
-    # Explorar
-    > Descubra conteúdos recomendados.
-  navigator:
-    - i-Home Início | Feed
-    - i-Search Explorar | Explore
-    - i-Bell Notificações | Notifications
-    - i-User Perfil | Profile
-
-screen Notifications:
-  container:
-    # Notificações
-    list:
-      - Bruno comentou sua tarefa
-      - Novo deploy disponível
-  navigator:
-    - i-Home Início | Feed
-    - i-Search Explorar | Explore
-    - i-Bell Notificações | Notifications
-    - i-User Perfil | Profile
-
-screen Profile:
-  container:
-    # Perfil
-    > Ajuste preferências e dados pessoais.
-  navigator:
-    - i-Home Início | Feed
-    - i-Search Explorar | Explore
-    - i-Bell Notificações | Notifications
-    - i-User Perfil | Profile
+    - i-Home Início | Home
+    - i-List Tarefas | Tasks
+    - i-Settings Config | Settings
 ```
 </DslPreview>
 
-## Variações e Props
-| Prop | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `label` | string | Texto visível da aba | `- Início | Home` |
-| `icon` | string | Prefixe com `i-` para reforçar a identificação visual | `- i-Home Início | Home` |
-| `target` | string | Nome da tela navegável associada ao item | `- Explorar | Explore` |
-| `duplicate` | fluxo | Repita o mesmo `navigator` em todas as telas do conjunto | `navigator:` |
-| `order` | fluxo | Organize itens por prioridade de uso (esquerda → direita) | `- Perfil | Profile` |
+<DslPreview title="Exemplo 2">
+```dsl
+screen Settings:
+  container-narrow:
+    # Configurações
+    ___email: E-mail{usuario@empresa.com}
+    ___password: Senha{••••••••}
+    row-end:
+      @ghost[Cancelar](-1)
+      @primary[Salvar alterações](saveSettings)
 
-## Boas práticas
-- Repita o `navigator` em todas as telas relacionadas para manter a navegação consistente.
-- Use ícones (`i-`) para reforçar o reconhecimento rápido das abas.
-- Limite a barra a 3–5 itens para evitar overflow em dispositivos menores.
-
-## Erros comuns
-⚠ Omitir o `navigator` em uma tela quebra a continuidade visual da barra.
-⚠ Usar nomes de tela inexistentes impede a navegação e gera erro no runtime.
+  navigator:
+    - i-Home Início | Home
+    - i-List Tarefas | Tasks
+    - i-Settings Config | Settings
+```
+</DslPreview>
 
 ## Veja também
+- [Button](./button)
 - [Screen](./screen)
-- [Icon](./icon)
-- [Dashboard](./dashboard)
+- [Fab](./fab)

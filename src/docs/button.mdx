@@ -1,29 +1,70 @@
 # Button
 
 ## O que é
-Botões de ação com variantes e destinos, usados para interações primárias, secundárias e fluxos de navegação entre telas.
+Botões acionam navegação, comandos e interações principais dentro das telas criadas com Proto-Typed.
+
+## Capacidades
+- Declarar botões com variantes (`primary`, `secondary`, `outline`, `ghost`, `destructive`, `link`, `success`, `warning`).
+- Ajustar tamanhos (`-xs`, `-sm`, `-md`, `-lg`) para adequar altura e espaçamento.
+- Encaminhar ações para telas, modais, drawers ou URLs externas (`@[Label](Destino)`).
+- Atribuir ícones embutidos (`i-Download`) antes do texto para reforçar o contexto.
+- Reagir a fluxos de confirmação (`(-1)` para voltar, chamar `modal`, `drawer` ou executar `alert('...')`).
 
 ## Sintaxe
-```proto
-@variant-size[Texto do botão](Destino)
-```
+- `@[Criar tarefa](TaskForm)`
+- `@secondary-sm[Ver relatórios](Reports)`
+- `@outline[i-Download Exportar CSV](https://example.com/report.csv)`
+- `@ghost[Voltar](-1)`
 
-Exemplo
-<DslPreview>
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `@` / `@primary` | Ação principal | Variante padrão e mais evidente. |
+| `@secondary`, `@outline`, `@ghost` | Ações complementares | Escolha conforme hierarquia visual. |
+| `@destructive` | Operações críticas | Usar para deletar/remover. |
+| `@link`, `@success`, `@warning` | Contextuais | Link abre destinos, success/warning reforçam status. |
+| `-xs / -sm / -md / -lg` | Tamanho | Define altura/padding do botão. |
+| `[Texto]` | Label | Obrigatório; pode incluir ícone `i-Icon`. |
+| `(Destino)` | Ação | Tela (`Dashboard`), overlay (`ConfirmDelete`), link externo ou `-1` para voltar. |
+
+## Casos de uso
+- `@[Criar tarefa](TaskForm)` — CTA principal para abrir uma tela de formulário.
+- `@secondary-sm[Ver histórico](History)` — Ação complementar em um card de métricas.
+- `@outline[i-Download Exportar CSV](https://example.com/report.csv)` — Download de relatórios.
+- `@ghost[Cancelar](-1)` — Retorna à tela anterior dentro de um fluxo multi-etapas.
+- `@destructive[Excluir](ConfirmDelete)` — Dispara modal de confirmação destrutiva.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
 screen Home:
   container:
     # Bem-vindo ao Proto-Typed
-    > Gerencie sua conta com ações rápidas.
+    > Gerencie tarefas e relatórios em um só lugar.
 
-    stack:
+    row-between:
       @[Criar Tarefa](TaskForm)
-      @secondary[Ver Relatórios](Reports)
-      @outline-lg[i-Download Exportar CSV](exportCsv)
+      @secondary-sm[Ver Dashboard](Dashboard)
+
+    card:
+      ## Relatório semanal
+      >> Exportar dados atualizados para o time financeiro.
+      row:
+        @outline[i-Download Exportar CSV](https://example.com/report.csv)
+        @ghost[Compartilhar](ShareModal)
+
+modal ShareModal:
+  card:
+    # Compartilhar link
+    ___: Email{usuario@empresa.com}
+    row-end:
+      @ghost[Cancelar](close)
+      @success[Enviar convite](sendInvite)
 
 screen TaskForm:
   container:
-    # Nova Tarefa
+    # Nova tarefa
     ___: Título{Nome da tarefa}
     ___textarea: Descrição{Detalhes}
     row-end:
@@ -32,25 +73,28 @@ screen TaskForm:
 ```
 </DslPreview>
 
-## Variações e Props
-| Prop | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `variant` | string | Controla estilo visual (`primary` é padrão) | `@secondary[Label](destino)`
-| `size` | string | Ajusta altura e padding (`xs`, `sm`, `md`, `lg`) | `@-xs[...]`
-| `icon` | string | Prefixa ícone usando sintaxe `i-IconName` | `@[i-Send Enviar](send)`
-| `action` | string | Destino de navegação, link externo ou comando | `(Dashboard)`, `(https://...)`, `(alert('ok'))`
-| `back` | especial | Usar `(-1)` para voltar à tela anterior | `@ghost[Voltar](-1)`
+<DslPreview title="Exemplo 2">
+```dsl
+screen DangerZone:
+  container:
+    # Configurações avançadas
+    card:
+      *> Cuidado: ações abaixo são permanentes.
+      row-between:
+        @outline[Exportar backup](exportBackup)
+        @destructive[Excluir conta](ConfirmDelete)
 
-## Boas práticas
-- Reserve `@` ou `@primary` para a ação principal de cada fluxo.
-- Combine variantes (`@secondary`, `@outline`) para reforçar hierarquia entre ações.
-- Adicione ícones (`i-`) apenas quando reforçarem a intenção do botão.
-
-## Erros comuns
-⚠ Omitir parênteses no destino (`(Destino)`) impede a navegação.
-⚠ Misturar muitas variantes na mesma tela gera ruído visual.
+modal ConfirmDelete:
+  card:
+    # Confirmar exclusão
+    > Esta ação não pode ser desfeita.
+    row-end:
+      @ghost[Voltar](close)
+      @destructive[Excluir agora](deleteTenant)
+```
+</DslPreview>
 
 ## Veja também
 - [Text](./text)
-- [Icon](./icon)
 - [Screen](./screen)
+- [Modal](./modal)

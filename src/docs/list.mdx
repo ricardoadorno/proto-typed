@@ -1,59 +1,111 @@
 # List
 
 ## O que é
-Coleção de elementos repetidos organizada em linhas, útil para menus, coleções e dados tabulares simples.
+Estrutura vertical que organiza itens em sequência, com suporte a texto simples ou instâncias de componentes reutilizáveis.
+
+## Capacidades
+- Declarar listas básicas com `list:` + itens `-`.
+- Renderizar componentes com props usando `list $Component:`.
+- Passar dados por linha via pipes (`- valor1 | valor2`) e interpolar com `%prop`.
+- Mesclar ações inline (botões `@variant` ou links `#[...]`).
+- Combinar com `component` para criar catálogos, menus e checklists dinâmicos.
 
 ## Sintaxe
-```proto
-list:
-  - Item simples
-  - Outro item | Detalhe
-```
+- `list:` seguido apenas de linhas `- texto simples`
+- `component Nome:` para preparar `%props`
+- `list $Nome:` com linhas `- valor1 | valor2` que preenchem `%props`
 
-Exemplo
-<DslPreview>
+## Sintaxe inválida
+- `list:` com `- Item | Outro valor` (use `list $Componente` ou `card`)
+- `list:` com `- Texto @[Ação](Destino)` (envolva em `card`/`stack`)
+
+## Variantes & Slots
+| Variante/Slot | Papel | Notas |
+| --- | --- | --- |
+| `list` | Lista simples | Cada item inicia com `-`. |
+| `list $Name` | Lista baseada em componente | Requer um `component Name:` declarado previamente. |
+| `- valor | valor` | Linha com props | A ordem deve corresponder aos `%props`. |
+| Conteúdo inline | Slot | Permite botões, links e formatos mistos nos itens. |
+
+## Casos de uso
+- `list:` Mostrar tarefas com status ou datas.
+- `list $Component:` Montar cards repetidos a partir de um template.
+- `list:` dentro de `drawer` ou `navigator` para menus laterais.
+- **Cuidado:** itens da lista aceitam apenas texto; para conteúdo avançado (cards, botões, múltiplas colunas) use `card`, `stack` ou `list $Componente`.
+
+## Exemplos
+<DslPreview title="Exemplo 1">
 ```dsl
-screen TeamDirectory:
+component TaskRow:
+  row-between:
+    stack:
+      > %title
+      >>> %due
+    row:
+      @outline-sm[i-Edit Editar](edit:%id)
+      @destructive-sm[i-Trash Remover](ConfirmDelete)
+
+screen Tasks:
   container:
-    # Equipe
-    list:
-      - Ana Souza
-      - Bruno Lima
-      - Carla Dias
+    # Tarefas da sprint
+    list $TaskRow:
+      - Atualizar documentação | Vence em 20/09 | 101
+      - Revisar backlog | Vence em 22/09 | 102
+      - Preparar demo | Vence em 25/09 | 103
 
-    ---
-
-    list $MemberCard:
-      - João Silva | Backend | joao@empresa.com
-      - Maria Moraes | Mobile | maria@empresa.com
-
-component MemberCard:
-  card-compact:
-    ## %name
-    >> %role
-    >>> %email
-    @[Enviar mensagem](mailto:%email)
+  container:
+    stack:
+      card-compact:
+        ## Checklist
+        @[Abrir checklist](Checklist)
+      card-compact:
+        ## Exportar relatório
+        @[Exportar CSV](https://example.com/export.csv)
 ```
 </DslPreview>
 
-## Variações e Props
-| Variação | Tipo | Descrição | Exemplo |
-| --- | --- | --- | --- |
-| `list` | layout | Lista vertical padrão com marcadores sutis | `list:` |
-| `list $Component` | binding | Gera cada linha a partir de componente customizado | `list $MemberCard:` |
-| `- valor1 | valor2` | dados | Separa colunas por `|` dentro do item | `- Plano Pro | R$ 79` |
-| `---` | separador | Insere linha divisória dentro de `list` | `---` |
+<DslPreview title="Exemplo 2">
+```dsl
+drawer QuickMenu:
+  container:
+    # Menu rápido
+    stack:
+      card-compact:
+        ## Dashboard
+        #[Abrir dashboard](Dashboard)
+      card-compact:
+        ## Tarefas
+        #[Ir para tarefas](Tasks)
+      card-compact:
+        ## Configurações
+        #[Abrir preferências](Settings)
 
-## Boas práticas
-- Use `list $Component` para manter consistência quando precisar de markup complexo.
-- Separe colunas com `|` para simular tabelas sem perder simplicidade.
-- Combine listas com `drawer` ou `modal` para exibir detalhes sob demanda.
+screen Dashboard:
+  header:
+    # Proto-Typed
+    @ghost[i-Menu Menu](QuickMenu)
 
-## Erros comuns
-⚠ Misturar `list` com `grid` para a mesma informação quebra a hierarquia visual.
-⚠ Esquecer de definir componentes usados em `list $Componente` gera erro de parse.
+  container:
+    # Visão geral
+    stack:
+      card:
+        ## Releases recentes
+        @[Ver changelog](https://example.com/changelog)
+      card:
+        ## Próxima reunião
+        @[Abrir agenda](Calendar)
+
+modal ConfirmDelete:
+  card:
+    # Remover tarefa
+    > Esta ação não pode ser desfeita.
+    row-end:
+      @ghost[Cancelar](close)
+      @destructive[Excluir agora](deleteTask)
+```
+</DslPreview>
 
 ## Veja também
-- [Component List](./component-list)
-- [Drawer Detail](./drawer-detail)
+- [Component Definition](./component-definition)
+- [Button](./button)
 - [Navigator](./navigator)
