@@ -51,7 +51,6 @@ export default function DocsSidebar({ sections, onNavigate }: DocsSidebarProps) 
                   <li key={item.slug}>
                     <Link
                       href={href}
-                      onClick={onNavigate}
                       className={cn(
                         "group flex items-center justify-between gap-2 rounded-lg border-l-2 border-transparent px-3 py-2 text-sm transition-colors",
                         isActive

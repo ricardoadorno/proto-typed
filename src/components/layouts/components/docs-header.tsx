@@ -32,6 +32,8 @@ import DocsSearch from '@/components/docs/docs-search'
 import docSections from '@/utils/toc'
 import { withAssetPath } from '@/utils/base-path'
 import { navItems } from "@/utils/constants"
+import SidebarMobile from "./sidebar-mobile"
+import DocsSidebar from "./docs-sidebar"
 
 
 
@@ -47,14 +49,16 @@ type ExtraCommandGroup = {
 }
 
 export interface DocsHeaderProps {
-  onOpenSidebar?: () => void
   commandGroups?: ExtraCommandGroup[]
+  children?: React.ReactNode
+  isDocs?: boolean
 }
 
-export function DocsHeader({ onOpenSidebar }: DocsHeaderProps) {
+export function DocsHeader({ children, isDocs }: DocsHeaderProps) {
   const pathname = usePathname()
   const [scrolled, setScrolled] = useState(false)
   const { theme, setTheme } = useTheme()
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
 
   const onThemeToggle = () => setTheme((prev) => (prev === "dark" ? "light" : "dark"));
 
@@ -75,6 +79,7 @@ export function DocsHeader({ onOpenSidebar }: DocsHeaderProps) {
   }
 
   return (
+    <>
     <header
       className={cn(
         "sticky top-0 z-40 w-full border-b border-[var(--border-muted)] bg-[color:rgba(14,15,18,0.88)] backdrop-blur-xl transition-shadow duration-300 supports-[backdrop-filter]:bg-[color:rgba(14,15,18,0.72)]",
@@ -158,7 +163,7 @@ export function DocsHeader({ onOpenSidebar }: DocsHeaderProps) {
             size="icon"
             className="md:hidden"
             aria-label="Abrir navegação"
-            onClick={onOpenSidebar}
+            onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
           >
             <MenuIcon className="h-5 w-5" />
           </Button>
@@ -198,6 +203,10 @@ export function DocsHeader({ onOpenSidebar }: DocsHeaderProps) {
         </div>
       </div>
     </header>
+    <SidebarMobile mobileSidebarOpen={mobileSidebarOpen} setMobileSidebarOpen={setMobileSidebarOpen} >
+      {isDocs && <DocsSidebar sections={docSections} onNavigate={() => setMobileSidebarOpen(false)} />}
+    </SidebarMobile>
+    </>
   )
 }
 

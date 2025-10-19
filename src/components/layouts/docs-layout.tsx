@@ -8,23 +8,14 @@ import DocsHeader from "./components/docs-header"
 import DocsSidebar from "./components/docs-sidebar"
 import docSections from "@/utils/toc"
 import {
-  Button,
   ScrollArea,
   Separator,
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
 } from "@/components/ui"
 import { ChevronLeft, ChevronRight } from "lucide-react"
-import SidebarMobile from "./components/sidebar-mobile"
-import { navItems } from "@/utils/constants"
 
 const localStorageKey = "docs-sidebar-collapsed"
 
 export function DocsLayout({ children }: { children: ReactNode }) {
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
       useEffect(() => {
@@ -39,7 +30,7 @@ export function DocsLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-[var(--bg-main)] text-[var(--fg-primary)] transition-all duration-300">
-      <DocsHeader onOpenSidebar={() => setMobileSidebarOpen(true)}  />
+      <DocsHeader isDocs />
 
       <div className="mx-auto flex gap- w-full max-w-[1360px] px-4 pb-20 pt-10 sm:px-6 lg:px-0 xl:pt-14">
         {/* SIDEBAR (desktop) */}
@@ -74,9 +65,6 @@ export function DocsLayout({ children }: { children: ReactNode }) {
         </main>
       </div>
 
-      <SidebarMobile mobileSidebarOpen={mobileSidebarOpen} setMobileSidebarOpen={setMobileSidebarOpen}>
-            <DocsSidebar sections={docSections} onNavigate={() => setMobileSidebarOpen(false)} />
-      </SidebarMobile>
     </div>
   )
 }

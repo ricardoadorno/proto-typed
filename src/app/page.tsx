@@ -26,6 +26,7 @@ import { astToHtmlDocument } from "@/core/renderer/ast-to-html-document";
 import { availableThemes } from '@/core/themes/theme-definitions';
 import { SimpleSelect } from '@/components/ui/select';
 import { customPropertiesManager } from '@/core/renderer/core/theme-manager';
+import SidebarMobile from "@/components/layouts/components/sidebar-mobile";
 
 const DEFAULT_EXAMPLE = exampleConfigs[0]?.code ?? "";
 
@@ -48,9 +49,10 @@ export default function PlaygroundPage() {
     exportDocument(documentResult, "playground-export.html");
   };
 
+
   return (
     <div className="min-h-screen bg-[var(--bg-main)] text-[var(--fg-primary)]">
-      <DocsHeader  />
+      <DocsHeader />
       <main className="mx-auto flex w-full max-w-[1320px] flex-col gap-12 px-4 pb-16 pt-10 sm:px-6 lg:px-10">
         <h1 className="text-4xl font-semibold leading-tight text-[var(--fg-primary)] sm:text-5xl">
           Playground
