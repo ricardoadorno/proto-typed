@@ -10,6 +10,7 @@ import {
   SheetTitle,
 } from "@/components/ui"
 import { navItems } from "@/utils/constants"
+import Link from "next/link"
 
 interface SidebarMobileProps {
     mobileSidebarOpen: boolean
@@ -34,14 +35,13 @@ const SidebarMobile = ({ mobileSidebarOpen, setMobileSidebarOpen, children }: Si
                 {navItems.length > 0 && (
                     <nav className="flex flex-col mb-4">
                         {navItems.map((item) => (
-                            <a
+                            <Link
                                 key={item.href}
-                                href={item.href
-}
+                                href={item.href}
                                 className="rounded-md px-3 py-2 text-sm font-medium text-[var(--fg-secondary)] hover:bg-[color:rgba(139,92,246,0.08)] hover:text-[var(--accent-light)] transition-colors"
                             >
                                 {item.label}
-                            </a>
+                            </Link>
                         ))}
                     </nav>
                 )}

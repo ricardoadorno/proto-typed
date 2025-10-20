@@ -181,7 +181,7 @@ export const docSections: DocSection[] = [
     ],
   },
   {
-    title: 'Exemplos e Cookbook',
+    title: 'Exemplos',
     items: [
       {
         slug: 'login-screen',

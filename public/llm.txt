@@ -51,7 +51,7 @@ Use este arquivo como mapa da documentação. Sempre que possível, responda apo
 - [Diretrizes de composição](https://ricardoadorno.github.io/proto-typed/docs/composition-guidelines)
 - [Erros comuns](https://ricardoadorno.github.io/proto-typed/docs/error-patterns)
 
-### Exemplos e cookbook
+### Exemplos
 - [Tela de login](https://ricardoadorno.github.io/proto-typed/docs/login-screen)
 - [Dashboard](https://ricardoadorno.github.io/proto-typed/docs/dashboard)
 - [Detalhe no drawer](https://ricardoadorno.github.io/proto-typed/docs/drawer-detail)
