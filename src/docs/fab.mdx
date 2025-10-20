@@ -59,7 +59,7 @@ fab:
 drawer FilterDrawer:
   container:
     # Filtros avançados
-    ___select: Status{Todos | Em andamento | Concluído}
+    ___: Status[Todos | Em andamento | Concluído]
     row-end:
       @ghost[Cancelar](close)
       @[Aplicar](applyFilters)
@@ -180,7 +180,7 @@ screen Dashboard:
 drawer FilterDrawer:
   container:
     # Ajustar filtros
-    ___select: Período{7 dias | 30 dias | 90 dias}
+    ___: Período[7 dias | 30 dias | 90 dias]
     row-end:
       @ghost[Cancelar](close)
       @[Aplicar](applyFilters)

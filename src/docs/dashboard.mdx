@@ -54,8 +54,8 @@ screen Dashboard:
 drawer FilterDrawer:
   container:
     # Filtros do painel
-    ___select: Intervalo{7 dias | 14 dias | 30 dias}
-    ___select: Equipe{Todos | Produto | Engenharia | Suporte}
+    ___: Intervalo[7 dias | 14 dias | 30 dias]
+    ___: Equipe[Todos | Produto | Engenharia | Suporte]
     row-end:
       @ghost[Cancelar](close)
       @primary[Aplicar](applyFilters)

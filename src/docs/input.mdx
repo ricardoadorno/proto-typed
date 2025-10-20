@@ -31,7 +31,7 @@ Por quê: reúne diferentes tipos de entrada em um fluxo compacto e completo.
 ## Variantes
 <DocsCodePreview title="Select com opções declaradas">
 ```dsl
-___select: Status{Em análise | Aprovado | Reprovado}
+___: Status[Em análise | Aprovado | Reprovado]
 ```
 </DocsCodePreview>
 Quando usar: limitar a escolha a um conjunto predeterminado.
@@ -65,12 +65,16 @@ component BillingForm:
   card:
     ## Configurar plano
     stack-loose:
-      ___select: Plano{Starter | Pro | Enterprise}
+      ___: Plano{Starter | Pro | Enterprise}
       ___number: Assentos{5} | min="1"
       ___textarea: Observações{Detalhes adicionais}
     row-end:
       @ghost[Cancelar](-1)
       @primary[Salvar alterações](savePlan)
+      
+screen AccountSettings:
+  container-narrow:
+    $BillingForm
 ```
 </DocsCodePreview>
 Por quê: reutiliza o formulário em diferentes telas mantendo layout padronizado.
@@ -78,11 +82,10 @@ Por quê: reutiliza o formulário em diferentes telas mantendo layout padronizad
 ## Slots & Props
 | Nome | Tipo | Padrão | Descrição | Obrigatório |
 | --- | --- | --- | --- | --- |
-| `tipo` | token (`___`, `___email`, `___password`, `___select`, `___textarea`, etc.) | `___` | Determina validação e apresentação do campo. | Sim |
+| `tipo` | token (`___`, `___email`, `___password`, `___`, `___textarea`, etc.) | `___` | Determina validação e apresentação do campo. | Sim |
 | `label` | string | — | Texto exibido antes da entrada. | Sim |
 | `placeholder` | string entre `{}` | — | Exemplo ou instrução contextual do campo. | Sim |
-| `atributos` | chave/valor após `|` | — | Complementa com `required`, `minlength`, `min`, `max`, entre outros. | Não |
-| `opções` | lista `opção A | opção B` | — | Define itens de selects ou radios. | Não |
+| `opções` | lista `opção A | opção B` | — | Define itens de selects. | Não |
 
 ## Erros comuns (Do/Don’t)
 <DoDont

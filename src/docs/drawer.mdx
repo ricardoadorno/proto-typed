@@ -13,8 +13,8 @@ Drawers exibem painéis laterais sobre a tela atual para oferecer filtros, detal
 drawer FilterDrawer:
   container:
     # Filtros avançados
-    ___select: Status{Todos | Em andamento | Concluído}
-    ___select: Responsável{Ana | Bruno | Carla}
+    ___: Status[Todos | Em andamento | Concluído]
+    ___: Responsável[Ana | Bruno | Carla]
     row-end:
       @ghost[Cancelar](close)
       @[Aplicar filtros](applyFilters)
@@ -128,7 +128,7 @@ drawer MainMenu:
     title: "Navegação estruturada",
     code: `
 drawer MainMenu:
-  navigator Menu:
+  navigator:
     - Dashboard | Dashboard
     - Relatórios | Reports
     `,
