@@ -4,7 +4,7 @@
 O fluxo de navegação determina como as pessoas avançam entre telas, drawers e modais. Uma estrutura bem definida evita becos sem saída, garante retomada rápida de contexto e mantém o produto coerente em diferentes dispositivos.
 
 ## Forma canônica (sintaxe mínima)
-<DslPreview title="Fluxo básico entre duas telas">
+<DocsCodePreview title="Fluxo básico entre duas telas">
 ```dsl
 screen Home:
   container:
@@ -16,36 +16,33 @@ screen Detail:
     # Detalhes
     @[Voltar](Home)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: exibe rotas bidirecionais simples usando botões que referenciam slugs válidos.
 
-<Attention title="Cheque slugs antes de gerar caminhos">
-Ao sugerir rotas (especialmente por LLM), confirme que cada destino existe no TOC (`src/utils/toc.ts`). Referências inválidas quebram navegação e atrapalham quem mantém a documentação.
-</Attention>
-
 ## Padrões de uso
-<DslPreview title="Usar navigator para seções irmãs">
+<DocsCodePreview title="Usar navigator para seções irmãs">
 ```dsl
 screen Dashboard:
   container:
     # Métricas
 
-  navigator MainNav:
+  navigator:
     - i-Home Início | Home
     - i-BarChart Métricas | Dashboard
     - i-Settings Configurações | Settings
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: oferecer menus persistentes em telas com status equivalente.
 Por quê: o navigator mantém destinos sempre acessíveis e reduz dependência de botões dispersos.
 
-<DslPreview title="Abrir drawer para contexto complementar">
+<DocsCodePreview title="Abrir drawer para contexto complementar">
 ```dsl
 screen Accounts:
   container:
     # Contas
-    list:
-      - Grupo Norte | @[Ver detalhes](AccountDrawer)
+    stack:
+      > Grupo Norte
+      @[Ver detalhes](AccountDrawer)
 
 drawer AccountDrawer:
   card:
@@ -55,11 +52,11 @@ drawer AccountDrawer:
       @ghost[Fechar](close)
       @[Editar conta](EditAccount)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: exibir detalhes sem abandonar a tela principal.
 Por quê: drawers expandem o fluxo lateralmente, mantendo origem e destino visíveis.
 
-<DslPreview title="Encadear modal de confirmação">
+<DocsCodePreview title="Encadear modal de confirmação">
 ```dsl
 row-end:
   @destructive[Excluir conta](ConfirmDelete)
@@ -72,69 +69,73 @@ modal ConfirmDelete:
       @ghost[Cancelar](close)
       @destructive[Excluir agora](deleteTenant)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: exigir confirmação explícita antes de executar ações críticas.
 Por quê: modais bloqueiam a navegação atual até que a pessoa tome uma decisão.
 
 ## Erros comuns (Do/Don’t)
-**Não faça — apontar para slugs inexistentes**
-<DslPreview title="❌ Errado — Destino inválido">
-```dsl
+<DoDont
+  dont={{
+    title: "Destino inválido",
+    code: `
 @[Ver relatório](ReportsDashboard)
-```
-</DslPreview>
-
-Faça — valide o slug no TOC
-<DslPreview title="✅ Correto — Destino registrado">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Destino registrado",
+    code: `
 @[Ver relatório](Dashboard)
-```
-</DslPreview>
-Por quê: nomes incorretos geram falhas de navegação e experiências quebradas.
-
-**Não faça — misturar `close` e `-1` no mesmo fluxo**
-<DslPreview title="❌ Errado — Fechamento inconsistente">
-```dsl
+    `,
+  }}
+>
+  Por quê: nomes incorretos geram falhas de navegação e experiências quebradas.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Fechamento inconsistente",
+    code: `
 modal Confirm:
   row-end:
     @ghost[Cancelar](-1)
     @[Confirmar](close)
-```
-</DslPreview>
-
-Faça — adote o mesmo padrão em todo o fluxo
-<DslPreview title="✅ Correto — Consistência de fechamento">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Consistência de fechamento",
+    code: `
 modal Confirm:
   row-end:
     @ghost[Cancelar](close)
     @[Confirmar](applyAction)
-```
-</DslPreview>
-Por quê: previsibilidade reduz erros e reforça comportamento mental das pessoas usuárias.
-
-**Não faça — deixar o usuário preso em overlay sem saída**
-<DslPreview title="❌ Errado — Drawer sem fechar">
-```dsl
+    `,
+  }}
+>
+  Por quê: previsibilidade reduz erros e reforça comportamento mental das pessoas usuárias.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Drawer sem fechar",
+    code: `
 drawer Filters:
   card:
     ## Filtros
     @[Aplicar](applyFilters)
-```
-</DslPreview>
-
-Faça — sempre incluir ação de retorno
-<DslPreview title="✅ Correto — Drawer com botões de saída">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Drawer com botões de saída",
+    code: `
 drawer Filters:
   card:
     ## Filtros
     row-end:
       @ghost[Cancelar](close)
       @[Aplicar](applyFilters)
-```
-</DslPreview>
-Por quê: overlays precisam de caminhos claros para voltar ao estado anterior.
+    `,
+  }}
+>
+  Por quê: overlays precisam de caminhos claros para voltar ao estado anterior.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -149,7 +150,7 @@ Por quê: overlays precisam de caminhos claros para voltar ao estado anterior.
 - **Fluxo de navegação + Modal Flow** → garante tratamento completo de confirmações.
 - **Fluxo de navegação + Drawer Detail** → combina lista principal com detalhes paralelos.
 
-<DslPreview title="Fluxo com navigator e modal">
+<DocsCodePreview title="Fluxo com navigator e modal">
 ```dsl
 screen Home:
   container:
@@ -167,5 +168,5 @@ modal ConfirmAdd:
       @ghost[Cancelar](close)
       @[Confirmar](Dashboard)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: integra navegação persistente com confirmação modal antes de redirecionar.

@@ -3,7 +3,7 @@
 Compor componentes permite criar layouts complexos a partir de blocos menores, mantendo coesão visual e facilitando manutenção. O padrão garante que mudanças estruturais sejam aplicadas em um único ponto e repercutam em todo o sistema.
 
 ## Forma canônica (sintaxe mínima)
-<DslPreview title="Componente maior reutilizando um auxiliar">
+<DocsCodePreview title="Componente maior reutilizando um auxiliar">
 ```dsl
 component HeaderBar:
   row-between:
@@ -21,11 +21,11 @@ screen Dashboard:
   $Section:
     - Revisão semanal das iniciativas
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: mostra como um componente principal reaproveita outro componente passando dados específicos.
 
 ## Padrões de uso
-<DslPreview title="Seção com header e grid de cards">
+<DocsCodePreview title="Seção com header e grid de cards">
 ```dsl
 component ProjectCard:
   card:
@@ -48,11 +48,11 @@ screen Dashboard:
     - Projetos ativos
     - ProjectForm
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: agrupar header, ações e coleção de cards em uma única unidade reaproveitável.
 Por quê: uma única mudança reflete em todas as telas que usam a seção composta.
 
-<DslPreview title="Componentes auxiliares para slots complexos">
+<DocsCodePreview title="Componentes auxiliares para slots complexos">
 ```dsl
 component EmptyState:
   card:
@@ -74,11 +74,11 @@ screen Leads:
   $Module:
     - Leads
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: encapsular estados vazios e reutilizá-los em diferentes módulos.
 Por quê: mantém linguagem consistente de empty state em todo o produto.
 
-<DslPreview title="Componente composto dentro de list">
+<DocsCodePreview title="Componente composto dentro de list">
 ```dsl
 component TaskRow:
   row-between:
@@ -98,14 +98,15 @@ screen Tasks:
   $TaskSection:
     - Tarefas da semana
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: separar responsabilidades entre componente de seção e componente de linha.
 Por quê: facilita evoluções isoladas de layout sem quebrar a lista principal.
 
 ## Erros comuns (Do/Don’t)
-**Não faça — duplicar a mesma estrutura em múltiplos componentes**
-<DslPreview title="❌ Errado — Cabeçalhos replicados">
-```dsl
+<DoDont
+  dont={{
+    title: "Cabeçalhos replicados",
+    code: `
 component DashboardHeader:
   row-between:
     # Projetos ativos
@@ -115,34 +116,34 @@ component ProjectsHeader:
   row-between:
     # Projetos ativos
     @[Criar projeto](ProjectForm)
-```
-</DslPreview>
-
-Faça — crie componente utilitário compartilhado
-<DslPreview title="✅ Correto — Cabeçalho reutilizável">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Cabeçalho reutilizável",
+    code: `
 component SectionHeader:
   row-between:
     # %title
     @[Criar projeto](%action)
-```
-</DslPreview>
-Por quê: centralizar estruturas idênticas reduz divergências e esforço de manutenção.
-
-**Não faça — passar props sem propagar para subcomponentes**
-<DslPreview title="❌ Errado — Valor ignorado">
-```dsl
+    `,
+  }}
+>
+  Por quê: centralizar estruturas idênticas reduz divergências e esforço de manutenção.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Valor ignorado",
+    code: `
 component Section:
   container:
     $SectionHeader:
       - %title
       - %action
-```
-</DslPreview>
-
-Faça — garanta que cada nível repasse os dados corretamente
-<DslPreview title="✅ Correto — Props encadeados">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Props encadeados",
+    code: `
 component Section:
   container:
     $SectionHeader:
@@ -153,9 +154,11 @@ screen Dashboard:
   $Section:
     - Projetos ativos
     - ProjectForm
-```
-</DslPreview>
-Por quê: componentes intermediários precisam repassar os dados esperados pelos utilitários que encapsulam.
+    `,
+  }}
+>
+  Por quê: componentes intermediários precisam repassar os dados esperados pelos utilitários que encapsulam.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -170,7 +173,7 @@ Por quê: componentes intermediários precisam repassar os dados esperados pelos
 - **Component Composition + Modal** → reutiliza cabeçalhos e conteúdos em sobreposições.
 - **Component Composition + Drawer** → painéis laterais complexos com subcomponentes.
 
-<DslPreview title="Componente composto aplicado em drawer">
+<DocsCodePreview title="Componente composto aplicado em drawer">
 ```dsl
 component DrawerHeader:
   row-between:
@@ -190,5 +193,5 @@ drawer CustomerDetails:
     - Revise as informações antes de avançar.
     - CustomerProfile
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: combina cabeçalho reutilizável e conteúdo customizado dentro do drawer.

@@ -4,9 +4,10 @@ import * as React from "react"
 import { CheckIcon, CopyIcon, ExternalLinkIcon } from "lucide-react"
 import { toast } from "sonner"
 
-import { Button, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui"
+import { Button, EditorPanel, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui"
 import { cn } from "@/lib/utils"
 import { withBasePath } from "@/utils/base-path"
+import { DSLEditor } from "@/core/editor"
 
 interface DocsCodeBlockProps extends React.ComponentPropsWithoutRef<"pre"> {
   "data-title"?: string
@@ -62,51 +63,26 @@ export function DocsCodeBlock({ children, className, ...rest }: DocsCodeBlockPro
   }
 
   return (
-    <figure className={cn("docs-code-block overflow-hidden rounded-xl border border-[var(--border-muted)] bg-[var(--bg-raised)]", className)}>
+    <figure className={cn("docs-code-block overflow-hidden rounded-xl border border-[var(--border-muted)] bg-[var(--bg-raised)] h-64", className)}>
       <div className="flex items-center justify-between border-b border-[var(--border-muted)] px-4 py-2 text-xs text-[var(--fg-secondary)]">
         <div className="flex items-center gap-3">
           <span className="font-semibold text-[var(--fg-primary)]">{title}</span>
-          <span className="hidden rounded-full bg-[color:rgba(139,92,246,0.12)] px-2 py-[2px] font-mono text-[10px] uppercase tracking-[0.24em] text-[var(--accent)] sm:inline">
-            {languageBadge}
-          </span>
-        </div>
-        <div className="flex items-center gap-1">
-          {playgroundHref ? (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" asChild>
-                    <a href={playgroundHref} target="_blank" rel="noreferrer">
-                      <ExternalLinkIcon className="h-4 w-4" />
-                    </a>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Abrir no Playground</TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          ) : null}
-
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button variant="ghost" size="icon" onClick={handleCopy} aria-label="Copiar código">
-                  {copied ? <CheckIcon className="h-4 w-4" /> : <CopyIcon className="h-4 w-4" />}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>{copied ? "Copiado" : "Copiar"}</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
         </div>
       </div>
-
-      <pre
-        className={cn("m-0 max-h-[520px] overflow-auto px-4 py-4 text-sm leading-relaxed text-[var(--fg-primary)]")}
-        {...preProps}
-      >
-        <code {...codeProps} className={cn("block font-mono text-[13px]", codeClassName)}>
-          {codeContent}
-        </code>
-      </pre>
+        <DSLEditor
+          value={codeContent}
+          options={{
+            readOnly: true,                      
+            domReadOnly: true,                   
+            renderLineHighlight: "none",          
+            readOnlyMessage: { value: "" },  
+            lineNumbers: "off",
+            glyphMargin: false,
+            stickyScroll: {
+              enabled: false,
+            },
+          }}
+        />
     </figure>
   )
 }

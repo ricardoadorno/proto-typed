@@ -8,7 +8,7 @@ Cards agrupam conteúdo relacionado em blocos autônomos com espaçamento consis
 - Servir como base para componentes reutilizáveis apresentando o mesmo layout.
 
 ## Exemplo básico
-<DslPreview title="Card com informação e ação">
+<DocsCodePreview title="Card com informação e ação">
 ```dsl
 card:
   ## Plano Pro
@@ -16,21 +16,21 @@ card:
   row-end:
     @[Assinar agora](Checkout)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: destaca um bloco de conteúdo com CTA direto e espaçamento equilibrado.
 
 ## Variantes
-<DslPreview title="Card padrão para blocos gerais">
+<DocsCodePreview title="Card padrão para blocos gerais">
 ```dsl
 card:
   ## Atualização semanal
   >> Consolidado das métricas do time.
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: comunique conteúdo recorrente com leitura confortável.
 Por quê: o espaçamento padrão equilibra texto e respiros visuais.
 
-<DslPreview title="Card compacto para listas densas">
+<DocsCodePreview title="Card compacto para listas densas">
 ```dsl
 card-compact:
   ## Próximas tarefas
@@ -38,18 +38,18 @@ card-compact:
     - Validar protótipo
     - Revisar copy do email
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: agrupe itens curtos em pouco espaço.
 Por quê: a variante reduz padding sem comprometer a legibilidade.
 
-<DslPreview title="Card destaque com foco em conversão">
+<DocsCodePreview title="Card destaque com foco em conversão">
 ```dsl
 card-feature:
   ## Enterprise
   *> Atendimento dedicado e SLA personalizado.
   @[Falar com vendas](ContactSales)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: direcionar atenção para ofertas premium ou ações críticas.
 Por quê: o estilo realçado cria foco imediato para CTAs estratégicos.
 
@@ -58,7 +58,7 @@ Por quê: o estilo realçado cria foco imediato para CTAs estratégicos.
 - **Card + Grid** — cria vitrines com cards repetidos para métricas ou planos.
 - **Card + Component Definition** — estabelece um layout reutilizável com dados variáveis.
 
-<DslPreview title="Grid de cards reutilizáveis">
+<DocsCodePreview title="Grid de cards reutilizáveis">
 ```dsl
 component MetricCard:
   card:
@@ -76,7 +76,7 @@ screen Dashboard:
       $MetricCard:
         - Satisfação | 92% | Pesquisa pós-release
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: reaproveita um layout consistente em diferentes dados sem duplicação.
 
 ## Slots & Props
@@ -88,42 +88,43 @@ Por quê: reaproveita um layout consistente em diferentes dados sem duplicação
 | `component` wrapper | referência | — | Permite transformar o card em componente reutilizável (`component`/`$`). | Não |
 
 ## Erros comuns (Do/Don’t)
-**Não faça — aninhar `card` dentro de `card`**
-<DslPreview title="❌ Errado — Card dentro de card">
-```dsl
+<DoDont
+  dont={{
+    title: "Card dentro de card",
+    code: `
 card:
   ## Alertas
   card:
     > Estoque baixo
-```
-</DslPreview>
-
-Faça — use `stack` para hierarquia interna
-<DslPreview title="✅ Correto — Stack dentro do card">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Stack dentro do card",
+    code: `
 card:
   ## Alertas
   stack:
     > Estoque baixo
     > Pagamentos pendentes
-```
-</DslPreview>
-Por quê: `stack` mantém espaçamento vertical sem quebrar o padrão visual do card.
-
-**Não faça — misturar ações com lista textual**
-<DslPreview title="❌ Errado — Ações dentro de list">
-```dsl
+    `,
+  }}
+>
+  Por quê: `stack` mantém espaçamento vertical sem quebrar o padrão visual do card.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Ações dentro de list",
+    code: `
 card:
   ## Próximos passos
   list:
     - #[Revisar backlog](Backlog)
     - #[Planejar sprint](Planning)
-```
-</DslPreview>
-
-Faça — separe itens e ações no rodapé
-<DslPreview title="✅ Correto — Lista + ações alinhadas">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Lista + ações alinhadas",
+    code: `
 card:
   ## Próximos passos
   list:
@@ -132,9 +133,11 @@ card:
   row-end:
     @[Abrir backlog](Backlog)
     @secondary[Planejar sprint](Planning)
-```
-</DslPreview>
-Por quê: listas aceitam apenas texto; botões e links ficam em blocos de ação dedicados.
+    `,
+  }}
+>
+  Por quê: listas aceitam apenas texto; botões e links ficam em blocos de ação dedicados.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -149,7 +152,7 @@ Por quê: listas aceitam apenas texto; botões e links ficam em blocos de ação
 - **Card + Row-end** → agrupa ações em rodapés consistentes.
 - **Card + Component List** → renderiza cards dinâmicos com dados de coleção.
 
-<DslPreview title="Card com ações alinhadas">
+<DocsCodePreview title="Card com ações alinhadas">
 ```dsl
 card:
   ## Status do pedido
@@ -158,5 +161,5 @@ card:
     @ghost[Cancelar](-1)
     @[Atualizar status](UpdateStatus)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: mantém CTA principal e opção de saída em posição previsível.

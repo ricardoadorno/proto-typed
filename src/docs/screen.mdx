@@ -3,18 +3,18 @@
 `screen Nome:` é a unidade navegável da DSL. Cada tela organiza conteúdo, conecta fluxos e serve como destino para botões, links ou navegadores. Estruturar telas corretamente garante navegação previsível e manutenção simples.
 
 ## Forma canônica (sintaxe mínima)
-<DslPreview title="Tela com container principal">
+<DocsCodePreview title="Tela com container principal">
 ```dsl
 screen Home:
   container:
     # Bem-vindo
     > Escolha uma ação para começar.
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: define uma tela com layout centralizado e hierarquia textual básica.
 
 ## Padrões de uso
-<DslPreview title="Screen com fluxos complementares">
+<DocsCodePreview title="Screen com fluxos complementares">
 ```dsl
 screen Tasks:
   container:
@@ -33,11 +33,11 @@ modal TaskForm:
       @ghost[Cancelar](close)
       @[Salvar](saveTask)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: acionar modais a partir da tela principal sem perder contexto.
 Por quê: mantém foco na tarefa atual enquanto resolve ações complementares.
 
-<DslPreview title="Screen com múltiplos containers">
+<DocsCodePreview title="Screen com múltiplos containers">
 ```dsl
 screen Dashboard:
   container-wide:
@@ -60,11 +60,11 @@ screen Dashboard:
         - Revisar backlog
         - Agendar retrospectiva
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: combinar colunas diferentes na mesma tela mantendo alinhamento consistente.
 Por quê: distribui o conteúdo em zonas claras (visualização ampla x ações complementares).
 
-<DslPreview title="Screen com navigator persistente">
+<DocsCodePreview title="Screen com navigator persistente">
 ```dsl
 screen Settings:
   container-narrow:
@@ -79,13 +79,12 @@ screen Settings:
     - Dashboard | Dashboard
     - Configurações | Settings
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: replicar menu inferior em todas as telas do grupo.
 Por quê: promove navegação previsível entre seções irmãs.
 
 ## Erros comuns (Do/Don’t)
 **Não faça — declarar telas com o mesmo nome**
-<DslPreview title="❌ Errado — Duplicação de slug">
 ```dsl
 screen Dashboard:
   container:
@@ -95,10 +94,9 @@ screen Dashboard:
   container:
     # Configurações
 ```
-</DslPreview>
 
 Faça — escolha nomes únicos
-<DslPreview title="✅ Correto — Nomes distintos">
+<DocsCodePreview title="✅ Correto — Nomes distintos">
 ```dsl
 screen Dashboard:
   container:
@@ -108,28 +106,29 @@ screen Settings:
   container:
     # Configurações
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: slugs duplicados quebram navegação e confundem acionadores.
-
-**Não faça — deixar tela sem estrutura principal**
-<DslPreview title="❌ Errado — Conteúdo solto">
-```dsl
+<DoDont
+  dont={{
+    title: "Conteúdo solto",
+    code: `
 screen Home:
   # Bem-vindo
   > Escolha uma opção.
-```
-</DslPreview>
-
-Faça — envolva conteúdo em layouts apropriados
-<DslPreview title="✅ Correto — Uso de container">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Uso de container",
+    code: `
 screen Home:
   container:
     # Bem-vindo
     > Escolha uma opção.
-```
-</DslPreview>
-Por quê: layouts (`container`, `stack`, `card`) controlam largura, espaçamento e responsividade.
+    `,
+  }}
+>
+  Por quê: layouts (`container`, `stack`, `card`) controlam largura, espaçamento e responsividade.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -144,29 +143,3 @@ Por quê: layouts (`container`, `stack`, `card`) controlam largura, espaçamento
 - **Screen + Modal/Drawer** → fluxos complementares sem trocar de tela.
 - **Screen + Navigator** → navegação persistente entre seções principais.
 
-<DslPreview title="Screen com drawer e modal integrados">
-```dsl
-screen Accounts:
-  container-wide:
-    # Contas
-    list:
-      - Grupo Norte | @[Ver detalhes](AccountDrawer)
-
-drawer AccountDrawer:
-  card:
-    ## Grupo Norte
-    > Revise dados de faturamento.
-    row-end:
-      @ghost[Fechar](close)
-      @[Editar conta](EditAccount)
-
-modal EditAccount:
-  card:
-    ## Editar conta
-    ___: Nome{Grupo Norte}
-    row-end:
-      @ghost[Cancelar](close)
-      @success[Salvar](saveAccount)
-```
-</DslPreview>
-Por quê: combina tela principal, drawer e modal para dar continuidade ao fluxo sem perder contexto.

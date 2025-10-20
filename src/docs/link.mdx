@@ -8,7 +8,7 @@ Links (`#[Texto](Destino)`) criam navegação inline para telas, modais ou URLs 
 - Conectar seções relacionadas quando um `navigator` não é necessário.
 
 ## Exemplo básico
-<DslPreview title="Links em texto de suporte">
+<DocsCodePreview title="Links em texto de suporte">
 ```dsl
 screen HelpCenter:
   container:
@@ -19,31 +19,31 @@ screen HelpCenter:
       ## Precisa redefinir senha?
       >> Acesse a #[tela de recuperação](RecoverPassword) e siga os passos.
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: mantém a leitura fluida e oferece navegação contextual.
 
 ## Variantes
-<DslPreview title="Link interno para screen">
+<DocsCodePreview title="Link interno para screen">
 ```dsl
 #[Ver detalhes](DetailScreen)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: apontar para telas existentes no fluxo principal.
 Por quê: mantém a navegação coesa sem depender de botões.
 
-<DslPreview title="Link externo">
+<DocsCodePreview title="Link externo">
 ```dsl
 #[Abrir documentação](https://proto-typed.dev/docs)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: referenciar recursos hospedados fora do produto.
 Por quê: direciona para documentação ou sites externos preservando contexto.
 
-<DslPreview title="Link para contato rápido">
+<DocsCodePreview title="Link para contato rápido">
 ```dsl
 #[Enviar e-mail](mailto:suporte@empresa.com)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: disponibilizar canais diretos de suporte ou contato comercial.
 Por quê: ativa protocolos específicos (e-mail, telefone) com um clique.
 
@@ -52,7 +52,7 @@ Por quê: ativa protocolos específicos (e-mail, telefone) com um clique.
 - **Link + List** — transforma itens em atalhos sem necessidade de botões.
 - **Link + Drawer** — agrupa links em painéis laterais de referência.
 
-<DslPreview title="Drawer com links rápidos">
+<DocsCodePreview title="Drawer com links rápidos">
 ```dsl
 drawer QuickLinks:
   container:
@@ -68,7 +68,7 @@ screen HeaderDemo:
     row-end:
       #[Abrir links rápidos](QuickLinks)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: agrupa atalhos sem sobrecarregar o cabeçalho com botões.
 
 ## Slots & Props
@@ -80,35 +80,38 @@ Por quê: agrupa atalhos sem sobrecarregar o cabeçalho com botões.
 | `ícone inline` | token `i-` | — | Opcional antes do texto para reforçar o contexto. | Não |
 
 ## Erros comuns (Do/Don’t)
-**Não faça — usar `@` em vez de `#`**
-<DslPreview title="❌ Errado — Botão no lugar de link">
-```dsl
+<DoDont
+  dont={{
+    title: "Botão no lugar de link",
+    code: `
 @[Ver detalhes](DetailScreen)
-```
-</DslPreview>
-
-Faça — utilize `#` para navegação inline
-<DslPreview title="✅ Correto — Link contextual">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Link contextual",
+    code: `
 #[Ver detalhes](DetailScreen)
-```
-</DslPreview>
-Por quê: `@` executa ações; `#` referencia destinos sem comportamento de botão.
-
-**Não faça — deixar o destino vazio**
-<DslPreview title="❌ Errado — Link sem destino">
-```dsl
+    `,
+  }}
+>
+  Por quê: `@` executa ações; `#` referencia destinos sem comportamento de botão.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Link sem destino",
+    code: `
 #[Leia mais]()
-```
-</DslPreview>
-
-Faça — informe o slug ou URL válido
-<DslPreview title="✅ Correto — Destino declarado">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Destino declarado",
+    code: `
 #[Leia mais](Guides)
-```
-</DslPreview>
-Por quê: cada link precisa apontar para um destino existente para evitar erros de navegação.
+    `,
+  }}
+>
+  Por quê: cada link precisa apontar para um destino existente para evitar erros de navegação.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -123,11 +126,11 @@ Por quê: cada link precisa apontar para um destino existente para evitar erros 
 - **Link + List** → coleções de atalhos sem usar botões.
 - **Link + Drawer** → catálogos laterais de documentação ou suporte.
 
-<DslPreview title="Card com links complementares">
+<DocsCodePreview title="Card com links complementares">
 ```dsl
 card:
   ## Recursos
   > Explore a #[lista de componentes](ComponentList) e a #[guia de composição](ComponentComposition) para aprofundar o uso.
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: oferece caminhos de estudo sem sobrecarregar o bloco principal.

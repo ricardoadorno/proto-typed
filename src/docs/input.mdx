@@ -8,7 +8,7 @@ Campos de entrada coletam dados estruturados, suportando textos, opções, núme
 - Confirmar consentimentos ou escolhas únicas com checkboxes e radios.
 
 ## Exemplo básico
-<DslPreview title="Formulário com campos variados">
+<DocsCodePreview title="Formulário com campos variados">
 ```dsl
 screen Signup:
   container-narrow:
@@ -25,32 +25,32 @@ screen Signup:
         @ghost[Cancelar](-1)
         @[Criar conta](submitSignup)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: reúne diferentes tipos de entrada em um fluxo compacto e completo.
 
 ## Variantes
-<DslPreview title="Select com opções declaradas">
+<DocsCodePreview title="Select com opções declaradas">
 ```dsl
 ___select: Status{Em análise | Aprovado | Reprovado}
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: limitar a escolha a um conjunto predeterminado.
 Por quê: evita entradas inválidas ao restringir alternativas disponíveis.
 
-<DslPreview title="Checkbox para confirmação">
+<DocsCodePreview title="Checkbox para confirmação">
 ```dsl
 [X] Receber novidades por e-mail
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: capturar consentimentos que podem ser marcados ou desmarcados.
 Por quê: reflete decisões binárias mantendo controle manual da pessoa usuária.
 
-<DslPreview title="Radios agrupados">
+<DocsCodePreview title="Radios agrupados">
 ```dsl
 (X) Cobrança mensal
 ( ) Cobrança anual
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: exigir seleção exclusiva entre opções mutuamente excludentes.
 Por quê: garante que apenas uma alternativa seja escolhida por vez.
 
@@ -59,7 +59,7 @@ Por quê: garante que apenas uma alternativa seja escolhida por vez.
 - **Input + Stack** — garante espaçamento vertical consistente entre campos.
 - **Input + Row-end** — alinha botões de submissão e cancelamento.
 
-<DslPreview title="Formulário modular com stack">
+<DocsCodePreview title="Formulário modular com stack">
 ```dsl
 component BillingForm:
   card:
@@ -72,7 +72,7 @@ component BillingForm:
       @ghost[Cancelar](-1)
       @primary[Salvar alterações](savePlan)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: reutiliza o formulário em diferentes telas mantendo layout padronizado.
 
 ## Slots & Props
@@ -85,40 +85,43 @@ Por quê: reutiliza o formulário em diferentes telas mantendo layout padronizad
 | `opções` | lista `opção A | opção B` | — | Define itens de selects ou radios. | Não |
 
 ## Erros comuns (Do/Don’t)
-**Não faça — omitir placeholder significativo**
-<DslPreview title="❌ Errado — Placeholder vazio">
-```dsl
+<DoDont
+  dont={{
+    title: "Placeholder vazio",
+    code: `
 ___email: E-mail{}
-```
-</DslPreview>
-
-Faça — descreva o formato esperado
-<DslPreview title="✅ Correto — Placeholder claro">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Placeholder claro",
+    code: `
 ___email: E-mail{nome@empresa.com}
-```
-</DslPreview>
-Por quê: placeholders orientam a digitação e reduzem erros no envio.
-
-**Não faça — misturar radios separados por outros elementos**
-<DslPreview title="❌ Errado — Radios interrompidos">
-```dsl
+    `,
+  }}
+>
+  Por quê: placeholders orientam a digitação e reduzem erros no envio.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Radios interrompidos",
+    code: `
 (X) Mensal
 card:
   > Desconto disponível
 ( ) Anual
-```
-</DslPreview>
-
-Faça — mantenha radios consecutivos
-<DslPreview title="✅ Correto — Seleção agrupada">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Seleção agrupada",
+    code: `
 stack-tight:
   (X) Mensal
   ( ) Anual
-```
-</DslPreview>
-Por quê: radios precisam estar juntos para comunicar que fazem parte do mesmo grupo.
+    `,
+  }}
+>
+  Por quê: radios precisam estar juntos para comunicar que fazem parte do mesmo grupo.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -133,7 +136,7 @@ Por quê: radios precisam estar juntos para comunicar que fazem parte do mesmo g
 - **Input + Card + Modal** → capturar informações rápidas sem sair da tela.
 - **Input + Component Definition** → reutilizar formulários em diferentes contextos.
 
-<DslPreview title="Formulário em modal">
+<DocsCodePreview title="Formulário em modal">
 ```dsl
 modal InviteModal:
   card:
@@ -145,5 +148,5 @@ modal InviteModal:
       @ghost[Cancelar](close)
       @success[Enviar convite](sendInvite)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: permite coletar dados essenciais sem abandonar a tela principal.

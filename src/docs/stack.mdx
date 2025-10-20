@@ -8,7 +8,7 @@ Stacks empilham elementos verticalmente, controlando o espaçamento entre blocos
 - Agrupar componentes reutilizáveis mantendo hierarquia visual coesa.
 
 ## Exemplo básico
-<DslPreview title="Stack em card de orientações">
+<DocsCodePreview title="Stack em card de orientações">
 ```dsl
 card:
   ## Próximos passos
@@ -17,7 +17,7 @@ card:
     > Confirme o plano da sprint.
     @[Abrir planejamento](Planning)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: combina textos e ação em blocos verticais com espaçamento confortável.
 
 <Attention title="Evite hífens automáticos em layouts">
@@ -25,29 +25,29 @@ Mesmo que um LLM sugira `-` antes de cada linha, `stack`, `row`, `card` e demais
 </Attention>
 
 ## Variantes
-<DslPreview title="Stack padrão">
+<DocsCodePreview title="Stack padrão">
 ```dsl
 stack:
   > Valide os requisitos
   > Ajuste o cronograma
   @[Abrir checklist](Checklist)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: organizar conteúdos variados com espaçamento mediano.
 Por quê: equilibra textos, inputs e ações sem gerar blocos soltos.
 
-<DslPreview title="Stack-tight para itens curtos">
+<DocsCodePreview title="Stack-tight para itens curtos">
 ```dsl
 stack-tight:
   [X] Definir objetivo
   [ ] Validar protótipo
   [ ] Preparar release
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: agrupar itens curtos ou checklists sem perder legibilidade.
 Por quê: o gap reduzido aproxima conteúdos relacionados e acelera leitura.
 
-<DslPreview title="Stack-flush para cards compactos">
+<DocsCodePreview title="Stack-flush para cards compactos">
 ```dsl
 stack-flush:
   card-compact:
@@ -55,7 +55,7 @@ stack-flush:
   card-compact:
     > Reunião agendada para amanhã.
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: empilhar elementos que já possuem padding próprio.
 Por quê: evita espaçamento duplo quando os componentes internos já trazem margem.
 
@@ -64,7 +64,7 @@ Por quê: evita espaçamento duplo quando os componentes internos já trazem mar
 - **Stack + Row** — mistura distribuição vertical e horizontal na mesma área.
 - **Stack + Component Definition** — reutiliza blocos padronizados em várias telas.
 
-<DslPreview title="Formulário com stack e row">
+<DocsCodePreview title="Formulário com stack e row">
 ```dsl
 card:
   ## Atualizar perfil
@@ -76,7 +76,7 @@ card:
     @ghost[Cancelar](close)
     @[Salvar mudanças](saveProfile)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: separa campos verticalmente e alinha ações no rodapé.
 
 ## Slots & Props
@@ -87,45 +87,48 @@ Por quê: separa campos verticalmente e alinha ações no rodapé.
 | `conteúdo interno` | blocos DSL | — | Itens empilhados, como textos, inputs e componentes. | Sim |
 
 ## Erros comuns (Do/Don’t)
-**Não faça — usar stack para alinhar elementos horizontais**
-<DslPreview title="❌ Errado — Stack com botões lado a lado">
-```dsl
+<DoDont
+  dont={{
+    title: "Stack com botões lado a lado",
+    code: `
 stack:
   @[Cancelar](close)
   @[Salvar](saveForm)
-```
-</DslPreview>
-
-Faça — utilize `row-end` para ações laterais
-<DslPreview title="✅ Correto — Ações horizontais">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Ações horizontais",
+    code: `
 stack:
   > Ajuste as preferências antes de salvar.
   row-end:
     @ghost[Cancelar](close)
     @[Salvar](saveForm)
-```
-</DslPreview>
-Por quê: stacks tratam a ordem vertical; rows cuidam de alinhamento horizontal.
-
-**Não faça — combinar `stack-tight` com conteúdos muito extensos**
-<DslPreview title="❌ Errado — Textos longos sem respiro">
-```dsl
+    `,
+  }}
+>
+  Por quê: stacks tratam a ordem vertical; rows cuidam de alinhamento horizontal.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Textos longos sem respiro",
+    code: `
 stack-tight:
   > Atualize relatórios de todas as squads com detalhes completos.
   > Documente aprendizados em um relatório amplo para todo o time.
-```
-</DslPreview>
-
-Faça — use `stack-loose` para blocos maiores
-<DslPreview title="✅ Correto — Espaço adequado">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Espaço adequado",
+    code: `
 stack-loose:
   > Atualize relatórios de todas as squads com detalhes completos.
   > Documente aprendizados em um relatório amplo para todo o time.
-```
-</DslPreview>
-Por quê: conteúdo amplo precisa de espaçamento maior para manter a leitura confortável.
+    `,
+  }}
+>
+  Por quê: conteúdo amplo precisa de espaçamento maior para manter a leitura confortável.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -140,7 +143,7 @@ Por quê: conteúdo amplo precisa de espaçamento maior para manter a leitura co
 - **Stack + Card + List** → seções de conteúdo com resumos textuais.
 - **Stack + Component Definition** → layouts reutilizáveis com dados variáveis.
 
-<DslPreview title="Stack com componente reutilizável">
+<DocsCodePreview title="Stack com componente reutilizável">
 ```dsl
 component Insight:
   card:
@@ -153,5 +156,5 @@ stack-loose:
   $Insight:
     - Métricas semanais | Revise KPIs antes da reunião de status.
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: evita duplicação ao empilhar componentes com dados diferentes.

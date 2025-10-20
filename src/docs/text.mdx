@@ -8,7 +8,7 @@ Textos estruturam títulos, parágrafos, notas e citações, definindo hierarqui
 - Compartilhar depoimentos ou feedback usando citações (`">`).
 
 ## Exemplo básico
-<DslPreview title="Seção textual completa">
+<DocsCodePreview title="Seção textual completa">
 ```dsl
 screen ReportIntro:
   container:
@@ -21,39 +21,39 @@ screen ReportIntro:
       *> Próxima revisão em 7 dias.
       @[Abrir dashboard](Dashboard)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: apresenta contexto, metadados e ação em blocos claramente hierarquizados.
 
 ## Variantes
-<DslPreview title="Notas e citações">
+<DocsCodePreview title="Notas e citações">
 ```dsl
 card:
   *> Lembre-se de validar os dados antes de compartilhar.
   "> Proto-Typed reduziu nosso tempo de prototipagem. — Squad A
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: destacar alertas e registrar feedback com formato diferenciado.
 Por quê: a formatação especial chama atenção sem exigir componentes extras.
 
-<DslPreview title="Metadados sutis">
+<DocsCodePreview title="Metadados sutis">
 ```dsl
 card:
   ## Status do projeto
   > Conclua a etapa de handoff ainda hoje.
   >>> Atualizado por Ana às 10h12.
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: oferecer informações de suporte sem competir com o conteúdo principal.
 Por quê: o nível `>>>` mantém o dado presente, porém discreto.
 
-<DslPreview title="Títulos hierárquicos">
+<DocsCodePreview title="Títulos hierárquicos">
 ```dsl
 container:
   # Visão geral
   ## Métricas principais
   ### Funil de aquisição
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: organizar o conteúdo em seções aninhadas com clareza.
 Por quê: hierarquia visível ajuda a pessoa usuária a escanear a página rapidamente.
 
@@ -62,7 +62,7 @@ Por quê: hierarquia visível ajuda a pessoa usuária a escanear a página rapid
 - **Text + Stack** — empilha mensagens com espaçamento controlado.
 - **Text + Button** — combina instrução e ação em sequência lógica.
 
-<DslPreview title="Card com texto e ação">
+<DocsCodePreview title="Card com texto e ação">
 ```dsl
 card:
   ## Próxima entrega
@@ -70,7 +70,7 @@ card:
   row-end:
     @[Abrir planejamento](Planning)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: explica o contexto e oferece o próximo passo em um único bloco.
 
 ## Slots & Props
@@ -82,45 +82,48 @@ Por quê: explica o contexto e oferece o próximo passo em um único bloco.
 | `">` | citação | — | Registra depoimentos ou mensagens destacadas. | Não |
 
 ## Erros comuns (Do/Don’t)
-**Não faça — usar mais de um título principal por tela**
-<DslPreview title="❌ Errado — Dois `#` na mesma tela">
-```dsl
+<DoDont
+  dont={{
+    title: "Dois `#` na mesma tela",
+    code: `
 screen Summary:
   container:
     # Resumo
     # Detalhes
-```
-</DslPreview>
-
-Faça — distribua hierarquia com subtítulos
-<DslPreview title="✅ Correto — Uso de subtítulos">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Uso de subtítulos",
+    code: `
 screen Summary:
   container:
     # Resumo
     ## Detalhes
-```
-</DslPreview>
-Por quê: apenas um `#` mantém foco e previne conflitos de acessibilidade.
-
-**Não faça — misturar ações dentro de citações**
-<DslPreview title="❌ Errado — Citação com botão">
-```dsl
+    `,
+  }}
+>
+  Por quê: apenas um `#` mantém foco e previne conflitos de acessibilidade.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Citação com botão",
+    code: `
 card:
   "> Proto-Typed agiliza entregas. @[Saiba mais](Guides)
-```
-</DslPreview>
-
-Faça — separe ação do bloco textual
-<DslPreview title="✅ Correto — Citação e ação organizadas">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Citação e ação organizadas",
+    code: `
 card:
   "> Proto-Typed agiliza entregas.
   row-end:
     @[Saiba mais](Guides)
-```
-</DslPreview>
-Por quê: cada bloco textual deve manter propósito único; ações ficam em rows ou botões próprios.
+    `,
+  }}
+>
+  Por quê: cada bloco textual deve manter propósito único; ações ficam em rows ou botões próprios.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -135,7 +138,7 @@ Por quê: cada bloco textual deve manter propósito único; ações ficam em row
 - **Text + Stack** → storytelling linear com espaçamento definido.
 - **Text + Styles Block** → ajustes de tipografia alinhados ao branding.
 
-<DslPreview title="Texto guiando ação">
+<DocsCodePreview title="Texto guiando ação">
 ```dsl
 card:
   ## Atualize o status
@@ -143,5 +146,5 @@ card:
   row-end:
     @[Atualizar agora](UpdateStatus)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: orienta a pessoa usuária e apresenta o CTA associado imediatamente.

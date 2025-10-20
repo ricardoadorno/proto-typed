@@ -8,7 +8,7 @@ Containers definem largura, centralizam conteúdo e oferecem padding seguro para
 - Combinar múltiplos layouts (grid, stack, cards) mantendo alinhamento previsível.
 
 ## Exemplo básico
-<DslPreview title="Container padrão em tela informativa">
+<DocsCodePreview title="Container padrão em tela informativa">
 ```dsl
 screen Overview:
   container:
@@ -16,11 +16,11 @@ screen Overview:
     > Acompanhe os indicadores principais da semana.
     @[Abrir dashboard](Dashboard)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: estabelece a coluna central e prepara o espaço para conteúdo complementar.
 
 ## Variantes
-<DslPreview title="Container estreito para foco">
+<DocsCodePreview title="Container estreito para foco">
 ```dsl
 container-narrow:
   card:
@@ -30,11 +30,11 @@ container-narrow:
       @ghost[Cancelar](-1)
       @[Enviar convite](Invite)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: concentrar atenção em formulários ou leitura longa.
 Por quê: a largura reduzida guia o olhar para campos e instruções.
 
-<DslPreview title="Container amplo para dashboards">
+<DocsCodePreview title="Container amplo para dashboards">
 ```dsl
 container-wide:
   grid-3:
@@ -48,11 +48,11 @@ container-wide:
       ## Receita
       # R$ 87K
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: disponibilizar múltiplas colunas de conteúdo de forma equilibrada.
 Por quê: evita compressão de cards ao distribuir métricas em colunas amplas.
 
-<DslPreview title="Largura total com layout controlado">
+<DocsCodePreview title="Largura total com layout controlado">
 ```dsl
 container-full:
   stack-tight:
@@ -62,7 +62,7 @@ container-full:
       @[Ver detalhes](Changelog)
       @secondary[Compartilhar](ShareModal)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: ocupar toda a largura, delegando o espaçamento ao layout interno.
 Por quê: permite heróis e painéis que controlam padding dentro do próprio layout.
 
@@ -71,7 +71,7 @@ Por quê: permite heróis e painéis que controlam padding dentro do próprio la
 - **Container + Grid** — alinha dashboards e coleções de cards.
 - **Container + Navigator** — agrupa header, abas e conteúdo principal na mesma tela.
 
-<DslPreview title="Container com header e conteúdo">
+<DocsCodePreview title="Container com header e conteúdo">
 ```dsl
 screen Settings:
   navigator Tabs:
@@ -91,7 +91,7 @@ screen Settings:
           - MacBook | Último acesso ontem
           - iPhone | Último acesso hoje
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: separa navegação e conteúdo mantendo alinhamento central.
 
 ## Slots & Props
@@ -102,45 +102,48 @@ Por quê: separa navegação e conteúdo mantendo alinhamento central.
 | `multiplos containers` | sequência | — | Permite combinar larguras diferentes na mesma tela. | Não |
 
 ## Erros comuns (Do/Don’t)
-**Não faça — aninhar `container` dentro de `container`**
-<DslPreview title="❌ Errado — Container duplicado">
-```dsl
+<DoDont
+  dont={{
+    title: "Container duplicado",
+    code: `
 container:
   container:
     # Relatório semanal
-```
-</DslPreview>
-
-Faça — combine com `stack`
-<DslPreview title="✅ Correto — Stack dentro do container">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Stack dentro do container",
+    code: `
 container:
   stack-loose:
     # Relatório semanal
     > Atualize dados sempre às segundas.
-```
-</DslPreview>
-Por quê: stacks organizam seções internas sem duplicar controles de largura.
-
-**Não faça — usar `container-full` sem layout interno**
-<DslPreview title="❌ Errado — Conteúdo alinhado à borda">
-```dsl
+    `,
+  }}
+>
+  Por quê: stacks organizam seções internas sem duplicar controles de largura.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Conteúdo alinhado à borda",
+    code: `
 container-full:
   # Atualizações
   > Texto colado na lateral.
-```
-</DslPreview>
-
-Faça — delegue o espaçamento para outro layout
-<DslPreview title="✅ Correto — Stack controla o espaçamento">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Stack controla o espaçamento",
+    code: `
 container-full:
   stack-loose:
     # Atualizações
     > Texto com margens confortáveis.
-```
-</DslPreview>
-Por quê: `container-full` ocupa toda a largura e depende do layout interno para aplicar padding.
+    `,
+  }}
+>
+  Por quê: `container-full` ocupa toda a largura e depende do layout interno para aplicar padding.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -155,7 +158,7 @@ Por quê: `container-full` ocupa toda a largura e depende do layout interno para
 - **Container + Grid** → dashboards responsivos com cards alinhados.
 - **Container + Drawer** → mantém conteúdo principal visível quando há painéis laterais.
 
-<DslPreview title="Container com painel lateral">
+<DocsCodePreview title="Container com painel lateral">
 ```dsl
 screen Accounts:
   container-wide:
@@ -170,5 +173,5 @@ screen Accounts:
           ## Detalhes
           > Consulte dados complementares sem sair da tela.
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: combina largura maior com drawer para contexto secundário.

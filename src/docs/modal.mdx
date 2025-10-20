@@ -8,7 +8,7 @@ Modais sobrepõem a tela atual para confirmar ações, exibir mensagens crítica
 - Dar continuidade a um fluxo iniciado por um botão, drawer ou FAB.
 
 ## Exemplo básico
-<DslPreview title="Modal de confirmação">
+<DocsCodePreview title="Modal de confirmação">
 ```dsl
 modal ConfirmDelete:
   card:
@@ -23,11 +23,11 @@ screen DangerZone:
     # Configurações avançadas
     @destructive[Excluir conta](ConfirmDelete)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: bloqueia o fluxo até que a pessoa confirme ou cancele a operação sensível.
 
 ## Variantes
-<DslPreview title="Modal com formulário curto">
+<DocsCodePreview title="Modal com formulário curto">
 ```dsl
 modal InviteMember:
   card:
@@ -37,11 +37,11 @@ modal InviteMember:
       @ghost[Cancelar](close)
       @success[Enviar convite](sendInvite)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: coletar poucos dados sem redirecionar para outra tela.
 Por quê: mantém o formulário rápido e focado na tarefa atômica.
 
-<DslPreview title="Modal informativo">
+<DocsCodePreview title="Modal informativo">
 ```dsl
 modal ReleaseNotes:
   card:
@@ -52,11 +52,11 @@ modal ReleaseNotes:
     row-end:
       @[Entendi](close)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: comunicar atualizações ou avisos breves com confirmação explícita.
 Por quê: garante leitura obrigatória antes de fechar a mensagem.
 
-<DslPreview title="Modal encadeado a um drawer">
+<DocsCodePreview title="Modal encadeado a um drawer">
 ```dsl
 drawer BillingDrawer:
   card:
@@ -71,7 +71,7 @@ modal ConfirmBilling:
       @ghost[Voltar](close)
       @success[Confirmar](applyBilling)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: complementar outro overlay com uma confirmação final.
 Por quê: separa ajustes e confirmação para reduzir erros em alterações críticas.
 
@@ -80,7 +80,7 @@ Por quê: separa ajustes e confirmação para reduzir erros em alterações crí
 - **Modal + Drawer** — fluxos em duas etapas com painel lateral e confirmação.
 - **Modal + Component Definition** — reutiliza layouts de mensagem ou formulário.
 
-<DslPreview title="Fluxo de aprovação em modal">
+<DocsCodePreview title="Fluxo de aprovação em modal">
 ```dsl
 component ApprovalModal:
   card:
@@ -96,7 +96,7 @@ modal ApproveBudget:
     - Confirme o orçamento para seguir com a contratação.
     - approveBudget
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: encapsula a estrutura do modal e reaproveita com dados diferentes.
 
 ## Slots & Props
@@ -108,49 +108,52 @@ Por quê: encapsula a estrutura do modal e reaproveita com dados diferentes.
 | `acionadores` | botões/links/FAB | — | Elementos que abrem o modal (`@[Abrir](ModalName)`). | Sim |
 
 ## Erros comuns (Do/Don’t)
-**Não faça — omitir ação de fechamento**
-<DslPreview title="❌ Errado — Sem botão de fechar">
-```dsl
+<DoDont
+  dont={{
+    title: "Sem botão de fechar",
+    code: `
 modal InfoModal:
   card:
     # Aviso importante
     > Leia atentamente antes de continuar.
-```
-</DslPreview>
-
-Faça — adicione fechamento explícito
-<DslPreview title="✅ Correto — Botão de fechar presente">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Botão de fechar presente",
+    code: `
 modal InfoModal:
   card:
     # Aviso importante
     > Leia atentamente antes de continuar.
     row-end:
       @[Entendi](close)
-```
-</DslPreview>
-Por quê: modais precisam de uma ação clara que devolva o controle à pessoa usuária.
-
-**Não faça — misturar `close` e `-1`**
-<DslPreview title="❌ Errado — Fechamentos inconsistentes">
-```dsl
+    `,
+  }}
+>
+  Por quê: modais precisam de uma ação clara que devolva o controle à pessoa usuária.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Fechamentos inconsistentes",
+    code: `
 modal ConfirmAction:
   row-end:
     @ghost[Cancelar](-1)
     @[Confirmar](close)
-```
-</DslPreview>
-
-Faça — mantenha padrão único
-<DslPreview title="✅ Correto — Fechamento consistente">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Fechamento consistente",
+    code: `
 modal ConfirmAction:
   row-end:
     @ghost[Cancelar](close)
     @[Confirmar](applyAction)
-```
-</DslPreview>
-Por quê: adotar um padrão único evita comportamento imprevisível ao fechar o modal.
+    `,
+  }}
+>
+  Por quê: adotar um padrão único evita comportamento imprevisível ao fechar o modal.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -165,7 +168,7 @@ Por quê: adotar um padrão único evita comportamento imprevisível ao fechar o
 - **Modal + Drawer** → etapa final após ajustes em painel lateral.
 - **Modal + Component Definition** → mensagens padronizadas reaproveitáveis.
 
-<DslPreview title="Modal confirmado por botão destrutivo">
+<DocsCodePreview title="Modal confirmado por botão destrutivo">
 ```dsl
 row-end:
   @destructive[Excluir conta](ConfirmDelete)
@@ -178,5 +181,5 @@ modal ConfirmDelete:
       @ghost[Cancelar](close)
       @destructive[Excluir agora](deleteTenant)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: CTA destrutivo abre modal que reforça o risco antes da execução.

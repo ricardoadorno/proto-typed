@@ -4,7 +4,7 @@ import path from 'path'
 import { compileMDX } from 'next-mdx-remote/rsc'
 import remarkGfm from 'remark-gfm'
 
-import DslExample from '@/components/docs/dsl-example'
+import DocsCodePreview from '@/components/docs/docs-code-preview'
 import { DocHeadingProvider } from '@/components/docs/doc-heading'
 import DocsBreadcrumbs from '@/components/docs/docs-breadcrumbs'
 import DocsPager from '@/components/docs/docs-pager'
@@ -91,8 +91,7 @@ export default async function PostPage({ params }: Props) {
     const { content } = await compileMDX({
         source,
         components: {
-            DslPreview: DslExample,
-            DslExample,
+            DocsCodePreview,
             ...mdxComponents,
         },
         options: {

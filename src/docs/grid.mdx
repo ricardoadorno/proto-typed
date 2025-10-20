@@ -8,7 +8,7 @@ Grades distribuem elementos em colunas equilibradas, garantindo alinhamento cons
 - Alternar automaticamente a quantidade de colunas conforme a largura disponível.
 
 ## Exemplo básico
-<DslPreview title="Grid com métricas em três colunas">
+<DocsCodePreview title="Grid com métricas em três colunas">
 ```dsl
 screen Analytics:
   container-wide:
@@ -24,11 +24,11 @@ screen Analytics:
         ## NPS
         # 72
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: apresenta métricas equilibradas com alinhamento previsível.
 
 ## Variantes
-<DslPreview title="Grid-2 para comparações">
+<DocsCodePreview title="Grid-2 para comparações">
 ```dsl
 grid-2:
   card:
@@ -38,11 +38,11 @@ grid-2:
     ## Plano Pro
     > Recursos avançados e suporte prioritário.
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: comparar conteúdos em duas colunas com foco equilibrado.
 Por quê: dois slots mantêm equilíbrio entre leitura e respiro visual.
 
-<DslPreview title="Grid-auto para coleções flexíveis">
+<DocsCodePreview title="Grid-auto para coleções flexíveis">
 ```dsl
 grid-auto:
   card:
@@ -55,11 +55,11 @@ grid-auto:
     ## Destaque 3
     > Quebra para a linha seguinte conforme necessário.
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: distribuir itens com largura dinâmica sem definir número fixo de colunas.
 Por quê: o ajuste automático evita colunas quebradas em telas menores.
 
-<DslPreview title="Grid-4 em telas amplas">
+<DocsCodePreview title="Grid-4 em telas amplas">
 ```dsl
 grid-4:
   card:
@@ -71,7 +71,7 @@ grid-4:
   card:
     ## Insight 4
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: dashboards extensos em desktop que pedem quatro colunas alinhadas.
 Por quê: aproveita a largura máxima disponível mantendo proporções iguais.
 
@@ -80,7 +80,7 @@ Por quê: aproveita a largura máxima disponível mantendo proporções iguais.
 - **Grid + Component Definition** — renderiza coleções dinâmicas com dados variáveis.
 - **Grid + Container-wide** — garante espaço lateral para múltiplas colunas.
 
-<DslPreview title="Grid com componentes reutilizáveis">
+<DocsCodePreview title="Grid com componentes reutilizáveis">
 ```dsl
 component MetricCard:
   card:
@@ -98,7 +98,7 @@ screen Dashboard:
       $MetricCard:
         - Receita | R$ 87K | Base mensal
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: padroniza o layout das métricas reduzindo repetição de código.
 
 ## Slots & Props
@@ -109,9 +109,10 @@ Por quê: padroniza o layout das métricas reduzindo repetição de código.
 | `container` suporte | layout | — | Recomenda-se envolver a grid em `container` ou `container-wide`. | Não |
 
 ## Erros comuns (Do/Don’t)
-**Não faça — usar `grid-4` em largura estreita**
-<DslPreview title="❌ Errado — Quatro colunas espremidas">
-```dsl
+<DoDont
+  dont={{
+    title: "Quatro colunas espremidas",
+    code: `
 container-narrow:
   grid-4:
     card:
@@ -122,25 +123,26 @@ container-narrow:
       ## Item 3
     card:
       ## Item 4
-```
-</DslPreview>
-
-Faça — ajuste colunas ao espaço disponível
-<DslPreview title="✅ Correto — Grid proporcional">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Grid proporcional",
+    code: `
 container-narrow:
   grid-2:
     card:
       ## Item 1
     card:
       ## Item 2
-```
-</DslPreview>
-Por quê: a quantidade de colunas deve respeitar a largura do container para preservar a legibilidade.
-
-**Não faça — usar grid para conteúdos que exigem ordem linear**
-<DslPreview title="❌ Errado — Checklist em grid">
-```dsl
+    `,
+  }}
+>
+  Por quê: a quantidade de colunas deve respeitar a largura do container para preservar a legibilidade.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Checklist em grid",
+    code: `
 grid-3:
   card:
     ## Passo 1
@@ -148,12 +150,11 @@ grid-3:
     ## Passo 2
   card:
     ## Passo 3
-```
-</DslPreview>
-
-Faça — utilize `stack` para sequências
-<DslPreview title="✅ Correto — Sequência em stack">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Sequência em stack",
+    code: `
 stack-loose:
   card:
     ## Passo 1
@@ -161,9 +162,11 @@ stack-loose:
     ## Passo 2
   card:
     ## Passo 3
-```
-</DslPreview>
-Por quê: fluxos sequenciais exigem leitura de cima para baixo para evitar confusão.
+    `,
+  }}
+>
+  Por quê: fluxos sequenciais exigem leitura de cima para baixo para evitar confusão.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -178,7 +181,7 @@ Por quê: fluxos sequenciais exigem leitura de cima para baixo para evitar confu
 - **Grid + Stack interno** → células com subelementos alinhados verticalmente.
 - **Grid + Component Definition** → layouts reutilizáveis com dados variáveis.
 
-<DslPreview title="Grid com stack interno">
+<DocsCodePreview title="Grid com stack interno">
 ```dsl
 grid-3:
   card:
@@ -194,5 +197,5 @@ grid-3:
       ## Roadmap
       > Próximos lançamentos
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: stacks dentro do card mantêm alinhamento vertical sem quebrar o layout da grade.

@@ -3,6 +3,7 @@ import type { ComponentPropsWithoutRef } from "react"
 import { Alert } from "@/components/ui"
 import { cn } from "@/lib/utils"
 import { DocsCodeBlock } from "./docs-code-block"
+import { DocsDoDont } from "./docs-do-dont"
 import { DocHeading } from "./doc-heading"
 
 const Paragraph = ({ className, ...props }: ComponentPropsWithoutRef<"p">) => (
@@ -43,6 +44,7 @@ export const mdxComponents = {
   Tip: (props: ComponentPropsWithoutRef<typeof Alert>) => <Alert variant="tip" {...props} />,
   Warning: (props: ComponentPropsWithoutRef<typeof Alert>) => <Alert variant="warning" {...props} />,
   Danger: (props: ComponentPropsWithoutRef<typeof Alert>) => <Alert variant="danger" {...props} />,
+  DoDont: DocsDoDont,
 }
 
 export type MdxComponents = typeof mdxComponents

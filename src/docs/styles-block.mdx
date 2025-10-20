@@ -3,17 +3,17 @@
 O bloco `styles:` centraliza tokens de cor, tipografia e espaçamento. Ajustes feitos aqui propagam para todo o DSL, garantindo identidade visual consistente e facilitando a manutenção de temas.
 
 ## Forma canônica (sintaxe mínima)
-<DslPreview title="Bloco de estilos básico">
+<DocsCodePreview title="Bloco de estilos básico">
 ```dsl
 styles:
   --primary: oklch(0.70 0.15 220);
   --primary-foreground: oklch(0.98 0 0);
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: define o conjunto mínimo de variáveis para controlar a cor primária e seu contraste.
 
 ## Padrões de uso
-<DslPreview title="Personalização de cores e raio">
+<DocsCodePreview title="Personalização de cores e raio">
 ```dsl
 styles:
   --primary: oklch(0.68 0.15 210);
@@ -29,11 +29,11 @@ screen CustomTheme:
       @[Ação principal](Action)
       @secondary[Secundário](Secondary)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: alinhar a interface à identidade de marca ajustando tokens globais.
 Por quê: todas as telas refletem imediatamente as novas cores e raios.
 
-<DslPreview title="Tokens customizados reutilizáveis">
+<DocsCodePreview title="Tokens customizados reutilizáveis">
 ```dsl
 styles:
   --brand-color: #0f172a;
@@ -46,11 +46,11 @@ component Hero:
     row-end:
       @[Começar agora](%destination)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: criar variáveis específicas que serão utilizadas em múltiplos componentes.
 Por quê: tokens customizados evitam repetir valores hexadecimais ou medidas locais.
 
-<DslPreview title="Combinação com temas">
+<DocsCodePreview title="Combinação com temas">
 ```dsl
 styles:
   --primary: var(--theme-primary);
@@ -61,24 +61,24 @@ screen ThemedDashboard:
     # Dashboard temático
     > As cores respondem ao tema ativo.
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: integrar o bloco de estilos com estratégias definidas em `themes`.
 Por quê: permite alternar paletas completas apenas trocando os valores de tema.
 
 ## Erros comuns (Do/Don’t)
-**Não faça — definir tokens espalhados fora de `styles:`**
-<DslPreview title="❌ Errado — Token fora do bloco">
-```dsl
+<DoDont
+  dont={{
+    title: "Token fora do bloco",
+    code: `
 component Hero:
   card:
     --brand-color: #0f172a;
     ## %title
-```
-</DslPreview>
-
-Faça — centralize no bloco de estilos
-<DslPreview title="✅ Correto — Token global">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Token global",
+    code: `
 styles:
   --brand-color: #0f172a;
 
@@ -86,26 +86,29 @@ component Hero:
   card:
     ## %title
     >>> Usa var(--brand-color) no tema.
-```
-</DslPreview>
-Por quê: manter tokens no `styles:` evita divergências e facilita auditoria.
-
-**Não faça — esquecer `;` ao final de cada linha**
-<DslPreview title="❌ Errado — Sintaxe incompleta">
-```dsl
+    `,
+  }}
+>
+  Por quê: manter tokens no `styles:` evita divergências e facilita auditoria.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Sintaxe incompleta",
+    code: `
 styles:
   --primary: #1f2937
-```
-</DslPreview>
-
-Faça — finalize cada propriedade corretamente
-<DslPreview title="✅ Correto — Linha terminada">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Linha terminada",
+    code: `
 styles:
   --primary: #1f2937;
-```
-</DslPreview>
-Por quê: o parser requer `;` para reconhecer cada declaração.
+    `,
+  }}
+>
+  Por quê: o parser requer `;` para reconhecer cada declaração.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -120,7 +123,7 @@ Por quê: o parser requer `;` para reconhecer cada declaração.
 - **Styles Block + Component Composition** → usa tokens customizados em componentes complexos.
 - **Styles Block + Modal** → garante contraste adequado em overlays.
 
-<DslPreview title="Estilos aplicados em modal">
+<DocsCodePreview title="Estilos aplicados em modal">
 ```dsl
 styles:
   --modal-background: #0f172a;
@@ -133,5 +136,5 @@ modal DarkModal:
     row-end:
       @[Entendi](close)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: o bloco garante contraste certo entre fundo e texto do modal.

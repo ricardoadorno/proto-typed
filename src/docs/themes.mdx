@@ -3,7 +3,7 @@
 Temas adaptam o produto à identidade visual da marca, garantindo contraste adequado e experiência consistente em todas as telas. Ajustar tokens core evita intervenção manual em cada componente.
 
 ## Forma canônica (sintaxe mínima)
-<DslPreview title="Tema customizado no bloco de estilos">
+<DocsCodePreview title="Tema customizado no bloco de estilos">
 ```dsl
 styles:
   --primary: oklch(0.68 0.15 210);
@@ -11,11 +11,11 @@ styles:
   --background: oklch(0.14 0.01 240);
   --foreground: oklch(0.95 0 0);
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: define cores principais e de texto, base para qualquer variação temática.
 
 ## Padrões de uso
-<DslPreview title="Paleta da marca aplicada a planos de assinatura">
+<DocsCodePreview title="Paleta da marca aplicada a planos de assinatura">
 ```dsl
 styles:
   --primary: oklch(0.7 0.15 220);
@@ -36,11 +36,11 @@ screen Pricing:
         ## Enterprise
         @[Falar com vendas](contact)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: alinhar botões, cards e raio às diretrizes da marca.
 Por quê: assegura que elementos críticos sigam o branding aprovado.
 
-<DslPreview title="Tema escuro com contraste garantido">
+<DocsCodePreview title="Tema escuro com contraste garantido">
 ```dsl
 styles:
   --background: oklch(0.13 0.02 250);
@@ -62,11 +62,11 @@ screen DarkDashboard:
         ## Satisfação
         # 92%
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: oferecer modo escuro ou alto contraste sem alterar cada componente.
 Por quê: melhora acessibilidade e cansaço visual com poucas mudanças.
 
-<DslPreview title="Tokens customizados combinados com componentes">
+<DocsCodePreview title="Tokens customizados combinados com componentes">
 ```dsl
 styles:
   --brand-header: #0b132b;
@@ -83,52 +83,55 @@ screen Landing:
     $Hero:
       - Proto-Typed | Ajuste o tema com CSS variables | Signup
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: criar tokens específicos e referenciá-los dentro de componentes compostos.
 Por quê: facilita reaproveitamento dos mesmos valores em diferentes blocos.
 
 ## Erros comuns (Do/Don’t)
-**Não faça — alterar tokens diretamente no componente**
-<DslPreview title="❌ Errado — Estilo local sem tema">
-```dsl
+<DoDont
+  dont={{
+    title: "Estilo local sem tema",
+    code: `
 card:
   ## Configurações
   --primary: #2563eb;
   > Ajustes rápidos.
-```
-</DslPreview>
-
-Faça — centralize no tema
-<DslPreview title="✅ Correto — Token global aplicado">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Token global aplicado",
+    code: `
 styles:
   --primary: #2563eb;
 
 card:
   ## Configurações
   > Ajustes rápidos.
-```
-</DslPreview>
-Por quê: tokens globais evitam divergências entre telas.
-
-**Não faça — escolher cores sem contraste adequado**
-<DslPreview title="❌ Errado — Baixo contraste">
-```dsl
+    `,
+  }}
+>
+  Por quê: tokens globais evitam divergências entre telas.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Baixo contraste",
+    code: `
 styles:
   --background: oklch(0.9 0.01 240);
   --foreground: oklch(0.88 0.01 240);
-```
-</DslPreview>
-
-Faça — valide contraste mínimo
-<DslPreview title="✅ Correto — Contraste forte">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Contraste forte",
+    code: `
 styles:
   --background: oklch(0.14 0.01 240);
   --foreground: oklch(0.95 0 0);
-```
-</DslPreview>
-Por quê: contraste insuficiente compromete leitura e acessibilidade.
+    `,
+  }}
+>
+  Por quê: contraste insuficiente compromete leitura e acessibilidade.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -143,7 +146,7 @@ Por quê: contraste insuficiente compromete leitura e acessibilidade.
 - **Themes + Component Composition** → garante consistência em componentes complexos.
 - **Themes + Modal** → controla contraste em overlays.
 
-<DslPreview title="Tema aplicado junto com componente composto">
+<DocsCodePreview title="Tema aplicado junto com componente composto">
 ```dsl
 styles:
   --primary: #1f2937;
@@ -162,5 +165,5 @@ screen Home:
       - Ajuste tokens para alinhar com a marca.
       - ThemeGuide
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: o tema global define aparência enquanto o componente compõe conteúdo reutilizável.

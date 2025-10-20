@@ -12,7 +12,7 @@ LLMs costumam inserir `-` para listar filhos de qualquer bloco, mas a DSL só ac
 </Attention>
 
 ## Exemplo básico
-<DslPreview title="Lista com ações separadas">
+<DocsCodePreview title="Lista com ações separadas">
 ```dsl
 card:
   ## Tarefas da semana
@@ -24,22 +24,22 @@ card:
     @[Criar nova tarefa](TaskForm)
     @ghost[Ver calendário](Calendar)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: mantém itens exclusivamente textuais e posiciona ações em bloco dedicado.
 
 ## Variantes
-<DslPreview title="Lista simples">
+<DocsCodePreview title="Lista simples">
 ```dsl
 list:
   - Configurar métricas
   - Validar integrações
   - Revisar deploy
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: enumerar itens curtos sem propriedades adicionais.
 Por quê: apresenta conteúdos simples sem exigir componentes complexos.
 
-<DslPreview title="Lista baseada em componente">
+<DocsCodePreview title="Lista baseada em componente">
 ```dsl
 component TaskRow:
   row-between:
@@ -52,11 +52,11 @@ list $TaskRow:
   - Atualizar roadmap | Até 22/09 | show:roadmap
   - Revisar backlog | Até 24/09 | show:backlog
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: renderizar itens repetidos com múltiplos campos seguindo a mesma estrutura.
 Por quê: evita duplicação de markup enquanto mantém layout consistente.
 
-<DslPreview title="Lista compacta em drawer">
+<DocsCodePreview title="Lista compacta em drawer">
 ```dsl
 drawer QuickTips:
   container:
@@ -66,7 +66,7 @@ drawer QuickTips:
       - Combine stack e card para formular layouts.
       - Consulte o guia de componentes antes do handoff.
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: oferecer notas rápidas sem ocupar muito espaço.
 Por quê: o drawer traz lembretes sucintos preservando a área principal.
 
@@ -75,7 +75,7 @@ Por quê: o drawer traz lembretes sucintos preservando a área principal.
 - **List + Component Definition** — transforma dados tabulares em layouts ricos.
 - **List + Drawer** — expõe listas de apoio sem sair da tela principal.
 
-<DslPreview title="Lista com componente reutilizável">
+<DocsCodePreview title="Lista com componente reutilizável">
 ```dsl
 component MetricItem:
   row-between:
@@ -89,7 +89,7 @@ card:
     - Conversões | 134
     - Receita | R$ 87K
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: mantém consistência na apresentação de métricas recorrentes.
 
 ## Slots & Props
@@ -101,37 +101,38 @@ Por quê: mantém consistência na apresentação de métricas recorrentes.
 | `%props` | interpolação | — | Variáveis dentro do componente associado à lista. | Não |
 
 ## Erros comuns (Do/Don’t)
-**Não faça — incluir links ou botões dentro da lista**
-<DslPreview title="❌ Errado — Ações em `list:`">
-```dsl
+<DoDont
+  dont={{
+    title: "Ações em `list:`",
+    code: `
 list:
   - Revisar backlog @[Editar](TaskForm)
-```
-</DslPreview>
-
-Faça — mova as ações para blocos de ação
-<DslPreview title="✅ Correto — Ações separadas">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Ações separadas",
+    code: `
 list:
   - Revisar backlog
   - Preparar demo
 row-end:
   @[Editar tarefa](TaskForm)
-```
-</DslPreview>
-Por quê: `list` aceita somente texto; ações ficam em rows, cards ou navigator.
-
-**Não faça — usar `|` sem componente associado**
-<DslPreview title="❌ Errado — Pipes sem `list $Componente`">
-```dsl
+    `,
+  }}
+>
+  Por quê: `list` aceita somente texto; ações ficam em rows, cards ou navigator.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Pipes sem `list $Componente`",
+    code: `
 list:
   - Plano Pro | R$ 89
-```
-</DslPreview>
-
-Faça — declare componente para receber props
-<DslPreview title="✅ Correto — Lista com componente">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Lista com componente",
+    code: `
 component PlanRow:
   row-between:
     > %title
@@ -139,9 +140,11 @@ component PlanRow:
 
 list $PlanRow:
   - Plano Pro | R$ 89
-```
-</DslPreview>
-Por quê: `|` indica múltiplos valores, e apenas componentes conseguem interpolar `%props`.
+    `,
+  }}
+>
+  Por quê: `|` indica múltiplos valores, e apenas componentes conseguem interpolar `%props`.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -156,7 +159,7 @@ Por quê: `|` indica múltiplos valores, e apenas componentes conseguem interpol
 - **List + Component Definition** → coleções ricas baseadas em dados.
 - **List + Drawer** → notas rápidas sem navegar de tela.
 
-<DslPreview title="Lista com ações estruturadas">
+<DocsCodePreview title="Lista com ações estruturadas">
 ```dsl
 card:
   ## Próximos passos
@@ -166,5 +169,5 @@ card:
   row-end:
     @[Abrir planejamento](Planning)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: separa itens informativos de ações, mantendo o padrão recomendado.

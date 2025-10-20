@@ -4,7 +4,7 @@
 Nomes coerentes ancoram telas, componentes e ações. Sem um padrão, fluxos quebram, props ficam ambíguas e a manutenção aumenta. Uma convenção clara facilita a leitura da DSL e garante que o time encontre rapidamente cada elemento.
 
 ## Forma canônica (sintaxe mínima)
-<DslPreview title="Convenções de nomes para telas e componentes">
+<DocsCodePreview title="Convenções de nomes para telas e componentes">
 ```dsl
 screen AccountSettings:
   container:
@@ -15,11 +15,11 @@ component AccountCard:
     ## %title
     > %description
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: mostra uso de PascalCase para telas e componentes, facilitando referências e reutilização.
 
 ## Padrões de uso
-<DslPreview title="Props nomeadas de forma descritiva">
+<DocsCodePreview title="Props nomeadas de forma descritiva">
 ```dsl
 component BillingSummary:
   card:
@@ -27,21 +27,21 @@ component BillingSummary:
     # %monthlyValue
     >>> Próxima cobrança em %renewalDate
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: representar valores específicos do domínio sem abreviações obscuras.
 Por quê: nomes explícitos evitam dúvidas ao alimentar dados no componente.
 
-<DslPreview title="Ações com verbos no infinitivo">
+<DocsCodePreview title="Ações com verbos no infinitivo">
 ```dsl
 row-end:
   @ghost[Cancelar](close)
   @[Enviar convite](SendInvite)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: instruir claramente o que acontece ao acionar o botão.
 Por quê: verbos consistentes reforçam expectativas do fluxo.
 
-<DslPreview title="Listas com componentes semânticos">
+<DocsCodePreview title="Listas com componentes semânticos">
 ```dsl
 component CustomerRow:
   row-between:
@@ -52,33 +52,35 @@ list $CustomerRow:
   - Ana Souza | Ontem
   - Bruno Lima | Hoje
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: nomear componentes de lista com foco no domínio representado.
 Por quê: ajuda a mapear rapidamente a estrutura ao navegar pelo arquivo.
 
 ## Erros comuns (Do/Don’t)
-**Não faça — usar abreviações genéricas**
-<DslPreview title="❌ Errado — Abreviação sem contexto">
-```dsl
+<DoDont
+  dont={{
+    title: "Abreviação sem contexto",
+    code: `
 screen Cfg:
   container:
     # Config
-```
-</DslPreview>
-
-Faça — prefira nomes completos
-<DslPreview title="✅ Correto — Nome explícito">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Nome explícito",
+    code: `
 screen Settings:
   container:
     # Configurações
-```
-</DslPreview>
-Por quê: nomes completos facilitam a busca e reduzem ambiguidades.
-
-**Não faça — reaproveitar nomes para propósitos distintos**
-<DslPreview title="❌ Errado — Mesmo slug para telas diferentes">
-```dsl
+    `,
+  }}
+>
+  Por quê: nomes completos facilitam a busca e reduzem ambiguidades.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Mesmo slug para telas diferentes",
+    code: `
 screen Dashboard:
   container:
     # Métricas
@@ -86,12 +88,11 @@ screen Dashboard:
 screen Dashboard:
   container:
     # Configurações
-```
-</DslPreview>
-
-Faça — defina slugs únicos
-<DslPreview title="✅ Correto — Slugs distintos">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Slugs distintos",
+    code: `
 screen Dashboard:
   container:
     # Métricas
@@ -99,28 +100,31 @@ screen Dashboard:
 screen DashboardSettings:
   container:
     # Configurações
-```
-</DslPreview>
-Por quê: slugs duplicados impedem navegação correta e confundem referências.
-
-**Não faça — misturar idiomas no mesmo fluxo**
-<DslPreview title="❌ Errado — Inglês e português juntos">
-```dsl
+    `,
+  }}
+>
+  Por quê: slugs duplicados impedem navegação correta e confundem referências.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Inglês e português juntos",
+    code: `
 screen Billing:
   container:
     @[Gerar invoice](InvoiceModal)
-```
-</DslPreview>
-
-Faça — escolha um idioma principal e mantenha-o
-<DslPreview title="✅ Correto — Idioma consistente">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Idioma consistente",
+    code: `
 screen Faturamento:
   container:
     @[Gerar fatura](InvoiceModal)
-```
-</DslPreview>
-Por quê: consistência linguística fortalece compreensão e evita traduções improvisadas.
+    `,
+  }}
+>
+  Por quê: consistência linguística fortalece compreensão e evita traduções improvisadas.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -135,7 +139,7 @@ Por quê: consistência linguística fortalece compreensão e evita traduções 
 - **Nomeação e consistência + Component Composition** → organiza subcomponentes sem conflitos.
 - **Nomeação e consistência + Error Patterns** → reduz chances de criar anti-padrões por nomes confusos.
 
-<DslPreview title="Fluxo nomeado de forma coesa">
+<DocsCodePreview title="Fluxo nomeado de forma coesa">
 ```dsl
 screen AccountOverview:
   container:
@@ -147,5 +151,5 @@ screen AccountEdit:
     # Editar conta
     @[Voltar](AccountOverview)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: nomes explícitos e relacionados tornam o fluxo fácil de seguir e documentar.

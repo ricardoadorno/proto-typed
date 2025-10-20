@@ -8,7 +8,7 @@ O FAB mantém uma ação global sempre disponível, flutuando sobre o conteúdo 
 - Ativar drawers ou modais rápidos sem perder o contexto atual.
 
 ## Exemplo básico
-<DslPreview title="FAB com ação principal única">
+<DocsCodePreview title="FAB com ação principal única">
 ```dsl
 screen Tasks:
   container:
@@ -20,21 +20,21 @@ screen Tasks:
   fab:
     - i-Plus | TaskForm
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: mantém a criação de tarefas ao alcance sem competir com o conteúdo da tela.
 
 ## Variantes
-<DslPreview title="FAB com múltiplas ações">
+<DocsCodePreview title="FAB com múltiplas ações">
 ```dsl
 fab:
   - i-Plus | TaskForm
   - i-Filter | FilterDrawer
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: oferecer atalho principal e opções secundárias relacionadas.
 Por quê: agrupa ações de mesmo contexto sem sobrecarregar o FAB.
 
-<DslPreview title="FAB acionando modal de confirmação">
+<DocsCodePreview title="FAB acionando modal de confirmação">
 ```dsl
 fab:
   - i-Check | ConfirmRelease
@@ -47,11 +47,11 @@ modal ConfirmRelease:
       @ghost[Cancelar](close)
       @success[Publicar](publishRelease)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: reforçar ações globais que precisam de confirmação antes de executar.
 Por quê: evita execuções irreversíveis ao intercalar feedback imediato.
 
-<DslPreview title="FAB abrindo drawer contextual">
+<DocsCodePreview title="FAB abrindo drawer contextual">
 ```dsl
 fab:
   - i-Filter | FilterDrawer
@@ -64,7 +64,7 @@ drawer FilterDrawer:
       @ghost[Cancelar](close)
       @[Aplicar](applyFilters)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: expor ajustes rápidos mantendo os dados principais visíveis.
 Por quê: o drawer permite ajustes inline sem mudar de tela.
 
@@ -73,7 +73,7 @@ Por quê: o drawer permite ajustes inline sem mudar de tela.
 - **FAB + Drawer** — abre filtros ou detalhes sem redirecionar.
 - **FAB + Modal** — valida comandos críticos antes de prosseguir.
 
-<DslPreview title="Lista com FAB de criação">
+<DocsCodePreview title="Lista com FAB de criação">
 ```dsl
 screen Leads:
   container:
@@ -85,7 +85,7 @@ screen Leads:
   fab:
     - i-Plus | LeadForm
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: a tela exibe dados passivamente e o FAB garante criação rápida.
 
 ## Slots & Props
@@ -97,50 +97,53 @@ Por quê: a tela exibe dados passivamente e o FAB garante criação rápida.
 | `ordem` | prioridade | — | Primeira linha é a ação principal; demais seguem ordem decrescente. | Não |
 
 ## Erros comuns (Do/Don’t)
-**Não faça — repetir a mesma ação do cabeçalho**
-<DslPreview title="❌ Errado — CTA duplicado">
-```dsl
+<DoDont
+  dont={{
+    title: "CTA duplicado",
+    code: `
 screen Tasks:
   header:
     @[Nova tarefa](TaskForm)
 
   fab:
     - i-Plus | TaskForm
-```
-</DslPreview>
-
-Faça — diferencie ação do FAB
-<DslPreview title="✅ Correto — CTA complementar">
-```dsl
+    `,
+  }}
+  do={{
+    title: "CTA complementar",
+    code: `
 screen Tasks:
   header:
     @[Nova tarefa](TaskForm)
 
   fab:
     - i-Filter | FilterDrawer
-```
-</DslPreview>
-Por quê: o FAB deve adicionar valor extra, não duplicar o CTA já disponível.
-
-**Não faça — listar ações sem relação entre si**
-<DslPreview title="❌ Errado — FAB com ações desconexas">
-```dsl
+    `,
+  }}
+>
+  Por quê: o FAB deve adicionar valor extra, não duplicar o CTA já disponível.
+</DoDont>
+<DoDont
+  dont={{
+    title: "FAB com ações desconexas",
+    code: `
 fab:
   - i-Plus | TaskForm
   - i-Settings | ThemeDrawer
   - i-Download | ExportModal
-```
-</DslPreview>
-
-Faça — agrupe somente ações complementares
-<DslPreview title="✅ Correto — Foco em filtros e criação">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Foco em filtros e criação",
+    code: `
 fab:
   - i-Plus | TaskForm
   - i-Filter | FilterDrawer
-```
-</DslPreview>
-Por quê: ações relacionadas reduzem dúvida sobre o objetivo do FAB.
+    `,
+  }}
+>
+  Por quê: ações relacionadas reduzem dúvida sobre o objetivo do FAB.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -155,7 +158,7 @@ Por quê: ações relacionadas reduzem dúvida sobre o objetivo do FAB.
 - **FAB + Modal** → confirmação rápida de ações globais.
 - **FAB + List** → mantém criação acessível enquanto percorre itens.
 
-<DslPreview title="FAB abrindo filtros no dashboard">
+<DocsCodePreview title="FAB abrindo filtros no dashboard">
 ```dsl
 screen Dashboard:
   container-wide:
@@ -182,5 +185,5 @@ drawer FilterDrawer:
       @ghost[Cancelar](close)
       @[Aplicar](applyFilters)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: facilita ajustes enquanto mantém os indicadores à vista.

@@ -4,7 +4,7 @@
 Compor elementos corretamente garante experiências coerentes: blocos ficam compreensíveis, CTA têm hierarquia clara e layouts permanecem responsivos. As diretrizes reduzem retrabalho e previnem conflitos visuais ao combinar componentes.
 
 ## Forma canônica (sintaxe mínima)
-<DslPreview title="Composição entre container, stack e row">
+<DocsCodePreview title="Composição entre container, stack e row">
 ```dsl
 screen Overview:
   container:
@@ -16,7 +16,7 @@ screen Overview:
         @ghost[Cancelar](close)
         @[Confirmar presença](ConfirmAttendance)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: ilustra a combinação básica de layouts verticais e horizontais mantendo espaçamento e hierarquia.
 
 <Attention title="Layouts não usam hífen como marcador">
@@ -24,7 +24,7 @@ Ao gerar DSL — manualmente ou via LLM — mantenha filhos de layouts (`stack`,
 </Attention>
 
 ## Padrões de uso
-<DslPreview title="Row-between + Stack para cabeçalhos ricos">
+<DocsCodePreview title="Row-between + Stack para cabeçalhos ricos">
 ```dsl
 row-between:
   stack-tight:
@@ -32,11 +32,11 @@ row-between:
     >>> Renovação em 30/09
   @[Atualizar plano](UpdatePlan)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: apresentar contexto textual e CTA principal na mesma faixa.
 Por quê: distribui responsabilidades entre blocos sem criar aninhamentos desnecessários.
 
-<DslPreview title="List + Component Definition para coleções">
+<DocsCodePreview title="List + Component Definition para coleções">
 ```dsl
 component TaskRow:
   row-between:
@@ -47,11 +47,11 @@ list $TaskRow:
   - Revisar backlog | 22/09
   - Preparar demo | 25/09
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: repetir estrutura de item com dados variáveis.
 Por quê: garante consistência visual e facilita futuras composições (ex.: colocar em cards).
 
-<DslPreview title="Card + Row-end para rodapés de ação">
+<DocsCodePreview title="Card + Row-end para rodapés de ação">
 ```dsl
 card:
   ## Revisar entrega
@@ -60,72 +60,76 @@ card:
     @ghost[Cancelar](close)
     @[Marcar como concluído](CompleteTask)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: fechar blocos com opções de saída e avanço organizadas.
 Por quê: o rodapé separado evita confusão com o conteúdo principal do card.
 
 ## Erros comuns (Do/Don’t)
-**Não faça — aninhar layouts equivalentes**
-<DslPreview title="❌ Errado — Card dentro de card">
-```dsl
+<DoDont
+  dont={{
+    title: "Card dentro de card",
+    code: `
 card:
   card:
     ## Conteúdo duplicado
-```
-</DslPreview>
-
-Faça — opte por stack para agrupar conteúdo interno
-<DslPreview title="✅ Correto — Stack dentro do card">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Stack dentro do card",
+    code: `
 card:
   stack:
     ## Primeiro bloco
     ## Segundo bloco
-```
-</DslPreview>
-Por quê: evita bordas repetidas e mantém a hierarquia visual limpa.
-
-**Não faça — prefixar itens de layout com `-`**
-<DslPreview title="❌ Errado — Stack com sintaxe de lista">
-```dsl
+    `,
+  }}
+>
+  Por quê: evita bordas repetidas e mantém a hierarquia visual limpa.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Stack com sintaxe de lista",
+    code: `
 stack:
   - ## Título
   - > Descrição
-```
-</DslPreview>
-
-Faça — listar elementos diretamente pela indentação
-<DslPreview title="✅ Correto — Stack com itens alinhados">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Stack com itens alinhados",
+    code: `
 stack:
   ## Título
   > Descrição
-```
-</DslPreview>
-Por quê: apenas `list`, `navigator` e `fab` usam `-`; layouts consideram os filhos pela indentação.
-
-**Não faça — misturar lista com ações inline**
-<DslPreview title="❌ Errado — Botões dentro de list">
-```dsl
+    `,
+  }}
+>
+  Por quê: apenas `list`, `navigator` e `fab` usam `-`; layouts consideram os filhos pela indentação.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Botões dentro de list",
+    code: `
 list:
   - Revisar backlog @[Abrir](Backlog)
-```
-</DslPreview>
-
-Faça — isole ações em blocos apropriados
-<DslPreview title="✅ Correto — Ações no rodapé">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Ações no rodapé",
+    code: `
 list:
   - Revisar backlog
 row-end:
   @[Abrir backlog](Backlog)
-```
-</DslPreview>
-Por quê: respeita a função textual da lista e preserva acessibilidade.
-
-**Não faça — criar loops de navegação sem retorno**
-<DslPreview title="❌ Errado — Fluxo sem saída">
-```dsl
+    `,
+  }}
+>
+  Por quê: respeita a função textual da lista e preserva acessibilidade.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Fluxo sem saída",
+    code: `
 screen Dashboard:
   container:
     @[Abrir modal](StatsModal)
@@ -134,21 +138,22 @@ modal StatsModal:
   card:
     ## Estatísticas
     @[Continuar](StatsModal)
-```
-</DslPreview>
-
-Faça — ofereça fechamento e retorno ao contexto
-<DslPreview title="✅ Correto — Fluxo encerrado">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Fluxo encerrado",
+    code: `
 modal StatsModal:
   card:
     ## Estatísticas
     row-end:
       @ghost[Fechar](close)
       @[Ir para métricas](Dashboard)
-```
-</DslPreview>
-Por quê: evita bloqueios e garante que a composição sustente o fluxo esperado.
+    `,
+  }}
+>
+  Por quê: evita bloqueios e garante que a composição sustente o fluxo esperado.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -163,7 +168,7 @@ Por quê: evita bloqueios e garante que a composição sustente o fluxo esperado
 - **Diretrizes de composição + Screen** → telas coerentes com hierarquia clara.
 - **Diretrizes de composição + Drawer Detail** → detalhes laterais alinhados com listas principais.
 
-<DslPreview title="Tela aplicando múltiplas diretrizes">
+<DocsCodePreview title="Tela aplicando múltiplas diretrizes">
 ```dsl
 screen Projects:
   container-wide:
@@ -185,5 +190,5 @@ screen Projects:
         @ghost[Fechar](close)
         @[Abrir tarefas](Dashboard)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: combina row-between, list e drawer seguindo as boas práticas descritas.

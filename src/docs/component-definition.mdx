@@ -3,7 +3,7 @@
 Componentes definidos com `component Nome:` concentram estrutura, estilo e comportamento visual em um só lugar. Eles evitam duplicação, facilitam manutenção e garantem consistência em telas complexas.
 
 ## Forma canônica (sintaxe mínima)
-<DslPreview title="Definição e instância básica">
+<DocsCodePreview title="Definição e instância básica">
 ```dsl
 component HeroBanner:
   card:
@@ -16,11 +16,11 @@ screen Home:
     $HeroBanner:
       - Prototipe mais rápido | Construa telas em minutos | Guides
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: demonstra o ciclo completo — declarar o componente e instanciá-lo com dados via lista.
 
 ## Padrões de uso
-<DslPreview title="Componentes para vitrines de métricas">
+<DocsCodePreview title="Componentes para vitrines de métricas">
 ```dsl
 component MetricCard:
   card:
@@ -38,11 +38,11 @@ screen Dashboard:
       $MetricCard:
         - Satisfação | 92% | +3%
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: replicar o mesmo layout com dados diferentes em dashboards e relatórios.
 Por quê: reduz manutenção ao trocar apenas os valores, não o markup.
 
-<DslPreview title="Componente para linhas de lista">
+<DocsCodePreview title="Componente para linhas de lista">
 ```dsl
 component TaskRow:
   row-between:
@@ -55,11 +55,11 @@ list $TaskRow:
   - Atualizar roadmap | Até 22/09 | show:roadmap
   - Revisar backlog | Até 24/09 | show:backlog
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: padronizar linhas de lista que exigem múltiplos campos e ações.
 Por quê: encapsula lógica de exibição e mantém consistência em toda a lista.
 
-<DslPreview title="Componente com fallback interno">
+<DocsCodePreview title="Componente com fallback interno">
 ```dsl
 component EmptyState:
   card:
@@ -75,24 +75,24 @@ screen Leads:
       - Comece registrando contatos da equipe comercial.
       - LeadForm
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: oferecer vazio padrão para diferentes contextos sem reescrever layout.
 Por quê: padroniza estados vazios com mensagem, ação e visual coerentes.
 
 ## Erros comuns (Do/Don’t)
-**Não faça — esquecer de declarar o componente antes da instância**
-<DslPreview title="❌ Errado — Instância sem definição">
-```dsl
+<DoDont
+  dont={{
+    title: "Instância sem definição",
+    code: `
 screen Home:
   container:
     $HeroBanner:
       - Bem-vindo | Explore recursos | Dashboard
-```
-</DslPreview>
-
-Faça — defina antes de usar
-<DslPreview title="✅ Correto — Declaração + uso">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Declaração + uso",
+    code: `
 component HeroBanner:
   card:
     ## %title
@@ -102,13 +102,15 @@ screen Home:
   container:
     $HeroBanner:
       - Bem-vindo | Explore recursos
-```
-</DslPreview>
-Por quê: a instância precisa conhecer a estrutura para interpolar `%props`.
-
-**Não faça — desalinha número de valores e `%props`**
-<DslPreview title="❌ Errado — Props faltando">
-```dsl
+    `,
+  }}
+>
+  Por quê: a instância precisa conhecer a estrutura para interpolar `%props`.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Props faltando",
+    code: `
 component PlanCard:
   card:
     ## %title
@@ -117,17 +119,18 @@ component PlanCard:
 
 $PlanCard:
   - Plano Pro | Experiência completa
-```
-</DslPreview>
-
-Faça — mantenha ordem e quantidade coerentes
-<DslPreview title="✅ Correto — Props completos">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Props completos",
+    code: `
 $PlanCard:
   - Plano Pro | Experiência completa | R$ 89/mês
-```
-</DslPreview>
-Por quê: a ordem dos valores precisa corresponder a cada `%prop` declarado.
+    `,
+  }}
+>
+  Por quê: a ordem dos valores precisa corresponder a cada `%prop` declarado.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -142,7 +145,7 @@ Por quê: a ordem dos valores precisa corresponder a cada `%prop` declarado.
 - **Component Definition + Grid** → monta vitrines e dashboards reutilizáveis.
 - **Component Definition + Modal** → cria modais padronizados para confirmação ou formulários.
 
-<DslPreview title="Componentes reutilizados em grid">
+<DocsCodePreview title="Componentes reutilizados em grid">
 ```dsl
 component InsightCard:
   card:
@@ -157,5 +160,5 @@ grid-3:
   $InsightCard:
     - Alertas críticos | Priorize correções urgentes.
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: garante consistência visual mesmo ao distribuir conteúdo em diferentes layouts.

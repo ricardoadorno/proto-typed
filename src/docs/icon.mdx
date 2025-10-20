@@ -8,7 +8,7 @@
 - Apoiar FABs e ações destacadas em telas responsivas.
 
 ## Exemplo básico
-<DslPreview title="Ícones em botões e lista">
+<DocsCodePreview title="Ícones em botões e lista">
 ```dsl
 screen Shortcuts:
   container:
@@ -21,37 +21,37 @@ screen Shortcuts:
       @[i-Plus Nova tarefa](TaskForm)
       @outline[i-Download Exportar CSV](ExportCSV)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: combina pistas visuais e texto para acelerar o reconhecimento da ação.
 
 ## Variantes
-<DslPreview title="Ícone em parágrafo informativo">
+<DocsCodePreview title="Ícone em parágrafo informativo">
 ```dsl
 card:
   *> i-Info A implantação está em andamento.
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: destacar avisos sem recorrer a blocos adicionais.
 Por quê: adiciona ênfase visual sem precisar de layouts extras.
 
-<DslPreview title="Ícone em navigator">
+<DocsCodePreview title="Ícone em navigator">
 ```dsl
 navigator Menu:
   - i-Home Início | Home
   - i-Server Deploys | Deploys
   - i-AlertCircle Logs | Logs
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: guiar navegação com pistas imediatas sobre cada aba.
 Por quê: acelera a identificação dos destinos ao percorrer o menu.
 
-<DslPreview title="Ícone em FAB">
+<DocsCodePreview title="Ícone em FAB">
 ```dsl
 fab:
   - i-Plus | TaskForm
   - i-Filter | FilterDrawer
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: diferenciar ações globais no FAB mantendo o layout limpo.
 Por quê: o ícone sintetiza a finalidade de cada ação sem texto adicional.
 
@@ -60,7 +60,7 @@ Por quê: o ícone sintetiza a finalidade de cada ação sem texto adicional.
 - **Icon + List** — transforma listas em atalhos visuais.
 - **Icon + Card** — sinaliza status sem poluir títulos.
 
-<DslPreview title="Card com ícones de status">
+<DocsCodePreview title="Card com ícones de status">
 ```dsl
 card:
   ## Status da implantação
@@ -69,7 +69,7 @@ card:
     > i-Check Testes finalizados
     > i-AlertCircle Acompanhar logs
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: permite acompanhar estados rapidamente dentro de um bloco resumido.
 
 ## Slots & Props
@@ -80,39 +80,42 @@ Por quê: permite acompanhar estados rapidamente dentro de um bloco resumido.
 | `semântica` | contexto | — | Escolha ícones que reforcem a mensagem sem ambiguidade. | Sim |
 
 ## Erros comuns (Do/Don’t)
-**Não faça — usar ícone sem prefixo `i-`**
-<DslPreview title="❌ Errado — Token incompleto">
-```dsl
+<DoDont
+  dont={{
+    title: "Token incompleto",
+    code: `
 @[Download Exportar CSV](ExportCSV)
-```
-</DslPreview>
-
-Faça — sempre prefixe com `i-`
-<DslPreview title="✅ Correto — Token válido">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Token válido",
+    code: `
 @[i-Download Exportar CSV](ExportCSV)
-```
-</DslPreview>
-Por quê: o prefixo `i-` identifica o recurso na biblioteca de ícones.
-
-**Não faça — empilhar muitos ícones sem texto**
-<DslPreview title="❌ Errado — Ícones isolados">
-```dsl
+    `,
+  }}
+>
+  Por quê: o prefixo `i-` identifica o recurso na biblioteca de ícones.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Ícones isolados",
+    code: `
 row:
   > i-AlertTriangle
   > i-AlertTriangle
   > i-AlertTriangle
-```
-</DslPreview>
-
-Faça — combine ícone com texto claro
-<DslPreview title="✅ Correto — Contexto explícito">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Contexto explícito",
+    code: `
 row:
   > i-AlertTriangle Alertas críticos
-```
-</DslPreview>
-Por quê: o texto garante acessibilidade e evita interpretações ambíguas.
+    `,
+  }}
+>
+  Por quê: o texto garante acessibilidade e evita interpretações ambíguas.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -127,7 +130,7 @@ Por quê: o texto garante acessibilidade e evita interpretações ambíguas.
 - **Icon + List** → atalhos com leitura rápida.
 - **Icon + Navigator** → menus contextualizados por ícones.
 
-<DslPreview title="Navigator com ícones e conteúdo">
+<DocsCodePreview title="Navigator com ícones e conteúdo">
 ```dsl
 screen Settings:
   navigator Menu:
@@ -139,5 +142,5 @@ screen Settings:
     # Perfil
     > Atualize dados pessoais e preferências.
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: associa ícones à seção correspondente e acelera a orientação do usuário.

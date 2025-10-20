@@ -8,17 +8,17 @@ Navigators montam menus fixos para alternar rapidamente entre telas relacionadas
 - Complementar headers simples quando abas ou drawer não fazem sentido.
 
 ## Exemplo básico
-<DslPreview title="Navigator replicado em telas do mesmo fluxo">
+<DocsCodePreview title="Navigator replicado em telas do mesmo fluxo">
 ```dsl
 screen Home:
   container:
     # Início
     > Acompanhe indicadores e novidades.
 
-  navigator MainNav:
-    - i-Home Início | Home
-    - i-List Tarefas | Tasks
-    - i-Settings Configurações | Settings
+  navigator:
+    - i-Home| Home
+    - i-List| Tasks
+    - i-Settings| Settings
 
 screen Tasks:
   container:
@@ -27,45 +27,45 @@ screen Tasks:
       - Revisar backlog
       - Preparar demo
 
-  navigator MainNav:
-    - i-Home Início | Home
+  navigator:
+    - i-Home| Home
     - i-List Tarefas | Tasks
-    - i-Settings Configurações | Settings
+    - i-Settings| Settings
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: replica o mesmo menu em cada tela do grupo para garantir consistência.
 
 ## Variantes
-<DslPreview title="Navigator sem ícones">
+<DocsCodePreview title="Navigator sem ícones">
 ```dsl
 navigator:
   - Home | Home
   - Métricas | Dashboard
   - Configurações | Settings
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: priorizar textos curtos quando os ícones não agregam contexto.
 Por quê: reduz ruído visual e favorece leitura rápida dos rótulos.
 
-<DslPreview title="Navigator com ícones Lucide">
+<DocsCodePreview title="Navigator com ícones Lucide">
 ```dsl
 navigator:
   - i-Home Início | Home
   - i-List Tarefas | Tasks
   - i-BarChart Métricas | Dashboard
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: acelerar reconhecimento visual dos destinos principais.
 Por quê: ajuda a localizar telas frequentes apenas pelo símbolo.
 
-<DslPreview title="Navigator com destaque para três telas">
+<DocsCodePreview title="Navigator com destaque para três telas">
 ```dsl
 navigator:
   - i-Home Visão geral | Dashboard
   - i-Users Equipe | Team
   - i-Settings Ajustes | Settings
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: destacar as telas mais relevantes de um fluxo reduzido.
 Por quê: três itens mantêm foco no essencial sem sobrecarregar o menu.
 
@@ -74,7 +74,7 @@ Por quê: três itens mantêm foco no essencial sem sobrecarregar o menu.
 - **Navigator + Screen** — aplicado em cada tela do grupo para consistência.
 - **Navigator + Fab** — combina navegação persistente com ação global.
 
-<DslPreview title="Navigator com FAB complementar">
+<DocsCodePreview title="Navigator com FAB complementar">
 ```dsl
 screen Dashboard:
   container:
@@ -89,7 +89,7 @@ screen Dashboard:
     - i-List Tarefas | Tasks
     - i-Settings Configurações | Settings
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: mantém navegação fixa enquanto o FAB oferece atalhos de ação.
 
 ## Slots & Props
@@ -101,9 +101,10 @@ Por quê: mantém navegação fixa enquanto o FAB oferece atalhos de ação.
 | `nome` | identificador | — | Opcional após `navigator` para documentar o menu. | Não |
 
 ## Erros comuns (Do/Don’t)
-**Não faça — variar itens entre telas do mesmo grupo**
-<DslPreview title="❌ Errado — Menu inconsistente">
-```dsl
+<DoDont
+  dont={{
+    title: "Menu inconsistente",
+    code: `
 screen Home:
   navigator:
     - Home | Home
@@ -113,12 +114,11 @@ screen Tasks:
   navigator:
     - Home | Home
     - Config | Settings
-```
-</DslPreview>
-
-Faça — mantenha o mesmo conjunto em todas as telas
-<DslPreview title="✅ Correto — Itens alinhados">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Itens alinhados",
+    code: `
 screen Home:
   navigator:
     - Home | Home
@@ -130,30 +130,33 @@ screen Tasks:
     - Home | Home
     - Tarefas | Tasks
     - Config | Settings
-```
-</DslPreview>
-Por quê: consistência evita que a pessoa perca destinos ao alternar telas.
-
-**Não faça — substituir navigator por `list` em menus fixos**
-<DslPreview title="❌ Errado — Lista usada como menu">
-```dsl
+    `,
+  }}
+>
+  Por quê: consistência evita que a pessoa perca destinos ao alternar telas.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Lista usada como menu",
+    code: `
 list:
   - Dashboard
   - Tarefas
   - Configurações
-```
-</DslPreview>
-
-Faça — use `navigator` para controles de navegação
-<DslPreview title="✅ Correto — Menu com navigator">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Menu com navigator",
+    code: `
 navigator:
   - Dashboard | Dashboard
   - Tarefas | Tasks
   - Configurações | Settings
-```
-</DslPreview>
-Por quê: `navigator` aplica semântica e comportamento apropriados para menus.
+    `,
+  }}
+>
+  Por quê: `navigator` aplica semântica e comportamento apropriados para menus.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -168,7 +171,7 @@ Por quê: `navigator` aplica semântica e comportamento apropriados para menus.
 - **Navigator + Container** → conteúdo central alinhado ao menu inferior.
 - **Navigator + Drawer** → menu inferior + painel lateral para contexto extra.
 
-<DslPreview title="Navigator e drawer combinados">
+<DocsCodePreview title="Navigator e drawer combinados">
 ```dsl
 screen Projects:
   container:
@@ -188,5 +191,5 @@ screen Projects:
       ___select: Status{Todos | Ativo | Concluído}
       @[Aplicar filtros](applyFilters)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: navigator cuida da navegação global enquanto o drawer filtra o conteúdo atual.

@@ -104,7 +104,6 @@ export function DocsHeader({ children, isDocs }: DocsHeaderProps) {
             {navItems.map((item) => {
               const href = resolveHref(item.href)
               const isActive = pathname === href || (href !== "/" && pathname.startsWith(href))
-              console.log(href)
 
               return (
                 <NavigationMenuItem key={item.label}>

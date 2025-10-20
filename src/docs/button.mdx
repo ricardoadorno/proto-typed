@@ -8,7 +8,7 @@ Botões disparam ações imediatas e conduzem pessoas pelos fluxos principais do
 - Oferecer caminhos de retorno com variantes mais leves (`@ghost`, `@link`).
 
 ## Exemplo básico
-<DslPreview title="Ação principal em tela de tarefas">
+<DocsCodePreview title="Ação principal em tela de tarefas">
 ```dsl
 screen Tasks:
   container:
@@ -17,34 +17,34 @@ screen Tasks:
     row-end:
       @[Criar tarefa](TaskForm)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: apresenta CTA único alinhado ao objetivo da tela.
 
 ## Variantes
-<DslPreview title="Variante primária para CTA principal">
+<DocsCodePreview title="Variante primária para CTA principal">
 ```dsl
 row:
   @[Publicar relatório](PublishReport)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: priorize a ação que move o fluxo adiante.
 Por quê: destaca o comando principal com contraste máximo.
 
-<DslPreview title="Variante secundária de apoio">
+<DocsCodePreview title="Variante secundária de apoio">
 ```dsl
 row:
   @secondary-sm[Ver histórico](History)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: ofereça opção complementar sem competir com o CTA principal.
 Por quê: mantém a hierarquia visual ao apresentar caminhos alternativos.
 
-<DslPreview title="Variante destrutiva para ações críticas">
+<DocsCodePreview title="Variante destrutiva para ações críticas">
 ```dsl
 row-end:
   @destructive[Excluir conta](ConfirmDelete)
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: sinalize riscos e peça confirmação antes de executar.
 Por quê: associa o estilo destrutivo a ações de alto impacto e reduz erros.
 
@@ -53,7 +53,7 @@ Por quê: associa o estilo destrutivo a ações de alto impacto e reduz erros.
 - **Row-end + Button** — alinha múltiplas ações respeitando a hierarquia.
 - **Modal + Button** — confirma decisões sensíveis antes de concluir tarefas.
 
-<DslPreview title="Card com botões alinhados">
+<DocsCodePreview title="Card com botões alinhados">
 ```dsl
 card:
   ## Plano mensal
@@ -62,7 +62,7 @@ card:
     @ghost[Cancelar](-1)
     @[Atualizar plano](UpdatePlan)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: combina CTA principal e opção de saída dentro do mesmo bloco.
 
 ## Slots & Props
@@ -75,56 +75,60 @@ Por quê: combina CTA principal e opção de saída dentro do mesmo bloco.
 | `destino` | slug/rota | — | Tela, modal, drawer, ação (`-1`, `close`, `alert`). | Sim |
 
 ## Erros comuns (Do/Don’t)
-**Não faça — usar `#` para acionar lógica**
-<DslPreview title="❌ Errado — Link usado como ação">
-```dsl
+<DoDont
+  dont={{
+    title: "Link usado como ação",
+    code: `
 row:
   #[Enviar convite](ConfirmInvite)
-```
-</DslPreview>
-
-Faça — mantenha ação com `@`
-<DslPreview title="✅ Correto — Botão com ação">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Botão com ação",
+    code: `
 row:
   @[Enviar convite](ConfirmInvite)
-```
-</DslPreview>
-Por quê: `@` executa ações no fluxo; `#` serve apenas para navegação declarativa.
-
-**Não faça — ação perigosa sem variante visível**
-<DslPreview title="❌ Errado — Exclusão sem destaque">
-```dsl
+    `,
+  }}
+>
+  Por quê: `@` executa ações no fluxo; `#` serve apenas para navegação declarativa.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Exclusão sem destaque",
+    code: `
 row-end:
   @[Excluir conta](ConfirmDelete)
-```
-</DslPreview>
-
-Faça — sinalize risco com `@destructive`
-<DslPreview title="✅ Correto — Exclusão destacada">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Exclusão destacada",
+    code: `
 row-end:
   @destructive[Excluir conta](ConfirmDelete)
-```
-</DslPreview>
-Por quê: a variante destrutiva comunica o risco e reduz cliques acidentais.
-
-**Não faça — labels genéricos**
-<DslPreview title="❌ Errado — Label pouco claro">
-```dsl
+    `,
+  }}
+>
+  Por quê: a variante destrutiva comunica o risco e reduz cliques acidentais.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Label pouco claro",
+    code: `
 row:
   @[Clique aqui](DownloadReport)
-```
-</DslPreview>
-
-Faça — descreva o resultado da ação
-<DslPreview title="✅ Correto — Label orientado a ação">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Label orientado a ação",
+    code: `
 row:
   @[Baixar relatório](DownloadReport)
-```
-</DslPreview>
-Por quê: labels específicos ajudam a decisão rápida e evitam dúvidas.
+    `,
+  }}
+>
+  Por quê: labels específicos ajudam a decisão rápida e evitam dúvidas.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -139,7 +143,7 @@ Por quê: labels específicos ajudam a decisão rápida e evitam dúvidas.
 - **Button + Modal** → envolve confirmações antes de alterações permanentes.
 - **Button + Navigator** → conecta telas relacionadas em fluxos guiados.
 
-<DslPreview title="Button com modal de confirmação">
+<DocsCodePreview title="Button com modal de confirmação">
 ```dsl
 row-end:
   @destructive[Excluir conta](ConfirmDelete)
@@ -152,5 +156,5 @@ modal ConfirmDelete:
       @ghost[Cancelar](close)
       @destructive[Excluir agora](deleteTenant)
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: combina CTA crítico com confirmação explícita para evitar erros.

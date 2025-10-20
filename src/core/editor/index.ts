@@ -61,6 +61,7 @@ export function initializeMonacoDSL(monaco: Monaco) {
  */
 export function getDSLEditorOptions(props: Partial<EditorProps['options']> = {}) {
   return {
+    fixedOverflowWidgets: true,
     fontSize: 14,
     minimap: { enabled: false },
     wordWrap: "on" as const,

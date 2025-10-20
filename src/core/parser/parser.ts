@@ -303,6 +303,7 @@ export class UiDslParser extends CstParser {
       this.CONSUME(ComponentInstanceWithProps, { LABEL: "componentName" });
     });
     this.OPTION2(() => {
+      this.CONSUME(Colon);
       this.CONSUME(Indent);
       this.AT_LEAST_ONE(() => {
         this.CONSUME(UnorderedListItem);

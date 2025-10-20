@@ -3,7 +3,7 @@
 Props conectam dados dinâmicos à estrutura do componente, permitindo reaproveitar o mesmo layout com conteúdos diferentes. O posicionamento consistente evita duplicação e erros em coleções.
 
 ## Forma canônica (sintaxe mínima)
-<DslPreview title="Template com dois `%props`">
+<DocsCodePreview title="Template com dois `%props`">
 ```dsl
 component UserCard:
   card:
@@ -13,11 +13,11 @@ component UserCard:
 $UserCard:
   - Ana Souza | ana@empresa.com
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: demonstra como cada valor separado por `|` preenche o `%prop` correspondente.
 
 ## Padrões de uso
-<DslPreview title="Props em listas">
+<DocsCodePreview title="Props em listas">
 ```dsl
 component TaskRow:
   row-between:
@@ -28,11 +28,11 @@ list $TaskRow:
   - Revisar backlog | 22/09
   - Preparar demo | 25/09
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: gerar linhas repetidas com dados que mudam a cada item.
 Por quê: cria coleções extensíveis sem duplicar estrutura manualmente.
 
-<DslPreview title="Props com ações">
+<DocsCodePreview title="Props com ações">
 ```dsl
 component ActionCard:
   card:
@@ -44,11 +44,11 @@ component ActionCard:
 $ActionCard:
   - Configurar integrações | Ajuste APIs conectadas | Integrations
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: parametrizar destinos de botões e textos no mesmo componente.
 Por quê: facilita ajustes futuros do fluxo trocando somente os valores usados nas props.
 
-<DslPreview title="Props com percentuais e tendências">
+<DocsCodePreview title="Props com percentuais e tendências">
 ```dsl
 component MetricCard:
   card:
@@ -64,14 +64,15 @@ grid-3:
   $MetricCard:
     - Satisfação | 92% | +3%
 ```
-</DslPreview>
+</DocsCodePreview>
 Quando usar: atualizar métricas com múltiplos campos sem alterar o layout.
 Por quê: mantém a apresentação das métricas alinhada mesmo com novos dados.
 
 ## Erros comuns (Do/Don’t)
-**Não faça — usar `%prop` não declarado na instância**
-<DslPreview title="❌ Errado — Valor extra sem placeholder">
-```dsl
+<DoDont
+  dont={{
+    title: "Valor extra sem placeholder",
+    code: `
 component HeroBanner:
   card:
     ## %title
@@ -79,38 +80,40 @@ component HeroBanner:
 
 $HeroBanner:
   - Prototipe rápido | Construa telas em minutos | Dashboard
-```
-</DslPreview>
-
-Faça — ajuste a estrutura ou remova o valor excedente
-<DslPreview title="✅ Correto — Props alinhados">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Props alinhados",
+    code: `
 $HeroBanner:
   - Prototipe rápido | Construa telas em minutos
-```
-</DslPreview>
-Por quê: valores extras ficam sem destino, gerando inconsistências na renderização.
-
-**Não faça — reutilizar `%prop` para propósitos diferentes**
-<DslPreview title="❌ Errado — `%title` usado como label e ação">
-```dsl
+    `,
+  }}
+>
+  Por quê: valores extras ficam sem destino, gerando inconsistências na renderização.
+</DoDont>
+<DoDont
+  dont={{
+    title: "`%title` usado como label e ação",
+    code: `
 component QuickLink:
   card:
     ## %title
     @[Abrir %title](%title)
-```
-</DslPreview>
-
-Faça — crie props específicos para cada papel
-<DslPreview title="✅ Correto — Props separados">
-```dsl
+    `,
+  }}
+  do={{
+    title: "Props separados",
+    code: `
 component QuickLink:
   card:
     ## %label
     @[Abrir %label](%action)
-```
-</DslPreview>
-Por quê: separar props mantém clareza semântica e facilita ajustes futuros.
+    `,
+  }}
+>
+  Por quê: separar props mantém clareza semântica e facilita ajustes futuros.
+</DoDont>
 
 ## Referências cruzadas
 
@@ -125,7 +128,7 @@ Por quê: separar props mantém clareza semântica e facilita ajustes futuros.
 - **Component Props + Grid** → dashboards com métricas parametrizadas.
 - **Component Props + Modal** → formularios ou confirmações reaproveitados.
 
-<DslPreview title="Props aplicados em modal reutilizável">
+<DocsCodePreview title="Props aplicados em modal reutilizável">
 ```dsl
 component ConfirmationModal:
   card:
@@ -142,5 +145,5 @@ modal ConfirmInvite:
     - Enviar convite
     - sendInvite
 ```
-</DslPreview>
+</DocsCodePreview>
 Por quê: parametriza título, mensagem e ações mantendo uma única estrutura de modal.
