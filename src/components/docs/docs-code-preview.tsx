@@ -94,7 +94,7 @@ const PanelHeader = ({
   title: string
   action?: ReactNode
 }) => (
-  <div className="flex items-center justify-between border-b border-[var(--border-muted)] bg-[color:rgba(32,34,42,0.72)] px-5 py-2">
+  <div className="flex items-center justify-between  bg-[var(--bg-surface)] px-5 py-2">
     <div className="flex items-center gap-3">
       <span className="inline-flex h-2 w-2 rounded-full bg-[var(--accent)]" />
       <span className="text-[11px]">{title}</span>
@@ -153,7 +153,7 @@ export function DocsCodePreview({
       variant="ghost"
       onClick={handleCopy}
       className={cn(
-        "inline-flex items-center gap-2 rounded-full border border-[var(--border-muted)] bg-[color:rgba(46,48,60,0.72)] px-3 text-xs font-medium text-[var(--fg-secondary)] transition-colors hover:border-[var(--accent)] hover:text-[var(--fg-primary)] focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-main)]",
+        "inline-flex items-center gap-2 rounded-full  bg-[var(--bg-surface)] px-3 text-xs font-medium text-[var(--fg-secondary)] transition-colors hover:border-[var(--accent)] hover:text-[var(--fg-primary)] focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-main)]",
         copied &&
           "border-[var(--accent)] bg-[color:rgba(46,48,60,0.92)] text-[var(--fg-primary)]",
       )}
@@ -176,7 +176,7 @@ export function DocsCodePreview({
     <EditorPanel
       className={cn(
         panelHeightClass,
-        "border-none bg-[var(--bg-main)] shadow-none",
+        " bg-[var(--bg-main)] shadow-none",
       )}
     >
       <PanelHeader title="Proto-Typed" action={copyButton} />
@@ -231,7 +231,7 @@ export function DocsCodePreview({
         </div>
 
         <Tabs defaultValue="editor" className="space-y-4 lg:hidden">
-          <TabsList className="grid grid-cols-2 rounded-full border border-[var(--border-muted)] bg-[color:rgba(32,34,42,0.72)]">
+          <TabsList className="grid grid-cols-2 rounded-full bg-[var(--bg-surface)]">
             <TabsTrigger
               value="editor"
               className="rounded-full text-xs uppercase tracking-[0.24em]"

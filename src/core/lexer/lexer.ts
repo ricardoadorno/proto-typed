@@ -37,6 +37,11 @@ function matchIndentBase(text: string, offset: number, matchedTokens: IToken[], 
       }
 
       const prevIndentLevel = indentStack[indentStack.length - 1] || 0;
+      const nextChar = text[currIndentLevel + offset];
+      if (!nextChar || nextChar === '\n' || nextChar === '\r') {
+      // linha vazia ou só com espaços, ignore
+      return null;
+      }
       if (currIndentLevel > prevIndentLevel && type === "indent") {
           indentStack.push(currIndentLevel);
           return match;

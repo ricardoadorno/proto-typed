@@ -175,12 +175,8 @@ export const useParse = (): UseParseResult => {
       };
       collectedErrors.push(protoError);
       
-      setAst([]);
       setAstResultJson('');
-      setRenderedHtml('');
       setError(errorMessage);
-      setCurrentScreen(null);
-      setMetadata(null);
     } finally {
       // Emit all collected errors to ErrorBus
       if (collectedErrors.length > 0) {
