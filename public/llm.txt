@@ -1,12 +1,83 @@
 # Proto-Typed – Guia de Navegação para LLMs
 
-Use este arquivo como mapa da documentação. Sempre que possível, responda apontando o link correspondente em `https://ricardoadorno.github.io/proto-typed/docs/{slug}` (ou `/docs/{slug}` em ambiente local).
+Use este arquivo como **mapa principal da documentação** e referência de estilo ao criar ou interpretar código na linguagem **Proto-Typed DSL**.  
+Antes de responder ou gerar qualquer código, **siga as diretrizes essenciais abaixo**.  
+Quando algo não for conhecido ou estiver incompleto, **pesquise diretamente no link do slug correspondente em `/docs/{slug}`** antes de inferir.
+
+---
+
+## ⚙️ Diretrizes Essenciais da Linguagem
+
+### 1. Estrutura e Identação
+- A **identação define a hierarquia** — nunca use `{}` ou `end` para delimitar blocos.  
+- Cada nível de aninhamento deve ser feito com **dois espaços** ou **um tab**:
+  ```dsl
+  screen Login:
+    container:
+      > Email
+      ___email: Email{Digite seu e-mail}
+  ```
+- O caractere `:` sempre indica que aquele nó possui conteúdo interno (children).
+
+### 2. Tokens e Sintaxe
+- A linguagem é **declarativa**, não programática.  
+- **Não use** símbolos como `{}`, `=`, `< >`, `;` — eles **não fazem parte da gramática**.  
+- Tudo deve ser **semântico e direto**, descrevendo a interface e não a lógica:
+  ✅ `@secondary[Enviar](submit)`  
+  ❌ `button(type = secondary, label = "Enviar")`
+
+### 3. Semântica de Blocos
+- Blocos são definidos por **prefixos e indentação**, **nunca por atributos**.  
+- Exemplo correto:
+  ```dsl
+  card:
+    # Usuário
+    > Nome: %name
+  ```
+  Exemplo incorreto:
+  ```dsl
+  card(name = "%name")  # ❌ não suportado
+  ```
+
+### 4. Evite Atributos Arbitrários
+- Não use expressões como `text(foo = bar)` ou `label="..."`.  
+- Customizações são declaradas por **tokens próprios da DSL**, não por pares chave-valor.  
+- Exemplo válido:
+  ```dsl
+  ___password: Senha{Digite sua senha}
+  ```
+
+### 5. Layout e Fluxo
+- Cada token de layout (`container:`, `row-center:`, `stack:` etc.) é **canônico** —  
+  ele já representa um conjunto fixo de estilos.  
+- Não use modificadores inline (`row-w50-center-p4`).  
+  Exemplo correto:
+  ```dsl
+  row-center:
+    @primary[Ok](Submit)
+  ```
+
+### 6. Filosofia de Escrita
+- Prefira **clareza à customização extrema**.  
+- O código deve parecer **uma descrição natural de interface**, não um script.  
+- Sempre que possível, busque exemplos nos links abaixo antes de criar algo novo.
+
+---
+
+> 🧩 **Resumo rápido:**  
+> Proto-Typed é indentado, declarativo e sem atributos arbitrários.  
+> Cada linha expressa uma intenção visual e estrutural — não uma instrução de código.  
+> Escreva como quem descreve uma interface, não como quem programa uma.
+
+---
 
 ## Passos rápidos
 
-1. Comece pela página índice `/docs` para contexto geral.
-2. Cada slug listado abaixo possui o conteúdo completo em Markdown/MDX.
-3. Priorize a seção correspondente antes de recorrer a outras fontes.
+1. Comece pela página índice `/docs` para contexto geral.  
+2. Cada slug listado abaixo possui o conteúdo completo em Markdown/MDX.  
+3. Priorize a seção correspondente antes de recorrer a outras fontes externas.
+
+---
 
 ## Índice principal
 
@@ -58,7 +129,10 @@ Use este arquivo como mapa da documentação. Sempre que possível, responda apo
 - [Fluxo com modal](https://ricardoadorno.github.io/proto-typed/docs/modal-flow)
 - [Listagem de cards](https://ricardoadorno.github.io/proto-typed/docs/list-cards)
 
+---
+
 ## Observações rápidas
 
-- Todos os exemplos de código usam blocos ` ```dsl `.
-- Mantenha a resposta focada e referencie explicitamente o slug relevante.
+- Todos os exemplos de código usam blocos ` ```dsl `.  
+- Mantenha a resposta focada, coerente com a DSL, e **referencie explicitamente o slug relevante**.  
+- Se houver dúvida ou incerteza, **pesquise primeiro nos links acima** antes de criar inferências.
