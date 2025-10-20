@@ -26,7 +26,7 @@ type KnownError = {
 
 const knownErrors: KnownError[] = [
   {
-    title: "Erro de renderização incorreta no modo escuro",
+    title: "Erro de Indentação",
     description:
       "Quando existe uma linha em branco é entendido como fim da identação do componente pai, causando falha na renderização correta dos estilos no tema escuro.",
     cause:
