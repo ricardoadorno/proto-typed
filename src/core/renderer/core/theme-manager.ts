@@ -9,7 +9,7 @@ export class CustomPropertiesManager {
   private selectedTheme: Theme;
 
   constructor() {
-    this.selectedTheme = availableThemes.neutral; // Default theme
+    this.selectedTheme = availableThemes.slate; // Default theme
   }
 
   /**
