@@ -1,11 +1,12 @@
 import { AstNode } from '../../types/ast-node';
 import { RenderOptions } from '../../types/render';
 import { ProtoError } from '../../types/errors';
-import { routeManager } from './core/route-manager';
+import { RouteManager, routeManager as defaultRouteManager } from './core/route-manager';
 import { customPropertiesManager } from './core/theme-manager';
 import { resetRenderErrors, getRenderErrors } from './core/node-renderer';
 import { setComponentDefinitions } from './nodes/components.node';
 import { renderAllScreens, renderGlobalElements } from './infrastructure/html-render-helper';
+import { NavigationMediator } from './infrastructure/navigation-mediator';
 
 /**
  * Result of rendering with errors collected
@@ -21,7 +22,11 @@ export interface RenderResult {
  * 
  * @returns Object with html string and collected render errors
  */
-export function astToHtmlStringPreview(ast: AstNode | AstNode[], options: RenderOptions = {}): RenderResult {
+export function astToHtmlStringPreview(
+  ast: AstNode | AstNode[],
+  options: RenderOptions = {},
+  manager: RouteManager = defaultRouteManager
+): RenderResult {
   try {
     // Reset render errors before starting
     resetRenderErrors();
@@ -35,30 +40,33 @@ export function astToHtmlStringPreview(ast: AstNode | AstNode[], options: Render
     customPropertiesManager.processStylesConfig(stylesNodes);
 
     // Process routes through the route manager
-    routeManager.processRoutes(ast, {
+    manager.processRoutes(ast, {
       currentScreen: options.currentScreen || undefined
     });
 
     // Set route context for navigation analysis
-    routeManager.setRouteContext(routeManager.getRouteContext());
+    manager.setRouteContext(manager.getRouteContext());
 
     // Create render context
-    const context = routeManager.createRenderContext('preview', {
+    const context = manager.createRenderContext('preview', {
       currentScreen: options.currentScreen || undefined
     });
 
-    const html = generatePreviewHtml(context);
+    NavigationMediator.setActiveRouteManager(manager);
+    const html = generatePreviewHtml(context, manager);
     
     // Collect render errors after rendering
     const errors = getRenderErrors();
     
     // Clear route context after rendering
-    routeManager.clearRouteContext();
+    manager.clearRouteContext();
+    NavigationMediator.resetRouteManager();
     
     return { html, errors };
   } catch (error: any) {
     // Clear route context on error
-    routeManager.clearRouteContext();
+    manager.clearRouteContext();
+    NavigationMediator.resetRouteManager();
     throw error;
   }
 }
@@ -66,23 +74,23 @@ export function astToHtmlStringPreview(ast: AstNode | AstNode[], options: Render
 /**
  * Generate HTML for preview mode
  */
-function generatePreviewHtml(context: any): string {
+function generatePreviewHtml(context: any, manager: RouteManager): string {
   const { routes } = context;
   
   // Register components with the renderer
-  const componentRoutes = routeManager.getRoutesByType('component');
+  const componentRoutes = manager.getRoutesByType('component');
   const componentNodes = componentRoutes.map(route => route.node);
   setComponentDefinitions(componentNodes);
   
   // Render screens
-  const screenRoutes = routeManager.getScreenRoutes();
+  const screenRoutes = manager.getScreenRoutes();
   const screensHtml = renderAllScreens(
     screenRoutes.map(route => route.node),
     routes.currentScreen
   );
   
   // Render global elements (modals and drawers)
-  const globalElementsHtml = renderGlobalElements(routeManager);
+  const globalElementsHtml = renderGlobalElements(manager);
   
   // Generate complete CSS variables for scoped styling (theme + custom)
   const allVariables = customPropertiesManager.generateAllCssVariables(true);

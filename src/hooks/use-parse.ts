@@ -1,12 +1,13 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { parseAndBuildAst } from '../core/parser/parse-and-build-ast';
 import { AstNode } from '../types/ast-node';
 import { astToHtmlStringPreview } from '../core/renderer/ast-to-html-string-preview';
-import { routeManagerGateway } from '../core/renderer/infrastructure/route-manager-gateway';
+import { createRouteManagerGateway } from '../core/renderer/infrastructure/route-manager-gateway';
 import { RouteMetadata } from '../types/routing';
 import { ErrorBus } from '../core/error-bus';
 import type { ProtoError } from '../types/errors';
 import { ERROR_CODES, sanitizeErrorMessage } from '../types/errors';
+import { RouteManager } from '../core/renderer/core/route-manager';
 
 interface UseParseResult {
   ast: AstNode[] | AstNode;
@@ -22,6 +23,12 @@ interface UseParseResult {
 }
 
 export const useParse = (): UseParseResult => {
+  const localRouteManager = useMemo(() => new RouteManager(), []);
+  const routeManagerGateway = useMemo(
+    () => createRouteManagerGateway(localRouteManager),
+    [localRouteManager]
+  );
+
   const [ast, setAst] = useState<AstNode[] | AstNode>([]);
   const [astResultJson, setAstResultJson] = useState<string>('');
   const [renderedHtml, setRenderedHtml] = useState<string>('');
@@ -37,6 +44,8 @@ export const useParse = (): UseParseResult => {
       setRenderedHtml('');
       setError(null);
       setCurrentScreen(null);
+      routeManagerGateway.initialize([] as AstNode[]);
+      routeManagerGateway.resetNavigation();
       // Clear ErrorBus for empty input
       ErrorBus.get().clear();
       // Set empty metadata for case zero
@@ -95,7 +104,11 @@ export const useParse = (): UseParseResult => {
       }
       
       // Generate rendered HTML with the determined screen
-      const renderResult = astToHtmlStringPreview(parsedAst, { currentScreen: newCurrentScreen || undefined });
+      const renderResult = astToHtmlStringPreview(
+        parsedAst,
+        { currentScreen: newCurrentScreen || undefined },
+        localRouteManager
+      );
       
       // Extract render errors (if any)
       if (renderResult.errors && renderResult.errors.length > 0) {
@@ -106,7 +119,11 @@ export const useParse = (): UseParseResult => {
       routeManagerGateway.setHandlers({
         onScreenNavigation: (screenName: string) => {
           // Re-render HTML for the new current screen
-            const updatedRenderResult = astToHtmlStringPreview(parsedAst, { currentScreen: screenName });
+            const updatedRenderResult = astToHtmlStringPreview(
+              parsedAst,
+              { currentScreen: screenName },
+              localRouteManager
+            );
             setRenderedHtml(updatedRenderResult.html);
             setCurrentScreen(screenName);
             
@@ -116,13 +133,16 @@ export const useParse = (): UseParseResult => {
             }
             
             // Refresh metadata (includes history and current screen info)
-            const updatedMetadata = routeManagerGateway.getRouteMetadata();
-            setMetadata(updatedMetadata);
+            setMetadata(routeManagerGateway.getRouteMetadata());
         },
         onBackNavigation: () => {
           const meta = routeManagerGateway.getRouteMetadata();
           const current = meta.currentScreen || null;
-          const updatedRenderResult = astToHtmlStringPreview(parsedAst, { currentScreen: current || undefined });
+          const updatedRenderResult = astToHtmlStringPreview(
+            parsedAst,
+            { currentScreen: current || undefined },
+            localRouteManager
+          );
           setRenderedHtml(updatedRenderResult.html);
           setCurrentScreen(current);
           
@@ -169,12 +189,11 @@ export const useParse = (): UseParseResult => {
       
       setIsLoading(false);
     }
-  }, [currentScreen]);
+  }, [currentScreen, routeManagerGateway, localRouteManager]);
 
   const navigateToScreen = (screenName: string) => {
     routeManagerGateway.navigateToScreen(screenName);
-    const updatedMetadata = routeManagerGateway.getRouteMetadata();
-    setMetadata(updatedMetadata);
+    setMetadata(routeManagerGateway.getRouteMetadata());
     setCurrentScreen(screenName);
   }
 

@@ -2,14 +2,27 @@
  * Navigation Mediator
  * Mediates between route manager and node renderer for navigation-related operations
  */
-import { routeManager } from '../core/route-manager';
+import { RouteManager, routeManager as defaultRouteManager } from '../core/route-manager';
 import { RouteContext, NavigationTarget } from '../../../types/routing';
 
 /**
  * Navigation Mediator - Central hub for navigation analysis and attribute generation
  */
 export class NavigationMediator {
-  
+  private static activeRouteManager: RouteManager = defaultRouteManager;
+
+  static setActiveRouteManager(manager: RouteManager) {
+    this.activeRouteManager = manager;
+  }
+
+  static resetRouteManager() {
+    this.activeRouteManager = defaultRouteManager;
+  }
+
+  private static getRouteManager(): RouteManager {
+    return this.activeRouteManager ?? defaultRouteManager;
+  }
+
   /**
    * Analyze a navigation target to determine its type and validity
    */
@@ -54,7 +67,7 @@ export class NavigationMediator {
    * Generate href attribute value for links based on navigation target analysis
    */
   static generateHrefValue(target: string | undefined, routes?: RouteContext): string {
-    const routeContext = routes || routeManager.getCurrentRouteContext();
+    const routeContext = routes || this.getRouteManager().getCurrentRouteContext();
     const navTarget = this.analyzeNavigationTarget(target, routeContext);
     
     if (!navTarget.isValid) {
@@ -78,7 +91,7 @@ export class NavigationMediator {
    * Generate navigation data attributes for HTML elements
    */
   static generateNavDataAttributes(target: string | undefined, routes?: RouteContext): Record<string, string> {
-    const routeContext = routes || routeManager.getCurrentRouteContext();
+    const routeContext = routes || this.getRouteManager().getCurrentRouteContext();
     const navTarget = this.analyzeNavigationTarget(target, routeContext);
     
     if (!navTarget.isValid) {
@@ -106,7 +119,7 @@ export class NavigationMediator {
    * Generate complete navigation attributes string for HTML elements
    */
   static generateNavigationAttributes(target: string | undefined, routes?: RouteContext): string {
-    const routeContext = routes || routeManager.getCurrentRouteContext();
+    const routeContext = routes || this.getRouteManager().getCurrentRouteContext();
     const attributes = this.generateNavDataAttributes(target, routeContext);
     
     return this.attributesToString(attributes);
@@ -116,7 +129,7 @@ export class NavigationMediator {
    * Generate href attribute string for links
    */
   static generateHrefAttribute(target: string | undefined, routes?: RouteContext): string {
-    const routeContext = routes || routeManager.getCurrentRouteContext();
+    const routeContext = routes || this.getRouteManager().getCurrentRouteContext();
     const hrefValue = this.generateHrefValue(target, routeContext);
     
     return `href="${hrefValue}"`;
@@ -126,7 +139,7 @@ export class NavigationMediator {
    * Get current route context from route manager
    */
   static getCurrentRouteContext(): RouteContext {
-    const context = routeManager.getCurrentRouteContext();
+    const context = this.getRouteManager().getCurrentRouteContext();
     if (!context) {
       return { screens: [], modals: [], drawers: [], components: [] };
     }
@@ -137,7 +150,7 @@ export class NavigationMediator {
    * Check if a target is a valid navigation target
    */
   static isValidNavigationTarget(target: string | undefined, routes?: RouteContext): boolean {
-    const routeContext = routes || routeManager.getCurrentRouteContext();
+    const routeContext = routes || this.getRouteManager().getCurrentRouteContext();
     const navTarget = this.analyzeNavigationTarget(target, routeContext);
     return navTarget.isValid;
   }
