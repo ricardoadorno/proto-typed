@@ -9,7 +9,7 @@ export function renderInput(node: AstNode): string {
   let inputHtml = '';
   
   if (inputProps?.label) {
-    inputHtml += `<label class="${elementStyles.label}" style="${getLabelInlineStyles()}">${inputProps.label}:${inputProps.flags?.required ? ' <span style="color: var(--destructive);">*</span>' : ''}\n`;
+    inputHtml += `<label class="${elementStyles.label}" style="${getLabelInlineStyles()}">${inputProps.label}:}\n`;
   }
   
   if(inputProps?.kind === 'textarea') {
@@ -53,7 +53,7 @@ export function renderSelect(node: AstNode): string {
   let selectHtml = '';
   
   if (selectProps?.label) {
-    selectHtml += `<label class="${elementStyles.label}" style="${getLabelInlineStyles()}">${selectProps.label}:${selectProps.required ? ' <span style="color: var(--destructive);">*</span>' : ''}\n`;
+    selectHtml += `<label class="${elementStyles.label}" style="${getLabelInlineStyles()}">${selectProps.label}:}\n`;
   }
   
   const selectOptions = (selectProps?.attributes?.options || [])

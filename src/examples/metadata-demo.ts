@@ -37,7 +37,7 @@ modal SettingsModal:
       @[Save](close)
       @[Cancel](close)
 
-  list:
+  
     - [Home](Home)Home Page
     - [Profile](Profile)User Profile  
     - [Settings](SettingsModal)Application Settings

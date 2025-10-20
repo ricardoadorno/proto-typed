@@ -7,7 +7,7 @@ screen Dashboard:
     card:
         ## Analytics
         > This widget shows analytics data
-        list:
+        
           - Total Users: 1,245
           - Active Sessions: 423
           - Conversion Rate: 8.5%
@@ -16,7 +16,7 @@ screen Dashboard:
     card:
         ## Reports
         > View and download reports
-        list:
+        
           - Monthly Summary
           - User Activity
           - Performance Metrics
@@ -25,11 +25,10 @@ screen Dashboard:
         
   card:
     ## Recent Activity
-    list:
-      - Updated profile information
-      - Changed account settings
-      - Added new dashboard widget
-      - Completed onboarding process
+    - Updated profile information
+    - Changed account settings
+    - Added new dashboard widget
+    - Completed onboarding process
   
   row-between:
     card:

@@ -30,6 +30,7 @@ import {
   Styles, CssProperty
 } from "../lexer/tokens";
 import { Indent, Outdent } from "../lexer/lexer";
+import { ComponentHeader } from "../lexer/tokens/components.tokens";
 
 // Parser class that defines the grammar rules
 export class UiDslParser extends CstParser {
@@ -300,7 +301,7 @@ export class UiDslParser extends CstParser {
     this.CONSUME(List);
     // Check if there's a component name after 'list'
     this.OPTION(() => {
-      this.CONSUME(ComponentInstanceWithProps, { LABEL: "componentName" });
+      this.CONSUME(ComponentHeader, { LABEL: "componentName" });
     });
     this.OPTION2(() => {
       this.CONSUME(Indent);

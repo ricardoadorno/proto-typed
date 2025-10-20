@@ -9,7 +9,7 @@ export const testStructuralTokens = `screen TestStructural:
   > Testing separator:
   ---
   
-  > Testing unordered list:
+  > Testing unordered 
   - First bullet point
   - Second bullet point
   - Third bullet point

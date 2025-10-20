@@ -34,7 +34,7 @@ screen Mob:
   card:
     ## Features
     > Explore our amazing features
-    list:
+    
       - Real-time notifications
       - Offline support
       - Cloud sync
@@ -137,7 +137,7 @@ screen SettingsScreen:
 
   card:
     ## Account
-    list:
+    
       - [Profile]{👤}(ProfileScreen)
       - [Privacy]{🔒}(ProfileScreen)
       - [Security]{🛡️}(ProfileScreen)
@@ -152,7 +152,7 @@ screen SettingsScreen:
     
   card:
     ## Support
-    list:
+    
       - [Help Center]{❓}(MessagesScreen)
       - [Contact Us]{📧}(MessagesScreen)
       - [Feedback]{💭}(MessagesScreen)

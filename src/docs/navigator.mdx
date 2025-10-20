@@ -23,14 +23,13 @@ screen Home:
 screen Tasks:
   container:
     # Tarefas
-    list:
-      - Revisar backlog
-      - Preparar demo
+    - Revisar backlog
+    - Preparar demo
 
   navigator:
-    - i-Home| Home
-    - i-List Tarefas | Tasks
-    - i-Settings| Settings
+    - i-Home
+    - i-List
+    - i-Settings
 ```
 </DocsCodePreview>
 Por quê: replica o mesmo menu em cada tela do grupo para garantir consistência.
@@ -139,7 +138,6 @@ screen Tasks:
   dont={{
     title: "Lista usada como menu",
     code: `
-list:
   - Dashboard
   - Tarefas
   - Configurações
@@ -176,9 +174,8 @@ navigator:
 screen Projects:
   container:
     # Projetos
-    list:
-      - Novo site
-      - Aplicativo mobile
+    - Novo site
+    - Aplicativo mobile
 
   navigator:
     - Projetos | Projects

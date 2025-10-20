@@ -8,7 +8,7 @@ Conhecer os anti-padrões mais recorrentes evita retrabalho, reduz bugs de naveg
 ```dsl
 card:
   ## Próximos passos
-  list:
+  
     - Revisar backlog
     - Preparar release
   row-end:
@@ -16,7 +16,7 @@ card:
     @[Abrir planejamento](Planning)
 ```
 </DocsCodePreview>
-Por quê: destaca que `list:` abriga apenas texto, enquanto ações ficam em blocos dedicados como `row-end`.
+Por quê: destaca que `` abriga apenas texto, enquanto ações ficam em blocos dedicados como `row-end`.
 
 ## Padrões de uso
 <DocsCodePreview title="Destacar ações destrutivas">
@@ -67,7 +67,7 @@ Por quê: o botão de fechar garante retorno imediato ao contexto original.
     code: `
 card:
   ## Tarefas
-  list:
+  
     - Revisar backlog #[Abrir](Backlog)
     `,
   }}
@@ -76,14 +76,14 @@ card:
     code: `
 card:
   ## Tarefas
-  list:
+  
     - Revisar backlog
   row-end:
     @[Abrir backlog](Backlog)
     `,
   }}
 >
-  Por quê: `list:` aceita apenas texto; botões e links devem ficar em rows ou navigator.
+  Por quê: `` aceita apenas texto; botões e links devem ficar em rows ou navigator.
 </DoDont>
 <DoDont
   dont={{
@@ -149,7 +149,7 @@ modal ConfirmAction:
 ```dsl
 card:
   ## Antes de publicar
-  list:
+  
     - Conferir lista sem ações inline.
     - Garantir overlays com botões de fechamento.
     - Verificar consistência dos destinos de navegação.

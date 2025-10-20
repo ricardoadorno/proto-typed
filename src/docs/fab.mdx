@@ -13,7 +13,7 @@ O FAB mantém uma ação global sempre disponível, flutuando sobre o conteúdo 
 screen Tasks:
   container:
     # Tarefas
-    list:
+    
       - Revisar backlog
       - Preparar release
 
@@ -23,26 +23,17 @@ screen Tasks:
 </DocsCodePreview>
 Por quê: mantém a criação de tarefas ao alcance sem competir com o conteúdo da tela.
 
-## Variantes
-<DocsCodePreview title="FAB com múltiplas ações">
-```dsl
-fab:
-  - i-Plus | TaskForm
-  - i-Filter | FilterDrawer
-```
-</DocsCodePreview>
-Quando usar: oferecer atalho principal e opções secundárias relacionadas.
-Por quê: agrupa ações de mesmo contexto sem sobrecarregar o FAB.
-
 <DocsCodePreview title="FAB acionando modal de confirmação">
 ```dsl
-fab:
-  - i-Check | ConfirmRelease
+screen Default:
+  container:
+    # Role para baixa para ver
+    fab:
+      - i-Check | ConfirmRelease
 
 modal ConfirmRelease:
-  card:
     ## Publicar release?
-    > Confirme para notificar o time.
+    # Confirme para notificar o time.
     row-end:
       @ghost[Cancelar](close)
       @success[Publicar](publishRelease)
@@ -53,8 +44,11 @@ Por quê: evita execuções irreversíveis ao intercalar feedback imediato.
 
 <DocsCodePreview title="FAB abrindo drawer contextual">
 ```dsl
-fab:
-  - i-Filter | FilterDrawer
+screen Default:
+  container:
+    > Role para baixa para ver
+    fab:
+      - i-Filter | FilterDrawer
 
 drawer FilterDrawer:
   container:
@@ -73,20 +67,6 @@ Por quê: o drawer permite ajustes inline sem mudar de tela.
 - **FAB + Drawer** — abre filtros ou detalhes sem redirecionar.
 - **FAB + Modal** — valida comandos críticos antes de prosseguir.
 
-<DocsCodePreview title="Lista com FAB de criação">
-```dsl
-screen Leads:
-  container:
-    # Leads recentes
-    list:
-      - Sofia Lima | Marketing
-      - Gilberto Ramos | Vendas
-
-  fab:
-    - i-Plus | LeadForm
-```
-</DocsCodePreview>
-Por quê: a tela exibe dados passivamente e o FAB garante criação rápida.
 
 ## Slots & Props
 | Nome | Tipo | Padrão | Descrição | Obrigatório |

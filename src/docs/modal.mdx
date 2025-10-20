@@ -11,12 +11,11 @@ Modais sobrepõem a tela atual para confirmar ações, exibir mensagens crítica
 <DocsCodePreview title="Modal de confirmação">
 ```dsl
 modal ConfirmDelete:
-  card:
-    # Confirmar exclusão
-    > Esta ação não pode ser desfeita.
-    row-end:
-      @ghost[Cancelar](close)
-      @destructive[Excluir agora](deleteItem)
+  # Confirmar exclusão
+  > Esta ação não pode ser desfeita.
+  row-end:
+    @ghost[Cancelar](close)
+    @destructive[Excluir agora](deleteItem)
 
 screen DangerZone:
   container:
@@ -29,8 +28,11 @@ Por quê: bloqueia o fluxo até que a pessoa confirme ou cancele a operação se
 ## Variantes
 <DocsCodePreview title="Modal com formulário curto">
 ```dsl
+screen Default:
+  container:
+    @[Convidar](InviteMember)
+
 modal InviteMember:
-  card:
     ## Convidar nova pessoa
     ___email: E-mail{nome@empresa.com} | required
     row-end:
@@ -46,7 +48,7 @@ Por quê: mantém o formulário rápido e focado na tarefa atômica.
 modal ReleaseNotes:
   card:
     ## Novidades da versão
-    list:
+    
       - Novo dashboard de métricas
       - Melhorias no fluxo de onboarding
     row-end:
@@ -55,25 +57,6 @@ modal ReleaseNotes:
 </DocsCodePreview>
 Quando usar: comunicar atualizações ou avisos breves com confirmação explícita.
 Por quê: garante leitura obrigatória antes de fechar a mensagem.
-
-<DocsCodePreview title="Modal encadeado a um drawer">
-```dsl
-drawer BillingDrawer:
-  card:
-    ## Atualizar plano
-    @[Avançar](ConfirmBilling)
-
-modal ConfirmBilling:
-  card:
-    ## Confirmar atualização
-    > A alteração será aplicada imediatamente.
-    row-end:
-      @ghost[Voltar](close)
-      @success[Confirmar](applyBilling)
-```
-</DocsCodePreview>
-Quando usar: complementar outro overlay com uma confirmação final.
-Por quê: separa ajustes e confirmação para reduzir erros em alterações críticas.
 
 ## Composição (usando com outros)
 - **Modal + Button** — principal acionador para confirmações.

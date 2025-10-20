@@ -21,7 +21,7 @@ import {
   Input,
   RadioOption, Checkbox 
 } from './inputs.tokens';
-import { Component, ComponentInstance, ComponentInstanceWithProps, PropVariable } from './components.tokens';
+import { Component, ComponentHeader, ComponentInstance, ComponentInstanceWithProps, PropVariable } from './components.tokens';
 import { Styles, CssProperty } from './styles.tokens';
 
 // Export all tokens - Organized by Category
@@ -130,6 +130,7 @@ export const allTokens = [
   CssProperty,
   Screen,
   Component,
+  ComponentHeader,
   Modal,
   Drawer,
   ComponentInstanceWithProps, // Must come before ComponentInstance for correct matching

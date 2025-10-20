@@ -16,10 +16,9 @@ LLMs costumam inserir `-` para listar filhos de qualquer bloco, mas a DSL só ac
 ```dsl
 card:
   ## Tarefas da semana
-  list:
-    - Revisar backlog
-    - Preparar demo
-    - Atualizar documentação
+  - Revisar backlog
+  - Preparar demo
+  - Atualizar documentação
   row-end:
     @[Criar nova tarefa](TaskForm)
     @ghost[Ver calendário](Calendar)
@@ -30,10 +29,9 @@ Por quê: mantém itens exclusivamente textuais e posiciona ações em bloco ded
 ## Variantes
 <DocsCodePreview title="Lista simples">
 ```dsl
-list:
-  - Configurar métricas
-  - Validar integrações
-  - Revisar deploy
+- Configurar métricas
+- Validar integrações
+- Revisar deploy
 ```
 </DocsCodePreview>
 Quando usar: enumerar itens curtos sem propriedades adicionais.
@@ -41,34 +39,22 @@ Por quê: apresenta conteúdos simples sem exigir componentes complexos.
 
 <DocsCodePreview title="Lista baseada em componente">
 ```dsl
+screen Todo:
+  container:
+    list $TaskRow:
+      - Atualizar roadmap | Até 22/09 | show:roadmap
+      - Revisar backlog | Até 24/09 | show:backlog
+
 component TaskRow:
   row-between:
     stack-tight:
       > %title
       >>> %due
-    @outline-sm[Detalhar](%action)
-
-list $TaskRow:
-  - Atualizar roadmap | Até 22/09 | show:roadmap
-  - Revisar backlog | Até 24/09 | show:backlog
+    @outline[Detalhar](%action)
 ```
 </DocsCodePreview>
 Quando usar: renderizar itens repetidos com múltiplos campos seguindo a mesma estrutura.
 Por quê: evita duplicação de markup enquanto mantém layout consistente.
-
-<DocsCodePreview title="Lista compacta em drawer">
-```dsl
-drawer QuickTips:
-  container:
-    # Dicas rápidas
-    list:
-      - Use filtros por período para refinar métricas.
-      - Combine stack e card para formular layouts.
-      - Consulte o guia de componentes antes do handoff.
-```
-</DocsCodePreview>
-Quando usar: oferecer notas rápidas sem ocupar muito espaço.
-Por quê: o drawer traz lembretes sucintos preservando a área principal.
 
 ## Composição (usando com outros)
 - **List + Card** — agrupa contexto e mantém itens alinhados.
@@ -77,17 +63,19 @@ Por quê: o drawer traz lembretes sucintos preservando a área principal.
 
 <DocsCodePreview title="Lista com componente reutilizável">
 ```dsl
-component MetricItem:
-  row-between:
-    > %label
-    >> %value
+screen Metrics:
+  container:
+    card:
+      ## Indicadores
+      list $MetricItem:
+        - Leads captados | 1.240
+        - Conversões | 134
+        - Receita | R$ 87K
 
-card:
-  ## Indicadores
-  list $MetricItem:
-    - Leads captados | 1.240
-    - Conversões | 134
-    - Receita | R$ 87K
+component MetricItem:
+    row-between:
+      > %label
+      >> %value
 ```
 </DocsCodePreview>
 Por quê: mantém consistência na apresentação de métricas recorrentes.
@@ -95,7 +83,7 @@ Por quê: mantém consistência na apresentação de métricas recorrentes.
 ## Slots & Props
 | Nome | Tipo | Padrão | Descrição | Obrigatório |
 | --- | --- | --- | --- | --- |
-| `list` | bloco | — | Renderiza itens textuais com marcador `-`. | Sim |
+| `-` | bloco | — | Renderiza itens textuais com marcador `-`. | Sim |
 | `list $Componente` | bloco | — | Usa componente previamente declarado para cada linha. | Não |
 | `itens` | texto ou dados separados por `|` | — | Dados passados para cada item ou componente. | Sim |
 | `%props` | interpolação | — | Variáveis dentro do componente associado à lista. | Não |
@@ -103,16 +91,16 @@ Por quê: mantém consistência na apresentação de métricas recorrentes.
 ## Erros comuns (Do/Don’t)
 <DoDont
   dont={{
-    title: "Ações em `list:`",
+    title: "Ações em ``",
     code: `
-list:
+
   - Revisar backlog @[Editar](TaskForm)
     `,
   }}
   do={{
     title: "Ações separadas",
     code: `
-list:
+
   - Revisar backlog
   - Preparar demo
 row-end:
@@ -126,7 +114,7 @@ row-end:
   dont={{
     title: "Pipes sem `list $Componente`",
     code: `
-list:
+
   - Plano Pro | R$ 89
     `,
   }}
@@ -159,15 +147,4 @@ list $PlanRow:
 - **List + Component Definition** → coleções ricas baseadas em dados.
 - **List + Drawer** → notas rápidas sem navegar de tela.
 
-<DocsCodePreview title="Lista com ações estruturadas">
-```dsl
-card:
-  ## Próximos passos
-  list:
-    - Reunir métricas da equipe
-    - Validar hipóteses com o time
-  row-end:
-    @[Abrir planejamento](Planning)
-```
-</DocsCodePreview>
-Por quê: separa itens informativos de ações, mantendo o padrão recomendado.
+
