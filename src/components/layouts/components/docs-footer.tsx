@@ -8,32 +8,20 @@ const footerColumns = [
     title: "Comece rápido",
     links: [
       { label: "Introdução", href: "/docs/getting-started" },
-      { label: "Filosofia do proto-typed", href: "/docs/principles" },
-      // { label: "Roadmap", href: "/changelog" },
+      { label: "Filosofia do proto-typed", href: "/principles" },
     ],
   },
   {
     title: "Explorar",
     links: [
       { label: "Playground", href: "/playground" },
-      // { label: "Templates", href: "/templates" },
-      // { label: "Componentes", href: "/docs/components" },
+      { label: "Erros Conhecidos", href: "/known-errors" },
     ],
   },
-  // {
-  //   title: "Recursos",
-  //   links: [
-  //     { label: "Design Tokens", href: "/docs/design-tokens" },
-  //     { label: "Guia de DSL", href: "/docs/dsl" },
-  //     { label: "Exemplos", href: "/docs/examples" },
-  //   ],
-  // },
   {
     title: "Comunidade",
     links: [
       { label: "GitHub", href: "https://github.com/ricardoadorno/proto-typed" },
-      // { label: "Discord", href: "https://discord.gg/" },
-      // { label: "Status", href: "/status" },
     ],
   },
 ]
@@ -83,7 +71,7 @@ export function DocsFooter() {
             <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-[#22c55e]" aria-hidden />
           </span>
           <Link
-            href={("/docs/changelog")}
+            href={("/changelog")}
             className="text-[10px] tracking-[0.28em] text-[var(--fg-secondary)] transition-colors hover:text-[var(--accent-light)]"
           >
             Changelog
