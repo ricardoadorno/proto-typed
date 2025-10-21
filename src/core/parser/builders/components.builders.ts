@@ -34,46 +34,62 @@ export function buildComponent(ctx: Context, visitor: any) {
 
 /**
  * Build component instance element from context
+ * Handles all variations:
+ * - $Foo (simple)
+ * - $Foo: bar | zir (inline props)
+ * - $Foo:\n  - bar | zir (list props)
  */
-export function buildComponentInstanceElement(ctx: Context) {
-  // Handle ComponentInstanceWithProps or ComponentInstance
-  if (ctx.ComponentInstanceWithProps) {
-    const instanceText = ctx.ComponentInstanceWithProps[0].image;
-    // Pattern: $ComponentName: prop1 | prop2 | prop3
-    const match = instanceText.match(/\$([^\s\n\r:]+):\s*(.+)/);
-    
-    if (match) {
-      const componentName = match[1];
-      const propsString = match[2].trim();
-      
-      // Split props by | and clean them up
-      const propsList = propsString.split('|').map((prop: string) => prop.trim()).filter((prop: string) => prop.length > 0);
-      
-      return {
-        type: "ComponentInstanceWithProps",
-        id: "", // ID will be generated later
-        props: { componentName, props: propsList },
-        children: []
-      };
-    }
-  }
+export function buildComponentInstanceElement(ctx: Context, visitor: any) {
+  let componentName = "";
+  let templateChildren: any[] = [];
   
+  // Extract component name from ComponentInstance token
   if (ctx.ComponentInstance) {
     const instanceText = ctx.ComponentInstance[0].image;
-    // Pattern: $ComponentName
     const match = instanceText.match(/\$([^\s\n\r:]+)/);
-    
     if (match) {
-      const componentName = match[1];
-      
-      return {
-        type: "ComponentInstance",
-        id: "", // ID will be generated later
-        props: { componentName },
-        children: []
-      };
+      componentName = match[1];
     }
   }
   
-  return null;
+  // Handle inline props: $Foo: bar | zir
+  if (ctx.inlineProps && ctx.inlineProps.length > 0) {
+    const propsText = ctx.inlineProps.map((token: any) => token.image).join(' ');
+    const propsList = propsText.split('|').map((prop: string) => prop.trim()).filter((prop: string) => prop.length > 0);
+    
+    templateChildren = propsList.map((prop: string) => ({
+      type: "PropValue",
+      props: { text: prop }
+    }));
+  }
+  // Handle list props: $Foo:\n  - bar | zir
+  else if (ctx.UnorderedListItem && ctx.UnorderedListItem.length > 0) {
+    // Each list item can have multiple props separated by |
+    ctx.UnorderedListItem.forEach((item: any) => {
+      const itemText = item.image;
+      // Remove leading dash and space: "- text" -> "text"
+      const text = itemText.replace(/^-\s+/, '');
+      
+      // Split by | to get multiple props from one line
+      const props = text.split('|').map((prop: string) => prop.trim()).filter((prop: string) => prop.length > 0);
+      
+      // Add each prop as a separate PropValue
+      props.forEach((prop: string) => {
+        templateChildren.push({
+          type: "PropValue",
+          props: { text: prop }
+        });
+      });
+    });
+  }
+  
+  return {
+    type: "ComponentInstance",
+    id: "", // ID will be generated later
+    props: { 
+      componentName,
+      ...(templateChildren.length > 0 && { templateChildren })
+    },
+    children: []
+  };
 }

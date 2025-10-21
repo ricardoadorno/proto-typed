@@ -96,7 +96,18 @@ export function renderComponentInstance(node: AstNode, context?: string, nodeRen
   }
   
   const componentName = (node.props as any)?.componentName;
-  const propValues: string[] = (node.props as any)?.props || [];
+  const templateChildren = (node.props as any)?.templateChildren || [];
+  
+  // Convert templateChildren to propValues for backward compatibility
+  // templateChildren can be PropValue nodes or UnorderedListItem nodes
+  const propValues: string[] = templateChildren.map((child: any) => {
+    if (child.type === 'PropValue') {
+      return child.props?.text || '';
+    } else if (child.type === 'UnorderedListItem') {
+      return child.props?.text || '';
+    }
+    return '';
+  }).filter((text: string) => text.length > 0);
   
   if (!componentName) {
     console.warn('Component instance missing componentName');

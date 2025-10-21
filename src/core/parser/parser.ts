@@ -16,6 +16,7 @@ import {
   ContainerNarrow, ContainerWide, ContainerFull, Container,
   Stack, StackTight, StackLoose, StackFlush,
   RowStart, RowCenter, RowBetween, RowEnd,
+  Col,
   Grid2, Grid3, Grid4, GridAuto,
   Card, CardCompact, CardFeature,
   Header, Sidebar,
@@ -25,12 +26,11 @@ import {
   Input,
   RadioOption, Checkbox,
   // Components
-  Component, ComponentInstance, ComponentInstanceWithProps,
+  Component, ComponentInstance,
   // Styles
   Styles, CssProperty
 } from "../lexer/tokens";
 import { Indent, Outdent } from "../lexer/lexer";
-import { ComponentHeader } from "../lexer/tokens/components.tokens";
 
 // Parser class that defines the grammar rules
 export class UiDslParser extends CstParser {
@@ -168,13 +168,33 @@ export class UiDslParser extends CstParser {
     this.consumeIndentedElements();
   });
 
-  // Component instance rule for $ComponentName or $ComponentName: prop1 | prop2
+  // Component instance rule for $ComponentName with optional props
   componentInstanceElement = this.RULE("componentInstanceElement", () => {
-    this.OR([
-      { ALT: () => this.CONSUME(ComponentInstanceWithProps) },
-      { ALT: () => this.CONSUME(ComponentInstance) }
-    ]);
+    this.CONSUME(ComponentInstance);
+    
+    // Optional: : followed by inline props or indented list
+    this.OPTION(() => {
+      this.CONSUME(Colon);
+      // Either consume rest of line as identifier (inline props) OR indented list
+      this.OR([
+        // Inline props: $Foo: bar | zir
+        { ALT: () => this.CONSUME(Identifier, { LABEL: "inlineProps" }) },
+        // Indented list: $Foo:\n  - bar\n  - zir
+        { ALT: () => {
+          this.OPTION2(() => {
+            this.CONSUME(Indent);
+            this.AT_LEAST_ONE(() => {
+              this.CONSUME(UnorderedListItem);
+            });
+            this.OPTION3(() => {
+              this.CONSUME(Outdent);
+            });
+          });
+        }}
+      ]);
+    });
   });
+
 
   // ===== MAIN ELEMENT DISPATCHER =====
 
@@ -188,10 +208,11 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.imageElement) },
       { ALT: () => this.SUBRULE(this.headingElement) },
       { ALT: () => this.SUBRULE(this.textElement) },
+      // Structures (before layouts for proper precedence)
+      { ALT: () => this.SUBRULE(this.listElement) },
       // Canonical Layouts
       { ALT: () => this.SUBRULE(this.layoutElement) },
-      // Structures
-      { ALT: () => this.SUBRULE(this.listElement) },
+      // Other Structures
       { ALT: () => this.SUBRULE(this.navigatorElement) },
       { ALT: () => this.SUBRULE(this.unorderedListElement) },
       { ALT: () => this.SUBRULE(this.fabElement) },
@@ -279,6 +300,7 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.CONSUME(RowCenter) },
       { ALT: () => this.CONSUME(RowBetween) },
       { ALT: () => this.CONSUME(RowEnd) },
+      { ALT: () => this.CONSUME(Col) },
       // Grids
       { ALT: () => this.CONSUME(Grid2) },
       { ALT: () => this.CONSUME(Grid3) },
@@ -297,19 +319,20 @@ export class UiDslParser extends CstParser {
 
   // ===== STRUCTURE ELEMENT RULES =====
 
+  // List with component template: list $ComponentName:
   listElement = this.RULE("listElement", () => {
     this.CONSUME(List);
-    // Check if there's a component name after 'list'
+    this.CONSUME(ComponentInstance);
     this.OPTION(() => {
-      this.CONSUME(ComponentHeader, { LABEL: "componentName" });
-    });
-    this.OPTION2(() => {
-      this.CONSUME(Indent);
-      this.AT_LEAST_ONE(() => {
-        this.CONSUME(UnorderedListItem);
-      });
-      this.OPTION3(() => {
-        this.CONSUME(Outdent);
+      this.CONSUME(Colon);
+      this.OPTION2(() => {
+        this.CONSUME(Indent);
+        this.AT_LEAST_ONE(() => {
+          this.CONSUME(UnorderedListItem);
+        });
+        this.OPTION3(() => {
+          this.CONSUME(Outdent);
+        });
       });
     });
   });

@@ -88,6 +88,13 @@ export const RowEnd = createToken({
   label: "row-end"
 });
 
+// Column Layout
+export const Col = createToken({ 
+  name: "Col", 
+  pattern: /col/,
+  label: "col"
+});
+
 // Grid Layouts
 export const Grid2 = createToken({ 
   name: "Grid2", 

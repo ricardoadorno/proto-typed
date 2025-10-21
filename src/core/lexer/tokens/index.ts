@@ -12,6 +12,7 @@ import {
   ContainerNarrow, ContainerWide, ContainerFull, Container,
   Stack, StackTight, StackLoose, StackFlush,
   RowStart, RowCenter, RowBetween, RowEnd,
+  Col,
   Grid2, Grid3, Grid4, GridAuto,
   Card, CardCompact, CardFeature,
   Header, Sidebar,
@@ -21,7 +22,7 @@ import {
   Input,
   RadioOption, Checkbox 
 } from './inputs.tokens';
-import { Component, ComponentHeader, ComponentInstance, ComponentInstanceWithProps, PropVariable } from './components.tokens';
+import { Component, ComponentInstance, PropVariable } from './components.tokens';
 import { Styles, CssProperty } from './styles.tokens';
 
 // Export all tokens - Organized by Category
@@ -82,6 +83,7 @@ export {
   RowCenter,
   RowBetween,
   RowEnd,
+  Col,
   
   // Layouts - Grids
   Grid2,
@@ -113,7 +115,6 @@ export {
   // Components
   Component,
   ComponentInstance,
-  ComponentInstanceWithProps,
   PropVariable,
   
   // Styles
@@ -130,10 +131,8 @@ export const allTokens = [
   CssProperty,
   Screen,
   Component,
-  ComponentHeader,
   Modal,
   Drawer,
-  ComponentInstanceWithProps, // Must come before ComponentInstance for correct matching
   ComponentInstance,
   PropVariable,
   Fab,
@@ -178,6 +177,7 @@ export const allTokens = [
   RowCenter,
   RowBetween,
   RowEnd,
+  Col,
   Grid2,
   Grid3,
   Grid4,

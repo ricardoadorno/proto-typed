@@ -82,7 +82,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
     // The visitor pattern automatically dispatches to the correct sub-rule method
     // We just need to find which element type is present and visit it
     const elementTypes = [
-      'componentInstanceElement', 'buttonElement', 'linkElement', 'imageElement', 
+      'layoutWithComponent', 'componentInstanceElement', 'buttonElement', 'linkElement', 'imageElement', 
       'headingElement', 'textElement', 'layoutElement',
       'listElement', 'navigatorElement', 'unorderedListElement', 
       'fabElement', 'separatorElement', 'inputElement', 'radioButtonGroup', 
@@ -142,8 +142,9 @@ export function createAstBuilder(parserInstance: UiDslParser) {
   }
 
   componentInstanceElement(ctx: Context) {
-    return buildComponentInstanceElement(ctx);
+    return buildComponentInstanceElement(ctx, this);
   }
+
 
   // ===== PRIMITIVE ELEMENT RULES =====
 

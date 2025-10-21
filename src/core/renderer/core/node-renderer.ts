@@ -74,7 +74,6 @@ const RENDERERS: Record<NodeType, typeof _render> = {
   // Components
   Component: (n) => renderComponent(n),
   ComponentInstance: (n, ctx) => renderComponentInstance(n, ctx, _render),
-  ComponentInstanceWithProps: (n, ctx) => renderComponentInstance(n, ctx, _render),
   PropVariable: () => '',
 
   // Primitives

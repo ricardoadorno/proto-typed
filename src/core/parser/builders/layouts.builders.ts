@@ -34,6 +34,7 @@ export function buildLayoutElement(ctx: Context, visitor: any) {
   else if (ctx.RowCenter) layoutType = 'row-center';
   else if (ctx.RowBetween) layoutType = 'row-between';
   else if (ctx.RowEnd) layoutType = 'row-end';
+  else if (ctx.Col) layoutType = 'col';
   // Grids
   else if (ctx.Grid2) layoutType = 'grid-2';
   else if (ctx.Grid3) layoutType = 'grid-3';
@@ -66,77 +67,52 @@ export function buildLayoutElement(ctx: Context, visitor: any) {
 }
 
 /**
- * Build list element from context
+ * Build list element with component template
+ * Handles: list $ComponentName:
  */
 export function buildListElement(ctx: Context) {
-  // Check if there's a component name (list $ComponentName:)
-  const hasComponent = ctx.componentName && ctx.componentName.length > 0;
-  
-  if (hasComponent) {
-    // List with component template
-    const token = ctx.componentName[0];
-    // Match ComponentInstanceWithProps pattern: $ComponentName: (ignore props part)
-    const match = token.image.match(/\$([a-zA-Z_][a-zA-Z0-9_]*)/);
-    const componentName = match ? match[1] : '';
-
-    const dataItems: string[][] = [];
-
-    // Handle data items (simple unordered list items with pipe-separated values)
-    if (ctx.UnorderedListItem) {
-      ctx.UnorderedListItem.forEach((item: any) => {
-        const itemText = item.image;
-        // Extract text after the dash and space: "- text" -> "text"
-        const textMatch = itemText.match(/^-\s+(.+)$/);
-        if (textMatch) {
-          const content = textMatch[1];
-          // Split by | for data columns
-          const columns = content.split('|').map((col: string) => col.trim());
-          dataItems.push(columns);
-        }
-      });
+  // Extract component name from ComponentInstance token
+  let componentName = "";
+  if (ctx.ComponentInstance) {
+    const instanceText = ctx.ComponentInstance[0].image;
+    const match = instanceText.match(/\$([^\s\n\r:]+)/);
+    if (match) {
+      componentName = match[1];
     }
-
-    return {
-      type: "List",
-      id: "", // ID will be generated posteriormente
-      props: {
-        variant: "component",
-        // Mantém propriedade antiga para retrocompatibilidade
-        component: componentName,
-        // Nova propriedade explícita
-        componentName,
-        // Fornece dados crus também para renderer otimizado
-        dataItems: dataItems
-      },
-      // Mantém children como representação detalhada para outros usos
-      children: dataItems.map(columns => ({
-        type: "UnorderedListItem",
-        id: "",
-        props: { columns },
-        children: []
-      }))
-    };
-  } else {
-    // Regular list with advanced parsing for links and buttons
-    const items: any[] = [];
-
-    if (ctx.UnorderedListItem) {
-      ctx.UnorderedListItem.forEach((item: any) => {
-        const itemText = item.image;
-        const parsedItem = parseListItem(itemText);
-        items.push(parsedItem);
-      });
-    }
-
-    return {
-      type: "List",
-      id: "", // ID will be generated later
-      props: {
-        variant: "advanced"
-      },
-      children: items
-    };
   }
+
+  const dataItems: string[][] = [];
+
+  // Handle data items (simple unordered list items with pipe-separated values)
+  if (ctx.UnorderedListItem) {
+    ctx.UnorderedListItem.forEach((item: any) => {
+      const itemText = item.image;
+      // Extract text after the dash and space: "- text" -> "text"
+      const textMatch = itemText.match(/^-\s+(.+)$/);
+      if (textMatch) {
+        const content = textMatch[1];
+        // Split by | for data columns
+        const columns = content.split('|').map((col: string) => col.trim());
+        dataItems.push(columns);
+      }
+    });
+  }
+
+  return {
+    type: "List",
+    id: "", // ID will be generated later
+    props: {
+      variant: "component",
+      componentName,
+      dataItems: dataItems
+    },
+    children: dataItems.map(columns => ({
+      type: "UnorderedListItem",
+      id: "",
+      props: { columns },
+      children: []
+    }))
+  };
 }
 
 /**

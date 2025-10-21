@@ -33,7 +33,6 @@ export type NodeType =
   // Components (from components.tokens.ts)
   | 'Component'
   | 'ComponentInstance'
-  | 'ComponentInstanceWithProps'
   | 'PropVariable'
   
   // Styles (from styles.tokens.ts)
