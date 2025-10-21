@@ -538,7 +538,7 @@ export default function PrinciplesPage() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(139,92,246,0.3),transparent_60%)] opacity-80" />
           <div className="relative z-10 space-y-6">
             <Badge className="border-[var(--border-muted)] bg-[rgba(139,92,246,0.18)] text-[10px] uppercase tracking-[0.32em] text-[var(--accent)]">
-              Call to Action
+              Experimente Já
             </Badge>
             <h2 className="text-3xl font-semibold text-[var(--fg-primary)] sm:text-4xl">
               Comece a prototipar em segundos.

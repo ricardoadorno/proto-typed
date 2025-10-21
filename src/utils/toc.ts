@@ -50,7 +50,7 @@ export const docSections: DocSection[] = [
       },
       {
         slug: 'input',
-        title: 'Campo de entrada',
+        title: 'Inputs',
         description: 'Captura dados do usuário como texto, senhas e seleções.',
       },
       {
@@ -148,11 +148,11 @@ export const docSections: DocSection[] = [
   {
     title: 'Temas e Estilos',
     items: [
-      {
-        slug: 'styles-block',
-        title: 'Bloco de estilos',
-        description: 'Define tokens, variáveis e estilos globais aplicáveis ao projeto.',
-      },
+      // {
+      //   slug: 'styles-block',
+      //   title: 'Bloco de estilos',
+      //   description: 'Define tokens, variáveis e estilos globais aplicáveis ao projeto.',
+      // },
       {
         slug: 'themes',
         title: 'Temas',

@@ -114,7 +114,6 @@ Quando algo não for conhecido ou estiver incompleto, **pesquise diretamente no 
 - [Composição de componentes](https://ricardoadorno.github.io/proto-typed/docs/component-composition)
 
 ### Temas e estilos
-- [Bloco de estilos](https://ricardoadorno.github.io/proto-typed/docs/styles-block)
 - [Temas](https://ricardoadorno.github.io/proto-typed/docs/themes)
 
 ### Padrões e boas práticas
