@@ -11,7 +11,13 @@ type Context = {
 };
 
 /**
- * Build component element from context
+ * @function buildComponent
+ * @description Builds a 'Component' AST node from the corresponding CST node.
+ * This function is responsible for parsing a component definition, including its name and children.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the component.
+ * @param {any} visitor - The CST visitor instance, used to visit child nodes.
+ * @returns {object} A 'Component' AST node.
  */
 export function buildComponent(ctx: Context, visitor: any) {
   const nameToken = ctx.name[0];
@@ -33,11 +39,13 @@ export function buildComponent(ctx: Context, visitor: any) {
 }
 
 /**
- * Build component instance element from context
- * Handles all variations:
- * - $Foo (simple)
- * - $Foo: bar | zir (inline props)
- * - $Foo:\n  - bar | zir (list props)
+ * @function buildComponentInstanceElement
+ * @description Builds a 'ComponentInstance' AST node from the corresponding CST node.
+ * This function handles the different ways a component can be instantiated, including with inline or list-based props.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the component instance.
+ * @param {any} visitor - The CST visitor instance.
+ * @returns {object} A 'ComponentInstance' AST node.
  */
 export function buildComponentInstanceElement(ctx: Context, visitor: any) {
   let componentName = "";

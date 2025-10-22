@@ -4,8 +4,13 @@
  */
 
 /**
- * Parse layout modifiers from token image like "col-w50-center-stretch-p4"
- * Returns structured modifiers object for CSS generation
+ * @function parseLayoutModifiers
+ * @description Parses layout modifiers from a token image string.
+ * For example, in "col-w50-center-stretch-p4", it extracts "w50", "center", "stretch", and "p4"
+ * and converts them into a structured object of CSS properties.
+ *
+ * @param {string} tokenImage - The string from the token to parse.
+ * @returns {object} An object containing the parsed layout modifiers.
  */
 export function parseLayoutModifiers(tokenImage: string) {
   const modifiers: any = {};
@@ -93,8 +98,12 @@ export function parseLayoutModifiers(tokenImage: string) {
 
 
 /**
- * Parse simple list item - just extracts the text content
- * Format: - Simple text content
+ * @function parseListItem
+ * @description Parses a simple unordered list item and extracts its text content.
+ * The format is "- Simple text content".
+ *
+ * @param {string} itemText - The full text of the list item.
+ * @returns {object} An 'UnorderedListItem' AST node.
  */
 export function parseListItem(itemText: string) {
   // Remove the initial "- " from the item text and return clean text
@@ -109,7 +118,14 @@ export function parseListItem(itemText: string) {
 }
 
 /**
- * Parse navigator item: "- text | icon | destination" or "- text | destination"
+ * @function parseNavigatorItem
+ * @description Parses a navigator item, which can have one of three formats:
+ * 1. "- text | icon | destination"
+ * 2. "- text | destination"
+ * 3. "- text"
+ *
+ * @param {string} itemText - The full text of the navigator item.
+ * @returns {object} A 'NavigatorItem' AST node.
  */
 export function parseNavigatorItem(itemText: string) {
   // Try 3-part pipe format: "- text | icon | destination"

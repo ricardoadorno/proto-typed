@@ -6,13 +6,16 @@ import type { ProtoError } from '../../types/errors';
 import { ERROR_CODES } from '../../types/errors';
 
 /**
- * Parse input text into a Concrete Syntax Tree (CST) and then outputs an Abstract Syntax Tree (AST).
+ * @function parseAndBuildAst
+ * @description Parses the input DSL text, builds a Concrete Syntax Tree (CST), and then transforms it into an Abstract Syntax Tree (AST).
+ * This function is designed with error recovery in mind. Instead of throwing an error on the first issue, it collects all errors encountered
+ * during the lexing, parsing, and AST building phases, and returns a partial AST along with the collected errors.
  * 
- * Now with error recovery: returns partial AST + collected errors instead of throwing.
- * 
- * @param text The DSL text to parse
- * @param previousAst Optional previous AST for ID reuse (for better stability between parses)
- * @returns The Abstract Syntax Tree with deterministic IDs and collected errors
+ * @param {string} text - The DSL text to be parsed.
+ * @param {any} [previousAst] - An optional previous AST. If provided, it is used to reuse IDs for elements,
+ * which helps maintain stability in the UI between parses, especially during live editing.
+ * @returns {any} An object representing the Abstract Syntax Tree. This AST has deterministic IDs generated for its nodes.
+ * It also contains a `__errors` property which is an array of all the errors collected during the process.
  */
 export function parseAndBuildAst(text: string, previousAst?: any) {
     const collectedErrors: ProtoError[] = [];

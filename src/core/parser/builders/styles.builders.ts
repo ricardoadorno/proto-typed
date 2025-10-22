@@ -11,7 +11,12 @@ type Context = {
 };
 
 /**
- * Build styles configuration node from CST context
+ * @function buildStyles
+ * @description Builds a 'Styles' AST node from the corresponding CST node.
+ * This function processes a block of style declarations.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the styles block.
+ * @returns {AstNode} A 'Styles' AST node.
  */
 export function buildStyles(ctx: Context): AstNode {
   const styleDeclarations: AstNode[] = [];
@@ -34,7 +39,12 @@ export function buildStyles(ctx: Context): AstNode {
 }
 
 /**
- * Build style declaration from CST node (internal helper)
+ * @function buildStyleDeclarationFromCst
+ * @description An internal helper function to build a 'CssProperty' AST node from a CST node.
+ * @private
+ *
+ * @param {CstNode} cstNode - The CST node for a single style declaration.
+ * @returns {AstNode | null} A 'CssProperty' AST node, or null if parsing fails.
  */
 function buildStyleDeclarationFromCst(cstNode: CstNode): AstNode | null {
   if (!cstNode || !cstNode.children || !cstNode.children.CssProperty) {
@@ -66,7 +76,12 @@ function buildStyleDeclarationFromCst(cstNode: CstNode): AstNode | null {
 }
 
 /**
- * Build style declaration from context (for direct usage)
+ * @function buildStyleDeclaration
+ * @description Builds a 'CssProperty' AST node from the corresponding CST node.
+ * This is used for directly processing a style declaration.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the style declaration.
+ * @returns {AstNode | null} A 'CssProperty' AST node, or null if parsing fails.
  */
 export function buildStyleDeclaration(ctx: Context): AstNode | null {
   if (!ctx.CssProperty || !ctx.CssProperty[0]) {

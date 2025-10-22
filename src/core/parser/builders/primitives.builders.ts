@@ -10,7 +10,12 @@ type Context = {
 };
 
 /**
- * Build heading element from context
+ * @function buildHeadingElement
+ * @description Builds a 'Heading' AST node from the corresponding CST node.
+ * It determines the heading level by counting the '#' characters and extracts the content.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the heading.
+ * @returns {object | null} A 'Heading' AST node, or null if the token is invalid.
  */
 export function buildHeadingElement(ctx: Context) {
   if (!ctx.Heading || !ctx.Heading[0]) {
@@ -40,7 +45,12 @@ export function buildHeadingElement(ctx: Context) {
 }
 
 /**
- * Build text element from context
+ * @function buildTextElement
+ * @description Builds a 'Text' or 'Paragraph' AST node from the corresponding CST node.
+ * It determines the text variant (text, paragraph, muted, note, quote) and extracts the content.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the text element.
+ * @returns {object} A 'Text' or 'Paragraph' AST node.
  */
 export function buildTextElement(ctx: Context) {
   let variant = "text";
@@ -86,7 +96,13 @@ export function buildTextElement(ctx: Context) {
 }
 
 /**
- * Build button element from context
+ * @function buildButtonElement
+ * @description Builds a 'Button' AST node from the corresponding CST node.
+ * It parses the button's variant, size, text, and action.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the button.
+ * @param {any} visitor - The CST visitor instance.
+ * @returns {object} A 'Button' AST node.
  */
 export function buildButtonElement(ctx: Context, visitor: any) {
   let variant = 'primary'; // Default variant
@@ -155,7 +171,12 @@ export function buildButtonElement(ctx: Context, visitor: any) {
 }
 
 /**
- * Build link element from context
+ * @function buildLinkElement
+ * @description Builds a 'Link' AST node from the corresponding CST node.
+ * It parses the link's text and URL from both Markdown and DSL syntaxes.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the link.
+ * @returns {object} A 'Link' AST node.
  */
 export function buildLinkElement(ctx: Context) {
   const linkText = ctx.Link[0].image;
@@ -185,7 +206,12 @@ export function buildLinkElement(ctx: Context) {
 }
 
 /**
- * Build image element from context
+ * @function buildImageElement
+ * @description Builds an 'Image' AST node from the corresponding CST node.
+ * It parses the image's alt text and source URL from both Markdown and DSL syntaxes.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the image.
+ * @returns {object} An 'Image' AST node.
  */
 export function buildImageElement(ctx: Context) {
   const imageText = ctx.Image[0].image;

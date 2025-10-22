@@ -2,7 +2,12 @@ import { AstNode } from '../../../types/ast-node';
 import { elementStyles, getScreenClasses,  getModalContentInlineStyles, getModalCloseInlineStyles, getDrawerInlineStyles } from './styles/styles';
 
 /**
- * Render screen element
+ * @function renderScreen
+ * @description Renders a 'Screen' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Screen' AST node.
+ * @param {(node: AstNode, context?: string) => string} nodeRenderer - The main node renderer function.
+ * @returns {string} The HTML string for the screen.
  */
 export function renderScreen(node: AstNode, nodeRenderer: (node: AstNode, context?: string) => string): string {
   const screenName = (node.props as any)?.name || 'default';
@@ -14,7 +19,13 @@ export function renderScreen(node: AstNode, nodeRenderer: (node: AstNode, contex
 }
 
 /**
- * Render modal element
+ * @function renderModal
+ * @description Renders a 'Modal' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Modal' AST node.
+ * @param {string} [context] - The rendering context.
+ * @param {(node: AstNode, context?: string) => string} [nodeRenderer] - The main node renderer function.
+ * @returns {string} The HTML string for the modal.
  */
 export function renderModal(node: AstNode, context?: string, nodeRenderer?: (node: AstNode, context?: string) => string): string {
   const modalElements = node.children && nodeRenderer ? 
@@ -33,7 +44,13 @@ export function renderModal(node: AstNode, context?: string, nodeRenderer?: (nod
 }
 
 /**
- * Render drawer element
+ * @function renderDrawer
+ * @description Renders a 'Drawer' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Drawer' AST node.
+ * @param {string} [context] - The rendering context.
+ * @param {(node: AstNode, context?: string) => string} [nodeRenderer] - The main node renderer function.
+ * @returns {string} The HTML string for the drawer.
  */
 export function renderDrawer(node: AstNode, context?: string, nodeRenderer?: (node: AstNode, context?: string) => string): string {
   const drawerName = (node.props as any)?.name;

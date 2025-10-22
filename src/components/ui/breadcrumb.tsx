@@ -5,6 +5,12 @@ import * as BreadcrumbPrimitive from "@radix-ui/react-navigation-menu"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * @function Breadcrumb
+ * @description The root component for a breadcrumb navigation.
+ * @param {React.ComponentPropsWithoutRef<typeof BreadcrumbPrimitive.Root>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered breadcrumb component.
+ */
 const Breadcrumb = React.forwardRef<
   React.ElementRef<typeof BreadcrumbPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof BreadcrumbPrimitive.Root>
@@ -17,6 +23,12 @@ const Breadcrumb = React.forwardRef<
 ))
 Breadcrumb.displayName = "Breadcrumb"
 
+/**
+ * @function BreadcrumbList
+ * @description A list of breadcrumb items.
+ * @param {React.ComponentPropsWithoutRef<typeof BreadcrumbPrimitive.List>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered breadcrumb list.
+ */
 const BreadcrumbList = React.forwardRef<
   React.ElementRef<typeof BreadcrumbPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof BreadcrumbPrimitive.List>
@@ -31,6 +43,12 @@ BreadcrumbList.displayName = "BreadcrumbList"
 
 const BreadcrumbItem = BreadcrumbPrimitive.Item
 
+/**
+ * @function BreadcrumbLink
+ * @description A link within a breadcrumb item.
+ * @param {React.ComponentPropsWithoutRef<typeof BreadcrumbPrimitive.Link>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered breadcrumb link.
+ */
 const BreadcrumbLink = React.forwardRef<
   React.ElementRef<typeof BreadcrumbPrimitive.Link>,
   React.ComponentPropsWithoutRef<typeof BreadcrumbPrimitive.Link>
@@ -46,6 +64,12 @@ const BreadcrumbLink = React.forwardRef<
 ))
 BreadcrumbLink.displayName = "BreadcrumbLink"
 
+/**
+ * @function BreadcrumbSeparator
+ * @description A separator between breadcrumb items.
+ * @param {React.HTMLAttributes<HTMLSpanElement>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered breadcrumb separator.
+ */
 const BreadcrumbSeparator = ({
   children,
   className,
@@ -61,6 +85,12 @@ const BreadcrumbSeparator = ({
 )
 BreadcrumbSeparator.displayName = "BreadcrumbSeparator"
 
+/**
+ * @function BreadcrumbPage
+ * @description The current page in a breadcrumb navigation.
+ * @param {React.HTMLAttributes<HTMLSpanElement>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered breadcrumb page.
+ */
 const BreadcrumbPage = React.forwardRef<
   HTMLSpanElement,
   React.HTMLAttributes<HTMLSpanElement>

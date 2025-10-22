@@ -14,6 +14,12 @@ const DialogPortal = DialogPrimitive.Portal
 
 const DialogClose = DialogPrimitive.Close
 
+/**
+ * @function DialogOverlay
+ * @description The overlay that covers the screen behind a dialog.
+ * @param {React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered dialog overlay.
+ */
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
@@ -26,6 +32,12 @@ const DialogOverlay = React.forwardRef<
 ))
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
+/**
+ * @function DialogContent
+ * @description The main content of a dialog.
+ * @param {React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered dialog content.
+ */
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
@@ -50,16 +62,34 @@ const DialogContent = React.forwardRef<
 ))
 DialogContent.displayName = DialogPrimitive.Content.displayName
 
+/**
+ * @function DialogHeader
+ * @description The header of a dialog.
+ * @param {React.HTMLAttributes<HTMLDivElement>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered dialog header.
+ */
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn("flex flex-col space-y-1 text-center sm:text-left", className)} {...props} />
 )
 DialogHeader.displayName = "DialogHeader"
 
+/**
+ * @function DialogFooter
+ * @description The footer of a dialog.
+ * @param {React.HTMLAttributes<HTMLDivElement>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered dialog footer.
+ */
 const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:space-x-2", className)} {...props} />
 )
 DialogFooter.displayName = "DialogFooter"
 
+/**
+ * @function DialogTitle
+ * @description The title of a dialog.
+ * @param {React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered dialog title.
+ */
 const DialogTitle = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
@@ -72,6 +102,12 @@ const DialogTitle = React.forwardRef<
 ))
 DialogTitle.displayName = DialogPrimitive.Title.displayName
 
+/**
+ * @function DialogDescription
+ * @description The description of a dialog.
+ * @param {React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered dialog description.
+ */
 const DialogDescription = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>

@@ -5,6 +5,13 @@ import * as LabelPrimitive from "@radix-ui/react-label"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * @function Label
+ * @description A component that displays a styled label.
+ *
+ * @param {React.ComponentProps<typeof LabelPrimitive.Root>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered label component.
+ */
 function Label({
   className,
   ...props

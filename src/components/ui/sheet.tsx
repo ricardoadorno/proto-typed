@@ -14,6 +14,12 @@ const SheetClose = DialogPrimitive.Close
 
 const SheetPortal = DialogPrimitive.Portal
 
+/**
+ * @function SheetOverlay
+ * @description The overlay that covers the screen behind a sheet.
+ * @param {React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered sheet overlay.
+ */
 const SheetOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
@@ -38,6 +44,12 @@ const sheetVariants = {
 
 type SheetVariants = keyof typeof sheetVariants
 
+/**
+ * @function SheetContent
+ * @description The main content of a sheet.
+ * @param {React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & { side?: SheetVariants }} props - The props for the component.
+ * @returns {React.ReactElement} The rendered sheet content.
+ */
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
@@ -65,10 +77,22 @@ const SheetContent = React.forwardRef<
 ))
 SheetContent.displayName = DialogPrimitive.Content.displayName
 
+/**
+ * @function SheetHeader
+ * @description The header of a sheet.
+ * @param {React.HTMLAttributes<HTMLDivElement>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered sheet header.
+ */
 const SheetHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn("grid gap-2 text-center sm:text-left", className)} {...props} />
 )
 
+/**
+ * @function SheetFooter
+ * @description The footer of a sheet.
+ * @param {React.HTMLAttributes<HTMLDivElement>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered sheet footer.
+ */
 const SheetFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:space-x-2", className)}
@@ -76,6 +100,12 @@ const SheetFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
   />
 )
 
+/**
+ * @function SheetTitle
+ * @description The title of a sheet.
+ * @param {React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered sheet title.
+ */
 const SheetTitle = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Title>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
@@ -88,6 +118,12 @@ const SheetTitle = React.forwardRef<
 ))
 SheetTitle.displayName = DialogPrimitive.Title.displayName
 
+/**
+ * @function SheetDescription
+ * @description The description of a sheet.
+ * @param {React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered sheet description.
+ */
 const SheetDescription = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>

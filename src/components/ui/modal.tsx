@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
 
+/**
+ * @interface ModalProps
+ * @description The props for the Modal component.
+ *
+ * @property {string} buttonText - The text to display on the button that opens the modal.
+ * @property {React.ReactNode} [header] - The content for the modal's header.
+ * @property {React.ReactNode} [content] - The main content of the modal.
+ * @property {React.ReactNode} [actions] - The content for the modal's footer, typically action buttons.
+ * @property {('primary' | 'secondary' | 'outline')} [buttonVariant='secondary'] - The variant of the button that opens the modal.
+ */
 interface ModalProps {
     buttonText: string;
     header?: React.ReactNode;
@@ -8,6 +18,13 @@ interface ModalProps {
     buttonVariant?: 'primary' | 'secondary' | 'outline';
 }
 
+/**
+ * @function Modal
+ * @description A component that displays a modal dialog.
+ *
+ * @param {ModalProps} props - The props for the component.
+ * @returns {React.ReactElement} The rendered modal component.
+ */
 export default function Modal({ buttonText, content, header, actions, buttonVariant = 'secondary' }: ModalProps) {
 
     const [isOpen, setIsOpen] = useState(false); const buttonClasses = {

@@ -5,7 +5,11 @@ import { NavigationMediator } from '../infrastructure/navigation-mediator';
 import { withAssetPath } from '../../../utils/base-path';
 
 /**
- * Render button element
+ * @function renderButton
+ * @description Renders a 'Button' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Button' AST node.
+ * @returns {string} The HTML string for the button.
  */
 export function renderButton(node: AstNode): string {
   const buttonProps = node.props as any;
@@ -35,7 +39,11 @@ export function renderButton(node: AstNode): string {
 }
 
 /**
- * Render link element
+ * @function renderLink
+ * @description Renders a 'Link' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Link' AST node.
+ * @returns {string} The HTML string for the link.
  */
 export function renderLink(node: AstNode): string {
   const props = node.props as any;
@@ -52,7 +60,11 @@ export function renderLink(node: AstNode): string {
 }
 
 /**
- * Render image element
+ * @function renderImage
+ * @description Renders an 'Image' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Image' AST node.
+ * @returns {string} The HTML string for the image.
  */
 export function renderImage(node: AstNode): string {
   const props = node.props as any;
@@ -63,7 +75,11 @@ export function renderImage(node: AstNode): string {
 }
 
 /**
- * Render heading element
+ * @function renderHeading
+ * @description Renders a 'Heading' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Heading' AST node.
+ * @returns {string} The HTML string for the heading.
  */
 export function renderHeading(node: AstNode): string {
   const props = node.props as any;
@@ -80,7 +96,11 @@ export function renderHeading(node: AstNode): string {
 }
 
 /**
- * Render text element (simple text without padding)
+ * @function renderText
+ * @description Renders a 'Text' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Text' AST node.
+ * @returns {string} The HTML string for the text.
  */
 export function renderText(node: AstNode): string {
   const props = node.props as any;
@@ -101,7 +121,11 @@ export function renderText(node: AstNode): string {
 }
 
 /**
- * Render paragraph element (text with padding bottom)
+ * @function renderParagraph
+ * @description Renders a 'Paragraph' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Paragraph' AST node.
+ * @returns {string} The HTML string for the paragraph.
  */
 export function renderParagraph(node: AstNode): string {
   const props = node.props as any;
@@ -122,7 +146,11 @@ export function renderParagraph(node: AstNode): string {
 }
 
 /**
- * Render muted text element (gray text without padding)
+ * @function renderMutedText
+ * @description Renders a 'MutedText' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'MutedText' AST node.
+ * @returns {string} The HTML string for the muted text.
  */
 export function renderMutedText(node: AstNode): string {
   const props = node.props as any;

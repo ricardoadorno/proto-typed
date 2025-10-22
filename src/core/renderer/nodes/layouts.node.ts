@@ -5,8 +5,9 @@ import { NavigationMediator } from '../infrastructure/navigation-mediator';
 import { isLucideIcon, getLucideSvg, renderTextWithIcons } from '../../../utils/icon-utils';
 
 /**
- * Canonical Layout Presets
- * Each layout type maps to predefined Tailwind classes + shadcn styling
+ * @const LAYOUT_PRESETS
+ * @description A record mapping layout types to their corresponding Tailwind CSS classes.
+ * This provides a set of predefined, canonical layouts.
  */
 const LAYOUT_PRESETS: Record<string, string> = {
   // Containers
@@ -44,7 +45,12 @@ const LAYOUT_PRESETS: Record<string, string> = {
 };
 
 /**
- * Get inline styles for layout based on type
+ * @function getLayoutInlineStyles
+ * @description Gets the inline styles for a layout based on its type.
+ * @private
+ *
+ * @param {string} layoutType - The type of the layout.
+ * @returns {string} The inline style string.
  */
 function getLayoutInlineStyles(layoutType: string): string {
   // Only cards, header, and sidebar get background colors
@@ -63,7 +69,12 @@ function getLayoutInlineStyles(layoutType: string): string {
 }
 
 /**
- * Render layout element with canonical preset
+ * @function renderLayout
+ * @description Renders a 'Layout' AST node to its HTML representation using a canonical preset.
+ *
+ * @param {AstNode} node - The 'Layout' AST node.
+ * @param {(node: AstNode, context?: string) => string} _render - The main node renderer function.
+ * @returns {string} The HTML string for the layout element.
  */
 export function renderLayout(node: AstNode, _render: (node: AstNode, context?: string) => string): string {
   const { layoutType } = node.props as any;
@@ -86,7 +97,14 @@ export function renderLayout(node: AstNode, _render: (node: AstNode, context?: s
 }
 
 /**
- * Render list element
+ * @function renderList
+ * @description Renders a 'List' AST node to its HTML representation.
+ * It can render a simple list of items or a list based on a component template.
+ *
+ * @param {AstNode} node - The 'List' AST node.
+ * @param {string} [context] - The rendering context.
+ * @param {(node: AstNode, context?: string) => string} [nodeRenderer] - The main node renderer function.
+ * @returns {string} The HTML string for the list.
  */
 export function renderList(node: AstNode, context?: string, nodeRenderer?: (node: AstNode, context?: string) => string): string {
   const props = node.props as any;
@@ -140,7 +158,11 @@ export function renderList(node: AstNode, context?: string, nodeRenderer?: (node
 }
 
 /**
- * Render list item element
+ * @function renderListItem
+ * @description Renders an 'UnorderedListItem' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'UnorderedListItem' AST node.
+ * @returns {string} The HTML string for the list item.
  */
 export function renderListItem(node: AstNode): string {
   const props = node.props as any;
@@ -150,14 +172,21 @@ export function renderListItem(node: AstNode): string {
 }
 
 /**
- * Render separator element
+ * @function renderSeparator
+ * @description Renders a 'Separator' AST node to its HTML representation.
+ *
+ * @returns {string} The HTML string for the separator.
  */
 export function renderSeparator(): string {
   return `<hr class="${elementStyles.separator}" />`;
 }
 
 /**
- * Render Fab (Floating Action Button) element
+ * @function renderFAB
+ * @description Renders a 'Fab' (Floating Action Button) AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Fab' AST node.
+ * @returns {string} The HTML string for the FAB.
  */
 export function renderFAB(node: AstNode): string {
   const props = node.props as any;
@@ -180,7 +209,11 @@ export function renderFAB(node: AstNode): string {
 }
 
 /**
- * Render Navigator (Bottom Navigation) element
+ * @function renderNavigator
+ * @description Renders a 'Navigator' (Bottom Navigation) AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Navigator' AST node.
+ * @returns {string} The HTML string for the navigator.
  */
 export function renderNavigator(node: AstNode): string {
   const items = node.children || [];

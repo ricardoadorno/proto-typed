@@ -6,6 +6,11 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * @const buttonVariants
+ * @description cva (class-variance-authority) variants for the Button component.
+ * This defines the different styles a button can have.
+ */
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-[color,background,transform,border-color] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent-light)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-main)] disabled:pointer-events-none disabled:opacity-50 active:translate-y-[1px]",
   {
@@ -37,12 +42,30 @@ const buttonVariants = cva(
   }
 )
 
+/**
+ * @interface ButtonProps
+ * @extends React.ButtonHTMLAttributes<HTMLButtonElement>
+ * @description The props for the Button component.
+ *
+ * @property {boolean} [asChild=false] - Whether to render the button as a child of its parent component.
+ */
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
 }
 
+/**
+ * @function Button
+ * @description A component that displays a styled button.
+ *
+ * @param {ButtonProps} props - The props for the component.
+ * @param {string} [props.className] - Additional class names to apply to the button.
+ * @param {('default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link')} [props.variant] - The variant of the button.
+ * @param {('default' | 'sm' | 'lg' | 'icon')} [props.size] - The size of the button.
+ * @param {boolean} [props.asChild=false] - Whether to render the button as a child of its parent component.
+ * @returns {React.ReactElement} The rendered button component.
+ */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"

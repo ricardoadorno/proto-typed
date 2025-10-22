@@ -7,6 +7,12 @@ import { Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Dialog, DialogContent } from "./dialog"
 
+/**
+ * @function Command
+ * @description The root component for a command menu.
+ * @param {React.ComponentPropsWithoutRef<typeof CommandPrimitive>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered command menu.
+ */
 const Command = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive>
@@ -22,10 +28,23 @@ const Command = React.forwardRef<
 ))
 Command.displayName = CommandPrimitive.displayName
 
+/**
+ * @interface CommandDialogProps
+ * @extends React.ComponentProps<typeof Dialog>
+ * @description The props for the CommandDialog component.
+ *
+ * @property {string} [searchPlaceholder] - The placeholder text for the search input.
+ */
 interface CommandDialogProps extends React.ComponentProps<typeof Dialog> {
   searchPlaceholder?: string
 }
 
+/**
+ * @function CommandDialog
+ * @description A command menu that opens in a dialog.
+ * @param {CommandDialogProps} props - The props for the component.
+ * @returns {React.ReactElement} The rendered command dialog.
+ */
 const CommandDialog = ({ children, searchPlaceholder = "Buscar", ...props }: CommandDialogProps) => (
   <Dialog {...props}>
     <DialogContent className="max-h-[80vh] w-[90vw] max-w-[640px] overflow-hidden border-none bg-transparent p-0 shadow-none outline-none">
@@ -43,6 +62,12 @@ const CommandDialog = ({ children, searchPlaceholder = "Buscar", ...props }: Com
   </Dialog>
 )
 
+/**
+ * @function CommandList
+ * @description A list of command items.
+ * @param {React.ComponentPropsWithoutRef<typeof CommandPrimitive.List>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered command list.
+ */
 const CommandList = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.List>
@@ -55,6 +80,12 @@ const CommandList = React.forwardRef<
 ))
 CommandList.displayName = CommandPrimitive.List.displayName
 
+/**
+ * @function CommandEmpty
+ * @description The component to display when there are no results in a command menu.
+ * @param {React.ComponentPropsWithoutRef<typeof CommandPrimitive.Empty>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered empty state.
+ */
 const CommandEmpty = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Empty>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Empty>
@@ -67,6 +98,12 @@ const CommandEmpty = React.forwardRef<
 ))
 CommandEmpty.displayName = CommandPrimitive.Empty.displayName
 
+/**
+ * @function CommandGroup
+ * @description A group of command items.
+ * @param {React.ComponentPropsWithoutRef<typeof CommandPrimitive.Group>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered command group.
+ */
 const CommandGroup = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Group>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Group>
@@ -82,6 +119,12 @@ const CommandGroup = React.forwardRef<
 ))
 CommandGroup.displayName = CommandPrimitive.Group.displayName
 
+/**
+ * @function CommandSeparator
+ * @description A separator between command groups.
+ * @param {React.ComponentPropsWithoutRef<typeof CommandPrimitive.Separator>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered command separator.
+ */
 const CommandSeparator = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Separator>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Separator>
@@ -94,6 +137,12 @@ const CommandSeparator = React.forwardRef<
 ))
 CommandSeparator.displayName = CommandPrimitive.Separator.displayName
 
+/**
+ * @function CommandItem
+ * @description An item in a command menu.
+ * @param {React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered command item.
+ */
 const CommandItem = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item>
@@ -109,6 +158,12 @@ const CommandItem = React.forwardRef<
 ))
 CommandItem.displayName = CommandPrimitive.Item.displayName
 
+/**
+ * @function CommandShortcut
+ * @description A keyboard shortcut hint for a command item.
+ * @param {React.HTMLAttributes<HTMLSpanElement>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered command shortcut.
+ */
 const CommandShortcut = ({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) => {
   return (
     <span
