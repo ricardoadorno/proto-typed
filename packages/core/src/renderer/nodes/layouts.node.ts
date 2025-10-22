@@ -1,8 +1,8 @@
-import { AstNode } from '@shared'; //ast-node';
+import { AstNode } from '@proto-typed/shared'; //ast-node';
 import { elementStyles, getListInlineStyles, getUnorderedListInlineStyles, getFabInlineStyles, getNavigatorInlineStyles } from './styles/styles';
 import { findComponentDefinitions, substitutePropsInElement } from './components.node';
 import { NavigationMediator } from '../infrastructure/navigation-mediator';
-import { isLucideIcon, getLucideSvg, renderTextWithIcons } from '@shared'; //icon-utils';
+import { isLucideIcon, getLucideSvg, renderTextWithIcons } from '@proto-typed/shared'; //icon-utils';
 
 /**
  * @const LAYOUT_PRESETS

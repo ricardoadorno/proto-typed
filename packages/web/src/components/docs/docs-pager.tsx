@@ -3,7 +3,7 @@ import { ArrowLeftIcon, ArrowRightIcon } from "lucide-react"
 
 import { Button } from "@/components/ui"
 import { cn } from "@/lib/utils"
-import type { DocItem } from "@shared"
+import type { DocItem } from "@proto-typed/shared"
 
 
 interface DocsPagerProps {

@@ -4,8 +4,8 @@
  */
 
 import { RouteManager, routeManager as defaultRouteManager } from '../core/route-manager';
-import { RouteMetadata, RouteCollection, RouteRenderContext, RouteProcessingOptions } from '@shared'; //routing';
-import { AstNode } from '@shared'; //ast-node';
+import { RouteMetadata, RouteCollection, RouteRenderContext, RouteProcessingOptions } from '@proto-typed/shared'; //routing';
+import { AstNode } from '@proto-typed/shared'; //ast-node';
 import type { MouseEvent } from 'react';
 
 export interface NavigationHandlers {

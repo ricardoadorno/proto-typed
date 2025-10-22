@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import Modal from '../ui/modal';
-import { parseAndBuildAst, astToHtmlStringPreview } from '@core';
+import { parseAndBuildAst, astToHtmlStringPreview } from '@proto-typed/core';
 
 // Import example data
 import layoutExamples from './layout';

@@ -12,8 +12,8 @@ import {
   CardTitle,
   Separator,
 } from "@/components/ui"
-import docSections from "@shared"
-import { withAssetPath } from "@shared"
+import docSections from "@proto-typed/shared"
+import { withAssetPath } from "@proto-typed/shared"
 
 const primaryDoc = docSections[0]?.items[0]
 

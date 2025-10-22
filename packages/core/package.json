@@ -1,11 +1,11 @@
 {
-  "name": "@core",
+  "name": "@proto-typed/core",
   "version": "1.0.0",
   "main": "src/index.ts",
   "types": "src/index.ts",
   "dependencies": {
     "chevrotain": "^11.0.3",
-    "@shared": "workspace:*"
+    "@proto-typed/shared": "workspace:*"
   },
   "peerDependencies": {
     "react": "^19.0.0"

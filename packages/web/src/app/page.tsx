@@ -18,11 +18,11 @@ import {
   ExampleButtons,
   PreviewDevice,
 } from "@/components/ui";
-import { DSLEditor, astToHtmlDocument, availableThemes, customPropertiesManager } from "@core";
+import { astToHtmlDocument, availableThemes, customPropertiesManager } from "@proto-typed/core";
+import { DSLEditor } from "@proto-typed/editor";
 import { useParse } from "@/hooks/use-parse";
 import { exampleConfigs } from "@/examples";
-import { exportDocument } from "@shared";
-import { SimpleSelect } from '@/components/ui/select';
+import { exportDocument, SimpleSelect } from "@proto-typed/shared";
 import SidebarMobile from "@/components/layouts/components/sidebar-mobile";
 
 const DEFAULT_EXAMPLE = exampleConfigs[0]?.code ?? "";

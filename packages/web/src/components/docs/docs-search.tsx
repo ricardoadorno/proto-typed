@@ -16,7 +16,7 @@ import {
   CommandShortcut,
 } from "@/components/ui"
 
-import type { DocItem, DocSection } from "@shared"
+import type { DocItem, DocSection } from "@proto-typed/shared"
 
 interface DocsSearchProps {
   sections: DocSection[]

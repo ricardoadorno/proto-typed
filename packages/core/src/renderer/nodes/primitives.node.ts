@@ -1,8 +1,8 @@
-import { AstNode } from '@shared'; //ast-node';
+import { AstNode } from '@proto-typed/shared'; //ast-node';
 import { elementStyles, getButtonClasses, getButtonInlineStyles, getHeadingInlineStyles, getParagraphInlineStyles, getLinkInlineStyles } from './styles/styles';
-import { isLucideIcon, getLucideSvg, renderTextWithIcons } from '@shared'; //icon-utils';
+import { isLucideIcon, getLucideSvg, renderTextWithIcons } from '@proto-typed/shared'; //icon-utils';
 import { NavigationMediator } from '../infrastructure/navigation-mediator';
-import { withAssetPath } from '@shared'; //base-path';
+import { withAssetPath } from '@proto-typed/shared'; //base-path';
 
 /**
  * @function renderButton

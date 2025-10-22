@@ -6,7 +6,7 @@ import { toast } from "sonner"
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui"
 import { cn } from "@/lib/utils"
-import { extractText, slugify } from "@shared"
+import { extractText, slugify } from "@proto-typed/shared"
 
 type HeadingTag = "h1" | "h2" | "h3"
 

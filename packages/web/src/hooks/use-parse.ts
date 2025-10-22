@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
-import { parseAndBuildAst, astToHtmlStringPreview, createRouteManagerGateway, ErrorBus, RouteManager } from '@core';
-import { AstNode, RouteMetadata, ProtoError, ERROR_CODES, sanitizeErrorMessage } from '@shared';
+import { parseAndBuildAst, astToHtmlStringPreview, createRouteManagerGateway, ErrorBus, RouteManager } from '@proto-typed/core';
+import { AstNode, RouteMetadata, ProtoError, ERROR_CODES, sanitizeErrorMessage } from '@proto-typed/shared';
 
 /**
  * @interface UseParseResult
