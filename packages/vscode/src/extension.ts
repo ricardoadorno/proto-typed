@@ -1,5 +1,10 @@
 import * as vscode from 'vscode';
-import { parseAndBuildAst, astToHtmlStringPreview } from '@proto-typed/core';
+import { 
+  parseAndBuildAst, 
+  astToHtmlStringPreview, 
+  RouteManager,
+  createRouteManagerGateway 
+} from '@proto-typed/core';
 import { getWebviewContent } from './getWebviewContent';
 
 export function activate(context: vscode.ExtensionContext) {
@@ -7,6 +12,11 @@ export function activate(context: vscode.ExtensionContext) {
   
   // Logo URI que será reutilizado
   const logoPath = vscode.Uri.joinPath(context.extensionUri, 'logo.svg');
+  
+  // Route manager para gerenciar navegação (como no useParse)
+  const routeManager = new RouteManager();
+  const routeManagerGateway = createRouteManagerGateway(routeManager);
+  let currentScreen: string | undefined = undefined;
 
   function updateWebview() {
     if (!currentPanel) {
@@ -25,12 +35,38 @@ export function activate(context: vscode.ExtensionContext) {
     const logoUri = currentPanel.webview.asWebviewUri(logoPath);
 
     try {
+      if (!text.trim()) {
+        currentPanel.webview.html = getWebviewContent('', logoUri.toString());
+        return;
+      }
+
+      // Parse AST (como no useParse)
       const ast = parseAndBuildAst(text);
-      const { html } = astToHtmlStringPreview(ast);
-      currentPanel.webview.html = getWebviewContent(html, logoUri.toString());
+      
+      // Initialize routes
+      routeManagerGateway.initialize(ast);
+      const metadata = routeManagerGateway.getRouteMetadata();
+      
+      // Determine current screen
+      if (!currentScreen && metadata.defaultScreen) {
+        currentScreen = metadata.defaultScreen;
+      }
+      
+      // Render usando astToHtmlStringPreview (como a web app)
+      const renderResult = astToHtmlStringPreview(
+        ast,
+        { currentScreen },
+        routeManager
+      );
+      
+      currentPanel.webview.html = getWebviewContent(renderResult.html, logoUri.toString());
     } catch (error) {
       console.error('Error parsing or rendering DSL:', error);
-      currentPanel.webview.html = getWebviewContent('<p>Error rendering preview.</p>', logoUri.toString());
+      const errorHtml = `<div style="padding: 20px; color: #ef4444;">
+        <h3>Error rendering preview</h3>
+        <pre style="background: #16171f; padding: 12px; border-radius: 8px; overflow-x: auto;">${String(error)}</pre>
+      </div>`;
+      currentPanel.webview.html = getWebviewContent(errorHtml, logoUri.toString());
     }
   }
 
