@@ -20,12 +20,12 @@ export const elementStyles = {
   buttonExtraSmall: 'w-6 h-6 text-xs', // 24x24px (quadrado para ícones)
   
   // Form elements - using base classes only
-  input: 'w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors',
-  label: 'block text-sm font-medium mb-2',
-  select: 'w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors',
+  input: 'w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1',
+  label: 'block text-sm font-medium',
+  select: 'w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1',
   checkbox: 'w-4 h-4 rounded focus:ring-2 transition-colors',
   radio: 'w-4 h-4 focus:ring-2 transition-colors',
-  textarea: 'w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors',
+  textarea: 'w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1',
 
   // Typography - using base classes only
   heading: {

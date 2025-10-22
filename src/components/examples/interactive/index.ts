@@ -38,7 +38,6 @@ export const interactiveExamples: ExampleCategory = {
   # External Links
   #[Visit Website](https://example.com)
   #[Documentation](https://docs.example.com)
-  #[Support](mailto:support@example.com)
   
   # Simple Links
   #[About Us]

@@ -26,6 +26,11 @@ component BillingSummary:
     ## %planName
     # %monthlyValue
     >>> Próxima cobrança em %renewalDate
+
+screen Default:
+  container:
+    $BillingSummary:
+      - Pro | R$ 89 | 30/09
 ```
 </DocsCodePreview>
 Quando usar: representar valores específicos do domínio sem abreviações obscuras.
@@ -33,9 +38,11 @@ Por quê: nomes explícitos evitam dúvidas ao alimentar dados no componente.
 
 <DocsCodePreview title="Ações com verbos no infinitivo">
 ```dsl
-row-end:
-  @ghost[Cancelar](close)
-  @[Enviar convite](SendInvite)
+screen Default:
+  container:
+    row-end:
+      @ghost[Cancelar](close)
+      @[Enviar convite](SendInvite)
 ```
 </DocsCodePreview>
 Quando usar: instruir claramente o que acontece ao acionar o botão.

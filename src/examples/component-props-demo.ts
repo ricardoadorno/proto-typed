@@ -11,7 +11,6 @@ export const componentPropsDemo = `component ContactItem:
     > Phone: %phone
     > Email: %email
     @primary[Call](call-%phone)
-    @secondary[Email](mailto-%email)
 
 component ProductItem:
   card:

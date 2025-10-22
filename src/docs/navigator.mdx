@@ -37,10 +37,13 @@ Por quê: replica o mesmo menu em cada tela do grupo para garantir consistência
 ## Variantes
 <DocsCodePreview title="Navigator sem ícones">
 ```dsl
-navigator:
-  - Home | Home
-  - Métricas | Dashboard
-  - Configurações | Settings
+screen Default:
+  container:
+    # Conteúdo da tela
+  navigator:
+    - Home | Home
+    - Métricas | Dashboard
+    - Configurações | Settings
 ```
 </DocsCodePreview>
 Quando usar: priorizar textos curtos quando os ícones não agregam contexto.
@@ -48,10 +51,13 @@ Por quê: reduz ruído visual e favorece leitura rápida dos rótulos.
 
 <DocsCodePreview title="Navigator com ícones Lucide">
 ```dsl
-navigator:
-  - i-Home Início | Home
-  - i-List Tarefas | Tasks
-  - i-BarChart Métricas | Dashboard
+screen Default:
+  container:
+    # Conteúdo da tela
+  navigator:
+    - i-Home Início | Home
+    - i-List Tarefas | Tasks
+    - i-BarChart Métricas | Dashboard
 ```
 </DocsCodePreview>
 Quando usar: acelerar reconhecimento visual dos destinos principais.
@@ -59,10 +65,13 @@ Por quê: ajuda a localizar telas frequentes apenas pelo símbolo.
 
 <DocsCodePreview title="Navigator com destaque para três telas">
 ```dsl
-navigator:
-  - i-Home Visão geral | Dashboard
-  - i-Users Equipe | Team
-  - i-Settings Ajustes | Settings
+screen Default:
+  container:
+    # Conteúdo da tela
+  navigator:
+    - i-Home Visão geral | Dashboard
+    - i-Users Equipe | Team
+    - i-Settings Ajustes | Settings
 ```
 </DocsCodePreview>
 Quando usar: destacar as telas mais relevantes de um fluxo reduzido.

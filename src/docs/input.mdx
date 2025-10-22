@@ -31,7 +31,9 @@ Por quê: reúne diferentes tipos de entrada em um fluxo compacto e completo.
 ## Variantes
 <DocsCodePreview title="Select com opções declaradas">
 ```dsl
-___: Status[Em análise | Aprovado | Reprovado]
+screen Default:
+  container:
+    ___: Status[Em análise | Aprovado | Reprovado]
 ```
 </DocsCodePreview>
 Quando usar: limitar a escolha a um conjunto predeterminado.
@@ -39,7 +41,9 @@ Por quê: evita entradas inválidas ao restringir alternativas disponíveis.
 
 <DocsCodePreview title="Checkbox para confirmação">
 ```dsl
-[X] Receber novidades por e-mail
+screen Default:
+  container:
+    [X] Receber novidades por e-mail
 ```
 </DocsCodePreview>
 Quando usar: capturar consentimentos que podem ser marcados ou desmarcados.
@@ -47,8 +51,10 @@ Por quê: reflete decisões binárias mantendo controle manual da pessoa usuári
 
 <DocsCodePreview title="Radios agrupados">
 ```dsl
-(X) Cobrança mensal
-( ) Cobrança anual
+screen Default:
+  container:
+    (X) Cobrança mensal
+    ( ) Cobrança anual
 ```
 </DocsCodePreview>
 Quando usar: exigir seleção exclusiva entre opções mutuamente excludentes.

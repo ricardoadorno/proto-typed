@@ -23,8 +23,10 @@ Por quê: apresenta CTA único alinhado ao objetivo da tela.
 ## Variantes
 <DocsCodePreview title="Variante primária para CTA principal">
 ```dsl
-row:
-  @[Publicar relatório](PublishReport)
+screen Default:
+  container:
+    row:
+      @[Publicar relatório](PublishReport)
 ```
 </DocsCodePreview>
 Quando usar: priorize a ação que move o fluxo adiante.
@@ -32,8 +34,10 @@ Por quê: destaca o comando principal com contraste máximo.
 
 <DocsCodePreview title="Variante secundária de apoio">
 ```dsl
-row:
-  @secondary-sm[Ver histórico](History)
+screen Default:
+  container:
+    row:
+      @secondary-sm[Ver histórico](History)
 ```
 </DocsCodePreview>
 Quando usar: ofereça opção complementar sem competir com o CTA principal.
@@ -41,8 +45,10 @@ Por quê: mantém a hierarquia visual ao apresentar caminhos alternativos.
 
 <DocsCodePreview title="Variante destrutiva para ações críticas">
 ```dsl
-row-end:
-  @destructive[Excluir conta](ConfirmDelete)
+screen Default:
+  container:
+    row-end:
+      @destructive[Excluir conta](ConfirmDelete)
 ```
 </DocsCodePreview>
 Quando usar: sinalize riscos e peça confirmação antes de executar.
@@ -55,13 +61,15 @@ Por quê: associa o estilo destrutivo a ações de alto impacto e reduz erros.
 
 <DocsCodePreview title="Card com botões alinhados">
 ```dsl
-card:
-  ## Plano mensal
-  > Controle de cobranças recorrentes.
-  row-end:
-    @ghost[Cancelar](-1)
-    @[Atualizar plano](UpdatePlan)
-```
+screen Default:
+  container:
+    card:
+      ## Plano mensal
+      > Controle de cobranças recorrentes.
+      row-end:
+        @ghost[Cancelar](-1)
+        @[Atualizar plano](UpdatePlan)
+    ```
 </DocsCodePreview>
 Por quê: combina CTA principal e opção de saída dentro do mesmo bloco.
 
@@ -145,8 +153,10 @@ row:
 
 <DocsCodePreview title="Button com modal de confirmação">
 ```dsl
-row-end:
-  @destructive[Excluir conta](ConfirmDelete)
+screen Default:
+  container:
+    row-end:
+      @destructive[Excluir conta](ConfirmDelete)
 
 modal ConfirmDelete:
   card:

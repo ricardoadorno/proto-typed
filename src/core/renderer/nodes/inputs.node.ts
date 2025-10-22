@@ -9,7 +9,7 @@ export function renderInput(node: AstNode): string {
   let inputHtml = '';
   
   if (inputProps?.label) {
-    inputHtml += `<label class="${elementStyles.label}" style="${getLabelInlineStyles()}">${inputProps.label}:}\n`;
+    inputHtml += `<label class="${elementStyles.label}" style="${getLabelInlineStyles()}">${inputProps.label}:\n`;
   }
   
   if(inputProps?.kind === 'textarea') {
@@ -36,7 +36,7 @@ export function renderRadioGroup(node: AstNode): string {
   const radioName = `radio-group-${Math.random().toString(36).substring(7)}`;
   const radioOptions = (props?.options || [])
     .map((option: { label: string, selected: boolean }) => `
-      <label class="${getFormControlClasses()} mb-2">
+      <label class="${getFormControlClasses()}">
         <input type="radio" name="${radioName}" ${option.selected ? 'checked' : ''} class="${elementStyles.radio}" style="${getRadioInlineStyles()}" />
         <span style="color: var(--foreground);">${option.label}</span>
       </label>
@@ -53,7 +53,7 @@ export function renderSelect(node: AstNode): string {
   let selectHtml = '';
   
   if (selectProps?.label) {
-    selectHtml += `<label class="${elementStyles.label}" style="${getLabelInlineStyles()}">${selectProps.label}:}\n`;
+    selectHtml += `<label class="${elementStyles.label}" style="${getLabelInlineStyles()}">${selectProps.label}:\n`;
   }
   
   const selectOptions = (selectProps?.attributes?.options || [])

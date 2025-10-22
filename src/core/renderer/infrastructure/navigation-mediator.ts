@@ -50,7 +50,7 @@ export class NavigationMediator {
     }
 
     // Check if it's an external URL
-    if (trimmedTarget.includes('://') || trimmedTarget.startsWith('mailto:')) {
+    if (trimmedTarget.includes('://')) {
       return { type: 'external', value: trimmedTarget, isValid: true };
     }
 

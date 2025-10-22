@@ -57,12 +57,13 @@ Por quê: a sintaxe de componente + instância reduz duplicação mantendo alinh
 
 <DocsCodePreview title="Listas textuais sem ações inline">
 ```dsl
-
-  - Planejar release
-  - Revisar backlog
-  - Atualizar métricas
-row-end:
-  @[Abrir planejamento](Planning)
+screen Default:
+  container:
+    - Planejar release
+    - Revisar backlog
+    - Atualizar métricas
+    row-end:
+      @[Abrir planejamento](Planning)
 ```
 </DocsCodePreview>
 Quando usar: apresentar itens somente textuais e agrupar as ações em blocos adequados.

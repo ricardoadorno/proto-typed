@@ -30,11 +30,6 @@ export interface DocsCodePreviewProps {
   children?: ReactNode
 }
 
-const DEFAULT_SCREEN = `screen Default:
-  container:
-    # Preview vazio
-    > Adicione blocos para visualizar o resultado.`
-
 const parseChildrenToText = (node: ReactNode): string => {
   if (node == null || typeof node === "boolean") return ""
 
@@ -69,24 +64,6 @@ const stripDslFence = (raw: string): string => {
   return normalized.trim()
 }
 
-const ensureScreenWrapper = (code: string): string => {
-  const trimmed = code.trim()
-  if (!trimmed) {
-    return DEFAULT_SCREEN
-  }
-
-  if (/\bscreen\s+\w+/i.test(trimmed)) {
-    return trimmed
-  }
-
-  const indented = trimmed
-    .split(/\r?\n/)
-    .map((line) => (line ? `    ${line}` : line))
-    .join("\n")
-
-  return `screen Default:\n  container:\n${indented}`
-}
-
 const PanelHeader = ({
   title,
   action,
@@ -116,7 +93,7 @@ export function DocsCodePreview({
   const normalizedCode = useMemo(() => {
     const rawText = parseChildrenToText(children)
     const withoutFence = stripDslFence(rawText)
-    return ensureScreenWrapper(withoutFence)
+    return withoutFence
   }, [children])
 
   useEffect(() => {

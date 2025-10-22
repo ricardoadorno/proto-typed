@@ -50,10 +50,10 @@ component TaskRow:
       > %title
       >>> %due
     @[Detalhar](%action)
-
-list $TaskRow:
-  - Atualizar roadmap | Até 22/09 | show:roadmap
-  - Revisar backlog | Até 24/09 | show:backlog
+screen Default:
+  list $TaskRow:
+    - Atualizar roadmap | Até 22/09 | show:roadmap
+    - Revisar backlog | Até 24/09 | show:backlog
 ```
 </DocsCodePreview>
 Quando usar: padronizar linhas de lista que exigem múltiplos campos e ações.

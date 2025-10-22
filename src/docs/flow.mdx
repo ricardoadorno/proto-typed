@@ -58,8 +58,10 @@ Por quê: drawers expandem o fluxo lateralmente, mantendo origem e destino visí
 
 <DocsCodePreview title="Encadear modal de confirmação">
 ```dsl
-row-end:
-  @destructive[Excluir conta](ConfirmDelete)
+screen Default:
+  container:
+    row-end:
+      @destructive[Excluir conta](ConfirmDelete)
 
 modal ConfirmDelete:
   card:

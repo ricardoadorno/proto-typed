@@ -13,7 +13,7 @@ Links (`#[Texto](Destino)`) criam navegação inline para telas, modais ou URLs 
 screen HelpCenter:
   container:
     # Central de ajuda
-    > Consulte a #[documentação oficial](https://proto-typed.dev/docs) para um panorama completo.
+    #[documentação oficial](https://proto-typed.dev/docs) para um panorama completo.
 
     card:
       ## Precisa redefinir senha?
@@ -25,7 +25,9 @@ Por quê: mantém a leitura fluida e oferece navegação contextual.
 ## Variantes
 <DocsCodePreview title="Link interno para screen">
 ```dsl
-#[Ver detalhes](DetailScreen)
+screen Default:
+  container:
+    #[Ver detalhes](DetailScreen)
 ```
 </DocsCodePreview>
 Quando usar: apontar para telas existentes no fluxo principal.
@@ -33,19 +35,14 @@ Por quê: mantém a navegação coesa sem depender de botões.
 
 <DocsCodePreview title="Link externo">
 ```dsl
-#[Abrir documentação](https://proto-typed.dev/docs)
+screen Default:
+  container:
+    #[Abrir documentação](https://proto-typed.dev/docs)
 ```
 </DocsCodePreview>
 Quando usar: referenciar recursos hospedados fora do produto.
 Por quê: direciona para documentação ou sites externos preservando contexto.
 
-<DocsCodePreview title="Link para contato rápido">
-```dsl
-#[Enviar e-mail](mailto:suporte@empresa.com)
-```
-</DocsCodePreview>
-Quando usar: disponibilizar canais diretos de suporte ou contato comercial.
-Por quê: ativa protocolos específicos (e-mail, telefone) com um clique.
 
 ## Composição (usando com outros)
 - **Link + Card** — oferece contextos adicionais dentro de blocos informativos.
@@ -76,7 +73,7 @@ Por quê: agrupa atalhos sem sobrecarregar o cabeçalho com botões.
 | --- | --- | --- | --- | --- |
 | `label` | string | — | Texto exibido entre `#[ ]`. | Sim |
 | `destino` | slug ou URL | — | Tela, modal, drawer ou endereço externo. | Sim |
-| `protocolo` | `https://`, `mailto:`, `tel:` | `https://` | Determina a ação para links externos. | Não |
+| `protocolo` | `https://`| `https://` | Determina a ação para links externos. | Não |
 | `ícone inline` | token `i-` | — | Opcional antes do texto para reforçar o contexto. | Não |
 
 ## Erros comuns (Do/Don’t)
@@ -126,11 +123,3 @@ Por quê: agrupa atalhos sem sobrecarregar o cabeçalho com botões.
 - **Link + List** → coleções de atalhos sem usar botões.
 - **Link + Drawer** → catálogos laterais de documentação ou suporte.
 
-<DocsCodePreview title="Card com links complementares">
-```dsl
-card:
-  ## Recursos
-  > Explore a #[lista de componentes](ComponentList) e a #[guia de composição](ComponentComposition) para aprofundar o uso.
-```
-</DocsCodePreview>
-Por quê: oferece caminhos de estudo sem sobrecarregar o bloco principal.

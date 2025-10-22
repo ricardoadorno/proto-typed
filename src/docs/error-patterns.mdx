@@ -6,14 +6,15 @@ Conhecer os anti-padrões mais recorrentes evita retrabalho, reduz bugs de naveg
 ## Forma canônica (sintaxe mínima)
 <DocsCodePreview title="Separar itens textuais de ações">
 ```dsl
-card:
-  ## Próximos passos
-  
-    - Revisar backlog
-    - Preparar release
-  row-end:
-    @ghost[Cancelar](close)
-    @[Abrir planejamento](Planning)
+screen Default:
+  container:
+    card:
+      ## Próximos passos
+      - Revisar backlog
+      - Preparar release
+      row-end:
+        @ghost[Cancelar](close)
+        @[Abrir planejamento](Planning)
 ```
 </DocsCodePreview>
 Por quê: destaca que `` abriga apenas texto, enquanto ações ficam em blocos dedicados como `row-end`.
@@ -21,9 +22,11 @@ Por quê: destaca que `` abriga apenas texto, enquanto ações ficam em blocos d
 ## Padrões de uso
 <DocsCodePreview title="Destacar ações destrutivas">
 ```dsl
-row-end:
-  @ghost[Cancelar](close)
-  @destructive[Excluir conta](ConfirmDelete)
+screen Default:
+  container:
+    row-end:
+      @ghost[Cancelar](close)
+      @destructive[Excluir conta](ConfirmDelete)
 ```
 </DocsCodePreview>
 Quando usar: qualquer operação que remova dados ou interrompa fluxos críticos.
@@ -147,12 +150,13 @@ modal ConfirmAction:
 
 <DocsCodePreview title="Checklist final de revisão">
 ```dsl
-card:
-  ## Antes de publicar
-  
-    - Conferir lista sem ações inline.
-    - Garantir overlays com botões de fechamento.
-    - Verificar consistência dos destinos de navegação.
+screen Default:
+  container:
+    card:
+      ## Antes de publicar
+      - Conferir lista sem ações inline.
+      - Garantir overlays com botões de fechamento.
+      - Verificar consistência dos destinos de navegação.
 ```
 </DocsCodePreview>
 Por quê: padroniza a inspeção e evita que anti-padrões sejam enviados para produção.

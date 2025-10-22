@@ -10,12 +10,14 @@ Stacks empilham elementos verticalmente, controlando o espaçamento entre blocos
 ## Exemplo básico
 <DocsCodePreview title="Stack em card de orientações">
 ```dsl
-card:
-  ## Próximos passos
-  stack-loose:
-    > Revise o backlog com o time.
-    > Confirme o plano da sprint.
-    @[Abrir planejamento](Planning)
+screen Default:
+  container:
+    card:
+      ## Próximos passos
+      stack-loose:
+        > Revise o backlog com o time.
+        > Confirme o plano da sprint.
+        @[Abrir planejamento](Planning)
 ```
 </DocsCodePreview>
 Por quê: combina textos e ação em blocos verticais com espaçamento confortável.
@@ -27,10 +29,12 @@ Mesmo que um LLM sugira `-` antes de cada linha, `stack`, `row`, `card` e demais
 ## Variantes
 <DocsCodePreview title="Stack padrão">
 ```dsl
-stack:
-  > Valide os requisitos
-  > Ajuste o cronograma
-  @[Abrir checklist](Checklist)
+screen Default:
+  container:
+    stack:
+      > Valide os requisitos
+      > Ajuste o cronograma
+      @[Abrir checklist](Checklist)
 ```
 </DocsCodePreview>
 Quando usar: organizar conteúdos variados com espaçamento mediano.
@@ -38,10 +42,12 @@ Por quê: equilibra textos, inputs e ações sem gerar blocos soltos.
 
 <DocsCodePreview title="Stack-tight para itens curtos">
 ```dsl
-stack-tight:
-  [X] Definir objetivo
-  [ ] Validar protótipo
-  [ ] Preparar release
+screen Default:
+  container:
+    stack-tight:
+      [X] Definir objetivo
+      [ ] Validar protótipo
+      [ ] Preparar release
 ```
 </DocsCodePreview>
 Quando usar: agrupar itens curtos ou checklists sem perder legibilidade.
@@ -49,11 +55,13 @@ Por quê: o gap reduzido aproxima conteúdos relacionados e acelera leitura.
 
 <DocsCodePreview title="Stack-flush para cards compactos">
 ```dsl
-stack-flush:
-  card-compact:
-    > Última atualização em 18/09.
-  card-compact:
-    > Reunião agendada para amanhã.
+screen Default:
+  container:
+    stack-flush:
+      card-compact:
+        > Última atualização em 18/09.
+      card-compact:
+        > Reunião agendada para amanhã.
 ```
 </DocsCodePreview>
 Quando usar: empilhar elementos que já possuem padding próprio.
@@ -66,15 +74,17 @@ Por quê: evita espaçamento duplo quando os componentes internos já trazem mar
 
 <DocsCodePreview title="Formulário com stack e row">
 ```dsl
-card:
-  ## Atualizar perfil
-  stack-loose:
-    ___: Nome completo{Digite seu nome}
-    ___email: E-mail{nome@empresa.com}
-    ___textarea: Bio{Conte sobre seu trabalho}
-  row-end:
-    @ghost[Cancelar](close)
-    @[Salvar mudanças](saveProfile)
+screen Default:
+  container:
+    card:
+      ## Atualizar perfil
+      stack-loose:
+        ___: Nome completo{Digite seu nome}
+        ___email: E-mail{nome@empresa.com}
+        ___textarea: Bio{Conte sobre seu trabalho}
+      row-end:
+        @ghost[Cancelar](close)
+        @[Salvar mudanças](saveProfile)
 ```
 </DocsCodePreview>
 Por quê: separa campos verticalmente e alinha ações no rodapé.
@@ -150,11 +160,13 @@ component Insight:
     ## %title
     > %description
 
-stack-loose:
-  $Insight:
-    - Roadmap atualizado | Planeje entregas para o próximo trimestre.
-  $Insight:
-    - Métricas semanais | Revise KPIs antes da reunião de status.
+screen Default:
+  container:
+    stack-loose:
+      $Insight:
+        - Roadmap atualizado | Planeje entregas para o próximo trimestre.
+      $Insight:
+        - Métricas semanais | Revise KPIs antes da reunião de status.
 ```
 </DocsCodePreview>
 Por quê: evita duplicação ao empilhar componentes com dados diferentes.

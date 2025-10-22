@@ -27,9 +27,11 @@ Por quê: apresenta contexto, metadados e ação em blocos claramente hierarquiz
 ## Variantes
 <DocsCodePreview title="Notas e citações">
 ```dsl
-card:
-  *> Lembre-se de validar os dados antes de compartilhar.
-  "> Proto-Typed reduziu nosso tempo de prototipagem. — Squad A
+screen Default:
+  container:
+    card:
+      *> Lembre-se de validar os dados antes de compartilhar.
+      "> Proto-Typed reduziu nosso tempo de prototipagem. — Squad A
 ```
 </DocsCodePreview>
 Quando usar: destacar alertas e registrar feedback com formato diferenciado.
@@ -37,10 +39,12 @@ Por quê: a formatação especial chama atenção sem exigir componentes extras.
 
 <DocsCodePreview title="Metadados sutis">
 ```dsl
-card:
-  ## Status do projeto
-  > Conclua a etapa de handoff ainda hoje.
-  >>> Atualizado por Ana às 10h12.
+screen Default:
+  container:
+    card:
+      ## Status do projeto
+      > Conclua a etapa de handoff ainda hoje.
+      >>> Atualizado por Ana às 10h12.
 ```
 </DocsCodePreview>
 Quando usar: oferecer informações de suporte sem competir com o conteúdo principal.
@@ -48,10 +52,11 @@ Por quê: o nível `>>>` mantém o dado presente, porém discreto.
 
 <DocsCodePreview title="Títulos hierárquicos">
 ```dsl
-container:
-  # Visão geral
-  ## Métricas principais
-  ### Funil de aquisição
+screen Default:
+  container:
+    # Visão geral
+    ## Métricas principais
+    ### Funil de aquisição
 ```
 </DocsCodePreview>
 Quando usar: organizar o conteúdo em seções aninhadas com clareza.
@@ -64,11 +69,13 @@ Por quê: hierarquia visível ajuda a pessoa usuária a escanear a página rapid
 
 <DocsCodePreview title="Card com texto e ação">
 ```dsl
-card:
-  ## Próxima entrega
-  > Revise o backlog com o time antes da reunião.
-  row-end:
-    @[Abrir planejamento](Planning)
+screen Default:
+  container:
+    card:
+      ## Próxima entrega
+      > Revise o backlog com o time antes da reunião.
+      row-end:
+        @[Abrir planejamento](Planning)
 ```
 </DocsCodePreview>
 Por quê: explica o contexto e oferece o próximo passo em um único bloco.
@@ -140,11 +147,13 @@ card:
 
 <DocsCodePreview title="Texto guiando ação">
 ```dsl
-card:
-  ## Atualize o status
-  > Garanta que o time tenha visibilidade do progresso.
-  row-end:
-    @[Atualizar agora](UpdateStatus)
+screen Default:
+  container:
+    card:
+      ## Atualize o status
+      > Garanta que o time tenha visibilidade do progresso.
+      row-end:
+        @[Atualizar agora](UpdateStatus)
 ```
 </DocsCodePreview>
 Por quê: orienta a pessoa usuária e apresenta o CTA associado imediatamente.

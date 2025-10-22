@@ -26,11 +26,13 @@ Ao gerar DSL — manualmente ou via LLM — mantenha filhos de layouts (`stack`,
 ## Padrões de uso
 <DocsCodePreview title="Row-between + Stack para cabeçalhos ricos">
 ```dsl
-row-between:
-  stack-tight:
-    ## Plano Pro
-    >>> Renovação em 30/09
-  @[Atualizar plano](UpdatePlan)
+screen Default:
+  container:
+    row-between:
+      stack-tight:
+        ## Plano Pro
+        >>> Renovação em 30/09
+      @[Atualizar plano](UpdatePlan)
 ```
 </DocsCodePreview>
 Quando usar: apresentar contexto textual e CTA principal na mesma faixa.
@@ -42,10 +44,10 @@ component TaskRow:
   row-between:
     > %title
     >>> %due
-
-list $TaskRow:
-  - Revisar backlog | 22/09
-  - Preparar demo | 25/09
+screen Default:
+  list $TaskRow:
+    - Revisar backlog | 22/09
+    - Preparar demo | 25/09
 ```
 </DocsCodePreview>
 Quando usar: repetir estrutura de item com dados variáveis.
@@ -53,12 +55,14 @@ Por quê: garante consistência visual e facilita futuras composições (ex.: co
 
 <DocsCodePreview title="Card + Row-end para rodapés de ação">
 ```dsl
-card:
-  ## Revisar entrega
-  > Confirme o status com o time.
-  row-end:
-    @ghost[Cancelar](close)
-    @[Marcar como concluído](CompleteTask)
+screen Default:
+  container:
+    card:
+      ## Revisar entrega
+      > Confirme o status com o time.
+      row-end:
+        @ghost[Cancelar](close)
+        @[Marcar como concluído](CompleteTask)
 ```
 </DocsCodePreview>
 Quando usar: fechar blocos com opções de saída e avanço organizadas.

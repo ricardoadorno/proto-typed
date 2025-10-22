@@ -14,14 +14,16 @@ LLMs costumam inserir `-` para listar filhos de qualquer bloco, mas a DSL só ac
 ## Exemplo básico
 <DocsCodePreview title="Lista com ações separadas">
 ```dsl
-card:
-  ## Tarefas da semana
-  - Revisar backlog
-  - Preparar demo
-  - Atualizar documentação
-  row-end:
-    @[Criar nova tarefa](TaskForm)
-    @ghost[Ver calendário](Calendar)
+screen Default:
+  container:
+    card:
+      ## Tarefas da semana
+      - Revisar backlog
+      - Preparar demo
+      - Atualizar documentação
+      row-end:
+        @[Criar nova tarefa](TaskForm)
+        @ghost[Ver calendário](Calendar)
 ```
 </DocsCodePreview>
 Por quê: mantém itens exclusivamente textuais e posiciona ações em bloco dedicado.
@@ -29,9 +31,11 @@ Por quê: mantém itens exclusivamente textuais e posiciona ações em bloco ded
 ## Variantes
 <DocsCodePreview title="Lista simples">
 ```dsl
-- Configurar métricas
-- Validar integrações
-- Revisar deploy
+screen Default:
+  container:
+    - Configurar métricas
+    - Validar integrações
+    - Revisar deploy
 ```
 </DocsCodePreview>
 Quando usar: enumerar itens curtos sem propriedades adicionais.

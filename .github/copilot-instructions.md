@@ -293,7 +293,7 @@ const RENDERERS: Record<NodeType, typeof _render> = {
   - `generateNavigationAttributes(target)` → data attributes object
 - **Navigation Types**:
   - `internal` - Screen navigation (`#ScreenName`)
-  - `external` - URLs with `://` or `mailto:`
+  - `external` - URLs with `://``
   - `action` - JavaScript calls (contains `()` or `.`)
   - `toggle` - Modal/Drawer activation (matches modal/drawer names)
   - `back` - History back (`-1`)

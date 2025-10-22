@@ -30,13 +30,15 @@ Por quê: apresenta métricas equilibradas com alinhamento previsível.
 ## Variantes
 <DocsCodePreview title="Grid-2 para comparações">
 ```dsl
-grid-2:
-  card:
-    ## Plano Starter
-    > Ideal para equipes pequenas.
-  card:
-    ## Plano Pro
-    > Recursos avançados e suporte prioritário.
+screen Default:
+  container:
+    grid-2:
+      card:
+        ## Plano Starter
+        > Ideal para equipes pequenas.
+      card:
+        ## Plano Pro
+        > Recursos avançados e suporte prioritário.
 ```
 </DocsCodePreview>
 Quando usar: comparar conteúdos em duas colunas com foco equilibrado.
@@ -44,16 +46,18 @@ Por quê: dois slots mantêm equilíbrio entre leitura e respiro visual.
 
 <DocsCodePreview title="Grid-auto para coleções flexíveis">
 ```dsl
-grid-auto:
-  card:
-    ## Destaque 1
-    > Ajusta automaticamente a largura.
-  card:
-    ## Destaque 2
-    > Se adapta ao espaço restante.
-  card:
-    ## Destaque 3
-    > Quebra para a linha seguinte conforme necessário.
+screen Default:
+  container:
+    grid-auto:
+      card:
+        ## Destaque 1
+        > Ajusta automaticamente a largura.
+      card:
+        ## Destaque 2
+        > Se adapta ao espaço restante.
+      card:
+        ## Destaque 3
+        > Quebra para a linha seguinte conforme necessário.
 ```
 </DocsCodePreview>
 Quando usar: distribuir itens com largura dinâmica sem definir número fixo de colunas.
@@ -61,15 +65,17 @@ Por quê: o ajuste automático evita colunas quebradas em telas menores.
 
 <DocsCodePreview title="Grid-4 em telas amplas">
 ```dsl
-grid-4:
-  card:
-    ## Insight 1
-  card:
-    ## Insight 2
-  card:
-    ## Insight 3
-  card:
-    ## Insight 4
+screen Default:
+  container:
+    grid-4:
+      card:
+        ## Insight 1
+      card:
+        ## Insight 2
+      card:
+        ## Insight 3
+      card:
+        ## Insight 4
 ```
 </DocsCodePreview>
 Quando usar: dashboards extensos em desktop que pedem quatro colunas alinhadas.
@@ -183,19 +189,21 @@ stack-loose:
 
 <DocsCodePreview title="Grid com stack interno">
 ```dsl
-grid-3:
-  card:
-    stack-tight:
-      ## Backlog
-      > Tarefas pendentes
-  card:
-    stack-tight:
-      ## Sprint atual
-      > Ênfase em bugs críticos
-  card:
-    stack-tight:
-      ## Roadmap
-      > Próximos lançamentos
+screen Default:
+  container:
+    grid-3:
+      card:
+        stack-tight:
+          ## Backlog
+          > Tarefas pendentes
+      card:
+        stack-tight:
+          ## Sprint atual
+          > Ênfase em bugs críticos
+      card:
+        stack-tight:
+          ## Roadmap
+          > Próximos lançamentos
 ```
 </DocsCodePreview>
 Por quê: stacks dentro do card mantêm alinhamento vertical sem quebrar o layout da grade.

@@ -27,8 +27,10 @@ Por quê: combina pistas visuais e texto para acelerar o reconhecimento da açã
 ## Variantes
 <DocsCodePreview title="Ícone em parágrafo informativo">
 ```dsl
-card:
-  *> i-Info A implantação está em andamento.
+screen Default:
+  container:
+    card:
+      *> i-Info A implantação está em andamento.
 ```
 </DocsCodePreview>
 Quando usar: destacar avisos sem recorrer a blocos adicionais.
@@ -36,10 +38,13 @@ Por quê: adiciona ênfase visual sem precisar de layouts extras.
 
 <DocsCodePreview title="Ícone em navigator">
 ```dsl
-navigator:
-  - i-Home Início | Home
-  - i-Server Deploys | Deploys
-  - i-AlertCircle Logs | Logs
+screen Default:
+  container:
+    # Conteúdo da tela
+  navigator:
+    - i-Home Início | Home
+    - i-Server Deploys | Deploys
+    - i-AlertCircle Logs | Logs
 ```
 </DocsCodePreview>
 Quando usar: guiar navegação com pistas imediatas sobre cada aba.
@@ -47,9 +52,12 @@ Por quê: acelera a identificação dos destinos ao percorrer o menu.
 
 <DocsCodePreview title="Ícone em FAB">
 ```dsl
-fab:
-  - i-Plus | TaskForm
-  - i-Filter | FilterDrawer
+screen Default:
+  container:
+    # Conteúdo da tela
+  fab:
+    - i-Plus | TaskForm
+    - i-Filter | FilterDrawer
 ```
 </DocsCodePreview>
 Quando usar: diferenciar ações globais no FAB mantendo o layout limpo.
@@ -62,12 +70,14 @@ Por quê: o ícone sintetiza a finalidade de cada ação sem texto adicional.
 
 <DocsCodePreview title="Card com ícones de status">
 ```dsl
-card:
-  ## Status da implantação
-  stack-tight:
-    > i-Check Build concluída
-    > i-Check Testes finalizados
-    > i-AlertCircle Acompanhar logs
+screen Default:
+  container:
+    card:
+      ## Status da implantação
+      stack-tight:
+        > i-Check Build concluída
+        > i-Check Testes finalizados
+        > i-AlertCircle Acompanhar logs
 ```
 </DocsCodePreview>
 Por quê: permite acompanhar estados rapidamente dentro de um bloco resumido.

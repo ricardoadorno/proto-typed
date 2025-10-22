@@ -10,8 +10,10 @@ component UserCard:
     ## %name
     >> %email
 
-$UserCard:
-  - Ana Souza | ana@empresa.com
+screen Default:
+  container:
+    $UserCard:
+      - Ana Souza | ana@empresa.com
 ```
 </DocsCodePreview>
 Por quê: demonstra como cada valor separado por `|` preenche o `%prop` correspondente.
@@ -23,10 +25,10 @@ component TaskRow:
   row-between:
     > %title
     >>> %due
-
-list $TaskRow:
-  - Revisar backlog | 22/09
-  - Preparar demo | 25/09
+screen Default:
+  list $TaskRow:
+    - Revisar backlog | 22/09
+    - Preparar demo | 25/09
 ```
 </DocsCodePreview>
 Quando usar: gerar linhas repetidas com dados que mudam a cada item.
@@ -41,8 +43,10 @@ component ActionCard:
     row-end:
       @[Abrir](%action)
 
-$ActionCard:
-  - Configurar integrações | Ajuste APIs conectadas | Integrations
+screen Default:
+  container:
+    $ActionCard:
+      - Configurar integrações | Ajuste APIs conectadas | Integrations
 ```
 </DocsCodePreview>
 Quando usar: parametrizar destinos de botões e textos no mesmo componente.
@@ -56,13 +60,15 @@ component MetricCard:
     # %value
     >> %trend
 
-grid-3:
-  $MetricCard:
-    - Leads captados | 1.240 | +8%
-  $MetricCard:
-    - Conversões | 134 | +5%
-  $MetricCard:
-    - Satisfação | 92% | +3%
+screen Default:
+  container:
+    grid-3:
+      $MetricCard:
+        - Leads captados | 1.240 | +8%
+      $MetricCard:
+        - Conversões | 134 | +5%
+      $MetricCard:
+        - Satisfação | 92% | +3%
 ```
 </DocsCodePreview>
 Quando usar: atualizar métricas com múltiplos campos sem alterar o layout.

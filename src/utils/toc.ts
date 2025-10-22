@@ -134,11 +134,6 @@ export const docSections: DocSection[] = [
         description: 'Como interpolar valores, criar placeholders e passar parâmetros dinâmicos.',
       },
       {
-        slug: 'component-list',
-        title: 'Lista de componentes',
-        description: 'Renderiza múltiplas instâncias de um mesmo componente com dados variados.',
-      },
-      {
         slug: 'component-composition',
         title: 'Composição de componentes',
         description: 'Boas práticas para combinar componentes sem redundância.',

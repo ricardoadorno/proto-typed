@@ -22,13 +22,14 @@ Por quê: estabelece a coluna central e prepara o espaço para conteúdo complem
 ## Variantes
 <DocsCodePreview title="Container estreito para foco">
 ```dsl
-container-narrow:
-  card:
-    ## Solicitar acesso
-    ___email: E-mail{pessoa@empresa.com}
-    row-end:
-      @ghost[Cancelar](-1)
-      @[Enviar convite](Invite)
+screen Default:
+  container-narrow:
+    card:
+      ## Solicitar acesso
+      ___email: E-mail{pessoa@empresa.com}
+      row-end:
+        @ghost[Cancelar](-1)
+        @[Enviar convite](Invite)
 ```
 </DocsCodePreview>
 Quando usar: concentrar atenção em formulários ou leitura longa.
@@ -36,17 +37,18 @@ Por quê: a largura reduzida guia o olhar para campos e instruções.
 
 <DocsCodePreview title="Container amplo para dashboards">
 ```dsl
-container-wide:
-  grid-3:
-    card:
-      ## Total de leads
-      # 1.240
-    card:
-      ## Conversões
-      # 134
-    card:
-      ## Receita
-      # R$ 87K
+screen Default:
+  container-wide:
+    grid-3:
+      card:
+        ## Total de leads
+        # 1.240
+      card:
+        ## Conversões
+        # 134
+      card:
+        ## Receita
+        # R$ 87K
 ```
 </DocsCodePreview>
 Quando usar: disponibilizar múltiplas colunas de conteúdo de forma equilibrada.
@@ -54,13 +56,14 @@ Por quê: evita compressão de cards ao distribuir métricas em colunas amplas.
 
 <DocsCodePreview title="Largura total com layout controlado">
 ```dsl
-container-full:
-  stack-tight:
-    # Release Notes
-    > Atualizações e correções da versão.
-    row-end:
-      @[Ver detalhes](Changelog)
-      @secondary[Compartilhar](ShareModal)
+screen Default:
+  container-full:
+    stack-tight:
+      # Release Notes
+      > Atualizações e correções da versão.
+      row-end:
+        @[Ver detalhes](Changelog)
+        @secondary[Compartilhar](ShareModal)
 ```
 </DocsCodePreview>
 Quando usar: ocupar toda a largura, delegando o espaçamento ao layout interno.
@@ -87,7 +90,6 @@ screen Settings:
         @[Atualizar](UpdatePassword)
       card:
         ## Dispositivos reconhecidos
-        
           - MacBook | Último acesso ontem
           - iPhone | Último acesso hoje
 ```
@@ -165,13 +167,8 @@ screen Accounts:
     grid-2:
       card:
         ## Contas ativas
-        
-          - Plano Pro | Desde 2022
-          - Plano Enterprise | Desde 2021
-      drawer Summary:
-        card:
-          ## Detalhes
-          > Consulte dados complementares sem sair da tela.
+        - Plano Pro
+        - Plano Enterprise
 ```
 </DocsCodePreview>
 Por quê: combina largura maior com drawer para contexto secundário.

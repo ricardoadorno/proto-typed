@@ -10,11 +10,13 @@ Cards agrupam conteúdo relacionado em blocos autônomos com espaçamento consis
 ## Exemplo básico
 <DocsCodePreview title="Card com informação e ação">
 ```dsl
-card:
-  ## Plano Pro
-  > Recursos completos para times em crescimento.
-  row-end:
-    @[Assinar agora](Checkout)
+screen Default:
+  container:
+    card:
+      ## Plano Pro
+      > Recursos completos para times em crescimento.
+      row-end:
+        @[Assinar agora](Checkout)
 ```
 </DocsCodePreview>
 Por quê: destaca um bloco de conteúdo com CTA direto e espaçamento equilibrado.
@@ -22,9 +24,11 @@ Por quê: destaca um bloco de conteúdo com CTA direto e espaçamento equilibrad
 ## Variantes
 <DocsCodePreview title="Card padrão para blocos gerais">
 ```dsl
-card:
-  ## Atualização semanal
-  >> Consolidado das métricas do time.
+screen Default:
+  container:
+    card:
+      ## Atualização semanal
+      >> Consolidado das métricas do time.
 ```
 </DocsCodePreview>
 Quando usar: comunique conteúdo recorrente com leitura confortável.
@@ -32,11 +36,13 @@ Por quê: o espaçamento padrão equilibra texto e respiros visuais.
 
 <DocsCodePreview title="Card compacto para listas densas">
 ```dsl
-card-compact:
-  ## Próximas tarefas
-  
-    - Validar protótipo
-    - Revisar copy do email
+screen Default:
+  container:
+    card-compact:
+      ## Próximas tarefas
+      
+        - Validar protótipo
+        - Revisar copy do email
 ```
 </DocsCodePreview>
 Quando usar: agrupe itens curtos em pouco espaço.
@@ -44,10 +50,12 @@ Por quê: a variante reduz padding sem comprometer a legibilidade.
 
 <DocsCodePreview title="Card destaque com foco em conversão">
 ```dsl
-card-feature:
-  ## Enterprise
-  *> Atendimento dedicado e SLA personalizado.
-  @[Falar com vendas](ContactSales)
+screen Default:
+  container:
+    card-feature:
+      ## Enterprise
+      *> Atendimento dedicado e SLA personalizado.
+      @[Falar com vendas](ContactSales)
 ```
 </DocsCodePreview>
 Quando usar: direcionar atenção para ofertas premium ou ações críticas.
@@ -154,12 +162,14 @@ card:
 
 <DocsCodePreview title="Card com ações alinhadas">
 ```dsl
-card:
-  ## Status do pedido
-  > Atualize o andamento e notifique clientes.
-  row-end:
-    @ghost[Cancelar](-1)
-    @[Atualizar status](UpdateStatus)
+screen Default:
+  container:
+    card:
+      ## Status do pedido
+      > Atualize o andamento e notifique clientes.
+      row-end:
+        @ghost[Cancelar](-1)
+        @[Atualizar status](UpdateStatus)
 ```
 </DocsCodePreview>
 Por quê: mantém CTA principal e opção de saída em posição previsível.

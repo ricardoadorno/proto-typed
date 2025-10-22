@@ -10,12 +10,14 @@ Rows alinham elementos horizontalmente, controlando distribuição e espaçament
 ## Exemplo básico
 <DocsCodePreview title="Rodapé de card com ações alinhadas">
 ```dsl
-card:
-  ## Pedido #3021
-  > Atualize o status ou cancele a operação.
-  row-end:
-    @ghost[Cancelar](-1)
-    @[Atualizar pedido](UpdateOrder)
+screen Default:
+  container:
+    card:
+      ## Pedido #3021
+      > Atualize o status ou cancele a operação.
+      row-end:
+        @ghost[Cancelar](-1)
+        @[Atualizar pedido](UpdateOrder)
 ```
 </DocsCodePreview>
 Por quê: concentra as ações relacionadas ao bloco em uma mesma faixa horizontal.
@@ -23,9 +25,11 @@ Por quê: concentra as ações relacionadas ao bloco em uma mesma faixa horizont
 ## Variantes
 <DocsCodePreview title="Row padrão">
 ```dsl
-row:
-  @[Exportar CSV](ExportCSV)
-  @[Compartilhar relatório](ShareReport)
+screen Default:
+  container:
+    row:
+      @[Exportar CSV](ExportCSV)
+      @[Compartilhar relatório](ShareReport)
 ```
 </DocsCodePreview>
 Quando usar: alinhar ações no início do container com espaçamento consistente.
@@ -33,11 +37,13 @@ Por quê: garante distância uniforme entre botões adjacentes.
 
 <DocsCodePreview title="Row-between para título + ação">
 ```dsl
-row-between:
-  stack-tight:
-    ## Plano Pro
-    >>> Renovação em 30/09
-  @[Alterar plano](ChangePlan)
+screen Default:
+  container:
+    row-between:
+      stack-tight:
+        ## Plano Pro
+        >>> Renovação em 30/09
+      @[Alterar plano](ChangePlan)
 ```
 </DocsCodePreview>
 Quando usar: distribuir elementos nos extremos mantendo equilíbrio visual.
@@ -45,8 +51,10 @@ Por quê: separa foco textual da ação sem exigir colunas extras.
 
 <DocsCodePreview title="Row-center para estados">
 ```dsl
-row-center:
-  @outline[i-Refresh Tentar novamente](Retry)
+screen Default:
+  container:
+    row-center:
+      @outline-lg[i-RefreshCcw Tentar novamente](Retry)
 ```
 </DocsCodePreview>
 Quando usar: centralizar ações em estados vazios ou mensagens temporárias.
