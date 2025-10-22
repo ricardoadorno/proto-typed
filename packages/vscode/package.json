@@ -1,0 +1,51 @@
+{
+  "name": "@proto-typed/vscode",
+  "displayName": "Proto-Typed DSL",
+  "description": "VSCode extension for the Proto-Typed DSL.",
+  "version": "0.0.1",
+  "icon": "logo.svg",
+  "engines": {
+    "vscode": "^1.83.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "activationEvents": [
+    "onLanguage:proto-typed"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languages": [{
+      "id": "proto-typed",
+      "aliases": ["Proto-Typed", "proto-typed"],
+      "extensions": [".ptd"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "proto-typed",
+      "scopeName": "source.ptd",
+      "path": "./syntaxes/proto-typed.tmLanguage.json"
+    }],
+    "snippets": [{
+      "language": "proto-typed",
+      "path": "./snippets/snippets.json"
+    }],
+    "commands": [{
+      "command": "proto-typed.showPreview",
+      "title": "Show Preview"
+    }]
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "dependencies": {
+    "@proto-typed/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.83.0",
+    "typescript": "^5.2.2"
+  }
+}

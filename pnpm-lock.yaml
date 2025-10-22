@@ -74,9 +74,6 @@ importers:
 
   packages/core:
     dependencies:
-      '@proto-typed/core':
-        specifier: workspace:*
-        version: link:../shared
       chevrotain:
         specifier: ^11.0.3
         version: 11.0.3
@@ -88,36 +85,18 @@ importers:
         specifier: ^19.0.10
         version: 19.2.2
 
-  packages/editor:
+  packages/vscode:
     dependencies:
-      '@monaco-editor/react':
-        specifier: ^4.7.0
-        version: 4.7.0(monaco-editor@0.54.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       '@proto-typed/core':
         specifier: workspace:*
         version: link:../core
-      '@proto-typed/core':
-        specifier: workspace:*
-        version: link:../shared
-      react:
-        specifier: ^19.0.0
-        version: 19.2.0
     devDependencies:
-      '@types/react':
-        specifier: ^19.0.10
-        version: 19.2.2
-
-  packages/shared:
-    dependencies:
-      lucide:
-        specifier: ^0.513.0
-        version: 0.513.0
-      next-themes:
-        specifier: ^0.4.6
-        version: 0.4.6(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      react:
-        specifier: ^19.0.0
-        version: 19.2.0
+      '@types/vscode':
+        specifier: ^1.83.0
+        version: 1.105.0
+      typescript:
+        specifier: ^5.2.2
+        version: 5.7.3
 
   packages/web:
     dependencies:
@@ -133,12 +112,6 @@ importers:
       '@proto-typed/core':
         specifier: workspace:*
         version: link:../core
-      '@proto-typed/editor':
-        specifier: workspace:*
-        version: link:../editor
-      '@proto-typed/core':
-        specifier: workspace:*
-        version: link:../shared
       '@radix-ui/react-dialog':
         specifier: ^1.1.15
         version: 1.1.15(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -1695,6 +1668,9 @@ packages:
 
   '@types/unist@3.0.3':
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
+
+  '@types/vscode@1.105.0':
+    resolution: {integrity: sha512-Lotk3CTFlGZN8ray4VxJE7axIyLZZETQJVWi/lYoUVQuqfRxlQhVOfoejsD2V3dVXPSbS15ov5ZyowMAzgUqcw==}
 
   '@typescript-eslint/eslint-plugin@8.46.2':
     resolution: {integrity: sha512-ZGBMToy857/NIPaaCucIUQgqueOiq7HeAKkhlvqVV4lm089zUFW6ikRySx2v+cAhKeUCPuWVHeimyk6Dw1iY3w==}
@@ -5335,6 +5311,8 @@ snapshots:
   '@types/unist@2.0.11': {}
 
   '@types/unist@3.0.3': {}
+
+  '@types/vscode@1.105.0': {}
 
   '@typescript-eslint/eslint-plugin@8.46.2(@typescript-eslint/parser@8.46.2(eslint@9.38.0(jiti@2.6.1))(typescript@5.7.3))(eslint@9.38.0(jiti@2.6.1))(typescript@5.7.3)':
     dependencies:
