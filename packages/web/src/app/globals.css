@@ -4,6 +4,9 @@
 @custom-variant dark (&:is(.dark *));
 @plugin "@tailwindcss/typography";
 
+/* Scan core package for Tailwind classes */
+@source "../../../core/src/**/*.{ts,tsx}";
+
 button {
    cursor: pointer;
 }
