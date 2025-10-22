@@ -4,6 +4,9 @@ import { getWebviewContent } from './getWebviewContent';
 
 export function activate(context: vscode.ExtensionContext) {
   let currentPanel: vscode.WebviewPanel | undefined = undefined;
+  
+  // Logo URI que será reutilizado
+  const logoPath = vscode.Uri.joinPath(context.extensionUri, 'logo.svg');
 
   function updateWebview() {
     if (!currentPanel) {
@@ -17,31 +20,39 @@ export function activate(context: vscode.ExtensionContext) {
 
     const document = editor.document;
     const text = document.getText();
+    
+    // Converte o URI do logo para uso no webview
+    const logoUri = currentPanel.webview.asWebviewUri(logoPath);
 
     try {
       const ast = parseAndBuildAst(text);
       const { html } = astToHtmlStringPreview(ast);
-      currentPanel.webview.html = getWebviewContent(html);
+      currentPanel.webview.html = getWebviewContent(html, logoUri.toString());
     } catch (error) {
       console.error('Error parsing or rendering DSL:', error);
-      currentPanel.webview.html = getWebviewContent('<p>Error rendering preview.</p>');
+      currentPanel.webview.html = getWebviewContent('<p>Error rendering preview.</p>', logoUri.toString());
     }
   }
 
   let disposable = vscode.commands.registerCommand('proto-typed.showPreview', () => {
-    const column = vscode.window.activeTextEditor
-      ? vscode.window.activeTextEditor.viewColumn
-      : undefined;
+    const editor = vscode.window.activeTextEditor;
+    
+    // Abre o preview ao lado do editor ativo
+    const viewColumn = editor 
+      ? (editor.viewColumn || 0) + 1 
+      : vscode.ViewColumn.Two;
 
     if (currentPanel) {
-      currentPanel.reveal(column);
+      currentPanel.reveal(viewColumn);
     } else {
       currentPanel = vscode.window.createWebviewPanel(
         'protoTypedPreview',
         'Proto-Typed Preview',
-        column || vscode.ViewColumn.One,
+        viewColumn,
         {
           enableScripts: true,
+          retainContextWhenHidden: true,
+          localResourceRoots: [context.extensionUri]
         }
       );
 
