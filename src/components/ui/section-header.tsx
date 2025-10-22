@@ -37,9 +37,9 @@ export function SectionHeader({
           {title}
         </h2>
         {description ? (
-          <p className="text-base leading-relaxed text-[var(--fg-secondary)] sm:text-lg">
+          <div className="text-base leading-relaxed text-[var(--fg-secondary)] sm:text-lg">
             {description}
-          </p>
+          </div>
         ) : null}
       </div>
       {actions ? (
