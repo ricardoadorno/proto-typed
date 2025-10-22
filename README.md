@@ -1,325 +1,344 @@
 # proto-typed
 
-**A lightweight DSL for rapid UI prototyping** - Write text, see UI instantly.
+**DSL para prototipação rápida de interfaces** — Descreva em texto, visualize instantaneamente.
 
-proto-typed is a browser-based tool that lets you create interactive UI prototypes using a simple, readable Domain Specific Language (DSL). No framework knowledge required - just type natural-looking syntax and watch your interface come to life in real-time.
+proto-typed transforma descrições textuais em protótipos navegáveis. Sem arrastar blocos, sem frameworks: você escreve o que a interface _é_ (telas, listas, botões), e o sistema cuida do resto.
 
-## What is proto-typed?
+🚀 **[Experimentar online](https://ricardoadorno.github.io/proto-typed/)** — Playground interativo com exemplos prontos
 
-proto-typed bridges the gap between wireframes and functional prototypes. Instead of dragging components or writing framework code, you describe your UI in plain text using an intuitive syntax. The tool handles the parsing, rendering, and interaction automatically.
+## O que é?
 
-**Perfect for**:
-- **Designers** sketching interaction flows without code
-- **Product Managers** creating clickable mockups for stakeholder reviews
-- **Developers** rapidly prototyping UI ideas before implementation
-- **Teams** collaborating on interface concepts with a shared, readable format
+Uma ferramenta que converte texto estruturado em interfaces interativas. Você descreve conteúdo, estrutura e navegação; ela gera HTML com Tailwind + shadcn. Pense em Markdown para UIs — semântica antes de aparência.
 
-## Key Features
+**Feito para**:
+- **Designers** que querem prototipar fluxos sem código
+- **PMs** criando mockups clicáveis para apresentações
+- **Devs backend/full-stack** montando telas sem mergulhar em CSS/JSX
+- **IAs e agentes** colaborando em um formato textual estável e versionável
 
-- 🚀 **Real-time Preview**: See your prototype update as you type
-- 📱 **Mobile-First**: Built-in support for headers, navigators, modals, and drawers
-- 🎨 **Theme System**: shadcn-inspired theming with CSS custom properties
-- 🧩 **Component System**: Create reusable UI blocks with prop interpolation
-- 🔗 **Navigation**: Screen transitions, modal/drawer toggles, back navigation
-- 📝 **Monaco Editor**: Syntax highlighting, IntelliSense, and error detection
-- 📤 **Export**: Download standalone HTML prototypes
-- 🎯 **Zero Dependencies**: Prototypes use only Tailwind CDN + Lucide icons
+## Recursos principais
 
-## Quick Start
+- 🚀 **Preview em tempo real**: veja mudanças instantaneamente
+- 📱 **Mobile-first**: headers, navegadores, modais e drawers nativos
+- 🎨 **Sistema de temas**: tokens CSS customizáveis (shadcn)
+- 🧩 **Componentes reutilizáveis**: blocos com interpolação de props
+- 🔗 **Navegação completa**: transições entre telas, modais, drawers
+- 📝 **Monaco Editor**: destaque de sintaxe, IntelliSense, detecção de erros
+- 📤 **Exportação**: HTML standalone (Tailwind CDN + Lucide icons)
+- 🤖 **IA-friendly**: sintaxe estável e previsível para modelos
 
-### Installation
+## Início rápido
+
+### Testar online
+
+Experimente imediatamente no playground: **[ricardoadorno.github.io/proto-typed](https://ricardoadorno.github.io/proto-typed/)**
+
+A interface online oferece:
+- Editor Monaco com sintaxe DSL e autocomplete
+- Preview em tempo real
+- Exemplos pré-carregados (Contacts App, Login, Navigator)
+- Exportação de HTML standalone
+- Seletor de dispositivo para simular diferentes telas
+
+### Instalação local
 
 ```bash
-# Clone the repository
+# Clone o repositório
 git clone https://github.com/ricardoadorno/proto-typed.git
 cd proto-typed
 
-# Install dependencies
+# Instale dependências
 npm install
 
-# Start development server
+# Inicie o servidor de desenvolvimento
 npm run dev
 ```
 
-The app will open at `http://localhost:5173` with a split-pane interface:
-- **Left**: Monaco editor with DSL syntax
-- **Right**: Live prototype preview with device selector
+O app abre em `http://localhost:3000` (Next.js) com interface dividida:
+- **Esquerda**: Monaco editor com sintaxe DSL
+- **Direita**: Preview em tempo real com seletor de dispositivo
 
-### Your First Prototype
-
-```dsl
-screen Welcome:
-  # Hello World
-  > This is your first prototype
-  @[Get Started](NextScreen)
-
-screen NextScreen:
-  # Success!
-  > You just navigated between screens
-  @[Go Back](-1)
-```
-
-**That's it!** You now have a working two-screen prototype with navigation.
-
-## How It Works
-
-proto-typed uses a **Lexer → Parser → AST → Renderer** pipeline:
-
-1. **Lexer** tokenizes your DSL text (Chevrotain)
-2. **Parser** builds an Abstract Syntax Tree (AST)
-3. **Renderer** converts AST to HTML with Tailwind CSS + shadcn variables
-4. **Preview** displays the result in a simulated device frame
-
-Your DSL is transformed into semantic HTML with proper navigation, theming, and responsive layout - no build step, no framework lock-in.
-
-## Technology Stack
-
-- **Frontend**: React 19 + TypeScript + Vite
-- **Parsing**: Chevrotain (lexer & parser)
-- **Editor**: Monaco Editor with custom DSL language
-- **Styling**: Tailwind CSS + shadcn theming system
-- **Output**: Standalone HTML with CDN dependencies
-
-## DSL Syntax Overview
-
-The DSL uses intuitive, readable syntax inspired by Markdown and common UI patterns.
-
-### Screens & Views
+### Seu primeiro protótipo
 
 ```dsl
 screen Home:
-  # Welcome
-  > Main content here
+  container:
+    # Olá, mundo
+    > Este é seu primeiro protótipo
+    @[Começar](Proxima)
 
-modal Dialog:
-  # Confirmation
+screen Proxima:
+  container:
+    # Sucesso!
+    > Você acabou de navegar entre telas
+    @[Voltar](-1)
+```
+
+**Pronto!** Você tem um protótipo navegável de duas telas.
+
+## Como funciona
+
+proto-typed usa um pipeline **Lexer → Parser → AST → Renderizador**:
+
+1. **Lexer** tokeniza o texto DSL (Chevrotain)
+2. **Parser** constrói uma Árvore Sintática Abstrata (AST)
+3. **Renderizador** converte AST em HTML com Tailwind CSS + variáveis shadcn
+4. **Preview** exibe o resultado em moldura de dispositivo simulado
+
+Seu texto é transformado em HTML semântico com navegação, temas e layout responsivo — sem build step, sem lock-in de framework.
+
+## Stack tecnológica
+
+- **Frontend**: Next.js 15 + React 19 + TypeScript
+- **Parsing**: Chevrotain (lexer & parser)
+- **Editor**: Monaco Editor com linguagem DSL customizada
+- **Styling**: Tailwind CSS + sistema de temas shadcn
+- **Output**: HTML standalone com dependências CDN
+
+## Sintaxe DSL
+
+A DSL usa sintaxe intuitiva e legível, inspirada em Markdown e padrões comuns de UI.
+
+### Telas e views
+
+```dsl
+screen Home:
+  container:
+    # Bem-vindo
+    > Conteúdo principal aqui
+
+modal Dialogo:
+  card:
+    # Confirmação
   @[OK](close)
 
 drawer Menu:
-  # Navigation
+  list:
   - [Home](Home)
-  - [Settings](Settings)
+    - [Configurações](Settings)
 ```
 
-### Typography
+### Tipografia
 
 ```dsl
-# to ###### → Headings (H1-H6)
->           → Paragraph text
->>          → Text (no bottom margin)
->>>         → Muted text
-*>          → Note text
-">          → Quote text
+# a ######  → Títulos (H1-H6)
+>           → Parágrafo
+>>          → Texto (sem margem inferior)
+>>>         → Texto secundário/muted
+*>          → Texto de nota
+">          → Citação
 ```
 
-### Buttons
+### Botões
 
-Pattern: `@<variant>?-<size>?\[text\]\(action\)`
+Padrão: `@<variante>?-<tamanho>?\[texto\]\(ação\)`
 
-**Variants** (optional, defaults to primary):
+**Variantes** (opcional, padrão: primary):
 - `@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@link`, `@success`, `@warning`
 
-**Sizes** (optional, defaults to md):
+**Tamanhos** (opcional, padrão: md):
 - `-xs`, `-sm`, `-md`, `-lg`
 
 ```dsl
-@[Large Default](action)
-@secondary-lg[Medium Outline](action)
-@outline-sm[Small Cancel](action)
-@destructive[Delete](delete)
+@[Botão padrão](acao)
+@secondary-lg[Botão secundário grande](acao)
+@outline-sm[Cancelar pequeno](acao)
+@destructive[Excluir](delete)
 ```
 
-### Forms
+### Formulários
 
-Pattern: `___<type>?: Label{placeholder}[options] | attributes`
+Padrão: `___<tipo>?: Label{placeholder}[opções] | atributos`
 
-**Input Types**: `email`, `password`, `date`, `number`, `textarea`
+**Tipos de input**: `email`, `password`, `date`, `number`, `textarea`
 
 ```dsl
-___: Email{Enter email}
-___email: Email{Enter email}
-___password: Password{Enter password}
-___: Country{Select}[USA | Canada | Mexico]
+___: Email{Digite o email}
+___email: Email{Digite o email}
+___password: Senha{Digite a senha}
+___: País{Selecione}[Brasil | Portugal | Angola]
 
-[X] Checked checkbox
-[ ] Unchecked checkbox
-(X) Selected radio
-( ) Unselected radio
+[X] Checkbox marcado
+[ ] Checkbox desmarcado
+(X) Radio selecionado
+( ) Radio não selecionado
 ```
 
 ### Layouts
 
-Canonical preset layouts with predefined Tailwind classes and shadcn styling:
+Layouts predefinidos com classes Tailwind e estilo shadcn:
 
 ```dsl
-container:          → Standard container
-container-narrow:   → Narrow container
-stack:              → Vertical stack (gap-4)
-stack-tight:        → Tight vertical stack (gap-2)
-row-center:         → Centered horizontal row
-row-between:        → Row with space-between
-grid-2:             → 2-column grid
-grid-3:             → 3-column grid
-card:               → Standard card
-card-compact:       → Compact card
-header:             → Page header
-sidebar:            → Sidebar layout
-list:               → List container
-navigator:          → Bottom navigation
-fab:                → Floating action button
----                 → Separator
+container:          → Container padrão
+container-narrow:   → Container estreito
+stack:              → Pilha vertical (gap-4)
+stack-tight:        → Pilha vertical compacta (gap-2)
+row-center:         → Linha horizontal centralizada
+row-between:        → Linha com space-between
+row-end:            → Linha alinhada à direita
+grid-2:             → Grid 2 colunas
+grid-3:             → Grid 3 colunas
+card:               → Card padrão
+card-compact:       → Card compacto
+header:             → Cabeçalho de página
+list:               → Container de lista
+navigator:          → Navegação inferior
+fab:                → Botão de ação flutuante
+---                 → Separador
 ```
 
-### Components with Props
+### Componentes com props
 
 ```dsl
 component UserCard:
   card:
-    # %name
+    ## %nome
     > Email: %email
-    > Phone: %phone
+    > Telefone: %telefone
 
-screen Users:
+screen Usuarios:
   list $UserCard:
-    - John | john@email.com | 555-1234
-    - Jane | jane@email.com | 555-5678
+    - João | joao@email.com | (11) 98765-4321
+    - Maria | maria@email.com | (21) 97654-3210
 ```
 
-Props are pipe-separated (`|`) and interpolated with `%propName`.
+Props são separados por pipe (`|`) e interpolados com `%nomeProp`.
 
-### Navigation
+### Navegação
 
 ```dsl
-@[Go to Screen](ScreenName)    → Navigate to screen
-@[Open Modal](ModalName)       → Toggle modal
-@[Open Drawer](DrawerName)     → Toggle drawer
-@[Go Back](-1)                 → History back
-#[External Link](https://...)  → External URL
+@[Ir para tela](NomeTela)      → Navegar para tela
+@[Abrir modal](NomeModal)      → Alternar modal
+@[Abrir drawer](NomeDrawer)    → Alternar drawer
+@[Voltar](-1)                  → Voltar no histórico
+#[Link externo](https://...)   → URL externa
 ```
 
-### Mobile Components
+### Componentes mobile
 
 ```dsl
 header:
-  # App Name
+  # Nome do App
   @ghost[Menu](menu)
 
 navigator:
   - Home | Home
-  - Profile | Profile
+  - Perfil | Profile
 
 fab:
-  - + | addItem
+  - + | adicionarItem
 ```
-## Complete Example
+## Exemplo completo
 
-Here's a full app with navigation, components, modals, and lists:
+Um app completo com navegação, componentes, modais e listas:
 
 ```dsl
-component Header:
+component Cabecalho:
   header:
-    # TaskApp
-    @ghost[Menu](MainMenu)
+    # AppTarefas
+    @ghost[Menu](MenuPrincipal)
 
-modal ConfirmDelete:
-  # Delete Task?
-  > This action cannot be undone
-  @destructive[Delete](delete)
-  @secondary[Cancel](close)
+modal ConfirmarExclusao:
+  card:
+    # Excluir tarefa?
+    > Esta ação não pode ser desfeita
+    row-end:
+      @ghost[Cancelar](close)
+      @destructive[Excluir](delete)
 
-drawer MainMenu:
-  # Menu
+drawer MenuPrincipal:
   list:
     - Dashboard | Dashboard
-    - Tasks | Tasks
-    - Settings | Settings
+    - Tarefas | Tarefas
+    - Configurações | Settings
 
 screen Dashboard:
-  $Header
+  $Cabecalho
   
   container:
     card:
-      ## Welcome Back
-      > You have 5 tasks pending
+      ## Bem-vindo de volta
+      > Você tem 5 tarefas pendentes
     
-    row-between:
+    grid-2:
       card:
-        ### Active
-        > 12 tasks
+        ### Ativas
+        # 12
       card:
-        ### Completed
-        > 48 tasks
+        ### Concluídas
+        # 48
 
-screen Tasks:
-  $Header
+screen Tarefas:
+  $Cabecalho
   
-  @[Add Task](AddTask)
+  container:
+    @[Adicionar tarefa](AddTask)
   
   list:
-    - Setup Project | Due: Today | @outline[Edit](edit) | @destructive[Delete](ConfirmDelete)
-    - Review Code | Due: Tomorrow | @outline[Edit](edit) | @destructive[Delete](ConfirmDelete)
-    - Deploy App | Due: Friday | @outline[Edit](edit) | @destructive[Delete](ConfirmDelete)
+      - Configurar projeto | Vence: Hoje | @outline[Editar](edit) | @destructive[Excluir](ConfirmarExclusao)
+      - Revisar código | Vence: Amanhã | @outline[Editar](edit) | @destructive[Excluir](ConfirmarExclusao)
+      - Deploy app | Vence: Sexta | @outline[Editar](edit) | @destructive[Excluir](ConfirmarExclusao)
   
   navigator:
     - Dashboard | Dashboard
-    - Tasks | Tasks
-    - Settings | Settings
+    - Tarefas | Tarefas
+    - Config | Settings
 ```
 
-## Architecture
+## Arquitetura
 
 ```
 src/
 ├── core/
-│   ├── lexer/          # Tokenization (Chevrotain)
-│   ├── parser/         # Grammar rules & AST building
-│   ├── renderer/       # AST → HTML conversion
+│   ├── lexer/          # Tokenização (Chevrotain)
+│   ├── parser/         # Regras gramaticais & construção da AST
+│   ├── renderer/       # Conversão AST → HTML
 │   │   ├── core/       # node-renderer, route-manager, theme-manager
 │   │   ├── infrastructure/  # Gateways, mediators, helpers
-│   │   └── nodes/      # Element-specific renderers
-│   ├── editor/         # Monaco editor integration
-│   └── themes/         # shadcn-based theme system
-├── components/         # React UI components
-├── examples/          # DSL example code
-├── types/             # TypeScript definitions
-└── utils/             # Helper functions
+│   │   └── nodes/      # Renderizadores específicos de elementos
+│   ├── editor/         # Integração com Monaco editor
+│   └── themes/         # Sistema de temas baseado em shadcn
+├── components/         # Componentes React da UI
+├── examples/          # Código de exemplo DSL
+├── types/             # Definições TypeScript
+└── utils/             # Funções auxiliares
 ```
 
-### Rendering Pipeline
+### Pipeline de renderização
 
-1. **Lexer** (`lexer/tokens/`) - Tokenize DSL text into structured tokens
-2. **Parser** (`parser/`) - Build Abstract Syntax Tree (AST) from tokens
-3. **Route Manager** - Process screens, modals, drawers, components
-4. **Theme Manager** - Merge shadcn themes with user styles
-5. **Node Renderer** - Convert AST nodes to HTML with navigation
-6. **Output** - Standalone HTML or preview fragment
+1. **Lexer** (`lexer/tokens/`) - Tokeniza texto DSL em tokens estruturados
+2. **Parser** (`parser/`) - Constrói Árvore Sintática Abstrata (AST) a partir dos tokens
+3. **Route Manager** - Processa screens, modais, drawers, componentes
+4. **Theme Manager** - Mescla temas shadcn com estilos customizados
+5. **Node Renderer** - Converte nós AST em HTML com navegação
+6. **Output** - HTML standalone ou fragmento de preview
 
-### Design Patterns
+### Padrões de design
 
-- **Strategy Pattern**: Node type → renderer function mapping
-- **Facade Pattern**: RouteManagerGateway simplifies complex APIs
-- **Mediator Pattern**: NavigationMediator decouples navigation logic
-- **Singleton Pattern**: Global route and theme managers
+- **Strategy Pattern**: Mapeamento tipo de nó → função renderizadora
+- **Facade Pattern**: RouteManagerGateway simplifica APIs complexas
+- **Mediator Pattern**: NavigationMediator desacopla lógica de navegação
+- **Singleton Pattern**: Gerenciadores globais de rotas e temas
 
-## For Developers
+## Para desenvolvedores
 
-### Project Philosophy
+### Filosofia do projeto
 
-- **Runtime validation** over automated tests
-- **Dark mode only** - no light theme support
-- **shadcn theming** - CSS variables for all colors
-- **No hardcoded colors** - always use semantic tokens
-- **Type-safe** - Full TypeScript coverage
+- **Validação em runtime** ao invés de testes automatizados
+- **Apenas modo escuro** - sem suporte a tema claro
+- **Temas shadcn** - variáveis CSS para todas as cores
+- **Sem cores hardcoded** - sempre use tokens semânticos
+- **Type-safe** - Cobertura completa TypeScript
 
-### Adding New DSL Elements
+### Adicionando novos elementos DSL
 
-1. **Token** (`lexer/tokens/*.tokens.ts`) - Define regex pattern
-2. **Parser** (`parser/parser.ts`) - Add grammar rule
-3. **Builder** (`parser/builders/*.builders.ts`) - CST → AST conversion
-4. **Renderer** (`renderer/nodes/*.node.ts`) - AST → HTML rendering
-5. **Types** (`types/ast-node.ts`) - Add to NodeType union
+1. **Token** (`lexer/tokens/*.tokens.ts`) - Definir padrão regex
+2. **Parser** (`parser/parser.ts`) - Adicionar regra gramatical
+3. **Builder** (`parser/builders/*.builders.ts`) - Conversão CST → AST
+4. **Renderer** (`renderer/nodes/*.node.ts`) - Renderização AST → HTML
+5. **Types** (`types/ast-node.ts`) - Adicionar ao union NodeType
 
-**Example**: Adding a badge element
+**Exemplo**: Adicionando um elemento badge
 
 ```typescript
 // 1. Token (lexer/tokens/primitives.tokens.ts)
@@ -344,38 +363,38 @@ export function renderBadge(node: AstNode): string {
   return `<span class="badge" style="background-color: var(--primary);">${text}</span>`;
 }
 
-// 4. Add to RENDERERS map (renderer/core/node-renderer.ts)
+// 4. Adicionar ao mapa RENDERERS (renderer/core/node-renderer.ts)
 const RENDERERS: Record<NodeType, typeof _render> = {
-  // ... existing renderers
+  // ... renderizadores existentes
   Badge: (n) => renderBadge(n),
 }
 ```
 
-### Code Style
+### Estilo de código
 
 **Tailwind CSS**:
-- ✅ Base classes only: `flex items-center px-4 py-2`
-- ❌ No hardcoded colors: `bg-blue-500 text-white`
-- ❌ No dark mode prefixes: `dark:bg-gray-900`
+- ✅ Apenas classes base: `flex items-center px-4 py-2`
+- ❌ Sem cores hardcoded: `bg-blue-500 text-white`
+- ❌ Sem prefixos dark mode: `dark:bg-gray-900`
 
-**CSS Variables** (shadcn):
-- ✅ Semantic tokens: `var(--primary)`, `var(--muted-foreground)`
-- ✅ UI elements: `var(--border)`, `var(--input)`, `var(--ring)`
-- ❌ Color names: `var(--blue-500)`, `var(--gray-800)`
+**Variáveis CSS** (shadcn):
+- ✅ Tokens semânticos: `var(--primary)`, `var(--muted-foreground)`
+- ✅ Elementos UI: `var(--border)`, `var(--input)`, `var(--ring)`
+- ❌ Nomes de cores: `var(--blue-500)`, `var(--gray-800)`
 
-### Contributing
+### Contribuindo
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/new-element`
-3. Make changes following the code style
-4. Test in the running app (no automated tests)
-5. Submit a pull request
+1. Faça fork do repositório
+2. Crie uma branch de feature: `git checkout -b feature/novo-elemento`
+3. Faça mudanças seguindo o estilo de código
+4. Teste no app rodando (sem testes automatizados)
+5. Envie um pull request
 
-See `.github/copilot-instructions.md` for comprehensive development guidelines.
+Veja `.github/copilot-instructions.md` para diretrizes completas de desenvolvimento.
 
-## License
+## Licença
 
-Licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
+Licenciado sob Apache License 2.0. Veja [LICENSE](LICENSE) para detalhes.
 
 ```
 Copyright 2025 Ricardo Adorno
@@ -393,10 +412,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-## Acknowledgments
+## Agradecimentos
 
-- **shadcn/ui** - Theming system inspiration
-- **Chevrotain** - Parsing library
-- **Monaco Editor** - Code editor component
-- **Tailwind CSS** - Utility-first CSS framework
-- **Lucide Icons** - Icon system
+- **shadcn/ui** - Inspiração para o sistema de temas
+- **Chevrotain** - Biblioteca de parsing
+- **Monaco Editor** - Componente de editor de código
+- **Tailwind CSS** - Framework CSS utility-first
+- **Lucide Icons** - Sistema de ícones
