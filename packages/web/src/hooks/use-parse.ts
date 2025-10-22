@@ -1,13 +1,9 @@
 import { useState, useCallback, useMemo } from 'react';
-import { parseAndBuildAst } from '../core/parser/parse-and-build-ast';
+import { parseAndBuildAst, astToHtmlStringPreview, createRouteManagerGateway, ErrorBus, RouteManager } from '@core/dsl';
 import { AstNode } from '../types/ast-node';
-import { astToHtmlStringPreview } from '../core/renderer/ast-to-html-string-preview';
-import { createRouteManagerGateway } from '../core/renderer/infrastructure/route-manager-gateway';
 import { RouteMetadata } from '../types/routing';
-import { ErrorBus } from '../core/error-bus';
 import type { ProtoError } from '../types/errors';
 import { ERROR_CODES, sanitizeErrorMessage } from '../types/errors';
-import { RouteManager } from '../core/renderer/core/route-manager';
 
 /**
  * @interface UseParseResult
