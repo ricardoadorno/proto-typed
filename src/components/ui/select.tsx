@@ -7,24 +7,48 @@ import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Label } from './label'
 
+/**
+ * @function Select
+ * @description The root component for a select menu.
+ * @param {React.ComponentProps<typeof SelectPrimitive.Root>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered select menu.
+ */
 function Select({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Root>) {
   return <SelectPrimitive.Root data-slot="select" {...props} />
 }
 
+/**
+ * @function SelectGroup
+ * @description A group of select items.
+ * @param {React.ComponentProps<typeof SelectPrimitive.Group>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered select group.
+ */
 function SelectGroup({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Group>) {
   return <SelectPrimitive.Group data-slot="select-group" {...props} />
 }
 
+/**
+ * @function SelectValue
+ * @description The selected value of a select menu.
+ * @param {React.ComponentProps<typeof SelectPrimitive.Value>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered select value.
+ */
 function SelectValue({
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Value>) {
   return <SelectPrimitive.Value data-slot="select-value" {...props} />
 }
 
+/**
+ * @function SelectTrigger
+ * @description The button that opens a select menu.
+ * @param {React.ComponentProps<typeof SelectPrimitive.Trigger> & { size?: "sm" | "default" }} props - The props for the component.
+ * @returns {React.ReactElement} The rendered select trigger.
+ */
 function SelectTrigger({
   className,
   size = "default",
@@ -51,6 +75,12 @@ function SelectTrigger({
   )
 }
 
+/**
+ * @function SelectContent
+ * @description The content of a select menu.
+ * @param {React.ComponentProps<typeof SelectPrimitive.Content>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered select content.
+ */
 function SelectContent({
   className,
   children,
@@ -88,6 +118,12 @@ function SelectContent({
   )
 }
 
+/**
+ * @function SelectLabel
+ * @description The label for a group of select items.
+ * @param {React.ComponentProps<typeof SelectPrimitive.Label>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered select label.
+ */
 function SelectLabel({
   className,
   ...props
@@ -101,6 +137,12 @@ function SelectLabel({
   )
 }
 
+/**
+ * @function SelectItem
+ * @description An item in a select menu.
+ * @param {React.ComponentProps<typeof SelectPrimitive.Item>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered select item.
+ */
 function SelectItem({
   className,
   children,
@@ -125,6 +167,12 @@ function SelectItem({
   )
 }
 
+/**
+ * @function SelectSeparator
+ * @description A separator between select items.
+ * @param {React.ComponentProps<typeof SelectPrimitive.Separator>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered select separator.
+ */
 function SelectSeparator({
   className,
   ...props
@@ -138,6 +186,12 @@ function SelectSeparator({
   )
 }
 
+/**
+ * @function SelectScrollUpButton
+ * @description The button to scroll up in a select menu.
+ * @param {React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered scroll up button.
+ */
 function SelectScrollUpButton({
   className,
   ...props
@@ -156,6 +210,12 @@ function SelectScrollUpButton({
   )
 }
 
+/**
+ * @function SelectScrollDownButton
+ * @description The button to scroll down in a select menu.
+ * @param {React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>} props - The props for the component.
+ * @returns {React.ReactElement} The rendered scroll down button.
+ */
 function SelectScrollDownButton({
   className,
   ...props
@@ -174,6 +234,16 @@ function SelectScrollDownButton({
   )
 }
 
+/**
+ * @interface SimpleSelectProps
+ * @description The props for the SimpleSelect component.
+ *
+ * @property {{ label: string; value: string }[]} options - The options for the select menu.
+ * @property {(value: string) => void} onValueChange - The function to call when the value changes.
+ * @property {string} value - The current value of the select menu.
+ * @property {string} [label] - The label for the select menu.
+ * @property {string} [placeholder] - The placeholder text for the select menu.
+ */
 const SimpleSelect = ({
   options,
   onValueChange,

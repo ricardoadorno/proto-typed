@@ -41,7 +41,7 @@ npm install
 npm run dev
 ```
 
-The app will open at `http://localhost:5173` with a split-pane interface:
+The app will open at `http://localhost:3000` with a split-pane interface:
 - **Left**: Monaco editor with DSL syntax
 - **Right**: Live prototype preview with device selector
 
@@ -63,22 +63,23 @@ screen NextScreen:
 
 ## How It Works
 
-proto-typed uses a **Lexer → Parser → AST → Renderer** pipeline:
+proto-typed uses a **Lexer → Parser → AST → Renderer** pipeline to transform your DSL text into an interactive HTML prototype:
 
-1. **Lexer** tokenizes your DSL text (Chevrotain)
-2. **Parser** builds an Abstract Syntax Tree (AST)
-3. **Renderer** converts AST to HTML with Tailwind CSS + shadcn variables
-4. **Preview** displays the result in a simulated device frame
+1.  **Lexer**: The input text is broken down into a sequence of tokens. This is handled by a custom lexer built with **Chevrotain**, which recognizes the fundamental parts of the DSL like keywords, symbols, and identifiers. It also has special logic to handle indentation.
 
-Your DSL is transformed into semantic HTML with proper navigation, theming, and responsive layout - no build step, no framework lock-in.
+2.  **Parser**: The stream of tokens is fed into a parser, also built with **Chevrotain**. The parser understands the grammatical rules of the DSL and organizes the tokens into a hierarchical structure called a Concrete Syntax Tree (CST).
+
+3.  **AST Builder**: The CST is then traversed by an **AST Builder**, which is a CST visitor. This process transforms the CST into an Abstract Syntax Tree (AST), which is a more simplified and abstract representation of the UI structure, making it easier to work with.
+
+4.  **Renderer**: Finally, the AST is passed to a **Renderer**. The renderer walks through the AST and generates a complete, self-contained HTML document. This document includes all the necessary HTML, CSS (via Tailwind CSS and custom properties), and JavaScript to create a fully interactive prototype.
 
 ## Technology Stack
 
-- **Frontend**: React 19 + TypeScript + Vite
+- **Frontend**: Next.js (React) + TypeScript
 - **Parsing**: Chevrotain (lexer & parser)
-- **Editor**: Monaco Editor with custom DSL language
+- **Editor**: Monaco Editor with custom DSL language support
 - **Styling**: Tailwind CSS + shadcn theming system
-- **Output**: Standalone HTML with CDN dependencies
+- **Output**: Standalone HTML with CDN dependencies for Tailwind and Lucide icons
 
 ## DSL Syntax Overview
 
@@ -270,36 +271,20 @@ screen Tasks:
 
 ```
 src/
+├── app/              # Next.js app directory
+├── components/       # React UI components for the editor
 ├── core/
-│   ├── lexer/          # Tokenization (Chevrotain)
-│   ├── parser/         # Grammar rules & AST building
-│   ├── renderer/       # AST → HTML conversion
-│   │   ├── core/       # node-renderer, route-manager, theme-manager
-│   │   ├── infrastructure/  # Gateways, mediators, helpers
-│   │   └── nodes/      # Element-specific renderers
-│   ├── editor/         # Monaco editor integration
-│   └── themes/         # shadcn-based theme system
-├── components/         # React UI components
-├── examples/          # DSL example code
-├── types/             # TypeScript definitions
-└── utils/             # Helper functions
+│   ├── lexer/        # Tokenization logic (Chevrotain)
+│   ├── parser/       # Grammar rules & AST building
+│   ├── renderer/     # AST to HTML conversion
+│   └── error-bus.ts  # Singleton for error handling
+├── docs/             # MDX documentation files
+├── examples/         # Example DSL files
+├── hooks/            # Custom React hooks (e.g., useParse)
+├── lib/              # Utility functions
+├── types/            # TypeScript type definitions
+└── utils/            # General helper functions
 ```
-
-### Rendering Pipeline
-
-1. **Lexer** (`lexer/tokens/`) - Tokenize DSL text into structured tokens
-2. **Parser** (`parser/`) - Build Abstract Syntax Tree (AST) from tokens
-3. **Route Manager** - Process screens, modals, drawers, components
-4. **Theme Manager** - Merge shadcn themes with user styles
-5. **Node Renderer** - Convert AST nodes to HTML with navigation
-6. **Output** - Standalone HTML or preview fragment
-
-### Design Patterns
-
-- **Strategy Pattern**: Node type → renderer function mapping
-- **Facade Pattern**: RouteManagerGateway simplifies complex APIs
-- **Mediator Pattern**: NavigationMediator decouples navigation logic
-- **Singleton Pattern**: Global route and theme managers
 
 ## For Developers
 
@@ -313,43 +298,12 @@ src/
 
 ### Adding New DSL Elements
 
-1. **Token** (`lexer/tokens/*.tokens.ts`) - Define regex pattern
-2. **Parser** (`parser/parser.ts`) - Add grammar rule
-3. **Builder** (`parser/builders/*.builders.ts`) - CST → AST conversion
-4. **Renderer** (`renderer/nodes/*.node.ts`) - AST → HTML rendering
-5. **Types** (`types/ast-node.ts`) - Add to NodeType union
+1.  **Token**: Define the token in `src/core/lexer/tokens/`.
+2.  **Parser Rule**: Add the grammar rule in `src/core/parser/parser.ts`.
+3.  **AST Builder**: Implement the logic to build the AST node in `src/core/parser/builders/`.
+4.  **Renderer**: Write the function to render the AST node to HTML in `src/core/renderer/nodes/`.
+5.  **Type Definition**: Add the new node type to the `AstNode` type in `src/types/ast-node.ts`.
 
-**Example**: Adding a badge element
-
-```typescript
-// 1. Token (lexer/tokens/primitives.tokens.ts)
-export const Badge = createToken({
-  name: "Badge",
-  pattern: /badge\[([^\]]+)\]/
-});
-
-// 2. Builder (parser/builders/primitives.builders.ts)
-export function buildBadgeElement(ctx: Context) {
-  const match = ctx.Badge[0].image.match(/badge\[([^\]]+)\]/);
-  return {
-    type: "Badge",
-    props: { text: match?.[1] || '' },
-    children: []
-  };
-}
-
-// 3. Renderer (renderer/nodes/primitives.node.ts)
-export function renderBadge(node: AstNode): string {
-  const { text } = node.props as any;
-  return `<span class="badge" style="background-color: var(--primary);">${text}</span>`;
-}
-
-// 4. Add to RENDERERS map (renderer/core/node-renderer.ts)
-const RENDERERS: Record<NodeType, typeof _render> = {
-  // ... existing renderers
-  Badge: (n) => renderBadge(n),
-}
-```
 
 ### Code Style
 
@@ -371,27 +325,9 @@ const RENDERERS: Record<NodeType, typeof _render> = {
 4. Test in the running app (no automated tests)
 5. Submit a pull request
 
-See `.github/copilot-instructions.md` for comprehensive development guidelines.
-
 ## License
 
-Licensed under the Apache License 2.0. See [LICENSE](LICENSE) for details.
-
-```
-Copyright 2025 Ricardo Adorno
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```
+Licensed under the Apache License 2.0. See LICENSE for details.
 
 ## Acknowledgments
 

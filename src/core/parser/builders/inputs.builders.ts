@@ -10,7 +10,13 @@ type Context = {
 };
 
 /**
- * Build input element from context
+ * @function buildInputElement
+ * @description Builds an 'Input' or 'Select' AST node from the corresponding CST node.
+ * It parses the input token to extract the type, label, placeholder, options, and other attributes.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the input element.
+ * @param {any} visitor - The CST visitor instance.
+ * @returns {object | null} An 'Input' or 'Select' AST node, or null if the token is invalid.
  */
 export function buildInputElement(ctx: Context, visitor: any) {
   if (!ctx.Input || !ctx.Input[0]) {
@@ -92,7 +98,12 @@ export function buildInputElement(ctx: Context, visitor: any) {
 }
 
 /**
- * Build radio button group from context
+ * @function buildRadioButtonGroup
+ * @description Builds a 'RadioOption' AST node from the corresponding CST node.
+ * It parses a group of radio button options and their selected states.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the radio button group.
+ * @returns {object} A 'RadioOption' AST node.
  */
 export function buildRadioButtonGroup(ctx: Context) {
   const options: any[] = [];
@@ -127,7 +138,12 @@ export function buildRadioButtonGroup(ctx: Context) {
 }
 
 /**
- * Build checkbox element from context
+ * @function buildCheckboxElement
+ * @description Builds a 'Checkbox' AST node from the corresponding CST node.
+ * It parses the checkbox token to determine its checked state and label.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the checkbox element.
+ * @returns {object} A 'Checkbox' AST node.
  */
 export function buildCheckboxElement(ctx: Context) {
   const checkboxText = ctx.Checkbox[0].image;

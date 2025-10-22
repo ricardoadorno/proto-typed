@@ -2,7 +2,12 @@ import { AstNode } from '../../../types/ast-node';
 import { elementStyles, getFormControlClasses, getInputInlineStyles, getLabelInlineStyles, getSelectInlineStyles, getCheckboxInlineStyles, getRadioInlineStyles } from './styles/styles';
 
 /**
- * Render input element
+ * @function renderInput
+ * @description Renders an 'Input' AST node to its HTML representation.
+ * This can be a standard input field or a textarea.
+ *
+ * @param {AstNode} node - The 'Input' AST node.
+ * @returns {string} The HTML string for the input element.
  */
 export function renderInput(node: AstNode): string {
   const inputProps = node.props as any;
@@ -29,7 +34,11 @@ export function renderInput(node: AstNode): string {
 }
 
 /**
- * Render radio group element
+ * @function renderRadioGroup
+ * @description Renders a 'RadioOption' AST node, which represents a group of radio buttons.
+ *
+ * @param {AstNode} node - The 'RadioOption' AST node.
+ * @returns {string} The HTML string for the radio button group.
  */
 export function renderRadioGroup(node: AstNode): string {
   const props = node.props as any;
@@ -46,7 +55,11 @@ export function renderRadioGroup(node: AstNode): string {
 }
 
 /**
- * Render select element
+ * @function renderSelect
+ * @description Renders a 'Select' AST node to its HTML representation, which is a dropdown menu.
+ *
+ * @param {AstNode} node - The 'Select' AST node.
+ * @returns {string} The HTML string for the select element.
  */
 export function renderSelect(node: AstNode): string {
   const selectProps = node.props as any;
@@ -70,7 +83,11 @@ export function renderSelect(node: AstNode): string {
 }
 
 /**
- * Render checkbox element
+ * @function renderCheckbox
+ * @description Renders a 'Checkbox' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Checkbox' AST node.
+ * @returns {string} The HTML string for the checkbox element.
  */
 export function renderCheckbox(node: AstNode): string {
   const checkboxProps = node.props as any;

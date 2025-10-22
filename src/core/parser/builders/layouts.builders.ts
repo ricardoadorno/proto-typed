@@ -11,7 +11,14 @@ type Context = {
 };
 
 /**
- * Build layout element from context using canonical presets
+ * @function buildLayoutElement
+ * @description Builds a 'Layout' AST node from the corresponding CST node.
+ * It determines the specific layout type from the token (e.g., 'container', 'stack', 'row')
+ * and processes any child elements.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the layout element.
+ * @param {any} visitor - The CST visitor instance, used to visit child nodes.
+ * @returns {object} A 'Layout' AST node.
  */
 export function buildLayoutElement(ctx: Context, visitor: any) {
   const elements = [];
@@ -67,8 +74,12 @@ export function buildLayoutElement(ctx: Context, visitor: any) {
 }
 
 /**
- * Build list element with component template
- * Handles: list $ComponentName:
+ * @function buildListElement
+ * @description Builds a 'List' AST node that is templated with a component.
+ * It handles the 'list $ComponentName:' syntax and parses the data items for the list.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the list element.
+ * @returns {object} A 'List' AST node.
  */
 export function buildListElement(ctx: Context) {
   // Extract component name from ComponentInstance token
@@ -116,7 +127,11 @@ export function buildListElement(ctx: Context) {
 }
 
 /**
- * Build unordered list element from context
+ * @function buildUnorderedListElement
+ * @description Builds an 'UnorderedListItem' AST node from the corresponding CST node.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the list item.
+ * @returns {object} An 'UnorderedListItem' AST node.
  */
 export function buildUnorderedListElement(ctx: Context) {
   const listText = ctx.UnorderedListItem[0].image;
@@ -134,7 +149,12 @@ export function buildUnorderedListElement(ctx: Context) {
 }
 
 /**
- * Build navigator element from context
+ * @function buildNavigatorElement
+ * @description Builds a 'Navigator' AST node from the corresponding CST node.
+ * It parses the list of navigator items and their properties.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the navigator element.
+ * @returns {object} A 'Navigator' AST node.
  */
 export function buildNavigatorElement(ctx: Context) {
   const items: any[] = [];
@@ -157,9 +177,12 @@ export function buildNavigatorElement(ctx: Context) {
 }
 
 /**
- * Build Fab (Floating Action Button) element from context
- * Pattern: fab:
- *   - icon | destination
+ * @function buildFABElement
+ * @description Builds a 'Fab' (Floating Action Button) AST node from the corresponding CST node.
+ * It parses the icon and destination for the FAB.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the FAB element.
+ * @returns {object} A 'Fab' AST node.
  */
 export function buildFABElement(ctx: Context) {
   const items: any[] = [];
@@ -197,7 +220,11 @@ export function buildFABElement(ctx: Context) {
 }
 
 /**
- * Build separator element from context
+ * @function buildSeparatorElement
+ * @description Builds a 'Separator' AST node from the corresponding CST node.
+ *
+ * @param {Context} _ctx - The Chevrotain CST node context for the separator element.
+ * @returns {object} A 'Separator' AST node.
  */
 export function buildSeparatorElement(_ctx: Context) {
   return {
@@ -208,7 +235,13 @@ export function buildSeparatorElement(_ctx: Context) {
   };
 }
 
-// Legacy support functions
+/**
+ * @function buildNavItemElement
+ * @description Legacy support function that builds a navigator element.
+ *
+ * @param {Context} ctx - The Chevrotain CST node context for the nav item element.
+ * @returns {object} A 'Navigator' AST node.
+ */
 export function buildNavItemElement(ctx: Context) {
   return buildNavigatorElement(ctx);
 }

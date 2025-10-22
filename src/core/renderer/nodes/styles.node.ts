@@ -1,7 +1,12 @@
 import { AstNode } from '../../../types/ast-node';
 
 /**
- * Render styles element
+ * @function renderStyles
+ * @description Renders a 'Styles' AST node to its HTML representation, which is a `<style>` block.
+ * This function is a no-op because styles are handled by the `customPropertiesManager`.
+ *
+ * @param {AstNode} node - The 'Styles' AST node.
+ * @returns {string} An empty string.
  */
 export function renderStyles(node: AstNode): string {
   const props = node.props as any;
@@ -19,7 +24,11 @@ export function renderStyles(node: AstNode): string {
 }
 
 /**
- * Render CSS property element
+ * @function renderCssProperty
+ * @description Renders a 'CssProperty' AST node to its CSS representation.
+ *
+ * @param {AstNode} node - The 'CssProperty' AST node.
+ * @returns {string} The CSS property string.
  */
 export function renderCssProperty(node: AstNode): string {
   const props = node.props as any;

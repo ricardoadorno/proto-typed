@@ -9,6 +9,21 @@ import type { ProtoError } from '../types/errors';
 import { ERROR_CODES, sanitizeErrorMessage } from '../types/errors';
 import { RouteManager } from '../core/renderer/core/route-manager';
 
+/**
+ * @interface UseParseResult
+ * @description Defines the shape of the object returned by the `useParse` hook.
+ *
+ * @property {AstNode[] | AstNode} ast - The parsed Abstract Syntax Tree.
+ * @property {string} astResultJson - A JSON string representation of the AST.
+ * @property {string} renderedHtml - The HTML string rendered from the AST.
+ * @property {string | null} error - Any error message that occurred during parsing or rendering.
+ * @property {string | null} currentScreen - The name of the currently displayed screen.
+ * @property {RouteMetadata | null} metadata - Metadata about the routes defined in the AST.
+ * @property {boolean} isLoading - A boolean indicating if a parse is in progress.
+ * @property {(input: string) => Promise<void>} handleParse - The function to call to parse a new input string.
+ * @property {(screenName: string) => void} navigateToScreen - A function to navigate to a specific screen.
+ * @property {() => (e: React.MouseEvent) => void} createClickHandler - A function that creates a click handler for the rendered preview.
+ */
 interface UseParseResult {
   ast: AstNode[] | AstNode;
   astResultJson: string;
@@ -22,6 +37,14 @@ interface UseParseResult {
   createClickHandler: () => (e: React.MouseEvent) => void;
 }
 
+/**
+ * @hook useParse
+ * @description A custom React hook that manages the parsing of the UI DSL, the rendering of the AST to HTML,
+ * and the state associated with this process. It provides a comprehensive interface for a UI editor component
+ * to interact with the DSL parser and renderer.
+ *
+ * @returns {UseParseResult} An object containing the state and functions for parsing and rendering the DSL.
+ */
 export const useParse = (): UseParseResult => {
   const localRouteManager = useMemo(() => new RouteManager(), []);
   const routeManagerGateway = useMemo(
@@ -37,6 +60,13 @@ export const useParse = (): UseParseResult => {
   const [metadata, setMetadata] = useState<RouteMetadata | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  /**
+   * @function handleParse
+   * @description A callback function that takes a string of DSL code, parses it, renders it to HTML,
+   * and updates the state with the results. It also handles error collection and reporting through the ErrorBus.
+   * @param {string} input - The DSL code to parse.
+   * @returns {Promise<void>}
+   */
   const handleParse = useCallback(async (input: string) => {
     if (!input.trim()) {
       setAst([]);
@@ -187,12 +217,23 @@ export const useParse = (): UseParseResult => {
     }
   }, [currentScreen, routeManagerGateway, localRouteManager]);
 
+  /**
+   * @function navigateToScreen
+   * @description A function to programmatically navigate to a specific screen.
+   * @param {string} screenName - The name of the screen to navigate to.
+   */
   const navigateToScreen = (screenName: string) => {
     routeManagerGateway.navigateToScreen(screenName);
     setMetadata(routeManagerGateway.getRouteMetadata());
     setCurrentScreen(screenName);
   }
 
+  /**
+   * @function createClickHandler
+   * @description Creates a click handler that can be attached to the rendered HTML preview
+   * to handle navigation events within the preview.
+   * @returns {(e: React.MouseEvent) => void} A click handler function.
+   */
   const createClickHandler = () => routeManagerGateway.createClickHandler()
 
   return {

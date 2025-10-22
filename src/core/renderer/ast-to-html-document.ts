@@ -6,7 +6,15 @@ import { renderGlobalElements, renderScreenForDocument } from './infrastructure/
 import { RenderOptions } from '../../types/render';
 
 /**
- * Generate a complete HTML document with all screens
+ * @function astToHtmlDocument
+ * @description This is the main function for rendering an Abstract Syntax Tree (AST) into a complete, self-contained HTML document.
+ * It orchestrates the entire rendering process, including processing styles, managing routes, rendering screens and global elements,
+ * and generating the necessary JavaScript for client-side navigation.
+ *
+ * @param {AstNode | AstNode[]} ast - The AST to be rendered. It can be a single root node or an array of root nodes.
+ * @param {RenderOptions} [options={}] - An optional object containing rendering options, such as the `currentScreen` to be displayed initially.
+ * @returns {string} A string containing the full HTML document.
+ * @throws {Error} Throws an error if any part of the rendering process fails.
  */
 export function astToHtmlDocument(ast: AstNode | AstNode[], options: RenderOptions = {}): string {
   try {
@@ -43,7 +51,12 @@ export function astToHtmlDocument(ast: AstNode | AstNode[], options: RenderOptio
 }
 
 /**
- * Generate full HTML document
+ * @function generateDocumentHtml
+ * @description Generates the HTML for the main content of the document, including all screens, global elements, and the navigation script.
+ * @private
+ *
+ * @param {any} context - The render context created by the route manager, containing information about routes and the current screen.
+ * @returns {string} The HTML content of the document.
  */
 function generateDocumentHtml(context: any): string {
   const { routes } = context;
@@ -72,7 +85,15 @@ function generateDocumentHtml(context: any): string {
 
 
 /**
- * Generate HTML document template
+ * @function generateHtmlDocumentTemplate
+ * @description Creates the final HTML document string by embedding the generated screens, global elements, and navigation script into a template.
+ * It also includes necessary scripts for Tailwind CSS, Lucide icons, and dark mode.
+ * @private
+ *
+ * @param {string} screensHtml - The HTML string for all the screens.
+ * @param {string} globalElementsHtml - The HTML string for global elements like modals and drawers.
+ * @param {string} navigationScript - The JavaScript string for handling client-side navigation.
+ * @returns {string} The complete HTML document as a string.
  */
 function generateHtmlDocumentTemplate(
   screensHtml: string,
@@ -128,7 +149,12 @@ ${allVariables}
 }
 
 /**
- * Generate the JavaScript code for navigation handling
+ * @function generateNavigationScript
+ * @description Generates the client-side JavaScript code responsible for handling all navigation and UI interactions,
+ * such as switching between screens, opening and closing modals and drawers, and managing navigation history.
+ * @private
+ *
+ * @returns {string} A string containing the JavaScript navigation code.
  */
 function generateNavigationScript(): string {
   return `
@@ -291,8 +317,8 @@ function generateNavigationScript(): string {
 
       // Close any open overlays before performing the navigation action
       // Exception: don't close overlays if the action is to open the same modal/drawer
-      const isOpeningModal = navType === 'internal' && document.getElementById(\`modal-\${navValue}\`);
-      const isOpeningDrawer = navType === 'internal' && document.getElementById(\`drawer-\${navValue}\`);
+      const isOpeningModal = navType === 'internal' && document.getElementById(`modal-${navValue}`);
+      const isOpeningDrawer = navType === 'internal' && document.getElementById(`drawer-${navValue}`);
       
       if (!isOpeningModal && !isOpeningDrawer) {
         closeOpenOverlaysOnButtonClick();
@@ -301,8 +327,8 @@ function generateNavigationScript(): string {
       switch (navType) {
         case 'internal':
           e.preventDefault();
-          const modal = document.getElementById(\`modal-\${navValue}\`);
-          const drawer = document.getElementById(\`drawer-\${navValue}\`);
+          const modal = document.getElementById(`modal-${navValue}`);
+          const drawer = document.getElementById(`drawer-${navValue}`);
           
           if (modal) {
             toggleElement(navValue);

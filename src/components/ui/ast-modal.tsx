@@ -1,6 +1,27 @@
 import Modal from './modal';
 
-export default function AstModal({ ast, html }: { ast: string; html: string }) {
+/**
+ * @interface AstModalProps
+ * @description The props for the AstModal component.
+ *
+ * @property {string} ast - The Abstract Syntax Tree as a JSON string.
+ * @property {string} html - The generated HTML string.
+ */
+export interface AstModalProps {
+    ast: string;
+    html: string;
+}
+
+/**
+ * @function AstModal
+ * @description A component that displays the generated Abstract Syntax Tree (AST) and HTML in a modal.
+ *
+ * @param {AstModalProps} props - The props for the component.
+ * @param {string} props.ast - The AST to display.
+ * @param {string} props.html - The HTML to display.
+ * @returns {React.ReactElement} The rendered modal component.
+ */
+export default function AstModal({ ast, html }: AstModalProps) {
     return (
         <Modal
             buttonText="View AST/HTML"

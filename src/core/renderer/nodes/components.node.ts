@@ -4,21 +4,33 @@ import { AstNode } from '../../../types/ast-node';
 let globalComponentDefinitions: AstNode[] = [];
 
 /**
- * Set the available component definitions
+ * @function setComponentDefinitions
+ * @description Sets the available component definitions that can be used for rendering.
+ *
+ * @param {AstNode[]} components - An array of 'Component' AST nodes.
  */
 export function setComponentDefinitions(components: AstNode[]) {
   globalComponentDefinitions = components;
 }
 
 /**
- * Find all component definitions that are available in the current context
+ * @function findComponentDefinitions
+ * @description Finds all component definitions that are available in the current context.
+ *
+ * @returns {AstNode[]} An array of 'Component' AST nodes.
  */
 export function findComponentDefinitions(): AstNode[] {
   return globalComponentDefinitions;
 }
 
 /**
- * Recursively substitute props in any object
+ * @function substitutePropsRecursive
+ * @description Recursively traverses an object or array and substitutes property placeholders in any string values found.
+ *
+ * @param {any} obj - The object or array to process.
+ * @param {string[]} props - An array of property values to substitute.
+ * @param {Record<string, string>} [namedMap] - An optional map of named properties to their values.
+ * @returns {any} The processed object or array with substituted properties.
  */
 export function substitutePropsRecursive(obj: any, props: string[], namedMap?: Record<string, string>): any {
   if (typeof obj === 'string') {
@@ -43,7 +55,12 @@ export function substitutePropsRecursive(obj: any, props: string[], namedMap?: R
 }
 
 /**
- * Substitute props in a string
+ * @function substitutePropsInString
+ * @description Substitutes property placeholders (e.g., `%name`) in a string with their corresponding values.
+ *
+ * @param {string} text - The string to perform substitutions on.
+ * @param {Record<string, string>} [namedMap] - An optional map of named properties to their values.
+ * @returns {string} The string with substituted properties.
  */
 export function substitutePropsInString(text: string, namedMap?: Record<string, string>): string {
   let result = text;
@@ -60,7 +77,13 @@ export function substitutePropsInString(text: string, namedMap?: Record<string, 
 }
 
 /**
- * Recursively substitute props in an element
+ * @function substitutePropsInElement
+ * @description Recursively substitutes property placeholders in an AST node.
+ *
+ * @param {AstNode} element - The AST node to process.
+ * @param {string[]} props - An array of property values.
+ * @param {string[]} [propNames] - An optional array of property names.
+ * @returns {AstNode} The processed AST node with substituted properties.
  */
 export function substitutePropsInElement(element: AstNode, props: string[], propNames?: string[]): AstNode {
   // Deep copy
@@ -79,7 +102,12 @@ export function substitutePropsInElement(element: AstNode, props: string[], prop
 }
 
 /**
- * Render component definition (stores for later use)
+ * @function renderComponent
+ * @description Renders a component definition. Component definitions themselves do not produce any output,
+ * as they are only templates. This function is a no-op.
+ *
+ * @param {AstNode} _node - The 'Component' AST node.
+ * @returns {string} An empty string.
  */
 export function renderComponent(_node: AstNode): string {
   // Component definitions don't render directly - they're stored for instantiation
@@ -87,7 +115,14 @@ export function renderComponent(_node: AstNode): string {
 }
 
 /**
- * Render component instance
+ * @function renderComponentInstance
+ * @description Renders an instance of a component. It finds the component's definition,
+ * substitutes the provided properties into the component's template, and then renders the result.
+ *
+ * @param {AstNode} node - The 'ComponentInstance' AST node.
+ * @param {string} [context] - The rendering context.
+ * @param {(node: AstNode, context?: string) => string} [nodeRenderer] - The main node renderer function, used to render the component's children.
+ * @returns {string} The rendered HTML of the component instance.
  */
 export function renderComponentInstance(node: AstNode, context?: string, nodeRenderer?: (node: AstNode, context?: string) => string): string {
   if (!nodeRenderer) {
