@@ -9,7 +9,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui"
-import { navItems } from "@/utils/constants"
+import { navItems } from "@shared"
 import Link from "next/link"
 
 interface SidebarMobileProps {

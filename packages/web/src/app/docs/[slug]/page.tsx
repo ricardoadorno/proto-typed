@@ -10,8 +10,8 @@ import DocsBreadcrumbs from '@/components/docs/docs-breadcrumbs'
 import DocsPager from '@/components/docs/docs-pager'
 import { DocsToc } from '@/components/docs/docs-toc'
 import { mdxComponents } from '@/components/docs/mdx-components'
-import docSections, { flatDocs, findDocBySlug, type DocItem } from '@/utils/toc'
-import { slugify } from '@/utils/slugify'
+import docSections, { flatDocs, findDocBySlug, type DocItem } from '@shared/toc'
+import { slugify } from '@shared/slugify'
 
 type Props = { params: { slug: string } }
 

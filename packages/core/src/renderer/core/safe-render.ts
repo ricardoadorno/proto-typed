@@ -4,9 +4,9 @@
 // Garante que erros em nós individuais não derrubem a renderização completa
 // Implementa graceful degradation com error recovery
 
-import type { AstNode } from '../../../types/ast-node';
-import type { ProtoError } from '../../../types/errors';
-import { ERROR_CODES, sanitizeErrorMessage } from '../../../types/errors';
+import type { AstNode } from '@shared'; //ast-node';
+import type { ProtoError } from '@shared'; //errors';
+import { ERROR_CODES, sanitizeErrorMessage } from '@shared'; //errors';
 
 // ============================================================
 // Safe Render Function

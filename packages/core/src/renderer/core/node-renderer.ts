@@ -1,5 +1,5 @@
-import { AstNode, NodeType } from '../../../types/ast-node';
-import { ProtoError } from '../../../types/errors';
+import { AstNode, NodeType } from '@shared'; //ast-node';
+import { ProtoError } from '@shared'; //errors';
 import { safeRender } from './safe-render';
 
 // Import all node renderers from the modular organization

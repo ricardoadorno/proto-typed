@@ -1,9 +1,9 @@
-import { AstNode } from '../../types/ast-node';
+import { AstNode } from '@shared'; //ast-node';
 import { routeManager } from './core/route-manager';
 import { customPropertiesManager } from './core/theme-manager';
 import { setComponentDefinitions } from './nodes/components.node';
 import { renderGlobalElements, renderScreenForDocument } from './infrastructure/html-render-helper';
-import { RenderOptions } from '../../types/render';
+import { RenderOptions } from '@shared'; //render';
 
 /**
  * @function astToHtmlDocument

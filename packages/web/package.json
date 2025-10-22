@@ -8,7 +8,8 @@
     "start": "next start"
   },
   "dependencies": {
-    "@core/dsl": "workspace:*",
+    "@core": "workspace:*",
+    "@shared": "workspace:*",
     "@mdx-js/react": "^3.1.1",
     "@monaco-editor/react": "^4.7.0",
     "@next/mdx": "^15.5.6",

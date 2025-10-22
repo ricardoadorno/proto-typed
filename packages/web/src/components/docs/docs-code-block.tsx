@@ -6,7 +6,7 @@ import { toast } from "sonner"
 
 import { Button, EditorPanel, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui"
 import { cn } from "@/lib/utils"
-import { withBasePath } from "@/utils/base-path"
+import { withBasePath } from "@shared"
 import { DSLEditor } from "@/core/editor"
 
 interface DocsCodeBlockProps extends React.ComponentPropsWithoutRef<"pre"> {

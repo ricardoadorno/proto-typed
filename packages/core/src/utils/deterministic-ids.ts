@@ -1,4 +1,4 @@
-import { AstNode } from '../../types/ast-node';
+import { AstNode } from '@shared'; //ast-node';
 
 /**
  * Generate a deterministic hash from a string

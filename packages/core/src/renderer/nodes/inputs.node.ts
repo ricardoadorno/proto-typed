@@ -1,4 +1,4 @@
-import { AstNode } from '../../../types/ast-node';
+import { AstNode } from '@shared'; //ast-node';
 import { elementStyles, getFormControlClasses, getInputInlineStyles, getLabelInlineStyles, getSelectInlineStyles, getCheckboxInlineStyles, getRadioInlineStyles } from './styles/styles';
 
 /**

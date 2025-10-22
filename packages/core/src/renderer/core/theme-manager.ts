@@ -1,4 +1,4 @@
-import { AstNode } from '../../../types/ast-node';
+import { AstNode } from '@shared'; //ast-node';
 import { availableThemes, generateThemeCssVariables, getThemeByName, Theme } from '../../themes/theme-definitions';
 
 /**

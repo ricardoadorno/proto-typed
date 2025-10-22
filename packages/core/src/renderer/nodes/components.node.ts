@@ -1,4 +1,4 @@
-import { AstNode } from '../../../types/ast-node';
+import { AstNode } from '@shared'; //ast-node';
 
 // Global variable to store component definitions
 let globalComponentDefinitions: AstNode[] = [];

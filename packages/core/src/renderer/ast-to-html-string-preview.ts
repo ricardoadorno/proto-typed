@@ -1,6 +1,6 @@
-import { AstNode } from '../../types/ast-node';
-import { RenderOptions } from '../../types/render';
-import { ProtoError } from '../../types/errors';
+import { AstNode } from '@shared'; //ast-node';
+import { RenderOptions } from '@shared'; //render';
+import { ProtoError } from '@shared'; //errors';
 import { RouteManager, routeManager as defaultRouteManager } from './core/route-manager';
 import { customPropertiesManager } from './core/theme-manager';
 import { resetRenderErrors, getRenderErrors } from './core/node-renderer';

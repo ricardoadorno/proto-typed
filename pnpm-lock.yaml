@@ -74,9 +74,34 @@ importers:
 
   packages/core:
     dependencies:
+      '@monaco-editor/react':
+        specifier: ^4.7.0
+        version: 4.7.0(monaco-editor@0.54.0)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@shared':
+        specifier: workspace:*
+        version: link:../shared
       chevrotain:
         specifier: ^11.0.3
         version: 11.0.3
+      react:
+        specifier: ^19.0.0
+        version: 19.2.0
+    devDependencies:
+      '@types/react':
+        specifier: ^19.0.10
+        version: 19.2.2
+
+  packages/shared:
+    dependencies:
+      lucide:
+        specifier: ^0.513.0
+        version: 0.513.0
+      next-themes:
+        specifier: ^0.4.6
+        version: 0.4.6(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      react:
+        specifier: ^19.0.0
+        version: 19.2.0
 
   packages/web:
     dependencies:
@@ -119,6 +144,9 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.0.3
         version: 1.2.8(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      '@shared':
+        specifier: workspace:*
+        version: link:../shared
       '@types/mdx':
         specifier: ^2.0.13
         version: 2.0.13

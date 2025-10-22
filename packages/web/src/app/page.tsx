@@ -18,14 +18,11 @@ import {
   ExampleButtons,
   PreviewDevice,
 } from "@/components/ui";
-import { DSLEditor } from "@/core/editor";
+import { DSLEditor, astToHtmlDocument, availableThemes, customPropertiesManager } from "@core";
 import { useParse } from "@/hooks/use-parse";
 import { exampleConfigs } from "@/examples";
-import { exportDocument } from "@/utils/export-document";
-import { astToHtmlDocument } from "@/core/renderer/ast-to-html-document";
-import { availableThemes } from '@/core/themes/theme-definitions';
+import { exportDocument } from "@shared";
 import { SimpleSelect } from '@/components/ui/select';
-import { customPropertiesManager } from '@/core/renderer/core/theme-manager';
 import SidebarMobile from "@/components/layouts/components/sidebar-mobile";
 
 const DEFAULT_EXAMPLE = exampleConfigs[0]?.code ?? "";

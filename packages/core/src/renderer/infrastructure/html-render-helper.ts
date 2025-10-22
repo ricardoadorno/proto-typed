@@ -3,8 +3,8 @@
  * Functions for rendering screens in different contexts
  */
 
-import { AstNode } from '../../../types/ast-node';
-import { ScreenRenderConfig } from '../../../types/render';
+import { AstNode } from '@shared'; //ast-node';
+import { ScreenRenderConfig } from '@shared'; //render';
 import { renderNode } from '../core/node-renderer';
 import { RouteManager } from '../core/route-manager';
 
