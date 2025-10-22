@@ -29,8 +29,8 @@ import { cn } from "@/lib/utils"
 
 import { useTheme } from 'next-themes'
 import DocsSearch from '@/components/docs/docs-search'
-import docSections from '@proto-typed/shared/toc'
-import { withAssetPath } from '@proto-typed/shared/base-path'
+import {docSections} from '@proto-typed/shared'
+import { withAssetPath } from '@proto-typed/shared'
 import { navItems } from "@proto-typed/shared"
 import SidebarMobile from "./sidebar-mobile"
 import DocsSidebar from "./docs-sidebar"

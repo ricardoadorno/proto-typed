@@ -23,8 +23,8 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useMonaco } from '@monaco-editor/react';
-import { initializeMonacoDSL } from '../index';
-import { ErrorBus } from '../../error-bus';
+import { initializeMonacoDSL } from '../components/editor';
+import { ErrorBus } from '@proto-typed/core';
 import type { ProtoError, Severity } from '@proto-typed/shared'; //errors';
 import { SEVERITY_RANK } from '@proto-typed/shared'; //errors';
 

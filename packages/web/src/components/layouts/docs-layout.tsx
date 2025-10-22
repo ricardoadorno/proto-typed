@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import DocsFooter from "./components/docs-footer"
 import DocsHeader from "./components/docs-header"
 import DocsSidebar from "./components/docs-sidebar"
-import docSections from "@proto-typed/shared"
+import {docSections} from "@proto-typed/shared"
 import {
   ScrollArea,
   Separator,

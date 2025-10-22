@@ -19,11 +19,12 @@ import {
   PreviewDevice,
 } from "@/components/ui";
 import { astToHtmlDocument, availableThemes, customPropertiesManager } from "@proto-typed/core";
-import { DSLEditor } from "@proto-typed/editor";
 import { useParse } from "@/hooks/use-parse";
 import { exampleConfigs } from "@/examples";
-import { exportDocument, SimpleSelect } from "@proto-typed/shared";
+import { exportDocument } from "@proto-typed/shared";
 import SidebarMobile from "@/components/layouts/components/sidebar-mobile";
+import { SimpleSelect } from "@/components/ui/select";
+import { DSLEditor } from "@/components/editor";
 
 const DEFAULT_EXAMPLE = exampleConfigs[0]?.code ?? "";
 

@@ -317,8 +317,8 @@ function generateNavigationScript(): string {
 
       // Close any open overlays before performing the navigation action
       // Exception: don't close overlays if the action is to open the same modal/drawer
-      const isOpeningModal = navType === 'internal' && document.getElementById(`modal-${navValue}`);
-      const isOpeningDrawer = navType === 'internal' && document.getElementById(`drawer-${navValue}`);
+      const isOpeningModal = navType === 'internal' && document.getElementById(\`modal-\${navValue}\`);
+      const isOpeningDrawer = navType === 'internal' && document.getElementById(\`drawer-\${navValue}\`);
       
       if (!isOpeningModal && !isOpeningDrawer) {
         closeOpenOverlaysOnButtonClick();
@@ -327,8 +327,8 @@ function generateNavigationScript(): string {
       switch (navType) {
         case 'internal':
           e.preventDefault();
-          const modal = document.getElementById(`modal-${navValue}`);
-          const drawer = document.getElementById(`drawer-${navValue}`);
+          const modal = document.getElementById(\`modal-\${navValue}\`);
+          const drawer = document.getElementById(\`drawer-\${navValue}\`);
           
           if (modal) {
             toggleElement(navValue);

@@ -1,6 +1,6 @@
 // UI Components exports
 export { ExampleButtons } from './example-buttons';
-export { LoadingSpinner } from './loading-spinner';
+export { LoadingSpinner } from '@proto-typed/shared';
 export { PreviewDevice } from './preview-device';
 export { EditorPanel } from './editor-panel';
 export { PreviewPanel } from './preview-panel';
