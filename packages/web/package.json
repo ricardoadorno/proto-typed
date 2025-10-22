@@ -10,7 +10,6 @@
   "dependencies": {
     "@proto-typed/core": "workspace:*",
     "@proto-typed/editor": "workspace:*",
-    "@proto-typed/shared": "workspace:*",
     "@mdx-js/react": "^3.1.1",
     "@monaco-editor/react": "^4.7.0",
     "@next/mdx": "^15.5.6",

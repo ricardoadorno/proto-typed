@@ -4,8 +4,7 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "dependencies": {
-    "chevrotain": "^11.0.3",
-    "@proto-typed/shared": "workspace:*"
+    "chevrotain": "^11.0.3"
   },
   "peerDependencies": {
     "react": "^19.0.0"

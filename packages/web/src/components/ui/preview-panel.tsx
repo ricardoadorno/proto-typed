@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 
 import { RouteMetadataDisplay } from './route-metadata-display';
-import { RouteMetadata } from '../../types/routing';
+import { RouteMetadata } from '@proto-typed/core';
 
 interface PreviewPanelProps {
     title?: string;

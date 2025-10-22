@@ -1,12 +1,12 @@
-import { AstNode } from '@proto-typed/shared'; //ast-node';
-import { RenderOptions } from '@proto-typed/shared'; //render';
-import { ProtoError } from '@proto-typed/shared'; //errors';
 import { RouteManager, routeManager as defaultRouteManager } from './core/route-manager';
 import { customPropertiesManager } from './core/theme-manager';
 import { resetRenderErrors, getRenderErrors } from './core/node-renderer';
 import { setComponentDefinitions } from './nodes/components.node';
 import { renderAllScreens, renderGlobalElements } from './infrastructure/html-render-helper';
 import { NavigationMediator } from './infrastructure/navigation-mediator';
+import { ProtoError } from '../types/errors';
+import { AstNode } from '../types/ast-node';
+import { RenderOptions } from '../types/render';
 
 /**
  * Result of rendering with errors collected

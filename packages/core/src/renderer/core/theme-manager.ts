@@ -1,5 +1,5 @@
-import { AstNode } from '@proto-typed/shared'; //ast-node';
 import { availableThemes, generateThemeCssVariables, getThemeByName, Theme } from '../../themes/theme-definitions';
+import { AstNode } from '../../types/ast-node';
 
 /**
  * Combined theme and custom CSS properties manager

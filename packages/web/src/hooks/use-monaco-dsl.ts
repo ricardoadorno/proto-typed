@@ -25,8 +25,8 @@ import { useEffect, useState, useRef } from 'react';
 import { useMonaco } from '@monaco-editor/react';
 import { initializeMonacoDSL } from '../components/editor';
 import { ErrorBus } from '@proto-typed/core';
-import type { ProtoError, Severity } from '@proto-typed/shared'; //errors';
-import { SEVERITY_RANK } from '@proto-typed/shared'; //errors';
+import type { ProtoError, Severity } from '@proto-typed/core'; //errors';
+import { SEVERITY_RANK } from '@proto-typed/core'; //errors';
 
 /**
  * Custom hook to manage Monaco DSL initialization and diagnostics

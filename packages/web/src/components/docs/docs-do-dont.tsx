@@ -5,7 +5,7 @@ import type { ReactNode } from "react"
 import { cn } from "@/lib/utils"
 import { DocsCodePreview } from "./docs-code-preview"
 import { DocsCodeBlock } from "./docs-code-block"
-import { DSLEditor } from "@/core/editor"
+import { DSLEditor } from "../editor"
 
 type ExampleDetails = {
   title: string

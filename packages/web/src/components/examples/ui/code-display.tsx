@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react"
 
-import { DSLEditor } from "@/core/editor"
 import { cn } from "@/lib/utils"
+import { DSLEditor } from "@/components/editor"
 
 interface CodeDisplayProps {
   code: string

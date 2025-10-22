@@ -4,7 +4,8 @@
 // Singleton para centralizar coleta e distribuição de erros
 // de todas as camadas do pipeline (Lexer → Parser → Builder → Renderer)
 
-import type { ProtoError, Stage } from '../types/errors';
+import { ProtoError, Stage } from "./types/errors";
+
 
 /**
  * @class ErrorBus

@@ -4,7 +4,7 @@
  */
 
 import { type CstNode, type IToken } from "chevrotain";
-import { AstNode } from "../../../types/ast-node";
+import { AstNode } from "../../types/ast-node";
 
 type Context = {
   [key: string]: any;

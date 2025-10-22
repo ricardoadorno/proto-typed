@@ -6,12 +6,12 @@ import { useEffect, useState } from "react"
 import DocsFooter from "./components/docs-footer"
 import DocsHeader from "./components/docs-header"
 import DocsSidebar from "./components/docs-sidebar"
-import {docSections} from "@proto-typed/shared"
 import {
   ScrollArea,
   Separator,
 } from "@/components/ui"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import docSections from "@/utils/toc"
 
 const localStorageKey = "docs-sidebar-collapsed"
 

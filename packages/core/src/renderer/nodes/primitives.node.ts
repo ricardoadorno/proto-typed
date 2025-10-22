@@ -1,8 +1,7 @@
-import { AstNode } from '@proto-typed/shared'; //ast-node';
 import { elementStyles, getButtonClasses, getButtonInlineStyles, getHeadingInlineStyles, getParagraphInlineStyles, getLinkInlineStyles } from './styles/styles';
-import { isLucideIcon, getLucideSvg, renderTextWithIcons } from '@proto-typed/shared'; //icon-utils';
 import { NavigationMediator } from '../infrastructure/navigation-mediator';
-import { withAssetPath } from '@proto-typed/shared'; //base-path';
+import { getLucideSvg, isLucideIcon, renderTextWithIcons } from '../../utils/icon-utils';
+import { AstNode } from '../../types/ast-node';
 
 /**
  * @function renderButton
@@ -70,8 +69,7 @@ export function renderImage(node: AstNode): string {
   const props = node.props as any;
   const src = props?.src || '';
   const alt = props?.alt || '';
-  const resolvedSrc = withAssetPath(src);
-  return `<img src="${resolvedSrc}" alt="${alt}" class="${elementStyles.image}" />`;
+  return `<img src="${src}" alt="${alt}" class="${elementStyles.image}" />`;
 }
 
 /**

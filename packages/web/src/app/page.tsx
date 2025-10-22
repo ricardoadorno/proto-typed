@@ -21,7 +21,7 @@ import {
 import { astToHtmlDocument, availableThemes, customPropertiesManager } from "@proto-typed/core";
 import { useParse } from "@/hooks/use-parse";
 import { exampleConfigs } from "@/examples";
-import { exportDocument } from "@proto-typed/shared";
+import { exportDocument } from "@/utils/export-document";
 import SidebarMobile from "@/components/layouts/components/sidebar-mobile";
 import { SimpleSelect } from "@/components/ui/select";
 import { DSLEditor } from "@/components/editor";

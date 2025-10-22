@@ -24,7 +24,7 @@ import { Editor, EditorProps } from '@monaco-editor/react';
 import { useMonacoDSL } from '../hooks/use-monaco-dsl';
 import { getDSLEditorOptions } from '../index';
 import { DSL_LANGUAGE_ID } from '../constants';
-import { LoadingSpinner } from '../../../components/ui';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 interface DSLEditorProps {
     value: string;

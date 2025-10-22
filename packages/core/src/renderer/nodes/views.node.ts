@@ -1,4 +1,4 @@
-import { AstNode } from '@proto-typed/shared'; //ast-node';
+import { AstNode } from '../../types/ast-node';
 import { elementStyles, getScreenClasses,  getModalContentInlineStyles, getModalCloseInlineStyles, getDrawerInlineStyles } from './styles/styles';
 
 /**

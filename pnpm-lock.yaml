@@ -74,7 +74,7 @@ importers:
 
   packages/core:
     dependencies:
-      '@proto-typed/shared':
+      '@proto-typed/core':
         specifier: workspace:*
         version: link:../shared
       chevrotain:
@@ -96,7 +96,7 @@ importers:
       '@proto-typed/core':
         specifier: workspace:*
         version: link:../core
-      '@proto-typed/shared':
+      '@proto-typed/core':
         specifier: workspace:*
         version: link:../shared
       react:
@@ -136,7 +136,7 @@ importers:
       '@proto-typed/editor':
         specifier: workspace:*
         version: link:../editor
-      '@proto-typed/shared':
+      '@proto-typed/core':
         specifier: workspace:*
         version: link:../shared
       '@radix-ui/react-dialog':

@@ -5,8 +5,8 @@
  * Collects errors instead of throwing to enable partial AST construction.
  */
 
-import type { ProtoError } from '@proto-typed/shared'; //errors';
-import { ERROR_CODES } from '@proto-typed/shared'; //errors';
+import { ERROR_CODES, ProtoError } from "../../types/errors";
+
 
 /**
  * Get error collection array from builder visitor instance

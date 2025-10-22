@@ -3,9 +3,9 @@
  * Simplified API gateway for SPA clients to interact with the Route Manager
  */
 
+import { AstNode } from '../../types/ast-node';
+import { RouteCollection, RouteMetadata, RouteProcessingOptions, RouteRenderContext } from '../../types/routing';
 import { RouteManager, routeManager as defaultRouteManager } from '../core/route-manager';
-import { RouteMetadata, RouteCollection, RouteRenderContext, RouteProcessingOptions } from '@proto-typed/shared'; //routing';
-import { AstNode } from '@proto-typed/shared'; //ast-node';
 import type { MouseEvent } from 'react';
 
 export interface NavigationHandlers {

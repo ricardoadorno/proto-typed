@@ -15,8 +15,8 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui"
+import { DocItem, DocSection } from "@/utils/toc"
 
-import type { DocItem, DocSection } from "@proto-typed/shared"
 
 interface DocsSearchProps {
   sections: DocSection[]

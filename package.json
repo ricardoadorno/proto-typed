@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "pnpm -F @web/app dev"
+    "dev": "pnpm -F @web/app dev",
+    "build": "pnpm -F @web/app build"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",

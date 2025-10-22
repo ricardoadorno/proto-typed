@@ -10,7 +10,6 @@ import {
 } from "react"
 import { CheckIcon, CopyIcon } from "lucide-react"
 
-import { DSLEditor } from "@/core/editor"
 import { useParse } from "@/hooks/use-parse"
 import { cn } from "@/lib/utils"
 import {
@@ -21,6 +20,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui"
+import { DSLEditor } from "../editor"
 
 type ChildrenRecord = { props?: { children?: ReactNode } }
 

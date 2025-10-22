@@ -28,7 +28,6 @@ import {
   SectionHeader,
   Separator,
 } from "@/components/ui";
-import { withAssetPath } from "@proto-typed/shared";
 
 const heroCtas = [
   { label: "Experimentar", href: "/playground", icon: SparklesIcon },

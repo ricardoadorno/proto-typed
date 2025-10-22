@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation"
 import { useMemo } from "react"
 
 import { cn } from "@/lib/utils"
-import type { DocSection } from "@proto-typed/shared"
-import { withAssetPath } from "@proto-typed/shared"
+import { withAssetPath } from "@/utils/base-path"
+import { DocSection } from "@/utils/toc"
 
 
 interface DocsSidebarProps {

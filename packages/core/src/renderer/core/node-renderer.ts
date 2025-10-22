@@ -1,5 +1,3 @@
-import { AstNode, NodeType } from '@proto-typed/shared'; //ast-node';
-import { ProtoError } from '@proto-typed/shared'; //errors';
 import { safeRender } from './safe-render';
 
 // Import all node renderers from the modular organization
@@ -35,6 +33,8 @@ import {
   renderComponent, 
   renderComponentInstance 
 } from '../nodes/components.node';
+import { ProtoError } from '../../types/errors';
+import { AstNode, NodeType } from '../../types/ast-node';
 
 /**
  * Global error collection for rendering phase

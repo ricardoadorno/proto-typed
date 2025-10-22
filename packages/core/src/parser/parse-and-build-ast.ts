@@ -2,8 +2,7 @@ import { tokenize } from '../lexer/lexer';
 import { parser } from './parser';
 import { createAstBuilder } from './ast-builder';
 import { generateDeterministicIds } from '../utils/deterministic-ids';
-import type { ProtoError } from '@proto-typed/shared'; //errors';
-import { ERROR_CODES } from '@proto-typed/shared'; //errors';
+import { ERROR_CODES, ProtoError } from '../types/errors';
 
 /**
  * @function parseAndBuildAst

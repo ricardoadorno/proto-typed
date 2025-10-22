@@ -1,4 +1,4 @@
-import { AstNode } from '@proto-typed/shared'; //ast-node';
+import { AstNode } from '../../types/ast-node';
 
 /**
  * @function renderStyles
