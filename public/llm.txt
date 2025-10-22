@@ -1,137 +1,363 @@
-# Proto-Typed – Guia de Navegação para LLMs
+# Proto-Typed – Guia para LLMs
 
-Use este arquivo como **mapa principal da documentação** e referência de estilo ao criar ou interpretar código na linguagem **Proto-Typed DSL**.  
-Antes de responder ou gerar qualquer código, **siga as diretrizes essenciais abaixo**.  
-Quando algo não for conhecido ou estiver incompleto, **pesquise diretamente no link do slug correspondente em `/docs/{slug}`** antes de inferir.
+Você é um assistente especializado em **Proto-Typed**, uma DSL para prototipação rápida de interfaces.  
+Use este guia como referência principal ao ajudar usuários a criar protótipos navegáveis.
 
 ---
 
-## ⚙️ Diretrizes Essenciais da Linguagem
+## 🎯 Sobre o Proto-Typed
 
-### 1. Estrutura e Identação
-- A **identação define a hierarquia** — nunca use `{}` ou `end` para delimitar blocos.  
-- Cada nível de aninhamento deve ser feito com **dois espaços** ou **um tab**:
-  ```dsl
-  screen Login:
-    container:
-      > Email
-      ___email: Email{Digite seu e-mail}
-  ```
-- O caractere `:` sempre indica que aquele nó possui conteúdo interno (children).
+**Proto-Typed** transforma texto estruturado em interfaces navegáveis. É como Markdown para UIs — semântica antes de aparência.
 
-### 2. Tokens e Sintaxe
-- A linguagem é **declarativa**, não programática.  
-- **Não use** símbolos como `{}`, `=`, `< >`, `;` — eles **não fazem parte da gramática**.  
-- Tudo deve ser **semântico e direto**, descrevendo a interface e não a lógica:
-  ✅ `@secondary[Enviar](submit)`  
-  ❌ `button(type = secondary, label = "Enviar")`
+### Filosofia central
+- **Descrever, não programar**: Você escreve _o que é_, não _como renderizar_
+- **Semântica antes de aparência**: `card:` em vez de `<div class="...">`
+- **~90% dos casos**: Foco em padrões comuns, não customização extrema
+- **IA-friendly**: Sintaxe estável, previsível, versionável
 
-### 3. Semântica de Blocos
-- Blocos são definidos por **prefixos e indentação**, **nunca por atributos**.  
-- Exemplo correto:
-  ```dsl
+---
+
+## ⚡ Diretrizes Essenciais
+
+### 1. Estrutura hierárquica por indentação
+
+**Regras fundamentais**:
+- Indentação com **2 espaços** ou **1 tab** define hierarquia
+- O caractere `:` indica que o bloco possui conteúdo interno
+- **Nunca** use `{}`, `end`, `;`, `<>` — não fazem parte da gramática
+
+✅ **Correto**:
+```dsl
+screen Home:
+  container:
+    # Bem-vindo
+    > Descrição aqui
+    @[Começar](Proxima)
+```
+
+❌ **Errado**:
+```dsl
+screen Home {
+  container {
+    text("Bem-vindo")
+  }
+}
+```
+
+### 2. Blocos sempre começam com layout
+
+Cada tela deve usar um container de layout (`container:`, `stack:`, `card:`).  
+**Nunca** deixe conteúdo solto diretamente em `screen:`.
+
+✅ **Correto**:
+```dsl
+screen Home:
+  container:
+    # Título
+```
+
+❌ **Errado**:
+```dsl
+screen Home:
+  # Título
+```
+
+### 3. Tipografia usa prefixos semânticos
+
+```dsl
+#           → Título H1
+##          → Título H2
+###         → Título H3 (até H6)
+>           → Parágrafo
+>>          → Texto (sem margem inferior)
+>>>         → Texto secundário/muted
+*>          → Texto de nota
+">          → Citação
+```
+
+### 4. Botões seguem padrão específico
+
+Padrão: `@<variante>?-<tamanho>?\[texto\]\(ação\)`
+
+```dsl
+@[Texto](destino)                    → Botão primário padrão
+@secondary[Texto](destino)           → Botão secundário
+@destructive-lg[Excluir](confirma)   → Botão destrutivo grande
+@ghost[Fechar](close)                → Botão ghost
+```
+
+**Variantes**: `primary`, `secondary`, `outline`, `ghost`, `destructive`, `link`, `success`, `warning`  
+**Tamanhos**: `xs`, `sm`, `md` (padrão), `lg`
+
+### 5. Formulários usam underscores
+
+Padrão: `___<tipo>?: Label{placeholder}`
+
+```dsl
+___: Email{Digite seu email}
+___email: Email{seu@email.com}
+___password: Senha{••••••}
+___: País{Selecione}[Brasil | Portugal | Angola]
+
+[X] Checkbox marcado
+[ ] Checkbox desmarcado
+(X) Radio selecionado
+( ) Radio não selecionado
+```
+
+### 6. Layouts são canônicos
+
+Cada layout tem comportamento fixo — **sem modificadores inline**.
+
+```dsl
+container:          → Container padrão centralizado
+container-narrow:   → Container estreito
+stack:              → Pilha vertical (gap-4)
+stack-tight:        → Pilha vertical compacta (gap-2)
+row-center:         → Linha horizontal centralizada
+row-between:        → Linha com space-between
+row-end:            → Linha alinhada à direita
+grid-2:             → Grid 2 colunas
+grid-3:             → Grid 3 colunas
+card:               → Card com padding e borda
+header:             → Cabeçalho de página
+list:               → Container de lista
+navigator:          → Navegação inferior
+fab:                → Botão de ação flutuante
+---                 → Separador
+```
+
+### 7. Navegação entre views
+
+```dsl
+@[Ir para tela](NomeTela)      → Navega para screen
+@[Abrir modal](NomeModal)      → Abre modal
+@[Abrir drawer](NomeDrawer)    → Abre drawer lateral
+@[Voltar](-1)                  → Volta no histórico
+@[Fechar](close)               → Fecha modal/drawer atual
+#[Link externo](https://...)   → URL externa
+```
+
+### 8. Componentes reutilizáveis
+
+Defina uma vez, use várias vezes com dados diferentes:
+
+```dsl
+component UserCard:
   card:
-    # Usuário
-    > Nome: %name
-  ```
-  Exemplo incorreto:
-  ```dsl
-  card(name = "%name")  # ❌ não suportado
-  ```
+    ## %nome
+    > Email: %email
+    > Telefone: %telefone
 
-### 4. Evite Atributos Arbitrários
-- Não use expressões como `text(foo = bar)` ou `label="..."`.  
-- Customizações são declaradas por **tokens próprios da DSL**, não por pares chave-valor.  
-- Exemplo válido:
-  ```dsl
-  ___password: Senha{Digite sua senha}
-  ```
+screen Usuarios:
+  list $UserCard:
+    - João | joao@email.com | (11) 98765-4321
+    - Maria | maria@email.com | (21) 97654-3210
+```
 
-### 5. Layout e Fluxo
-- Cada token de layout (`container:`, `row-center:`, `stack:` etc.) é **canônico** —  
-  ele já representa um conjunto fixo de estilos.  
-- Não use modificadores inline (`row-w50-center-p4`).  
-  Exemplo correto:
-  ```dsl
-  row-center:
-    @primary[Ok](Submit)
-  ```
-
-### 6. Filosofia de Escrita
-- Prefira **clareza à customização extrema**.  
-- O código deve parecer **uma descrição natural de interface**, não um script.  
-- Sempre que possível, busque exemplos nos links abaixo antes de criar algo novo.
+Props são separados por `|` e interpolados com `%nomeProp`.
 
 ---
 
-> 🧩 **Resumo rápido:**  
-> Proto-Typed é indentado, declarativo e sem atributos arbitrários.  
-> Cada linha expressa uma intenção visual e estrutural — não uma instrução de código.  
-> Escreva como quem descreve uma interface, não como quem programa uma.
+## 🎨 Temas e Customização
+
+Use bloco `styles:` no início do arquivo para customizar cores:
+
+```dsl
+styles:
+  --primary: oklch(0.68 0.15 210);
+  --background: oklch(0.14 0.01 240);
+  --foreground: oklch(0.95 0 0);
+
+screen Home:
+  container:
+    # Título customizado
+```
+
+**Sempre use tokens semânticos**:
+- ✅ `var(--primary)`, `var(--muted-foreground)`
+- ❌ `#3b82f6`, `var(--blue-500)`
 
 ---
 
-## Passos rápidos
+## 📚 Estrutura de Navegação da Documentação
 
-1. Comece pela página índice `/docs` para contexto geral.  
-2. Cada slug listado abaixo possui o conteúdo completo em Markdown/MDX.  
-3. Priorize a seção correspondente antes de recorrer a outras fontes externas.
+### Fundamentos
+- [Sintaxe básica](https://ricardoadorno.github.io/proto-typed/docs/syntax) — Indentação, blocos, nomeação
+- [Screen](https://ricardoadorno.github.io/proto-typed/docs/screen) — Unidade navegável principal
+- [Flow](https://ricardoadorno.github.io/proto-typed/docs/flow) — Navegação entre telas
 
----
+### Primitivos
+- [Text](https://ricardoadorno.github.io/proto-typed/docs/text) — Tipografia e hierarquia
+- [Button](https://ricardoadorno.github.io/proto-typed/docs/button) — Ações e variantes
+- [Input](https://ricardoadorno.github.io/proto-typed/docs/input) — Formulários e validação
+- [Link](https://ricardoadorno.github.io/proto-typed/docs/link) — Navegação declarativa
+- [Icon](https://ricardoadorno.github.io/proto-typed/docs/icon) — Ícones Lucide
 
-## Índice principal
+### Layouts
+- [Container](https://ricardoadorno.github.io/proto-typed/docs/container) — Containers principais
+- [Stack](https://ricardoadorno.github.io/proto-typed/docs/stack) — Pilhas verticais
+- [Row](https://ricardoadorno.github.io/proto-typed/docs/row) — Linhas horizontais
+- [Grid](https://ricardoadorno.github.io/proto-typed/docs/grid) — Grades responsivas
+- [Card](https://ricardoadorno.github.io/proto-typed/docs/card) — Cards e agrupamentos
+- [List](https://ricardoadorno.github.io/proto-typed/docs/list) — Listas e itens
 
-### Sintaxe e fluxo
-- [Sintaxe básica](https://ricardoadorno.github.io/proto-typed/docs/syntax)
-- [Telas (screen)](https://ricardoadorno.github.io/proto-typed/docs/screen)
-- [Fluxo de navegação](https://ricardoadorno.github.io/proto-typed/docs/flow)
+### Navegação
+- [Navigator](https://ricardoadorno.github.io/proto-typed/docs/navigator) — Menu inferior
+- [Modal](https://ricardoadorno.github.io/proto-typed/docs/modal) — Diálogos e confirmações
+- [Drawer](https://ricardoadorno.github.io/proto-typed/docs/drawer) — Painéis laterais
+- [FAB](https://ricardoadorno.github.io/proto-typed/docs/fab) — Botão flutuante
 
-### Primitivos de interface
-- [Texto](https://ricardoadorno.github.io/proto-typed/docs/text)
-- [Ícone](https://ricardoadorno.github.io/proto-typed/docs/icon)
-- [Botão](https://ricardoadorno.github.io/proto-typed/docs/button)
-- [Campo de entrada](https://ricardoadorno.github.io/proto-typed/docs/input)
-- [Link](https://ricardoadorno.github.io/proto-typed/docs/link)
+### Componentes
+- [Component Definition](https://ricardoadorno.github.io/proto-typed/docs/component-definition) — Criar componentes
+- [Component Props](https://ricardoadorno.github.io/proto-typed/docs/component-props) — Interpolação
+- [Component Composition](https://ricardoadorno.github.io/proto-typed/docs/component-composition) — Composição
 
-### Layout e estrutura
-- [Container](https://ricardoadorno.github.io/proto-typed/docs/container)
-- [Stack](https://ricardoadorno.github.io/proto-typed/docs/stack)
-- [Linha (row)](https://ricardoadorno.github.io/proto-typed/docs/row)
-- [Grade (grid)](https://ricardoadorno.github.io/proto-typed/docs/grid)
-- [Card](https://ricardoadorno.github.io/proto-typed/docs/card)
-- [Lista](https://ricardoadorno.github.io/proto-typed/docs/list)
+### Boas Práticas
+- [Naming](https://ricardoadorno.github.io/proto-typed/docs/naming) — Convenções de nomenclatura
+- [Composition Guidelines](https://ricardoadorno.github.io/proto-typed/docs/composition-guidelines) — Guias de composição
+- [Error Patterns](https://ricardoadorno.github.io/proto-typed/docs/error-patterns) — Erros comuns
 
-### Navegação e interações
-- [Navegador](https://ricardoadorno.github.io/proto-typed/docs/navigator)
-- [Modal](https://ricardoadorno.github.io/proto-typed/docs/modal)
-- [Drawer](https://ricardoadorno.github.io/proto-typed/docs/drawer)
-- [Botão flutuante (FAB)](https://ricardoadorno.github.io/proto-typed/docs/fab)
-
-### Componentes e reuso
-- [Definição de componente](https://ricardoadorno.github.io/proto-typed/docs/component-definition)
-- [Propriedades de componente](https://ricardoadorno.github.io/proto-typed/docs/component-props)
-- [Lista de componentes](https://ricardoadorno.github.io/proto-typed/docs/component-list)
-- [Composição de componentes](https://ricardoadorno.github.io/proto-typed/docs/component-composition)
-
-### Temas e estilos
-- [Temas](https://ricardoadorno.github.io/proto-typed/docs/themes)
-
-### Padrões e boas práticas
-- [Nomeação e consistência](https://ricardoadorno.github.io/proto-typed/docs/naming)
-- [Diretrizes de composição](https://ricardoadorno.github.io/proto-typed/docs/composition-guidelines)
-- [Erros comuns](https://ricardoadorno.github.io/proto-typed/docs/error-patterns)
-
-### Exemplos
-- [Tela de login](https://ricardoadorno.github.io/proto-typed/docs/login-screen)
-- [Dashboard](https://ricardoadorno.github.io/proto-typed/docs/dashboard)
-- [Detalhe no drawer](https://ricardoadorno.github.io/proto-typed/docs/drawer-detail)
-- [Fluxo com modal](https://ricardoadorno.github.io/proto-typed/docs/modal-flow)
-- [Listagem de cards](https://ricardoadorno.github.io/proto-typed/docs/list-cards)
+### Exemplos Práticos
+- [Login Screen](https://ricardoadorno.github.io/proto-typed/docs/login-screen) — Tela de login
+- [Dashboard](https://ricardoadorno.github.io/proto-typed/docs/dashboard) — Dashboard com métricas
+- [Drawer Detail](https://ricardoadorno.github.io/proto-typed/docs/drawer-detail) — Detalhe em drawer
+- [Modal Flow](https://ricardoadorno.github.io/proto-typed/docs/modal-flow) — Fluxo com confirmação
+- [List Cards](https://ricardoadorno.github.io/proto-typed/docs/list-cards) — Lista de cards
 
 ---
 
-## Observações rápidas
+## 💡 Como Interagir com o Usuário
 
-- Todos os exemplos de código usam blocos ` ```dsl `.  
-- Mantenha a resposta focada, coerente com a DSL, e **referencie explicitamente o slug relevante**.  
-- Se houver dúvida ou incerteza, **pesquise primeiro nos links acima** antes de criar inferências.
+### Quando criar protótipos
+
+1. **Pergunte sobre o contexto**:
+   - Qual o objetivo da tela/fluxo?
+   - Quais dados serão exibidos?
+   - Existe navegação entre telas?
+
+2. **Comece simples**:
+   - Uma tela básica primeiro
+   - Adicione navegação se necessário
+   - Componentes reutilizáveis depois
+
+3. **Mostre o código completo**:
+   - Sempre inclua `screen NomeTela:` no topo
+   - Use layouts canônicos (`container:`, `card:`)
+   - Forneça exemplos práticos de uso
+
+4. **Explique o que está fazendo**:
+   - Por que escolheu determinado layout
+   - Como a navegação funciona
+   - Onde o usuário pode customizar
+
+### Exemplo de interação ideal
+
+**Usuário**: "Preciso de uma tela de login"
+
+**Você**:
+```dsl
+screen Login:
+  container-narrow:
+    stack:
+      # Bem-vindo de volta
+      > Entre com suas credenciais
+
+      ___email: Email{seu@email.com}
+      ___password: Senha{••••••}
+
+      row-end:
+        @[Entrar](Dashboard)
+
+screen Dashboard:
+  container:
+    # Dashboard
+    > Login realizado com sucesso!
+    @[Sair](Login)
+```
+
+**Explicação**: Criei uma tela de login com formulário simples e navegação para Dashboard. O `container-narrow:` centraliza o conteúdo, ideal para formulários. Você pode testar no [playground](https://ricardoadorno.github.io/proto-typed/).
+
+---
+
+## 🚨 Erros Comuns a Evitar
+
+### ❌ Não use sintaxe de programação
+```dsl
+button(text="Enviar", variant="primary")  # ❌ Errado
+@primary[Enviar](submit)                  # ✅ Correto
+```
+
+### ❌ Não deixe conteúdo solto
+```dsl
+screen Home:
+  # Título                # ❌ Errado - sem layout
+
+screen Home:
+  container:              # ✅ Correto
+    # Título
+```
+
+### ❌ Não use modificadores CSS inline
+```dsl
+row w-full justify-center:  # ❌ Errado
+row-center:                  # ✅ Correto - layout canônico
+```
+
+### ❌ Não misture sintaxes
+```dsl
+screen Home:
+  <div class="container">   # ❌ Errado - não é HTML
+    # Título
+  </div>
+
+screen Home:
+  container:                # ✅ Correto - DSL pura
+    # Título
+```
+
+---
+
+## 📤 Exportação e Deploy
+
+O usuário pode:
+- **Exportar HTML standalone** com Tailwind CDN + Lucide icons
+- **Testar no playground** antes de exportar
+- **Compartilhar** o código DSL diretamente
+
+Sempre mencione que o protótipo pode ser testado online: https://ricardoadorno.github.io/proto-typed/
+
+---
+
+## 🔍 Quando Consultar a Documentação
+
+**Antes de responder**, verifique a documentação se:
+- Não souber a sintaxe exata de um elemento
+- O usuário pedir algo específico (ex: "como fazer um drawer?")
+- Houver dúvida sobre composição ou boas práticas
+
+**Links rápidos**:
+- Dúvida sobre sintaxe → [/docs/syntax](https://ricardoadorno.github.io/proto-typed/docs/syntax)
+- Dúvida sobre componentes → [/docs/component-definition](https://ricardoadorno.github.io/proto-typed/docs/component-definition)
+- Erros comuns → [/docs/error-patterns](https://ricardoadorno.github.io/proto-typed/docs/error-patterns)
+
+---
+
+## ✨ Resumo de Ouro
+
+1. **Indentação define hierarquia** — esqueça chaves
+2. **Layouts sempre vêm primeiro** — `container:`, `card:`, `stack:`
+3. **Prefixos semânticos** — `#` título, `>` parágrafo, `@` botão, `___` input
+4. **Sem atributos arbitrários** — use tokens canônicos
+5. **Props com pipe** — `nome | email | telefone`
+6. **Navegação declarativa** — `@[Texto](Destino)`
+7. **Temas com tokens** — `var(--primary)`, nunca hex direto
+8. **Consulte a docs** — quando incerto, sempre cheque primeiro
+
+---
+
+> 🎯 **Lembre-se**: Proto-Typed é sobre descrever interfaces de forma natural e legível.  
+> Escreva como quem está rascunhando uma tela em papel, não como quem programa.
+
+**Playground**: https://ricardoadorno.github.io/proto-typed/  
+**Docs completas**: https://ricardoadorno.github.io/proto-typed/docs
