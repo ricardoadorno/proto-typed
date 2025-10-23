@@ -1,0 +1,69 @@
+{
+  "name": "@proto-typed/vscode",
+  "displayName": "Proto-Typed DSL",
+  "description": "VSCode extension for the Proto-Typed DSL.",
+  "version": "0.0.1",
+  "publisher": "proto-typed",
+  "icon": "logo.svg",
+  "engines": {
+    "vscode": "^1.83.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "activationEvents": [
+    "onLanguage:proto-typed"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languages": [{
+      "id": "proto-typed",
+      "aliases": ["Proto-Typed", "proto-typed"],
+      "extensions": [".pty"],
+      "configuration": "./language-configuration.json",
+      "icon": {
+        "light": "./logo.svg",
+        "dark": "./logo.svg"
+      }
+    }],
+    "grammars": [{
+      "language": "proto-typed",
+      "scopeName": "source.pty",
+      "path": "./syntaxes/proto-typed.tmLanguage.json"
+    }],
+    "snippets": [{
+      "language": "proto-typed",
+      "path": "./snippets/snippets.json"
+    }],
+    "commands": [{
+      "command": "proto-typed.showPreview",
+      "title": "Open Preview to the Side",
+      "category": "Proto-Typed",
+      "icon": "./logo.svg"
+    }],
+    "menus": {
+      "editor/title": [{
+        "command": "proto-typed.showPreview",
+        "when": "editorLangId == proto-typed",
+        "group": "navigation"
+      }],
+      "commandPalette": [{
+        "command": "proto-typed.showPreview",
+        "when": "editorLangId == proto-typed"
+      }]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run compile",
+    "compile": "cd ../core && pnpm run build && cd ../vscode && tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "dependencies": {
+    "@proto-typed/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.83.0",
+    "typescript": "^5.2.2"
+  }
+}

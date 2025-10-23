@@ -1,0 +1,114 @@
+{
+  "screen": {
+    "prefix": "screen",
+    "body": [
+      "screen ${1:ScreenName} {",
+      "\tlayout {",
+      "\t\t",
+      "\t}",
+      "}"
+    ],
+    "description": "Create a new screen"
+  },
+  "component": {
+    "prefix": "component",
+    "body": [
+      "component ${1:ComponentName} {",
+      "\tproperties {",
+      "\t\t",
+      "\t}",
+      "\tlayout {",
+      "\t\t",
+      "\t}",
+      "}"
+    ],
+    "description": "Create a new component"
+  },
+  "button": {
+    "prefix": "button",
+    "body": [
+      "element button {",
+      "\tproperties {",
+      "\t\ttext: \"${1:Button Text}\"",
+      "\t}",
+      "}"
+    ],
+    "description": "Create a button element"
+  },
+  "text": {
+    "prefix": "text",
+    "body": [
+      "element text {",
+      "\tproperties {",
+      "\t\tvalue: \"${1:Text Value}\"",
+      "\t}",
+      "}"
+    ],
+    "description": "Create a text element"
+  },
+  "input": {
+    "prefix": "input",
+    "body": [
+      "element input {",
+      "\tproperties {",
+      "\t\tplaceholder: \"${1:Placeholder Text}\"",
+      "\t}",
+      "}"
+    ],
+    "description": "Create an input element"
+  },
+  "image": {
+    "prefix": "image",
+    "body": [
+      "element image {",
+      "\tproperties {",
+      "\t\tsrc: \"${1:Image URL}\"",
+      "\t\talt: \"${2:Image Alt Text}\"",
+      "\t}",
+      "}"
+    ],
+    "description": "Create an image element"
+  },
+  "layout": {
+    "prefix": "layout",
+    "body": [
+      "layout {",
+      "\t",
+      "}"
+    ],
+    "description": "Create a layout block"
+  },
+  "row": {
+    "prefix": "row",
+    "body": [
+      "element row {",
+      "\tlayout {",
+      "\t\t",
+      "\t}",
+      "}"
+    ],
+    "description": "Create a row layout element"
+  },
+  "column": {
+    "prefix": "column",
+    "body": [
+      "element column {",
+      "\tlayout {",
+      "\t\t",
+      "\t}",
+      "}"
+    ],
+    "description": "Create a column layout element"
+  },
+  "styles": {
+    "prefix": "styles",
+    "body": [
+      "styles {",
+      "\tcolors {",
+      "\t\t",
+      "\t}",
+      "}"
+    ],
+    "description": "Create a styles block"
+  }
+}
