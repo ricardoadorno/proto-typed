@@ -8,7 +8,7 @@
 pnpm run compile
 
 # OU diretamente na pasta da extensão
-cd packages/vscode
+cd packages/extension
 pnpm run compile
 ```
 
@@ -28,7 +28,7 @@ pnpm run compile
 
 ### 1. Abrir um arquivo .pty
 Na janela de desenvolvimento que abriu:
-1. Abra o arquivo `example.pty` (que está em `packages/vscode/example.pty`)
+1. Abra o arquivo `example.pty` (que está em `packages/extension/example.pty`)
 2. OU crie um novo arquivo com extensão `.pty`
 
 ### 2. O que observar
@@ -84,7 +84,7 @@ Se você fizer alterações no código da extensão (`src/extension.ts`):
 ### Modo watch (desenvolvimento ativo)
 Para recompilar automaticamente ao fazer alterações:
 ```bash
-cd packages/vscode
+cd packages/extension
 pnpm run watch
 ```
 
@@ -92,7 +92,7 @@ pnpm run watch
 
 ### Empacotar a extensão
 ```bash
-cd packages/vscode
+cd packages/extension
 npx @vscode/vsce package
 ```
 
@@ -129,7 +129,7 @@ Isso criará um arquivo `.vsix` que pode ser instalado manualmente:
 - Verifique se a linguagem está definida como "Proto-Typed" (canto inferior direito)
 
 ### Logo não aparece
-- Verifique se o arquivo `logo.svg` existe em `packages/vscode/`
+- Verifique se o arquivo `logo.svg` existe em `packages/extension/`
 - Compile novamente a extensão
 - Recarregue a janela de desenvolvimento
 

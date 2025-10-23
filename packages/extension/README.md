@@ -15,7 +15,7 @@ pnpm install
 pnpm run compile
 
 # Ou diretamente nesta pasta
-cd packages/vscode
+cd packages/extension
 pnpm run compile
 ```
 
@@ -40,7 +40,7 @@ pnpm run compile
 ### Estrutura
 
 ```
-packages/vscode/
+packages/extension/
 ├── src/
 │   ├── extension.ts          # Código principal da extensão
 │   └── getWebviewContent.ts  # Template HTML do preview

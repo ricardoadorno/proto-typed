@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "pnpm -F @web/app dev",
     "build": "pnpm -F @web/app build",
-    "compile": "pnpm -F @proto-typed/vscode compile",
+    "compile": "pnpm -F @proto-typed/extension compile",
     "compile:core": "pnpm -F @proto-typed/core build",
-    "compile:vscode": "pnpm run compile"
+    "compile:extension": "pnpm run compile"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",

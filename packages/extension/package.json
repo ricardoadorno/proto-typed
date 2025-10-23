@@ -1,5 +1,5 @@
 {
-  "name": "@proto-typed/vscode",
+  "name": "@proto-typed/extension",
   "displayName": "Proto-Typed DSL",
   "description": "VSCode extension for the Proto-Typed DSL.",
   "version": "0.0.1",
@@ -56,7 +56,7 @@
   },
   "scripts": {
     "vscode:prepublish": "pnpm run compile",
-    "compile": "cd ../core && pnpm run build && cd ../vscode && tsc -p ./",
+    "compile": "cd ../core && pnpm run build && cd ../extension && tsc -p ./",
     "watch": "tsc -watch -p ./"
   },
   "dependencies": {
