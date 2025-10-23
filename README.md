@@ -291,6 +291,8 @@ screen Tarefas:
 src/
 ├── app/              # Next.js app directory
 ├── components/       # React UI components for the editor
+├── app/              # Next.js app directory
+├── components/       # React UI components for the editor
 ├── core/
 │   ├── lexer/          # Tokenização (Chevrotain)
 │   ├── parser/         # Regras gramaticais & construção da AST
