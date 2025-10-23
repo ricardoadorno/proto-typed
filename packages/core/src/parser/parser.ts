@@ -1,36 +1,79 @@
-import { CstParser } from "chevrotain";
-import { 
+import { CstParser } from 'chevrotain'
+import {
   allTokens,
   // Core
-  Identifier, Colon,
-  // Views  
-  Screen, Modal, Drawer,
+  Identifier,
+  Colon,
+  // Views
+  Screen,
+  Modal,
+  Drawer,
   // Primitives - Buttons
-  ButtonPrimary, ButtonSecondary, ButtonOutline, ButtonGhost, ButtonDestructive,
-  ButtonLink, ButtonSuccess, ButtonWarning, ButtonMarker,
-  ButtonSizeXs, ButtonSizeSm, ButtonSizeMd, ButtonSizeLg,
-  ButtonLabel, ButtonAction,
+  ButtonPrimary,
+  ButtonSecondary,
+  ButtonOutline,
+  ButtonGhost,
+  ButtonDestructive,
+  ButtonLink,
+  ButtonSuccess,
+  ButtonWarning,
+  ButtonMarker,
+  ButtonSizeXs,
+  ButtonSizeSm,
+  ButtonSizeMd,
+  ButtonSizeLg,
+  ButtonLabel,
+  ButtonAction,
   // Primitives - Other
-  Link, Image, Heading, Text, Paragraph, MutedText, Note, Quote,
+  Link,
+  Image,
+  Heading,
+  Text,
+  Paragraph,
+  MutedText,
+  Note,
+  Quote,
   // Canonical Layouts
-  ContainerNarrow, ContainerWide, ContainerFull, Container,
-  Stack, StackTight, StackLoose, StackFlush,
-  RowStart, RowCenter, RowBetween, RowEnd,
+  ContainerNarrow,
+  ContainerWide,
+  ContainerFull,
+  Container,
+  Stack,
+  StackTight,
+  StackLoose,
+  StackFlush,
+  RowStart,
+  RowCenter,
+  RowBetween,
+  RowEnd,
   Col,
-  Grid2, Grid3, Grid4, GridAuto,
-  Card, CardCompact, CardFeature,
-  Header, Sidebar,
+  Grid2,
+  Grid3,
+  Grid4,
+  GridAuto,
+  Card,
+  CardCompact,
+  CardFeature,
+  Header,
+  Sidebar,
   // Structures
-  List, Navigator, UnorderedListItem, Fab, Separator,
+  List,
+  Navigator,
+  UnorderedListItem,
+  Fab,
+  Separator,
   // Inputs
   Input,
-  RadioOption, Checkbox,
+  RadioOption,
+  Checkbox,
   // Components
-  Component, ComponentInstance,
+  Component,
+  ComponentInstance,
   // Styles
-  Styles, CssProperty
-} from "../lexer/tokens";
-import { Indent, Outdent } from "../lexer/lexer";
+  Styles,
+  CssProperty,
+} from '../lexer/tokens'
+import { Indent, Outdent } from '../lexer/lexer'
 
 /**
  * @class UiDslParser
@@ -48,17 +91,17 @@ export class UiDslParser extends CstParser {
    */
   constructor() {
     super([Indent, Outdent, ...allTokens], {
-      nodeLocationTracking: "full",
+      nodeLocationTracking: 'full',
       // Enable automatic error recovery - parser will try to continue after errors
       recoveryEnabled: true,
       // Maximum lookahead for better error recovery (default is 4)
       maxLookahead: 3,
-    });
-    this.performSelfAnalysis();
+    })
+    this.performSelfAnalysis()
   }
 
   // ===== CORE PROGRAM RULES =====
-  
+
   /**
    * @rule program
    * @description The top-level rule of the grammar. It can parse a sequence of screens, components, modals, drawers, and styles.
@@ -66,24 +109,24 @@ export class UiDslParser extends CstParser {
    * It also handles any trailing indentation tokens.
    * @returns {CstNode} A Concrete Syntax Tree node representing the entire program.
    */
-  program = this.RULE("program", () => {
+  program = this.RULE('program', () => {
     this.MANY(() => {
       this.OR([
         { ALT: () => this.SUBRULE(this.styles) },
         { ALT: () => this.SUBRULE(this.screen) },
         { ALT: () => this.SUBRULE(this.component) },
         { ALT: () => this.SUBRULE(this.modal) },
-        { ALT: () => this.SUBRULE(this.drawer) }
-      ]);
-    });
+        { ALT: () => this.SUBRULE(this.drawer) },
+      ])
+    })
     // Consume any remaining indent/outdent tokens at the end
     this.MANY2(() => {
       this.OR2([
         { ALT: () => this.CONSUME(Indent) },
-        { ALT: () => this.CONSUME(Outdent) }
-      ]);
-    });
-  });
+        { ALT: () => this.CONSUME(Outdent) },
+      ])
+    })
+  })
 
   // ===== HELPER METHODS =====
 
@@ -98,9 +141,9 @@ export class UiDslParser extends CstParser {
       this.OR([
         { ALT: () => this.CONSUME(Indent) },
         { ALT: () => this.CONSUME(Outdent) },
-        { ALT: () => this.SUBRULE(this.element) }
-      ]);
-    });
+        { ALT: () => this.SUBRULE(this.element) },
+      ])
+    })
   }
 
   /**
@@ -111,17 +154,17 @@ export class UiDslParser extends CstParser {
    */
   private containerWithOptionalContent() {
     this.OPTION(() => {
-      this.CONSUME(Colon);
+      this.CONSUME(Colon)
       this.OPTION2(() => {
-        this.CONSUME(Indent);
+        this.CONSUME(Indent)
         this.AT_LEAST_ONE(() => {
-          this.SUBRULE(this.element);
-        });
+          this.SUBRULE(this.element)
+        })
         this.OPTION3(() => {
-          this.CONSUME(Outdent);
-        });
-      });
-    });
+          this.CONSUME(Outdent)
+        })
+      })
+    })
   }
 
   /**
@@ -132,47 +175,47 @@ export class UiDslParser extends CstParser {
    */
   private listWithOptionalContent() {
     this.OPTION(() => {
-      this.CONSUME(Colon);
+      this.CONSUME(Colon)
       this.OPTION2(() => {
-        this.CONSUME(Indent);
+        this.CONSUME(Indent)
         this.AT_LEAST_ONE(() => {
-          this.CONSUME(UnorderedListItem);
-        });
+          this.CONSUME(UnorderedListItem)
+        })
         this.OPTION3(() => {
-          this.CONSUME(Outdent);
-        });
-      });
-    });
+          this.CONSUME(Outdent)
+        })
+      })
+    })
   }
 
   // ===== STYLES RULES =====
-  
+
   /**
    * @rule styles
    * @description Parses a 'styles' block which contains a list of CSS custom property declarations.
    * This allows for defining a set of reusable style variables.
    * @returns {CstNode} A CST node for the styles block.
    */
-  styles = this.RULE("styles", () => {
-    this.CONSUME(Styles);
-    this.CONSUME(Colon);
+  styles = this.RULE('styles', () => {
+    this.CONSUME(Styles)
+    this.CONSUME(Colon)
     this.MANY(() => {
       this.OR([
         { ALT: () => this.CONSUME(Indent) },
         { ALT: () => this.CONSUME(Outdent) },
-        { ALT: () => this.SUBRULE(this.styleDeclaration) }
-      ]);
-    });
-  });
+        { ALT: () => this.SUBRULE(this.styleDeclaration) },
+      ])
+    })
+  })
 
   /**
    * @rule styleDeclaration
    * @description Parses a single CSS custom property declaration within a 'styles' block.
    * @returns {CstNode} A CST node for a single style declaration.
    */
-  styleDeclaration = this.RULE("styleDeclaration", () => {
-    this.CONSUME(CssProperty);
-  });
+  styleDeclaration = this.RULE('styleDeclaration', () => {
+    this.CONSUME(CssProperty)
+  })
 
   // ===== VIEW CONTAINER RULES =====
 
@@ -182,36 +225,36 @@ export class UiDslParser extends CstParser {
    * A screen has a name and contains a block of UI elements.
    * @returns {CstNode} A CST node for a screen.
    */
-  screen = this.RULE("screen", () => {
-    this.CONSUME(Screen);
-    this.CONSUME(Identifier, { LABEL: "name" });
-    this.CONSUME(Colon);
-    this.consumeIndentedElements();
-  });
+  screen = this.RULE('screen', () => {
+    this.CONSUME(Screen)
+    this.CONSUME(Identifier, { LABEL: 'name' })
+    this.CONSUME(Colon)
+    this.consumeIndentedElements()
+  })
 
   /**
    * @rule modal
    * @description Parses a 'modal' declaration. Modals are global, reusable UI components that can be shown or hidden.
    * @returns {CstNode} A CST node for a modal.
    */
-  modal = this.RULE("modal", () => {
-    this.CONSUME(Modal);
-    this.CONSUME(Identifier, { LABEL: "name" });
-    this.CONSUME(Colon);
-    this.consumeIndentedElements();
-  });
+  modal = this.RULE('modal', () => {
+    this.CONSUME(Modal)
+    this.CONSUME(Identifier, { LABEL: 'name' })
+    this.CONSUME(Colon)
+    this.consumeIndentedElements()
+  })
 
   /**
    * @rule drawer
    * @description Parses a 'drawer' declaration. Drawers are similar to modals but typically slide in from the side of the screen.
    * @returns {CstNode} A CST node for a drawer.
    */
-  drawer = this.RULE("drawer", () => {
-    this.CONSUME(Drawer);
-    this.CONSUME(Identifier, { LABEL: "name" });
-    this.CONSUME(Colon);
-    this.consumeIndentedElements();
-  });
+  drawer = this.RULE('drawer', () => {
+    this.CONSUME(Drawer)
+    this.CONSUME(Identifier, { LABEL: 'name' })
+    this.CONSUME(Colon)
+    this.consumeIndentedElements()
+  })
 
   // ===== COMPONENT RULES =====
 
@@ -220,44 +263,45 @@ export class UiDslParser extends CstParser {
    * @description Parses a 'component' declaration. This allows for creating reusable UI components within the DSL.
    * @returns {CstNode} A CST node for a component declaration.
    */
-  component = this.RULE("component", () => {
-    this.CONSUME(Component);
-    this.CONSUME(Identifier, { LABEL: "name" });
-    this.CONSUME(Colon);
-    this.consumeIndentedElements();
-  });
+  component = this.RULE('component', () => {
+    this.CONSUME(Component)
+    this.CONSUME(Identifier, { LABEL: 'name' })
+    this.CONSUME(Colon)
+    this.consumeIndentedElements()
+  })
 
   /**
    * @rule componentInstanceElement
    * @description Parses an instance of a component, e.g., '$MyComponent'. It can optionally have inline props or a list of props.
    * @returns {CstNode} A CST node for a component instance.
    */
-  componentInstanceElement = this.RULE("componentInstanceElement", () => {
-    this.CONSUME(ComponentInstance);
-    
+  componentInstanceElement = this.RULE('componentInstanceElement', () => {
+    this.CONSUME(ComponentInstance)
+
     // Optional: : followed by inline props or indented list
     this.OPTION(() => {
-      this.CONSUME(Colon);
+      this.CONSUME(Colon)
       // Either consume rest of line as identifier (inline props) OR indented list
       this.OR([
         // Inline props: $Foo: bar | zir
-        { ALT: () => this.CONSUME(Identifier, { LABEL: "inlineProps" }) },
+        { ALT: () => this.CONSUME(Identifier, { LABEL: 'inlineProps' }) },
         // Indented list: $Foo:\n  - bar\n  - zir
-        { ALT: () => {
-          this.OPTION2(() => {
-            this.CONSUME(Indent);
-            this.AT_LEAST_ONE(() => {
-              this.CONSUME(UnorderedListItem);
-            });
-            this.OPTION3(() => {
-              this.CONSUME(Outdent);
-            });
-          });
-        }}
-      ]);
-    });
-  });
-
+        {
+          ALT: () => {
+            this.OPTION2(() => {
+              this.CONSUME(Indent)
+              this.AT_LEAST_ONE(() => {
+                this.CONSUME(UnorderedListItem)
+              })
+              this.OPTION3(() => {
+                this.CONSUME(Outdent)
+              })
+            })
+          },
+        },
+      ])
+    })
+  })
 
   // ===== MAIN ELEMENT DISPATCHER =====
 
@@ -267,7 +311,7 @@ export class UiDslParser extends CstParser {
    * The order of alternatives is important for parsing precedence.
    * @returns {CstNode} A CST node for any of the possible UI elements.
    */
-  element = this.RULE("element", () => {
+  element = this.RULE('element', () => {
     this.OR([
       // Components
       { ALT: () => this.SUBRULE(this.componentInstanceElement) },
@@ -290,41 +334,41 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.SUBRULE(this.inputElement) },
       { ALT: () => this.SUBRULE(this.radioButtonGroup) },
       { ALT: () => this.SUBRULE(this.checkboxElement) },
-    ]);
-  });
+    ])
+  })
 
   // ===== PRIMITIVE ELEMENT RULES =====
-  
+
   /**
    * @rule headingElement
    * @description Parses a heading element.
    * @returns {CstNode} A CST node for a heading.
    */
-  headingElement = this.RULE("headingElement", () => {
-    this.CONSUME(Heading);
-  });
+  headingElement = this.RULE('headingElement', () => {
+    this.CONSUME(Heading)
+  })
 
   /**
    * @rule textElement
    * @description Parses various types of text elements, such as 'Text', 'Paragraph', 'MutedText', 'Note', and 'Quote'.
    * @returns {CstNode} A CST node for a text element.
    */
-  textElement = this.RULE("textElement", () => {
+  textElement = this.RULE('textElement', () => {
     this.OR([
       { ALT: () => this.CONSUME(Text) },
       { ALT: () => this.CONSUME(Paragraph) },
       { ALT: () => this.CONSUME(MutedText) },
       { ALT: () => this.CONSUME(Note) },
-      { ALT: () => this.CONSUME(Quote) }
-    ]);
-  });
+      { ALT: () => this.CONSUME(Quote) },
+    ])
+  })
 
   /**
    * @rule buttonElement
    * @description Parses a button element. It can have a variant, size, a required label, and an optional action.
    * @returns {CstNode} A CST node for a button.
    */
-  buttonElement = this.RULE("buttonElement", () => {
+  buttonElement = this.RULE('buttonElement', () => {
     // Parse button variant (or default marker)
     this.OR([
       { ALT: () => this.CONSUME(ButtonPrimary) },
@@ -335,45 +379,45 @@ export class UiDslParser extends CstParser {
       { ALT: () => this.CONSUME(ButtonLink) },
       { ALT: () => this.CONSUME(ButtonSuccess) },
       { ALT: () => this.CONSUME(ButtonWarning) },
-      { ALT: () => this.CONSUME(ButtonMarker) } // Default: primary
-    ]);
-    
+      { ALT: () => this.CONSUME(ButtonMarker) }, // Default: primary
+    ])
+
     // Parse optional size
     this.OPTION(() => {
       this.OR2([
         { ALT: () => this.CONSUME(ButtonSizeXs) },
         { ALT: () => this.CONSUME(ButtonSizeSm) },
         { ALT: () => this.CONSUME(ButtonSizeMd) },
-        { ALT: () => this.CONSUME(ButtonSizeLg) }
-      ]);
-    });
-    
+        { ALT: () => this.CONSUME(ButtonSizeLg) },
+      ])
+    })
+
     // Parse required label
-    this.CONSUME(ButtonLabel);
-    
+    this.CONSUME(ButtonLabel)
+
     // Parse optional action
     this.OPTION2(() => {
-      this.CONSUME(ButtonAction);
-    });
-  });
+      this.CONSUME(ButtonAction)
+    })
+  })
 
   /**
    * @rule linkElement
    * @description Parses a link element.
    * @returns {CstNode} A CST node for a link.
    */
-  linkElement = this.RULE("linkElement", () => {
-    this.CONSUME(Link);
-  });
+  linkElement = this.RULE('linkElement', () => {
+    this.CONSUME(Link)
+  })
 
   /**
    * @rule imageElement
    * @description Parses an image element.
    * @returns {CstNode} A CST node for an image.
    */
-  imageElement = this.RULE("imageElement", () => {
-    this.CONSUME(Image);
-  });
+  imageElement = this.RULE('imageElement', () => {
+    this.CONSUME(Image)
+  })
 
   // ===== LAYOUT ELEMENT RULES =====
 
@@ -383,7 +427,7 @@ export class UiDslParser extends CstParser {
    * These elements can contain other elements.
    * @returns {CstNode} A CST node for a layout element.
    */
-  layoutElement = this.RULE("layoutElement", () => {
+  layoutElement = this.RULE('layoutElement', () => {
     this.OR([
       // Containers
       { ALT: () => this.CONSUME(ContainerNarrow) },
@@ -413,9 +457,9 @@ export class UiDslParser extends CstParser {
       // Special
       { ALT: () => this.CONSUME(Header) },
       { ALT: () => this.CONSUME(Sidebar) },
-    ]);
-    this.containerWithOptionalContent();
-  });
+    ])
+    this.containerWithOptionalContent()
+  })
 
   // ===== STRUCTURE ELEMENT RULES =====
 
@@ -425,60 +469,60 @@ export class UiDslParser extends CstParser {
    * This is used for rendering a list of items using a reusable component.
    * @returns {CstNode} A CST node for a templated list.
    */
-  listElement = this.RULE("listElement", () => {
-    this.CONSUME(List);
-    this.CONSUME(ComponentInstance);
+  listElement = this.RULE('listElement', () => {
+    this.CONSUME(List)
+    this.CONSUME(ComponentInstance)
     this.OPTION(() => {
-      this.CONSUME(Colon);
+      this.CONSUME(Colon)
       this.OPTION2(() => {
-        this.CONSUME(Indent);
+        this.CONSUME(Indent)
         this.AT_LEAST_ONE(() => {
-          this.CONSUME(UnorderedListItem);
-        });
+          this.CONSUME(UnorderedListItem)
+        })
         this.OPTION3(() => {
-          this.CONSUME(Outdent);
-        });
-      });
-    });
-  });
+          this.CONSUME(Outdent)
+        })
+      })
+    })
+  })
 
   /**
    * @rule navigatorElement
    * @description Parses a navigator element, which is a list-like structure for navigation.
    * @returns {CstNode} A CST node for a navigator.
    */
-  navigatorElement = this.RULE("navigatorElement", () => {
-    this.CONSUME(Navigator);
-    this.listWithOptionalContent();
-  });
+  navigatorElement = this.RULE('navigatorElement', () => {
+    this.CONSUME(Navigator)
+    this.listWithOptionalContent()
+  })
 
   /**
    * @rule fabElement
    * @description Parses a Floating Action Button (FAB) element, which can contain a list of actions.
    * @returns {CstNode} A CST node for a FAB.
    */
-  fabElement = this.RULE("fabElement", () => {
-    this.CONSUME(Fab);
-    this.listWithOptionalContent();
-  });
+  fabElement = this.RULE('fabElement', () => {
+    this.CONSUME(Fab)
+    this.listWithOptionalContent()
+  })
 
   /**
    * @rule unorderedListElement
    * @description Parses a standalone unordered list item.
    * @returns {CstNode} A CST node for a list item.
    */
-  unorderedListElement = this.RULE("unorderedListElement", () => {
-    this.CONSUME(UnorderedListItem);
-  });
+  unorderedListElement = this.RULE('unorderedListElement', () => {
+    this.CONSUME(UnorderedListItem)
+  })
 
   /**
    * @rule separatorElement
    * @description Parses a separator element, used for visually separating content.
    * @returns {CstNode} A CST node for a separator.
    */
-  separatorElement = this.RULE("separatorElement", () => {
-    this.CONSUME(Separator);
-  });
+  separatorElement = this.RULE('separatorElement', () => {
+    this.CONSUME(Separator)
+  })
 
   // ===== INPUT ELEMENT RULES =====
 
@@ -487,29 +531,29 @@ export class UiDslParser extends CstParser {
    * @description Parses a generic input element.
    * @returns {CstNode} A CST node for an input.
    */
-  inputElement = this.RULE("inputElement", () => {
-    this.CONSUME(Input);
-  });
+  inputElement = this.RULE('inputElement', () => {
+    this.CONSUME(Input)
+  })
 
   /**
    * @rule radioButtonGroup
    * @description Parses a group of radio button options.
    * @returns {CstNode} A CST node for a radio button group.
    */
-  radioButtonGroup = this.RULE("radioButtonGroup", () => {
+  radioButtonGroup = this.RULE('radioButtonGroup', () => {
     this.AT_LEAST_ONE(() => {
-      this.CONSUME(RadioOption);
-    });
-  });
+      this.CONSUME(RadioOption)
+    })
+  })
 
   /**
    * @rule checkboxElement
    * @description Parses a checkbox element.
    * @returns {CstNode} A CST node for a checkbox.
    */
-  checkboxElement = this.RULE("checkboxElement", () => {
-    this.CONSUME(Checkbox);
-  });
+  checkboxElement = this.RULE('checkboxElement', () => {
+    this.CONSUME(Checkbox)
+  })
 }
 
 /**
@@ -517,4 +561,4 @@ export class UiDslParser extends CstParser {
  * @description A singleton instance of the UiDslParser.
  * This instance is used throughout the application to parse DSL code.
  */
-export const parser = new UiDslParser();
+export const parser = new UiDslParser()

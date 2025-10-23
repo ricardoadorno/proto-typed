@@ -11,6 +11,7 @@ proto-typed transforma descrições textuais em protótipos navegáveis. Sem arr
 Uma ferramenta que converte texto estruturado em interfaces interativas. Você descreve conteúdo, estrutura e navegação; ela gera HTML com Tailwind + shadcn. Pense em Markdown para UIs — semântica antes de aparência.
 
 **Feito para**:
+
 - **Designers** que querem prototipar fluxos sem código
 - **PMs** criando mockups clicáveis para apresentações
 - **Devs backend/full-stack** montando telas sem mergulhar em CSS/JSX
@@ -34,6 +35,7 @@ Uma ferramenta que converte texto estruturado em interfaces interativas. Você d
 Experimente imediatamente no playground: **[ricardoadorno.github.io/proto-typed](https://ricardoadorno.github.io/proto-typed/)**
 
 A interface online oferece:
+
 - Editor Monaco com sintaxe DSL e autocomplete
 - Preview em tempo real
 - Exemplos pré-carregados (Contacts App, Login, Navigator)
@@ -55,6 +57,7 @@ npm run dev
 ```
 
 O app abre em `http://localhost:3000` (Next.js) com interface dividida:
+
 - **Esquerda**: Monaco editor com sintaxe DSL
 - **Direita**: Preview em tempo real com seletor de dispositivo
 
@@ -134,9 +137,11 @@ drawer Menu:
 Padrão: `@<variante>?-<tamanho>?\[texto\]\(ação\)`
 
 **Variantes** (opcional, padrão: primary):
+
 - `@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@link`, `@success`, `@warning`
 
 **Tamanhos** (opcional, padrão: md):
+
 - `-xs`, `-sm`, `-md`, `-lg`
 
 ```dsl
@@ -228,6 +233,7 @@ navigator:
 fab:
   - + | adicionarItem
 ```
+
 ## Exemplo completo
 
 Um app completo com navegação, componentes, modais e listas:
@@ -254,12 +260,12 @@ drawer MenuPrincipal:
 
 screen Dashboard:
   $Cabecalho
-  
+
   container:
     card:
       ## Bem-vindo de volta
       > Você tem 5 tarefas pendentes
-    
+
     grid-2:
       card:
         ### Ativas
@@ -270,15 +276,15 @@ screen Dashboard:
 
 screen Tarefas:
   $Cabecalho
-  
+
   container:
     @[Adicionar tarefa](AddTask)
-  
+
   list:
       - Configurar projeto | Vence: Hoje | @outline[Editar](edit) | @destructive[Excluir](ConfirmarExclusao)
       - Revisar código | Vence: Amanhã | @outline[Editar](edit) | @destructive[Excluir](ConfirmarExclusao)
       - Deploy app | Vence: Sexta | @outline[Editar](edit) | @destructive[Excluir](ConfirmarExclusao)
-  
+
   navigator:
     - Dashboard | Dashboard
     - Tarefas | Tarefas
@@ -347,24 +353,24 @@ src/
 ```typescript
 // 1. Token (lexer/tokens/primitives.tokens.ts)
 export const Badge = createToken({
-  name: "Badge",
-  pattern: /badge\[([^\]]+)\]/
-});
+  name: 'Badge',
+  pattern: /badge\[([^\]]+)\]/,
+})
 
 // 2. Builder (parser/builders/primitives.builders.ts)
 export function buildBadgeElement(ctx: Context) {
-  const match = ctx.Badge[0].image.match(/badge\[([^\]]+)\]/);
+  const match = ctx.Badge[0].image.match(/badge\[([^\]]+)\]/)
   return {
-    type: "Badge",
+    type: 'Badge',
     props: { text: match?.[1] || '' },
-    children: []
-  };
+    children: [],
+  }
 }
 
 // 3. Renderer (renderer/nodes/primitives.node.ts)
 export function renderBadge(node: AstNode): string {
-  const { text } = node.props as any;
-  return `<span class="badge" style="background-color: var(--primary);">${text}</span>`;
+  const { text } = node.props as any
+  return `<span class="badge" style="background-color: var(--primary);">${text}</span>`
 }
 
 // 4. Adicionar ao mapa RENDERERS (renderer/core/node-renderer.ts)
@@ -377,11 +383,13 @@ const RENDERERS: Record<NodeType, typeof _render> = {
 ### Estilo de código
 
 **Tailwind CSS**:
+
 - ✅ Apenas classes base: `flex items-center px-4 py-2`
 - ❌ Sem cores hardcoded: `bg-blue-500 text-white`
 - ❌ Sem prefixos dark mode: `dark:bg-gray-900`
 
 **Variáveis CSS** (shadcn):
+
 - ✅ Tokens semânticos: `var(--primary)`, `var(--muted-foreground)`
 - ✅ Elementos UI: `var(--border)`, `var(--input)`, `var(--ring)`
 - ❌ Nomes de cores: `var(--blue-500)`, `var(--gray-800)`

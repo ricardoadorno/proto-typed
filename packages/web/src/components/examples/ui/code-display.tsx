@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from 'react'
 
-import { cn } from "@/lib/utils"
-import { DSLEditor } from "@/components/editor"
+import { cn } from '@/lib/utils'
+import { DSLEditor } from '@/components/editor'
 
 interface CodeDisplayProps {
   code: string
@@ -14,14 +14,14 @@ interface CodeDisplayProps {
 }
 
 const baseControlButton =
-  "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors border border-[var(--border-muted)] bg-[var(--bg-surface)] text-[var(--fg-secondary)] hover:border-[var(--brand-400)] hover:bg-[color:rgba(139,92,246,0.08)] hover:text-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-400)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-main)]"
+  'flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors border border-[var(--border-muted)] bg-[var(--bg-surface)] text-[var(--fg-secondary)] hover:border-[var(--brand-400)] hover:bg-[color:rgba(139,92,246,0.08)] hover:text-[var(--accent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-400)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-main)]'
 
 /**
  * Interactive code display component with Monaco Editor, syntax highlighting, and live editing.
  */
 export function CodeDisplay({
   code,
-  title = "DSL Code",
+  title = 'DSL Code',
   description,
   onCodeChange,
   editable = false,
@@ -40,7 +40,7 @@ export function CodeDisplay({
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch (error) {
-      console.error("Failed to copy DSL snippet", error)
+      console.error('Failed to copy DSL snippet', error)
     }
   }
 
@@ -63,7 +63,9 @@ export function CodeDisplay({
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <span className="text-lg">⚡</span>
-          <h4 className="text-lg font-semibold text-[var(--fg-primary)]">{title}</h4>
+          <h4 className="text-lg font-semibold text-[var(--fg-primary)]">
+            {title}
+          </h4>
         </div>
         <div className="flex items-center gap-2">
           {editable ? (
@@ -73,10 +75,16 @@ export function CodeDisplay({
                 className={cn(
                   baseControlButton,
                   isEditing &&
-                    "border-[color:rgba(139,92,246,0.32)] bg-[color:rgba(139,92,246,0.14)] text-[var(--accent)]"
+                    'border-[color:rgba(139,92,246,0.32)] bg-[color:rgba(139,92,246,0.14)] text-[var(--accent)]'
                 )}
               >
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -84,17 +92,23 @@ export function CodeDisplay({
                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                   />
                 </svg>
-                <span>{isEditing ? "View" : "Edit"}</span>
+                <span>{isEditing ? 'View' : 'Edit'}</span>
               </button>
               {isEditing ? (
                 <button
                   onClick={resetCode}
                   className={cn(
                     baseControlButton,
-                    "border-[color:rgba(245,158,11,0.32)] bg-[color:rgba(245,158,11,0.12)] text-[var(--warning)] hover:border-[var(--warning)] hover:bg-[color:rgba(245,158,11,0.18)] hover:text-[var(--warning)]"
+                    'border-[color:rgba(245,158,11,0.32)] bg-[color:rgba(245,158,11,0.12)] text-[var(--warning)] hover:border-[var(--warning)] hover:bg-[color:rgba(245,158,11,0.18)] hover:text-[var(--warning)]'
                   )}
                 >
-                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -111,19 +125,37 @@ export function CodeDisplay({
             onClick={copyToClipboard}
             className={cn(
               baseControlButton,
-              copied && "border-[var(--brand-400)] bg-[color:rgba(139,92,246,0.16)] text-[var(--fg-primary)]"
+              copied &&
+                'border-[var(--brand-400)] bg-[color:rgba(139,92,246,0.16)] text-[var(--fg-primary)]'
             )}
           >
             {copied ? (
               <>
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
                 <span>Copiado!</span>
               </>
             ) : (
               <>
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -141,15 +173,25 @@ export function CodeDisplay({
       <div className="relative">
         {isEditing ? (
           <div className="overflow-hidden rounded-3xl border border-[var(--border-muted)] bg-[var(--bg-surface)]">
-            <DSLEditor height="384px" value={currentCode} onChange={handleCodeChange} />
+            <DSLEditor
+              height="384px"
+              value={currentCode}
+              onChange={handleCodeChange}
+            />
           </div>
         ) : (
           <div className="relative">
             <div className="overflow-hidden rounded-3xl border border-[var(--border-muted)] bg-[var(--bg-surface)]">
-              <DSLEditor height="384px" value={currentCode} onChange={() => {}} />
+              <DSLEditor
+                height="384px"
+                value={currentCode}
+                onChange={() => {}}
+              />
             </div>
             <div className="absolute right-3 top-3 z-10">
-              <span className="rounded px-2 py-1 text-xs font-medium text-[var(--accent)]">DSL</span>
+              <span className="rounded px-2 py-1 text-xs font-medium text-[var(--accent)]">
+                DSL
+              </span>
             </div>
             <div className="pointer-events-none absolute inset-0" />
           </div>
@@ -161,8 +203,12 @@ export function CodeDisplay({
           <div className="flex items-start gap-2 text-sm text-[var(--fg-secondary)]">
             <span className="mt-0.5 text-[var(--info)]">💡</span>
             <div>
-              <p className="font-medium text-[var(--fg-primary)]">Description</p>
-              <p className="mt-1 text-sm leading-relaxed text-[var(--fg-secondary)]">{description}</p>
+              <p className="font-medium text-[var(--fg-primary)]">
+                Description
+              </p>
+              <p className="mt-1 text-sm leading-relaxed text-[var(--fg-secondary)]">
+                {description}
+              </p>
             </div>
           </div>
         </div>

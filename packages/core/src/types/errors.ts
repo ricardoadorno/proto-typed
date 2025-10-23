@@ -1,57 +1,57 @@
-export type Severity = 'info' | 'warning' | 'error' | 'fatal';
+export type Severity = 'info' | 'warning' | 'error' | 'fatal'
 
 export const SEVERITY_RANK: Record<Severity, number> = {
   info: 1,
   warning: 2,
   error: 3,
   fatal: 4,
-};
+}
 
-export type Stage = 'lexer' | 'parser' | 'builder' | 'renderer' | 'editor';
+export type Stage = 'lexer' | 'parser' | 'builder' | 'renderer' | 'editor'
 
 export interface ProtoErrorBase {
-  stage: Stage;
-  code: string;
-  severity: Severity;
-  message: string;
-  hint?: string;
-  line?: number;
-  column?: number;
-  length?: number;
-  nodeId?: string;
-  sourceSnippet?: string;
-  fatal?: boolean;
-  messageKey?: string;
-  messageParams?: Record<string, string | number>;
+  stage: Stage
+  code: string
+  severity: Severity
+  message: string
+  hint?: string
+  line?: number
+  column?: number
+  length?: number
+  nodeId?: string
+  sourceSnippet?: string
+  fatal?: boolean
+  messageKey?: string
+  messageParams?: Record<string, string | number>
 }
 
 export type ProtoError =
   | (ProtoErrorBase & {
-      stage: 'lexer';
-      token?: string;
-      expected?: string[];
+      stage: 'lexer'
+      token?: string
+      expected?: string[]
     })
   | (ProtoErrorBase & {
-      stage: 'parser';
-      rule?: string;
-      unexpected?: string;
-      expected?: string[];
+      stage: 'parser'
+      rule?: string
+      unexpected?: string
+      expected?: string[]
     })
   | (ProtoErrorBase & {
-      stage: 'builder';
-      builder?: string;
-      nodeType?: string;
+      stage: 'builder'
+      builder?: string
+      nodeType?: string
     })
   | (ProtoErrorBase & {
-      stage: 'renderer';
-      nodeType?: string;
-      component?: string;
-      recoverable?: boolean;
+      stage: 'renderer'
+      nodeType?: string
+      component?: string
+      recoverable?: boolean
     })
   | (ProtoErrorBase & {
-      stage: 'editor';
-      source?: 'monaco' | 'runtime';
-    });
+      stage: 'editor'
+      source?: 'monaco' | 'runtime'
+    })
 
 export const ERROR_CODES = {
   LEX_INVALID_TOKEN: 'PT-LEX-1001',
@@ -70,13 +70,13 @@ export const ERROR_CODES = {
   REND_COMPONENT_ERROR: 'PT-REND-3004',
   EDIT_FATAL_ERROR: 'PT-EDIT-4001',
   EDIT_MONACO_ERROR: 'PT-EDIT-4002',
-} as const;
+} as const
 
 export function isMoreSevere(a: Severity, b: Severity): boolean {
-  return SEVERITY_RANK[a] > SEVERITY_RANK[b];
+  return SEVERITY_RANK[a] > SEVERITY_RANK[b]
 }
 
 export function sanitizeErrorMessage(error: unknown, maxLength = 80): string {
-  const rawMsg = error instanceof Error ? error.message : String(error);
-  return rawMsg.split('\n')[0].slice(0, maxLength);
+  const rawMsg = error instanceof Error ? error.message : String(error)
+  return rawMsg.split('\n')[0].slice(0, maxLength)
 }

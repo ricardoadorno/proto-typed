@@ -1,13 +1,13 @@
-import { ExampleCategory } from '../types';
+import { ExampleCategory } from '../types'
 
 /**
  * Layout component examples showcasing grid, flexbox, cards, and list layouts
  */
 export const layoutExamples: ExampleCategory = {
-  title: "Layout Elements",
+  title: 'Layout Elements',
   examples: [
     {
-      name: "Grid Layout",
+      name: 'Grid Layout',
       code: `screen GridExample:
   row:
     col:
@@ -16,20 +16,22 @@ export const layoutExamples: ExampleCategory = {
     col:
       # Second Column
       > Content in second column`,
-      description: "Create responsive layouts with rows and columns for grid-based designs"
+      description:
+        'Create responsive layouts with rows and columns for grid-based designs',
     },
     {
-      name: "Card Container",
+      name: 'Card Container',
       code: `screen CardExample:
   card:
     # Card Title
     > Card content goes here with multiple lines
     > More content in the same card
     @[Action Button](action)`,
-      description: "Group related content in a container with header and actions"
+      description:
+        'Group related content in a container with header and actions',
     },
     {
-      name: "Simple List",
+      name: 'Simple List',
       code: `screen SimpleListExample:
   list:
     - User Profile
@@ -37,10 +39,10 @@ export const layoutExamples: ExampleCategory = {
     - Project Update
     - Settings
     - Help Center`,
-      description: "Create simple lists with basic text items"
+      description: 'Create simple lists with basic text items',
     },
     {
-      name: "Advanced Interactive List",
+      name: 'Advanced Interactive List',
       code: `screen AdvancedListExample:
   list:
     - [User](user-profile)John Doe{Software Engineer}@+[Edit](edit)@-[View](view)
@@ -48,10 +50,11 @@ export const layoutExamples: ExampleCategory = {
     - [Project](project-page)Bug Report{Fix login validation}@_[Assign](assign)@+[Comment](comment)
     - Simple text item
     - [Settings](settings)Account Settings{Update preferences}@-[Change](change)`,
-      description: "Create rich interactive list items with links, subtitles, and action buttons with variants"
+      description:
+        'Create rich interactive list items with links, subtitles, and action buttons with variants',
     },
     {
-      name: "Content Separators",
+      name: 'Content Separators',
       code: `screen SeparatorExample:
   # First Section
   > Content above separator
@@ -61,10 +64,10 @@ export const layoutExamples: ExampleCategory = {
   --
   # Third Section
   > Content with empty space above`,
-      description: "Use separators (---) for visual breaks"
+      description: 'Use separators (---) for visual breaks',
     },
     {
-      name: "Nested Layout",
+      name: 'Nested Layout',
       code: `screen NestedLayoutExample:
   card:
     # Main Container
@@ -81,9 +84,10 @@ export const layoutExamples: ExampleCategory = {
           ### Metrics
           > Key performance indicators
           @[View Details](details)`,
-      description: "Combine multiple layout elements for complex nested structures"
-    }
-  ]
-};
+      description:
+        'Combine multiple layout elements for complex nested structures',
+    },
+  ],
+}
 
-export default layoutExamples;
+export default layoutExamples

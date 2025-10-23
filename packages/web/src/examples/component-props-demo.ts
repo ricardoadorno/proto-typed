@@ -55,6 +55,6 @@ screen ComponentPropsDemo:
   
   $ContactItem: Ricardo Adorno | (11) 55555-5555 | ricardo@email.com
   $ProductItem: Apple Watch | 2499 | Smart watch with health features | apple-watch
-`;
+`
 
-export default componentPropsDemo;
+export default componentPropsDemo

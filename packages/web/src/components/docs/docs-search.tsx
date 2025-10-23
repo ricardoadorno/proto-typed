@@ -1,8 +1,8 @@
-"use client"
+'use client'
 
-import { useCallback, useEffect, useMemo, useState } from "react"
-import { useRouter } from "next/navigation"
-import { CommandIcon, Search } from "lucide-react"
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { CommandIcon, Search } from 'lucide-react'
 
 import {
   Badge,
@@ -14,9 +14,8 @@ import {
   CommandList,
   CommandSeparator,
   CommandShortcut,
-} from "@/components/ui"
-import { DocItem, DocSection } from "@/utils/toc"
-
+} from '@/components/ui'
+import { DocItem, DocSection } from '@/utils/toc'
 
 interface DocsSearchProps {
   sections: DocSection[]
@@ -38,14 +37,14 @@ export function DocsSearch({ sections }: DocsSearchProps) {
   const handleOpen = useCallback(() => setOpen(true), [])
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         event.preventDefault()
         setOpen((value) => !value)
       }
     }
 
-    window.addEventListener("keydown", handler)
-    return () => window.removeEventListener("keydown", handler)
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
   }, [])
 
   const handleSelect = (doc: DocItem) => {
@@ -69,7 +68,11 @@ export function DocsSearch({ sections }: DocsSearchProps) {
       <Button variant="ghost" onClick={handleOpen} className="p-2 md:hidden">
         <Search className="h-5 w-5 text-[var(--fg-secondary)]" />
       </Button>
-      <CommandDialog open={open} onOpenChange={setOpen} searchPlaceholder="Buscar na documentação">
+      <CommandDialog
+        open={open}
+        onOpenChange={setOpen}
+        searchPlaceholder="Buscar na documentação"
+      >
         <CommandList>
           <CommandEmpty>Nenhum resultado.</CommandEmpty>
           {items.map((group) => (

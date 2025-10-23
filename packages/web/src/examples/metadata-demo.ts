@@ -47,6 +47,6 @@ screen About:
   # About
   > This is a demo application showing route metadata functionality
   @[Back to Home](Home)
-`;
+`
 
-export default metadataDemo;
+export default metadataDemo

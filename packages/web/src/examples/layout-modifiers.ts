@@ -140,4 +140,4 @@ export const layoutModifiersExample = `screen LayoutModifiers:
     # Special Layouts
     > header: sticky top-0 border-b px-4 py-3
     > sidebar: h-full border-r p-4
-`;
+`

@@ -1,22 +1,22 @@
 /**
  * Monaco Editor Integration for proto-typed DSL
- * 
+ *
  * This module provides the complete Monaco Editor setup for the DSL:
  * - Language registration (syntax, tokenization)
  * - Theme configuration (dark mode)
  * - Completion provider (IntelliSense)
  * - Editor options (optimized for DSL editing)
- * 
+ *
  * Main exports:
  * - DSLEditor: React component for the editor
  * - useMonacoDSL: Hook for Monaco initialization
  * - initializeMonacoDSL: Setup function for Monaco features
  * - getDSLEditorOptions: Default editor configuration
- * 
+ *
  * Usage:
  * ```tsx
  * import { DSLEditor } from '@/core/editor';
- * 
+ *
  *  * @example
  * ```tsx
  * <DSLEditor value={code} onChange={setCode} />
@@ -24,58 +24,61 @@
  * ```
  */
 
-import { EditorProps, Monaco } from '@monaco-editor/react';
-import { registerDSLCompletionProvider } from './completion/dsl-completion';
-import { registerDSLLanguage } from './language/dsl-language';
-import { registerDSLTheme } from './theme/dsl-theme';
+import { EditorProps, Monaco } from '@monaco-editor/react'
+import { registerDSLCompletionProvider } from './completion/dsl-completion'
+import { registerDSLLanguage } from './language/dsl-language'
+import { registerDSLTheme } from './theme/dsl-theme'
 
 // Re-export components and hooks
-export { DSLEditor } from './components/dsl-editor';
-export { useMonacoDSL } from './hooks/use-monaco-dsl';
+export { DSLEditor } from './components/dsl-editor'
+export { useMonacoDSL } from './hooks/use-monaco-dsl'
 
 /**
  * Initialize Monaco DSL language and features
- * 
+ *
  * This function should be called once when Monaco is loaded.
  * It registers the DSL language, theme, and completion provider.
- * 
+ *
  * @param monaco - Monaco instance from @monaco-editor/react
  */
 export function initializeMonacoDSL(monaco: Monaco) {
-  registerDSLLanguage(monaco);
-  registerDSLTheme(monaco);
-  registerDSLCompletionProvider(monaco);
+  registerDSLLanguage(monaco)
+  registerDSLTheme(monaco)
+  registerDSLCompletionProvider(monaco)
 }
 
 /**
  * Get optimized Monaco editor options for DSL editing
- * 
+ *
  * Returns configuration object with:
  * - Monospace font optimized for code
  * - Disabled minimap for cleaner UI
  * - Word wrap enabled for long lines
  * - Enhanced suggestions (IntelliSense)
  * - Auto-indentation and formatting
- * 
+ *
  * @returns Monaco editor options object
  */
-export function getDSLEditorOptions(props: Partial<EditorProps['options']> = {}) {
+export function getDSLEditorOptions(
+  props: Partial<EditorProps['options']> = {}
+) {
   return {
     fixedOverflowWidgets: true,
     fontSize: 14,
     minimap: { enabled: false },
-    wordWrap: "on" as const,
-    wrappingIndent: "same" as const,
-    lineNumbers: "on" as const,
+    wordWrap: 'on' as const,
+    wrappingIndent: 'same' as const,
+    lineNumbers: 'on' as const,
     padding: { top: 16, bottom: 16 },
-    fontFamily: "'JetBrains Mono', 'Fira Code', Monaco, 'Cascadia Code', monospace",
+    fontFamily:
+      "'JetBrains Mono', 'Fira Code', Monaco, 'Cascadia Code', monospace",
     lineHeight: 1.6,
-    cursorBlinking: "smooth" as const,
+    cursorBlinking: 'smooth' as const,
     smoothScrolling: true,
     contextmenu: true,
     scrollBeyondLastLine: false,
     bracketPairColorization: { enabled: true },
-    autoIndent: "full" as const,
+    autoIndent: 'full' as const,
     formatOnPaste: true,
     formatOnType: true,
     // CRITICAL: Enable glyph margin for error markers icons
@@ -119,5 +122,5 @@ export function getDSLEditorOptions(props: Partial<EditorProps['options']> = {})
       showIssues: true,
     },
     ...props,
-  };
+  }
 }

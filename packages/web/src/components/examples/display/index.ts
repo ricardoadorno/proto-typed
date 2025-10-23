@@ -1,13 +1,13 @@
-import { ExampleCategory } from '../types';
+import { ExampleCategory } from '../types'
 
 /**
  * Display component examples covering typography, progress indicators, badges, and data visualization
  */
 export const displayExamples: ExampleCategory = {
-  title: "Display Elements",
+  title: 'Display Elements',
   examples: [
     {
-      name: "Typography Hierarchy",
+      name: 'Typography Hierarchy',
       code: `screen TypographyExample:
   # Main Heading (H1)
   ## Section Heading (H2)
@@ -22,10 +22,11 @@ export const displayExamples: ExampleCategory = {
   
   > Multiple paragraphs can be used to create
   > structured content with proper spacing`,
-      description: "Display text hierarchy from H1-H6 headings plus paragraph, note, and quote styles"
+      description:
+        'Display text hierarchy from H1-H6 headings plus paragraph, note, and quote styles',
     },
     {
-      name: "Ordered Lists",
+      name: 'Ordered Lists',
       code: `screen OrderedListExample:
   # Setup Instructions
   1. Download the application
@@ -40,10 +41,11 @@ export const displayExamples: ExampleCategory = {
   2. Verify network connection
   3. Clear browser cache
   4. Restart the application`,
-      description: "Create numbered lists for step-by-step instructions and procedures"
+      description:
+        'Create numbered lists for step-by-step instructions and procedures',
     },
     {
-      name: "Unordered Lists",
+      name: 'Unordered Lists',
       code: `screen UnorderedListExample:
   # Features
   - Real-time collaboration
@@ -57,9 +59,11 @@ export const displayExamples: ExampleCategory = {
   - YAML data structures
   - Markdown documentation
   - CSV data imports`,
-      description: "Create bullet point lists for features, benefits, and general information"
-    },    {
-      name: "Data Dashboard",
+      description:
+        'Create bullet point lists for features, benefits, and general information',
+    },
+    {
+      name: 'Data Dashboard',
       code: `screen DataDashboardExample:
   # System Status
   ## Server Performance
@@ -86,9 +90,10 @@ export const displayExamples: ExampleCategory = {
   - Memory Usage: 62%
   - Disk Space: 78% used
   - Active Users: 1,247`,
-      description: "Combine headings, text, and lists to create informative data displays"
-    }
-  ]
-};
+      description:
+        'Combine headings, text, and lists to create informative data displays',
+    },
+  ],
+}
 
-export default displayExamples;
+export default displayExamples

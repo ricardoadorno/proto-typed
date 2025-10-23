@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { X } from "lucide-react"
+import * as React from 'react'
+import * as DialogPrimitive from '@radix-ui/react-dialog'
+import { X } from 'lucide-react'
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 
 const Dialog = DialogPrimitive.Root
 
@@ -26,7 +26,7 @@ const DialogOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
-    className={cn("fixed inset-0 z-50 bg-black/70 backdrop-blur-sm", className)}
+    className={cn('fixed inset-0 z-50 bg-black/70 backdrop-blur-sm', className)}
     {...props}
   />
 ))
@@ -47,7 +47,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-surface)] p-6 text-[var(--fg-primary)] shadow-[0_24px_60px_rgba(0,0,0,0.45)]",
+        'fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 rounded-2xl border border-[var(--border-muted)] bg-[var(--bg-surface)] p-6 text-[var(--fg-primary)] shadow-[0_24px_60px_rgba(0,0,0,0.45)]',
         className
       )}
       {...props}
@@ -68,10 +68,19 @@ DialogContent.displayName = DialogPrimitive.Content.displayName
  * @param {React.HTMLAttributes<HTMLDivElement>} props - The props for the component.
  * @returns {React.ReactElement} The rendered dialog header.
  */
-const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("flex flex-col space-y-1 text-center sm:text-left", className)} {...props} />
+const DialogHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      'flex flex-col space-y-1 text-center sm:text-left',
+      className
+    )}
+    {...props}
+  />
 )
-DialogHeader.displayName = "DialogHeader"
+DialogHeader.displayName = 'DialogHeader'
 
 /**
  * @function DialogFooter
@@ -79,10 +88,19 @@ DialogHeader.displayName = "DialogHeader"
  * @param {React.HTMLAttributes<HTMLDivElement>} props - The props for the component.
  * @returns {React.ReactElement} The rendered dialog footer.
  */
-const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:space-x-2", className)} {...props} />
+const DialogFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      'flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:space-x-2',
+      className
+    )}
+    {...props}
+  />
 )
-DialogFooter.displayName = "DialogFooter"
+DialogFooter.displayName = 'DialogFooter'
 
 /**
  * @function DialogTitle
@@ -96,7 +114,10 @@ const DialogTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
-    className={cn("text-lg font-semibold leading-none tracking-tight", className)}
+    className={cn(
+      'text-lg font-semibold leading-none tracking-tight',
+      className
+    )}
     {...props}
   />
 ))
@@ -114,7 +135,7 @@ const DialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}
-    className={cn("text-sm text-[var(--fg-secondary)]", className)}
+    className={cn('text-sm text-[var(--fg-secondary)]', className)}
     {...props}
   />
 ))

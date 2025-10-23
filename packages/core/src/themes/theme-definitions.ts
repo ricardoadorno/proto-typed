@@ -5,50 +5,50 @@
 
 export interface ThemeColors {
   // Core colors
-  background: string;
-  foreground: string;
-  card: string;
-  cardForeground: string;
-  popover: string;
-  popoverForeground: string;
-  
+  background: string
+  foreground: string
+  card: string
+  cardForeground: string
+  popover: string
+  popoverForeground: string
+
   // Primary colors
-  primary: string;
-  primaryForeground: string;
-  
+  primary: string
+  primaryForeground: string
+
   // Secondary colors
-  secondary: string;
-  secondaryForeground: string;
-  
+  secondary: string
+  secondaryForeground: string
+
   // Muted colors
-  muted: string;
-  mutedForeground: string;
-  
+  muted: string
+  mutedForeground: string
+
   // Accent colors
-  accent: string;
-  accentForeground: string;
-  
+  accent: string
+  accentForeground: string
+
   // Destructive colors
-  destructive: string;
-  destructiveForeground: string;
-  
+  destructive: string
+  destructiveForeground: string
+
   // UI elements
-  border: string;
-  input: string;
-  ring: string;
-  
+  border: string
+  input: string
+  ring: string
+
   // Chart colors
-  chart1: string;
-  chart2: string;
-  chart3: string;
-  chart4: string;
-  chart5: string;
+  chart1: string
+  chart2: string
+  chart3: string
+  chart4: string
+  chart5: string
 }
 
 export interface Theme {
-  name: string;
-  light: ThemeColors;
-  dark: ThemeColors;
+  name: string
+  light: ThemeColors
+  dark: ThemeColors
 }
 
 // Default theme (Neutral)
@@ -78,7 +78,7 @@ export const neutralTheme: Theme = {
     chart2: 'oklch(0.6 0.118 184.704)',
     chart3: 'oklch(0.398 0.07 227.392)',
     chart4: 'oklch(0.828 0.189 84.429)',
-    chart5: 'oklch(0.769 0.188 70.08)'
+    chart5: 'oklch(0.769 0.188 70.08)',
   },
   dark: {
     background: 'oklch(0.145 0 0)',
@@ -104,9 +104,9 @@ export const neutralTheme: Theme = {
     chart2: 'oklch(0.696 0.17 162.48)',
     chart3: 'oklch(0.769 0.188 70.08)',
     chart4: 'oklch(0.627 0.265 303.9)',
-    chart5: 'oklch(0.645 0.246 16.439)'
-  }
-};
+    chart5: 'oklch(0.645 0.246 16.439)',
+  },
+}
 
 // Stone theme
 export const stoneTheme: Theme = {
@@ -135,7 +135,7 @@ export const stoneTheme: Theme = {
     chart2: 'oklch(0.6 0.118 184.704)',
     chart3: 'oklch(0.398 0.07 227.392)',
     chart4: 'oklch(0.828 0.189 84.429)',
-    chart5: 'oklch(0.769 0.188 70.08)'
+    chart5: 'oklch(0.769 0.188 70.08)',
   },
   dark: {
     background: 'oklch(0.147 0.004 49.25)',
@@ -161,9 +161,9 @@ export const stoneTheme: Theme = {
     chart2: 'oklch(0.696 0.17 162.48)',
     chart3: 'oklch(0.769 0.188 70.08)',
     chart4: 'oklch(0.627 0.265 303.9)',
-    chart5: 'oklch(0.645 0.246 16.439)'
-  }
-};
+    chart5: 'oklch(0.645 0.246 16.439)',
+  },
+}
 
 // Zinc theme
 export const zincTheme: Theme = {
@@ -192,7 +192,7 @@ export const zincTheme: Theme = {
     chart2: 'oklch(0.6 0.118 184.704)',
     chart3: 'oklch(0.398 0.07 227.392)',
     chart4: 'oklch(0.828 0.189 84.429)',
-    chart5: 'oklch(0.769 0.188 70.08)'
+    chart5: 'oklch(0.769 0.188 70.08)',
   },
   dark: {
     background: 'oklch(0.141 0.005 285.823)',
@@ -218,9 +218,9 @@ export const zincTheme: Theme = {
     chart2: 'oklch(0.696 0.17 162.48)',
     chart3: 'oklch(0.769 0.188 70.08)',
     chart4: 'oklch(0.627 0.265 303.9)',
-    chart5: 'oklch(0.645 0.246 16.439)'
-  }
-};
+    chart5: 'oklch(0.645 0.246 16.439)',
+  },
+}
 
 // Gray theme
 export const grayTheme: Theme = {
@@ -249,7 +249,7 @@ export const grayTheme: Theme = {
     chart2: 'oklch(0.6 0.118 184.704)',
     chart3: 'oklch(0.398 0.07 227.392)',
     chart4: 'oklch(0.828 0.189 84.429)',
-    chart5: 'oklch(0.769 0.188 70.08)'
+    chart5: 'oklch(0.769 0.188 70.08)',
   },
   dark: {
     background: 'oklch(0.13 0.028 261.692)',
@@ -275,9 +275,9 @@ export const grayTheme: Theme = {
     chart2: 'oklch(0.696 0.17 162.48)',
     chart3: 'oklch(0.769 0.188 70.08)',
     chart4: 'oklch(0.627 0.265 303.9)',
-    chart5: 'oklch(0.645 0.246 16.439)'
-  }
-};
+    chart5: 'oklch(0.645 0.246 16.439)',
+  },
+}
 
 // Slate theme
 export const slateTheme: Theme = {
@@ -306,7 +306,7 @@ export const slateTheme: Theme = {
     chart2: 'oklch(0.6 0.118 184.704)',
     chart3: 'oklch(0.398 0.07 227.392)',
     chart4: 'oklch(0.828 0.189 84.429)',
-    chart5: 'oklch(0.769 0.188 70.08)'
+    chart5: 'oklch(0.769 0.188 70.08)',
   },
   dark: {
     background: 'oklch(0.129 0.042 264.695)',
@@ -332,9 +332,9 @@ export const slateTheme: Theme = {
     chart2: 'oklch(0.696 0.17 162.48)',
     chart3: 'oklch(0.769 0.188 70.08)',
     chart4: 'oklch(0.627 0.265 303.9)',
-    chart5: 'oklch(0.645 0.246 16.439)'
-  }
-};
+    chart5: 'oklch(0.645 0.246 16.439)',
+  },
+}
 
 // Export all themes
 export const availableThemes = {
@@ -342,15 +342,18 @@ export const availableThemes = {
   stone: stoneTheme,
   zinc: zincTheme,
   gray: grayTheme,
-  slate: slateTheme
-};
+  slate: slateTheme,
+}
 
 /**
  * Generate CSS variables for a theme
  */
-export function generateThemeCssVariables(theme: Theme, isDark: boolean = true): string {
-  const colors = isDark ? theme.dark : theme.light;
-  
+export function generateThemeCssVariables(
+  theme: Theme,
+  isDark: boolean = true
+): string {
+  const colors = isDark ? theme.dark : theme.light
+
   return `
     --background: ${colors.background};
     --foreground: ${colors.foreground};
@@ -377,12 +380,14 @@ export function generateThemeCssVariables(theme: Theme, isDark: boolean = true):
     --chart-4: ${colors.chart4};
     --chart-5: ${colors.chart5};
     --radius: 0.5rem;
-  `.trim();
+  `.trim()
 }
 
 /**
  * Get theme by name with fallback to neutral
  */
 export function getThemeByName(themeName: string): Theme {
-  return availableThemes[themeName as keyof typeof availableThemes] || neutralTheme;
+  return (
+    availableThemes[themeName as keyof typeof availableThemes] || neutralTheme
+  )
 }

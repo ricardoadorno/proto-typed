@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { X } from "lucide-react"
+import * as React from 'react'
+import * as DialogPrimitive from '@radix-ui/react-dialog'
+import { X } from 'lucide-react'
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 
 const Sheet = DialogPrimitive.Root
 
@@ -26,20 +26,17 @@ const SheetOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
-    className={cn(
-      "fixed inset-0 z-50 bg-black/70 backdrop-blur-sm",
-      className
-    )}
+    className={cn('fixed inset-0 z-50 bg-black/70 backdrop-blur-sm', className)}
     {...props}
   />
 ))
 SheetOverlay.displayName = DialogPrimitive.Overlay.displayName
 
 const sheetVariants = {
-  top: "inset-x-0 top-0 border-b",
-  bottom: "inset-x-0 bottom-0 border-t",
-  left: "inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm",
-  right: "inset-y-0 right-0 h-full w-[85%] border-l sm:w-[400px]",
+  top: 'inset-x-0 top-0 border-b',
+  bottom: 'inset-x-0 bottom-0 border-t',
+  left: 'inset-y-0 left-0 h-full w-3/4 border-r sm:max-w-sm',
+  right: 'inset-y-0 right-0 h-full w-[85%] border-l sm:w-[400px]',
 }
 
 type SheetVariants = keyof typeof sheetVariants
@@ -55,13 +52,13 @@ const SheetContent = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
     side?: SheetVariants
   }
->(({ side = "right", className, children, ...props }, ref) => (
+>(({ side = 'right', className, children, ...props }, ref) => (
   <SheetPortal>
     <SheetOverlay />
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed z-50 flex flex-col bg-[var(--bg-surface)] text-[var(--fg-primary)] shadow-xl transition-transform duration-200 ease-out",
+        'fixed z-50 flex flex-col bg-[var(--bg-surface)] text-[var(--fg-primary)] shadow-xl transition-transform duration-200 ease-out',
         sheetVariants[side],
         className
       )}
@@ -83,8 +80,14 @@ SheetContent.displayName = DialogPrimitive.Content.displayName
  * @param {React.HTMLAttributes<HTMLDivElement>} props - The props for the component.
  * @returns {React.ReactElement} The rendered sheet header.
  */
-const SheetHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn("grid gap-2 text-center sm:text-left", className)} {...props} />
+const SheetHeader = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn('grid gap-2 text-center sm:text-left', className)}
+    {...props}
+  />
 )
 
 /**
@@ -93,9 +96,15 @@ const SheetHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
  * @param {React.HTMLAttributes<HTMLDivElement>} props - The props for the component.
  * @returns {React.ReactElement} The rendered sheet footer.
  */
-const SheetFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
+const SheetFooter = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:space-x-2", className)}
+    className={cn(
+      'flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:space-x-2',
+      className
+    )}
     {...props}
   />
 )
@@ -112,7 +121,7 @@ const SheetTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
-    className={cn("text-lg font-semibold text-[var(--fg-primary)]", className)}
+    className={cn('text-lg font-semibold text-[var(--fg-primary)]', className)}
     {...props}
   />
 ))
@@ -130,7 +139,7 @@ const SheetDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Description
     ref={ref}
-    className={cn("text-sm text-[var(--fg-secondary)]", className)}
+    className={cn('text-sm text-[var(--fg-secondary)]', className)}
     {...props}
   />
 ))

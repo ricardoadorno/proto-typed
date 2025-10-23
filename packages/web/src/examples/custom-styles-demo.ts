@@ -1,6 +1,6 @@
 /**
  * Custom Styles Demo - Showcasing theme system and custom CSS variables
- * This example demonstrates how to use the new styles: global token 
+ * This example demonstrates how to use the new styles: global token
  * to configure themes and custom styling variables.
  */
 
@@ -57,6 +57,6 @@ screen StoneTheme:
   
   container-narrow:
     @primary[Switch to Stone]
-    > The stone theme incorporates subtle warm undertones for a more organic feel.`;
+    > The stone theme incorporates subtle warm undertones for a more organic feel.`
 
-export default customStylesDemo;
+export default customStylesDemo

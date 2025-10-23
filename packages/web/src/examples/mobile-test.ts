@@ -24,4 +24,4 @@ screen TestMobile:
     - Search | 🔍 | TestMobile
     - Messages | 💬 | TestMobile
     - Profile | 👤 | TestMobile
-`;
+`

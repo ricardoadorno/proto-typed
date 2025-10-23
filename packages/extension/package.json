@@ -17,47 +17,69 @@
   ],
   "main": "./dist/extension.js",
   "contributes": {
-    "languages": [{
-      "id": "proto-typed",
-      "aliases": ["Proto-Typed", "proto-typed"],
-      "extensions": [".pty"],
-      "configuration": "./language-configuration.json",
-      "icon": {
-        "light": "./logo.svg",
-        "dark": "./logo.svg"
+    "languages": [
+      {
+        "id": "proto-typed",
+        "aliases": [
+          "Proto-Typed",
+          "proto-typed"
+        ],
+        "extensions": [
+          ".pty"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./logo.svg",
+          "dark": "./logo.svg"
+        }
       }
-    }],
-    "grammars": [{
-      "language": "proto-typed",
-      "scopeName": "source.pty",
-      "path": "./syntaxes/proto-typed.tmLanguage.json"
-    }],
-    "snippets": [{
-      "language": "proto-typed",
-      "path": "./snippets/snippets.json"
-    }],
-    "commands": [{
-      "command": "proto-typed.showPreview",
-      "title": "Open Preview to the Side",
-      "category": "Proto-Typed",
-      "icon": "./logo.svg"
-    }],
+    ],
+    "grammars": [
+      {
+        "language": "proto-typed",
+        "scopeName": "source.pty",
+        "path": "./syntaxes/proto-typed.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "proto-typed",
+        "path": "./snippets/snippets.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "proto-typed.showPreview",
+        "title": "Open Preview to the Side",
+        "category": "Proto-Typed",
+        "icon": "./logo.svg"
+      }
+    ],
     "menus": {
-      "editor/title": [{
-        "command": "proto-typed.showPreview",
-        "when": "editorLangId == proto-typed",
-        "group": "navigation"
-      }],
-      "commandPalette": [{
-        "command": "proto-typed.showPreview",
-        "when": "editorLangId == proto-typed"
-      }]
+      "editor/title": [
+        {
+          "command": "proto-typed.showPreview",
+          "when": "editorLangId == proto-typed",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "proto-typed.showPreview",
+          "when": "editorLangId == proto-typed"
+        }
+      ]
     }
   },
   "scripts": {
     "vscode:prepublish": "pnpm run compile",
     "compile": "cd ../core && pnpm run build && cd ../extension && tsc -p ./",
-    "watch": "tsc -watch -p ./"
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@proto-typed/core": "workspace:*"

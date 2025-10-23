@@ -45,5 +45,4 @@ screen ForgotPassword:
       @link[Back to Login](-1)
 `
 
-
-export default login;
+export default login

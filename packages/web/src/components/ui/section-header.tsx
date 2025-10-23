@@ -1,29 +1,29 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react'
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
 
 export interface SectionHeaderProps {
-  eyebrow?: ReactNode;
-  title: ReactNode;
-  description?: ReactNode;
-  align?: "left" | "center";
-  className?: string;
-  actions?: ReactNode;
+  eyebrow?: ReactNode
+  title: ReactNode
+  description?: ReactNode
+  align?: 'left' | 'center'
+  className?: string
+  actions?: ReactNode
 }
 
 export function SectionHeader({
   eyebrow,
   title,
   description,
-  align = "left",
+  align = 'left',
   className,
   actions,
 }: SectionHeaderProps) {
   return (
     <div
       className={cn(
-        "flex flex-col gap-4",
-        align === "center" && "items-center text-center",
+        'flex flex-col gap-4',
+        align === 'center' && 'items-center text-center',
         className
       )}
     >
@@ -32,7 +32,7 @@ export function SectionHeader({
           {eyebrow}
         </span>
       ) : null}
-      <div className={cn("space-y-4", align === "center" && "max-w-2xl")}>
+      <div className={cn('space-y-4', align === 'center' && 'max-w-2xl')}>
         <h2 className="text-balance text-3xl font-semibold tracking-tight text-[var(--fg-primary)] sm:text-4xl">
           {title}
         </h2>
@@ -45,15 +45,15 @@ export function SectionHeader({
       {actions ? (
         <div
           className={cn(
-            "mt-2 flex flex-wrap gap-3",
-            align === "center" && "justify-center"
+            'mt-2 flex flex-wrap gap-3',
+            align === 'center' && 'justify-center'
           )}
         >
           {actions}
         </div>
       ) : null}
     </div>
-  );
+  )
 }
 
-export default SectionHeader;
+export default SectionHeader

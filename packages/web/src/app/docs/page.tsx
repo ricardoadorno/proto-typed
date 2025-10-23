@@ -1,5 +1,10 @@
-import Link from "next/link"
-import { ArrowRightIcon, CompassIcon, SparklesIcon, Wand2Icon } from "lucide-react"
+import Link from 'next/link'
+import {
+  ArrowRightIcon,
+  CompassIcon,
+  SparklesIcon,
+  Wand2Icon,
+} from 'lucide-react'
 
 import {
   Badge,
@@ -10,17 +15,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-  Separator,
-} from "@/components/ui"
-import docSections from "@/utils/toc"
-import { withAssetPath } from "@/utils/base-path"
+} from '@/components/ui'
+import docSections from '@/utils/toc'
+import { withAssetPath } from '@/utils/base-path'
 
 const primaryDoc = docSections[0]?.items[0]
 
 const highlightItems = [
-  "Fluxo passo a passo para sair da ideia ao protótipo clicável.",
-  "Playgrounds integrados e blocos de código com copy instantâneo.",
-  "Guia de tokens, layouts e padrões visuais do proto-typed.",
+  'Fluxo passo a passo para sair da ideia ao protótipo clicável.',
+  'Playgrounds integrados e blocos de código com copy instantâneo.',
+  'Guia de tokens, layouts e padrões visuais do proto-typed.',
 ]
 
 export default function DocsHomePage() {
@@ -36,7 +40,7 @@ export default function DocsHomePage() {
           <div className="relative z-10 grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_320px] lg:items-start">
             <div className="space-y-6">
               <img
-                src={withAssetPath("/logo.svg")}
+                src={withAssetPath('/logo.svg')}
                 alt="Proto-typed"
                 className="h-80 w-auto absolute -z-10 left-10 bottom-15 opacity-15"
               />
@@ -47,16 +51,18 @@ export default function DocsHomePage() {
                 Proto-typed · Docs
               </Badge>
               <h1 className="text-4xl font-bold leading-[2.75rem] text-[var(--fg-primary)] sm:text-5xl sm:leading-[3.25rem]">
-                Documentação enxuta para prototipar rápido no universo proto-typed
+                Documentação enxuta para prototipar rápido no universo
+                proto-typed
               </h1>
               <p className="text-lg leading-relaxed text-[var(--fg-secondary)]">
-                Aprenda a usar a DSL, componentes e tokens oficiais para construir experiências navegáveis em minutos.
-                Tudo pensado para um fluxo coeso entre design e desenvolvimento.
+                Aprenda a usar a DSL, componentes e tokens oficiais para
+                construir experiências navegáveis em minutos. Tudo pensado para
+                um fluxo coeso entre design e desenvolvimento.
               </p>
               <div className="flex flex-wrap gap-3 pt-2">
                 {primaryDoc ? (
                   <Button asChild size="lg" className="gap-2">
-                    <Link href={(`/docs/${primaryDoc.slug}`)}>
+                    <Link href={`/docs/${primaryDoc.slug}`}>
                       <SparklesIcon className="h-5 w-5" />
                       Começar agora
                     </Link>
@@ -68,7 +74,7 @@ export default function DocsHomePage() {
                   size="lg"
                   className="gap-2 border-[var(--border-muted)] text-[var(--fg-secondary)] hover:text-[var(--accent-light)]"
                 >
-                  <Link href={("/playground")}>
+                  <Link href={'/playground'}>
                     <CompassIcon className="h-5 w-5" />
                     Ir para o playground
                   </Link>
@@ -84,7 +90,8 @@ export default function DocsHomePage() {
                     Destaques
                   </CardTitle>
                   <CardDescription>
-                    Os pontos essenciais para dominar o proto-typed do zero ao avançado.
+                    Os pontos essenciais para dominar o proto-typed do zero ao
+                    avançado.
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm text-[var(--fg-secondary)]">
@@ -122,10 +129,13 @@ export default function DocsHomePage() {
         <section className="space-y-6">
           <div className="flex flex-col gap-2 text-balance sm:flex-row sm:items-end sm:justify-between">
             <div className="space-y-2">
-              <h2 className="text-2xl font-semibold text-[var(--fg-primary)]">Explorar por capítulos</h2>
+              <h2 className="text-2xl font-semibold text-[var(--fg-primary)]">
+                Explorar por capítulos
+              </h2>
               <p className="max-w-xl text-sm text-[var(--fg-secondary)]">
-                A documentação é organizada em capítulos temáticos. Avance conforme a sua necessidade, sem perder o
-                contexto do fluxo completo.
+                A documentação é organizada em capítulos temáticos. Avance
+                conforme a sua necessidade, sem perder o contexto do fluxo
+                completo.
               </p>
             </div>
           </div>
@@ -136,16 +146,19 @@ export default function DocsHomePage() {
                 className="flex h-full flex-col justify-between border border-[var(--border-muted)] bg-[var(--bg-surface)]/90 transition-transform duration-200 hover:-translate-y-1 hover:border-[var(--brand-400)] hover:bg-[var(--bg-surface)]"
               >
                 <CardHeader className="pb-4">
-                  <CardTitle className="text-xl text-[var(--fg-primary)]">{section.title}</CardTitle>
+                  <CardTitle className="text-xl text-[var(--fg-primary)]">
+                    {section.title}
+                  </CardTitle>
                   <CardDescription>
-                    {section.items.length} tópico{section.items.length > 1 ? "s" : ""}
+                    {section.items.length} tópico
+                    {section.items.length > 1 ? 's' : ''}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-2">
                   {section.items.slice(0, 4).map((item) => (
                     <Link
                       key={item.slug}
-                      href={(`/docs/${item.slug}`)}
+                      href={`/docs/${item.slug}`}
                       className="group flex items-center justify-between gap-3 rounded-lg border border-transparent px-3 py-2 text-sm text-[var(--fg-secondary)] transition-colors hover:border-[var(--brand-400)] hover:bg-[color:rgba(139,92,246,0.08)] hover:text-[var(--accent-light)]"
                     >
                       <span>{item.title}</span>
@@ -155,8 +168,12 @@ export default function DocsHomePage() {
                 </CardContent>
                 <CardFooter className="pt-0">
                   {section.items[0] ? (
-                    <Button asChild variant="ghost" className="gap-2 text-[var(--accent-light)]">
-                      <Link href={(`/docs/${section.items[0].slug}`)}>
+                    <Button
+                      asChild
+                      variant="ghost"
+                      className="gap-2 text-[var(--accent-light)]"
+                    >
+                      <Link href={`/docs/${section.items[0].slug}`}>
                         Abrir primeiro tópico
                         <ArrowRightIcon className="h-4 w-4" />
                       </Link>
@@ -167,8 +184,6 @@ export default function DocsHomePage() {
             ))}
           </div>
         </section>
-
-
       </main>
     </div>
   )

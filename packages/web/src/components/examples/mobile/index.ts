@@ -1,13 +1,13 @@
-import { ExampleCategory } from '../types';
+import { ExampleCategory } from '../types'
 
 /**
  * Mobile-specific component examples including headers, navigation, drawers, and FABs
  */
 export const mobileExamples: ExampleCategory = {
-  title: "Mobile Components",
+  title: 'Mobile Components',
   examples: [
     {
-      name: "App Header",
+      name: 'App Header',
       code: `screen HeaderExample:
   header:
     # My Application
@@ -17,10 +17,11 @@ export const mobileExamples: ExampleCategory = {
   # Main Content
   > Your app content goes here
   > Header will remain fixed at the top`,
-      description: "Create a fixed header with title and action buttons for mobile apps"
+      description:
+        'Create a fixed header with title and action buttons for mobile apps',
     },
     {
-      name: "Bottom Navigation",
+      name: 'Bottom Navigation',
       code: `screen NavigatorExample:
   # Main Content Area
   > App content and main interface
@@ -31,10 +32,11 @@ export const mobileExamples: ExampleCategory = {
     - [Messages]{💬}(messages-screen)
     - [Profile]{👤}(profile-screen)
     - [More]{⋯}(more-screen)`,
-      description: "Create a fixed bottom navigation bar with icons and labels for mobile navigation"
+      description:
+        'Create a fixed bottom navigation bar with icons and labels for mobile navigation',
     },
     {
-      name: "Slide-out Drawer",
+      name: 'Slide-out Drawer',
       code: `screen DrawerExample:
   # App Content
   > Main application interface
@@ -48,10 +50,11 @@ export const mobileExamples: ExampleCategory = {
     - [Settings]{⚙️}(settings-screen)
     - [Help]{❓}(help-screen)
     - [Logout]{🚪}(logout)`,
-      description: "Create a slide-out drawer menu with navigation items and icons"
+      description:
+        'Create a slide-out drawer menu with navigation items and icons',
     },
     {
-      name: "Floating Action Button",
+      name: 'Floating Action Button',
       code: `screen FABExample:
   # Main Interface
   > Your main application content
@@ -67,10 +70,11 @@ export const mobileExamples: ExampleCategory = {
   fab {➕}
   
   > FAB provides primary action access`,
-      description: "Add a floating action button for primary actions that overlay the content"
+      description:
+        'Add a floating action button for primary actions that overlay the content',
     },
     {
-      name: "Complete Mobile App",
+      name: 'Complete Mobile App',
       code: `screen MobileAppExample:
   header:
     # TaskMaster
@@ -99,10 +103,11 @@ export const mobileExamples: ExampleCategory = {
     - [Help]{❓}(help)
     
   fab {➕}`,
-      description: "A complete mobile app layout with header, content, navigation, drawer, and FAB"
+      description:
+        'A complete mobile app layout with header, content, navigation, drawer, and FAB',
     },
     {
-      name: "Modal Dialog",
+      name: 'Modal Dialog',
       code: `screen ModalExample:
   # Main Screen
   > Click button to open modal
@@ -119,9 +124,10 @@ export const mobileExamples: ExampleCategory = {
     
     @[Save Changes](save)
     @_[Cancel](close)`,
-      description: "Create modal dialogs that can be opened from buttons and closed with actions"
-    }
-  ]
-};
+      description:
+        'Create modal dialogs that can be opened from buttons and closed with actions',
+    },
+  ],
+}
 
-export default mobileExamples;
+export default mobileExamples

@@ -45,6 +45,6 @@ screen Dashboard:
           [X] Enable browser notifications
           [ ] Enable SMS alerts
           ___: Notification Frequency{Set frequency}[Immediate | Hourly | Daily | Weekly]
-`;
+`
 
-export default dashboardExample;
+export default dashboardExample

@@ -1,12 +1,12 @@
 /**
  * Error Test Suite - Comprehensive DSL with intentional errors
- * 
+ *
  * This file contains intentional errors to test the error handling system:
  * - Lexer errors (invalid tokens)
  * - Parser errors (syntax issues)
  * - Builder errors (semantic validation failures)
  * - Render errors (runtime issues)
- * 
+ *
  * Expected: Monaco markers + Error terminal display + Partial preview
  */
 
@@ -131,6 +131,6 @@ screen NavigationTest:
       @secondary[Go back](-1)
       @primary[Back to Valid](ValidContent)
 
-`;
+`
 
-export default errorTestSuite;
+export default errorTestSuite

@@ -1,20 +1,20 @@
-import { createToken } from "chevrotain";
+import { createToken } from 'chevrotain'
 
 // Component System Tokens - Reusable component definitions and instances
 export const Component = createToken({
-  name: "Component",
+  name: 'Component',
   pattern: /component/,
-  label: "component"
-});
+  label: 'component',
+})
 
 export const ComponentInstance = createToken({
-  name: "ComponentInstance",
+  name: 'ComponentInstance',
   pattern: /\$([^\s\n\r:]+)/,
-  label: "$ComponentName"
-});
+  label: '$ComponentName',
+})
 
 export const PropVariable = createToken({
-  name: "PropVariable",
+  name: 'PropVariable',
   pattern: /%([a-zA-Z_][a-zA-Z0-9_]*)/,
-  label: "%propName"
-});
+  label: '%propName',
+})

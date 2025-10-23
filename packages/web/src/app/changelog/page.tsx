@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import {
   SparklesIcon,
@@ -8,38 +8,38 @@ import {
   GitBranchIcon,
   HistoryIcon,
   ExternalLinkIcon,
-} from "lucide-react";
-import Link from "next/link";
+} from 'lucide-react'
+import Link from 'next/link'
 
-import { DocsHeader } from "@/components/layouts/components/docs-header";
-import DocsFooter from "@/components/layouts/components/docs-footer";
-import { GlowCard, SectionHeader, Badge, Button, Separator } from "@/components/ui";
+import { DocsHeader } from '@/components/layouts/components/docs-header'
+import DocsFooter from '@/components/layouts/components/docs-footer'
+import { GlowCard, SectionHeader, Button, Separator } from '@/components/ui'
 
 type ChangelogEntry = {
-  version: string;
-  date: string;
-  highlights: string[];
+  version: string
+  date: string
+  highlights: string[]
   sections?: {
-    features?: string[];
-    qualityImprovements?: string[];
-    fixes?: string[];
-    internalChanges?: string[];
-  };
-};
+    features?: string[]
+    qualityImprovements?: string[]
+    fixes?: string[]
+    internalChanges?: string[]
+  }
+}
 
 const changelog: ChangelogEntry[] = [
   {
-    version: "v0.1.0-beta",
-    date: "2025-10-20",
-    highlights: ["Lançamento inicial do Proto-Typed!"],
+    version: 'v0.1.0-beta',
+    date: '2025-10-20',
+    highlights: ['Lançamento inicial do Proto-Typed!'],
     sections: {
       features: [
-        "Versão inicial da DSL textual para prototipagem.",
-        "Playground integrado com preview ao vivo.",
+        'Versão inicial da DSL textual para prototipagem.',
+        'Playground integrado com preview ao vivo.',
       ],
     },
   },
-];
+]
 
 export default function ChangelogPage() {
   return (
@@ -64,12 +64,10 @@ export default function ChangelogPage() {
               hoverLift={false}
               className={`relative overflow-hidden ${
                 index === 0
-                  ? "border-[color:rgba(139,92,246,0.4)] shadow-[0_0_60px_rgba(139,92,246,0.25)]"
-                  : ""
+                  ? 'border-[color:rgba(139,92,246,0.4)] shadow-[0_0_60px_rgba(139,92,246,0.25)]'
+                  : ''
               }`}
             >
-
-
               <div className="space-y-6">
                 {/* Cabeçalho da versão */}
                 <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border-muted)] pb-4">
@@ -80,7 +78,9 @@ export default function ChangelogPage() {
                     </h2>
                   </div>
                   <span className="text-sm text-[var(--fg-secondary)]">
-                    {new Intl.DateTimeFormat('pt-BR', { dateStyle: 'long' }).format(new Date(entry.date + 'T00:00:00'))}
+                    {new Intl.DateTimeFormat('pt-BR', {
+                      dateStyle: 'long',
+                    }).format(new Date(entry.date + 'T00:00:00'))}
                   </span>
                 </div>
 
@@ -168,7 +168,8 @@ export default function ChangelogPage() {
             Acompanhe o desenvolvimento
           </h2>
           <p className="text-[var(--fg-secondary)] max-w-xl mx-auto">
-            Veja o histórico completo de commits e releases do Proto-Typed no repositório oficial.
+            Veja o histórico completo de commits e releases do Proto-Typed no
+            repositório oficial.
           </p>
           <Button asChild size="lg" variant="outline" className="gap-2">
             <Link
@@ -187,5 +188,5 @@ export default function ChangelogPage() {
         <DocsFooter />
       </div>
     </div>
-  );
+  )
 }

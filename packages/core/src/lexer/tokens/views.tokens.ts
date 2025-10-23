@@ -1,20 +1,20 @@
-import { createToken } from "chevrotain";
+import { createToken } from 'chevrotain'
 
 // View Container Tokens - Screen-level containers and overlays
-export const Screen = createToken({ 
-  name: "Screen", 
+export const Screen = createToken({
+  name: 'Screen',
   pattern: /screen/,
-  label: "screen"
-});
+  label: 'screen',
+})
 
 export const Modal = createToken({
-  name: "Modal", 
+  name: 'Modal',
   pattern: /modal/,
-  label: "modal"
-});
+  label: 'modal',
+})
 
 export const Drawer = createToken({
-  name: "Drawer",
+  name: 'Drawer',
   pattern: /drawer/,
-  label: "drawer"
-});
+  label: 'drawer',
+})

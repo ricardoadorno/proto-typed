@@ -1,5 +1,7 @@
-import { type CstNode } from "chevrotain";
-import { UiDslParser } from './parser';
+import { type CstNode } from 'chevrotain'
+import { UiDslParser } from './parser'
+import { type ProtoError } from '../types/errors'
+import { type CstContext } from './types'
 import {
   // Primitive builders
   buildHeadingElement,
@@ -27,28 +29,23 @@ import {
   buildComponentInstanceElement,
   // Styles builders
   buildStyles,
-  buildStyleDeclaration
-} from './builders';
+  buildStyleDeclaration,
+} from './builders'
 
-/**
- * @typedef {Object} Context
- * @description A type alias for the parsing context object, which can have any string keys.
- * This is used to represent the context object passed to the visitor methods.
- */
-type Context = {
-  [key: string]: any;
-};
+// Type alias for backward compatibility
+type Context = CstContext
 
 /**
  * @function createAstBuilder
  * @description Factory function that creates an AST Builder class using the provided parser instance.
  * This approach uses composition and dependency injection to avoid circular dependencies.
- * 
+ *
  * @param {UiDslParser} parserInstance - The UiDslParser instance to use for creating the visitor.
  * @returns {AstBuilder} An instance of the AstBuilder class.
  */
 export function createAstBuilder(parserInstance: UiDslParser) {
-  const BaseUiDslCstVisitor = parserInstance.getBaseCstVisitorConstructorWithDefaults();
+  const BaseUiDslCstVisitor =
+    parserInstance.getBaseCstVisitorConstructorWithDefaults()
 
   /**
    * @class AstBuilder
@@ -59,19 +56,19 @@ export function createAstBuilder(parserInstance: UiDslParser) {
    */
   class AstBuilder extends BaseUiDslCstVisitor {
     /**
-     * @property {any[]} __builderErrors - An array to collect any errors that occur during the AST building process.
+     * @property {ProtoError[]} __builderErrors - An array to collect any errors that occur during the AST building process.
      */
-    __builderErrors?: any[];  // Type annotation for error collection
-    
+    __builderErrors?: ProtoError[] // Type annotation for error collection
+
     /**
      * @constructor
      * @description Initializes the AstBuilder and validates the visitor.
      */
     constructor() {
-      super();
-      this.validateVisitor();
+      super()
+      this.validateVisitor()
       // Initialize error collection array for builder validation
-      this.__builderErrors = [];
+      this.__builderErrors = []
     }
 
     // ===== CORE PROGRAM RULES =====
@@ -85,13 +82,23 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      */
     program(ctx: Context) {
       // Process multiple screens, components, modals, drawers, and styles as global elements
-      const styles = ctx.styles ? ctx.styles.map((style: CstNode) => this.visit(style)) : [];
-      const screens = ctx.screen ? ctx.screen.map((screen: CstNode) => this.visit(screen)) : [];
-      const components = ctx.component ? ctx.component.map((component: CstNode) => this.visit(component)) : [];
-      const modals = ctx.modal ? ctx.modal.map((modal: CstNode) => this.visit(modal)) : [];
-      const drawers = ctx.drawer ? ctx.drawer.map((drawer: CstNode) => this.visit(drawer)) : [];
+      const styles = ctx.styles
+        ? ctx.styles.map((style) => this.visit(style as CstNode))
+        : []
+      const screens = ctx.screen
+        ? ctx.screen.map((screen) => this.visit(screen as CstNode))
+        : []
+      const components = ctx.component
+        ? ctx.component.map((component) => this.visit(component as CstNode))
+        : []
+      const modals = ctx.modal
+        ? ctx.modal.map((modal) => this.visit(modal as CstNode))
+        : []
+      const drawers = ctx.drawer
+        ? ctx.drawer.map((drawer) => this.visit(drawer as CstNode))
+        : []
 
-      return [...styles, ...screens, ...components, ...modals, ...drawers];
+      return [...styles, ...screens, ...components, ...modals, ...drawers]
     }
 
     // ===== STYLES RULES =====
@@ -107,21 +114,32 @@ export function createAstBuilder(parserInstance: UiDslParser) {
       // The visitor pattern automatically dispatches to the correct sub-rule method
       // We just need to find which element type is present and visit it
       const elementTypes = [
-        'layoutWithComponent', 'componentInstanceElement', 'buttonElement', 'linkElement', 'imageElement',
-        'headingElement', 'textElement', 'layoutElement',
-        'listElement', 'navigatorElement', 'unorderedListElement',
-        'fabElement', 'separatorElement', 'inputElement', 'radioButtonGroup',
-        'checkboxElement'
-      ];
+        'layoutWithComponent',
+        'componentInstanceElement',
+        'buttonElement',
+        'linkElement',
+        'imageElement',
+        'headingElement',
+        'textElement',
+        'layoutElement',
+        'listElement',
+        'navigatorElement',
+        'unorderedListElement',
+        'fabElement',
+        'separatorElement',
+        'inputElement',
+        'radioButtonGroup',
+        'checkboxElement',
+      ]
 
       for (const elementType of elementTypes) {
         if (ctx[elementType]) {
-          return this.visit(ctx[elementType]);
+          return this.visit(ctx[elementType] as CstNode | CstNode[])
         }
       }
 
-      console.warn('Unknown element type in context:', Object.keys(ctx));
-      return null;
+      console.warn('Unknown element type in context:', Object.keys(ctx))
+      return null
     }
 
     /**
@@ -131,7 +149,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting styles AST node.
      */
     styles(ctx: Context) {
-      return buildStyles(ctx);
+      return buildStyles(ctx)
     }
 
     /**
@@ -141,7 +159,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting style declaration AST node.
      */
     styleDeclaration(ctx: Context) {
-      return buildStyleDeclaration(ctx);
+      return buildStyleDeclaration(ctx)
     }
 
     // ===== VIEW CONTAINER RULES =====
@@ -153,7 +171,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting screen AST node.
      */
     screen(ctx: Context) {
-      return buildScreen(ctx, this);
+      return buildScreen(ctx, this)
     }
 
     /**
@@ -163,7 +181,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting modal AST node.
      */
     modal(ctx: Context) {
-      return buildModal(ctx, this);
+      return buildModal(ctx, this)
     }
 
     /**
@@ -173,7 +191,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting drawer AST node.
      */
     drawer(ctx: Context) {
-      return buildDrawer(ctx, this);
+      return buildDrawer(ctx, this)
     }
 
     // ===== COMPONENT RULES =====
@@ -185,7 +203,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting component AST node.
      */
     component(ctx: Context) {
-      return buildComponent(ctx, this);
+      return buildComponent(ctx, this)
     }
 
     /**
@@ -195,9 +213,8 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting component instance AST node.
      */
     componentInstanceElement(ctx: Context) {
-      return buildComponentInstanceElement(ctx, this);
+      return buildComponentInstanceElement(ctx, this)
     }
-
 
     // ===== PRIMITIVE ELEMENT RULES =====
 
@@ -208,7 +225,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting heading AST node.
      */
     headingElement(ctx: Context) {
-      return buildHeadingElement(ctx);
+      return buildHeadingElement(ctx)
     }
 
     /**
@@ -218,7 +235,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting text AST node.
      */
     textElement(ctx: Context) {
-      return buildTextElement(ctx);
+      return buildTextElement(ctx)
     }
 
     /**
@@ -228,7 +245,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting button AST node.
      */
     buttonElement(ctx: Context) {
-      return buildButtonElement(ctx, this);
+      return buildButtonElement(ctx, this)
     }
 
     /**
@@ -238,7 +255,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting link AST node.
      */
     linkElement(ctx: Context) {
-      return buildLinkElement(ctx);
+      return buildLinkElement(ctx)
     }
 
     /**
@@ -248,7 +265,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting image AST node.
      */
     imageElement(ctx: Context) {
-      return buildImageElement(ctx);
+      return buildImageElement(ctx)
     }
 
     // ===== LAYOUT ELEMENT RULES =====
@@ -260,7 +277,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting layout AST node.
      */
     layoutElement(ctx: Context) {
-      return buildLayoutElement(ctx, this);
+      return buildLayoutElement(ctx, this)
     }
 
     // ===== STRUCTURE ELEMENT RULES =====
@@ -272,7 +289,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting list AST node.
      */
     listElement(ctx: Context) {
-      return buildListElement(ctx);
+      return buildListElement(ctx)
     }
 
     /**
@@ -282,7 +299,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting navigator AST node.
      */
     navigatorElement(ctx: Context) {
-      return buildNavigatorElement(ctx);
+      return buildNavigatorElement(ctx)
     }
 
     /**
@@ -292,7 +309,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting list item AST node.
      */
     unorderedListElement(ctx: Awaited<Context>) {
-      return buildUnorderedListElement(ctx);
+      return buildUnorderedListElement(ctx)
     }
 
     /**
@@ -302,7 +319,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting FAB AST node.
      */
     fabElement(ctx: Context) {
-      return buildFABElement(ctx);
+      return buildFABElement(ctx)
     }
 
     /**
@@ -312,7 +329,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting separator AST node.
      */
     separatorElement(ctx: Context) {
-      return buildSeparatorElement(ctx);
+      return buildSeparatorElement(ctx)
     }
 
     /**
@@ -322,7 +339,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting nav item AST node.
      */
     navItemElement(ctx: Context) {
-      return buildNavItemElement(ctx);
+      return buildNavItemElement(ctx)
     }
 
     // ===== INPUT ELEMENT RULES =====
@@ -334,7 +351,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting input AST node.
      */
     inputElement(ctx: Context) {
-      return buildInputElement(ctx, this);
+      return buildInputElement(ctx, this)
     }
 
     /**
@@ -344,7 +361,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting radio button group AST node.
      */
     radioButtonGroup(ctx: Context) {
-      return buildRadioButtonGroup(ctx);
+      return buildRadioButtonGroup(ctx)
     }
 
     /**
@@ -354,9 +371,9 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any} The resulting checkbox AST node.
      */
     checkboxElement(ctx: Context) {
-      return buildCheckboxElement(ctx);
+      return buildCheckboxElement(ctx)
     }
   }
 
-  return new AstBuilder();
+  return new AstBuilder()
 }

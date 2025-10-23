@@ -1,31 +1,31 @@
-import { createToken, Lexer } from "chevrotain";
+import { createToken, Lexer } from 'chevrotain'
 
 // Core Language Tokens - Essential tokens for parsing structure
 export const WhiteSpace = createToken({
-  name: "Spaces",
+  name: 'Spaces',
   pattern: / +/,
   group: Lexer.SKIPPED,
-});
+})
 
 export const NewLine = createToken({
-  name: "Newline",
+  name: 'Newline',
   pattern: /\n|\r\n?/,
-  group: "nl",
-});
+  group: 'nl',
+})
 
-export const BlankLine = createToken({ 
-  name: "BlankLine", 
-  pattern: /\r?\n\s*\r?\n/ 
-});
+export const BlankLine = createToken({
+  name: 'BlankLine',
+  pattern: /\r?\n\s*\r?\n/,
+})
 
-export const Colon = createToken({ 
-  name: "Colon", 
+export const Colon = createToken({
+  name: 'Colon',
   pattern: /:/,
-  label: ":"
-});
+  label: ':',
+})
 
-export const Identifier = createToken({ 
-  name: "Identifier", 
-  pattern: /[^\s\n\r:{}[\](\)]+/,
-  label: "name"
-});
+export const Identifier = createToken({
+  name: 'Identifier',
+  pattern: /[^\s\n\r:{}[\]()]+/,
+  label: 'name',
+})

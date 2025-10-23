@@ -1,4 +1,13 @@
-import { AstNode } from '../../types/ast-node';
+import { AstNode } from '../../types/ast-node'
+
+interface CssProperty {
+  property: string
+  value: string
+}
+
+interface StylesProps {
+  cssProperties?: CssProperty[]
+}
 
 /**
  * @function renderStyles
@@ -9,18 +18,18 @@ import { AstNode } from '../../types/ast-node';
  * @returns {string} An empty string.
  */
 export function renderStyles(node: AstNode): string {
-  const props = node.props as any;
-  const cssProperties = props?.cssProperties || [];
-  
+  const props = node.props as StylesProps
+  const cssProperties = props?.cssProperties || []
+
   if (cssProperties.length === 0) {
-    return '';
+    return ''
   }
-  
+
   const cssText = cssProperties
-    .map((prop: any) => `${prop.property}: ${prop.value};`)
-    .join('\n  ');
-  
-  return `<style>\n  ${cssText}\n</style>`;
+    .map((prop: CssProperty) => `${prop.property}: ${prop.value};`)
+    .join('\n  ')
+
+  return `<style>\n  ${cssText}\n</style>`
 }
 
 /**
@@ -31,9 +40,9 @@ export function renderStyles(node: AstNode): string {
  * @returns {string} The CSS property string.
  */
 export function renderCssProperty(node: AstNode): string {
-  const props = node.props as any;
-  const property = props?.property || '';
-  const value = props?.value || '';
-  
-  return `${property}: ${value};`;
+  const props = node.props as CssProperty
+  const property = props?.property || ''
+  const value = props?.value || ''
+
+  return `${property}: ${value};`
 }

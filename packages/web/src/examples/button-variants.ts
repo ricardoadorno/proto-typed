@@ -63,6 +63,6 @@ screen ButtonVariants:
     @ghost[Close]
     @link[Learn More](docs)
 
-`;
+`
 
-export { buttonVariantsExample };
+export { buttonVariantsExample }

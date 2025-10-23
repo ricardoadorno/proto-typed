@@ -4,9 +4,12 @@
 // Garante que erros em nós individuais não derrubem a renderização completa
 // Implementa graceful degradation com error recovery
 
-import { AstNode } from "../../types/ast-node";
-import { ERROR_CODES, ProtoError, sanitizeErrorMessage } from "../../types/errors";
-
+import { AstNode } from '../../types/ast-node'
+import {
+  ERROR_CODES,
+  ProtoError,
+  sanitizeErrorMessage,
+} from '../../types/errors'
 
 // ============================================================
 // Safe Render Function
@@ -14,16 +17,16 @@ import { ERROR_CODES, ProtoError, sanitizeErrorMessage } from "../../types/error
 
 /**
  * Envolve função de renderização em try/catch de segurança
- * 
+ *
  * - Se renderização OK: retorna HTML normalmente
  * - Se erro: captura, sanitiza, coleta erro e retorna string vazia
  * - NUNCA deixa erro de nó individual derrubar renderização completa
- * 
+ *
  * @param renderFn Função que renderiza um nó específico
  * @param node Nó AST a ser renderizado
  * @param collected Array para coletar erros durante renderização
  * @returns HTML string (ou vazio se erro)
- * 
+ *
  * @example
  * const html = safeRender(renderButton, buttonNode, errors);
  */
@@ -34,12 +37,12 @@ export function safeRender(
 ): string {
   try {
     // Tenta renderizar normalmente
-    return renderFn(node);
+    return renderFn(node)
   } catch (error: unknown) {
     // ========================================================
     // ERROR HANDLING: Captura e sanitiza erro
     // ========================================================
-    const sanitized = sanitizeErrorMessage(error);
+    const sanitized = sanitizeErrorMessage(error)
 
     // Coleta erro para ErrorBus
     const rendererError: ProtoError = {
@@ -52,15 +55,15 @@ export function safeRender(
       nodeId: node.id,
       recoverable: true,
       // Localização (se disponível no node)
-      line: (node as any).line,
-      column: (node as any).column,
-    };
-    
-    collected.push(rendererError);
+      line: (node as AstNode & { line?: number }).line,
+      column: (node as AstNode & { column?: number }).column,
+    }
+
+    collected.push(rendererError)
 
     // Retorna vazio para este nó (não quebra layout)
     // Preview renderiza resto normalmente
-    return '';
+    return ''
   }
 }
 
@@ -71,7 +74,7 @@ export function safeRender(
 /**
  * Renderiza array de nós filhos com segurança
  * Continua renderizando mesmo se alguns nós falharem
- * 
+ *
  * @param nodes Array de nós filhos
  * @param renderFn Função de renderização
  * @param collected Array de erros
@@ -85,7 +88,7 @@ export function safeRenderChildren(
   return nodes
     .map((node) => safeRender(renderFn, node, collected))
     .filter((html) => html.length > 0) // Remove strings vazias (erros)
-    .join('');
+    .join('')
 }
 
 // ============================================================
@@ -95,7 +98,7 @@ export function safeRenderChildren(
 /**
  * Renderiza com fallback customizado em caso de erro
  * Útil para components críticos que precisam mostrar algo
- * 
+ *
  * @param renderFn Função de renderização
  * @param node Nó a renderizar
  * @param fallback HTML a retornar em caso de erro
@@ -109,9 +112,9 @@ export function safeRenderWithFallback(
   collected: ProtoError[]
 ): string {
   try {
-    return renderFn(node);
+    return renderFn(node)
   } catch (error: unknown) {
-    const sanitized = sanitizeErrorMessage(error);
+    const sanitized = sanitizeErrorMessage(error)
 
     collected.push({
       stage: 'renderer',
@@ -122,9 +125,9 @@ export function safeRenderWithFallback(
       nodeType: node.type,
       nodeId: node.id,
       recoverable: true,
-    });
+    })
 
-    return fallback;
+    return fallback
   }
 }
 
@@ -144,8 +147,8 @@ export function validateNode(node: AstNode, collected: ProtoError[]): boolean {
       message: 'Received null or undefined node',
       severity: 'error',
       recoverable: false,
-    });
-    return false;
+    })
+    return false
   }
 
   if (!node.type) {
@@ -156,18 +159,18 @@ export function validateNode(node: AstNode, collected: ProtoError[]): boolean {
       severity: 'error',
       nodeId: node.id,
       recoverable: false,
-    });
-    return false;
+    })
+    return false
   }
 
-  return true;
+  return true
 }
 
 /**
  * Valida props de um nó antes de usar
  * Retorna props default se inválido
  */
-export function validateProps<T extends Record<string, any>>(
+export function validateProps<T extends Record<string, unknown>>(
   node: AstNode,
   defaultProps: T,
   collected: ProtoError[]
@@ -181,9 +184,9 @@ export function validateProps<T extends Record<string, any>>(
       nodeType: node.type,
       nodeId: node.id,
       recoverable: true,
-    });
-    return defaultProps;
+    })
+    return defaultProps
   }
 
-  return { ...defaultProps, ...node.props } as T;
+  return { ...defaultProps, ...node.props } as T
 }

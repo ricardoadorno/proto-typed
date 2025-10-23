@@ -98,6 +98,6 @@ screen ListExamples:
       - Welcome to proto-typed!{Getting started guide}[Start Tutorial](tutorial)@ghost[Skip](skip)
 
   @primary[Back to Examples](ExamplesList)
-`;
+`
 
-export default listsExample;
+export default listsExample

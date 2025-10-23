@@ -5,12 +5,14 @@
 **BEFORE making ANY changes**: Read the actual implementation in `src/core/` to understand current token patterns, parsing rules, and AST structures. This file is a GUIDE - the SOURCE OF TRUTH is the code.
 
 ### Technology Stack
+
 - **Parse Pipeline**: Chevrotain (Lexer → Parser → AST Builder → Renderer)
 - **Frontend**: React 19 + TypeScript + Vite
 - **Editor**: Monaco with custom DSL syntax
 - **Testing Philosophy**: Runtime validation over automated tests (no test suite)
 
 ### Code Architecture
+
 ```
 src/core/
 ├── lexer/tokens/        ← Token definitions by category
@@ -27,6 +29,7 @@ src/core/
 ### Token Categories (see `src/core/lexer/tokens/`)
 
 #### **Views** (`views.tokens.ts`)
+
 ```
 screen ScreenName:
 modal ModalName:
@@ -34,6 +37,7 @@ drawer DrawerName:
 ```
 
 #### **Typography** (`primitives.tokens.ts`)
+
 ```
 # to ###### → Heading (levels 1-6)
 >           → Paragraph
@@ -44,9 +48,11 @@ drawer DrawerName:
 ```
 
 #### **Buttons** (`primitives.tokens.ts`)
+
 Pattern: `@<variant>?-<size>?\[text\]\(action\)`
 
 **Variants** (optional, defaults to primary):
+
 - `@primary[Text]` → Primary (default)
 - `@secondary[Text]` → Secondary
 - `@outline[Text]` → Outline
@@ -57,12 +63,14 @@ Pattern: `@<variant>?-<size>?\[text\]\(action\)`
 - `@warning[Text]` → Warning
 
 **Sizes** (optional, defaults to md):
+
 - `-xs` → Extra Small
 - `-sm` → Small
 - `-md` → Medium (default)
 - `-lg` → Large
 
 **Examples**:
+
 ```
 @[Click Me](action)              → Primary, medium
 @secondary-lg[Submit](submit)    → Secondary, large
@@ -71,15 +79,18 @@ Pattern: `@<variant>?-<size>?\[text\]\(action\)`
 ```
 
 #### **Links & Images** (`primitives.tokens.ts`)
+
 ```
 #[Link Text](destination)
 ![Alt Text](image-url)
 ```
 
 #### **Layout Elements** (`layouts.tokens.ts`)
+
 Canonical preset layouts with predefined Tailwind classes and shadcn styling.
 
 **Containers**:
+
 ```
 container:          → Standard container with max-width
 container-narrow:   → Narrow container (sm max-width)
@@ -88,6 +99,7 @@ container-full:     → Full-width container
 ```
 
 **Stacks** (Vertical flow):
+
 ```
 stack:              → Standard vertical stack (gap-4)
 stack-tight:        → Tight vertical stack (gap-2)
@@ -96,6 +108,7 @@ stack-flush:        → No gap vertical stack
 ```
 
 **Rows** (Horizontal flow):
+
 ```
 row:          → Row with items at start
 row-center:         → Row with items centered
@@ -104,6 +117,7 @@ row-end:            → Row with items at end
 ```
 
 **Grids**:
+
 ```
 grid-2:             → 2-column grid
 grid-3:             → 3-column grid
@@ -112,6 +126,7 @@ grid-auto:          → Auto-fit grid
 ```
 
 **Cards**:
+
 ```
 card:               → Standard card with padding
 card-compact:       → Compact card (less padding)
@@ -119,6 +134,7 @@ card-feature:       → Feature card (more prominent)
 ```
 
 **Special**:
+
 ```
 header:             → Page header layout
 sidebar:            → Sidebar layout
@@ -128,17 +144,21 @@ fab:                → Floating action button
 ```
 
 **Separator**:
+
 ```
 ---                 → Horizontal separator
 ```
 
 #### **Forms** (`inputs.tokens.ts`)
+
 Pattern: `___<type>?: Label{placeholder}[options] | attributes`
 
 **Input Types** (optional, defaults to text):
+
 - `email`, `password`, `date`, `number`, `textarea`
 
 **Format**:
+
 ```
 ___: Label{placeholder}                    → Text input
 ___email: Email{Enter email}               → Email input
@@ -155,11 +175,13 @@ ___: Country{Select}[USA | Canada | Mexico] → Select dropdown
 ```
 
 **Attributes** (optional, pipe-separated):
+
 ```
 ___: Email{Enter email} | required placeholder="Email address"
 ```
 
 #### **Components** (`components.tokens.ts`)
+
 ```
 component UserCard:
   > Component content here
@@ -177,6 +199,7 @@ list $UserCard:                     ← Component-based list
 **Prop Variables**: Use `%propName` inside component to interpolate values
 
 #### **Styles** (`styles.tokens.ts`)
+
 ```
 styles:
   --primary-color: #3b82f6;
@@ -226,9 +249,11 @@ The renderer follows a **3-tier layered architecture** with clear boundaries and
 ### Core Layer Components
 
 #### **node-renderer.ts** - Central Dispatcher
+
 - **Pattern**: Strategy Pattern
 - **Purpose**: Map `NodeType` to specialized renderer functions
 - **Key Feature**: `RENDERERS` object with type-safe mapping
+
 ```typescript
 const RENDERERS: Record<NodeType, typeof _render> = {
   Button: (n) => renderButton(n),
@@ -236,10 +261,12 @@ const RENDERERS: Record<NodeType, typeof _render> = {
   // ... 40+ node types
 }
 ```
+
 - **Usage**: Single entry point for all AST → HTML conversion
 - **Extensibility**: Add new node type = add to RENDERERS map
 
 #### **route-manager.ts** - Navigation State Management
+
 - **Pattern**: Singleton Service
 - **Responsibilities**:
   - Process AST nodes into `RouteCollection` (screens, modals, drawers, components)
@@ -254,6 +281,7 @@ const RENDERERS: Record<NodeType, typeof _render> = {
 - **State Management**: Tracks `currentScreen`, `navigationHistory`, `currentHistoryIndex`
 
 #### **theme-manager.ts** - CSS Variable System
+
 - **Pattern**: Singleton Service (`CustomPropertiesManager`)
 - **Responsibilities**:
   - Merge theme CSS variables with user-defined custom properties
@@ -268,6 +296,7 @@ const RENDERERS: Record<NodeType, typeof _render> = {
 ### Infrastructure Layer Components
 
 #### **route-manager-gateway.ts** - Facade Pattern
+
 - **Purpose**: Simplify RouteManager API for SPA clients
 - **Benefits**:
   - Clean, focused API for React components
@@ -281,6 +310,7 @@ const RENDERERS: Record<NodeType, typeof _render> = {
 - **Pattern**: Gateway shields clients from RouteManager internals
 
 #### **navigation-mediator.ts** - Navigation Analysis
+
 - **Pattern**: Mediator Pattern
 - **Purpose**: Decouple navigation logic from node renderers
 - **Key Responsibilities**:
@@ -299,6 +329,7 @@ const RENDERERS: Record<NodeType, typeof _render> = {
   - `back` - History back (`-1`)
 
 #### **html-render-helper.ts** - Screen Rendering Utilities
+
 - **Purpose**: Shared screen rendering logic
 - **Key Functions**:
   - `renderAllScreens(screens, currentScreen)` - Preview mode rendering
@@ -319,6 +350,7 @@ const RENDERERS: Record<NodeType, typeof _render> = {
 - **components.node.ts**: Component definition storage and instantiation
 
 **Key Characteristics**:
+
 - Import infrastructure services (NavigationMediator, styles)
 - No direct state mutation
 - Recursive rendering via `_render` callback
@@ -327,6 +359,7 @@ const RENDERERS: Record<NodeType, typeof _render> = {
 ### Top-Level Adapters
 
 #### **ast-to-html-document.ts**
+
 - **Purpose**: Generate standalone HTML document
 - **Includes**:
   - Full `<!DOCTYPE html>` structure
@@ -345,6 +378,7 @@ const RENDERERS: Record<NodeType, typeof _render> = {
 - **Use Case**: Export prototype as downloadable HTML
 
 #### **ast-to-html-string-preview.ts**
+
 - **Purpose**: Generate HTML fragment for SPA embedding
 - **Differences from Document**:
   - No `<html>` wrapper (just content divs)
@@ -354,14 +388,14 @@ const RENDERERS: Record<NodeType, typeof _render> = {
 
 ### Key Design Patterns Summary
 
-| Pattern | Component | Purpose |
-|---------|-----------|---------|
-| **Strategy** | `node-renderer.ts` | Map node types to renderers |
-| **Singleton** | `routeManager`, `customPropertiesManager` | Global state management |
-| **Facade/Gateway** | `route-manager-gateway.ts` | Simplify API for clients |
-| **Mediator** | `navigation-mediator.ts` | Decouple navigation logic |
-| **Template Method** | Render pipeline | Consistent render flow |
-| **Pure Functions** | Node renderers | Predictable HTML generation |
+| Pattern             | Component                                 | Purpose                     |
+| ------------------- | ----------------------------------------- | --------------------------- |
+| **Strategy**        | `node-renderer.ts`                        | Map node types to renderers |
+| **Singleton**       | `routeManager`, `customPropertiesManager` | Global state management     |
+| **Facade/Gateway**  | `route-manager-gateway.ts`                | Simplify API for clients    |
+| **Mediator**        | `navigation-mediator.ts`                  | Decouple navigation logic   |
+| **Template Method** | Render pipeline                           | Consistent render flow      |
+| **Pure Functions**  | Node renderers                            | Predictable HTML generation |
 
 ### Critical Rendering Flow
 
@@ -448,6 +482,7 @@ const RENDERERS: Record<NodeType, typeof _render> = {
 Each layout token represents a complete, pre-configured layout with predefined Tailwind classes and shadcn styling. Instead of modifiers like `row-w50-center-p4`, you use semantic layout names like `row-center`, `stack-tight`, `container-narrow`.
 
 **Migration Example**:
+
 ```typescript
 // OLD (with modifiers - NO LONGER SUPPORTED)
 row-w50-center-p4:
@@ -463,6 +498,7 @@ row-center:
 ### Component Props System
 
 **Data Flow**:
+
 1. List with component: `list $UserCard:`
 2. Items with pipe-separated values: `- John | john@email.com | 555-1234`
 3. Props extracted and matched to component variables
@@ -473,7 +509,9 @@ row-center:
 ## 🎨 Styling System: shadcn-Inspired Architecture
 
 ### Design Philosophy
+
 The styling system is based on **shadcn/ui** design patterns, using CSS custom properties (variables) for theming and Tailwind CSS for utility classes. This approach provides:
+
 - **Theme flexibility**: Easy theme switching via CSS variables
 - **Consistency**: All components reference the same color tokens
 - **Customizability**: Users can override variables via `styles:` block
@@ -486,20 +524,36 @@ Based on shadcn's theming system with **OKLCH color space** for better perceptua
 ```typescript
 interface ThemeColors {
   // Core colors
-  background, foreground, card, cardForeground, popover, popoverForeground
-  
+  background
+  foreground
+  card
+  cardForeground
+  popover
+  popoverForeground
+
   // Semantic colors
-  primary, primaryForeground
-  secondary, secondaryForeground
-  muted, mutedForeground
-  accent, accentForeground
-  destructive, destructiveForeground
-  
+  primary
+  primaryForeground
+  secondary
+  secondaryForeground
+  muted
+  mutedForeground
+  accent
+  accentForeground
+  destructive
+  destructiveForeground
+
   // UI elements
-  border, input, ring
-  
+  border
+  input
+  ring
+
   // Charts
-  chart1, chart2, chart3, chart4, chart5
+  chart1
+  chart2
+  chart3
+  chart4
+  chart5
 }
 ```
 
@@ -508,13 +562,17 @@ interface ThemeColors {
 ### Styling Implementation Pattern
 
 #### 1. **Base Classes** (`nodes/styles/styles.ts`)
+
 Define Tailwind utility classes WITHOUT colors:
+
 ```typescript
 button: 'inline-flex items-center justify-center px-4 py-2 focus:outline-none focus:ring-2 transition-colors'
 ```
 
 #### 2. **Inline Styles with CSS Variables**
+
 Apply colors via inline styles referencing CSS variables:
+
 ```typescript
 getButtonInlineStyles(variant): string {
   return `background-color: var(--primary); color: var(--primary-foreground); border-radius: var(--radius);`
@@ -522,7 +580,9 @@ getButtonInlineStyles(variant): string {
 ```
 
 #### 3. **Component Rendering**
+
 Combine base classes + inline styles:
+
 ```typescript
 <button class="${buttonClasses}" style="${getButtonInlineStyles(variant)}">
 ```
@@ -530,6 +590,7 @@ Combine base classes + inline styles:
 ### shadcn Pattern Implementation
 
 **DO** ✅:
+
 ```typescript
 // Use CSS variable references
 style="background-color: var(--primary); color: var(--primary-foreground);"
@@ -542,6 +603,7 @@ var(--card), var(--muted-foreground), var(--border), var(--ring)
 ```
 
 **DON'T** ❌:
+
 ```typescript
 // Hardcoded Tailwind color classes
 class="bg-blue-500 text-white"
@@ -556,6 +618,7 @@ var(--blue-500), var(--gray-800)
 ### Tailwind + CSS Variables Integration
 
 #### Element Style Pattern:
+
 ```typescript
 // 1. Define base classes (structure + spacing)
 const baseClasses = 'inline-flex items-center justify-center px-4 py-2 rounded-md transition-colors';
@@ -568,6 +631,7 @@ const inlineStyles = 'background-color: var(--primary); color: var(--primary-for
 ```
 
 #### Common CSS Variable Patterns:
+
 - **Buttons**: `var(--primary)`, `var(--secondary)`, `var(--destructive)`
 - **Text**: `var(--foreground)`, `var(--muted-foreground)`
 - **Backgrounds**: `var(--background)`, `var(--card)`, `var(--popover)`
@@ -598,29 +662,33 @@ const inlineStyles = 'background-color: var(--primary); color: var(--primary-for
 When creating new DSL elements that need styling:
 
 1. **Add base classes** to `elementStyles` in `nodes/styles/styles.ts`:
+
 ```typescript
 newElement: 'flex items-center px-4 py-2 rounded-md transition-colors'
 ```
 
 2. **Create inline style function**:
+
 ```typescript
 export function getNewElementInlineStyles(): string {
-  return 'background-color: var(--card); color: var(--card-foreground); border: 1px solid var(--border);';
+  return 'background-color: var(--card); color: var(--card-foreground); border: 1px solid var(--border);'
 }
 ```
 
 3. **Use in renderer** (`nodes/*.node.ts`):
+
 ```typescript
-import { elementStyles, getNewElementInlineStyles } from './styles/styles';
+import { elementStyles, getNewElementInlineStyles } from './styles/styles'
 
 export function renderNewElement(node: AstNode): string {
-  return `<div class="${elementStyles.newElement}" style="${getNewElementInlineStyles()}">${content}</div>`;
+  return `<div class="${elementStyles.newElement}" style="${getNewElementInlineStyles()}">${content}</div>`
 }
 ```
 
 ### Code Style Mandates
 
 #### Tailwind CSS
+
 - **DARK MODE ONLY** - never use `dark:` prefix
 - **NO hardcoded colors** - always use CSS variables
 - Base classes: structure, spacing, typography
@@ -628,6 +696,7 @@ export function renderNewElement(node: AstNode): string {
 - Avoid: `bg-blue-500 text-white` ❌
 
 #### CSS Variables
+
 - **ALWAYS use semantic shadcn tokens**
 - Primary: `var(--primary)`, `var(--primary-foreground)`
 - Secondary: `var(--secondary)`, `var(--secondary-foreground)`
@@ -636,11 +705,13 @@ export function renderNewElement(node: AstNode): string {
 - UI: `var(--border)`, `var(--input)`, `var(--ring)`, `var(--radius)`
 
 #### TypeScript
+
 - Use `interface` over `type` for objects
 - Discriminated unions for AST nodes
 - Explicit null handling
 
 #### React
+
 - Functional components only
 - Error boundaries for parsing
 - Debounced parsing for performance
@@ -650,6 +721,7 @@ export function renderNewElement(node: AstNode): string {
 ## 🚨 Critical Rules
 
 ### DO NOT
+
 - ❌ Create test files unless explicitly requested
 - ❌ Reference StringLiteral token (doesn't exist)
 - ❌ Use inline modifiers for layouts (use canonical presets instead)
@@ -658,6 +730,7 @@ export function renderNewElement(node: AstNode): string {
 - ❌ Make assumptions - check `src/core/` implementation first
 
 ### ALWAYS
+
 - ✅ Read token implementation before modifying syntax
 - ✅ Use canonical layout presets: `row-center`, `stack-tight`, `container-narrow`
 - ✅ Use variant and size modifiers for buttons: `@secondary-lg[Text]`
@@ -670,38 +743,40 @@ export function renderNewElement(node: AstNode): string {
 ## 📖 Quick Syntax Examples
 
 ### Complete Screen Example
+
 ```
 screen Dashboard:
   header:
     # Dashboard
     @ghost[Settings](Settings)
-  
+
   container:
     row-between:
       card:
         ## User Stats
         > Total Users: 1,234
         @[View Details](Users)
-      
+
       card:
         ## Revenue
         >>> Last updated: 5 mins ago
         @outline[Refresh](Refresh)
-    
+
     list:
       - Recent activity item
       - Another update
-  
+
   navigator:
     - Home | Dashboard
     - Users | Users
     - Settings | Settings
-  
+
   fab:
     - + | CreateItem
 ```
 
 ### Component with Props Example
+
 ```
 component ContactCard:
   card:

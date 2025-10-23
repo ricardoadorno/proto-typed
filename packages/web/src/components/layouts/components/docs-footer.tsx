@@ -1,32 +1,31 @@
-import Link from "next/link"
+import Link from 'next/link'
 
-import { Separator } from "@/components/ui"
-
+import { Separator } from '@/components/ui'
 
 const footerColumns = [
   {
-    title: "Comece rápido",
+    title: 'Comece rápido',
     links: [
-      { label: "Introdução", href: "/docs/getting-started" },
-      { label: "Filosofia do proto-typed", href: "/principles" },
+      { label: 'Introdução', href: '/docs/getting-started' },
+      { label: 'Filosofia do proto-typed', href: '/principles' },
     ],
   },
   {
-    title: "Explorar",
+    title: 'Explorar',
     links: [
-      { label: "Playground", href: "/playground" },
-      { label: "Erros Conhecidos", href: "/known-errors" },
+      { label: 'Playground', href: '/playground' },
+      { label: 'Erros Conhecidos', href: '/known-errors' },
     ],
   },
   {
-    title: "Comunidade",
+    title: 'Comunidade',
     links: [
-      { label: "GitHub", href: "https://github.com/ricardoadorno/proto-typed" },
+      { label: 'GitHub', href: 'https://github.com/ricardoadorno/proto-typed' },
     ],
   },
 ]
 
-const appVersion = process.env.NEXT_PUBLIC_APP_VERSION ?? "v0.1.0"
+const appVersion = process.env.NEXT_PUBLIC_APP_VERSION ?? 'v0.1.0'
 
 export function DocsFooter() {
   const currentYear = new Date().getFullYear()
@@ -42,14 +41,16 @@ export function DocsFooter() {
             </p>
             <ul className="space-y-2">
               {column.links.map((link) => {
-                const href = (link.href)
-                const isExternal = href.startsWith("http")
+                const href = link.href
+                const isExternal = href.startsWith('http')
                 return (
                   <li key={link.label}>
                     <Link
                       href={href}
                       className="text-sm text-[var(--fg-secondary)] transition-colors hover:text-[var(--accent-light)]"
-                      {...(isExternal ? { target: "_blank", rel: "noreferrer" } : undefined)}
+                      {...(isExternal
+                        ? { target: '_blank', rel: 'noreferrer' }
+                        : undefined)}
                     >
                       {link.label}
                     </Link>
@@ -68,10 +69,13 @@ export function DocsFooter() {
         <div className="flex items-center gap-3">
           <span className="flex items-center gap-2">
             Status
-            <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-[#22c55e]" aria-hidden />
+            <span
+              className="inline-flex h-2 w-2 animate-pulse rounded-full bg-[#22c55e]"
+              aria-hidden
+            />
           </span>
           <Link
-            href={("/changelog")}
+            href={'/changelog'}
             className="text-[10px] tracking-[0.28em] text-[var(--fg-secondary)] transition-colors hover:text-[var(--accent-light)]"
           >
             Changelog

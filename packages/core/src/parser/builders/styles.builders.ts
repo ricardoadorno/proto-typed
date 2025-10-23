@@ -3,12 +3,9 @@
  * Handles style configurations and custom CSS properties
  */
 
-import { type CstNode, type IToken } from "chevrotain";
-import { AstNode } from "../../types/ast-node";
-
-type Context = {
-  [key: string]: any;
-};
+import { type CstNode, type IToken } from 'chevrotain'
+import { AstNode } from '../../types/ast-node'
+import type { CstContext } from '../types'
 
 /**
  * @function buildStyles
@@ -18,24 +15,24 @@ type Context = {
  * @param {Context} ctx - The Chevrotain CST node context for the styles block.
  * @returns {AstNode} A 'Styles' AST node.
  */
-export function buildStyles(ctx: Context): AstNode {
-  const styleDeclarations: AstNode[] = [];
-  
+export function buildStyles(ctx: CstContext): AstNode {
+  const styleDeclarations: AstNode[] = []
+
   if (ctx.styleDeclaration) {
     for (const decl of ctx.styleDeclaration) {
-      const styleNode = buildStyleDeclarationFromCst(decl as CstNode);
+      const styleNode = buildStyleDeclarationFromCst(decl as CstNode)
       if (styleNode) {
-        styleDeclarations.push(styleNode);
+        styleDeclarations.push(styleNode)
       }
     }
   }
 
   return {
     type: 'Styles',
-    id: "", // ID will be generated later
+    id: '', // ID will be generated later
     props: {},
-    children: styleDeclarations
-  };
+    children: styleDeclarations,
+  }
 }
 
 /**
@@ -48,31 +45,31 @@ export function buildStyles(ctx: Context): AstNode {
  */
 function buildStyleDeclarationFromCst(cstNode: CstNode): AstNode | null {
   if (!cstNode || !cstNode.children || !cstNode.children.CssProperty) {
-    return null;
+    return null
   }
 
-  const cssPropertyToken = cstNode.children.CssProperty[0] as IToken;
-  const cssText = cssPropertyToken.image;
-  
+  const cssPropertyToken = cstNode.children.CssProperty[0] as IToken
+  const cssText = cssPropertyToken.image
+
   // Parse CSS property: --property-name: value;
-  const match = cssText.match(/^--([a-zA-Z-]+):\s*([^;]+);?$/);
-  
+  const match = cssText.match(/^--([a-zA-Z-]+):\s*([^;]+);?$/)
+
   if (match) {
-    const propertyName = match[1];
-    const propertyValue = match[2].trim();
-    
+    const propertyName = match[1]
+    const propertyValue = match[2].trim()
+
     return {
       type: 'CssProperty',
-      id: "", // ID will be generated later
+      id: '', // ID will be generated later
       props: {
         property: propertyName,
-        value: propertyValue
+        value: propertyValue,
       },
-      children: []
-    };
+      children: [],
+    }
   }
-  
-  return null;
+
+  return null
 }
 
 /**
@@ -83,31 +80,31 @@ function buildStyleDeclarationFromCst(cstNode: CstNode): AstNode | null {
  * @param {Context} ctx - The Chevrotain CST node context for the style declaration.
  * @returns {AstNode | null} A 'CssProperty' AST node, or null if parsing fails.
  */
-export function buildStyleDeclaration(ctx: Context): AstNode | null {
+export function buildStyleDeclaration(ctx: CstContext): AstNode | null {
   if (!ctx.CssProperty || !ctx.CssProperty[0]) {
-    return null;
+    return null
   }
 
-  const cssPropertyToken = ctx.CssProperty[0];
-  const cssText = cssPropertyToken.image;
-  
+  const cssPropertyToken = ctx.CssProperty[0]
+  const cssText = (cssPropertyToken as IToken).image
+
   // Parse CSS property: --property-name: value;
-  const match = cssText.match(/^--([a-zA-Z-]+):\s*([^;]+);?$/);
-  
+  const match = cssText.match(/^--([a-zA-Z-]+):\s*([^;]+);?$/)
+
   if (match) {
-    const propertyName = match[1];
-    const propertyValue = match[2].trim();
-    
+    const propertyName = match[1]
+    const propertyValue = match[2].trim()
+
     return {
       type: 'CssProperty',
-      id: "", // ID will be generated later
+      id: '', // ID will be generated later
       props: {
         property: propertyName,
-        value: propertyValue
+        value: propertyValue,
       },
-      children: []
-    };
+      children: [],
+    }
   }
-  
-  return null;
+
+  return null
 }

@@ -3,8 +3,8 @@
  * Takes HTML content from astToHtmlStringPreview and wraps it with device frame
  */
 export function getWebviewContent(previewHtml: string, logoUri?: string) {
-  const deviceStyles = getDeviceMockupStyles();
-  
+  const deviceStyles = getDeviceMockupStyles()
+
   return `<!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
@@ -67,12 +67,11 @@ export function getWebviewContent(previewHtml: string, logoUri?: string) {
       });
     </script>
 </body>
-</html>`;
+</html>`
 }
 
-
 function getDeviceMockupStyles() {
-    return `
+  return `
         /* VSCode Webview Base Styles */
         * {
             margin: 0;
@@ -288,5 +287,5 @@ function getDeviceMockupStyles() {
             border: 1px solid var(--border-muted);
             background: var(--bg-raised);
         }
-    `;
+    `
 }

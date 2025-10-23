@@ -1,68 +1,77 @@
 /**
  * React Hook: Monaco DSL Initialization + Diagnostics
- * 
+ *
  * Manages Monaco Editor initialization for the proto-typed DSL.
  * Handles language registration, theme setup, completion provider,
  * and integrates with ErrorBus for real-time error markers.
- * 
+ *
  * Usage:
  * ```tsx
  * const { monaco, isInitialized, error, editorRef } = useMonacoDSL();
- * 
+ *
  * if (error) return <ErrorDisplay error={error} />;
  * if (!isInitialized) return <LoadingSpinner />;
- * 
+ *
  * <Editor
  *   onMount={(editor) => editorRef.current = editor}
  *   // ... other props
  * />
  * ```
- * 
+ *
  * @returns {object} Monaco instance, initialization state, error state, and editor ref
  */
 
-import { useEffect, useState, useRef } from 'react';
-import { useMonaco } from '@monaco-editor/react';
-import { initializeMonacoDSL } from '../components/editor';
-import { ErrorBus } from '@proto-typed/core';
-import type { ProtoError, Severity } from '@proto-typed/core'; //errors';
-import { SEVERITY_RANK } from '@proto-typed/core'; //errors';
+import { useEffect, useState, useRef } from 'react'
+import { useMonaco } from '@monaco-editor/react'
+import { initializeMonacoDSL } from '../components/editor'
+import { ErrorBus } from '@proto-typed/core'
+import type { ProtoError, Severity } from '@proto-typed/core' //errors';
+import { SEVERITY_RANK } from '@proto-typed/core' //errors';
+
+// Extract editor type from Monaco
+type IStandaloneCodeEditor = Parameters<
+  NonNullable<
+    React.ComponentProps<
+      typeof import('@monaco-editor/react').Editor
+    >['onMount']
+  >
+>[0]
 
 /**
  * Custom hook to manage Monaco DSL initialization and diagnostics
  */
 export function useMonacoDSL() {
   const monaco = useMonaco()
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const editorRef = useRef<any>(null);
-  const [isEditorMounted, setIsEditorMounted] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const editorRef = useRef<IStandaloneCodeEditor | null>(null)
+  const [isEditorMounted, setIsEditorMounted] = useState(false)
 
   useEffect(() => {
-    if (!monaco || isInitialized) return;
-    (async () => {
+    if (!monaco || isInitialized) return
+    ;(async () => {
       try {
-        await initializeMonacoDSL(monaco);
-        setIsInitialized(true);
+        await initializeMonacoDSL(monaco)
+        setIsInitialized(true)
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
+        setError(err instanceof Error ? err.message : 'Unknown error')
       }
-    })();
-  }, [monaco, isInitialized]);
+    })()
+  }, [monaco, isInitialized])
 
   useEffect(() => {
-    const editor = editorRef.current;
-    if (!editor || !monaco || !isEditorMounted) return;
-    const model = editor.getModel();
-    if (!model) return;
+    const editor = editorRef.current
+    if (!editor || !monaco || !isEditorMounted) return
+    const model = editor.getModel()
+    if (!model) return
 
     const applyMarkers = (errors: ProtoError[]) => {
       if (!errors.length) {
-        monaco.editor.setModelMarkers(model, 'proto-typed', []);
-        return;
+        monaco.editor.setModelMarkers(model, 'proto-typed', [])
+        return
       }
 
-      const bestByLine = getBestErrorPerLine(errors);
+      const bestByLine = getBestErrorPerLine(errors)
       const markers = [...bestByLine.values()].map((err) => ({
         startLineNumber: err.line || 1,
         startColumn: err.column || 1,
@@ -71,23 +80,23 @@ export function useMonacoDSL() {
         message: formatErrorMessage(err),
         severity: toMonacoSeverity(err.severity),
         source: `proto-typed-${err.stage}`,
-      }));
+      }))
 
-      monaco.editor.setModelMarkers(model, 'proto-typed', markers);
-    };
+      monaco.editor.setModelMarkers(model, 'proto-typed', markers)
+    }
 
     // Subscribe will immediately call applyMarkers with current errors
-    const unsubscribe = ErrorBus.get().subscribe(applyMarkers);
-    
-    return () => unsubscribe();
-  }, [isInitialized, monaco, isEditorMounted]);
+    const unsubscribe = ErrorBus.get().subscribe(applyMarkers)
 
-  const handleEditorMount = (editor: any) => {
-    editorRef.current = editor;
-    setIsEditorMounted(true);
-  };
+    return () => unsubscribe()
+  }, [isInitialized, monaco, isEditorMounted])
 
-  return { monaco, isInitialized, error, editorRef, handleEditorMount };
+  const handleEditorMount = (editor: IStandaloneCodeEditor) => {
+    editorRef.current = editor
+    setIsEditorMounted(true)
+  }
+
+  return { monaco, isInitialized, error, editorRef, handleEditorMount }
 }
 
 // ============================================================
@@ -99,18 +108,18 @@ export function useMonacoDSL() {
  * Prevents visual clutter from multiple markers on the same line
  */
 function getBestErrorPerLine(errors: ProtoError[]): Map<number, ProtoError> {
-  const bestByLine = new Map<number, ProtoError>();
+  const bestByLine = new Map<number, ProtoError>()
 
   for (const err of errors) {
-    if (!err.line) continue;
+    if (!err.line) continue
 
-    const prev = bestByLine.get(err.line);
+    const prev = bestByLine.get(err.line)
     if (!prev || SEVERITY_RANK[err.severity] > SEVERITY_RANK[prev.severity]) {
-      bestByLine.set(err.line, err);
+      bestByLine.set(err.line, err)
     }
   }
 
-  return bestByLine;
+  return bestByLine
 }
 
 /**
@@ -118,18 +127,18 @@ function getBestErrorPerLine(errors: ProtoError[]): Map<number, ProtoError> {
  * Format: [stage] message — hint
  */
 function formatErrorMessage(err: ProtoError): string {
-  let msg = `[${err.stage}] ${err.message}`;
+  let msg = `[${err.stage}] ${err.message}`
   if (err.hint) {
-    msg += ` — ${err.hint}`;
+    msg += ` — ${err.hint}`
   }
-  return msg;
+  return msg
 }
 
 export enum MarkerSeverity {
-    Hint = 1,
-    Info = 2,
-    Warning = 4,
-    Error = 8
+  Hint = 1,
+  Info = 2,
+  Warning = 4,
+  Error = 8,
 }
 
 /**
@@ -139,12 +148,12 @@ function toMonacoSeverity(severity: Severity): MarkerSeverity {
   switch (severity) {
     case 'fatal':
     case 'error':
-      return MarkerSeverity.Error;
+      return MarkerSeverity.Error
     case 'warning':
-      return MarkerSeverity.Warning;
+      return MarkerSeverity.Warning
     case 'info':
-      return MarkerSeverity.Info;
+      return MarkerSeverity.Info
     default:
-      return MarkerSeverity.Hint;
+      return MarkerSeverity.Hint
   }
 }

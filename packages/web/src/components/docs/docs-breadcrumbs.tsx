@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from 'next/link'
 
 import {
   Breadcrumb,
@@ -7,7 +7,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui"
+} from '@/components/ui'
 
 export interface BreadcrumbSegment {
   label: string
@@ -23,7 +23,8 @@ export function DocsBreadcrumbs({ trail }: DocsBreadcrumbsProps) {
     return null
   }
 
-  const displayTrail = trail.length > 4 ? [trail[0], { label: "…" }, ...trail.slice(-3)] : trail
+  const displayTrail =
+    trail.length > 4 ? [trail[0], { label: '…' }, ...trail.slice(-3)] : trail
 
   return (
     <Breadcrumb aria-label="Breadcrumb" className="w-full text-[11px]">
@@ -31,13 +32,16 @@ export function DocsBreadcrumbs({ trail }: DocsBreadcrumbsProps) {
         {displayTrail.map((segment, index) => {
           const isLast = index === displayTrail.length - 1
           return (
-            <BreadcrumbItem key={`${segment.label}-${index}`} className="flex items-center gap-2">
+            <BreadcrumbItem
+              key={`${segment.label}-${index}`}
+              className="flex items-center gap-2"
+            >
               {segment.href && !isLast ? (
                 <BreadcrumbLink
                   asChild
                   className="uppercase tracking-[0.32em] text-[var(--fg-secondary)] transition-colors hover:text-[var(--accent-light)]"
                 >
-                  <Link href={(segment.href)}>{segment.label}</Link>
+                  <Link href={segment.href}>{segment.label}</Link>
                 </BreadcrumbLink>
               ) : isLast ? (
                 <BreadcrumbPage className="uppercase tracking-[0.32em] text-[var(--accent-light)]">

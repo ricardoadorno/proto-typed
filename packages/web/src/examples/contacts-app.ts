@@ -257,6 +257,6 @@ screen Premium:
       @primary-md[i-Crown Subscribe](Contacts)
       @ghost[Maybe Later](-1)
 
-`;
+`
 
-export default contactsAppExample;
+export default contactsAppExample

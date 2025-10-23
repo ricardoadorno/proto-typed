@@ -4,8 +4,7 @@
 // Singleton para centralizar coleta e distribuição de erros
 // de todas as camadas do pipeline (Lexer → Parser → Builder → Renderer)
 
-import { ProtoError, Stage } from "./types/errors";
-
+import { ProtoError, Stage } from './types/errors'
 
 /**
  * @class ErrorBus
@@ -15,9 +14,9 @@ import { ProtoError, Stage } from "./types/errors";
  * updates and react accordingly, for example, by displaying them in an editor.
  */
 export class ErrorBus {
-  private static instance: ErrorBus;
-  private listeners: ((errors: ProtoError[]) => void)[] = [];
-  private errors: ProtoError[] = [];
+  private static instance: ErrorBus
+  private listeners: ((errors: ProtoError[]) => void)[] = []
+  private errors: ProtoError[] = []
 
   // ==========================================================
   // SINGLETON PATTERN
@@ -34,9 +33,9 @@ export class ErrorBus {
    */
   static get(): ErrorBus {
     if (!ErrorBus.instance) {
-      ErrorBus.instance = new ErrorBus();
+      ErrorBus.instance = new ErrorBus()
     }
-    return ErrorBus.instance;
+    return ErrorBus.instance
   }
 
   // ==========================================================
@@ -50,8 +49,8 @@ export class ErrorBus {
    * @returns {boolean} True if the error is a duplicate, false otherwise.
    */
   private hasDuplicate(err: ProtoError): boolean {
-    const key = this.getErrorKey(err);
-    return this.errors.some((e) => this.getErrorKey(e) === key);
+    const key = this.getErrorKey(err)
+    return this.errors.some((e) => this.getErrorKey(e) === key)
   }
 
   /**
@@ -64,8 +63,8 @@ export class ErrorBus {
    */
   private getErrorKey(err: ProtoError): string {
     // Chave: stage|line|column|code|messagePrefix(16 chars)
-    const msgPrefix = err.message.slice(0, 16);
-    return `${err.stage}|${err.line ?? '?'}|${err.column ?? '?'}|${err.code}|${msgPrefix}`;
+    const msgPrefix = err.message.slice(0, 16)
+    return `${err.stage}|${err.line ?? '?'}|${err.column ?? '?'}|${err.code}|${msgPrefix}`
   }
 
   // ==========================================================
@@ -78,8 +77,8 @@ export class ErrorBus {
    */
   emit(err: ProtoError): void {
     if (!this.hasDuplicate(err)) {
-      this.errors.push(err);
-      this.notify();
+      this.errors.push(err)
+      this.notify()
     }
   }
 
@@ -92,15 +91,15 @@ export class ErrorBus {
    * @param {ProtoError[]} errs - An array of errors to add.
    */
   bulk(errs: ProtoError[]): void {
-    let added = false;
+    let added = false
     for (const e of errs) {
       if (!this.hasDuplicate(e)) {
-        this.errors.push(e);
-        added = true;
+        this.errors.push(e)
+        added = true
       }
     }
     if (added) {
-      this.notify();
+      this.notify()
     }
   }
 
@@ -113,8 +112,8 @@ export class ErrorBus {
    * @param {Stage} [stage] - The optional stage to clear errors from.
    */
   clear(stage?: Stage): void {
-    this.errors = stage ? this.errors.filter((e) => e.stage !== stage) : [];
-    this.notify();
+    this.errors = stage ? this.errors.filter((e) => e.stage !== stage) : []
+    this.notify()
   }
 
   // ==========================================================
@@ -126,7 +125,7 @@ export class ErrorBus {
    * @returns {ProtoError[]} An array of all errors.
    */
   getAll(): ProtoError[] {
-    return [...this.errors];
+    return [...this.errors]
   }
 
   /**
@@ -137,24 +136,24 @@ export class ErrorBus {
    * @returns {() => void} A function to unsubscribe from the updates.
    */
   subscribe(cb: (errors: ProtoError[]) => void): () => void {
-    this.listeners.push(cb);
+    this.listeners.push(cb)
 
     // Immediately notify the new subscriber with current snapshot so
     // late subscribers (for example Monaco mounted after errors were
     // emitted) receive the existing errors and can render markers.
     try {
-      cb([...this.errors]);
+      cb([...this.errors])
     } catch (err) {
-      console.error('Error in ErrorBus initial notify:', err);
+      console.error('Error in ErrorBus initial notify:', err)
     }
 
     // Retorna unsubscribe function
     return () => {
-      const index = this.listeners.indexOf(cb);
+      const index = this.listeners.indexOf(cb)
       if (index > -1) {
-        this.listeners.splice(index, 1);
+        this.listeners.splice(index, 1)
       }
-    };
+    }
   }
 
   // ==========================================================
@@ -167,7 +166,7 @@ export class ErrorBus {
    * @returns {number} The total number of errors.
    */
   count(): number {
-    return this.errors.length;
+    return this.errors.length
   }
 
   /**
@@ -177,7 +176,7 @@ export class ErrorBus {
    * @returns {ProtoError[]} An array of errors for the specified stage.
    */
   getByStage(stage: Stage): ProtoError[] {
-    return this.errors.filter((e) => e.stage === stage);
+    return this.errors.filter((e) => e.stage === stage)
   }
 
   /**
@@ -186,7 +185,7 @@ export class ErrorBus {
    * @returns {boolean} True if there is at least one fatal error, false otherwise.
    */
   hasFatalErrors(): boolean {
-    return this.errors.some((e) => e.severity === 'fatal');
+    return this.errors.some((e) => e.severity === 'fatal')
   }
 
   // ==========================================================
@@ -199,14 +198,14 @@ export class ErrorBus {
    */
   private notify(): void {
     // Notifica todos os subscribers com cópia imutável
-    const snapshot = [...this.errors];
+    const snapshot = [...this.errors]
     this.listeners.forEach((cb) => {
       try {
-        cb(snapshot);
+        cb(snapshot)
       } catch (error) {
-        console.error('Error in ErrorBus subscriber:', error);
+        console.error('Error in ErrorBus subscriber:', error)
       }
-    });
+    })
   }
 
   // ==========================================================
@@ -217,18 +216,18 @@ export class ErrorBus {
    * @description Logs debug information about the ErrorBus to the console.
    */
   debug(): void {
-    console.group('🚌 ErrorBus Debug');
-    console.log('Total errors:', this.count());
-    console.log('Fatal errors:', this.hasFatalErrors());
+    console.group('🚌 ErrorBus Debug')
+    console.log('Total errors:', this.count())
+    console.log('Fatal errors:', this.hasFatalErrors())
     console.log('Errors by stage:', {
       lexer: this.getByStage('lexer').length,
       parser: this.getByStage('parser').length,
       builder: this.getByStage('builder').length,
       renderer: this.getByStage('renderer').length,
       editor: this.getByStage('editor').length,
-    });
-    console.table(this.errors);
-    console.groupEnd();
+    })
+    console.table(this.errors)
+    console.groupEnd()
   }
 }
 
@@ -236,4 +235,4 @@ export class ErrorBus {
  * @const errorBus
  * @description The singleton instance of the ErrorBus, for convenient access throughout the application.
  */
-export const errorBus = ErrorBus.get();
+export const errorBus = ErrorBus.get()

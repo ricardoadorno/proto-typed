@@ -1,59 +1,57 @@
-"use client";
+'use client'
 
 import {
-  AlertTriangleIcon,
   BugIcon,
-  FileWarningIcon,
   RefreshCcwIcon,
   WrenchIcon,
   InfoIcon,
   ExternalLinkIcon,
-} from "lucide-react";
-import Link from "next/link";
+} from 'lucide-react'
+import Link from 'next/link'
 
-import { Badge, GlowCard, SectionHeader, Button } from "@/components/ui";
-import { DocsHeader } from "@/components/layouts/components/docs-header";
-import DocsFooter from "@/components/layouts/components/docs-footer";
+import { Badge, GlowCard, SectionHeader, Button } from '@/components/ui'
+import { DocsHeader } from '@/components/layouts/components/docs-header'
+import DocsFooter from '@/components/layouts/components/docs-footer'
 
 type KnownError = {
-  title: string;
-  description: string;
-    cause: string;
-    fix?: string;
-    status: string;
-    severity: "high" | "medium" | "low";
-};
+  title: string
+  description: string
+  cause: string
+  fix?: string
+  status: string
+  severity: 'high' | 'medium' | 'low'
+}
 
 const knownErrors: KnownError[] = [
   {
-    title: "Erro de Indentação",
+    title: 'Erro de Indentação',
     description:
-      "Quando existe uma linha em branco é entendido como fim da identação do componente pai, causando falha na renderização correta dos estilos no tema escuro.",
+      'Quando existe uma linha em branco é entendido como fim da identação do componente pai, causando falha na renderização correta dos estilos no tema escuro.',
     cause:
-      "Problema no parser que entende linhas em branco como término de bloco",
-    status: "Correção em andamento",
-    severity: "medium",
-  }
-];
+      'Problema no parser que entende linhas em branco como término de bloco',
+    status: 'Correção em andamento',
+    severity: 'medium',
+  },
+]
 
-const ErrorSeverityBadge = ({ level }: { level: KnownError["severity"] }) => {
+const ErrorSeverityBadge = ({ level }: { level: KnownError['severity'] }) => {
   const colors: Record<string, string> = {
-    high: "bg-red-500/10 text-red-400 border-red-400/20",
-    medium: "bg-yellow-500/10 text-yellow-400 border-yellow-400/20",
-    low: "bg-green-500/10 text-green-400 border-green-400/20",
-  };
+    high: 'bg-red-500/10 text-red-400 border-red-400/20',
+    medium: 'bg-yellow-500/10 text-yellow-400 border-yellow-400/20',
+    low: 'bg-green-500/10 text-green-400 border-green-400/20',
+  }
 
-  const label = level.charAt(0).toUpperCase() + level.slice(1);
+  const label = level.charAt(0).toUpperCase() + level.slice(1)
 
   return (
     <Badge
       variant="outline"
-      className={`text-xs uppercase tracking-wide ${colors[level] || ""}`}
+      className={`text-xs uppercase tracking-wide ${colors[level] || ''}`}
     >
       {label}
     </Badge>
-  );
-};
+  )
+}
 
 export default function KnownErrorsPage() {
   return (
@@ -87,12 +85,14 @@ export default function KnownErrorsPage() {
                         <strong>Causa:</strong> {error.cause}
                       </span>
                     </p>
-                    {error.fix && <p className="flex items-start gap-2">
-                      <WrenchIcon className="mt-0.5 h-4 w-4 text-[var(--accent)]" />
-                      <span>
-                        <strong>Correção:</strong> {error.fix}
-                      </span>
-                    </p>}
+                    {error.fix && (
+                      <p className="flex items-start gap-2">
+                        <WrenchIcon className="mt-0.5 h-4 w-4 text-[var(--accent)]" />
+                        <span>
+                          <strong>Correção:</strong> {error.fix}
+                        </span>
+                      </p>
+                    )}
                     <p className="flex items-start gap-2">
                       <RefreshCcwIcon className="mt-0.5 h-4 w-4 text-[var(--accent)]" />
                       <span>
@@ -131,5 +131,5 @@ export default function KnownErrorsPage() {
         <DocsFooter />
       </div>
     </div>
-  );
+  )
 }

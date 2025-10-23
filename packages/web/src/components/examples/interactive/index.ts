@@ -1,13 +1,13 @@
-import { ExampleCategory } from '../types';
+import { ExampleCategory } from '../types'
 
 /**
  * Interactive component examples including buttons, links, and images with various variants
  */
 export const interactiveExamples: ExampleCategory = {
-  title: "Interactive Elements",
+  title: 'Interactive Elements',
   examples: [
     {
-      name: "Button Variants",
+      name: 'Button Variants',
       code: `screen ButtonVariantsExample:
   # Standard Buttons
   @[Primary Button](action)
@@ -24,10 +24,11 @@ export const interactiveExamples: ExampleCategory = {
   @[Save]{💾}(save)
   @+[Edit]{✏️}(edit)
   @=[Delete]{🗑️}(delete)`,
-      description: "Showcase different button variants using @[variant] syntax with optional icons and actions"
+      description:
+        'Showcase different button variants using @[variant] syntax with optional icons and actions',
     },
     {
-      name: "Navigation Links",
+      name: 'Navigation Links',
       code: `screen NavigationExample:
   # Internal Navigation
   #[Dashboard](dashboard-screen)
@@ -42,10 +43,11 @@ export const interactiveExamples: ExampleCategory = {
   # Simple Links
   #[About Us]
   #[Contact]`,
-      description: "Create navigational links for internal screens and external URLs using #[text](destination) syntax"
+      description:
+        'Create navigational links for internal screens and external URLs using #[text](destination) syntax',
     },
     {
-      name: "Image Gallery",
+      name: 'Image Gallery',
       code: `screen ImageGalleryExample:
   # Profile Images
   ![User Avatar](https://picsum.photos/100/100?random=1)
@@ -58,10 +60,11 @@ export const interactiveExamples: ExampleCategory = {
   # Icons and Graphics
   ![App Icon](https://picsum.photos/64/64?random=5)
   ![Logo](https://picsum.photos/200/80?random=6)`,
-      description: "Display images with alt text using ![alt](url) syntax, supporting various sizes"
+      description:
+        'Display images with alt text using ![alt](url) syntax, supporting various sizes',
     },
     {
-      name: "Interactive Dashboard",
+      name: 'Interactive Dashboard',
       code: `screen InteractiveDashboard:
   # Control Panel
   @[Refresh Data]{🔄}(refresh)
@@ -83,10 +86,11 @@ export const interactiveExamples: ExampleCategory = {
   #[Projects](projects) 
   #[Analytics](analytics)
   #[Team](team)`,
-      description: "Combine buttons, links, and layout elements for an interactive dashboard interface"
+      description:
+        'Combine buttons, links, and layout elements for an interactive dashboard interface',
     },
     {
-      name: "Action Panel",
+      name: 'Action Panel',
       code: `screen ActionPanelExample:
   # Document Actions
   @[Save Document]{💾}(save)
@@ -105,9 +109,10 @@ export const interactiveExamples: ExampleCategory = {
   # Danger Zone
   @![Archive]{📦}(archive)
   @=[Delete Forever]{🗑️}(delete-confirm)`,
-      description: "Organize related actions with separators and appropriate button variants for different action types"
-    }
-  ]
-};
+      description:
+        'Organize related actions with separators and appropriate button variants for different action types',
+    },
+  ],
+}
 
-export default interactiveExamples;
+export default interactiveExamples

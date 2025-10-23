@@ -1,29 +1,69 @@
 import js from '@eslint/js'
 import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
 import tseslint from 'typescript-eslint'
+import prettierConfig from 'eslint-config-prettier'
+import prettierPlugin from 'eslint-plugin-prettier'
 
-export default tseslint.config(
-  { ignores: ['dist'] },
+/**
+ * Base ESLint configuration for the monorepo
+ * This configuration is shared across all packages
+ */
+export default [
+  // Global ignores
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ['**/*.{ts,tsx}'],
+    ignores: [
+      '**/dist/**',
+      '**/out/**',
+      '**/build/**',
+      '**/node_modules/**',
+      '**/.next/**',
+      '**/coverage/**',
+      '**/*.config.js',
+      '**/*.config.mjs',
+      '**/next-env.d.ts',
+      '**/*.tsbuildinfo',
+    ],
+  },
+  // Base configs
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  // Base configuration for all TypeScript files
+  {
+    files: ['**/*.{ts,tsx,js,jsx}'],
     languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+      },
     },
     plugins: {
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
+      prettier: prettierPlugin,
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
+      // Prettier integration
+      'prettier/prettier': 'warn',
+
+      // TypeScript specific rules
+      '@typescript-eslint/no-unused-vars': [
         'warn',
-        { allowConstantExport: true },
-        {}
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
       ],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+
+      // General rules
+      'no-console': 'off', // Permitir console em desenvolvimento
+      'prefer-const': 'warn',
+      'no-useless-escape': 'warn', // Warning ao invés de error
     },
   },
-)
+  // Prettier config must be last to override other formatting rules
+  prettierConfig,
+]

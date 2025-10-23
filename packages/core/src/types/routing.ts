@@ -3,42 +3,42 @@
  * Defines the unified route system for screens and global elements
  */
 
-import { AstNode } from './ast-node';
+import { AstNode } from './ast-node'
 
 /**
  * Base route interface for all navigation elements
  */
 export interface BaseRoute {
   /** Unique identifier for the route */
-  id: string;
+  id: string
   /** Display name */
-  name: string;
+  name: string
   /** The original AST node */
-  node: AstNode;
+  node: AstNode
   /** Route type discriminator */
-  type: 'screen' | 'modal' | 'drawer' | 'component';
+  type: 'screen' | 'modal' | 'drawer' | 'component'
 }
 
 /**
  * Screen route - represents a full screen/page
  */
 export interface ScreenRoute extends BaseRoute {
-  type: 'screen';
+  type: 'screen'
   /** Whether this is the default/initial screen */
-  isDefault: boolean;
+  isDefault: boolean
   /** Screen index for navigation ordering */
-  index: number;
+  index: number
 }
 
 /**
  * Global route - represents modals, drawers, and other overlay elements
  */
 export interface GlobalRoute extends BaseRoute {
-  type: 'modal' | 'drawer' | 'component';
+  type: 'modal' | 'drawer' | 'component'
   /** Whether this element should be initially visible */
-  isVisible: boolean;
+  isVisible: boolean
   /** Parent screen context if applicable */
-  parentScreen?: string;
+  parentScreen?: string
 }
 
 /**
@@ -46,13 +46,13 @@ export interface GlobalRoute extends BaseRoute {
  */
 export interface RouteCollection {
   /** Screen routes indexed by name */
-  screens: Map<string, ScreenRoute>;
+  screens: Map<string, ScreenRoute>
   /** Global routes (modals, drawers) indexed by name */
-  globals: Map<string, GlobalRoute>;
+  globals: Map<string, GlobalRoute>
   /** Default screen identifier */
-  defaultScreen?: string;
+  defaultScreen?: string
   /** Currently active screen */
-  currentScreen?: string;
+  currentScreen?: string
 }
 
 /**
@@ -60,9 +60,9 @@ export interface RouteCollection {
  */
 export interface RouteProcessingOptions {
   /** Current active screen for rendering */
-  currentScreen?: string;
+  currentScreen?: string
   /** Default screen if none specified */
-  defaultScreen?: string;
+  defaultScreen?: string
 }
 
 /**
@@ -70,11 +70,11 @@ export interface RouteProcessingOptions {
  */
 export interface RouteRenderContext {
   /** Collection of all routes */
-  routes: RouteCollection;
+  routes: RouteCollection
   /** Rendering mode */
-  mode: 'preview' | 'document';
+  mode: 'preview' | 'document'
   /** Additional options */
-  options?: RouteProcessingOptions;
+  options?: RouteProcessingOptions
 }
 
 /**
@@ -82,17 +82,17 @@ export interface RouteRenderContext {
  */
 export interface RouteInfo {
   /** Route identifier */
-  id: string;
+  id: string
   /** Display name */
-  name: string;
+  name: string
   /** Route type */
-  type: 'screen' | 'modal' | 'drawer' | 'component';
+  type: 'screen' | 'modal' | 'drawer' | 'component'
   /** Whether this route is currently active/visible */
-  isActive?: boolean;
+  isActive?: boolean
   /** Whether this is the default screen */
-  isDefault?: boolean;
+  isDefault?: boolean
   /** Screen index (for screens only) */
-  index?: number;
+  index?: number
 }
 
 /**
@@ -100,42 +100,42 @@ export interface RouteInfo {
  */
 export interface RouteMetadata {
   /** Available screens */
-  screens: RouteInfo[];
+  screens: RouteInfo[]
   /** Available components */
-  components: RouteInfo[];
+  components: RouteInfo[]
   /** Available modals */
-  modals: RouteInfo[];
+  modals: RouteInfo[]
   /** Available drawers */
-  drawers: RouteInfo[];
+  drawers: RouteInfo[]
   /** Default screen identifier */
-  defaultScreen?: string;
+  defaultScreen?: string
   /** Currently active screen */
-  currentScreen?: string;
+  currentScreen?: string
   /** Total count of all routes */
-  totalRoutes: number;
+  totalRoutes: number
   /** Navigation history */
-  navigationHistory: string[];
+  navigationHistory: string[]
   /** Current position in navigation history */
-  currentHistoryIndex: number;
+  currentHistoryIndex: number
   /** Whether back navigation is possible */
-  canNavigateBack: boolean;
+  canNavigateBack: boolean
 }
 
 /**
  * Available routes information for navigation analysis
  */
 export interface RouteContext {
-  screens: string[];
-  modals: string[];
-  drawers: string[];
-  components: string[];
+  screens: string[]
+  modals: string[]
+  drawers: string[]
+  components: string[]
 }
 
 /**
  * Navigation target analysis result
  */
 export interface NavigationTarget {
-  type: 'internal' | 'external' | 'action' | 'toggle' | 'back';
-  value: string;
-  isValid: boolean;
+  type: 'internal' | 'external' | 'action' | 'toggle' | 'back'
+  value: string
+  isValid: boolean
 }

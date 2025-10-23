@@ -3,12 +3,9 @@
  * Handles screens, modals, and drawers
  */
 
-import type { CstNode } from "chevrotain";
-import { validateViewName } from './builder-validation';
-
-type Context = {
-  [key: string]: any;
-};
+import type { CstNode } from 'chevrotain'
+import { validateViewName } from './builder-validation'
+import type { CstContext, CstVisitor, IToken } from '../types'
 
 /**
  * @function buildScreen
@@ -19,23 +16,27 @@ type Context = {
  * @param {any} visitor - The CST visitor instance, used to visit child nodes.
  * @returns {object} A 'Screen' AST node.
  */
-export function buildScreen(ctx: Context, visitor: any) {
-  const nameToken = ctx.name[0];
-  const name = nameToken.image;
-  const line = nameToken.startLine;
-  const column = nameToken.startColumn;
-  
+export function buildScreen(ctx: CstContext, visitor: CstVisitor) {
+  const nameToken = ctx.name?.[0] as IToken | undefined
+  if (!nameToken) return { type: 'Screen', id: '', props: {}, children: [] }
+
+  const name = nameToken.image
+  const line = nameToken.startLine ?? 0
+  const column = nameToken.startColumn ?? 0
+
   // Validate screen name format
-  validateViewName(visitor, name, 'Screen', line, column);
-  
-  const children = ctx.element ? ctx.element.map((el: CstNode) => visitor.visit(el)) : [];
+  validateViewName(visitor, name, 'Screen', line, column)
+
+  const children = ctx.element
+    ? ctx.element.map((el) => visitor.visit(el as CstNode))
+    : []
 
   return {
-    type: "Screen",
-    id: "", // ID will be generated later
+    type: 'Screen',
+    id: '', // ID will be generated later
     props: { name },
-    children
-  };
+    children,
+  }
 }
 
 /**
@@ -47,23 +48,27 @@ export function buildScreen(ctx: Context, visitor: any) {
  * @param {any} visitor - The CST visitor instance, used to visit child nodes.
  * @returns {object} A 'Modal' AST node.
  */
-export function buildModal(ctx: Context, visitor: any) {
-  const nameToken = ctx.name[0];
-  const name = nameToken.image;
-  const line = nameToken.startLine;
-  const column = nameToken.startColumn;
-  
+export function buildModal(ctx: CstContext, visitor: CstVisitor) {
+  const nameToken = ctx.name?.[0] as IToken | undefined
+  if (!nameToken) return { type: 'Modal', id: '', props: {}, children: [] }
+
+  const name = nameToken.image
+  const line = nameToken.startLine ?? 0
+  const column = nameToken.startColumn ?? 0
+
   // Validate modal name format
-  validateViewName(visitor, name, 'Modal', line, column);
-  
-  const children = ctx.element ? ctx.element.map((el: CstNode) => visitor.visit(el)) : [];
+  validateViewName(visitor, name, 'Modal', line, column)
+
+  const children = ctx.element
+    ? ctx.element.map((el) => visitor.visit(el as CstNode))
+    : []
 
   return {
-    type: "Modal",
-    id: "", // ID will be generated later
+    type: 'Modal',
+    id: '', // ID will be generated later
     props: { name },
-    children
-  };
+    children,
+  }
 }
 
 /**
@@ -75,21 +80,25 @@ export function buildModal(ctx: Context, visitor: any) {
  * @param {any} visitor - The CST visitor instance, used to visit child nodes.
  * @returns {object} A 'Drawer' AST node.
  */
-export function buildDrawer(ctx: Context, visitor: any) {
-  const nameToken = ctx.name[0];
-  const name = nameToken.image;
-  const line = nameToken.startLine;
-  const column = nameToken.startColumn;
-  
+export function buildDrawer(ctx: CstContext, visitor: CstVisitor) {
+  const nameToken = ctx.name?.[0] as IToken | undefined
+  if (!nameToken) return { type: 'Drawer', id: '', props: {}, children: [] }
+
+  const name = nameToken.image
+  const line = nameToken.startLine ?? 0
+  const column = nameToken.startColumn ?? 0
+
   // Validate drawer name format
-  validateViewName(visitor, name, 'Drawer', line, column);
-  
-  const children = ctx.element ? ctx.element.map((el: CstNode) => visitor.visit(el)) : [];
+  validateViewName(visitor, name, 'Drawer', line, column)
+
+  const children = ctx.element
+    ? ctx.element.map((el) => visitor.visit(el as CstNode))
+    : []
 
   return {
-    type: "Drawer",
-    id: "", // ID will be generated later
+    type: 'Drawer',
+    id: '', // ID will be generated later
     props: { name },
-    children
-  };
+    children,
+  }
 }

@@ -17,6 +17,6 @@ export const testStructuralTokens = `screen TestStructural:
   ---
   
   > End of test
-`;
+`
 
-export default testStructuralTokens;
+export default testStructuralTokens

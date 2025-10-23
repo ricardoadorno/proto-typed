@@ -16,17 +16,20 @@ export const docSections: DocSection[] = [
       {
         slug: 'syntax',
         title: 'Sintaxe básica',
-        description: 'Como escrever blocos DSL, identar e comentar código de forma correta.',
+        description:
+          'Como escrever blocos DSL, identar e comentar código de forma correta.',
       },
       {
         slug: 'screen',
         title: 'Telas (Screens)',
-        description: 'Define o fluxo de visualização: como criar telas, containers e a hierarquia visual principal.',
+        description:
+          'Define o fluxo de visualização: como criar telas, containers e a hierarquia visual principal.',
       },
       {
         slug: 'flow',
         title: 'Fluxo de navegação',
-        description: 'Como as telas se conectam entre si e como o DSL define a experiência de navegação.',
+        description:
+          'Como as telas se conectam entre si e como o DSL define a experiência de navegação.',
       },
     ],
   },
@@ -36,17 +39,20 @@ export const docSections: DocSection[] = [
       {
         slug: 'text',
         title: 'Texto',
-        description: 'Renderiza títulos, subtítulos e parágrafos dentro da interface.',
+        description:
+          'Renderiza títulos, subtítulos e parágrafos dentro da interface.',
       },
       {
         slug: 'icon',
         title: 'Ícone',
-        description: 'Adiciona símbolos visuais ou ícones inline para reforçar significado.',
+        description:
+          'Adiciona símbolos visuais ou ícones inline para reforçar significado.',
       },
       {
         slug: 'button',
         title: 'Botão',
-        description: 'Cria ações interativas com variantes e comportamentos configuráveis.',
+        description:
+          'Cria ações interativas com variantes e comportamentos configuráveis.',
       },
       {
         slug: 'input',
@@ -56,7 +62,8 @@ export const docSections: DocSection[] = [
       {
         slug: 'link',
         title: 'Link',
-        description: 'Cria vínculos de navegação interna ou externa com semântica acessível.',
+        description:
+          'Cria vínculos de navegação interna ou externa com semântica acessível.',
       },
     ],
   },
@@ -66,32 +73,38 @@ export const docSections: DocSection[] = [
       {
         slug: 'container',
         title: 'Container',
-        description: 'Delimita a largura do conteúdo e aplica espaçamento consistente.',
+        description:
+          'Delimita a largura do conteúdo e aplica espaçamento consistente.',
       },
       {
         slug: 'stack',
         title: 'Stack',
-        description: 'Empilha elementos verticalmente com espaçamento automático.',
+        description:
+          'Empilha elementos verticalmente com espaçamento automático.',
       },
       {
         slug: 'row',
         title: 'Linha (Row)',
-        description: 'Organiza elementos horizontalmente e alinha conteúdo lateral.',
+        description:
+          'Organiza elementos horizontalmente e alinha conteúdo lateral.',
       },
       {
         slug: 'grid',
         title: 'Grade (Grid)',
-        description: 'Cria layouts responsivos com múltiplas colunas e alinhamentos flexíveis.',
+        description:
+          'Cria layouts responsivos com múltiplas colunas e alinhamentos flexíveis.',
       },
       {
         slug: 'card',
         title: 'Card',
-        description: 'Agrupa informações em blocos visuais, com fundo e bordas opcionais.',
+        description:
+          'Agrupa informações em blocos visuais, com fundo e bordas opcionais.',
       },
       {
         slug: 'list',
         title: 'Lista',
-        description: 'Renderiza coleções repetitivas de elementos ou componentes.',
+        description:
+          'Renderiza coleções repetitivas de elementos ou componentes.',
       },
     ],
   },
@@ -106,17 +119,20 @@ export const docSections: DocSection[] = [
       {
         slug: 'modal',
         title: 'Modal',
-        description: 'Janela sobreposta usada para ações rápidas e confirmação de eventos.',
+        description:
+          'Janela sobreposta usada para ações rápidas e confirmação de eventos.',
       },
       {
         slug: 'drawer',
         title: 'Drawer',
-        description: 'Painel lateral persistente usado para contexto adicional.',
+        description:
+          'Painel lateral persistente usado para contexto adicional.',
       },
       {
         slug: 'fab',
         title: 'Botão Flutuante (FAB)',
-        description: 'Ação global e persistente exibida sobre o conteúdo principal.',
+        description:
+          'Ação global e persistente exibida sobre o conteúdo principal.',
       },
     ],
   },
@@ -126,12 +142,14 @@ export const docSections: DocSection[] = [
       {
         slug: 'component-definition',
         title: 'Definição de componente',
-        description: 'Como declarar componentes reutilizáveis e suas propriedades (%props).',
+        description:
+          'Como declarar componentes reutilizáveis e suas propriedades (%props).',
       },
       {
         slug: 'component-props',
         title: 'Propriedades de componente',
-        description: 'Como interpolar valores, criar placeholders e passar parâmetros dinâmicos.',
+        description:
+          'Como interpolar valores, criar placeholders e passar parâmetros dinâmicos.',
       },
       {
         slug: 'component-composition',
@@ -151,7 +169,8 @@ export const docSections: DocSection[] = [
       {
         slug: 'themes',
         title: 'Temas',
-        description: 'Configura e personaliza o tema visual — cores, espaçamentos e tipografia.',
+        description:
+          'Configura e personaliza o tema visual — cores, espaçamentos e tipografia.',
       },
     ],
   },
@@ -161,17 +180,20 @@ export const docSections: DocSection[] = [
       {
         slug: 'naming',
         title: 'Nomeação e consistência',
-        description: 'Regras para nomear componentes, props e arquivos de forma padronizada.',
+        description:
+          'Regras para nomear componentes, props e arquivos de forma padronizada.',
       },
       {
         slug: 'composition-guidelines',
         title: 'Diretrizes de composição',
-        description: 'Como combinar elementos sem gerar redundância ou conflito visual.',
+        description:
+          'Como combinar elementos sem gerar redundância ou conflito visual.',
       },
       {
         slug: 'error-patterns',
         title: 'Erros comuns',
-        description: 'Catálogo de anti-padrões (Do/Don’t) com soluções práticas.',
+        description:
+          'Catálogo de anti-padrões (Do/Don’t) com soluções práticas.',
       },
     ],
   },
@@ -186,12 +208,14 @@ export const docSections: DocSection[] = [
       {
         slug: 'dashboard',
         title: 'Dashboard',
-        description: 'Tela principal com cards de métricas e navegação lateral.',
+        description:
+          'Tela principal com cards de métricas e navegação lateral.',
       },
       {
         slug: 'drawer-detail',
         title: 'Detalhe no Drawer',
-        description: 'Mostra como exibir informações dinâmicas em um painel lateral.',
+        description:
+          'Mostra como exibir informações dinâmicas em um painel lateral.',
       },
       {
         slug: 'modal-flow',
@@ -201,7 +225,8 @@ export const docSections: DocSection[] = [
       {
         slug: 'list-cards',
         title: 'Listagem de Cards',
-        description: 'Composição entre List e Card para exibir coleções dinâmicas.',
+        description:
+          'Composição entre List e Card para exibir coleções dinâmicas.',
       },
     ],
   },

@@ -1,11 +1,11 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { Command as CommandPrimitive } from "cmdk"
-import { Search } from "lucide-react"
+import * as React from 'react'
+import { Command as CommandPrimitive } from 'cmdk'
+import { Search } from 'lucide-react'
 
-import { cn } from "@/lib/utils"
-import { Dialog, DialogContent } from "./dialog"
+import { cn } from '@/lib/utils'
+import { Dialog, DialogContent } from './dialog'
 
 /**
  * @function Command
@@ -20,7 +20,7 @@ const Command = React.forwardRef<
   <CommandPrimitive
     ref={ref}
     className={cn(
-      "flex h-full w-full flex-col overflow-hidden rounded-xl border border-[var(--border-muted)] bg-[var(--bg-surface)] text-[var(--fg-primary)] shadow-xl",
+      'flex h-full w-full flex-col overflow-hidden rounded-xl border border-[var(--border-muted)] bg-[var(--bg-surface)] text-[var(--fg-primary)] shadow-xl',
       className
     )}
     {...props}
@@ -45,7 +45,11 @@ interface CommandDialogProps extends React.ComponentProps<typeof Dialog> {
  * @param {CommandDialogProps} props - The props for the component.
  * @returns {React.ReactElement} The rendered command dialog.
  */
-const CommandDialog = ({ children, searchPlaceholder = "Buscar", ...props }: CommandDialogProps) => (
+const CommandDialog = ({
+  children,
+  searchPlaceholder = 'Buscar',
+  ...props
+}: CommandDialogProps) => (
   <Dialog {...props}>
     <DialogContent className="max-h-[80vh] w-[90vw] max-w-[640px] overflow-hidden border-none bg-transparent p-0 shadow-none outline-none">
       <Command>
@@ -74,7 +78,7 @@ const CommandList = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.List
     ref={ref}
-    className={cn("max-h-[360px] overflow-y-auto px-2 py-2 text-sm", className)}
+    className={cn('max-h-[360px] overflow-y-auto px-2 py-2 text-sm', className)}
     {...props}
   />
 ))
@@ -92,7 +96,10 @@ const CommandEmpty = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.Empty
     ref={ref}
-    className={cn("px-4 py-8 text-center text-sm text-[var(--fg-secondary)]", className)}
+    className={cn(
+      'px-4 py-8 text-center text-sm text-[var(--fg-secondary)]',
+      className
+    )}
     {...props}
   />
 ))
@@ -111,7 +118,7 @@ const CommandGroup = React.forwardRef<
   <CommandPrimitive.Group
     ref={ref}
     className={cn(
-      "overflow-hidden rounded-lg border border-transparent px-2 py-2 text-[var(--fg-secondary)] [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-2 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:font-semibold [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-[0.32em]",
+      'overflow-hidden rounded-lg border border-transparent px-2 py-2 text-[var(--fg-secondary)] [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-2 [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:font-semibold [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-[0.32em]',
       className
     )}
     {...props}
@@ -131,7 +138,7 @@ const CommandSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.Separator
     ref={ref}
-    className={cn("my-2 h-px bg-[var(--border-muted)]", className)}
+    className={cn('my-2 h-px bg-[var(--border-muted)]', className)}
     {...props}
   />
 ))
@@ -150,7 +157,7 @@ const CommandItem = React.forwardRef<
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex cursor-pointer select-none items-center gap-3 rounded-lg px-3 py-2 text-sm text-[var(--fg-primary)] outline-none transition-colors data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-[selected=true]:bg-[var(--surface-hover)]",
+      'relative flex cursor-pointer select-none items-center gap-3 rounded-lg px-3 py-2 text-sm text-[var(--fg-primary)] outline-none transition-colors data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-[selected=true]:bg-[var(--surface-hover)]',
       className
     )}
     {...props}
@@ -164,15 +171,21 @@ CommandItem.displayName = CommandPrimitive.Item.displayName
  * @param {React.HTMLAttributes<HTMLSpanElement>} props - The props for the component.
  * @returns {React.ReactElement} The rendered command shortcut.
  */
-const CommandShortcut = ({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) => {
+const CommandShortcut = ({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLSpanElement>) => {
   return (
     <span
-      className={cn("ml-auto text-xs text-[var(--fg-secondary)] tracking-wider", className)}
+      className={cn(
+        'ml-auto text-xs text-[var(--fg-secondary)] tracking-wider',
+        className
+      )}
       {...props}
     />
   )
 }
-CommandShortcut.displayName = "CommandShortcut"
+CommandShortcut.displayName = 'CommandShortcut'
 
 export {
   Command,

@@ -7,11 +7,11 @@ import {
   useRef,
   useState,
   type ReactNode,
-} from "react"
-import { CheckIcon, CopyIcon } from "lucide-react"
+} from 'react'
+import { CheckIcon, CopyIcon } from 'lucide-react'
 
-import { useParse } from "@/hooks/use-parse"
-import { cn } from "@/lib/utils"
+import { useParse } from '@/hooks/use-parse'
+import { cn } from '@/lib/utils'
 import {
   Button,
   EditorPanel,
@@ -19,8 +19,8 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/components/ui"
-import { DSLEditor } from "../editor"
+} from '@/components/ui'
+import { DSLEditor } from '../editor'
 
 type ChildrenRecord = { props?: { children?: ReactNode } }
 
@@ -31,30 +31,30 @@ export interface DocsCodePreviewProps {
 }
 
 const parseChildrenToText = (node: ReactNode): string => {
-  if (node == null || typeof node === "boolean") return ""
+  if (node == null || typeof node === 'boolean') return ''
 
-  if (typeof node === "string" || typeof node === "number") {
+  if (typeof node === 'string' || typeof node === 'number') {
     return String(node)
   }
 
   if (Array.isArray(node)) {
-    return node.map(parseChildrenToText).join("")
+    return node.map(parseChildrenToText).join('')
   }
 
-  if (typeof node === "object") {
+  if (typeof node === 'object') {
     const record = node as ChildrenRecord
     if (record.props?.children) {
       return parseChildrenToText(record.props.children)
     }
   }
 
-  return ""
+  return ''
 }
 
 const stripDslFence = (raw: string): string => {
-  if (!raw) return ""
+  if (!raw) return ''
 
-  const normalized = raw.replace(/\r/g, "")
+  const normalized = raw.replace(/\r/g, '')
 
   const fencedMatch = /^```(?:dsl)?\n?([\s\S]*?)```$/i.exec(normalized.trim())
   if (fencedMatch) {
@@ -130,9 +130,9 @@ export function DocsCodePreview({
       variant="ghost"
       onClick={handleCopy}
       className={cn(
-        "inline-flex items-center gap-2 rounded-full  bg-[var(--bg-surface)] px-3 text-xs font-medium text-[var(--fg-secondary)] transition-colors hover:border-[var(--accent)] hover:text-[var(--fg-primary)] focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-main)]",
+        'inline-flex items-center gap-2 rounded-full  bg-[var(--bg-surface)] px-3 text-xs font-medium text-[var(--fg-secondary)] transition-colors hover:border-[var(--accent)] hover:text-[var(--fg-primary)] focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-main)]',
         copied &&
-          "border-[var(--accent)] bg-[color:rgba(46,48,60,0.92)] text-[var(--fg-primary)]",
+          'border-[var(--accent)] bg-[color:rgba(46,48,60,0.92)] text-[var(--fg-primary)]'
       )}
     >
       {copied ? (
@@ -151,17 +151,14 @@ export function DocsCodePreview({
 
   const renderEditorPanel = (panelHeightClass: string) => (
     <EditorPanel
-      className={cn(
-        panelHeightClass,
-        " bg-[var(--bg-main)] shadow-none",
-      )}
+      className={cn(panelHeightClass, ' bg-[var(--bg-main)] shadow-none')}
     >
       <PanelHeader title="Proto-Typed" action={copyButton} />
       <div className="flex-1 min-h-0">
         <DSLEditor
           value={normalizedCode}
           options={{
-            lineNumbers: "off",
+            lineNumbers: 'off',
             glyphMargin: false,
             stickyScroll: {
               enabled: false,
@@ -176,7 +173,7 @@ export function DocsCodePreview({
     <div
       className={cn(
         panelHeightClass,
-        "flex flex-col overflow-hidden rounded-3xl border border-[var(--border-muted)] bg-[var(--bg-main)]",
+        'flex flex-col overflow-hidden rounded-3xl border border-[var(--border-muted)] bg-[var(--bg-main)]'
       )}
     >
       <PanelHeader title="Preview Proto-Typed" />
@@ -203,8 +200,8 @@ export function DocsCodePreview({
 
       <div>
         <div className="hidden gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-          {renderEditorPanel("h-[350px]")}
-          {renderPreviewPanel("h-[350px]")}
+          {renderEditorPanel('h-[350px]')}
+          {renderPreviewPanel('h-[350px]')}
         </div>
 
         <Tabs defaultValue="editor" className="space-y-4 lg:hidden">
@@ -223,10 +220,10 @@ export function DocsCodePreview({
             </TabsTrigger>
           </TabsList>
           <TabsContent value="editor" className="mt-0">
-            {renderEditorPanel("h-[420px]")}
+            {renderEditorPanel('h-[420px]')}
           </TabsContent>
           <TabsContent value="preview" className="mt-0">
-            {renderPreviewPanel("h-[420px]")}
+            {renderPreviewPanel('h-[420px]')}
           </TabsContent>
         </Tabs>
       </div>

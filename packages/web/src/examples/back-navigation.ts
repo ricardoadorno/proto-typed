@@ -47,6 +47,6 @@ screen Settings:
     @primary[Ir para Página 2](Page2)
     @secondary[Voltar](-1)
     @outline[Ir para Home](Home)
-`;
+`
 
-export default backNavigationExample;
+export default backNavigationExample

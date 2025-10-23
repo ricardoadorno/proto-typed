@@ -1,13 +1,13 @@
-import { ExampleCategory } from '../types';
+import { ExampleCategory } from '../types'
 
 /**
  * Form and input component examples covering all input types and validation states
  */
 export const formExamples: ExampleCategory = {
-  title: "Form Elements",
+  title: 'Form Elements',
   examples: [
     {
-      name: "Text Inputs",
+      name: 'Text Inputs',
       code: `screen TextInputExample:
   # User Information Form
   ___:Username{Enter your username}
@@ -15,20 +15,22 @@ export const formExamples: ExampleCategory = {
   ___*:Password{Enter secure password}
   ___*:Confirm Password{Confirm your password}
   ___-:User ID{12345}`,
-      description: "Create various text input fields with labels and placeholders. Use ___* for password fields and ___- for disabled fields"
+      description:
+        'Create various text input fields with labels and placeholders. Use ___* for password fields and ___- for disabled fields',
     },
     {
-      name: "Select Dropdowns",
+      name: 'Select Dropdowns',
       code: `screen SelectExample:
   # Selection Fields
   ___:Country{Select your country}[USA | Canada | Mexico | Brazil]
   ___:Language{Choose language}[English | Spanish | French | Portuguese]
   ___:Priority{Set priority}[Low | Medium | High | Critical]
   ___-:Status{Current status}[Active | Inactive | Pending]`,
-      description: "Create dropdown select menus with pipe-separated options. Use ___- for disabled select fields"
+      description:
+        'Create dropdown select menus with pipe-separated options. Use ___- for disabled select fields',
     },
     {
-      name: "Checkboxes",
+      name: 'Checkboxes',
       code: `screen CheckboxExample:
   # Preferences
   [X] Enable notifications
@@ -36,10 +38,11 @@ export const formExamples: ExampleCategory = {
   [ ] Share usage analytics
   [ ] Receive newsletter
   [ ] Beta features access`,
-      description: "Create checkboxes with checked [X] or unchecked [ ] states for multiple selections"
+      description:
+        'Create checkboxes with checked [X] or unchecked [ ] states for multiple selections',
     },
     {
-      name: "Radio Buttons",
+      name: 'Radio Buttons',
       code: `screen RadioExample:
   # Account Type
   (X) Personal Account
@@ -50,10 +53,11 @@ export const formExamples: ExampleCategory = {
   ( ) Light Theme
   (X) Dark Theme
   ( ) Auto Theme`,
-      description: "Create radio button groups where only one option can be selected. Use (X) for selected and ( ) for unselected"
+      description:
+        'Create radio button groups where only one option can be selected. Use (X) for selected and ( ) for unselected',
     },
     {
-      name: "Complete Form",
+      name: 'Complete Form',
       code: `screen CompleteFormExample:
   # Registration Form
   ___:Full Name{Enter your full name}
@@ -74,9 +78,10 @@ export const formExamples: ExampleCategory = {
   
   @[Create Account](submit)
   @_[Cancel](cancel)`,
-      description: "A comprehensive form example combining all input types with proper organization"
-    }
-  ]
-};
+      description:
+        'A comprehensive form example combining all input types with proper organization',
+    },
+  ],
+}
 
-export default formExamples;
+export default formExamples

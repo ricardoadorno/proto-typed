@@ -1,32 +1,29 @@
-"use client"
+'use client'
 
-import type { ReactNode } from "react"
-import { useEffect, useState } from "react"
+import type { ReactNode } from 'react'
+import { useEffect, useState } from 'react'
 
-import DocsFooter from "./components/docs-footer"
-import DocsHeader from "./components/docs-header"
-import DocsSidebar from "./components/docs-sidebar"
-import {
-  ScrollArea,
-  Separator,
-} from "@/components/ui"
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import docSections from "@/utils/toc"
+import DocsFooter from './components/docs-footer'
+import DocsHeader from './components/docs-header'
+import DocsSidebar from './components/docs-sidebar'
+import { ScrollArea, Separator } from '@/components/ui'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import docSections from '@/utils/toc'
 
-const localStorageKey = "docs-sidebar-collapsed"
+const localStorageKey = 'docs-sidebar-collapsed'
 
 export function DocsLayout({ children }: { children: ReactNode }) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
-      useEffect(() => {
-          const storedValue = localStorage.getItem(localStorageKey)
-          if (storedValue !== null) setSidebarCollapsed(storedValue === "true");
-      }, [])
-  
-      const handleCollapseChange = (collapsed: boolean) => {
-          setSidebarCollapsed(collapsed)
-          localStorage.setItem(localStorageKey, collapsed.toString())
-      }
+  useEffect(() => {
+    const storedValue = localStorage.getItem(localStorageKey)
+    if (storedValue !== null) setSidebarCollapsed(storedValue === 'true')
+  }, [])
+
+  const handleCollapseChange = (collapsed: boolean) => {
+    setSidebarCollapsed(collapsed)
+    localStorage.setItem(localStorageKey, collapsed.toString())
+  }
 
   return (
     <div className="min-h-screen bg-[var(--bg-main)] text-[var(--fg-primary)] transition-all duration-300">
@@ -36,23 +33,29 @@ export function DocsLayout({ children }: { children: ReactNode }) {
         {/* SIDEBAR (desktop) */}
         <aside
           className={`relative hidden xl:flex flex-col flex-shrink-0 transition-all duration-300 ease-in-out ${
-            sidebarCollapsed ? "w-[56px]" : "w-[260px]"
+            sidebarCollapsed ? 'w-[56px]' : 'w-[260px]'
           }`}
         >
           <div className="sticky top-[64px] h-[calc(100vh-64px)]  transition-all duration-300">
-            <ScrollArea className={`h-full ${sidebarCollapsed ? "px-2" : "px-4"} py-5`}>
-              {!sidebarCollapsed && (
-                <DocsSidebar sections={docSections} />
-              )}
+            <ScrollArea
+              className={`h-full ${sidebarCollapsed ? 'px-2' : 'px-4'} py-5`}
+            >
+              {!sidebarCollapsed && <DocsSidebar sections={docSections} />}
             </ScrollArea>
 
             {/* BOTÃO DE TOGGLE */}
             <button
               onClick={() => handleCollapseChange(!sidebarCollapsed)}
               className="absolute -right-3 top-1/2 flex h-6 w-6 items-center justify-center rounded-full border border-[var(--border-muted)] bg-[var(--bg-surface)] shadow-sm hover:text-[var(--accent)] transition"
-              aria-label={sidebarCollapsed ? "Mostrar sidebar" : "Esconder sidebar"}
+              aria-label={
+                sidebarCollapsed ? 'Mostrar sidebar' : 'Esconder sidebar'
+              }
             >
-              {sidebarCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+              {sidebarCollapsed ? (
+                <ChevronRight size={20} />
+              ) : (
+                <ChevronLeft size={20} />
+              )}
             </button>
           </div>
         </aside>
@@ -64,7 +67,6 @@ export function DocsLayout({ children }: { children: ReactNode }) {
           <DocsFooter />
         </main>
       </div>
-
     </div>
   )
 }

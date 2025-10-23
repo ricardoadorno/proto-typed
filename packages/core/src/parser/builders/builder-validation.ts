@@ -1,29 +1,31 @@
 /**
  * Builder Validation Helpers
- * 
+ *
  * Utilities for semantic validation during AST building.
  * Collects errors instead of throwing to enable partial AST construction.
  */
 
-import { ERROR_CODES, ProtoError } from "../../types/errors";
-
+import { ERROR_CODES, ProtoError } from '../../types/errors'
+import type { CstVisitor } from '../types'
 
 /**
  * Get error collection array from builder visitor instance
  */
-export function getBuilderErrors(visitor: any): ProtoError[] {
+export function getBuilderErrors(
+  visitor: CstVisitor & { __builderErrors?: ProtoError[] }
+): ProtoError[] {
   if (!visitor.__builderErrors) {
-    visitor.__builderErrors = [];
+    visitor.__builderErrors = []
   }
-  return visitor.__builderErrors;
+  return visitor.__builderErrors
 }
 
 /**
  * Add error to builder error collection
  */
-export function addBuilderError(visitor: any, error: ProtoError) {
-  const errors = getBuilderErrors(visitor);
-  errors.push(error);
+export function addBuilderError(visitor: CstVisitor, error: ProtoError) {
+  const errors = getBuilderErrors(visitor)
+  errors.push(error)
 }
 
 /**
@@ -31,15 +33,15 @@ export function addBuilderError(visitor: any, error: ProtoError) {
  * Returns true if valid, false otherwise (and adds error)
  */
 export function validateRequiredProps(
-  visitor: any,
-  props: Record<string, any>,
+  visitor: CstVisitor,
+  props: Record<string, unknown>,
   required: string[],
   nodeType: string,
   line?: number,
   column?: number
 ): boolean {
-  const missing = required.filter(key => !props[key] || props[key] === '');
-  
+  const missing = required.filter((key) => !props[key] || props[key] === '')
+
   if (missing.length > 0) {
     addBuilderError(visitor, {
       stage: 'builder',
@@ -49,11 +51,11 @@ export function validateRequiredProps(
       nodeType,
       line,
       column,
-    });
-    return false;
+    })
+    return false
   }
-  
-  return true;
+
+  return true
 }
 
 /**
@@ -61,7 +63,7 @@ export function validateRequiredProps(
  * Returns validated modifier or default (and adds error if invalid)
  */
 export function validateLayoutModifier(
-  visitor: any,
+  visitor: CstVisitor,
   modifier: string | undefined,
   validValues: string[],
   defaultValue: string,
@@ -69,8 +71,8 @@ export function validateLayoutModifier(
   line?: number,
   column?: number
 ): string {
-  if (!modifier) return defaultValue;
-  
+  if (!modifier) return defaultValue
+
   if (!validValues.includes(modifier)) {
     addBuilderError(visitor, {
       stage: 'builder',
@@ -81,27 +83,33 @@ export function validateLayoutModifier(
       nodeType,
       line,
       column,
-    });
-    return defaultValue;
+    })
+    return defaultValue
   }
-  
-  return modifier;
+
+  return modifier
 }
 
 /**
  * Validate button variant
  */
 export function validateButtonVariant(
-  visitor: any,
+  visitor: CstVisitor,
   variant: string | undefined,
   line?: number,
   column?: number
 ): string {
   const validVariants = [
-    'primary', 'secondary', 'outline', 'ghost', 
-    'destructive', 'link', 'success', 'warning'
-  ];
-  
+    'primary',
+    'secondary',
+    'outline',
+    'ghost',
+    'destructive',
+    'link',
+    'success',
+    'warning',
+  ]
+
   return validateLayoutModifier(
     visitor,
     variant,
@@ -110,20 +118,20 @@ export function validateButtonVariant(
     'Button',
     line,
     column
-  );
+  )
 }
 
 /**
  * Validate button size
  */
 export function validateButtonSize(
-  visitor: any,
+  visitor: CstVisitor,
   size: string | undefined,
   line?: number,
   column?: number
 ): string {
-  const validSizes = ['xs', 'sm', 'md', 'lg'];
-  
+  const validSizes = ['xs', 'sm', 'md', 'lg']
+
   return validateLayoutModifier(
     visitor,
     size,
@@ -132,25 +140,30 @@ export function validateButtonSize(
     'Button',
     line,
     column
-  );
+  )
 }
 
 /**
  * Validate input type
  */
 export function validateInputType(
-  visitor: any,
+  visitor: CstVisitor,
   inputType: string | undefined,
   line?: number,
   column?: number
 ): string {
   const validTypes = [
-    'text', 'email', 'password', 'number', 
-    'date', 'textarea', 'select'
-  ];
-  
-  if (!inputType) return 'text';
-  
+    'text',
+    'email',
+    'password',
+    'number',
+    'date',
+    'textarea',
+    'select',
+  ]
+
+  if (!inputType) return 'text'
+
   if (!validTypes.includes(inputType)) {
     addBuilderError(visitor, {
       stage: 'builder',
@@ -161,27 +174,27 @@ export function validateInputType(
       nodeType: 'Input',
       line,
       column,
-    });
-    return 'text';
+    })
+    return 'text'
   }
-  
-  return inputType;
+
+  return inputType
 }
 
 /**
  * Validate prop value matches expected type
  */
 export function validatePropType(
-  visitor: any,
+  visitor: CstVisitor,
   propName: string,
-  propValue: any,
+  propValue: unknown,
   expectedType: 'string' | 'number' | 'boolean' | 'array',
   nodeType: string,
   line?: number,
   column?: number
 ): boolean {
-  const actualType = Array.isArray(propValue) ? 'array' : typeof propValue;
-  
+  const actualType = Array.isArray(propValue) ? 'array' : typeof propValue
+
   if (actualType !== expectedType) {
     addBuilderError(visitor, {
       stage: 'builder',
@@ -191,11 +204,11 @@ export function validatePropType(
       nodeType,
       line,
       column,
-    });
-    return false;
+    })
+    return false
   }
-  
-  return true;
+
+  return true
 }
 
 /**
@@ -203,7 +216,7 @@ export function validatePropType(
  * Component names must start with uppercase letter
  */
 export function validateComponentName(
-  visitor: any,
+  visitor: CstVisitor,
   name: string,
   line?: number,
   column?: number
@@ -217,10 +230,10 @@ export function validateComponentName(
       nodeType: 'Component',
       line,
       column,
-    });
-    return false;
+    })
+    return false
   }
-  
+
   if (!/^[A-Z][a-zA-Z0-9_]*$/.test(name)) {
     addBuilderError(visitor, {
       stage: 'builder',
@@ -230,11 +243,11 @@ export function validateComponentName(
       nodeType: 'Component',
       line,
       column,
-    });
-    return false;
+    })
+    return false
   }
-  
-  return true;
+
+  return true
 }
 
 /**
@@ -242,7 +255,7 @@ export function validateComponentName(
  * View names must start with uppercase letter
  */
 export function validateViewName(
-  visitor: any,
+  visitor: CstVisitor,
   name: string,
   viewType: 'Screen' | 'Modal' | 'Drawer',
   line?: number,
@@ -257,10 +270,10 @@ export function validateViewName(
       nodeType: viewType,
       line,
       column,
-    });
-    return false;
+    })
+    return false
   }
-  
+
   if (!/^[A-Z][a-zA-Z0-9_]*$/.test(name)) {
     addBuilderError(visitor, {
       stage: 'builder',
@@ -270,9 +283,9 @@ export function validateViewName(
       nodeType: viewType,
       line,
       column,
-    });
-    return false;
+    })
+    return false
   }
-  
-  return true;
+
+  return true
 }

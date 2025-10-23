@@ -1,9 +1,14 @@
-import { routeManager } from './core/route-manager';
-import { customPropertiesManager } from './core/theme-manager';
-import { setComponentDefinitions } from './nodes/components.node';
-import { renderGlobalElements, renderScreenForDocument } from './infrastructure/html-render-helper';
-import { AstNode } from '../types/ast-node';
-import { RenderOptions } from '../types/render';
+/* eslint-disable no-useless-escape */
+
+import { routeManager } from './core/route-manager'
+import { customPropertiesManager } from './core/theme-manager'
+import { setComponentDefinitions } from './nodes/components.node'
+import {
+  renderGlobalElements,
+  renderScreenForDocument,
+} from './infrastructure/html-render-helper'
+import { AstNode } from '../types/ast-node'
+import { RenderOptions } from '../types/render'
 
 /**
  * @function astToHtmlDocument
@@ -16,38 +21,47 @@ import { RenderOptions } from '../types/render';
  * @returns {string} A string containing the full HTML document.
  * @throws {Error} Throws an error if any part of the rendering process fails.
  */
-export function astToHtmlDocument(ast: AstNode | AstNode[], options: RenderOptions = {}): string {
+export function astToHtmlDocument(
+  ast: AstNode | AstNode[],
+  options: RenderOptions = {}
+): string {
   try {
     // Reset custom properties manager for each document generation
-    customPropertiesManager.reset();
-    
+    customPropertiesManager.reset()
+
     // Process styles first to configure custom properties
-    const astArray = Array.isArray(ast) ? ast : [ast];
-    const stylesNodes = astArray.filter(node => node.type === 'Styles');
-    customPropertiesManager.processStylesConfig(stylesNodes);
-    
+    const astArray = Array.isArray(ast) ? ast : [ast]
+    const stylesNodes = astArray.filter((node) => node.type === 'Styles')
+    customPropertiesManager.processStylesConfig(stylesNodes)
+
     // Process routes through the route manager with possible currentScreen
     routeManager.processRoutes(ast, {
-      currentScreen: options.currentScreen || undefined
-    });
+      currentScreen: options.currentScreen || undefined,
+    })
 
     // Set route context for navigation analysis
-    routeManager.setRouteContext(routeManager.getRouteContext());
+    routeManager.setRouteContext(routeManager.getRouteContext())
 
     // Create render context
     const context = routeManager.createRenderContext('document', {
-      currentScreen: options.currentScreen || undefined
-    });
+      currentScreen: options.currentScreen || undefined,
+    })
 
-    const result = generateDocumentHtml(context);
+    const result = generateDocumentHtml(context)
 
     // Clear after
-    routeManager.clearRouteContext();
-    return result;
-  } catch (error: any) {
-    routeManager.clearRouteContext();
-    throw error;
+    routeManager.clearRouteContext()
+    return result
+  } catch (error: unknown) {
+    routeManager.clearRouteContext()
+    throw error
   }
+}
+
+interface RenderContext {
+  routes: Array<{ name: string; path: string }>
+  globalElements?: unknown[]
+  [key: string]: unknown
 }
 
 /**
@@ -55,34 +69,38 @@ export function astToHtmlDocument(ast: AstNode | AstNode[], options: RenderOptio
  * @description Generates the HTML for the main content of the document, including all screens, global elements, and the navigation script.
  * @private
  *
- * @param {any} context - The render context created by the route manager, containing information about routes and the current screen.
+ * @param {RenderContext} context - The render context created by the route manager, containing information about routes and the current screen.
  * @returns {string} The HTML content of the document.
  */
-function generateDocumentHtml(context: any): string {
-  const { routes } = context;
+function generateDocumentHtml(context: RenderContext): string {
+  const { routes } = context
   // Register components with the renderer
-  const componentRoutes = routeManager.getRoutesByType('component');
-  const componentNodes = componentRoutes.map(route => route.node);
-  setComponentDefinitions(componentNodes);
-  
+  const componentRoutes = routeManager.getRoutesByType('component')
+  const componentNodes = componentRoutes.map((route) => route.node)
+  setComponentDefinitions(componentNodes)
+
   // Generate screens HTML with visibility styles using currentScreen from context
-  const screenRoutes = routeManager.getScreenRoutes();
+  const screenRoutes = routeManager.getScreenRoutes()
   const screensHtml = screenRoutes
-    .filter(route => route.node && route.name)
-    .map((route, index) => renderScreenForDocument(route.node, index, routes.currentScreen))
-    .join('\n\n');
-  
+    .filter((route) => route.node && route.name)
+    .map((route, index) =>
+      renderScreenForDocument(route.node, index, routes.currentScreen)
+    )
+    .join('\n\n')
+
   // Render global elements
-  const globalElementsHtml = renderGlobalElements(routeManager);
-  
+  const globalElementsHtml = renderGlobalElements(routeManager)
+
   // Generate navigation script
-  const navigationScript = generateNavigationScript();
+  const navigationScript = generateNavigationScript()
 
   // Create the full HTML document
-  return generateHtmlDocumentTemplate(screensHtml, globalElementsHtml, navigationScript);
+  return generateHtmlDocumentTemplate(
+    screensHtml,
+    globalElementsHtml,
+    navigationScript
+  )
 }
-
-
 
 /**
  * @function generateHtmlDocumentTemplate
@@ -111,11 +129,11 @@ function generateHtmlDocumentTemplate(
           lucide.createIcons();
         }
       });
-    </script>`
+    </script>`,
   }
 
   // Generate CSS variables from theme and custom properties
-  const allVariables = customPropertiesManager.generateAllCssVariables(true); // Dark mode
+  const allVariables = customPropertiesManager.generateAllCssVariables(true) // Dark mode
 
   return `
 <!DOCTYPE html>
@@ -145,7 +163,7 @@ ${allVariables}
     ${navigationScript}
   </script>
 </body>
-</html>  `.trim();
+</html>  `.trim()
 }
 
 /**
@@ -359,7 +377,9 @@ function generateNavigationScript(): string {
           // Simplified: navValue directly represents the drawer/modal name now
           // Maintain legacy pattern support (toggleName()) if detected
           let directName = navValue;
+          // eslint-disable-next-line no-useless-escape
           if (/^toggle\w+\(\)$/.test(navValue)) {
+            // eslint-disable-next-line no-useless-escape
             const m = navValue.match(/^toggle(\w+)\(\)$/);
             directName = m ? m[1].toLowerCase() : navValue;
           }
@@ -401,5 +421,5 @@ function generateNavigationScript(): string {
       // DOM is already ready, initialize immediately
       initializeNavigation();
     }
-  `;
+  `
 }

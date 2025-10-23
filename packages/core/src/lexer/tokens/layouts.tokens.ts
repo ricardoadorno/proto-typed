@@ -1,4 +1,4 @@
-import { createToken } from "chevrotain";
+import { createToken } from 'chevrotain'
 
 // Canonical Layout Tokens
 // Preset layouts that cover common UI patterns without modifiers
@@ -13,172 +13,172 @@ import { createToken } from "chevrotain";
 // - Special: header, sidebar, list
 
 // Container Layouts
-export const ContainerNarrow = createToken({ 
-  name: "ContainerNarrow", 
+export const ContainerNarrow = createToken({
+  name: 'ContainerNarrow',
   pattern: /container-narrow/,
-  label: "container-narrow"
-});
+  label: 'container-narrow',
+})
 
-export const ContainerWide = createToken({ 
-  name: "ContainerWide", 
+export const ContainerWide = createToken({
+  name: 'ContainerWide',
   pattern: /container-wide/,
-  label: "container-wide"
-});
+  label: 'container-wide',
+})
 
-export const ContainerFull = createToken({ 
-  name: "ContainerFull", 
+export const ContainerFull = createToken({
+  name: 'ContainerFull',
   pattern: /container-full/,
-  label: "container-full"
-});
+  label: 'container-full',
+})
 
-export const Container = createToken({ 
-  name: "Container", 
+export const Container = createToken({
+  name: 'Container',
   pattern: /container/,
-  label: "container",
-  longer_alt: ContainerNarrow
-});
+  label: 'container',
+  longer_alt: ContainerNarrow,
+})
 
 // Stack Layouts (Vertical)
-export const Stack = createToken({ 
-  name: "Stack", 
+export const Stack = createToken({
+  name: 'Stack',
   pattern: /stack/,
-  label: "stack"
-});
+  label: 'stack',
+})
 
-export const StackTight = createToken({ 
-  name: "StackTight", 
+export const StackTight = createToken({
+  name: 'StackTight',
   pattern: /stack-tight/,
-  label: "stack-tight"
-});
+  label: 'stack-tight',
+})
 
-export const StackLoose = createToken({ 
-  name: "StackLoose", 
+export const StackLoose = createToken({
+  name: 'StackLoose',
   pattern: /stack-loose/,
-  label: "stack-loose"
-});
+  label: 'stack-loose',
+})
 
 export const StackFlush = createToken({
-  name: "StackFlush",
+  name: 'StackFlush',
   pattern: /stack-flush/,
-  label: "stack-flush"
-});
+  label: 'stack-flush',
+})
 
 // Row Layouts (Horizontal)
-export const RowStart = createToken({ 
-  name: "RowStart", 
+export const RowStart = createToken({
+  name: 'RowStart',
   pattern: /row-start/,
-  label: "row-start"
-});
+  label: 'row-start',
+})
 
-export const RowCenter = createToken({ 
-  name: "RowCenter", 
+export const RowCenter = createToken({
+  name: 'RowCenter',
   pattern: /row-center/,
-  label: "row-center"
-});
+  label: 'row-center',
+})
 
-export const RowBetween = createToken({ 
-  name: "RowBetween", 
+export const RowBetween = createToken({
+  name: 'RowBetween',
   pattern: /row-between/,
-  label: "row-between"
-});
+  label: 'row-between',
+})
 
-export const RowEnd = createToken({ 
-  name: "RowEnd", 
+export const RowEnd = createToken({
+  name: 'RowEnd',
   pattern: /row-end/,
-  label: "row-end"
-});
+  label: 'row-end',
+})
 
 // Column Layout
-export const Col = createToken({ 
-  name: "Col", 
+export const Col = createToken({
+  name: 'Col',
   pattern: /col/,
-  label: "col"
-});
+  label: 'col',
+})
 
 // Grid Layouts
-export const Grid2 = createToken({ 
-  name: "Grid2", 
+export const Grid2 = createToken({
+  name: 'Grid2',
   pattern: /grid-2/,
-  label: "grid-2"
-});
+  label: 'grid-2',
+})
 
-export const Grid3 = createToken({ 
-  name: "Grid3", 
+export const Grid3 = createToken({
+  name: 'Grid3',
   pattern: /grid-3/,
-  label: "grid-3"
-});
+  label: 'grid-3',
+})
 
-export const Grid4 = createToken({ 
-  name: "Grid4", 
+export const Grid4 = createToken({
+  name: 'Grid4',
   pattern: /grid-4/,
-  label: "grid-4"
-});
+  label: 'grid-4',
+})
 
-export const GridAuto = createToken({ 
-  name: "GridAuto", 
+export const GridAuto = createToken({
+  name: 'GridAuto',
   pattern: /grid-auto/,
-  label: "grid-auto"
-});
+  label: 'grid-auto',
+})
 
 // Card Layouts
-export const Card = createToken({ 
-  name: "Card", 
+export const Card = createToken({
+  name: 'Card',
   pattern: /card/,
-  label: "card"
-});
+  label: 'card',
+})
 
-export const CardCompact = createToken({ 
-  name: "CardCompact", 
+export const CardCompact = createToken({
+  name: 'CardCompact',
   pattern: /card-compact/,
-  label: "card-compact"
-});
+  label: 'card-compact',
+})
 
-export const CardFeature = createToken({ 
-  name: "CardFeature", 
+export const CardFeature = createToken({
+  name: 'CardFeature',
   pattern: /card-feature/,
-  label: "card-feature"
-});
+  label: 'card-feature',
+})
 
 // Special Layouts
-export const Header = createToken({ 
-  name: "Header", 
+export const Header = createToken({
+  name: 'Header',
   pattern: /header/,
-  label: "header"
-});
+  label: 'header',
+})
 
-export const Sidebar = createToken({ 
-  name: "Sidebar", 
+export const Sidebar = createToken({
+  name: 'Sidebar',
   pattern: /sidebar/,
-  label: "sidebar"
-});
+  label: 'sidebar',
+})
 
 // Structural Elements (now part of layouts)
-export const List = createToken({ 
-  name: "List", 
+export const List = createToken({
+  name: 'List',
   pattern: /list/,
-  label: "list"
-});
+  label: 'list',
+})
 
 export const Navigator = createToken({
-  name: "Navigator",
+  name: 'Navigator',
   pattern: /navigator/,
-  label: "navigator"
-});
+  label: 'navigator',
+})
 
 export const Fab = createToken({
-  name: "Fab",
+  name: 'Fab',
   pattern: /fab/,
-  label: "fab"
-});
+  label: 'fab',
+})
 
 export const UnorderedListItem = createToken({
-  name: "UnorderedListItem",
+  name: 'UnorderedListItem',
   pattern: /-\s+[^\n\r]+/,
-  label: "- list item"
-});
+  label: '- list item',
+})
 
 export const Separator = createToken({
-  name: "Separator", 
+  name: 'Separator',
   pattern: /---/,
-  label: "---"
-});
+  label: '---',
+})

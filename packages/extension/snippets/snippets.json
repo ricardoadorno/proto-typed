@@ -1,13 +1,7 @@
 {
   "screen": {
     "prefix": "screen",
-    "body": [
-      "screen ${1:ScreenName} {",
-      "\tlayout {",
-      "\t\t",
-      "\t}",
-      "}"
-    ],
+    "body": ["screen ${1:ScreenName} {", "\tlayout {", "\t\t", "\t}", "}"],
     "description": "Create a new screen"
   },
   "component": {
@@ -71,44 +65,22 @@
   },
   "layout": {
     "prefix": "layout",
-    "body": [
-      "layout {",
-      "\t",
-      "}"
-    ],
+    "body": ["layout {", "\t", "}"],
     "description": "Create a layout block"
   },
   "row": {
     "prefix": "row",
-    "body": [
-      "element row {",
-      "\tlayout {",
-      "\t\t",
-      "\t}",
-      "}"
-    ],
+    "body": ["element row {", "\tlayout {", "\t\t", "\t}", "}"],
     "description": "Create a row layout element"
   },
   "column": {
     "prefix": "column",
-    "body": [
-      "element column {",
-      "\tlayout {",
-      "\t\t",
-      "\t}",
-      "}"
-    ],
+    "body": ["element column {", "\tlayout {", "\t\t", "\t}", "}"],
     "description": "Create a column layout element"
   },
   "styles": {
     "prefix": "styles",
-    "body": [
-      "styles {",
-      "\tcolors {",
-      "\t\t",
-      "\t}",
-      "}"
-    ],
+    "body": ["styles {", "\tcolors {", "\t\t", "\t}", "}"],
     "description": "Create a styles block"
   }
 }

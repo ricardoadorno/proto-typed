@@ -1,9 +1,9 @@
-import { createToken, createTokenInstance, Lexer } from "chevrotain";
-import { allTokens } from "./tokens/index";
-import { IToken, CustomPatternMatcherReturn } from 'chevrotain';
+import { createToken, createTokenInstance, Lexer } from 'chevrotain'
+import { allTokens } from './tokens/index'
+import { IToken, CustomPatternMatcherReturn } from 'chevrotain'
 
 // State required for matching the indentations
-let indentStack = [0];
+let indentStack = [0]
 
 /**
  * @function matchIndentBase
@@ -19,60 +19,72 @@ let indentStack = [0];
  * @param {string} type - A string that specifies whether this function should match 'indent' or 'outdent' tokens.
  * @returns {CustomPatternMatcherReturn | RegExpExecArray | null} A match object if an indent or outdent is found, otherwise null.
  */
-function matchIndentBase(text: string, offset: number, matchedTokens: IToken[], groups: { nl?: IToken[] }, type: string): CustomPatternMatcherReturn | RegExpExecArray | null {
-  const noTokensMatchedYet = matchedTokens.length === 0;
-  const newLines = groups.nl || [];
-  const noNewLinesMatchedYet = newLines.length === 0;
-  const isFirstLine = noTokensMatchedYet && noNewLinesMatchedYet;
+function matchIndentBase(
+  text: string,
+  offset: number,
+  matchedTokens: IToken[],
+  groups: { nl?: IToken[] },
+  type: string
+): CustomPatternMatcherReturn | RegExpExecArray | null {
+  const noTokensMatchedYet = matchedTokens.length === 0
+  const newLines = groups.nl || []
+  const noNewLinesMatchedYet = newLines.length === 0
+  const isFirstLine = noTokensMatchedYet && noNewLinesMatchedYet
   const isStartOfLine =
     (noTokensMatchedYet && !noNewLinesMatchedYet) ||
-    (!noTokensMatchedYet && !noNewLinesMatchedYet && newLines.length > 0 && offset === newLines[newLines.length - 1]!.startOffset + 1);
+    (!noTokensMatchedYet &&
+      !noNewLinesMatchedYet &&
+      newLines.length > 0 &&
+      offset === newLines[newLines.length - 1]!.startOffset + 1)
 
   if (isFirstLine || isStartOfLine) {
-      let match;
-      let currIndentLevel = 0;
-      const wsRegExp = / +/y;
-      wsRegExp.lastIndex = offset;
-      match = wsRegExp.exec(text);
+    let currIndentLevel = 0
+    const wsRegExp = / +/y
+    wsRegExp.lastIndex = offset
+    const match = wsRegExp.exec(text)
 
-      if (match !== null) {
-          currIndentLevel = match[0].length;
-      }
+    if (match !== null) {
+      currIndentLevel = match[0].length
+    }
 
-      const prevIndentLevel = indentStack[indentStack.length - 1] || 0;
-      const nextChar = text[currIndentLevel + offset];
-      if (!nextChar || nextChar === '\n' || nextChar === '\r') {
+    const prevIndentLevel = indentStack[indentStack.length - 1] || 0
+    const nextChar = text[currIndentLevel + offset]
+    if (!nextChar || nextChar === '\n' || nextChar === '\r') {
       // linha vazia ou só com espaços, ignore
-      return null;
+      return null
+    }
+    if (currIndentLevel > prevIndentLevel && type === 'indent') {
+      indentStack.push(currIndentLevel)
+      return match
+    } else if (currIndentLevel < prevIndentLevel && type === 'outdent') {
+      const matchIndentIndex = [...indentStack]
+        .reverse()
+        .findIndex((stackIndentDepth) => stackIndentDepth === currIndentLevel)
+      const finalMatchIndex =
+        matchIndentIndex === -1 ? -1 : indentStack.length - 1 - matchIndentIndex
+
+      if (finalMatchIndex === -1) {
+        throw Error(`invalid outdent at offset: ${offset}`)
       }
-      if (currIndentLevel > prevIndentLevel && type === "indent") {
-          indentStack.push(currIndentLevel);
-          return match;
-      } else if (currIndentLevel < prevIndentLevel && type === "outdent") {          const matchIndentIndex = [...indentStack].reverse().findIndex(
-              (stackIndentDepth) => stackIndentDepth === currIndentLevel,
-          );
-          const finalMatchIndex = matchIndentIndex === -1 ? -1 : indentStack.length - 1 - matchIndentIndex;
 
-          if (finalMatchIndex === -1) {
-              throw Error(`invalid outdent at offset: ${offset}`);
-          }
-
-          const numberOfDedents = indentStack.length - finalMatchIndex - 1;
-          let iStart = match !== null ? 1 : 0;
-          for (let i = iStart; i < numberOfDedents; i++) {
-              indentStack.pop();
-              matchedTokens.push(createTokenInstance(Outdent, "", NaN, NaN, NaN, NaN, NaN, NaN));
-          }
-
-          if (iStart === 1) {
-              indentStack.pop();
-          }
-          return match;
-      } else {
-          return null;
+      const numberOfDedents = indentStack.length - finalMatchIndex - 1
+      const iStart = match !== null ? 1 : 0
+      for (let i = iStart; i < numberOfDedents; i++) {
+        indentStack.pop()
+        matchedTokens.push(
+          createTokenInstance(Outdent, '', NaN, NaN, NaN, NaN, NaN, NaN)
+        )
       }
+
+      if (iStart === 1) {
+        indentStack.pop()
+      }
+      return match
+    } else {
+      return null
+    }
   } else {
-      return null;
+    return null
   }
 }
 
@@ -85,8 +97,12 @@ function matchIndentBase(text: string, offset: number, matchedTokens: IToken[], 
  * @param {object} groups - An object containing token groups that have already been lexed.
  * @returns {CustomPatternMatcherReturn | RegExpExecArray | null} A match object if an indent is found, otherwise null.
  */
-export const matchIndent = (text: string, offset: number, matchedTokens: IToken[], groups: { nl?: IToken[] }) => 
-  matchIndentBase(text, offset, matchedTokens, groups, "indent");
+export const matchIndent = (
+  text: string,
+  offset: number,
+  matchedTokens: IToken[],
+  groups: { nl?: IToken[] }
+) => matchIndentBase(text, offset, matchedTokens, groups, 'indent')
 
 /**
  * @function matchOutdent
@@ -97,8 +113,12 @@ export const matchIndent = (text: string, offset: number, matchedTokens: IToken[
  * @param {object} groups - An object containing token groups that have already been lexed.
  * @returns {CustomPatternMatcherReturn | RegExpExecArray | null} A match object if an outdent is found, otherwise null.
  */
-export const matchOutdent = (text: string, offset: number, matchedTokens: IToken[], groups: { nl?: IToken[] }) => 
-  matchIndentBase(text, offset, matchedTokens, groups, "outdent");
+export const matchOutdent = (
+  text: string,
+  offset: number,
+  matchedTokens: IToken[],
+  groups: { nl?: IToken[] }
+) => matchIndentBase(text, offset, matchedTokens, groups, 'outdent')
 
 /**
  * @const Indent
@@ -106,11 +126,11 @@ export const matchOutdent = (text: string, offset: number, matchedTokens: IToken
  * It uses the custom `matchIndent` pattern to be recognized.
  */
 export const Indent = createToken({
-  name: "Indent",
+  name: 'Indent',
   line_breaks: false,
   pattern: matchIndent,
-  label: "indentation (spaces)"
-});
+  label: 'indentation (spaces)',
+})
 
 /**
  * @const Outdent
@@ -118,18 +138,18 @@ export const Indent = createToken({
  * It uses the custom `matchOutdent` pattern to be recognized.
  */
 export const Outdent = createToken({
-  name: "Outdent",
+  name: 'Outdent',
   line_breaks: false,
   pattern: matchOutdent,
-  label: "outdentation (dedent)"
-});
+  label: 'outdentation (dedent)',
+})
 
 /**
  * @const lexer
  * @description The main lexer instance for the UI DSL. It is configured with all the defined tokens,
  * including the custom 'Indent' and 'Outdent' tokens.
  */
-export const lexer = new Lexer([Indent,Outdent,...allTokens]);
+export const lexer = new Lexer([Indent, Outdent, ...allTokens])
 
 /**
  * @function tokenize
@@ -141,26 +161,25 @@ export const lexer = new Lexer([Indent,Outdent,...allTokens]);
  * @returns {object} The result of the tokenization process, which includes the array of tokens and any errors that occurred.
  */
 export function tokenize(text: string) {
-    // have to reset the indent stack between processing of different text inputs
-    indentStack = [0];
+  // have to reset the indent stack between processing of different text inputs
+  indentStack = [0]
 
-    const lexResult = lexer.tokenize(text);
-    
-  
-    //add remaining Outdents
-    while (indentStack.length > 1) {
-      lexResult.tokens.push(
-        createTokenInstance(Outdent, "", NaN, NaN, NaN, NaN, NaN, NaN),
-      );
-      indentStack.pop();
-    }
-  
-    // Don't throw - return errors for graceful handling by parser
-    // This allows error recovery and prevents crashes
-    // if (lexResult.errors.length > 0) {
-    //   throw new Error("Lexer errors detected: " + 
-    //     JSON.stringify(lexResult.errors, null, 2));
-    // }
+  const lexResult = lexer.tokenize(text)
 
-    return lexResult;
+  //add remaining Outdents
+  while (indentStack.length > 1) {
+    lexResult.tokens.push(
+      createTokenInstance(Outdent, '', NaN, NaN, NaN, NaN, NaN, NaN)
+    )
+    indentStack.pop()
+  }
+
+  // Don't throw - return errors for graceful handling by parser
+  // This allows error recovery and prevents crashes
+  // if (lexResult.errors.length > 0) {
+  //   throw new Error("Lexer errors detected: " +
+  //     JSON.stringify(lexResult.errors, null, 2));
+  // }
+
+  return lexResult
 }

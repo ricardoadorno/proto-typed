@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import * as BreadcrumbPrimitive from "@radix-ui/react-navigation-menu"
+import * as React from 'react'
+import * as BreadcrumbPrimitive from '@radix-ui/react-navigation-menu'
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils'
 
 /**
  * @function Breadcrumb
@@ -17,11 +17,11 @@ const Breadcrumb = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <BreadcrumbPrimitive.Root
     ref={ref}
-    className={cn("flex flex-wrap items-center gap-2 text-xs", className)}
+    className={cn('flex flex-wrap items-center gap-2 text-xs', className)}
     {...props}
   />
 ))
-Breadcrumb.displayName = "Breadcrumb"
+Breadcrumb.displayName = 'Breadcrumb'
 
 /**
  * @function BreadcrumbList
@@ -35,11 +35,11 @@ const BreadcrumbList = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <BreadcrumbPrimitive.List
     ref={ref}
-    className={cn("flex items-center gap-2", className)}
+    className={cn('flex items-center gap-2', className)}
     {...props}
   />
 ))
-BreadcrumbList.displayName = "BreadcrumbList"
+BreadcrumbList.displayName = 'BreadcrumbList'
 
 const BreadcrumbItem = BreadcrumbPrimitive.Item
 
@@ -56,13 +56,13 @@ const BreadcrumbLink = React.forwardRef<
   <BreadcrumbPrimitive.Link
     ref={ref}
     className={cn(
-      "font-semibold uppercase tracking-[0.32em] text-[var(--fg-secondary)] transition-colors hover:text-[var(--accent-light)]",
+      'font-semibold uppercase tracking-[0.32em] text-[var(--fg-secondary)] transition-colors hover:text-[var(--accent-light)]',
       className
     )}
     {...props}
   />
 ))
-BreadcrumbLink.displayName = "BreadcrumbLink"
+BreadcrumbLink.displayName = 'BreadcrumbLink'
 
 /**
  * @function BreadcrumbSeparator
@@ -77,13 +77,13 @@ const BreadcrumbSeparator = ({
 }: React.HTMLAttributes<HTMLSpanElement>) => (
   <span
     role="presentation"
-    className={cn("select-none text-[var(--fg-secondary)]", className)}
+    className={cn('select-none text-[var(--fg-secondary)]', className)}
     {...props}
   >
-    {children ?? "›"}
+    {children ?? '›'}
   </span>
 )
-BreadcrumbSeparator.displayName = "BreadcrumbSeparator"
+BreadcrumbSeparator.displayName = 'BreadcrumbSeparator'
 
 /**
  * @function BreadcrumbPage
@@ -99,13 +99,13 @@ const BreadcrumbPage = React.forwardRef<
     ref={ref}
     aria-current="page"
     className={cn(
-      "font-semibold uppercase tracking-[0.32em] text-[var(--fg-primary)]",
+      'font-semibold uppercase tracking-[0.32em] text-[var(--fg-primary)]',
       className
     )}
     {...props}
   />
 ))
-BreadcrumbPage.displayName = "BreadcrumbPage"
+BreadcrumbPage.displayName = 'BreadcrumbPage'
 
 export {
   Breadcrumb,

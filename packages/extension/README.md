@@ -5,11 +5,13 @@ Extensão VSCode para syntax highlighting e preview da linguagem Proto-Typed DSL
 ## 🚀 Desenvolvimento
 
 ### Pré-requisitos
+
 ```bash
 pnpm install
 ```
 
 ### Compilar
+
 ```bash
 # Na raiz do projeto
 pnpm run compile
@@ -64,6 +66,7 @@ packages/extension/
 ## 🐛 Troubleshooting
 
 ### Comando não encontrado
+
 ```bash
 # Compile a extensão
 pnpm run compile
@@ -71,16 +74,20 @@ pnpm run compile
 ```
 
 ### Preview não atualiza
+
 - Salve o arquivo `.ptd`
 - Ou feche e reabra o preview
 
 ### Mudanças no código não aparecem
+
 1. Recompile: `pnpm run compile`
 2. Na janela de desenvolvimento: `Ctrl+R` (ou `Cmd+R`)
 3. Ou: `Ctrl+Shift+P` > "Developer: Reload Window"
 
 ### Erro ao ativar extensão
+
 Certifique-se de que:
+
 1. O pacote `@proto-typed/core` está compilado: `cd ../core && pnpm run build`
 2. A extensão está compilada: `pnpm run compile`
 3. As dependências estão instaladas: `pnpm install` (na raiz)
@@ -98,4 +105,3 @@ npx @vscode/vsce package
 ```
 
 Isso criará um arquivo `proto-typed-vscode-0.0.1.vsix` que pode ser instalado em qualquer VSCode.
-

@@ -1,5 +1,5 @@
 /**
- * Example demonstrating the Named UI Elements (modal and drawer) 
+ * Example demonstrating the Named UI Elements (modal and drawer)
  * functionality in proto-typed DSL, including auto-close behavior
  */
 
@@ -90,6 +90,6 @@ drawer LeftDrawer:
   > 🏠 Return home
   
   @[Close Drawer](LeftDrawer)
-`;
+`
 
-export default namedElementsExample;
+export default namedElementsExample

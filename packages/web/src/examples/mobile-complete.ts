@@ -168,6 +168,6 @@ screen SettingsScreen:
     - Messages | 💬 | MessagesScreen
     - Profile | 👤 | ProfileScreen
     - More | ⋯ | SettingsScreen
-`;
+`
 
-export default mobileAppExample;
+export default mobileAppExample
