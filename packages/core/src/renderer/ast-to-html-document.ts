@@ -43,9 +43,21 @@ export function astToHtmlDocument(
     routeManager.setRouteContext(routeManager.getRouteContext())
 
     // Create render context
-    const context = routeManager.createRenderContext('document', {
+    const renderContext = routeManager.createRenderContext('document', {
       currentScreen: options.currentScreen || undefined,
     })
+
+    // Convert RouteRenderContext to RenderContext for backward compatibility
+    const screenRoutes = routeManager.getScreenRoutes()
+    const context: RenderContext = {
+      routes: screenRoutes.map((route) => ({
+        name: route.name,
+        path: route.name,
+        node: route.node,
+        currentScreen: renderContext.routes.currentScreen,
+      })),
+      currentScreen: renderContext.routes.currentScreen,
+    }
 
     const result = generateDocumentHtml(context)
 
@@ -59,7 +71,12 @@ export function astToHtmlDocument(
 }
 
 interface RenderContext {
-  routes: Array<{ name: string; path: string }>
+  routes: Array<{
+    name: string
+    path: string
+    node: unknown
+    currentScreen?: string | null
+  }>
   globalElements?: unknown[]
   [key: string]: unknown
 }
@@ -81,10 +98,12 @@ function generateDocumentHtml(context: RenderContext): string {
 
   // Generate screens HTML with visibility styles using currentScreen from context
   const screenRoutes = routeManager.getScreenRoutes()
+  const currentScreen =
+    (context.currentScreen as string | null | undefined) || null
   const screensHtml = screenRoutes
     .filter((route) => route.node && route.name)
     .map((route, index) =>
-      renderScreenForDocument(route.node, index, routes.currentScreen)
+      renderScreenForDocument(route.node, index, currentScreen)
     )
     .join('\n\n')
 

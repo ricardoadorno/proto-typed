@@ -42,7 +42,7 @@ function extractStableProps(props: Record<string, unknown>): string {
  * Generate a semantic fingerprint for a node
  */
 function generateFingerprint(node: AstNode, parentType?: string): string {
-  const stableProps = extractStableProps(node.props)
+  const stableProps = extractStableProps(node.props as Record<string, unknown>)
   const parentPart = parentType ? `parent=${parentType}` : ''
 
   const parts = [`type=${node.type}`, stableProps, parentPart].filter(Boolean)

@@ -3,7 +3,7 @@
  * Functions for rendering screens in different contexts
  */
 
-import { AstNode, ViewProps } from '../../types/ast-node'
+import { AstNode, ViewProps, LayoutProps } from '../../types/ast-node'
 import { ScreenRenderConfig } from '../../types/render'
 import { renderNode } from '../core/node-renderer'
 import { RouteManager } from '../core/route-manager'
@@ -107,8 +107,11 @@ export function renderScreenForDocument(
  */
 function separateScreenElements(screen: AstNode) {
   const headerElements =
-    screen.children?.filter((element: AstNode) => element.type === 'Header') ||
-    []
+    screen.children?.filter(
+      (element: AstNode) =>
+        element.type === 'Layout' &&
+        (element.props as LayoutProps)?.layoutType === 'header'
+    ) || []
   const fabElements =
     screen.children?.filter((element: AstNode) => element.type === 'Fab') || []
   const navigatorElements =
@@ -118,7 +121,10 @@ function separateScreenElements(screen: AstNode) {
   const contentElements =
     screen.children?.filter(
       (element: AstNode) =>
-        element.type !== 'Header' &&
+        !(
+          element.type === 'Layout' &&
+          (element.props as LayoutProps)?.layoutType === 'header'
+        ) &&
         element.type !== 'Fab' &&
         element.type !== 'Navigator' &&
         // Exclude named modals and drawers (they'll be rendered globally)

@@ -120,7 +120,7 @@ export function parseAndBuildAst(
   // Collect builder errors from the builder instance
   const builderErrors = builder.__builderErrors || []
   if (builderErrors.length > 0) {
-    collectedErrors.push(...builderErrors)
+    collectedErrors.push(...(builderErrors as ProtoError[]))
   }
 
   // ========================================================

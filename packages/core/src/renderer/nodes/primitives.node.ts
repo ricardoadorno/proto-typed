@@ -34,7 +34,14 @@ export function renderButton(node: AstNode): string {
 
   const buttonNavAttrs = NavigationMediator.generateNavigationAttributes(action)
   const buttonClasses = `${getButtonClasses(variant, size)}`
-  const buttonInlineStyles = getButtonInlineStyles(variant || 'primary')
+  const buttonVariant = (variant || 'primary') as
+    | 'primary'
+    | 'ghost'
+    | 'outline'
+    | 'secondary'
+    | 'destructive'
+    | 'warning'
+  const buttonInlineStyles = getButtonInlineStyles(buttonVariant)
 
   // Strategy 1: Explicit icon prop (legacy support)
   if (icon) {

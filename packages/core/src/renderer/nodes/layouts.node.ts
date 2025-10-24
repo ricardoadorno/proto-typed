@@ -101,8 +101,8 @@ export function renderLayout(
   _render: (node: AstNode, context?: string) => string
 ): string {
   const { layoutType } = node.props as LayoutProps
-  const classes = LAYOUT_PRESETS[layoutType] || ''
-  const styles = getLayoutInlineStyles(layoutType)
+  const classes = layoutType ? LAYOUT_PRESETS[layoutType] || '' : ''
+  const styles = layoutType ? getLayoutInlineStyles(layoutType) : ''
 
   const content = node.children.map((child) => _render(child)).join('\n')
 
@@ -138,11 +138,13 @@ export function renderList(
     component?: string
     variant?: string
     columns?: string[]
+    componentName?: string
+    dataItems?: string[][]
   }
 
   // Normalização de propriedades
   const componentName: string | undefined =
-    props.componentName || props.component
+    props.component || props.componentName
   let dataItems: string[][] | undefined = props?.dataItems
 
   // Caso não exista dataItems mas seja variant component, derivar de children

@@ -50,9 +50,11 @@ export function substitutePropsRecursive(
   }
 
   if (obj && typeof obj === 'object') {
-    const result: Record<string, unknown> = Array.isArray(obj)
-      ? [...obj]
-      : { ...obj }
+    if (Array.isArray(obj)) {
+      return obj.map((item) => substitutePropsRecursive(item, props, namedMap))
+    }
+
+    const result = { ...obj } as Record<string, unknown>
     for (const key in result) {
       if (Object.prototype.hasOwnProperty.call(result, key)) {
         result[key] = substitutePropsRecursive(result[key], props, namedMap)
@@ -115,7 +117,7 @@ export function substitutePropsInElement(
     })
   }
 
-  return substitutePropsRecursive(elementCopy, props, namedMap)
+  return substitutePropsRecursive(elementCopy, props, namedMap) as AstNode
 }
 
 /**
@@ -158,12 +160,10 @@ export function renderComponentInstance(
   const templateChildren = instanceProps.templateChildren || []
 
   // Convert templateChildren to propValues for backward compatibility
-  // templateChildren can be PropValue nodes or UnorderedListItem nodes
+  // templateChildren are UnorderedListItem nodes
   const propValues: string[] = templateChildren
     .map((child: AstNode) => {
-      if (child.type === 'PropValue') {
-        return (child.props as { text?: string }).text || ''
-      } else if (child.type === 'UnorderedListItem') {
+      if (child.type === 'UnorderedListItem') {
         return (child.props as { text?: string }).text || ''
       }
       return ''

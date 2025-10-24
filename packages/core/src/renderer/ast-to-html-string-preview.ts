@@ -54,9 +54,21 @@ export function astToHtmlStringPreview(
     manager.setRouteContext(manager.getRouteContext())
 
     // Create render context
-    const context = manager.createRenderContext('preview', {
+    const renderContext = manager.createRenderContext('preview', {
       currentScreen: options.currentScreen || undefined,
     })
+
+    // Convert RouteRenderContext to PreviewContext for backward compatibility
+    const screenRoutes = manager.getScreenRoutes()
+    const context: PreviewContext = {
+      routes: screenRoutes.map((route) => ({
+        name: route.name,
+        path: route.name,
+        node: route.node,
+        currentScreen: renderContext.routes.currentScreen,
+      })),
+      currentScreen: renderContext.routes.currentScreen,
+    }
 
     NavigationMediator.setActiveRouteManager(manager)
     const html = generatePreviewHtml(context, manager)
@@ -78,7 +90,12 @@ export function astToHtmlStringPreview(
 }
 
 interface PreviewContext {
-  routes: Array<{ name: string; path: string; node: unknown }>
+  routes: Array<{
+    name: string
+    path: string
+    node: unknown
+    currentScreen?: string | null
+  }>
   [key: string]: unknown
 }
 
@@ -98,9 +115,11 @@ function generatePreviewHtml(
 
   // Render screens
   const screenRoutes = manager.getScreenRoutes()
+  const currentScreen =
+    (context.currentScreen as string | null | undefined) || null
   const screensHtml = renderAllScreens(
     screenRoutes.map((route) => route.node),
-    routes.currentScreen
+    currentScreen
   )
 
   // Render global elements (modals and drawers)

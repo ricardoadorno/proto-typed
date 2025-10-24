@@ -316,7 +316,7 @@ export function getLayoutModifierInlineStyles(
   }
 
   // Border radius using CSS variables
-  if (modifiers.rounded !== false) {
+  if (modifiers.rounded !== 'false' && modifiers.rounded !== undefined) {
     styles.push('border-radius: var(--radius);')
   }
 

@@ -9,6 +9,7 @@ import {
   RouteMetadata,
   RouteProcessingOptions,
   RouteRenderContext,
+  RouteContext,
 } from '../../types/routing'
 import {
   RouteManager,
@@ -297,7 +298,7 @@ export class RouteManagerGateway {
   /**
    * Set route context
    */
-  setRouteContext(context: unknown) {
+  setRouteContext(context: RouteContext) {
     this.routeManager.setRouteContext(context)
   }
 
