@@ -5,7 +5,7 @@
 
 import type { CstNode } from 'chevrotain'
 import { validateComponentName } from './builder-validation'
-import type { CstContext, CstVisitor } from '../types'
+import type { CstContext, CstVisitor } from '../../types/parser'
 
 /**
  * @function buildComponent

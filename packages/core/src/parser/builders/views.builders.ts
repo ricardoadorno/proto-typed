@@ -5,7 +5,7 @@
 
 import type { CstNode } from 'chevrotain'
 import { validateViewName } from './builder-validation'
-import type { CstContext, CstVisitor, IToken } from '../types'
+import type { CstContext, CstVisitor, IToken } from '../../types/parser'
 
 /**
  * @function buildScreen

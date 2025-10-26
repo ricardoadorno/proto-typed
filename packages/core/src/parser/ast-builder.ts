@@ -1,7 +1,7 @@
 import { type CstNode } from 'chevrotain'
 import { UiDslParser } from './parser'
 import { type ProtoError } from '../types/errors'
-import { type CstContext } from './types'
+import { type CstContext } from '../types/parser'
 import {
   // Primitive builders
   buildHeadingElement,

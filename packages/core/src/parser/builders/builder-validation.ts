@@ -6,7 +6,7 @@
  */
 
 import { ERROR_CODES, ProtoError } from '../../types/errors'
-import type { CstVisitor } from '../types'
+import type { CstVisitor } from '../../types/parser'
 
 /**
  * Get error collection array from builder visitor instance

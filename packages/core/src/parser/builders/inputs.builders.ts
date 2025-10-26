@@ -5,7 +5,7 @@
 
 import { validateInputType, validateRequiredProps } from './builder-validation'
 import type { IToken } from 'chevrotain'
-import type { CstContext, CstVisitor } from '../types'
+import type { CstContext, CstVisitor } from '../../types/parser'
 
 /**
  * @function buildInputElement

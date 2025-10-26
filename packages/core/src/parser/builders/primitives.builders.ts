@@ -9,7 +9,7 @@ import {
   validateButtonSize,
   validateRequiredProps,
 } from './builder-validation'
-import type { CstContext, CstVisitor } from '../types'
+import type { CstContext, CstVisitor } from '../../types/parser'
 
 /**
  * @function buildHeadingElement

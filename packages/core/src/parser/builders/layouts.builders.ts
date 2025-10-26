@@ -5,7 +5,7 @@
  */
 
 import { parseNavigatorItem } from './core.builders'
-import type { CstContext, CstVisitor, IToken } from '../types'
+import type { CstContext, CstVisitor, IToken } from '../../types/parser'
 import type { CstNode } from 'chevrotain'
 import type { AstNode } from '../../types/ast-node'
 

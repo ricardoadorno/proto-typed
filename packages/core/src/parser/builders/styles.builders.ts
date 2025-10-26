@@ -5,7 +5,7 @@
 
 import { type CstNode, type IToken } from 'chevrotain'
 import { AstNode } from '../../types/ast-node'
-import type { CstContext } from '../types'
+import type { CstContext } from '../../types/parser'
 
 /**
  * @function buildStyles
