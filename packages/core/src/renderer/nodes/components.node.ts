@@ -160,10 +160,10 @@ export function renderComponentInstance(
   const templateChildren = instanceProps.templateChildren || []
 
   // Convert templateChildren to propValues for backward compatibility
-  // templateChildren are UnorderedListItem nodes
+  // templateChildren are PropValue nodes
   const propValues: string[] = templateChildren
     .map((child: AstNode) => {
-      if (child.type === 'UnorderedListItem') {
+      if (child.type === 'PropValue') {
         return (child.props as { text?: string }).text || ''
       }
       return ''

@@ -90,7 +90,6 @@ interface RenderContext {
  * @returns {string} The HTML content of the document.
  */
 function generateDocumentHtml(context: RenderContext): string {
-  const { routes } = context
   // Register components with the renderer
   const componentRoutes = routeManager.getRoutesByType('component')
   const componentNodes = componentRoutes.map((route) => route.node)

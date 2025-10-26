@@ -35,6 +35,7 @@ export type NodeType =
   | 'Component'
   | 'ComponentInstance'
   | 'PropVariable'
+  | 'PropValue'
 
   // Styles (from styles.tokens.ts)
   | 'Styles'

@@ -71,6 +71,7 @@ const RENDERERS: Record<NodeType, typeof _render> = {
   Component: (n) => renderComponent(n),
   ComponentInstance: (n, ctx) => renderComponentInstance(n, ctx, _render),
   PropVariable: () => '',
+  PropValue: () => '', // PropValue nodes are internal and don't render directly
 
   // Primitives
   Button: (n) => renderButton(n),

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { astToHtmlDocument } from '../../src/renderer/ast-to-html-document'
 import { astToHtmlStringPreview } from '../../src/renderer/ast-to-html-string-preview'
 import { parseAndBuildAst } from '../../src/parser/parse-and-build-ast'
@@ -7,8 +7,9 @@ import { AstNode } from '../../src/types/ast-node'
 describe('Renderer - HTML Generation', () => {
   describe('astToHtmlDocument', () => {
     it('should render simple screen to HTML', () => {
-      const input = `Screen MainScreen
-  Text "Hello World"`
+      const input = `screen MainScreen:
+  container:
+    >> Hello World`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -18,7 +19,7 @@ describe('Renderer - HTML Generation', () => {
     })
 
     it('should include Tailwind CDN', () => {
-      const input = 'Screen MainScreen'
+      const input = 'screen MainScreen:'
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -26,7 +27,7 @@ describe('Renderer - HTML Generation', () => {
     })
 
     it('should include Lucide icons script', () => {
-      const input = 'Screen MainScreen'
+      const input = 'screen MainScreen:'
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -34,7 +35,7 @@ describe('Renderer - HTML Generation', () => {
     })
 
     it('should include navigation script', () => {
-      const input = 'Screen MainScreen'
+      const input = 'screen MainScreen:'
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -42,8 +43,9 @@ describe('Renderer - HTML Generation', () => {
     })
 
     it('should render button element', () => {
-      const input = `Screen MainScreen
-  Button "Click me"`
+      const input = `screen MainScreen:
+  container:
+    @[Click me](action)`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -52,11 +54,13 @@ describe('Renderer - HTML Generation', () => {
     })
 
     it('should render multiple screens', () => {
-      const input = `Screen Home
-  Text "Home"
+      const input = `screen Home:
+  container:
+    >> Home
 
-Screen About
-  Text "About"`
+screen About:
+  container:
+    >> About`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -65,8 +69,9 @@ Screen About
     })
 
     it('should render modal', () => {
-      const input = `Modal ConfirmDialog
-  Text "Are you sure?"`
+      const input = `modal ConfirmDialog:
+  card:
+    >> Are you sure?`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -75,8 +80,9 @@ Screen About
     })
 
     it('should render drawer', () => {
-      const input = `Drawer SideMenu
-  Text "Menu"`
+      const input = `drawer SideMenu:
+  container:
+    >> Menu`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -85,10 +91,11 @@ Screen About
     })
 
     it('should render nested layouts', () => {
-      const input = `Screen MainScreen
-  Layout stack
-    Button "First"
-    Button "Second"`
+      const input = `screen MainScreen:
+  container:
+    stack:
+      @[First](action1)
+      @[Second](action2)`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -97,7 +104,7 @@ Screen About
     })
 
     it('should include dark mode class', () => {
-      const input = 'Screen MainScreen'
+      const input = 'screen MainScreen:'
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -105,25 +112,27 @@ Screen About
     })
 
     it('should set current screen when specified', () => {
-      const input = `Screen Home
-  Text "Home"
+      const input = `screen Home:
+  container:
+    >> Home
 
-Screen About
-  Text "About"`
+screen About:
+  container:
+    >> About`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast, { currentScreen: 'About' })
 
       expect(html).toBeDefined()
-      // The About screen should be visible
       expect(html).toContain('About')
     })
 
     it('should include CSS variables from theme', () => {
-      const input = `Styles
-  primary = #FF0000
+      const input = `styles:
+  --primary: #FF0000;
 
-Screen MainScreen
-  Text "Test"`
+screen MainScreen:
+  container:
+    >> Test`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -134,69 +143,78 @@ Screen MainScreen
 
   describe('astToHtmlStringPreview', () => {
     it('should render preview without full document', () => {
-      const input = `Screen MainScreen
-  Button "Click me"`
+      const input = `screen MainScreen:
+  container:
+    @[Click me](action)`
       const ast = parseAndBuildAst(input)
-      const html = astToHtmlStringPreview(ast)
+      const html = astToHtmlStringPreview(ast).html
 
       expect(html).not.toContain('<!DOCTYPE html>')
       expect(html).toContain('Click me')
     })
 
     it('should render simple button', () => {
-      const input = `Screen MainScreen
-  Button "Test"`
+      const input = `screen MainScreen:
+  container:
+    @[Test](action)`
       const ast = parseAndBuildAst(input)
-      const html = astToHtmlStringPreview(ast)
+      const html = astToHtmlStringPreview(ast).html
 
       expect(html).toContain('<button')
       expect(html).toContain('Test')
     })
 
     it('should render text element', () => {
-      const input = `Screen MainScreen
-  Text "Hello"`
+      const input = `screen MainScreen:
+  container:
+    >> Hello`
       const ast = parseAndBuildAst(input)
-      const html = astToHtmlStringPreview(ast)
+      const html = astToHtmlStringPreview(ast).html
 
       expect(html).toContain('Hello')
     })
 
     it('should render heading', () => {
-      const input = `Screen MainScreen
-  Heading "Title"`
+      const input = `screen MainScreen:
+  container:
+    # Title`
       const ast = parseAndBuildAst(input)
-      const html = astToHtmlStringPreview(ast)
+      const html = astToHtmlStringPreview(ast).html
 
       expect(html).toContain('Title')
       expect(html).toMatch(/<h[1-6]/)
     })
 
     it('should render link', () => {
-      const input = `Screen MainScreen
-  Link "Home" destination=HomeScreen`
+      const input = `screen MainScreen:
+  container:
+    #[Home](HomeScreen)`
       const ast = parseAndBuildAst(input)
-      const html = astToHtmlStringPreview(ast)
+      const html = astToHtmlStringPreview(ast).html
 
       expect(html).toContain('<a')
       expect(html).toContain('Home')
     })
 
     it('should render input field', () => {
-      const input = `Screen MainScreen
-  Input "Email"`
+      const input = `screen MainScreen:
+  container:
+    card:
+      ___: Email{Enter your email}`
       const ast = parseAndBuildAst(input)
-      const html = astToHtmlStringPreview(ast)
+      const html = astToHtmlStringPreview(ast).html
 
       expect(html).toContain('<input')
       expect(html).toContain('Email')
     })
 
     it('should render checkbox', () => {
-      const input = `Screen MainScreen
-  Checkbox "Accept"`
+      const input = `screen MainScreen:
+  container:
+    card:
+      [X] Accept`
       const ast = parseAndBuildAst(input)
-      const html = astToHtmlStringPreview(ast)
+      const html = astToHtmlStringPreview(ast).html
 
       expect(html).toContain('checkbox')
       expect(html).toContain('Accept')
@@ -205,8 +223,13 @@ Screen MainScreen
 
   describe('Navigation Attributes', () => {
     it('should add data-nav for screen navigation', () => {
-      const input = `Screen Home
-  Button "Go to About" action=goToAbout`
+      const input = `screen Home:
+  container:
+    @[Go to About](About)
+
+screen About:
+  container:
+    >> About Page`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -214,8 +237,13 @@ Screen MainScreen
     })
 
     it('should handle link destinations', () => {
-      const input = `Screen Home
-  Link "About" destination=AboutScreen`
+      const input = `screen Home:
+  container:
+    @[About](AboutScreen)
+
+screen AboutScreen:
+  container:
+    >> About`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -224,8 +252,9 @@ Screen MainScreen
     })
 
     it('should handle external links', () => {
-      const input = `Screen Home
-  Link "Google" destination=https://google.com`
+      const input = `screen Home:
+  container:
+    #[Google](https://google.com)`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -235,8 +264,9 @@ Screen MainScreen
 
   describe('Styling and Classes', () => {
     it('should apply Tailwind classes', () => {
-      const input = `Screen MainScreen
-  Button "Click"`
+      const input = `screen MainScreen:
+  container:
+    @[Click](action)`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -245,9 +275,10 @@ Screen MainScreen
     })
 
     it('should apply layout classes', () => {
-      const input = `Screen MainScreen
-  Layout stack
-    Text "Item"`
+      const input = `screen MainScreen:
+  container:
+    stack:
+      >> Item`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -255,9 +286,10 @@ Screen MainScreen
     })
 
     it('should handle card layout', () => {
-      const input = `Screen MainScreen
-  Layout card
-    Text "Card content"`
+      const input = `screen MainScreen:
+  container:
+    card:
+      >> Card content`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -267,10 +299,11 @@ Screen MainScreen
 
   describe('Element Rendering', () => {
     it('should render image with src', () => {
-      const input = `Screen MainScreen
-  Image "Logo" src=logo.png`
+      const input = `screen MainScreen:
+  container:
+    ![Logo](logo.png)`
       const ast = parseAndBuildAst(input)
-      const html = astToHtmlStringPreview(ast)
+      const html = astToHtmlStringPreview(ast).html
 
       expect(html).toContain('<img')
       expect(html).toContain('logo.png')
@@ -278,32 +311,41 @@ Screen MainScreen
     })
 
     it('should render separator', () => {
-      const input = `Screen MainScreen
-  Separator`
+      const input = `screen MainScreen:
+  container:
+    >> Before
+    ---
+    >> After`
       const ast = parseAndBuildAst(input)
-      const html = astToHtmlStringPreview(ast)
+      const html = astToHtmlStringPreview(ast).html
 
       expect(html).toContain('<hr')
     })
 
     it('should render FAB', () => {
-      const input = `Screen MainScreen
-  Fab icon=plus action=addItem`
+      const input = `screen MainScreen:
+  container:
+    >> Content
+  
+  fab:
+    - icon:plus | addItem`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
-      expect(html).toContain('fixed')
-      expect(html).toContain('plus')
+      expect(html).toContain('sticky')
+      expect(html).toContain('absolute')
     })
   })
 
   describe('Complex Structures', () => {
     it('should render form with inputs', () => {
-      const input = `Screen LoginForm
-  Layout stack
-    Input "Email" type=email
-    Input "Password" type=password
-    Button "Login" action=submit`
+      const input = `screen LoginForm:
+  container:
+    card:
+      stack:
+        ___email: Email{Enter your email}
+        ___password: Password{Enter password}
+        @[Login](submit)`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -315,17 +357,18 @@ Screen MainScreen
     })
 
     it('should render dashboard with cards', () => {
-      const input = `Screen Dashboard
-  Layout grid-3
-    Layout card
-      Heading "Stats"
-      Text "100"
-    Layout card
-      Heading "Revenue"
-      Text "$5000"
-    Layout card
-      Heading "Orders"
-      Text "42"`
+      const input = `screen Dashboard:
+  container:
+    grid-3:
+      card:
+        ## Stats
+        >> 100
+      card:
+        ## Revenue
+        >> $5000
+      card:
+        ## Orders
+        >> 42`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -338,11 +381,14 @@ Screen MainScreen
     })
 
     it('should render nested navigation', () => {
-      const input = `Screen Home
-  Navigator
-    - Home destination=HomeScreen
-    - About destination=AboutScreen
-    - Contact destination=ContactScreen`
+      const input = `screen Home:
+  container:
+    >> Welcome
+  
+  navigator:
+    - Home | Home
+    - About | About
+    - Contact | Contact`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -354,7 +400,7 @@ Screen MainScreen
 
   describe('Error Handling', () => {
     it('should handle empty screen', () => {
-      const input = 'Screen EmptyScreen'
+      const input = 'screen EmptyScreen:'
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -366,7 +412,7 @@ Screen MainScreen
       const ast: AstNode = {
         type: 'Screen',
         id: 'screen_test',
-        props: {},
+        props: { name: 'Test' },
         children: [],
       }
 
@@ -376,11 +422,13 @@ Screen MainScreen
 
   describe('Screen Visibility', () => {
     it('should render multiple screens with visibility control', () => {
-      const input = `Screen Home
-  Text "Home"
+      const input = `screen Home:
+  container:
+    >> Home
 
-Screen About
-  Text "About"`
+screen About:
+  container:
+    >> About`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast, { currentScreen: 'Home' })
 
@@ -392,24 +440,26 @@ Screen About
 
   describe('Theme Integration', () => {
     it('should apply theme styles', () => {
-      const input = `Styles
-  theme = dark
+      const input = `styles:
+  --primary: #FF0000;
 
-Screen MainScreen
-  Text "Themed"`
+screen MainScreen:
+  container:
+    >> Themed`
       const ast = parseAndBuildAst(input)
-      const html = astToHtmlDocument(ast)
+      const html = astToHtmlDocument(ast, { isDarkMode: true })
 
       expect(html).toContain('dark')
     })
 
     it('should include custom properties', () => {
-      const input = `Styles
-  primary = #FF0000
-  secondary = #00FF00
+      const input = `styles:
+  --primary: #FF0000;
+  --secondary: #00FF00;
 
-Screen MainScreen
-  Text "Custom colors"`
+screen MainScreen:
+  container:
+    >> Custom colors`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -419,7 +469,7 @@ Screen MainScreen
 
   describe('Responsive Design', () => {
     it('should include viewport meta tag', () => {
-      const input = 'Screen MainScreen'
+      const input = 'screen MainScreen:'
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -428,9 +478,9 @@ Screen MainScreen
     })
 
     it('should use responsive Tailwind classes', () => {
-      const input = `Screen MainScreen
-  Layout container
-    Text "Responsive"`
+      const input = `screen MainScreen:
+  container:
+    >> Responsive`
       const ast = parseAndBuildAst(input)
       const html = astToHtmlDocument(ast)
 
@@ -440,19 +490,22 @@ Screen MainScreen
 
   describe('Accessibility', () => {
     it('should include alt text for images', () => {
-      const input = `Screen MainScreen
-  Image "Logo" src=logo.png`
+      const input = `screen MainScreen:
+  container:
+    ![Logo](logo.png)`
       const ast = parseAndBuildAst(input)
-      const html = astToHtmlStringPreview(ast)
+      const html = astToHtmlStringPreview(ast).html
 
       expect(html).toContain('alt="Logo"')
     })
 
     it('should include labels for inputs', () => {
-      const input = `Screen MainScreen
-  Input "Email"`
+      const input = `screen MainScreen:
+  container:
+    card:
+      ___: Email{Enter email}`
       const ast = parseAndBuildAst(input)
-      const html = astToHtmlStringPreview(ast)
+      const html = astToHtmlStringPreview(ast).html
 
       expect(html).toContain('Email')
     })

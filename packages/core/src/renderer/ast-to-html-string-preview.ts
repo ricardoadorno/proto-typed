@@ -106,8 +106,6 @@ function generatePreviewHtml(
   context: PreviewContext,
   manager: RouteManager
 ): string {
-  const { routes } = context
-
   // Register components with the renderer
   const componentRoutes = manager.getRoutesByType('component')
   const componentNodes = componentRoutes.map((route) => route.node)
