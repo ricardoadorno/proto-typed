@@ -3,6 +3,10 @@ import globals from 'globals'
 import tseslint from 'typescript-eslint'
 import prettierConfig from 'eslint-config-prettier'
 import prettierPlugin from 'eslint-plugin-prettier'
+import { fileURLToPath } from 'node:url'
+import { dirname } from 'node:path'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 /**
  * Base ESLint configuration for the monorepo
@@ -36,6 +40,10 @@ export default [
       globals: {
         ...globals.node,
         ...globals.browser,
+      },
+      parserOptions: {
+        tsconfigRootDir: __dirname,
+        project: true,
       },
     },
     plugins: {
