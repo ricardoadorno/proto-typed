@@ -8,24 +8,30 @@ out
 build
 .next
 
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# OS
-.DS_Store
-Thumbs.db
-
-# IDE
-.vscode
-.idea
-
-# Misc
-coverage
+# Cache
+.cache
 .turbo
 *.tsbuildinfo
-pnpm-lock.yaml
 
+# Coverage
+coverage
+.nyc_output
+
+# Test results
+playwright-report
+test-results
+
+# Logs
+*.log
+
+# MDX files
+*.mdx
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Git
+.git
+.husky/_

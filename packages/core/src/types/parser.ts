@@ -11,6 +11,9 @@ import type {
 } from 'chevrotain'
 import type { AstNode } from './ast-node'
 
+// Re-export commonly used Chevrotain types
+export type { CstNode, IToken, TokenType, CstChildrenDictionary }
+
 /**
  * Parser rule function signature
  */

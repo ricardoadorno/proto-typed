@@ -14,9 +14,7 @@
     "typescript",
     "typescriptreact"
   ],
-  "eslint.workingDirectories": [
-    { "mode": "auto" }
-  ],
+  "eslint.workingDirectories": [{ "mode": "auto" }],
 
   // Prettier settings
   "prettier.enable": true,
@@ -42,4 +40,3 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }
-

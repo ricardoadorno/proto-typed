@@ -15,7 +15,7 @@ import {
   RouteManager,
   routeManager as defaultRouteManager,
 } from '../core/route-manager'
-import type { MouseEvent } from 'react'
+import type { MouseEvent } from '../../types/dom'
 
 export interface NavigationHandlers {
   onScreenNavigation: (screenName: string) => void

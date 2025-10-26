@@ -45,3 +45,4 @@ export {
   type ScreenRenderConfig,
   type NodeRenderer,
 } from './types/render'
+export { type MouseEvent } from './types/dom'
