@@ -11,222 +11,223 @@ export interface DocSection {
 
 export const docSections: DocSection[] = [
   {
-    title: 'Sintaxe e Fluxo de View',
+    title: 'Syntax and View Flow',
     items: [
       {
         slug: 'syntax',
-        title: 'Sintaxe básica',
+        title: 'Basic Syntax',
         description:
-          'Como escrever blocos DSL, identar e comentar código de forma correta.',
+          'How to write DSL blocks, indent, and comment code correctly.',
       },
       {
         slug: 'screen',
-        title: 'Telas (Screens)',
+        title: 'Screens',
         description:
-          'Define o fluxo de visualização: como criar telas, containers e a hierarquia visual principal.',
+          'Defines the view flow: how to create screens, containers, and the main visual hierarchy.',
       },
       {
         slug: 'flow',
-        title: 'Fluxo de navegação',
+        title: 'Navigation Flow',
         description:
-          'Como as telas se conectam entre si e como o DSL define a experiência de navegação.',
+          'How screens connect to each other and how the DSL defines the navigation experience.',
       },
     ],
   },
   {
-    title: 'Primitivos de Interface',
+    title: 'Interface Primitives',
     items: [
       {
         slug: 'text',
-        title: 'Texto',
+        title: 'Text',
         description:
-          'Renderiza títulos, subtítulos e parágrafos dentro da interface.',
+          'Renders titles, subtitles, and paragraphs within the interface.',
       },
       {
         slug: 'icon',
-        title: 'Ícone',
+        title: 'Icon',
         description:
-          'Adiciona símbolos visuais ou ícones inline para reforçar significado.',
+          'Adds visual symbols or inline icons to reinforce meaning.',
       },
       {
         slug: 'button',
-        title: 'Botão',
+        title: 'Button',
         description:
-          'Cria ações interativas com variantes e comportamentos configuráveis.',
+          'Creates interactive actions with configurable variants and behaviors.',
       },
       {
         slug: 'input',
         title: 'Inputs',
-        description: 'Captura dados do usuário como texto, senhas e seleções.',
+        description:
+          'Captures user data such as text, passwords, and selections.',
       },
       {
         slug: 'link',
         title: 'Link',
         description:
-          'Cria vínculos de navegação interna ou externa com semântica acessível.',
+          'Creates internal or external navigation links with accessible semantics.',
       },
     ],
   },
   {
-    title: 'Layout e Estrutura',
+    title: 'Layout and Structure',
     items: [
       {
         slug: 'container',
         title: 'Container',
         description:
-          'Delimita a largura do conteúdo e aplica espaçamento consistente.',
+          'Defines the content width and applies consistent spacing.',
       },
       {
         slug: 'stack',
         title: 'Stack',
-        description:
-          'Empilha elementos verticalmente com espaçamento automático.',
+        description: 'Stacks elements vertically with automatic spacing.',
       },
       {
         slug: 'row',
-        title: 'Linha (Row)',
+        title: 'Row',
         description:
-          'Organiza elementos horizontalmente e alinha conteúdo lateral.',
+          'Organizes elements horizontally and aligns content laterally.',
       },
       {
         slug: 'grid',
-        title: 'Grade (Grid)',
+        title: 'Grid',
         description:
-          'Cria layouts responsivos com múltiplas colunas e alinhamentos flexíveis.',
+          'Creates responsive layouts with multiple columns and flexible alignments.',
       },
       {
         slug: 'card',
         title: 'Card',
         description:
-          'Agrupa informações em blocos visuais, com fundo e bordas opcionais.',
+          'Groups information into visual blocks, with optional background and borders.',
       },
       {
         slug: 'list',
-        title: 'Lista',
+        title: 'List',
         description:
-          'Renderiza coleções repetitivas de elementos ou componentes.',
+          'Renders repetitive collections of elements or components.',
       },
     ],
   },
   {
-    title: 'Navegação e Interações',
+    title: 'Navigation and Interactions',
     items: [
       {
         slug: 'navigator',
-        title: 'Navegador',
-        description: 'Gerencia rotas, abas e menus de troca de tela.',
+        title: 'Navigator',
+        description: 'Manages routes, tabs, and screen-switching menus.',
       },
       {
         slug: 'modal',
         title: 'Modal',
         description:
-          'Janela sobreposta usada para ações rápidas e confirmação de eventos.',
+          'Overlay window used for quick actions and event confirmation.',
       },
       {
         slug: 'drawer',
         title: 'Drawer',
-        description:
-          'Painel lateral persistente usado para contexto adicional.',
+        description: 'Persistent side panel used for additional context.',
       },
       {
         slug: 'fab',
-        title: 'Botão Flutuante (FAB)',
+        title: 'Floating Action Button (FAB)',
         description:
-          'Ação global e persistente exibida sobre o conteúdo principal.',
+          'Global and persistent action displayed over the main content.',
       },
     ],
   },
   {
-    title: 'Componentes e Reuso',
+    title: 'Components and Reuse',
     items: [
       {
         slug: 'component-definition',
-        title: 'Definição de componente',
+        title: 'Component Definition',
         description:
-          'Como declarar componentes reutilizáveis e suas propriedades (%props).',
+          'How to declare reusable components and their properties (%props).',
       },
       {
         slug: 'component-props',
-        title: 'Propriedades de componente',
+        title: 'Component Properties',
         description:
-          'Como interpolar valores, criar placeholders e passar parâmetros dinâmicos.',
+          'How to interpolate values, create placeholders, and pass dynamic parameters.',
       },
       {
         slug: 'component-composition',
-        title: 'Composição de componentes',
-        description: 'Boas práticas para combinar componentes sem redundância.',
+        title: 'Component Composition',
+        description:
+          'Best practices for combining components without redundancy.',
       },
     ],
   },
   {
-    title: 'Temas e Estilos',
+    title: 'Themes and Styles',
     items: [
       // {
       //   slug: 'styles-block',
-      //   title: 'Bloco de estilos',
-      //   description: 'Define tokens, variáveis e estilos globais aplicáveis ao projeto.',
+      //   title: 'Styles Block',
+      //   description: 'Defines tokens, variables, and global styles applicable to the project.',
       // },
       {
         slug: 'themes',
-        title: 'Temas',
+        title: 'Themes',
         description:
-          'Configura e personaliza o tema visual — cores, espaçamentos e tipografia.',
+          'Configures and customizes the visual theme — colors, spacing, and typography.',
       },
     ],
   },
   {
-    title: 'Padrões e Boas Práticas',
+    title: 'Patterns and Best Practices',
     items: [
       {
         slug: 'naming',
-        title: 'Nomeação e consistência',
+        title: 'Naming and Consistency',
         description:
-          'Regras para nomear componentes, props e arquivos de forma padronizada.',
+          'Rules for naming components, props, and files in a standardized way.',
       },
       {
         slug: 'composition-guidelines',
-        title: 'Diretrizes de composição',
+        title: 'Composition Guidelines',
         description:
-          'Como combinar elementos sem gerar redundância ou conflito visual.',
+          'How to combine elements without generating redundancy or visual conflict.',
       },
       {
         slug: 'error-patterns',
-        title: 'Erros comuns',
+        title: 'Common Errors',
         description:
-          'Catálogo de anti-padrões (Do/Don’t) com soluções práticas.',
+          'Catalog of anti-patterns (Do/Dont) with practical solutions.',
       },
     ],
   },
   {
-    title: 'Exemplos',
+    title: 'Examples',
     items: [
       {
         slug: 'login-screen',
-        title: 'Tela de Login',
-        description: 'Exemplo completo com inputs, validação e ação de envio.',
+        title: 'Login Screen',
+        description:
+          'Complete example with inputs, validation, and submission action.',
       },
       {
         slug: 'dashboard',
         title: 'Dashboard',
-        description:
-          'Tela principal com cards de métricas e navegação lateral.',
+        description: 'Main screen with metric cards and side navigation.',
       },
       {
         slug: 'drawer-detail',
-        title: 'Detalhe no Drawer',
+        title: 'Detail in Drawer',
         description:
-          'Mostra como exibir informações dinâmicas em um painel lateral.',
+          'Shows how to display dynamic information in a side panel.',
       },
       {
         slug: 'modal-flow',
-        title: 'Fluxo com Modal',
-        description: 'Encadeia interações modais e transições entre telas.',
+        title: 'Flow with Modal',
+        description:
+          'Chains modal interactions and transitions between screens.',
       },
       {
         slug: 'list-cards',
-        title: 'Listagem de Cards',
+        title: 'Card Listing',
         description:
-          'Composição entre List e Card para exibir coleções dinâmicas.',
+          'Composition between List and Card to display dynamic collections.',
       },
     ],
   },

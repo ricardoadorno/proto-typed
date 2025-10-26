@@ -1,49 +1,49 @@
-# Listagem de Cards
+# Card Listing
 
-## Pré-requisitos
-- Entender `card`, `card-compact` e `card-feature` para escolher a variante correta.
-- Ter componentes reutilizáveis (ex.: `MetricCard`, `PlanCard`) definidos previamente.
-- Conhecer `grid` e `list` para organizar coleções de cards em diferentes layouts.
+## Prerequisites
+- Understand `card`, `card-compact`, and `card-feature` to choose the correct variant.
+- Have reusable components (e.g., `MetricCard`, `PlanCard`) defined beforehand.
+- Know `grid` and `list` to organize card collections in different layouts.
 
-## Passo a passo
-1. Escolha o layout principal (`grid` ou `stack`) considerando o espaço disponível.
-2. Defina um componente de card que receba os dados necessários via `%props`.
-3. Alimente o componente por meio de `list $Componente:` ou múltiplas instâncias `$Componente:`.
-4. Adicione ações de apoio em `row-end` ou `fab` para complementar a listagem.
+## Step-by-step
+1. Choose the main layout (`grid` or `stack`) considering the available space.
+2. Define a card component that receives the necessary data via `%props`.
+3. Feed the component through `list $Component:` or multiple `$Component:` instances.
+4. Add support actions in `row-end` or `fab` to complement the listing.
 
-<DocsCodePreview title="Coleção de cards com dados dinâmicos">
+<DocsCodePreview title="Card collection with dynamic data">
 ```dsl
 component PlanCard:
   card:
     ## %planName
     >> %description
     row-end:
-      @ghost[Detalhes](%details)
-      @[Assinar](%cta)
+      @ghost[Details](%details)
+      @[Subscribe](%cta)
 
 screen Plans:
   container-wide:
-    # Escolha um plano
+    # Choose a plan
     grid-3:
       $PlanCard:
-        - Starter | Ideal para equipes pequenas | PlanStarter | CheckoutStarter
+        - Starter | Ideal for small teams | PlanStarter | CheckoutStarter
       $PlanCard:
-        - Pro | Recursos avançados e suporte prioritário | PlanPro | CheckoutPro
+        - Pro | Advanced features and priority support | PlanPro | CheckoutPro
       $PlanCard:
-        - Enterprise | Atendimento dedicado | PlanEnterprise | ContactSales
+        - Enterprise | Dedicated support | PlanEnterprise | ContactSales
 ```
 </DocsCodePreview>
-Por quê: demonstra como replicar cards com dados variados mantendo CTA consistentes.
+Why: demonstrates how to replicate cards with varied data while keeping CTAs consistent.
 
-## Depuração rápida
-- Cards desalinhados → confirme que todos estão dentro do mesmo `grid-*` com número correto de colunas.
-- Texto truncado → use `card-compact` apenas quando o conteúdo for realmente curto.
-- Ações duplicadas → mova CTAs comuns para `row-end` compartilhado ou para um `fab`.
-- Componentes sem props suficientes → revise a ordem de valores nas linhas `-` e nos `%props`.
-- Cards sem espaçamento → envolva a listagem em `container` ou `stack-loose` para garantir respiro.
+## Quick debugging
+- Misaligned cards → confirm that all are within the same `grid-*` with the correct number of columns.
+- Truncated text → use `card-compact` only when the content is really short.
+- Duplicate actions → move common CTAs to a shared `row-end` or to a `fab`.
+- Components without enough props → review the order of values in the `-` lines and in the `%props`.
+- Cards without spacing → wrap the listing in `container` or `stack-loose` to ensure breathing room.
 
-## Próximos passos
-- Consulte [`Card`](./card) para revisar variantes e uso de rodapés.
-- Revise [`Grid`](./grid) ao ajustar colunas responsivas.
-- Estude [`Component List`](./component-list) para sincronizar dados tabulares com cards.
-- Explore [`Dashboard`](./dashboard) como referência de layout completo com múltiplas listagens.
+## Next steps
+- Consult [`Card`](./card) to review variants and footer usage.
+- Review [`Grid`](./grid) when adjusting responsive columns.
+- Study [`Component List`](./component-list) to synchronize tabular data with cards.
+- Explore [`Dashboard`](./dashboard) as a reference for a complete layout with multiple listings.

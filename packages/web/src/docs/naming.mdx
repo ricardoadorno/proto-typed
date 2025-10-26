@@ -1,14 +1,14 @@
-# Nomeação e consistência
+# Naming and Consistency
 
-## Por que importa
-Nomes coerentes ancoram telas, componentes e ações. Sem um padrão, fluxos quebram, props ficam ambíguas e a manutenção aumenta. Uma convenção clara facilita a leitura da DSL e garante que o time encontre rapidamente cada elemento.
+## Why it matters
+Consistent names anchor screens, components, and actions. Without a standard, flows break, props become ambiguous, and maintenance increases. A clear convention facilitates reading the DSL and ensures that the team can quickly find each element.
 
-## Forma canônica (sintaxe mínima)
-<DocsCodePreview title="Convenções de nomes para telas e componentes">
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Naming conventions for screens and components">
 ```dsl
 screen AccountSettings:
   container:
-    # Preferências
+    # Preferences
 
 component AccountCard:
   card:
@@ -16,39 +16,39 @@ component AccountCard:
     > %description
 ```
 </DocsCodePreview>
-Por quê: mostra uso de PascalCase para telas e componentes, facilitando referências e reutilização.
+Why: shows the use of PascalCase for screens and components, facilitating references and reuse.
 
-## Padrões de uso
-<DocsCodePreview title="Props nomeadas de forma descritiva">
+## Usage patterns
+<DocsCodePreview title="Descriptively named props">
 ```dsl
 component BillingSummary:
   card:
     ## %planName
     # %monthlyValue
-    >>> Próxima cobrança em %renewalDate
+    >>> Next billing on %renewalDate
 
 screen Default:
   container:
     $BillingSummary:
-      - Pro | R$ 89 | 30/09
+      - Pro | $89 | 09/30
 ```
 </DocsCodePreview>
-Quando usar: representar valores específicos do domínio sem abreviações obscuras.
-Por quê: nomes explícitos evitam dúvidas ao alimentar dados no componente.
+When to use: represent specific domain values without obscure abbreviations.
+Why: explicit names avoid doubts when feeding data into the component.
 
-<DocsCodePreview title="Ações com verbos no infinitivo">
+<DocsCodePreview title="Actions with infinitive verbs">
 ```dsl
 screen Default:
   container:
     row-end:
-      @ghost[Cancelar](close)
-      @[Enviar convite](SendInvite)
+      @ghost[Cancel](close)
+      @[Send invite](SendInvite)
 ```
 </DocsCodePreview>
-Quando usar: instruir claramente o que acontece ao acionar o botão.
-Por quê: verbos consistentes reforçam expectativas do fluxo.
+When to use: clearly instruct what happens when the button is triggered.
+Why: consistent verbs reinforce flow expectations.
 
-<DocsCodePreview title="Listas com componentes semânticos">
+<DocsCodePreview title="Lists with semantic components">
 ```dsl
 component CustomerRow:
   row-between:
@@ -56,17 +56,17 @@ component CustomerRow:
     >>> %lastContact
 
 list $CustomerRow:
-  - Ana Souza | Ontem
-  - Bruno Lima | Hoje
+  - Ana Souza | Yesterday
+  - Bruno Lima | Today
 ```
 </DocsCodePreview>
-Quando usar: nomear componentes de lista com foco no domínio representado.
-Por quê: ajuda a mapear rapidamente a estrutura ao navegar pelo arquivo.
+When to use: name list components with a focus on the represented domain.
+Why: helps to quickly map the structure when navigating the file.
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Abreviação sem contexto",
+    title: "Abbreviation without context",
     code: `
 screen Cfg:
   container:
@@ -74,47 +74,47 @@ screen Cfg:
     `,
   }}
   do={{
-    title: "Nome explícito",
+    title: "Explicit name",
     code: `
 screen Settings:
   container:
-    # Configurações
+    # Settings
     `,
   }}
 >
-  Por quê: nomes completos facilitam a busca e reduzem ambiguidades.
+  Why: full names facilitate searching and reduce ambiguities.
 </DoDont>
 <DoDont
   dont={{
-    title: "Mesmo slug para telas diferentes",
+    title: "Same slug for different screens",
     code: `
 screen Dashboard:
   container:
-    # Métricas
+    # Metrics
 
 screen Dashboard:
   container:
-    # Configurações
+    # Settings
     `,
   }}
   do={{
-    title: "Slugs distintos",
+    title: "Distinct slugs",
     code: `
 screen Dashboard:
   container:
-    # Métricas
+    # Metrics
 
 screen DashboardSettings:
   container:
-    # Configurações
+    # Settings
     `,
   }}
 >
-  Por quê: slugs duplicados impedem navegação correta e confundem referências.
+  Why: duplicate slugs prevent correct navigation and confuse references.
 </DoDont>
 <DoDont
   dont={{
-    title: "Inglês e português juntos",
+    title: "English and Portuguese together",
     code: `
 screen Billing:
   container:
@@ -122,7 +122,7 @@ screen Billing:
     `,
   }}
   do={{
-    title: "Idioma consistente",
+    title: "Consistent language",
     code: `
 screen Faturamento:
   container:
@@ -130,33 +130,33 @@ screen Faturamento:
     `,
   }}
 >
-  Por quê: consistência linguística fortalece compreensão e evita traduções improvisadas.
+  Why: linguistic consistency strengthens understanding and avoids improvised translations.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Sintaxe básica`](./syntax): base para declarar nomes válidos na DSL.
-- [`Component Definition`](./component-definition): reutiliza nomes de componentes bem definidos.
-- [`Component Props`](./component-props): depende de chaves consistentes para preencher dados.
-- [`Flow`](./flow): garante que links apontem para slugs corretos.
+### Related
+- [`Basic Syntax`](./syntax): basis for declaring valid names in the DSL.
+- [`Component Definition`](./component-definition): reuses well-defined component names.
+- [`Component Props`](./component-props): depends on consistent keys to fill in data.
+- [`Flow`](./flow): ensures that links point to correct slugs.
 
-### Composições recomendadas
-- **Nomeação e consistência + Flow** → conecta rotas usando slugs previsíveis.
-- **Nomeação e consistência + Component Composition** → organiza subcomponentes sem conflitos.
-- **Nomeação e consistência + Error Patterns** → reduz chances de criar anti-padrões por nomes confusos.
+### Recommended compositions
+- **Naming and Consistency + Flow** → connects routes using predictable slugs.
+- **Naming and Consistency + Component Composition** → organizes subcomponents without conflicts.
+- **Naming and Consistency + Error Patterns** → reduces the chances of creating anti-patterns due to confusing names.
 
-<DocsCodePreview title="Fluxo nomeado de forma coesa">
+<DocsCodePreview title="Cohesively named flow">
 ```dsl
 screen AccountOverview:
   container:
-    # Visão da conta
-    @[Editar conta](AccountEdit)
+    # Account overview
+    @[Edit account](AccountEdit)
 
 screen AccountEdit:
   container:
-    # Editar conta
-    @[Voltar](AccountOverview)
+    # Edit account
+    @[Back](AccountOverview)
 ```
 </DocsCodePreview>
-Por quê: nomes explícitos e relacionados tornam o fluxo fácil de seguir e documentar.
+Why: explicit and related names make the flow easy to follow and document.

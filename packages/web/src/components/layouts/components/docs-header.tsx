@@ -1,12 +1,16 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter, useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { MenuIcon, MoonIcon, SunIcon } from 'lucide-react'
+import { MenuIcon, MoonIcon, SunIcon, LanguagesIcon } from 'lucide-react'
 
 import {
   Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   NavigationMenu,
   NavigationMenuIndicator,
   NavigationMenuItem,
@@ -18,15 +22,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 
 import { useTheme } from 'next-themes'
 import DocsSearch from '@/components/docs/docs-search'
 import SidebarMobile from './sidebar-mobile'
 import DocsSidebar from './docs-sidebar'
 import { withAssetPath } from '@/utils/base-path'
-import { navItems } from '@/utils/constants'
-import docSections from '@/utils/toc'
+import { getDictionary } from '@/lib/get-dictionary'
+import type { Locale } from '@/utils/types'
+import type { DocSection } from '@/utils/toc'
 
 type CommandGroupItem = {
   label: string
@@ -47,12 +52,32 @@ export interface DocsHeaderProps {
 
 export function DocsHeader({ children: _children, isDocs }: DocsHeaderProps) {
   const pathname = usePathname()
+  const router = useRouter()
+  const params = useParams()
+  const lang = (params?.lang as Locale) ?? 'en'
   const [scrolled, setScrolled] = useState(false)
   const { theme, setTheme } = useTheme()
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
+  const [dict, setDict] = useState<any>(null)
+  const [docSections, setDocSections] = useState<DocSection[]>([])
+
+  useEffect(() => {
+    getDictionary(lang).then(setDict)
+  }, [lang])
+
+  useEffect(() => {
+    async function loadToc() {
+      const tocModule =
+        lang === 'pt'
+          ? await import('@/utils/toc.pt')
+          : await import('@/utils/toc')
+      setDocSections(tocModule.docSections)
+    }
+    loadToc()
+  }, [lang])
 
   const onThemeToggle = () =>
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
+    setTheme((prev: string) => (prev === 'dark' ? 'light' : 'dark'))
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 2)
@@ -61,13 +86,41 @@ export function DocsHeader({ children: _children, isDocs }: DocsHeaderProps) {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const resolveHref = (href: string) => {
-    const resolved = href
-    if (resolved.startsWith('http')) {
-      return resolved
+  const handleLanguageChange = (newLang: string) => {
+    if (newLang === 'en') {
+      // Remove /pt prefix for English (default)
+      const newPath = pathname.replace(/^\/pt/, '')
+      router.push(newPath || '/')
+    } else {
+      // Add /pt prefix or replace /en with /pt
+      if (pathname.startsWith('/pt')) {
+        return // Already in Portuguese
+      }
+      router.push(`/pt${pathname}`)
     }
-    return resolved.startsWith('/') ? resolved : `/${resolved}`
   }
+
+  const resolveHref = (href: string) => {
+    if (href.startsWith('http')) {
+      return href
+    }
+    // For English (default), don't add prefix
+    if (lang === 'en') {
+      return href
+    }
+    // For Portuguese, add /pt prefix
+    if (href.startsWith('/') && !href.startsWith('/pt')) {
+      return `/pt${href}`
+    }
+    return href
+  }
+
+  const navItems = [
+    { label: dict?.nav?.playground ?? 'Playground', href: '/' },
+    { label: dict?.nav?.docs ?? 'Docs', href: '/docs' },
+    { label: dict?.nav?.philosophy ?? 'Philosophy', href: '/principles' },
+    { label: dict?.nav?.knownErrors ?? 'Known Issues', href: '/known-errors' },
+  ]
 
   return (
     <>
@@ -150,6 +203,26 @@ export function DocsHeader({ children: _children, isDocs }: DocsHeaderProps) {
               </Tooltip>
             </TooltipProvider>
 
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-[var(--fg-secondary)] transition-transform duration-300 hover:text-[var(--accent)]"
+                >
+                  <LanguagesIcon className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onSelect={() => handleLanguageChange('en')}>
+                  English
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => handleLanguageChange('pt')}>
+                  Português
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
             <Button
               variant="ghost"
               size="icon"
@@ -203,6 +276,7 @@ export function DocsHeader({ children: _children, isDocs }: DocsHeaderProps) {
           <DocsSidebar
             sections={docSections}
             onNavigate={() => setMobileSidebarOpen(false)}
+            lang={lang}
           />
         )}
       </SidebarMobile>

@@ -1,0 +1,174 @@
+# Container
+Containers definem largura, centralizam conteúdo e oferecem padding seguro para estruturar as telas do Proto-Typed.
+
+## Quando usar
+- Definir a coluna principal de uma tela antes de adicionar componentes.
+- Alternar entre leitura focada (`container-narrow`) e dashboards amplos (`container-wide`).
+- Garantir espaçamento horizontal consistente em páginas responsivas.
+- Combinar múltiplos layouts (grid, stack, cards) mantendo alinhamento previsível.
+
+## Exemplo básico
+<DocsCodePreview title="Container padrão em tela informativa">
+```dsl
+screen Overview:
+  container:
+    # Visão geral
+    > Acompanhe os indicadores principais da semana.
+    @[Abrir dashboard](Dashboard)
+```
+</DocsCodePreview>
+Por quê: estabelece a coluna central e prepara o espaço para conteúdo complementar.
+
+## Variantes
+<DocsCodePreview title="Container estreito para foco">
+```dsl
+screen Default:
+  container-narrow:
+    card:
+      ## Solicitar acesso
+      ___email: E-mail{pessoa@empresa.com}
+      row-end:
+        @ghost[Cancelar](-1)
+        @[Enviar convite](Invite)
+```
+</DocsCodePreview>
+Quando usar: concentrar atenção em formulários ou leitura longa.
+Por quê: a largura reduzida guia o olhar para campos e instruções.
+
+<DocsCodePreview title="Container amplo para dashboards">
+```dsl
+screen Default:
+  container-wide:
+    grid-3:
+      card:
+        ## Total de leads
+        # 1.240
+      card:
+        ## Conversões
+        # 134
+      card:
+        ## Receita
+        # R$ 87K
+```
+</DocsCodePreview>
+Quando usar: disponibilizar múltiplas colunas de conteúdo de forma equilibrada.
+Por quê: evita compressão de cards ao distribuir métricas em colunas amplas.
+
+<DocsCodePreview title="Largura total com layout controlado">
+```dsl
+screen Default:
+  container-full:
+    stack-tight:
+      # Release Notes
+      > Atualizações e correções da versão.
+      row-end:
+        @[Ver detalhes](Changelog)
+        @secondary[Compartilhar](ShareModal)
+```
+</DocsCodePreview>
+Quando usar: ocupar toda a largura, delegando o espaçamento ao layout interno.
+Por quê: permite heróis e painéis que controlam padding dentro do próprio layout.
+
+## Composição (usando com outros)
+- **Container + Stack** — estrutura seções verticais com espaçamento previsível.
+- **Container + Grid** — alinha dashboards e coleções de cards.
+- **Container + Navigator** — agrupa header, abas e conteúdo principal na mesma tela.
+
+<DocsCodePreview title="Container com header e conteúdo">
+```dsl
+screen Settings:
+  navigator:
+    - Perfil | Profile
+    - Segurança | Security
+
+  container:
+    # Segurança
+    > Ajuste autenticação e dispositivos confiáveis.
+    stack:
+      card:
+        ## Mudança de senha
+        @[Atualizar](UpdatePassword)
+      card:
+        ## Dispositivos reconhecidos
+          - MacBook | Último acesso ontem
+          - iPhone | Último acesso hoje
+```
+</DocsCodePreview>
+Por quê: separa navegação e conteúdo mantendo alinhamento central.
+
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `variante` | enum (`container`, `container-narrow`, `container-wide`, `container-full`) | `container` | Define largura máxima e gutters laterais. | Não |
+| `conteúdo interno` | blocos DSL | — | Elementos, componentes, stacks e grids renderizados dentro do container. | Sim |
+| `multiplos containers` | sequência | — | Permite combinar larguras diferentes na mesma tela. | Não |
+
+## Erros comuns (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Container duplicado",
+    code: `
+container:
+  container:
+    # Relatório semanal
+    `,
+  }}
+  do={{
+    title: "Stack dentro do container",
+    code: `
+container:
+  stack-loose:
+    # Relatório semanal
+    > Atualize dados sempre às segundas.
+    `,
+  }}
+>
+  Por quê: stacks organizam seções internas sem duplicar controles de largura.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Conteúdo alinhado à borda",
+    code: `
+container-full:
+  # Atualizações
+  > Texto colado na lateral.
+    `,
+  }}
+  do={{
+    title: "Stack controla o espaçamento",
+    code: `
+container-full:
+  stack-loose:
+    # Atualizações
+    > Texto com margens confortáveis.
+    `,
+  }}
+>
+  Por quê: `container-full` ocupa toda a largura e depende do layout interno para aplicar padding.
+</DoDont>
+
+## Referências cruzadas
+
+### Relacionados
+- [`Screen`](./screen): define a estrutura principal antes dos containers.
+- [`Stack`](./stack): organiza conteúdo vertical dentro do container.
+- [`Grid`](./grid): distribui cards e métricas em múltiplas colunas.
+- [`Dashboard`](./dashboard): guia completo sobre montagem de telas analíticas.
+
+### Composições recomendadas
+- **Container + Stack** → sequência de seções com leitura fluida.
+- **Container + Grid** → dashboards responsivos com cards alinhados.
+- **Container + Drawer** → mantém conteúdo principal visível quando há painéis laterais.
+
+<DocsCodePreview title="Container com painel lateral">
+```dsl
+screen Accounts:
+  container-wide:
+    grid-2:
+      card:
+        ## Contas ativas
+        - Plano Pro
+        - Plano Enterprise
+```
+</DocsCodePreview>
+Por quê: combina largura maior com drawer para contexto secundário.

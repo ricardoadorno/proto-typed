@@ -1,42 +1,42 @@
-# Sintaxe básica
+# Basic Syntax
 
-## Por que importa
-A DSL do Proto-Typed define telas de forma declarativa: indentação, dois-pontos e blocos nomeados controlam hierarquia e fluxo. Dominar a sintaxe evita erros estruturais e garante que componentes, containers e ações se comportem como esperado em tempo de execução.
+## Why it matters
+The Proto-Typed DSL defines screens declaratively: indentation, colons, and named blocks control hierarchy and flow. Mastering the syntax avoids structural errors and ensures that components, containers, and actions behave as expected at runtime.
 
-## Forma canônica (sintaxe mínima)
-<DocsCodePreview title="Estrutura de tela com blocos aninhados">
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Screen structure with nested blocks">
 ```dsl
 screen Home:
   container:
-    # Título principal
-    > Parágrafo introdutório.
+    # Main title
+    > Introductory paragraph.
     row-end:
-      @[Ação primária](NextStep)
+      @[Primary action](NextStep)
 ```
 </DocsCodePreview>
-Por quê: ilustra identação obrigatória, uso de dois-pontos e blocos nomeados para organizar o conteúdo.
+Why: illustrates mandatory indentation, use of colons, and named blocks to organize content.
 
 
 
-## Padrões de uso
-<DocsCodePreview title="Declarar múltiplos blocos de topo">
+## Usage patterns
+<DocsCodePreview title="Declare multiple top-level blocks">
 ```dsl
 screen Home:
   container:
-    # Visão geral
-    > Contexto inicial.
+    # Overview
+    > Initial context.
 
 modal HelpModal:
   card:
-    ## Precisa de ajuda?
-    > Revise os guias disponíveis.
-    @[Fechar](close)
+    ## Need help?
+    > Review the available guides.
+    @[Close](close)
 ```
 </DocsCodePreview>
-Quando usar: agrupar tela principal e overlays relacionados no mesmo arquivo.
-Por quê: mantém contexto de navegação próximo e facilita manutenção de fluxos completos.
+When to use: group the main screen and related overlays in the same file.
+Why: keeps navigation context close and facilitates maintenance of complete flows.
 
-<DocsCodePreview title="Componentes reutilizáveis com indentação consistente">
+<DocsCodePreview title="Reusable components with consistent indentation">
 ```dsl
 component MetricCard:
   card:
@@ -47,114 +47,114 @@ screen Dashboard:
   container-wide:
     grid-3:
       $MetricCard:
-        - Leads | 1.240
+        - Leads | 1,240
       $MetricCard:
-        - Conversões | 134
+        - Conversions | 134
 ```
 </DocsCodePreview>
-Quando usar: separar layout genérico dos dados que variam.
-Por quê: a sintaxe de componente + instância reduz duplicação mantendo alinhamento correto.
+When to use: separate the generic layout from the data that varies.
+Why: the component + instance syntax reduces duplication while maintaining correct alignment.
 
-<DocsCodePreview title="Listas textuais sem ações inline">
+<DocsCodePreview title="Textual lists without inline actions">
 ```dsl
 screen Default:
   container:
-    - Planejar release
-    - Revisar backlog
-    - Atualizar métricas
+    - Plan release
+    - Review backlog
+    - Update metrics
     row-end:
-      @[Abrir planejamento](Planning)
+      @[Open planning](Planning)
 ```
 </DocsCodePreview>
-Quando usar: apresentar itens somente textuais e agrupar as ações em blocos adequados.
-Por quê: respeita a regra da DSL que restringe `list` a conteúdo textual puro.
+When to use: present text-only items and group actions in appropriate blocks.
+Why: respects the DSL rule that restricts `list` to pure textual content.
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Bloco sem dois-pontos",
+    title: "Block without a colon",
     code: `
 screen Home
   container:
-    # Visão
+    # Overview
     `,
   }}
   do={{
-    title: "Dois-pontos obrigatório",
+    title: "Mandatory colon",
     code: `
 screen Home:
   container:
-    # Visão
+    # Overview
     `,
   }}
 >
-  Por quê: o parser depende do `:` para reconhecer o início do bloco.
+  Why: the parser depends on the `:` to recognize the beginning of the block.
 </DoDont>
 <DoDont
   dont={{
-    title: "Indentação inconsistente",
+    title: "Inconsistent indentation",
     code: `
 screen Home:
 <TAB>container:
-    # Visão
+    # Overview
     `,
   }}
   do={{
-    title: "Indentação uniforme",
+    title: "Uniform indentation",
     code: `
 screen Home:
   container:
-    # Visão
+    # Overview
     `,
   }}
 >
-  Por quê: indentação inconsistente gera nós desalinhados e erros de renderização.
+  Why: inconsistent indentation generates misaligned nodes and rendering errors.
 </DoDont>
 <DoDont
   dont={{
-    title: "Nome não padrão",
+    title: "Non-standard name",
     code: `
 screen homeDashboard:
   container:
-    # Conteúdo
+    # Content
     `,
   }}
   do={{
-    title: "Nome padrão de tela",
+    title: "Standard screen name",
     code: `
 screen HomeDashboard:
   container:
-    # Conteúdo
+    # Content
     `,
   }}
 >
-  Por quê: a engine conecta ações usando nomes exatos; seguir TitleCase evita referências quebradas.
+  Why: the engine connects actions using exact names; following TitleCase avoids broken references.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Screen`](./screen): define o contêiner principal da hierarquia.
-- [`Flow`](./flow): organiza a navegação entre telas declaradas.
-- [`Component Definition`](./component-definition): detalha criação de blocos reutilizáveis.
-- [`Text`](./text): descreve hierarquia tipográfica dentro dos blocos.
+### Related
+- [`Screen`](./screen): defines the main container of the hierarchy.
+- [`Flow`](./flow): organizes navigation between declared screens.
+- [`Component Definition`](./component-definition): details the creation of reusable blocks.
+- [`Text`](./text): describes the typographic hierarchy within the blocks.
 
-### Composições recomendadas
-- **Sintaxe básica + Screen** → garante telas válidas antes de pensar em estilo.
-- **Sintaxe básica + Component Definition** → aplica padrões consistentes em coleções.
-- **Sintaxe básica + Flow** → conecta telas respeitando nomes e indentação.
+### Recommended compositions
+- **Basic Syntax + Screen** → ensures valid screens before thinking about style.
+- **Basic Syntax + Component Definition** → applies consistent patterns in collections.
+- **Basic Syntax + Flow** → connects screens respecting names and indentation.
 
-<DocsCodePreview title="Tela com navegação correta">
+<DocsCodePreview title="Screen with correct navigation">
 ```dsl
 screen Home:
   container:
-    # Início
-    @[Ir para detalhes](Detail)
+    # Home
+    @[Go to details](Detail)
 
 screen Detail:
   container:
-    # Detalhes
-    @[Voltar ao início](Home)
+    # Details
+    @[Back to home](Home)
 ```
 </DocsCodePreview>
-Por quê: mostra uso correto de nomes TitleCase e indentação para navegação bidirecional.
+Why: shows the correct use of TitleCase names and indentation for bidirectional navigation.

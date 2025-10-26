@@ -1,0 +1,81 @@
+{
+  "playground": {
+    "title": "Playground",
+    "editorTitle": "Editor",
+    "editorDescription": "Escreva componentes, telas e fluxos usando a sintaxe declarativa.",
+    "viewDocumentation": "Ver documentação",
+    "exportHtml": "Exportar HTML",
+    "themePreset": "Preset de tema",
+    "livePreview": "Preview ao vivo",
+    "livePreviewDescription": "Interaja com a interface renderizada. Clique nos botões para trocar de tela mais rápido.",
+    "screensDetected": "telas detectadas:",
+    "noScreensDetected": "Nenhuma tela detectada"
+  },
+  "docs": {
+    "title": "Documentação enxuta para prototipar rápido no universo proto-typed",
+    "description": "Aprenda a usar a DSL, componentes e tokens oficiais para construir experiências navegáveis em minutos. Tudo pensado para um fluxo coeso entre design e desenvolvimento.",
+    "startNow": "Começar agora",
+    "goToPlayground": "Ir para o playground",
+    "highlights": "Destaques",
+    "highlightsDescription": "Os pontos essenciais para dominar o proto-typed do zero ao avançado.",
+    "highlightItems": [
+      "Fluxo passo a passo para sair da ideia ao protótipo clicável.",
+      "Playgrounds integrados e blocos de código com copy instantâneo.",
+      "Guia de tokens, layouts e padrões visuais do proto-typed."
+    ],
+    "exploreByChapters": "Explorar por capítulos",
+    "exploreByChaptersDescription": "A documentação é organizada em capítulos temáticos. Avance conforme a sua necessidade, sem perder o contexto do fluxo completo.",
+    "openFirstTopic": "Abrir primeiro tópico"
+  },
+  "changelog": {
+    "versionRegistry": "Registro de versões",
+    "title": "Change Log do Proto-Typed",
+    "description": "Histórico de lançamentos, correções e melhorias contínuas do sistema de prototipagem textual.",
+    "initialRelease": "Lançamento inicial do Proto-Typed!",
+    "initialDslVersion": "Versão inicial da DSL textual para prototipagem.",
+    "integratedPlayground": "Playground integrado com preview ao vivo.",
+    "features": "Novidades",
+    "improvements": "Melhorias",
+    "fixes": "Correções",
+    "internalChanges": "Alterações internas",
+    "trackDevelopment": "Acompanhe o desenvolvimento",
+    "trackDevelopmentDescription": "Veja o histórico completo de commits e releases do Proto-Typed no repositório oficial.",
+    "viewOnGitHub": "Ver no GitHub"
+  },
+  "known_errors": {
+    "title": "Lista de bugs e limitações identificadas",
+    "description": "Aqui estão os problemas conhecidos nas versões atuais do Proto-Typed. Acompanhe seu status e soluções sugeridas.",
+    "indentationError": "Erro de Indentação",
+    "indentationErrorDescription": "Quando existe uma linha em branco é entendido como fim da identação do componente pai, causando falha na renderização correta dos estilos no tema escuro.",
+    "indentationErrorCause": "Problema no parser que entende linhas em branco como término de bloco",
+    "status": "Status",
+    "inProgress": "Correção em andamento",
+    "cause": "Causa",
+    "fix": "Correção",
+    "foundNewIssue": "Encontrou um novo problema?",
+    "foundNewIssueDescription": "Relate um bug ou comportamento inesperado para que possamos investigar e corrigir o mais rápido possível.",
+    "openIssueOnGitHub": "Abrir issue no GitHub"
+  },
+  "principles": {
+    "title": "Proto-Typed — descreva interfaces, veja protótipos, itere com IA.",
+    "description": "Um formato textual de prototipação: você escreve o que a interface é (telas, listas, botões, navegação) e o sistema cuida do resto — sem arrastar blocos, sem JSX, sem fricção."
+  },
+  "nav": {
+    "playground": "Playground",
+    "docs": "Docs",
+    "philosophy": "Filosofia",
+    "knownErrors": "Problemas Conhecidos"
+  },
+  "footer": {
+    "getStarted": "Comece rápido",
+    "introduction": "Introdução",
+    "philosophy": "Filosofia do proto-typed",
+    "explore": "Explorar",
+    "playground": "Playground",
+    "knownErrors": "Erros Conhecidos",
+    "community": "Comunidade",
+    "github": "GitHub",
+    "status": "Status",
+    "changelog": "Changelog"
+  }
+}

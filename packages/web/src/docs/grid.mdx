@@ -1,69 +1,69 @@
 # Grid
-Grades distribuem elementos em colunas equilibradas, garantindo alinhamento consistente e leitura responsiva.
+Grids distribute elements into balanced columns, ensuring consistent alignment and responsive reading.
 
-## Quando usar
-- Exibir múltiplos cards ou componentes com largura semelhante.
-- Montar dashboards com métricas organizadas por colunas.
-- Oferecer comparações lado a lado sem recorrer a tabelas complexas.
-- Alternar automaticamente a quantidade de colunas conforme a largura disponível.
+## When to use
+- Display multiple cards or components with similar width.
+- Assemble dashboards with metrics organized by columns.
+- Offer side-by-side comparisons without resorting to complex tables.
+- Automatically switch the number of columns according to the available width.
 
-## Exemplo básico
-<DocsCodePreview title="Grid com métricas em três colunas">
+## Basic example
+<DocsCodePreview title="Grid with metrics in three columns">
 ```dsl
 screen Analytics:
   container-wide:
-    # Indicadores principais
+    # Main indicators
     grid-3:
       card:
-        ## Usuários ativos
-        # 12.304
+        ## Active users
+        # 12,304
       card:
-        ## Conversão
-        # 23,5%
+        ## Conversion
+        # 23.5%
       card:
         ## NPS
         # 72
 ```
 </DocsCodePreview>
-Por quê: apresenta métricas equilibradas com alinhamento previsível.
+Why: presents balanced metrics with predictable alignment.
 
-## Variantes
-<DocsCodePreview title="Grid-2 para comparações">
+## Variants
+<DocsCodePreview title="Grid-2 for comparisons">
 ```dsl
 screen Default:
   container:
     grid-2:
       card:
-        ## Plano Starter
-        > Ideal para equipes pequenas.
+        ## Starter Plan
+        > Ideal for small teams.
       card:
-        ## Plano Pro
-        > Recursos avançados e suporte prioritário.
+        ## Pro Plan
+        > Advanced features and priority support.
 ```
 </DocsCodePreview>
-Quando usar: comparar conteúdos em duas colunas com foco equilibrado.
-Por quê: dois slots mantêm equilíbrio entre leitura e respiro visual.
+When to use: compare content in two columns with balanced focus.
+Why: two slots maintain a balance between reading and visual breathing room.
 
-<DocsCodePreview title="Grid-auto para coleções flexíveis">
+<DocsCodePreview title="Grid-auto for flexible collections">
 ```dsl
 screen Default:
   container:
     grid-auto:
       card:
-        ## Destaque 1
-        > Ajusta automaticamente a largura.
+        ## Highlight 1
+        > Automatically adjusts the width.
       card:
-        ## Destaque 2
-        > Se adapta ao espaço restante.
+        ## Highlight 2
+        > Adapts to the remaining space.
       card:
-        ## Destaque 3
-        > Quebra para a linha seguinte conforme necessário.
+        ## Highlight 3
+        > Wraps to the next line as needed.
 ```
 </DocsCodePreview>
-Quando usar: distribuir itens com largura dinâmica sem definir número fixo de colunas.
-Por quê: o ajuste automático evita colunas quebradas em telas menores.
+When to use: distribute items with dynamic width without defining a fixed number of columns.
+Why: automatic adjustment avoids broken columns on smaller screens.
 
-<DocsCodePreview title="Grid-4 em telas amplas">
+<DocsCodePreview title="Grid-4 on wide screens">
 ```dsl
 screen Default:
   container:
@@ -78,15 +78,15 @@ screen Default:
         ## Insight 4
 ```
 </DocsCodePreview>
-Quando usar: dashboards extensos em desktop que pedem quatro colunas alinhadas.
-Por quê: aproveita a largura máxima disponível mantendo proporções iguais.
+When to use: extensive dashboards on desktop that call for four aligned columns.
+Why: takes advantage of the maximum available width while maintaining equal proportions.
 
-## Composição (usando com outros)
-- **Grid + Card** — cada célula mantém espaçamento interno consistente.
-- **Grid + Component Definition** — renderiza coleções dinâmicas com dados variáveis.
-- **Grid + Container-wide** — garante espaço lateral para múltiplas colunas.
+## Composition (using with others)
+- **Grid + Card** — each cell maintains consistent internal spacing.
+- **Grid + Component Definition** — renders dynamic collections with variable data.
+- **Grid + Container-wide** — ensures side space for multiple columns.
 
-<DocsCodePreview title="Grid com componentes reutilizáveis">
+<DocsCodePreview title="Grid with reusable components">
 ```dsl
 component MetricCard:
   card:
@@ -98,26 +98,26 @@ screen Dashboard:
   container-wide:
     grid-3:
       $MetricCard:
-        - Leads | 1.240 | Últimas 24h
+        - Leads | 1,240 | Last 24h
       $MetricCard:
-        - Conversões | 134 | Semana atual
+        - Conversions | 134 | Current week
       $MetricCard:
-        - Receita | R$ 87K | Base mensal
+        - Revenue | $87K | Monthly basis
 ```
 </DocsCodePreview>
-Por quê: padroniza o layout das métricas reduzindo repetição de código.
+Why: standardizes the layout of metrics, reducing code repetition.
 
 ## Slots & Props
-| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `variante` | enum (`grid-2`, `grid-3`, `grid-4`, `grid-auto`) | `grid-3` | Define número de colunas ou ajuste automático. | Não |
-| `conteúdo interno` | blocos DSL | — | Cards, componentes e layouts renderizados nas células. | Sim |
-| `container` suporte | layout | — | Recomenda-se envolver a grid em `container` ou `container-wide`. | Não |
+| `variant` | enum (`grid-2`, `grid-3`, `grid-4`, `grid-auto`) | `grid-3` | Defines the number of columns or automatic adjustment. | No |
+| `internal content` | DSL blocks | — | Cards, components, and layouts rendered in the cells. | Yes |
+| `container` support | layout | — | It is recommended to wrap the grid in `container` or `container-wide`. | No |
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Quatro colunas espremidas",
+    title: "Four squeezed columns",
     code: `
 container-narrow:
   grid-4:
@@ -132,7 +132,7 @@ container-narrow:
     `,
   }}
   do={{
-    title: "Grid proporcional",
+    title: "Proportional grid",
     code: `
 container-narrow:
   grid-2:
@@ -143,51 +143,51 @@ container-narrow:
     `,
   }}
 >
-  Por quê: a quantidade de colunas deve respeitar a largura do container para preservar a legibilidade.
+  Why: the number of columns should respect the container's width to preserve readability.
 </DoDont>
 <DoDont
   dont={{
-    title: "Checklist em grid",
+    title: "Checklist in a grid",
     code: `
 grid-3:
   card:
-    ## Passo 1
+    ## Step 1
   card:
-    ## Passo 2
+    ## Step 2
   card:
-    ## Passo 3
+    ## Step 3
     `,
   }}
   do={{
-    title: "Sequência em stack",
+    title: "Sequence in a stack",
     code: `
 stack-loose:
   card:
-    ## Passo 1
+    ## Step 1
   card:
-    ## Passo 2
+    ## Step 2
   card:
-    ## Passo 3
+    ## Step 3
     `,
   }}
 >
-  Por quê: fluxos sequenciais exigem leitura de cima para baixo para evitar confusão.
+  Why: sequential flows require top-to-bottom reading to avoid confusion.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Container`](./container): delimita a largura antes de aplicar a grid.
-- [`Card`](./card): elemento mais comum em células de grade.
-- [`Component List`](./component-list): gera grids dinâmicas com dados vindos de coleções.
-- [`Dashboard`](./dashboard): guia que explora grids em telas analíticas.
+### Related
+- [`Container`](./container): defines the width before applying the grid.
+- [`Card`](./card): the most common element in grid cells.
+- [`Component List`](./component-list): generates dynamic grids with data from collections.
+- [`Dashboard`](./dashboard): a guide that explores grids on analytical screens.
 
-### Composições recomendadas
-- **Grid + Container-wide** → dashboards com múltiplas colunas e respiro lateral.
-- **Grid + Stack interno** → células com subelementos alinhados verticalmente.
-- **Grid + Component Definition** → layouts reutilizáveis com dados variáveis.
+### Recommended compositions
+- **Grid + Container-wide** → dashboards with multiple columns and side breathing room.
+- **Grid + Internal stack** → cells with vertically aligned sub-elements.
+- **Grid + Component Definition** → reusable layouts with variable data.
 
-<DocsCodePreview title="Grid com stack interno">
+<DocsCodePreview title="Grid with internal stack">
 ```dsl
 screen Default:
   container:
@@ -195,15 +195,15 @@ screen Default:
       card:
         stack-tight:
           ## Backlog
-          > Tarefas pendentes
+          > Pending tasks
       card:
         stack-tight:
-          ## Sprint atual
-          > Ênfase em bugs críticos
+          ## Current sprint
+          > Emphasis on critical bugs
       card:
         stack-tight:
           ## Roadmap
-          > Próximos lançamentos
+          > Upcoming releases
 ```
 </DocsCodePreview>
-Por quê: stacks dentro do card mantêm alinhamento vertical sem quebrar o layout da grade.
+Why: stacks inside the card maintain vertical alignment without breaking the grid layout.

@@ -1,80 +1,80 @@
 # List
-Listas organizam itens textuais em sequência vertical, servindo como ponto de partida para resumos e catálogos.
+Lists organize textual items in a vertical sequence, serving as a starting point for summaries and catalogs.
 
-## Quando usar
-- Exibir coleções de itens curtos com leitura rápida.
-- Estruturar resumos, agendas ou checklists sem formatação complexa.
-- Alimentar componentes repetidos (`list $Componente`) com dados tabulares.
-- Agrupar conteúdos em drawers, modais ou cards mantendo ritmo vertical.
+## When to use
+- Display collections of short items for quick reading.
+- Structure summaries, agendas, or checklists without complex formatting.
+- Feed repeated components (`list $Component`) with tabular data.
+- Group content in drawers, modals, or cards while maintaining a vertical rhythm.
 
-<Attention title="Indentação primeiro, hífen apenas em listas">
-LLMs costumam inserir `-` para listar filhos de qualquer bloco, mas a DSL só aceita esse marcador em `list`, `navigator` e `fab`. Para layouts e componentes use apenas indentação; isso evita nós fantasmas e mantém a leitura clara para quem dá manutenção.
+<Attention title="Indentation first, hyphen only in lists">
+LLMs often insert `-` to list children of any block, but the DSL only accepts this marker in `list`, `navigator`, and `fab`. For layouts and components, use only indentation; this avoids ghost nodes and keeps the reading clear for those who maintain the code.
 </Attention>
 
-## Exemplo básico
-<DocsCodePreview title="Lista com ações separadas">
+## Basic example
+<DocsCodePreview title="List with separate actions">
 ```dsl
 screen Default:
   container:
     card:
-      ## Tarefas da semana
-      - Revisar backlog
-      - Preparar demo
-      - Atualizar documentação
+      ## Tasks of the week
+      - Review backlog
+      - Prepare demo
+      - Update documentation
       row-end:
-        @[Criar nova tarefa](TaskForm)
-        @ghost[Ver calendário](Calendar)
+        @[Create new task](TaskForm)
+        @ghost[View calendar](Calendar)
 ```
 </DocsCodePreview>
-Por quê: mantém itens exclusivamente textuais e posiciona ações em bloco dedicado.
+Why: keeps items exclusively textual and positions actions in a dedicated block.
 
-## Variantes
-<DocsCodePreview title="Lista simples">
+## Variants
+<DocsCodePreview title="Simple list">
 ```dsl
 screen Default:
   container:
-    - Configurar métricas
-    - Validar integrações
-    - Revisar deploy
+    - Configure metrics
+    - Validate integrations
+    - Review deploy
 ```
 </DocsCodePreview>
-Quando usar: enumerar itens curtos sem propriedades adicionais.
-Por quê: apresenta conteúdos simples sem exigir componentes complexos.
+When to use: enumerate short items without additional properties.
+Why: presents simple content without requiring complex components.
 
-<DocsCodePreview title="Lista baseada em componente">
+<DocsCodePreview title="Component-based list">
 ```dsl
 screen Todo:
   container:
     list $TaskRow:
-      - Atualizar roadmap | Até 22/09 | show:roadmap
-      - Revisar backlog | Até 24/09 | show:backlog
+      - Update roadmap | By 22/09 | show:roadmap
+      - Review backlog | By 24/09 | show:backlog
 
 component TaskRow:
   row-between:
     stack-tight:
       > %title
       >>> %due
-    @outline[Detalhar](%action)
+    @outline[Details](%action)
 ```
 </DocsCodePreview>
-Quando usar: renderizar itens repetidos com múltiplos campos seguindo a mesma estrutura.
-Por quê: evita duplicação de markup enquanto mantém layout consistente.
+When to use: render repeated items with multiple fields following the same structure.
+Why: avoids markup duplication while maintaining a consistent layout.
 
-## Composição (usando com outros)
-- **List + Card** — agrupa contexto e mantém itens alinhados.
-- **List + Component Definition** — transforma dados tabulares em layouts ricos.
-- **List + Drawer** — expõe listas de apoio sem sair da tela principal.
+## Composition (using with others)
+- **List + Card** — groups context and keeps items aligned.
+- **List + Component Definition** — transforms tabular data into rich layouts.
+- **List + Drawer** — exposes support lists without leaving the main screen.
 
-<DocsCodePreview title="Lista com componente reutilizável">
+<DocsCodePreview title="List with reusable component">
 ```dsl
 screen Metrics:
   container:
     card:
-      ## Indicadores
+      ## Indicators
       list $MetricItem:
-        - Leads captados | 1.240
-        - Conversões | 134
-        - Receita | R$ 87K
+        - Leads captured | 1,240
+        - Conversions | 134
+        - Revenue | $87K
 
 component MetricItem:
     row-between:
@@ -82,48 +82,48 @@ component MetricItem:
       >> %value
 ```
 </DocsCodePreview>
-Por quê: mantém consistência na apresentação de métricas recorrentes.
+Why: maintains consistency in the presentation of recurring metrics.
 
 ## Slots & Props
-| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `-` | bloco | — | Renderiza itens textuais com marcador `-`. | Sim |
-| `list $Componente` | bloco | — | Usa componente previamente declarado para cada linha. | Não |
-| `itens` | texto ou dados separados por `|` | — | Dados passados para cada item ou componente. | Sim |
-| `%props` | interpolação | — | Variáveis dentro do componente associado à lista. | Não |
+| `-` | block | — | Renders textual items with a `-` marker. | Yes |
+| `list $Component` | block | — | Uses a previously declared component for each line. | No |
+| `items` | text or data separated by `|` | — | Data passed to each item or component. | Yes |
+| `%props` | interpolation | — | Variables within the component associated with the list. | No |
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Ações em ``",
+    title: "Actions in ``",
     code: `
 
-  - Revisar backlog @[Editar](TaskForm)
+  - Review backlog @[Edit](TaskForm)
     `,
   }}
   do={{
-    title: "Ações separadas",
+    title: "Separate actions",
     code: `
 
-  - Revisar backlog
-  - Preparar demo
+  - Review backlog
+  - Prepare demo
 row-end:
-  @[Editar tarefa](TaskForm)
+  @[Edit task](TaskForm)
     `,
   }}
 >
-  Por quê: `list` aceita somente texto; ações ficam em rows, cards ou navigator.
+  Why: `list` only accepts text; actions should be in rows, cards, or navigator.
 </DoDont>
 <DoDont
   dont={{
-    title: "Pipes sem `list $Componente`",
+    title: "Pipes without `list $Component`",
     code: `
 
-  - Plano Pro | R$ 89
+  - Pro Plan | $89
     `,
   }}
   do={{
-    title: "Lista com componente",
+    title: "List with component",
     code: `
 component PlanRow:
   row-between:
@@ -131,24 +131,22 @@ component PlanRow:
     >> %price
 
 list $PlanRow:
-  - Plano Pro | R$ 89
+  - Pro Plan | $89
     `,
   }}
 >
-  Por quê: `|` indica múltiplos valores, e apenas componentes conseguem interpolar `%props`.
+  Why: `|` indicates multiple values, and only components can interpolate `%props`.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Component Definition`](./component-definition): define templates usados em `list $`.
-- [`Component List`](./component-list): amplia listas com dados dinâmicos.
-- [`Row`](./row): posiciona ações relacionadas à lista.
-- [`Card`](./card): delimita contexto e oferece título à lista.
+### Related
+- [`Component Definition`](./component-definition): defines templates used in `list $`.
+- [`Component List`](./component-list): extends lists with dynamic data.
+- [`Row`](./row): positions actions related to the list.
+- [`Card`](./card): defines context and provides a title to the list.
 
-### Composições recomendadas
-- **List + Card + Row-end** → resumo textual com ações no rodapé.
-- **List + Component Definition** → coleções ricas baseadas em dados.
-- **List + Drawer** → notas rápidas sem navegar de tela.
-
-
+### Recommended compositions
+- **List + Card + Row-end** → textual summary with actions in the footer.
+- **List + Component Definition** → rich collections based on data.
+- **List + Drawer** → quick notes without navigating from the screen.

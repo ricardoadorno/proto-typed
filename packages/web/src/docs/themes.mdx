@@ -1,9 +1,9 @@
 # Themes
-## Por que importa
-Temas adaptam o produto à identidade visual da marca, garantindo contraste adequado e experiência consistente em todas as telas. Ajustar tokens core evita intervenção manual em cada componente.
+## Why it matters
+Themes adapt the product to the brand's visual identity, ensuring adequate contrast and a consistent experience across all screens. Adjusting core tokens avoids manual intervention in each component.
 
-## Forma canônica (sintaxe mínima)
-<DocsCodePreview title="Tema customizado no bloco de estilos">
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Custom theme in the styles block">
 ```dsl
 styles:
   --primary: oklch(0.68 0.15 210);
@@ -13,13 +13,13 @@ styles:
 
 screen Default:
   container:
-    # Exemplo usando o tema
+    # Example using the theme
 ```
 </DocsCodePreview>
-Por quê: define cores principais e de texto, base para qualquer variação temática.
+Why: defines the main and text colors, the basis for any thematic variation.
 
-## Padrões de uso
-<DocsCodePreview title="Paleta da marca aplicada a planos de assinatura">
+## Usage patterns
+<DocsCodePreview title="Brand palette applied to subscription plans">
 ```dsl
 styles:
   --primary: oklch(0.7 0.15 220);
@@ -28,23 +28,23 @@ styles:
 
 screen Pricing:
   container:
-    # Escolha seu plano
+    # Choose your plan
     grid-3:
       card:
         ## Starter
-        @[Começar grátis](Signup)
+        @[Start for free](Signup)
       card-feature:
         ## Business
-        @[Assinar Business](upgrade)
+        @[Subscribe to Business](upgrade)
       card:
         ## Enterprise
-        @[Falar com vendas](contact)
+        @[Talk to sales](contact)
 ```
 </DocsCodePreview>
-Quando usar: alinhar botões, cards e raio às diretrizes da marca.
-Por quê: assegura que elementos críticos sigam o branding aprovado.
+When to use: align buttons, cards, and radius with brand guidelines.
+Why: ensures that critical elements follow the approved branding.
 
-<DocsCodePreview title="Tema escuro com contraste garantido">
+<DocsCodePreview title="Dark theme with guaranteed contrast">
 ```dsl
 styles:
   --background: oklch(0.13 0.02 250);
@@ -54,23 +54,23 @@ styles:
 
 screen DarkDashboard:
   container-wide:
-    # Métricas noturnas
+    # Nightly metrics
     grid-3:
       card:
         ## Leads
-        # 1.240
+        # 1,240
       card:
-        ## Conversões
+        ## Conversions
         # 134
       card:
-        ## Satisfação
+        ## Satisfaction
         # 92%
 ```
 </DocsCodePreview>
-Quando usar: oferecer modo escuro ou alto contraste sem alterar cada componente.
-Por quê: melhora acessibilidade e cansaço visual com poucas mudanças.
+When to use: offer dark or high-contrast mode without changing each component.
+Why: improves accessibility and visual fatigue with few changes.
 
-<DocsCodePreview title="Tokens customizados combinados com componentes">
+<DocsCodePreview title="Custom tokens combined with components">
 ```dsl
 styles:
   --brand-header: #0b132b;
@@ -80,45 +80,45 @@ component Hero:
   card:
     ## %title
     > %subtitle
-    @[Começar agora](%destination)
+    @[Get started now](%destination)
 
 screen Landing:
   container:
     $Hero:
-      - Proto-Typed | Ajuste o tema com CSS variables | Signup
+      - Proto-Typed | Adjust the theme with CSS variables | Signup
 ```
 </DocsCodePreview>
-Quando usar: criar tokens específicos e referenciá-los dentro de componentes compostos.
-Por quê: facilita reaproveitamento dos mesmos valores em diferentes blocos.
+When to use: create specific tokens and reference them within composite components.
+Why: facilitates reuse of the same values in different blocks.
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Estilo local sem tema",
+    title: "Local style without a theme",
     code: `
 card:
-  ## Configurações
+  ## Settings
   --primary: #2563eb;
-  > Ajustes rápidos.
+  > Quick adjustments.
     `,
   }}
   do={{
-    title: "Token global aplicado",
+    title: "Global token applied",
     code: `
 styles:
   --primary: #2563eb;
 
 card:
-  ## Configurações
-  > Ajustes rápidos.
+  ## Settings
+  > Quick adjustments.
     `,
   }}
 >
-  Por quê: tokens globais evitam divergências entre telas.
+  Why: global tokens avoid discrepancies between screens.
 </DoDont>
 <DoDont
   dont={{
-    title: "Baixo contraste",
+    title: "Low contrast",
     code: `
 styles:
   --background: oklch(0.9 0.01 240);
@@ -126,7 +126,7 @@ styles:
     `,
   }}
   do={{
-    title: "Contraste forte",
+    title: "Strong contrast",
     code: `
 styles:
   --background: oklch(0.14 0.01 240);
@@ -134,23 +134,23 @@ styles:
     `,
   }}
 >
-  Por quê: contraste insuficiente compromete leitura e acessibilidade.
+  Why: insufficient contrast compromises reading and accessibility.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Styles Block`](./styles-block): local onde os tokens são declarados.
-- [`Button`](./button): responde diretamente às variáveis de cor.
-- [`Card`](./card): utiliza tokens de fundo e raio do tema.
-- [`Dashboard`](./dashboard): demonstra a aplicação de temas em telas analíticas.
+### Related
+- [`Styles Block`](./styles-block): where the tokens are declared.
+- [`Button`](./button): responds directly to the color and radius variables.
+- [`Card`](./card): uses background and radius tokens from the theme.
+- [`Dashboard`](./dashboard): demonstrates the application of themes on analytical screens.
 
-### Composições recomendadas
-- **Themes + Styles Block** → separa tokens padrão e variações específicas.
-- **Themes + Component Composition** → garante consistência em componentes complexos.
-- **Themes + Modal** → controla contraste em overlays.
+### Recommended compositions
+- **Themes + Styles Block** → separates standard tokens and specific variations.
+- **Themes + Component Composition** → ensures consistency in complex components.
+- **Themes + Modal** → controls contrast in overlays.
 
-<DocsCodePreview title="Tema aplicado junto com componente composto">
+<DocsCodePreview title="Theme applied along with a composite component">
 ```dsl
 styles:
   --primary: #1f2937;
@@ -160,14 +160,14 @@ component HeroBanner:
   card:
     ## %title
     > %subtitle
-    @[Começar agora](%action)
+    @[Get started now](%action)
 
 screen Home:
   container:
     $HeroBanner:
-      - Lançamento do novo tema
-      - Ajuste tokens para alinhar com a marca.
+      - Launch of the new theme
+      - Adjust tokens to align with the brand.
       - ThemeGuide
 ```
 </DocsCodePreview>
-Por quê: o tema global define aparência enquanto o componente compõe conteúdo reutilizável.
+Why: the global theme defines the appearance while the component composes reusable content.

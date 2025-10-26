@@ -1,72 +1,72 @@
 # Card
-Cards agrupam conteúdo relacionado em blocos autônomos com espaçamento consistente e foco visual.
+Cards group related content into self-contained blocks with consistent spacing and visual focus.
 
-## Quando usar
-- Destacar um conjunto de informações que precisam ser lidas em grupo.
-- Criar vitrines de métricas, planos ou ações prioritárias.
-- Organizar entradas curtas (formularios rápidos, filtros) mantendo bordas e padding.
-- Servir como base para componentes reutilizáveis apresentando o mesmo layout.
+## When to use
+- Highlight a set of information that needs to be read as a group.
+- Create showcases for metrics, plans, or priority actions.
+- Organize short entries (quick forms, filters) while maintaining borders and padding.
+- Serve as a basis for reusable components presenting the same layout.
 
-## Exemplo básico
-<DocsCodePreview title="Card com informação e ação">
+## Basic example
+<DocsCodePreview title="Card with information and action">
 ```dsl
 screen Default:
   container:
     card:
-      ## Plano Pro
-      > Recursos completos para times em crescimento.
+      ## Pro Plan
+      > Full features for growing teams.
       row-end:
-        @[Assinar agora](Checkout)
+        @[Subscribe now](Checkout)
 ```
 </DocsCodePreview>
-Por quê: destaca um bloco de conteúdo com CTA direto e espaçamento equilibrado.
+Why: highlights a block of content with a direct CTA and balanced spacing.
 
-## Variantes
-<DocsCodePreview title="Card padrão para blocos gerais">
+## Variants
+<DocsCodePreview title="Standard card for general blocks">
 ```dsl
 screen Default:
   container:
     card:
-      ## Atualização semanal
-      >> Consolidado das métricas do time.
+      ## Weekly update
+      >> Consolidated team metrics.
 ```
 </DocsCodePreview>
-Quando usar: comunique conteúdo recorrente com leitura confortável.
-Por quê: o espaçamento padrão equilibra texto e respiros visuais.
+When to use: communicate recurring content with comfortable reading.
+Why: the default spacing balances text and visual breathing room.
 
-<DocsCodePreview title="Card compacto para listas densas">
+<DocsCodePreview title="Compact card for dense lists">
 ```dsl
 screen Default:
   container:
     card-compact:
-      ## Próximas tarefas
+      ## Next tasks
       
-        - Validar protótipo
-        - Revisar copy do email
+        - Validate prototype
+        - Review email copy
 ```
 </DocsCodePreview>
-Quando usar: agrupe itens curtos em pouco espaço.
-Por quê: a variante reduz padding sem comprometer a legibilidade.
+When to use: group short items in a small space.
+Why: the variant reduces padding without compromising readability.
 
-<DocsCodePreview title="Card destaque com foco em conversão">
+<DocsCodePreview title="Feature card with a focus on conversion">
 ```dsl
 screen Default:
   container:
     card-feature:
       ## Enterprise
-      *> Atendimento dedicado e SLA personalizado.
-      @[Falar com vendas](ContactSales)
+      *> Dedicated support and custom SLA.
+      @[Talk to sales](ContactSales)
 ```
 </DocsCodePreview>
-Quando usar: direcionar atenção para ofertas premium ou ações críticas.
-Por quê: o estilo realçado cria foco imediato para CTAs estratégicos.
+When to use: direct attention to premium offers or critical actions.
+Why: the enhanced style creates immediate focus for strategic CTAs.
 
-## Composição (usando com outros)
-- **Card + Stack** — combina múltiplas seções verticais sem perder espaçamento.
-- **Card + Grid** — cria vitrines com cards repetidos para métricas ou planos.
-- **Card + Component Definition** — estabelece um layout reutilizável com dados variáveis.
+## Composition (using with others)
+- **Card + Stack** — combines multiple vertical sections without losing spacing.
+- **Card + Grid** — creates showcases with repeated cards for metrics or plans.
+- **Card + Component Definition** — establishes a reusable layout with variable data.
 
-<DocsCodePreview title="Grid de cards reutilizáveis">
+<DocsCodePreview title="Grid of reusable cards">
 ```dsl
 component MetricCard:
   card:
@@ -78,98 +78,98 @@ screen Dashboard:
   container:
     grid-3:
       $MetricCard:
-        - Leads | 1.240 | Últimas 24h
+        - Leads | 1,240 | Last 24h
       $MetricCard:
-        - Conversões | 134 | Semana atual
+        - Conversions | 134 | Current week
       $MetricCard:
-        - Satisfação | 92% | Pesquisa pós-release
+        - Satisfaction | 92% | Post-release survey
 ```
 </DocsCodePreview>
-Por quê: reaproveita um layout consistente em diferentes dados sem duplicação.
+Why: reuses a consistent layout across different data without duplication.
 
 ## Slots & Props
-| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `variante` | enum (`card`, `card-compact`, `card-feature`) | `card` | Ajusta padding, contraste e hierarquia visual. | Não |
-| `conteúdo interno` | blocos DSL | — | Recebe textos, listas, botões, componentes. | Sim |
-| `stack/row` internos | layout | — | Controla distribuição de itens dentro do card. | Não |
-| `component` wrapper | referência | — | Permite transformar o card em componente reutilizável (`component`/`$`). | Não |
+| `variant` | enum (`card`, `card-compact`, `card-feature`) | `card` | Adjusts padding, contrast, and visual hierarchy. | No |
+| `internal content` | DSL blocks | — | Receives texts, lists, buttons, components. | Yes |
+| `internal stack/row` | layout | — | Controls item distribution within the card. | No |
+| `component` wrapper | reference | — | Allows transforming the card into a reusable component (`component`/`$`). | No |
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Card dentro de card",
+    title: "Card inside a card",
     code: `
 card:
-  ## Alertas
+  ## Alerts
   card:
-    > Estoque baixo
+    > Low stock
     `,
   }}
   do={{
-    title: "Stack dentro do card",
+    title: "Stack inside the card",
     code: `
 card:
-  ## Alertas
+  ## Alerts
   stack:
-    > Estoque baixo
-    > Pagamentos pendentes
+    > Low stock
+    > Pending payments
     `,
   }}
 >
-  Por quê: `stack` mantém espaçamento vertical sem quebrar o padrão visual do card.
+  Why: `stack` maintains vertical spacing without breaking the card's visual pattern.
 </DoDont>
 <DoDont
   dont={{
-    title: "Ações dentro de list",
+    title: "Actions inside a list",
     code: `
 card:
-  ## Próximos passos
+  ## Next steps
   
-    - #[Revisar backlog](Backlog)
-    - #[Planejar sprint](Planning)
+    - #[Review backlog](Backlog)
+    - #[Plan sprint](Planning)
     `,
   }}
   do={{
-    title: "Lista + ações alinhadas",
+    title: "List + aligned actions",
     code: `
 card:
-  ## Próximos passos
+  ## Next steps
   
-    - Revisar backlog
-    - Planejar sprint
+    - Review backlog
+    - Plan sprint
   row-end:
-    @[Abrir backlog](Backlog)
-    @secondary[Planejar sprint](Planning)
+    @[Open backlog](Backlog)
+    @secondary[Plan sprint](Planning)
     `,
   }}
 >
-  Por quê: listas aceitam apenas texto; botões e links ficam em blocos de ação dedicados.
+  Why: lists only accept text; buttons and links should be in dedicated action blocks.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Container`](./container): delimita largura antes de empilhar cards.
-- [`Stack`](./stack): organiza conteúdo vertical dentro do card.
-- [`Grid`](./grid): distribui múltiplos cards em layouts responsivos.
-- [`Component Definition`](./component-definition): transforma cards em componentes reutilizáveis.
+### Related
+- [`Container`](./container): defines the width before stacking cards.
+- [`Stack`](./stack): organizes content vertically within the card.
+- [`Grid`](./grid): distributes multiple cards in responsive layouts.
+- [`Component Definition`](./component-definition): transforms cards into reusable components.
 
-### Composições recomendadas
-- **Card + Grid** → vitrine de métricas ou planos com espaçamento uniforme.
-- **Card + Row-end** → agrupa ações em rodapés consistentes.
-- **Card + Component List** → renderiza cards dinâmicos com dados de coleção.
+### Recommended compositions
+- **Card + Grid** → showcase of metrics or plans with uniform spacing.
+- **Card + Row-end** → groups actions in consistent footers.
+- **Card + Component List** → renders dynamic cards with collection data.
 
-<DocsCodePreview title="Card com ações alinhadas">
+<DocsCodePreview title="Card with aligned actions">
 ```dsl
 screen Default:
   container:
     card:
-      ## Status do pedido
-      > Atualize o andamento e notifique clientes.
+      ## Order status
+      > Update the progress and notify customers.
       row-end:
-        @ghost[Cancelar](-1)
-        @[Atualizar status](UpdateStatus)
+        @ghost[Cancel](-1)
+        @[Update status](UpdateStatus)
 ```
 </DocsCodePreview>
-Por quê: mantém CTA principal e opção de saída em posição previsível.
+Why: keeps the main CTA and exit option in a predictable position.

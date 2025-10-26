@@ -2,23 +2,45 @@
 
 import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
 
 import DocsFooter from './components/docs-footer'
 import DocsHeader from './components/docs-header'
 import DocsSidebar from './components/docs-sidebar'
 import { ScrollArea, Separator } from '@/components/ui'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import docSections from '@/utils/toc'
+import { DocSection } from '@/utils/toc'
 
 const localStorageKey = 'docs-sidebar-collapsed'
 
-export function DocsLayout({ children }: { children: ReactNode }) {
+export function DocsLayout({
+  children,
+  paramsOverride,
+}: {
+  children: ReactNode
+  paramsOverride?: Record<string, string | string[]>
+}) {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [docSections, setDocSections] = useState<DocSection[]>([])
+  const paramsFromHook = useParams()
+  const params = paramsOverride || paramsFromHook
+  const lang = (params.lang as string) || 'en'
 
   useEffect(() => {
     const storedValue = localStorage.getItem(localStorageKey)
     if (storedValue !== null) setSidebarCollapsed(storedValue === 'true')
   }, [])
+
+  useEffect(() => {
+    async function loadToc() {
+      const tocModule =
+        lang === 'pt'
+          ? await import('@/utils/toc.pt')
+          : await import('@/utils/toc')
+      setDocSections(tocModule.docSections)
+    }
+    loadToc()
+  }, [lang])
 
   const handleCollapseChange = (collapsed: boolean) => {
     setSidebarCollapsed(collapsed)
@@ -40,16 +62,16 @@ export function DocsLayout({ children }: { children: ReactNode }) {
             <ScrollArea
               className={`h-full ${sidebarCollapsed ? 'px-2' : 'px-4'} py-5`}
             >
-              {!sidebarCollapsed && <DocsSidebar sections={docSections} />}
+              {!sidebarCollapsed && (
+                <DocsSidebar sections={docSections} lang={lang} />
+              )}
             </ScrollArea>
 
-            {/* BOTÃO DE TOGGLE */}
+            {/* TOGGLE BUTTON */}
             <button
               onClick={() => handleCollapseChange(!sidebarCollapsed)}
               className="absolute -right-3 top-1/2 flex h-6 w-6 items-center justify-center rounded-full border border-[var(--border-muted)] bg-[var(--bg-surface)] shadow-sm hover:text-[var(--accent)] transition"
-              aria-label={
-                sidebarCollapsed ? 'Mostrar sidebar' : 'Esconder sidebar'
-              }
+              aria-label={sidebarCollapsed ? 'Show sidebar' : 'Hide sidebar'}
             >
               {sidebarCollapsed ? (
                 <ChevronRight size={20} />
@@ -60,7 +82,7 @@ export function DocsLayout({ children }: { children: ReactNode }) {
           </div>
         </aside>
 
-        {/* CONTEÚDO PRINCIPAL */}
+        {/* MAIN CONTENT */}
         <main className="flex w-full min-w-0 flex-1 flex-col gap-16 transition-all duration-300">
           {children}
           <Separator className="border-[var(--border-muted)]" />

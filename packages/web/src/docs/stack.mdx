@@ -1,159 +1,159 @@
 # Stack
-Stacks empilham elementos verticalmente, controlando o espaçamento entre blocos de conteúdo.
+Stacks pile elements vertically, controlling the spacing between content blocks.
 
-## Quando usar
-- Organizar títulos, textos e ações em sequência lógica.
-- Montar formulários com múltiplos campos e botões alinhados.
-- Alternar densidade de leitura com variantes `tight`, `loose` e `flush`.
-- Agrupar componentes reutilizáveis mantendo hierarquia visual coesa.
+## When to use
+- Organize titles, texts, and actions in a logical sequence.
+- Assemble forms with multiple fields and aligned buttons.
+- Alternate reading density with `tight`, `loose`, and `flush` variants.
+- Group reusable components while maintaining a cohesive visual hierarchy.
 
-## Exemplo básico
-<DocsCodePreview title="Stack em card de orientações">
+## Basic example
+<DocsCodePreview title="Stack in a guidance card">
 ```dsl
 screen Default:
   container:
     card:
-      ## Próximos passos
+      ## Next steps
       stack-loose:
-        > Revise o backlog com o time.
-        > Confirme o plano da sprint.
-        @[Abrir planejamento](Planning)
+        > Review the backlog with the team.
+        > Confirm the sprint plan.
+        @[Open planning](Planning)
 ```
 </DocsCodePreview>
-Por quê: combina textos e ação em blocos verticais com espaçamento confortável.
+Why: combines texts and action in vertical blocks with comfortable spacing.
 
-<Attention title="Evite hífens automáticos em layouts">
-Mesmo que um LLM sugira `-` antes de cada linha, `stack`, `row`, `card` e demais layouts esperam apenas filhos indentados. Use hífen somente em `list`, `navigator` e `fab` para impedir que a sintaxe gere nós inválidos.
+<Attention title="Avoid automatic hyphens in layouts">
+Even if an LLM suggests `-` before each line, `stack`, `row`, `card`, and other layouts expect only indented children. Use a hyphen only in `list`, `navigator`, and `fab` to prevent the syntax from generating invalid nodes.
 </Attention>
 
-## Variantes
-<DocsCodePreview title="Stack padrão">
+## Variants
+<DocsCodePreview title="Default stack">
 ```dsl
 screen Default:
   container:
     stack:
-      > Valide os requisitos
-      > Ajuste o cronograma
-      @[Abrir checklist](Checklist)
+      > Validate requirements
+      > Adjust schedule
+      @[Open checklist](Checklist)
 ```
 </DocsCodePreview>
-Quando usar: organizar conteúdos variados com espaçamento mediano.
-Por quê: equilibra textos, inputs e ações sem gerar blocos soltos.
+When to use: organize varied content with medium spacing.
+Why: balances texts, inputs, and actions without creating loose blocks.
 
-<DocsCodePreview title="Stack-tight para itens curtos">
+<DocsCodePreview title="Stack-tight for short items">
 ```dsl
 screen Default:
   container:
     stack-tight:
-      [X] Definir objetivo
-      [ ] Validar protótipo
-      [ ] Preparar release
+      [X] Define objective
+      [ ] Validate prototype
+      [ ] Prepare release
 ```
 </DocsCodePreview>
-Quando usar: agrupar itens curtos ou checklists sem perder legibilidade.
-Por quê: o gap reduzido aproxima conteúdos relacionados e acelera leitura.
+When to use: group short items or checklists without losing readability.
+Why: the reduced gap brings related content closer and speeds up reading.
 
-<DocsCodePreview title="Stack-flush para cards compactos">
+<DocsCodePreview title="Stack-flush for compact cards">
 ```dsl
 screen Default:
   container:
     stack-flush:
       card-compact:
-        > Última atualização em 18/09.
+        > Last update on 09/18.
       card-compact:
-        > Reunião agendada para amanhã.
+        > Meeting scheduled for tomorrow.
 ```
 </DocsCodePreview>
-Quando usar: empilhar elementos que já possuem padding próprio.
-Por quê: evita espaçamento duplo quando os componentes internos já trazem margem.
+When to use: stack elements that already have their own padding.
+Why: avoids double spacing when the internal components already bring a margin.
 
-## Composição (usando com outros)
-- **Stack + Card** — coloca conteúdos sequenciais dentro de um bloco estruturado.
-- **Stack + Row** — mistura distribuição vertical e horizontal na mesma área.
-- **Stack + Component Definition** — reutiliza blocos padronizados em várias telas.
+## Composition (using with others)
+- **Stack + Card** — places sequential content within a structured block.
+- **Stack + Row** — mixes vertical and horizontal distribution in the same area.
+- **Stack + Component Definition** — reuses standardized blocks on various screens.
 
-<DocsCodePreview title="Formulário com stack e row">
+<DocsCodePreview title="Form with stack and row">
 ```dsl
 screen Default:
   container:
     card:
-      ## Atualizar perfil
+      ## Update profile
       stack-loose:
-        ___: Nome completo{Digite seu nome}
-        ___email: E-mail{nome@empresa.com}
-        ___textarea: Bio{Conte sobre seu trabalho}
+        ___: Full name{Enter your name}
+        ___email: E-mail{name@company.com}
+        ___textarea: Bio{Tell us about your work}
       row-end:
-        @ghost[Cancelar](close)
-        @[Salvar mudanças](saveProfile)
+        @ghost[Cancel](close)
+        @[Save changes](saveProfile)
 ```
 </DocsCodePreview>
-Por quê: separa campos verticalmente e alinha ações no rodapé.
+Why: separates fields vertically and aligns actions in the footer.
 
 ## Slots & Props
-| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `stack` | layout vertical | `stack` | Empilha elementos com espaçamento padrão. | Não |
-| `stack-tight`, `stack-loose`, `stack-flush` | variações | — | Ajustam densidade entre itens (compacto, amplo, sem gap). | Não |
-| `conteúdo interno` | blocos DSL | — | Itens empilhados, como textos, inputs e componentes. | Sim |
+| `stack` | vertical layout | `stack` | Stacks elements with default spacing. | No |
+| `stack-tight`, `stack-loose`, `stack-flush` | variations | — | Adjust density between items (compact, wide, no gap). | No |
+| `internal content` | DSL blocks | — | Stacked items, such as texts, inputs, and components. | Yes |
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Stack com botões lado a lado",
+    title: "Stack with side-by-side buttons",
     code: `
 stack:
-  @[Cancelar](close)
-  @[Salvar](saveForm)
+  @[Cancel](close)
+  @[Save](saveForm)
     `,
   }}
   do={{
-    title: "Ações horizontais",
+    title: "Horizontal actions",
     code: `
 stack:
-  > Ajuste as preferências antes de salvar.
+  > Adjust preferences before saving.
   row-end:
-    @ghost[Cancelar](close)
-    @[Salvar](saveForm)
+    @ghost[Cancel](close)
+    @[Save](saveForm)
     `,
   }}
 >
-  Por quê: stacks tratam a ordem vertical; rows cuidam de alinhamento horizontal.
+  Why: stacks handle the vertical order; rows take care of horizontal alignment.
 </DoDont>
 <DoDont
   dont={{
-    title: "Textos longos sem respiro",
+    title: "Long texts without breathing room",
     code: `
 stack-tight:
-  > Atualize relatórios de todas as squads com detalhes completos.
-  > Documente aprendizados em um relatório amplo para todo o time.
+  > Update reports from all squads with full details.
+  > Document learnings in a comprehensive report for the entire team.
     `,
   }}
   do={{
-    title: "Espaço adequado",
+    title: "Adequate space",
     code: `
 stack-loose:
-  > Atualize relatórios de todas as squads com detalhes completos.
-  > Documente aprendizados em um relatório amplo para todo o time.
+  > Update reports from all squads with full details.
+  > Document learnings in a comprehensive report for the entire team.
     `,
   }}
 >
-  Por quê: conteúdo amplo precisa de espaçamento maior para manter a leitura confortável.
+  Why: ample content needs more spacing to maintain comfortable reading.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Row`](./row): complementa stacks quando é preciso alinhar ações na horizontal.
-- [`Card`](./card): envolve stacks com título e contexto.
-- [`Container`](./container): estrutura principal antes de incluir stacks.
-- [`Component Definition`](./component-definition): cria blocos reutilizáveis empilhados.
+### Related
+- [`Row`](./row): complements stacks when it is necessary to align actions horizontally.
+- [`Card`](./card): wraps stacks with a title and context.
+- [`Container`](./container): main structure before including stacks.
+- [`Component Definition`](./component-definition): creates reusable stacked blocks.
 
-### Composições recomendadas
-- **Stack + Row-end** → formulários com ações alinhadas.
-- **Stack + Card + List** → seções de conteúdo com resumos textuais.
-- **Stack + Component Definition** → layouts reutilizáveis com dados variáveis.
+### Recommended compositions
+- **Stack + Row-end** → forms with aligned actions.
+- **Stack + Card + List** → content sections with textual summaries.
+- **Stack + Component Definition** → reusable layouts with variable data.
 
-<DocsCodePreview title="Stack com componente reutilizável">
+<DocsCodePreview title="Stack with reusable component">
 ```dsl
 component Insight:
   card:
@@ -164,9 +164,9 @@ screen Default:
   container:
     stack-loose:
       $Insight:
-        - Roadmap atualizado | Planeje entregas para o próximo trimestre.
+        - Roadmap updated | Plan deliveries for the next quarter.
       $Insight:
-        - Métricas semanais | Revise KPIs antes da reunião de status.
+        - Weekly metrics | Review KPIs before the status meeting.
 ```
 </DocsCodePreview>
-Por quê: evita duplicação ao empilhar componentes com dados diferentes.
+Why: avoids duplication by stacking components with different data.

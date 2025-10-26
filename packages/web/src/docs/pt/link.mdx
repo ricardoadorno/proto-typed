@@ -1,0 +1,125 @@
+# Link
+Links (`#[Texto](Destino)`) criam navegação inline para telas, modais ou URLs externas sem quebrar o fluxo de leitura.
+
+## Quando usar
+- Referenciar telas ou recursos secundários dentro de parágrafos e listas.
+- Direcionar para artigos, e-mails ou telefones externos ao ambiente Proto-Typed.
+- Oferecer caminhos alternativos enquanto o CTA principal permanece em botões.
+- Conectar seções relacionadas quando um `navigator` não é necessário.
+
+## Exemplo básico
+<DocsCodePreview title="Links em texto de suporte">
+```dsl
+screen HelpCenter:
+  container:
+    # Central de ajuda
+    #[documentação oficial](https://proto-typed.dev/docs) para um panorama completo.
+
+    card:
+      ## Precisa redefinir senha?
+      >> Acesse a #[tela de recuperação](RecoverPassword) e siga os passos.
+```
+</DocsCodePreview>
+Por quê: mantém a leitura fluida e oferece navegação contextual.
+
+## Variantes
+<DocsCodePreview title="Link interno para screen">
+```dsl
+screen Default:
+  container:
+    #[Ver detalhes](DetailScreen)
+```
+</DocsCodePreview>
+Quando usar: apontar para telas existentes no fluxo principal.
+Por quê: mantém a navegação coesa sem depender de botões.
+
+<DocsCodePreview title="Link externo">
+```dsl
+screen Default:
+  container:
+    #[Abrir documentação](https://proto-typed.dev/docs)
+```
+</DocsCodePreview>
+Quando usar: referenciar recursos hospedados fora do produto.
+Por quê: direciona para documentação ou sites externos preservando contexto.
+
+
+## Composição (usando com outros)
+- **Link + Card** — oferece contextos adicionais dentro de blocos informativos.
+- **Link + List** — transforma itens em atalhos sem necessidade de botões.
+- **Link + Drawer** — agrupa links em painéis laterais de referência.
+
+<DocsCodePreview title="Drawer com links rápidos">
+```dsl
+drawer QuickLinks:
+  container:
+    # Links rápidos
+    stack-tight:
+      #[Dashboard](Dashboard)
+      #[Equipe](Team)
+      #[Configurações](Settings)
+
+screen HeaderDemo:
+  header:
+    # Proto-Typed
+    row-end:
+      #[Abrir links rápidos](QuickLinks)
+```
+</DocsCodePreview>
+Por quê: agrupa atalhos sem sobrecarregar o cabeçalho com botões.
+
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `label` | string | — | Texto exibido entre `#[ ]`. | Sim |
+| `destino` | slug ou URL | — | Tela, modal, drawer ou endereço externo. | Sim |
+| `protocolo` | `https://`| `https://` | Determina a ação para links externos. | Não |
+| `ícone inline` | token `i-` | — | Opcional antes do texto para reforçar o contexto. | Não |
+
+## Erros comuns (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Botão no lugar de link",
+    code: `
+@[Ver detalhes](DetailScreen)
+    `,
+  }}
+  do={{
+    title: "Link contextual",
+    code: `
+#[Ver detalhes](DetailScreen)
+    `,
+  }}
+>
+  Por quê: `@` executa ações; `#` referencia destinos sem comportamento de botão.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Link sem destino",
+    code: `
+#[Leia mais]()
+    `,
+  }}
+  do={{
+    title: "Destino declarado",
+    code: `
+#[Leia mais](Guides)
+    `,
+  }}
+>
+  Por quê: cada link precisa apontar para um destino existente para evitar erros de navegação.
+</DoDont>
+
+## Referências cruzadas
+
+### Relacionados
+- [`Button`](./button): ações que executam lógica ou abrem fluxos.
+- [`Navigator`](./navigator): navegação estruturada por abas ou menus.
+- [`Drawer`](./drawer): agrupa links de referência lateralmente.
+- [`Screen`](./screen): destino mais comum para links internos.
+
+### Composições recomendadas
+- **Link + Card** → blocos informativos com referências adicionais.
+- **Link + List** → coleções de atalhos sem usar botões.
+- **Link + Drawer** → catálogos laterais de documentação ou suporte.
+

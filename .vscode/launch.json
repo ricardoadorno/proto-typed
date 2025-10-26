@@ -16,6 +16,28 @@
       "sourceMaps": true,
       "smartStep": true,
       "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Vitest Tests (Core)",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["test", "--run", "--no-coverage"],
+      "cwd": "${workspaceFolder}/packages/core",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Current Test File",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["test", "--run", "${relativeFile}"],
+      "cwd": "${workspaceFolder}/packages/core",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**"]
     }
   ]
 }

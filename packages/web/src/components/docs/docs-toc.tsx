@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { ChevronDownIcon, ChevronLeft, ChevronRight } from 'lucide-react'
 
 import { Button, ScrollArea } from '@/components/ui'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 
 export interface TocItem {
   slug: string

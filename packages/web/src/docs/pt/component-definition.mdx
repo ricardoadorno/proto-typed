@@ -1,0 +1,146 @@
+# Component Definition
+## Por que importa
+Componentes definidos com `component Nome:` concentram estrutura, estilo e comportamento visual em um só lugar. Eles evitam duplicação, facilitam manutenção e garantem consistência em telas complexas.
+
+## Forma canônica (sintaxe mínima)
+<DocsCodePreview title="Definição e instância básica">
+```dsl
+component HeroBanner:
+  card:
+    ## %title
+    > %subtitle
+    @[Saiba mais](%destination)
+
+screen Home:
+  container:
+    $HeroBanner:
+      - Prototipe mais rápido | Construa telas em minutos | Guides
+```
+</DocsCodePreview>
+Por quê: demonstra o ciclo completo — declarar o componente e instanciá-lo com dados via lista.
+
+## Padrões de uso
+<DocsCodePreview title="Componentes para vitrines de métricas">
+```dsl
+component MetricCard:
+  card:
+    ## %label
+    # %value
+    >>> %trend
+
+screen Dashboard:
+  container-wide:
+    grid-3:
+      $MetricCard:
+        - Leads captados | 1.240 | +8%
+      $MetricCard:
+        - Conversões | 134 | +5%
+      $MetricCard:
+        - Satisfação | 92% | +3%
+```
+</DocsCodePreview>
+Quando usar: replicar o mesmo layout com dados diferentes em dashboards e relatórios.
+Por quê: reduz manutenção ao trocar apenas os valores, não o markup.
+
+<DocsCodePreview title="Componente para linhas de lista">
+```dsl
+component TaskRow:
+  row-between:
+    stack-tight:
+      > %title
+      >>> %due
+    @[Detalhar](%action)
+screen Default:
+  list $TaskRow:
+    - Atualizar roadmap | Até 22/09 | show:roadmap
+    - Revisar backlog | Até 24/09 | show:backlog
+```
+</DocsCodePreview>
+Quando usar: padronizar linhas de lista que exigem múltiplos campos e ações.
+Por quê: encapsula lógica de exibição e mantém consistência em toda a lista.
+
+<DocsCodePreview title="Componente com fallback interno">
+```dsl
+component EmptyState:
+  card:
+    ## %title
+    > %message
+    row-center:
+      @[Criar primeiro item](%action)
+
+screen Leads:
+  container:
+    $EmptyState:
+      - Nenhum lead ainda
+      - Comece registrando contatos da equipe comercial.
+      - LeadForm
+```
+</DocsCodePreview>
+Quando usar: oferecer vazio padrão para diferentes contextos sem reescrever layout.
+Por quê: padroniza estados vazios com mensagem, ação e visual coerentes.
+
+## Erros comuns (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Instância sem definição",
+    code: `
+screen Home:
+  container:
+    $HeroBanner:
+      - Bem-vindo | Explore recursos | Dashboard
+    `,
+  }}
+  do={{
+    title: "Declaração + uso",
+    code: `
+component HeroBanner:
+  card:
+    ## %title
+    > %subtitle
+
+screen Home:
+  container:
+    $HeroBanner:
+      - Bem-vindo | Explore recursos
+    `,
+  }}
+>
+  Por quê: a instância precisa conhecer a estrutura para interpolar `%props`.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Props faltando",
+    code: `
+component PlanCard:
+  card:
+    ## %title
+    > %description
+    >> %price
+
+$PlanCard:
+  - Plano Pro | Experiência completa
+    `,
+  }}
+  do={{
+    title: "Props completos",
+    code: `
+$PlanCard:
+  - Plano Pro | Experiência completa | R$ 89/mês
+    `,
+  }}
+>
+  Por quê: a ordem dos valores precisa corresponder a cada `%prop` declarado.
+</DoDont>
+
+## Referências cruzadas
+
+### Relacionados
+- [`Component Props`](./component-props): detalha interpolação e manipulação de `%props`.
+- [`Component List`](./component-list): gera coleções a partir de componentes.
+- [`Component Composition`](./component-composition): orienta como combinar componentes entre si.
+- [`List`](./list): alimenta componentes com dados tabulares.
+
+### Composições recomendadas
+- **Component Definition + List** → repete um layout para cada item de dados.
+- **Component Definition + Grid** → monta vitrines e dashboards reutilizáveis.
+- **Component Definition + Modal** → cria modais padronizados para confirmação ou formulários.

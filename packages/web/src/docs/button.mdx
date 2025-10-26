@@ -1,170 +1,170 @@
 # Button
-Botões disparam ações imediatas e conduzem pessoas pelos fluxos principais do Proto-Typed.
+Buttons trigger immediate actions and guide people through the main flows of Proto-Typed.
 
-## Quando usar
-- Destacar a ação mais importante da tela ou do card.
-- Guiar para telas subsequentes, modais ou drawers com contexto claro.
-- Confirmar envios e salvar formulários sem ambiguidade.
-- Oferecer caminhos de retorno com variantes mais leves (`@ghost`, `@link`).
+## When to use
+- Highlight the most important action on the screen or card.
+- Guide to subsequent screens, modals, or drawers with clear context.
+- Confirm submissions and save forms without ambiguity.
+- Offer return paths with lighter variants (`@ghost`, `@link`).
 
-## Exemplo básico
-<DocsCodePreview title="Ação principal em tela de tarefas">
+## Basic example
+<DocsCodePreview title="Main action on a task screen">
 ```dsl
 screen Tasks:
   container:
-    # Minhas tarefas
-    > Priorize as ações do dia.
+    # My tasks
+    > Prioritize the day's actions.
     row-end:
-      @[Criar tarefa](TaskForm)
+      @[Create task](TaskForm)
 ```
 </DocsCodePreview>
-Por quê: apresenta CTA único alinhado ao objetivo da tela.
+Why: presents a single CTA aligned with the screen's objective.
 
-## Variantes
-<DocsCodePreview title="Variante primária para CTA principal">
+## Variants
+<DocsCodePreview title="Primary variant for main CTA">
 ```dsl
 screen Default:
   container:
     row:
-      @[Publicar relatório](PublishReport)
+      @[Publish report](PublishReport)
 ```
 </DocsCodePreview>
-Quando usar: priorize a ação que move o fluxo adiante.
-Por quê: destaca o comando principal com contraste máximo.
+When to use: prioritize the action that moves the flow forward.
+Why: highlights the main command with maximum contrast.
 
-<DocsCodePreview title="Variante secundária de apoio">
+<DocsCodePreview title="Secondary support variant">
 ```dsl
 screen Default:
   container:
     row:
-      @secondary-sm[Ver histórico](History)
+      @secondary-sm[View history](History)
 ```
 </DocsCodePreview>
-Quando usar: ofereça opção complementar sem competir com o CTA principal.
-Por quê: mantém a hierarquia visual ao apresentar caminhos alternativos.
+When to use: offer a complementary option without competing with the main CTA.
+Why: maintains the visual hierarchy when presenting alternative paths.
 
-<DocsCodePreview title="Variante destrutiva para ações críticas">
+<DocsCodePreview title="Destructive variant for critical actions">
 ```dsl
 screen Default:
   container:
     row-end:
-      @destructive[Excluir conta](ConfirmDelete)
+      @destructive[Delete account](ConfirmDelete)
 ```
 </DocsCodePreview>
-Quando usar: sinalize riscos e peça confirmação antes de executar.
-Por quê: associa o estilo destrutivo a ações de alto impacto e reduz erros.
+When to use: signal risks and ask for confirmation before executing.
+Why: associates the destructive style with high-impact actions and reduces errors.
 
-## Composição (usando com outros)
-- **Card + Button** — encapsula contexto e mantém CTA visível.
-- **Row-end + Button** — alinha múltiplas ações respeitando a hierarquia.
-- **Modal + Button** — confirma decisões sensíveis antes de concluir tarefas.
+## Composition (using with others)
+- **Card + Button** — encapsulates context and keeps the CTA visible.
+- **Row-end + Button** — aligns multiple actions respecting the hierarchy.
+- **Modal + Button** — confirms sensitive decisions before completing tasks.
 
-<DocsCodePreview title="Card com botões alinhados">
+<DocsCodePreview title="Card with aligned buttons">
 ```dsl
 screen Default:
   container:
     card:
-      ## Plano mensal
-      > Controle de cobranças recorrentes.
+      ## Monthly plan
+      > Control recurring charges.
       row-end:
-        @ghost[Cancelar](-1)
-        @[Atualizar plano](UpdatePlan)
+        @ghost[Cancel](-1)
+        @[Update plan](UpdatePlan)
     ```
 </DocsCodePreview>
-Por quê: combina CTA principal e opção de saída dentro do mesmo bloco.
+Why: combines the main CTA and exit option within the same block.
 
 ## Slots & Props
-| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `variante` | enum (`@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@link`, `@success`, `@warning`) | `@primary` | Define hierarquia visual da ação. | Não |
-| `tamanho` | enum (`-xs`, `-sm`, `-md`, `-lg`) | `-md` | Ajusta altura e espaçamento do botão. | Não |
-| `label` | string | — | Texto visível do botão; pode incluir ícone. | Sim |
-| `ícone` | token `i-` | — | Ícone opcional exibido antes do label. | Não |
-| `destino` | slug/rota | — | Tela, modal, drawer, ação (`-1`, `close`, `alert`). | Sim |
+| `variant` | enum (`@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@link`, `@success`, `@warning`) | `@primary` | Defines the visual hierarchy of the action. | No |
+| `size` | enum (`-xs`, `-sm`, `-md`, `-lg`) | `-md` | Adjusts the button's height and spacing. | No |
+| `label` | string | — | Visible text of the button; can include an icon. | Yes |
+| `icon` | token `i-` | — | Optional icon displayed before the label. | No |
+| `destination` | slug/route | — | Screen, modal, drawer, action (`-1`, `close`, `alert`). | Yes |
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Link usado como ação",
+    title: "Link used as action",
     code: `
 row:
-  #[Enviar convite](ConfirmInvite)
+  #[Send invite](ConfirmInvite)
     `,
   }}
   do={{
-    title: "Botão com ação",
+    title: "Button with action",
     code: `
 row:
-  @[Enviar convite](ConfirmInvite)
+  @[Send invite](ConfirmInvite)
     `,
   }}
 >
-  Por quê: `@` executa ações no fluxo; `#` serve apenas para navegação declarativa.
+  Why: `@` executes actions in the flow; `#` is only for declarative navigation.
 </DoDont>
 <DoDont
   dont={{
-    title: "Exclusão sem destaque",
+    title: "Deletion without highlight",
     code: `
 row-end:
-  @[Excluir conta](ConfirmDelete)
+  @[Delete account](ConfirmDelete)
     `,
   }}
   do={{
-    title: "Exclusão destacada",
+    title: "Highlighted deletion",
     code: `
 row-end:
-  @destructive[Excluir conta](ConfirmDelete)
+  @destructive[Delete account](ConfirmDelete)
     `,
   }}
 >
-  Por quê: a variante destrutiva comunica o risco e reduz cliques acidentais.
+  Why: the destructive variant communicates risk and reduces accidental clicks.
 </DoDont>
 <DoDont
   dont={{
-    title: "Label pouco claro",
+    title: "Unclear label",
     code: `
 row:
-  @[Clique aqui](DownloadReport)
+  @[Click here](DownloadReport)
     `,
   }}
   do={{
-    title: "Label orientado a ação",
+    title: "Action-oriented label",
     code: `
 row:
-  @[Baixar relatório](DownloadReport)
+  @[Download report](DownloadReport)
     `,
   }}
 >
-  Por quê: labels específicos ajudam a decisão rápida e evitam dúvidas.
+  Why: specific labels help quick decision-making and avoid doubts.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Link`](./link): navegação sem executar lógica de negócio.
-- [`Row`](./row): organiza botões lado a lado com alinhamentos.
-- [`Modal`](./modal): confirma decisões sensíveis com mensagens adicionais.
-- [`Navigator`](./navigator): estrutura caminhos alternativos por abas ou menus.
+### Related
+- [`Link`](./link): navigation without executing business logic.
+- [`Row`](./row): organizes buttons side by side with alignments.
+- [`Modal`](./modal): confirms sensitive decisions with additional messages.
+- [`Navigator`](./navigator): structures alternative paths through tabs or menus.
 
-### Composições recomendadas
-- **Button + Row-end** → destaca CTA principal com ações de suporte.
-- **Button + Modal** → envolve confirmações antes de alterações permanentes.
-- **Button + Navigator** → conecta telas relacionadas em fluxos guiados.
+### Recommended compositions
+- **Button + Row-end** → highlights the main CTA with support actions.
+- **Button + Modal** → involves confirmations before permanent changes.
+- **Button + Navigator** → connects related screens in guided flows.
 
-<DocsCodePreview title="Button com modal de confirmação">
+<DocsCodePreview title="Button with confirmation modal">
 ```dsl
 screen Default:
   container:
     row-end:
-      @destructive[Excluir conta](ConfirmDelete)
+      @destructive[Delete account](ConfirmDelete)
 
 modal ConfirmDelete:
   card:
-    # Confirmar exclusão
-    > Essa ação não pode ser desfeita.
+    # Confirm deletion
+    > This action cannot be undone.
     row-end:
-      @ghost[Cancelar](close)
-      @destructive[Excluir agora](deleteTenant)
+      @ghost[Cancel](close)
+      @destructive[Delete now](deleteTenant)
 ```
 </DocsCodePreview>
-Por quê: combina CTA crítico com confirmação explícita para evitar erros.
+Why: combines a critical CTA with explicit confirmation to avoid errors.

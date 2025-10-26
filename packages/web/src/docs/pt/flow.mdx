@@ -1,0 +1,174 @@
+# Fluxo de navegação
+
+## Por que importa
+O fluxo de navegação determina como as pessoas avançam entre telas, drawers e modais. Uma estrutura bem definida evita becos sem saída, garante retomada rápida de contexto e mantém o produto coerente em diferentes dispositivos.
+
+## Forma canônica (sintaxe mínima)
+<DocsCodePreview title="Fluxo básico entre duas telas">
+```dsl
+screen Home:
+  container:
+    # Início
+    @[Ir para detalhes](Detail)
+
+screen Detail:
+  container:
+    # Detalhes
+    @[Voltar](Home)
+```
+</DocsCodePreview>
+Por quê: exibe rotas bidirecionais simples usando botões que referenciam slugs válidos.
+
+## Padrões de uso
+<DocsCodePreview title="Usar navigator para seções irmãs">
+```dsl
+screen Dashboard:
+  container:
+    # Métricas
+
+  navigator:
+    - i-Home Início | Home
+    - i-BarChart Métricas | Dashboard
+    - i-Settings Configurações | Settings
+```
+</DocsCodePreview>
+Quando usar: oferecer menus persistentes em telas com status equivalente.
+Por quê: o navigator mantém destinos sempre acessíveis e reduz dependência de botões dispersos.
+
+<DocsCodePreview title="Abrir drawer para contexto complementar">
+```dsl
+screen Accounts:
+  container:
+    # Contas
+    stack:
+      > Grupo Norte
+      @[Ver detalhes](AccountDrawer)
+
+drawer AccountDrawer:
+  card:
+    ## Detalhes
+    > Atualize dados antes de confirmar mudanças.
+    row-end:
+      @ghost[Fechar](close)
+      @[Editar conta](EditAccount)
+```
+</DocsCodePreview>
+Quando usar: exibir detalhes sem abandonar a tela principal.
+Por quê: drawers expandem o fluxo lateralmente, mantendo origem e destino visíveis.
+
+<DocsCodePreview title="Encadear modal de confirmação">
+```dsl
+screen Default:
+  container:
+    row-end:
+      @destructive[Excluir conta](ConfirmDelete)
+
+modal ConfirmDelete:
+  card:
+    ## Confirmar exclusão
+    > Essa ação é permanente.
+    row-end:
+      @ghost[Cancelar](close)
+      @destructive[Excluir agora](deleteTenant)
+```
+</DocsCodePreview>
+Quando usar: exigir confirmação explícita antes de executar ações críticas.
+Por quê: modais bloqueiam a navegação atual até que a pessoa tome uma decisão.
+
+## Erros comuns (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Destino inválido",
+    code: `
+@[Ver relatório](ReportsDashboard)
+    `,
+  }}
+  do={{
+    title: "Destino registrado",
+    code: `
+@[Ver relatório](Dashboard)
+    `,
+  }}
+>
+  Por quê: nomes incorretos geram falhas de navegação e experiências quebradas.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Fechamento inconsistente",
+    code: `
+modal Confirm:
+  row-end:
+    @ghost[Cancelar](-1)
+    @[Confirmar](close)
+    `,
+  }}
+  do={{
+    title: "Consistência de fechamento",
+    code: `
+modal Confirm:
+  row-end:
+    @ghost[Cancelar](close)
+    @[Confirmar](applyAction)
+    `,
+  }}
+>
+  Por quê: previsibilidade reduz erros e reforça comportamento mental das pessoas usuárias.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Drawer sem fechar",
+    code: `
+drawer Filters:
+  card:
+    ## Filtros
+    @[Aplicar](applyFilters)
+    `,
+  }}
+  do={{
+    title: "Drawer com botões de saída",
+    code: `
+drawer Filters:
+  card:
+    ## Filtros
+    row-end:
+      @ghost[Cancelar](close)
+      @[Aplicar](applyFilters)
+    `,
+  }}
+>
+  Por quê: overlays precisam de caminhos claros para voltar ao estado anterior.
+</DoDont>
+
+## Referências cruzadas
+
+### Relacionados
+- [`Screen`](./screen): unidade principal onde o fluxo acontece.
+- [`Navigator`](./navigator): menus persistentes entre telas irmãs.
+- [`Modal`](./modal): confirmações críticas no fluxo.
+- [`Drawer`](./drawer): detalhes laterais sem perder o contexto.
+
+### Composições recomendadas
+- **Fluxo de navegação + Navigator** → estrutura páginas de mesmo nível.
+- **Fluxo de navegação + Modal Flow** → garante tratamento completo de confirmações.
+- **Fluxo de navegação + Drawer Detail** → combina lista principal com detalhes paralelos.
+
+<DocsCodePreview title="Fluxo com navigator e modal">
+```dsl
+screen Home:
+  container:
+    # Início
+    @[Adicionar item](ConfirmAdd)
+
+  navigator:
+    - Início | Home
+    - Métricas | Dashboard
+
+modal ConfirmAdd:
+  card:
+    ## Adicionar item?
+    row-end:
+      @ghost[Cancelar](close)
+      @[Confirmar](Dashboard)
+```
+</DocsCodePreview>
+Por quê: integra navegação persistente com confirmação modal antes de redirecionar.

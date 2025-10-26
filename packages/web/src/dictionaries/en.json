@@ -1,0 +1,81 @@
+{
+  "playground": {
+    "title": "Playground",
+    "editorTitle": "Editor",
+    "editorDescription": "Write components, screens, and flows using the declarative syntax.",
+    "viewDocumentation": "View documentation",
+    "exportHtml": "Export HTML",
+    "themePreset": "Theme preset",
+    "livePreview": "Live Preview",
+    "livePreviewDescription": "Interact with the rendered interface. Click the buttons to switch screens faster.",
+    "screensDetected": "screens detected:",
+    "noScreensDetected": "No screens detected"
+  },
+  "docs": {
+    "title": "Lean documentation for fast prototyping in the proto-typed universe",
+    "description": "Learn how to use the DSL, components, and official tokens to build navigable experiences in minutes. Everything designed for a cohesive flow between design and development.",
+    "startNow": "Start now",
+    "goToPlayground": "Go to playground",
+    "highlights": "Highlights",
+    "highlightsDescription": "The essential points to master proto-typed from scratch to advanced.",
+    "highlightItems": [
+      "Step-by-step flow from idea to clickable prototype.",
+      "Integrated playgrounds and code blocks with instant copy.",
+      "Guide to tokens, layouts, and visual patterns of proto-typed."
+    ],
+    "exploreByChapters": "Explore by chapters",
+    "exploreByChaptersDescription": "The documentation is organized into thematic chapters. Advance according to your needs, without losing the context of the complete flow.",
+    "openFirstTopic": "Open first topic"
+  },
+  "changelog": {
+    "versionRegistry": "Version Registry",
+    "title": "Proto-Typed Change Log",
+    "description": "History of releases, fixes, and continuous improvements of the textual prototyping system.",
+    "initialRelease": "Initial release of Proto-Typed!",
+    "initialDslVersion": "Initial version of the textual DSL for prototyping.",
+    "integratedPlayground": "Integrated playground with live preview.",
+    "features": "Features",
+    "improvements": "Improvements",
+    "fixes": "Fixes",
+    "internalChanges": "Internal Changes",
+    "trackDevelopment": "Track development",
+    "trackDevelopmentDescription": "See the full history of commits and releases of Proto-Typed in the official repository.",
+    "viewOnGitHub": "View on GitHub"
+  },
+  "known_errors": {
+    "title": "List of identified bugs and limitations",
+    "description": "Here are the known issues in the current versions of Proto-Typed. Track their status and suggested solutions.",
+    "indentationError": "Indentation Error",
+    "indentationErrorDescription": "When there is a blank line, it is understood as the end of the parent component's indentation, causing a failure in the correct rendering of styles in the dark theme.",
+    "indentationErrorCause": "Problem in the parser that understands blank lines as the end of a block",
+    "status": "Status",
+    "inProgress": "Correction in progress",
+    "cause": "Cause",
+    "fix": "Fix",
+    "foundNewIssue": "Found a new issue?",
+    "foundNewIssueDescription": "Report a bug or unexpected behavior so we can investigate and fix it as quickly as possible.",
+    "openIssueOnGitHub": "Open issue on GitHub"
+  },
+  "principles": {
+    "title": "Proto-Typed — describe interfaces, see prototypes, iterate with AI.",
+    "description": "A textual prototyping format: you write what the interface is (screens, lists, buttons, navigation) and the system takes care of the rest — no dragging blocks, no JSX, no friction."
+  },
+  "nav": {
+    "playground": "Playground",
+    "docs": "Docs",
+    "philosophy": "Philosophy",
+    "knownErrors": "Known Issues"
+  },
+  "footer": {
+    "getStarted": "Get Started",
+    "introduction": "Introduction",
+    "philosophy": "Proto-Typed Philosophy",
+    "explore": "Explore",
+    "playground": "Playground",
+    "knownErrors": "Known Errors",
+    "community": "Community",
+    "github": "GitHub",
+    "status": "Status",
+    "changelog": "Changelog"
+  }
+}

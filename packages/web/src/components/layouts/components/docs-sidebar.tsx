@@ -4,24 +4,28 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useMemo } from 'react'
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 import { withAssetPath } from '@/utils/base-path'
 import { DocSection } from '@/utils/toc'
 
 interface DocsSidebarProps {
   sections: DocSection[]
   onNavigate?: () => void
+  lang?: string
 }
 
 export default function DocsSidebar({
   sections,
   onNavigate: _onNavigate,
+  lang = 'en',
 }: DocsSidebarProps) {
   const pathname = usePathname()
   const activeSlug = useMemo(
     () => pathname?.split('/').filter(Boolean).pop() ?? '',
     [pathname]
   )
+
+  const langPrefix = lang === 'en' ? '' : `/${lang}`
 
   return (
     <nav
@@ -58,7 +62,7 @@ export default function DocsSidebar({
             </p>
             <ul className="space-y-1">
               {section.items.map((item) => {
-                const href = `/docs/${item.slug}`
+                const href = `${langPrefix}/docs/${item.slug}`
                 const isActive = activeSlug === item.slug
 
                 return (

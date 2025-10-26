@@ -1,110 +1,110 @@
 # Floating Action Button (FAB)
-O FAB mantém uma ação global sempre disponível, flutuando sobre o conteúdo para acelerar tarefas recorrentes.
+The FAB keeps a global action always available, floating above the content to speed up recurring tasks.
 
-## Quando usar
-- Destacar a ação mais frequente da tela em cenários mobile ou responsivos.
-- Oferecer atalhos globais, como criar registros ou abrir filtros relevantes.
-- Complementar dashboards e listas quando o CTA principal não cabe no cabeçalho.
-- Ativar drawers ou modais rápidos sem perder o contexto atual.
+## When to use
+- Highlight the most frequent action on the screen in mobile or responsive scenarios.
+- Offer global shortcuts, such as creating records or opening relevant filters.
+- Complement dashboards and lists when the main CTA does not fit in the header.
+- Activate quick drawers or modals without losing the current context.
 
-## Exemplo básico
-<DocsCodePreview title="FAB com ação principal única">
+## Basic example
+<DocsCodePreview title="FAB with a single main action">
 ```dsl
 screen Tasks:
   container:
-    # Tarefas
-    - Revisar backlog
-    - Preparar release
+    # Tasks
+    - Review backlog
+    - Prepare release
 
   fab:
     - i-Plus | TaskForm
 ```
 </DocsCodePreview>
-Por quê: mantém a criação de tarefas ao alcance sem competir com o conteúdo da tela.
+Why: keeps task creation within reach without competing with the screen content.
 
-<DocsCodePreview title="FAB acionando modal de confirmação">
+<DocsCodePreview title="FAB triggering a confirmation modal">
 ```dsl
 screen Default:
   container:
-    # Role para baixa para ver
+    # Scroll down to see
     fab:
       - i-Check | ConfirmRelease
 
 modal ConfirmRelease:
-    ## Publicar release?
-    # Confirme para notificar o time.
+    ## Publish release?
+    # Confirm to notify the team.
     row-end:
-      @ghost[Cancelar](close)
-      @success[Publicar](publishRelease)
+      @ghost[Cancel](close)
+      @success[Publish](publishRelease)
 ```
 </DocsCodePreview>
-Quando usar: reforçar ações globais que precisam de confirmação antes de executar.
-Por quê: evita execuções irreversíveis ao intercalar feedback imediato.
+When to use: reinforce global actions that need confirmation before executing.
+Why: avoids irreversible executions by interspersing immediate feedback.
 
-<DocsCodePreview title="FAB abrindo drawer contextual">
+<DocsCodePreview title="FAB opening a contextual drawer">
 ```dsl
 screen Default:
   container:
-    > Role para baixa para ver
+    > Scroll down to see
     fab:
       - i-Filter | FilterDrawer
 
 drawer FilterDrawer:
   container:
-    # Filtros avançados
-    ___: Status[Todos | Em andamento | Concluído]
+    # Advanced filters
+    ___: Status[All | In progress | Completed]
     row-end:
-      @ghost[Cancelar](close)
-      @[Aplicar](applyFilters)
+      @ghost[Cancel](close)
+      @[Apply](applyFilters)
 ```
 </DocsCodePreview>
-Quando usar: expor ajustes rápidos mantendo os dados principais visíveis.
-Por quê: o drawer permite ajustes inline sem mudar de tela.
+When to use: expose quick adjustments while keeping the main data visible.
+Why: the drawer allows inline adjustments without changing the screen.
 
-## Composição (usando com outros)
-- **FAB + Button principal** — CTA fixo convive com ações locais em cards.
-- **FAB + Drawer** — abre filtros ou detalhes sem redirecionar.
-- **FAB + Modal** — valida comandos críticos antes de prosseguir.
+## Composition (using with others)
+- **FAB + Main button** — fixed CTA coexists with local actions in cards.
+- **FAB + Drawer** — opens filters or details without redirecting.
+- **FAB + Modal** — validates critical commands before proceeding.
 
 
 ## Slots & Props
-| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `itens` | lista `- i-Icon | Destino` | — | Cada linha define ação com ícone e destino alvo. | Sim |
-| `ícone` | token `i-` | — | Ícone exibido no botão flutuante. | Sim |
-| `destino` | slug/ação | — | Tela, modal ou drawer aberto ao tocar. | Sim |
-| `ordem` | prioridade | — | Primeira linha é a ação principal; demais seguem ordem decrescente. | Não |
+| `items` | list `- i-Icon | Destination` | — | Each line defines an action with an icon and target destination. | Yes |
+| `icon` | token `i-` | — | Icon displayed on the floating button. | Yes |
+| `destination` | slug/action | — | Screen, modal, or drawer opened on touch. | Yes |
+| `order` | priority | — | The first line is the main action; others follow in descending order. | No |
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "CTA duplicado",
+    title: "Duplicate CTA",
     code: `
 screen Tasks:
   header:
-    @[Nova tarefa](TaskForm)
+    @[New task](TaskForm)
 
   fab:
     - i-Plus | TaskForm
     `,
   }}
   do={{
-    title: "CTA complementar",
+    title: "Complementary CTA",
     code: `
 screen Tasks:
   header:
-    @[Nova tarefa](TaskForm)
+    @[New task](TaskForm)
 
   fab:
     - i-Filter | FilterDrawer
     `,
   }}
 >
-  Por quê: o FAB deve adicionar valor extra, não duplicar o CTA já disponível.
+  Why: the FAB should add extra value, not duplicate the already available CTA.
 </DoDont>
 <DoDont
   dont={{
-    title: "FAB com ações desconexas",
+    title: "FAB with disconnected actions",
     code: `
 fab:
   - i-Plus | TaskForm
@@ -113,7 +113,7 @@ fab:
     `,
   }}
   do={{
-    title: "Foco em filtros e criação",
+    title: "Focus on filters and creation",
     code: `
 fab:
   - i-Plus | TaskForm
@@ -121,48 +121,48 @@ fab:
     `,
   }}
 >
-  Por quê: ações relacionadas reduzem dúvida sobre o objetivo do FAB.
+  Why: related actions reduce doubt about the FAB's purpose.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Button`](./button): ações locais dentro do conteúdo.
-- [`Drawer`](./drawer): painéis laterais acionados pelo FAB.
-- [`Modal`](./modal): confirmações ou formulários rápidos.
-- [`Dashboard`](./dashboard): guia com uso frequente de FAB em telas analíticas.
+### Related
+- [`Button`](./button): local actions within the content.
+- [`Drawer`](./drawer): side panels triggered by the FAB.
+- [`Modal`](./modal): quick confirmations or forms.
+- [`Dashboard`](./dashboard): a guide with frequent use of FAB on analytical screens.
 
-### Composições recomendadas
-- **FAB + Drawer** → filtros e detalhes avançados sem sair da tela.
-- **FAB + Modal** → confirmação rápida de ações globais.
-- **FAB + List** → mantém criação acessível enquanto percorre itens.
+### Recommended compositions
+- **FAB + Drawer** → advanced filters and details without leaving the screen.
+- **FAB + Modal** → quick confirmation of global actions.
+- **FAB + List** → keeps creation accessible while scrolling through items.
 
-<DocsCodePreview title="FAB abrindo filtros no dashboard">
+<DocsCodePreview title="FAB opening filters on the dashboard">
 ```dsl
 screen Dashboard:
   container-wide:
-    # Visão Geral
+    # Overview
     grid-3:
       card:
         ## Leads
-        # 1.240
+        # 1,240
       card:
-        ## Conversões
+        ## Conversions
         # 134
       card:
-        ## Receita
-        # R$ 87K
+        ## Revenue
+        # $87K
 
   fab:
     - i-Filter | FilterDrawer
 
 drawer FilterDrawer:
   container:
-    # Ajustar filtros
-    ___: Período[7 dias | 30 dias | 90 dias]
+    # Adjust filters
+    ___: Period[7 days | 30 days | 90 days]
     row-end:
-      @ghost[Cancelar](close)
-      @[Aplicar](applyFilters)
+      @ghost[Cancel](close)
+      @[Apply](applyFilters)
 ```
 </DocsCodePreview>
-Por quê: facilita ajustes enquanto mantém os indicadores à vista.
+Why: facilitates adjustments while keeping the indicators in sight.

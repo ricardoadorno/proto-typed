@@ -1,61 +1,61 @@
 # Login Screen
-## Pré-requisitos
-- Conhecer `input` para campos de e-mail e senha.
-- Definir rotas de suporte como recuperação de senha ou cadastro.
-- Configurar ações de navegação (`@[Entrar]`, `@ghost[Esqueci]`) para conduzir o fluxo.
+## Prerequisites
+- Know `input` for email and password fields.
+- Define support routes such as password recovery or registration.
+- Configure navigation actions (`@[Login]`, `@ghost[Forgot]`) to drive the flow.
 
-## Passo a passo
-1. Estruture a tela com `container` e `card` para delimitar o formulário.
-2. Adicione campos obrigatórios (`___email`, `___password`) com placeholders claros e validações.
-3. Crie links auxiliares para recuperação e criação de conta.
-4. Configure o botão principal para redirecionar ao dashboard ou próxima etapa segura.
+## Step-by-step
+1. Structure the screen with `container` and `card` to define the form.
+2. Add required fields (`___email`, `___password`) with clear placeholders and validations.
+3. Create auxiliary links for recovery and account creation.
+4. Configure the main button to redirect to the dashboard or the next secure step.
 
-<DocsCodePreview title="Tela de login completa">
+<DocsCodePreview title="Complete login screen">
 ```dsl
 screen Login:
   container:
-    # Acesse sua conta
+    # Access your account
     card:
       stack-loose:
-        ___email: E-mail{usuario@empresa.com} | required
-        ___password: Senha{Mínimo 8 caracteres} | required minlength="8"
-        [X] Permanecer conectado
+        ___email: E-mail{user@company.com} | required
+        ___password: Password{Minimum 8 characters} | required minlength="8"
+        [X] Stay logged in
 
       row-end:
-        @ghost[Esqueci a senha](Recover)
-        @[Entrar](Dashboard)
+        @ghost[Forgot password](Recover)
+        @[Login](Dashboard)
 
 screen Recover:
   container-narrow:
-    # Recuperar senha
-    ___email: E-mail cadastrado{usuario@empresa.com} | required
+    # Recover password
+    ___email: Registered e-mail{user@company.com} | required
     row-end:
-      @ghost[Cancelar](Login)
-      @[Enviar instruções](sendReset)
+      @ghost[Cancel](Login)
+      @[Send instructions](sendReset)
 
 screen Signup:
   container-narrow:
-    # Criar conta
+    # Create account
     stack-loose:
-      ___: Nome completo{Seu nome}
-      ___email: E-mail{email@empresa.com} | required
-      ___password: Senha{Mínimo 8 caracteres} | required minlength="8"
+      ___: Full name{Your name}
+      ___email: E-mail{email@company.com} | required
+      ___password: Password{Minimum 8 characters} | required minlength="8"
     row-end:
-      @ghost[Voltar](Login)
-      @primary[Começar agora](createAccount)
+      @ghost[Back](Login)
+      @primary[Start now](createAccount)
 ```
 </DocsCodePreview>
-Por quê: organiza credenciais, links auxiliares e fluxos de suporte em uma única experiência.
+Why: organizes credentials, auxiliary links, and support flows in a single experience.
 
-## Depuração rápida
-- Botão principal não navega → confirme o slug `Dashboard` no destino.
-- Placeholder ausente → garanta `{placeholder}` em todos os inputs.
-- Validação mínima ignorada → inclua `required` ou atributos como `minlength="8"`.
-- Link de recuperação não retorna → ajuste `@ghost[Cancelar](Login)` para voltar à tela de login.
-- Checkbox desalinhado → coloque `[X]` dentro do mesmo `stack` dos inputs.
+## Quick debugging
+- Main button does not navigate → confirm the `Dashboard` slug in the destination.
+- Missing placeholder → ensure `{placeholder}` in all inputs.
+- Minimum validation ignored → include `required` or attributes like `minlength="8"`.
+- Recovery link does not return → adjust `@ghost[Cancel](Login)` to return to the login screen.
+- Misaligned checkbox → place `[X]` within the same `stack` as the inputs.
 
-## Próximos passos
-- Revise [`Input`](./input) para cobrir campos adicionais (2FA, selects).
-- Explore [`Modal Flow`](./modal-flow) se precisar autenticação em múltiplas etapas.
-- Consulte [`Button`](./button) para definir variantes coerentes nas ações.
-- Avalie [`Themes`](./themes) para aplicar branding à tela de login.
+## Next steps
+- Review [`Input`](./input) to cover additional fields (2FA, selects).
+- Explore [`Modal Flow`](./modal-flow) if you need multi-step authentication.
+- Consult [`Button`](./button) to define coherent variants in the actions.
+- Evaluate [`Themes`](./themes) to apply branding to the login screen.

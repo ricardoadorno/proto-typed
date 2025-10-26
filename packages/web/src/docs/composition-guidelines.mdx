@@ -1,44 +1,44 @@
-# Diretrizes de composição
+# Composition Guidelines
 
-## Por que importa
-Compor elementos corretamente garante experiências coerentes: blocos ficam compreensíveis, CTA têm hierarquia clara e layouts permanecem responsivos. As diretrizes reduzem retrabalho e previnem conflitos visuais ao combinar componentes.
+## Why it matters
+Composing elements correctly ensures coherent experiences: blocks become understandable, CTAs have a clear hierarchy, and layouts remain responsive. The guidelines reduce rework and prevent visual conflicts when combining components.
 
-## Forma canônica (sintaxe mínima)
-<DocsCodePreview title="Composição entre container, stack e row">
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Composition between container, stack, and row">
 ```dsl
 screen Overview:
   container:
     stack-loose:
       card:
-        ## Próxima reunião
-        > Detalhes do encontro semanal.
+        ## Next meeting
+        > Details of the weekly meeting.
       row-end:
-        @ghost[Cancelar](close)
-        @[Confirmar presença](ConfirmAttendance)
+        @ghost[Cancel](close)
+        @[Confirm attendance](ConfirmAttendance)
 ```
 </DocsCodePreview>
-Por quê: ilustra a combinação básica de layouts verticais e horizontais mantendo espaçamento e hierarquia.
+Why: illustrates the basic combination of vertical and horizontal layouts while maintaining spacing and hierarchy.
 
-<Attention title="Layouts não usam hífen como marcador">
-Ao gerar DSL — manualmente ou via LLM — mantenha filhos de layouts (`stack`, `row`, `card`, `container`) apenas por indentação. O prefixo `-` é reservado para `list`, `navigator` e `fab`; usar hífen em outros blocos cria nós inválidos e confunde quem mantém o código.
+<Attention title="Layouts do not use a hyphen as a marker">
+When generating DSL — manually or via LLM — keep children of layouts (`stack`, `row`, `card`, `container`) only by indentation. The `-` prefix is reserved for `list`, `navigator`, and `fab`; using a hyphen in other blocks creates invalid nodes and confuses those who maintain the code.
 </Attention>
 
-## Padrões de uso
-<DocsCodePreview title="Row-between + Stack para cabeçalhos ricos">
+## Usage patterns
+<DocsCodePreview title="Row-between + Stack for rich headers">
 ```dsl
 screen Default:
   container:
     row-between:
       stack-tight:
-        ## Plano Pro
-        >>> Renovação em 30/09
-      @[Atualizar plano](UpdatePlan)
+        ## Pro Plan
+        >>> Renewal on 09/30
+      @[Update plan](UpdatePlan)
 ```
 </DocsCodePreview>
-Quando usar: apresentar contexto textual e CTA principal na mesma faixa.
-Por quê: distribui responsabilidades entre blocos sem criar aninhamentos desnecessários.
+When to use: present textual context and the main CTA in the same band.
+Why: distributes responsibilities between blocks without creating unnecessary nesting.
 
-<DocsCodePreview title="List + Component Definition para coleções">
+<DocsCodePreview title="List + Component Definition for collections">
 ```dsl
 component TaskRow:
   row-between:
@@ -46,153 +46,153 @@ component TaskRow:
     >>> %due
 screen Default:
   list $TaskRow:
-    - Revisar backlog | 22/09
-    - Preparar demo | 25/09
+    - Review backlog | 22/09
+    - Prepare demo | 25/09
 ```
 </DocsCodePreview>
-Quando usar: repetir estrutura de item com dados variáveis.
-Por quê: garante consistência visual e facilita futuras composições (ex.: colocar em cards).
+When to use: repeat an item structure with variable data.
+Why: ensures visual consistency and facilitates future compositions (e.g., placing in cards).
 
-<DocsCodePreview title="Card + Row-end para rodapés de ação">
+<DocsCodePreview title="Card + Row-end for action footers">
 ```dsl
 screen Default:
   container:
     card:
-      ## Revisar entrega
-      > Confirme o status com o time.
+      ## Review delivery
+      > Confirm the status with the team.
       row-end:
-        @ghost[Cancelar](close)
-        @[Marcar como concluído](CompleteTask)
+        @ghost[Cancel](close)
+        @[Mark as completed](CompleteTask)
 ```
 </DocsCodePreview>
-Quando usar: fechar blocos com opções de saída e avanço organizadas.
-Por quê: o rodapé separado evita confusão com o conteúdo principal do card.
+When to use: close blocks with organized exit and advance options.
+Why: the separate footer avoids confusion with the main content of the card.
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Card dentro de card",
+    title: "Card inside a card",
     code: `
 card:
   card:
-    ## Conteúdo duplicado
+    ## Duplicate content
     `,
   }}
   do={{
-    title: "Stack dentro do card",
+    title: "Stack inside the card",
     code: `
 card:
   stack:
-    ## Primeiro bloco
-    ## Segundo bloco
+    ## First block
+    ## Second block
     `,
   }}
 >
-  Por quê: evita bordas repetidas e mantém a hierarquia visual limpa.
+  Why: avoids repeated borders and keeps the visual hierarchy clean.
 </DoDont>
 <DoDont
   dont={{
-    title: "Stack com sintaxe de lista",
+    title: "Stack with list syntax",
     code: `
 stack:
-  - ## Título
-  - > Descrição
+  - ## Title
+  - > Description
     `,
   }}
   do={{
-    title: "Stack com itens alinhados",
+    title: "Stack with aligned items",
     code: `
 stack:
-  ## Título
-  > Descrição
+  ## Title
+  > Description
     `,
   }}
 >
-  Por quê: apenas `list`, `navigator` e `fab` usam `-`; layouts consideram os filhos pela indentação.
+  Why: only `list`, `navigator`, and `fab` use `-`; layouts consider children by indentation.
 </DoDont>
 <DoDont
   dont={{
-    title: "Botões dentro de list",
+    title: "Buttons inside a list",
     code: `
 
-  - Revisar backlog @[Abrir](Backlog)
+  - Review backlog @[Open](Backlog)
     `,
   }}
   do={{
-    title: "Ações no rodapé",
+    title: "Actions in the footer",
     code: `
 
-  - Revisar backlog
+  - Review backlog
 row-end:
-  @[Abrir backlog](Backlog)
+  @[Open backlog](Backlog)
     `,
   }}
 >
-  Por quê: respeita a função textual da lista e preserva acessibilidade.
+  Why: respects the textual function of the list and preserves accessibility.
 </DoDont>
 <DoDont
   dont={{
-    title: "Fluxo sem saída",
+    title: "Flow without an exit",
     code: `
 screen Dashboard:
   container:
-    @[Abrir modal](StatsModal)
+    @[Open modal](StatsModal)
 
 modal StatsModal:
   card:
-    ## Estatísticas
-    @[Continuar](StatsModal)
+    ## Statistics
+    @[Continue](StatsModal)
     `,
   }}
   do={{
-    title: "Fluxo encerrado",
+    title: "Closed flow",
     code: `
 modal StatsModal:
   card:
-    ## Estatísticas
+    ## Statistics
     row-end:
-      @ghost[Fechar](close)
-      @[Ir para métricas](Dashboard)
+      @ghost[Close](close)
+      @[Go to metrics](Dashboard)
     `,
   }}
 >
-  Por quê: evita bloqueios e garante que a composição sustente o fluxo esperado.
+  Why: avoids dead ends and ensures that the composition supports the expected flow.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Component Composition`](./component-composition): aprofunda combinações entre componentes.
-- [`Row`](./row): base para alinhar ações horizontais.
-- [`Stack`](./stack): empilha conteúdos mantendo espaçamento controlado.
-- [`List`](./list): catálogo textual usado em diversas composições.
+### Related
+- [`Component Composition`](./component-composition): delves into combinations between components.
+- [`Row`](./row): basis for aligning horizontal actions.
+- [`Stack`](./stack): stacks content while maintaining controlled spacing.
+- [`List`](./list): textual catalog used in various compositions.
 
-### Composições recomendadas
-- **Diretrizes de composição + Component Composition** → estruturas escaláveis com componentes auxiliares.
-- **Diretrizes de composição + Screen** → telas coerentes com hierarquia clara.
-- **Diretrizes de composição + Drawer Detail** → detalhes laterais alinhados com listas principais.
+### Recommended compositions
+- **Composition Guidelines + Component Composition** → scalable structures with helper components.
+- **Composition Guidelines + Screen** → coherent screens with a clear hierarchy.
+- **Composition Guidelines + Drawer Detail** → side details aligned with main lists.
 
-<DocsCodePreview title="Tela aplicando múltiplas diretrizes">
+<DocsCodePreview title="Screen applying multiple guidelines">
 ```dsl
 screen Projects:
   container-wide:
     row-between:
       stack-tight:
-        # Projetos ativos
-        >>> Atualizado hoje às 10h
-      @[Criar projeto](ProjectForm)
+        # Active projects
+        >>> Updated today at 10am
+      @[Create project](ProjectForm)
 
     
-      - Protótipo mobile
-      - Migration backend
+      - Mobile prototype
+      - Backend migration
 
   drawer ProjectDetail:
     card:
-      ## Protótipo mobile
-      > Status em desenvolvimento
+      ## Mobile prototype
+      > Status in development
       row-end:
-        @ghost[Fechar](close)
-        @[Abrir tarefas](Dashboard)
+        @ghost[Close](close)
+        @[Open tasks](Dashboard)
 ```
 </DocsCodePreview>
-Por quê: combina row-between, list e drawer seguindo as boas práticas descritas.
+Why: combines row-between, list, and drawer following the described best practices.

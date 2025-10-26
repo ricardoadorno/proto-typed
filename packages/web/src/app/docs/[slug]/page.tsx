@@ -10,10 +10,10 @@ import DocsBreadcrumbs from '@/components/docs/docs-breadcrumbs'
 import DocsPager from '@/components/docs/docs-pager'
 import { DocsToc } from '@/components/docs/docs-toc'
 import { mdxComponents } from '@/components/docs/mdx-components'
-import docSections, { DocItem, findDocBySlug, flatDocs } from '@/utils/toc'
 import { slugify } from '@/utils/slugify'
+import docSections, { flatDocs, findDocBySlug, type DocItem } from '@/utils/toc'
 
-type Props = { params: { slug: string } }
+type Props = { params: Promise<{ slug: string }> }
 
 type Heading = {
   level: 1 | 2 | 3
@@ -87,7 +87,9 @@ function getPager(slug: string): {
 }
 
 export default async function PostPage({ params }: Props) {
-  const { slug } = params
+  const { slug } = await params
+  const lang = 'en' // Fixed to English for root docs
+
   const filePath = path.join(process.cwd(), 'src/docs', `${slug}.mdx`)
   const source = fs.readFileSync(filePath, 'utf8')
 
@@ -109,7 +111,7 @@ export default async function PostPage({ params }: Props) {
   const pageTitle =
     headings.find((heading) => heading.level === 1)?.title ??
     findDocBySlug(slug)?.title ??
-    'Documentação'
+    'Documentation'
 
   const tocItems = headings
     .filter((heading) => heading.level === 2 || heading.level === 3)
@@ -141,7 +143,7 @@ export default async function PostPage({ params }: Props) {
               <div className="docs-prose">{content}</div>
             </DocHeadingProvider>
           </div>
-          <DocsPager prev={prev} next={next} />
+          <DocsPager prev={prev} next={next} lang="en" />
         </article>
         <DocsToc items={tocItems} />
       </div>

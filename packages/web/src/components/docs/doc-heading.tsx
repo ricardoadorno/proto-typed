@@ -17,7 +17,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 import { extractText, slugify } from '@/utils/slugify'
 
 type HeadingTag = 'h1' | 'h2' | 'h3'

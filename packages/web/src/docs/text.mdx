@@ -1,159 +1,159 @@
 # Text
-Textos estruturam títulos, parágrafos, notas e citações, definindo hierarquia e tom da interface.
+Texts structure titles, paragraphs, notes, and quotes, defining the hierarchy and tone of the interface.
 
-## Quando usar
-- Comunicar propósito de telas com títulos e parágrafos introdutórios.
-- Destacar avisos ou dicas em notas (`*>`) dentro de cards e modais.
-- Registrar metadados ou mensagens de apoio com níveis secundários (`>>`, `>>>`).
-- Compartilhar depoimentos ou feedback usando citações (`">`).
+## When to use
+- Communicate the purpose of screens with introductory titles and paragraphs.
+- Highlight warnings or tips in notes (`*>`) within cards and modals.
+- Record metadata or support messages with secondary levels (`>>`, `>>>`).
+- Share testimonials or feedback using quotes (`">`).
 
-## Exemplo básico
-<DocsCodePreview title="Seção textual completa">
+## Basic example
+<DocsCodePreview title="Complete textual section">
 ```dsl
 screen ReportIntro:
   container:
-    # Relatório semanal
-    > Acompanhe os resultados da última sprint.
-    >> Principais métricas estão logo abaixo.
-    >>> Atualizado em 18/09 às 09:30.
+    # Weekly report
+    > Track the results of the last sprint.
+    >> Main metrics are just below.
+    >>> Updated on 09/18 at 09:30.
 
     card:
-      *> Próxima revisão em 7 dias.
-      @[Abrir dashboard](Dashboard)
+      *> Next review in 7 days.
+      @[Open dashboard](Dashboard)
 ```
 </DocsCodePreview>
-Por quê: apresenta contexto, metadados e ação em blocos claramente hierarquizados.
+Why: presents context, metadata, and action in clearly hierarchical blocks.
 
-## Variantes
-<DocsCodePreview title="Notas e citações">
+## Variants
+<DocsCodePreview title="Notes and quotes">
 ```dsl
 screen Default:
   container:
     card:
-      *> Lembre-se de validar os dados antes de compartilhar.
-      "> Proto-Typed reduziu nosso tempo de prototipagem. — Squad A
+      *> Remember to validate the data before sharing.
+      "> Proto-Typed reduced our prototyping time. — Squad A
 ```
 </DocsCodePreview>
-Quando usar: destacar alertas e registrar feedback com formato diferenciado.
-Por quê: a formatação especial chama atenção sem exigir componentes extras.
+When to use: highlight alerts and record feedback with a different format.
+Why: the special formatting calls attention without requiring extra components.
 
-<DocsCodePreview title="Metadados sutis">
+<DocsCodePreview title="Subtle metadata">
 ```dsl
 screen Default:
   container:
     card:
-      ## Status do projeto
-      > Conclua a etapa de handoff ainda hoje.
-      >>> Atualizado por Ana às 10h12.
+      ## Project status
+      > Complete the handoff stage today.
+      >>> Updated by Ana at 10:12am.
 ```
 </DocsCodePreview>
-Quando usar: oferecer informações de suporte sem competir com o conteúdo principal.
-Por quê: o nível `>>>` mantém o dado presente, porém discreto.
+When to use: offer support information without competing with the main content.
+Why: the `>>>` level keeps the data present, but discreet.
 
-<DocsCodePreview title="Títulos hierárquicos">
+<DocsCodePreview title="Hierarchical titles">
 ```dsl
 screen Default:
   container:
-    # Visão geral
-    ## Métricas principais
-    ### Funil de aquisição
+    # Overview
+    ## Main metrics
+    ### Acquisition funnel
 ```
 </DocsCodePreview>
-Quando usar: organizar o conteúdo em seções aninhadas com clareza.
-Por quê: hierarquia visível ajuda a pessoa usuária a escanear a página rapidamente.
+When to use: organize content into nested sections with clarity.
+Why: a visible hierarchy helps the user to scan the page quickly.
 
-## Composição (usando com outros)
-- **Text + Card** — adiciona contexto e notas antes de ações.
-- **Text + Stack** — empilha mensagens com espaçamento controlado.
-- **Text + Button** — combina instrução e ação em sequência lógica.
+## Composition (using with others)
+- **Text + Card** — adds context and notes before actions.
+- **Text + Stack** — stacks messages with controlled spacing.
+- **Text + Button** — combines instruction and action in a logical sequence.
 
-<DocsCodePreview title="Card com texto e ação">
+<DocsCodePreview title="Card with text and action">
 ```dsl
 screen Default:
   container:
     card:
-      ## Próxima entrega
-      > Revise o backlog com o time antes da reunião.
+      ## Next delivery
+      > Review the backlog with the team before the meeting.
       row-end:
-        @[Abrir planejamento](Planning)
+        @[Open planning](Planning)
 ```
 </DocsCodePreview>
-Por quê: explica o contexto e oferece o próximo passo em um único bloco.
+Why: explains the context and offers the next step in a single block.
 
 ## Slots & Props
-| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `# … ######` | títulos | — | Define hierarquia de seções (use um `#` por tela). | Não |
-| `>`, `>>`, `>>>` | parágrafos | — | Parágrafos principal, secundário e metadado. | Não |
-| `*>` | nota | — | Realça alertas, dicas e mensagens importantes. | Não |
-| `">` | citação | — | Registra depoimentos ou mensagens destacadas. | Não |
+| `# … ######` | titles | — | Defines section hierarchy (use one `#` per screen). | No |
+| `>`, `>>`, `>>>` | paragraphs | — | Main, secondary, and metadata paragraphs. | No |
+| `*>` | note | — | Highlights alerts, tips, and important messages. | No |
+| `">` | quote | — | Records testimonials or highlighted messages. | No |
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Dois `#` na mesma tela",
+    title: "Two `#` on the same screen",
     code: `
 screen Summary:
   container:
-    # Resumo
-    # Detalhes
+    # Summary
+    # Details
     `,
   }}
   do={{
-    title: "Uso de subtítulos",
+    title: "Use of subtitles",
     code: `
 screen Summary:
   container:
-    # Resumo
-    ## Detalhes
+    # Summary
+    ## Details
     `,
   }}
 >
-  Por quê: apenas um `#` mantém foco e previne conflitos de acessibilidade.
+  Why: only one `#` maintains focus and prevents accessibility conflicts.
 </DoDont>
 <DoDont
   dont={{
-    title: "Citação com botão",
+    title: "Quote with a button",
     code: `
 card:
-  "> Proto-Typed agiliza entregas. @[Saiba mais](Guides)
+  "> Proto-Typed speeds up deliveries. @[Learn more](Guides)
     `,
   }}
   do={{
-    title: "Citação e ação organizadas",
+    title: "Quote and action organized",
     code: `
 card:
-  "> Proto-Typed agiliza entregas.
+  "> Proto-Typed speeds up deliveries.
   row-end:
-    @[Saiba mais](Guides)
+    @[Learn more](Guides)
     `,
   }}
 >
-  Por quê: cada bloco textual deve manter propósito único; ações ficam em rows ou botões próprios.
+  Why: each textual block should maintain a single purpose; actions should be in their own rows or buttons.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Card`](./card): envolve texto com títulos e ações.
-- [`Stack`](./stack): controla espaçamento entre blocos textuais.
-- [`Button`](./button): ações ligadas ao conteúdo textual.
-- [`Styles Block`](./styles-block): customiza tipografia global.
+### Related
+- [`Card`](./card): wraps text with titles and actions.
+- [`Stack`](./stack): controls spacing between textual blocks.
+- [`Button`](./button): actions linked to the textual content.
+- [`Styles Block`](./styles-block): customizes global typography.
 
-### Composições recomendadas
-- **Text + Card + Row-end** → explicações seguidas de ação direta.
-- **Text + Stack** → storytelling linear com espaçamento definido.
-- **Text + Styles Block** → ajustes de tipografia alinhados ao branding.
+### Recommended compositions
+- **Text + Card + Row-end** → explanations followed by a direct action.
+- **Text + Stack** → linear storytelling with defined spacing.
+- **Text + Styles Block** → typography adjustments aligned with branding.
 
-<DocsCodePreview title="Texto guiando ação">
+<DocsCodePreview title="Text guiding an action">
 ```dsl
 screen Default:
   container:
     card:
-      ## Atualize o status
-      > Garanta que o time tenha visibilidade do progresso.
+      ## Update the status
+      > Ensure the team has visibility of the progress.
       row-end:
-        @[Atualizar agora](UpdateStatus)
+        @[Update now](UpdateStatus)
 ```
 </DocsCodePreview>
-Por quê: orienta a pessoa usuária e apresenta o CTA associado imediatamente.
+Why: guides the user and presents the associated CTA immediately.

@@ -1,174 +1,174 @@
-# Fluxo de navegação
+# Navigation Flow
 
-## Por que importa
-O fluxo de navegação determina como as pessoas avançam entre telas, drawers e modais. Uma estrutura bem definida evita becos sem saída, garante retomada rápida de contexto e mantém o produto coerente em diferentes dispositivos.
+## Why it matters
+The navigation flow determines how people move between screens, drawers, and modals. A well-defined structure avoids dead ends, ensures quick context resumption, and keeps the product coherent across different devices.
 
-## Forma canônica (sintaxe mínima)
-<DocsCodePreview title="Fluxo básico entre duas telas">
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Basic flow between two screens">
 ```dsl
 screen Home:
   container:
-    # Início
-    @[Ir para detalhes](Detail)
+    # Home
+    @[Go to details](Detail)
 
 screen Detail:
   container:
-    # Detalhes
-    @[Voltar](Home)
+    # Details
+    @[Back](Home)
 ```
 </DocsCodePreview>
-Por quê: exibe rotas bidirecionais simples usando botões que referenciam slugs válidos.
+Why: displays simple bidirectional routes using buttons that reference valid slugs.
 
-## Padrões de uso
-<DocsCodePreview title="Usar navigator para seções irmãs">
+## Usage patterns
+<DocsCodePreview title="Use navigator for sibling sections">
 ```dsl
 screen Dashboard:
   container:
-    # Métricas
+    # Metrics
 
   navigator:
-    - i-Home Início | Home
-    - i-BarChart Métricas | Dashboard
-    - i-Settings Configurações | Settings
+    - i-Home Home | Home
+    - i-BarChart Metrics | Dashboard
+    - i-Settings Settings | Settings
 ```
 </DocsCodePreview>
-Quando usar: oferecer menus persistentes em telas com status equivalente.
-Por quê: o navigator mantém destinos sempre acessíveis e reduz dependência de botões dispersos.
+When to use: offer persistent menus on screens with equivalent status.
+Why: the navigator keeps destinations always accessible and reduces dependence on scattered buttons.
 
-<DocsCodePreview title="Abrir drawer para contexto complementar">
+<DocsCodePreview title="Open drawer for complementary context">
 ```dsl
 screen Accounts:
   container:
-    # Contas
+    # Accounts
     stack:
-      > Grupo Norte
-      @[Ver detalhes](AccountDrawer)
+      > North Group
+      @[View details](AccountDrawer)
 
 drawer AccountDrawer:
   card:
-    ## Detalhes
-    > Atualize dados antes de confirmar mudanças.
+    ## Details
+    > Update data before confirming changes.
     row-end:
-      @ghost[Fechar](close)
-      @[Editar conta](EditAccount)
+      @ghost[Close](close)
+      @[Edit account](EditAccount)
 ```
 </DocsCodePreview>
-Quando usar: exibir detalhes sem abandonar a tela principal.
-Por quê: drawers expandem o fluxo lateralmente, mantendo origem e destino visíveis.
+When to use: display details without leaving the main screen.
+Why: drawers expand the flow laterally, keeping the origin and destination visible.
 
-<DocsCodePreview title="Encadear modal de confirmação">
+<DocsCodePreview title="Chain confirmation modal">
 ```dsl
 screen Default:
   container:
     row-end:
-      @destructive[Excluir conta](ConfirmDelete)
+      @destructive[Delete account](ConfirmDelete)
 
 modal ConfirmDelete:
   card:
-    ## Confirmar exclusão
-    > Essa ação é permanente.
+    ## Confirm deletion
+    > This action is permanent.
     row-end:
-      @ghost[Cancelar](close)
-      @destructive[Excluir agora](deleteTenant)
+      @ghost[Cancel](close)
+      @destructive[Delete now](deleteTenant)
 ```
 </DocsCodePreview>
-Quando usar: exigir confirmação explícita antes de executar ações críticas.
-Por quê: modais bloqueiam a navegação atual até que a pessoa tome uma decisão.
+When to use: require explicit confirmation before executing critical actions.
+Why: modals block the current navigation until the person makes a decision.
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Destino inválido",
+    title: "Invalid destination",
     code: `
-@[Ver relatório](ReportsDashboard)
+@[View report](ReportsDashboard)
     `,
   }}
   do={{
-    title: "Destino registrado",
+    title: "Registered destination",
     code: `
-@[Ver relatório](Dashboard)
+@[View report](Dashboard)
     `,
   }}
 >
-  Por quê: nomes incorretos geram falhas de navegação e experiências quebradas.
+  Why: incorrect names lead to navigation failures and broken experiences.
 </DoDont>
 <DoDont
   dont={{
-    title: "Fechamento inconsistente",
+    title: "Inconsistent closing",
     code: `
 modal Confirm:
   row-end:
-    @ghost[Cancelar](-1)
-    @[Confirmar](close)
+    @ghost[Cancel](-1)
+    @[Confirm](close)
     `,
   }}
   do={{
-    title: "Consistência de fechamento",
+    title: "Closing consistency",
     code: `
 modal Confirm:
   row-end:
-    @ghost[Cancelar](close)
-    @[Confirmar](applyAction)
+    @ghost[Cancel](close)
+    @[Confirm](applyAction)
     `,
   }}
 >
-  Por quê: previsibilidade reduz erros e reforça comportamento mental das pessoas usuárias.
+  Why: predictability reduces errors and reinforces users' mental model.
 </DoDont>
 <DoDont
   dont={{
-    title: "Drawer sem fechar",
+    title: "Drawer without closing",
     code: `
 drawer Filters:
   card:
-    ## Filtros
-    @[Aplicar](applyFilters)
+    ## Filters
+    @[Apply](applyFilters)
     `,
   }}
   do={{
-    title: "Drawer com botões de saída",
+    title: "Drawer with exit buttons",
     code: `
 drawer Filters:
   card:
-    ## Filtros
+    ## Filters
     row-end:
-      @ghost[Cancelar](close)
-      @[Aplicar](applyFilters)
+      @ghost[Cancel](close)
+      @[Apply](applyFilters)
     `,
   }}
 >
-  Por quê: overlays precisam de caminhos claros para voltar ao estado anterior.
+  Why: overlays need clear paths to return to the previous state.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Screen`](./screen): unidade principal onde o fluxo acontece.
-- [`Navigator`](./navigator): menus persistentes entre telas irmãs.
-- [`Modal`](./modal): confirmações críticas no fluxo.
-- [`Drawer`](./drawer): detalhes laterais sem perder o contexto.
+### Related
+- [`Screen`](./screen): the main unit where the flow happens.
+- [`Navigator`](./navigator): persistent menus between sibling screens.
+- [`Modal`](./modal): critical confirmations in the flow.
+- [`Drawer`](./drawer): side details without losing context.
 
-### Composições recomendadas
-- **Fluxo de navegação + Navigator** → estrutura páginas de mesmo nível.
-- **Fluxo de navegação + Modal Flow** → garante tratamento completo de confirmações.
-- **Fluxo de navegação + Drawer Detail** → combina lista principal com detalhes paralelos.
+### Recommended compositions
+- **Navigation Flow + Navigator** → structures pages of the same level.
+- **Navigation Flow + Modal Flow** → ensures complete handling of confirmations.
+- **Navigation Flow + Drawer Detail** → combines the main list with parallel details.
 
-<DocsCodePreview title="Fluxo com navigator e modal">
+<DocsCodePreview title="Flow with navigator and modal">
 ```dsl
 screen Home:
   container:
-    # Início
-    @[Adicionar item](ConfirmAdd)
+    # Home
+    @[Add item](ConfirmAdd)
 
   navigator:
-    - Início | Home
-    - Métricas | Dashboard
+    - Home | Home
+    - Metrics | Dashboard
 
 modal ConfirmAdd:
   card:
-    ## Adicionar item?
+    ## Add item?
     row-end:
-      @ghost[Cancelar](close)
-      @[Confirmar](Dashboard)
+      @ghost[Cancel](close)
+      @[Confirm](Dashboard)
 ```
 </DocsCodePreview>
-Por quê: integra navegação persistente com confirmação modal antes de redirecionar.
+Why: integrates persistent navigation with modal confirmation before redirecting.

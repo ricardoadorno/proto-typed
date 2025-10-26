@@ -1,125 +1,124 @@
 # Link
-Links (`#[Texto](Destino)`) criam navegação inline para telas, modais ou URLs externas sem quebrar o fluxo de leitura.
+Links (`#[Text](Destination)`) create inline navigation to screens, modals, or external URLs without breaking the reading flow.
 
-## Quando usar
-- Referenciar telas ou recursos secundários dentro de parágrafos e listas.
-- Direcionar para artigos, e-mails ou telefones externos ao ambiente Proto-Typed.
-- Oferecer caminhos alternativos enquanto o CTA principal permanece em botões.
-- Conectar seções relacionadas quando um `navigator` não é necessário.
+## When to use
+- Reference secondary screens or resources within paragraphs and lists.
+- Direct to articles, emails, or external phones outside the Proto-Typed environment.
+- Offer alternative paths while the main CTA remains in buttons.
+- Connect related sections when a `navigator` is not necessary.
 
-## Exemplo básico
-<DocsCodePreview title="Links em texto de suporte">
+## Basic example
+<DocsCodePreview title="Links in support text">
 ```dsl
 screen HelpCenter:
   container:
-    # Central de ajuda
-    #[documentação oficial](https://proto-typed.dev/docs) para um panorama completo.
+    # Help center
+    #[official documentation](https://proto-typed.dev/docs) for a complete overview.
 
     card:
-      ## Precisa redefinir senha?
-      >> Acesse a #[tela de recuperação](RecoverPassword) e siga os passos.
+      ## Need to reset your password?
+      >> Access the #[recovery screen](RecoverPassword) and follow the steps.
 ```
 </DocsCodePreview>
-Por quê: mantém a leitura fluida e oferece navegação contextual.
+Why: maintains a fluid reading and offers contextual navigation.
 
-## Variantes
-<DocsCodePreview title="Link interno para screen">
+## Variants
+<DocsCodePreview title="Internal link to a screen">
 ```dsl
 screen Default:
   container:
-    #[Ver detalhes](DetailScreen)
+    #[View details](DetailScreen)
 ```
 </DocsCodePreview>
-Quando usar: apontar para telas existentes no fluxo principal.
-Por quê: mantém a navegação coesa sem depender de botões.
+When to use: point to existing screens in the main flow.
+Why: keeps navigation cohesive without relying on buttons.
 
-<DocsCodePreview title="Link externo">
+<DocsCodePreview title="External link">
 ```dsl
 screen Default:
   container:
-    #[Abrir documentação](https://proto-typed.dev/docs)
+    #[Open documentation](https://proto-typed.dev/docs)
 ```
 </DocsCodePreview>
-Quando usar: referenciar recursos hospedados fora do produto.
-Por quê: direciona para documentação ou sites externos preservando contexto.
+When to use: reference resources hosted outside the product.
+Why: directs to documentation or external sites while preserving context.
 
 
-## Composição (usando com outros)
-- **Link + Card** — oferece contextos adicionais dentro de blocos informativos.
-- **Link + List** — transforma itens em atalhos sem necessidade de botões.
-- **Link + Drawer** — agrupa links em painéis laterais de referência.
+## Composition (using with others)
+- **Link + Card** — offers additional contexts within informational blocks.
+- **Link + List** — transforms items into shortcuts without the need for buttons.
+- **Link + Drawer** — groups links in side reference panels.
 
-<DocsCodePreview title="Drawer com links rápidos">
+<DocsCodePreview title="Drawer with quick links">
 ```dsl
 drawer QuickLinks:
   container:
-    # Links rápidos
+    # Quick links
     stack-tight:
       #[Dashboard](Dashboard)
-      #[Equipe](Team)
-      #[Configurações](Settings)
+      #[Team](Team)
+      #[Settings](Settings)
 
 screen HeaderDemo:
   header:
     # Proto-Typed
     row-end:
-      #[Abrir links rápidos](QuickLinks)
+      #[Open quick links](QuickLinks)
 ```
 </DocsCodePreview>
-Por quê: agrupa atalhos sem sobrecarregar o cabeçalho com botões.
+Why: groups shortcuts without overloading the header with buttons.
 
 ## Slots & Props
-| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `label` | string | — | Texto exibido entre `#[ ]`. | Sim |
-| `destino` | slug ou URL | — | Tela, modal, drawer ou endereço externo. | Sim |
-| `protocolo` | `https://`| `https://` | Determina a ação para links externos. | Não |
-| `ícone inline` | token `i-` | — | Opcional antes do texto para reforçar o contexto. | Não |
+| `label` | string | — | Text displayed between `#[ ]`. | Yes |
+| `destination` | slug or URL | — | Screen, modal, drawer, or external address. | Yes |
+| `protocol` | `https://`| `https://` | Determines the action for external links. | No |
+| `inline icon` | token `i-` | — | Optional before the text to reinforce the context. | No |
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Botão no lugar de link",
+    title: "Button instead of link",
     code: `
-@[Ver detalhes](DetailScreen)
+@[View details](DetailScreen)
     `,
   }}
   do={{
-    title: "Link contextual",
+    title: "Contextual link",
     code: `
-#[Ver detalhes](DetailScreen)
+#[View details](DetailScreen)
     `,
   }}
 >
-  Por quê: `@` executa ações; `#` referencia destinos sem comportamento de botão.
+  Why: `@` executes actions; `#` references destinations without button behavior.
 </DoDont>
 <DoDont
   dont={{
-    title: "Link sem destino",
+    title: "Link without destination",
     code: `
-#[Leia mais]()
+#[Read more]()
     `,
   }}
   do={{
-    title: "Destino declarado",
+    title: "Declared destination",
     code: `
-#[Leia mais](Guides)
+#[Read more](Guides)
     `,
   }}
 >
-  Por quê: cada link precisa apontar para um destino existente para evitar erros de navegação.
+  Why: each link needs to point to an existing destination to avoid navigation errors.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Button`](./button): ações que executam lógica ou abrem fluxos.
-- [`Navigator`](./navigator): navegação estruturada por abas ou menus.
-- [`Drawer`](./drawer): agrupa links de referência lateralmente.
-- [`Screen`](./screen): destino mais comum para links internos.
+### Related
+- [`Button`](./button): actions that execute logic or open flows.
+- [`Navigator`](./navigator): structured navigation by tabs or menus.
+- [`Drawer`](./drawer): groups side reference links.
+- [`Screen`](./screen): the most common destination for internal links.
 
-### Composições recomendadas
-- **Link + Card** → blocos informativos com referências adicionais.
-- **Link + List** → coleções de atalhos sem usar botões.
-- **Link + Drawer** → catálogos laterais de documentação ou suporte.
-
+### Recommended compositions
+- **Link + Card** → informational blocks with additional references.
+- **Link + List** → collections of shortcuts without using buttons.
+- **Link + Drawer** → side catalogs of documentation or support.

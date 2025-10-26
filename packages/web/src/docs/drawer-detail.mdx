@@ -1,16 +1,16 @@
 # Drawer Detail
-## Pré-requisitos
-- Ter domínio de `drawer` para abertura e fechamento via ações.
-- Definir componentes de linha (`component CustomerRow`) com `%props`.
-- Conhecer `list $Componente:` para alimentar o drawer com dados dinâmicos.
+## Prerequisites
+- Have mastery of `drawer` for opening and closing via actions.
+- Define row components (`component CustomerRow`) with `%props`.
+- Know `list $Component:` to feed the drawer with dynamic data.
 
-## Passo a passo
-1. Crie um componente de linha (`CustomerRow`) com CTA que abre o drawer.
-2. Declare o `drawer CustomerDetail` recebendo props como nome, empresa e último contato.
-3. Alimente a lista principal com `list $CustomerRow:` usando valores separados por `|`.
-4. Adicione ações internas (follow-up, fechar) dentro do drawer para manter o fluxo completo.
+## Step-by-step
+1. Create a row component (`CustomerRow`) with a CTA that opens the drawer.
+2. Declare the `drawer CustomerDetail` receiving props like name, company, and last contact.
+3. Feed the main list with `list $CustomerRow:` using values separated by `|`.
+4. Add internal actions (follow-up, close) inside the drawer to keep the flow complete.
 
-<DocsCodePreview title="Fluxo completo de lista + drawer de detalhes">
+<DocsCodePreview title="Complete flow of list + detail drawer">
 ```dsl
 component InfoRow:
   row-between:
@@ -21,20 +21,20 @@ drawer CustomerDetail:
   container:
     # %name
     >> %company
-    >>> Último contato: %lastContact
+    >>> Last contact: %lastContact
 
     list $InfoRow:
-      - Status | Em negociação
-      - Valor estimado | R$ 180K
-      - Próximo passo | Apresentar proposta final
+      - Status | In negotiation
+      - Estimated value | $180K
+      - Next step | Present final proposal
 
     card:
-      ## Observações
-      > Atualize o CRM após a reunião.
+      ## Notes
+      > Update the CRM after the meeting.
 
     row-end:
-      @ghost[Fechar](close)
-      @success[Marcar follow-up](scheduleFollowUp)
+      @ghost[Close](close)
+      @success[Schedule follow-up](scheduleFollowUp)
 
 component CustomerRow:
   card-compact:
@@ -42,29 +42,29 @@ component CustomerRow:
       stack-tight:
         ## %name
         >>> %company
-        >>> Último contato: %lastContact
-      @ghost[i-ChevronRight Ver detalhes](CustomerDetail)
+        >>> Last contact: %lastContact
+      @ghost[i-ChevronRight View details](CustomerDetail)
 
 screen Accounts:
   container:
-    # Contas estratégicas
+    # Strategic accounts
     list $CustomerRow:
-      - Ana Souza | Proto Labs | Ontem
-      - Bruno Lima | NextWave | 3 dias atrás
-      - Carla Dias | FutureSoft | 7 dias atrás
+      - Ana Souza | Proto Labs | Yesterday
+      - Bruno Lima | NextWave | 3 days ago
+      - Carla Dias | FutureSoft | 7 days ago
 ```
 </DocsCodePreview>
-Por quê: mantém a lista principal visível enquanto o drawer exibe detalhes e ações contextuais.
+Why: keeps the main list visible while the drawer displays details and contextual actions.
 
-## Depuração rápida
-- Drawer não abre → verifique se o CTA aponta para `CustomerDetail` exatamente.
-- Props não aparecem → valide a ordem dos valores nas linhas da lista.
-- Ações internas não fecham → use `@ghost[Fechar](close)` ou `@ghost[Cancelar](close)`.
-- Overflow de conteúdo → aplique `container` ou `stack` dentro do drawer para controlar espaçamento.
-- Lista com ações inline → mova botões para dentro do componente ou para `row-end`.
+## Quick debugging
+- Drawer not opening → check if the CTA points to `CustomerDetail` exactly.
+- Props not appearing → validate the order of values in the list rows.
+- Internal actions not closing → use `@ghost[Close](close)` or `@ghost[Cancel](close)`.
+- Content overflow → apply `container` or `stack` inside the drawer to control spacing.
+- List with inline actions → move buttons inside the component or to `row-end`.
 
-## Próximos passos
-- Reforce fundamentos em [`Drawer`](./drawer) e [`List`](./list).
-- Explore [`Component List`](./component-list) para catálogos maiores.
-- Estude [`Modal`](./modal) caso precise confirmar ações iniciadas no drawer.
-- Avalie [`Component Composition`](./component-composition) para dividir o drawer em subcomponentes.
+## Next steps
+- Reinforce fundamentals in [`Drawer`](./drawer) and [`List`](./list).
+- Explore [`Component List`](./component-list) for larger catalogs.
+- Study [`Modal`](./modal) if you need to confirm actions initiated in the drawer.
+- Evaluate [`Component Composition`](./component-composition) to divide the drawer into subcomponents.

@@ -1,161 +1,161 @@
 # Input
-Campos de entrada coletam dados estruturados, suportando textos, opções, números e confirmações dentro do Proto-Typed.
+Input fields collect structured data, supporting texts, options, numbers, and confirmations within Proto-Typed.
 
-## Quando usar
-- Capturar informações essenciais em formulários, checklists e configurações.
-- Validar formatos específicos como e-mail, senha ou data com sintaxe declarativa.
-- Permitir descrições longas sem sair da tela principal (`___textarea`).
-- Confirmar consentimentos ou escolhas únicas com checkboxes e radios.
+## When to use
+- Capture essential information in forms, checklists, and settings.
+- Validate specific formats like email, password, or date with declarative syntax.
+- Allow long descriptions without leaving the main screen (`___textarea`).
+- Confirm consents or unique choices with checkboxes and radios.
 
-## Exemplo básico
-<DocsCodePreview title="Formulário com campos variados">
+## Basic example
+<DocsCodePreview title="Form with various fields">
 ```dsl
 screen Signup:
   container-narrow:
     card:
-      ## Criar conta
+      ## Create account
       stack-loose:
-        ___: Nome completo{Seu nome} | required
-        ___email: E-mail{usuario@empresa.com} | required
-        ___password: Senha{Mínimo 8 caracteres} | required minlength="8"
-        ___date: Início da assinatura{Selecione uma data}
-        ___textarea: Objetivos{Conte como pretende usar o produto}
-        [X] Aceito os termos e políticas
+        ___: Full name{Your name} | required
+        ___email: E-mail{user@company.com} | required
+        ___password: Password{Minimum 8 characters} | required minlength="8"
+        ___date: Subscription start{Select a date}
+        ___textarea: Goals{Tell us how you plan to use the product}
+        [X] I accept the terms and policies
       row-end:
-        @ghost[Cancelar](-1)
-        @[Criar conta](submitSignup)
+        @ghost[Cancel](-1)
+        @[Create account](submitSignup)
 ```
 </DocsCodePreview>
-Por quê: reúne diferentes tipos de entrada em um fluxo compacto e completo.
+Why: gathers different types of input in a compact and complete flow.
 
-## Variantes
-<DocsCodePreview title="Select com opções declaradas">
+## Variants
+<DocsCodePreview title="Select with declared options">
 ```dsl
 screen Default:
   container:
-    ___: Status[Em análise | Aprovado | Reprovado]
+    ___: Status[Under review | Approved | Rejected]
 ```
 </DocsCodePreview>
-Quando usar: limitar a escolha a um conjunto predeterminado.
-Por quê: evita entradas inválidas ao restringir alternativas disponíveis.
+When to use: limit the choice to a predetermined set.
+Why: avoids invalid entries by restricting available alternatives.
 
-<DocsCodePreview title="Checkbox para confirmação">
+<DocsCodePreview title="Checkbox for confirmation">
 ```dsl
 screen Default:
   container:
-    [X] Receber novidades por e-mail
+    [X] Receive news by email
 ```
 </DocsCodePreview>
-Quando usar: capturar consentimentos que podem ser marcados ou desmarcados.
-Por quê: reflete decisões binárias mantendo controle manual da pessoa usuária.
+When to use: capture consents that can be checked or unchecked.
+Why: reflects binary decisions while maintaining manual user control.
 
-<DocsCodePreview title="Radios agrupados">
+<DocsCodePreview title="Grouped radios">
 ```dsl
 screen Default:
   container:
-    (X) Cobrança mensal
-    ( ) Cobrança anual
+    (X) Monthly billing
+    ( ) Annual billing
 ```
 </DocsCodePreview>
-Quando usar: exigir seleção exclusiva entre opções mutuamente excludentes.
-Por quê: garante que apenas uma alternativa seja escolhida por vez.
+When to use: require an exclusive selection between mutually exclusive options.
+Why: ensures that only one alternative is chosen at a time.
 
-## Composição (usando com outros)
-- **Input + Card** — agrupa os campos em bloco com título e ações.
-- **Input + Stack** — garante espaçamento vertical consistente entre campos.
-- **Input + Row-end** — alinha botões de submissão e cancelamento.
+## Composition (using with others)
+- **Input + Card** — groups the fields in a block with a title and actions.
+- **Input + Stack** — ensures consistent vertical spacing between fields.
+- **Input + Row-end** — aligns submission and cancellation buttons.
 
-<DocsCodePreview title="Formulário modular com stack">
+<DocsCodePreview title="Modular form with stack">
 ```dsl
 component BillingForm:
   card:
-    ## Configurar plano
+    ## Configure plan
     stack-loose:
-      ___: Plano{Starter | Pro | Enterprise}
-      ___number: Assentos{5} | min="1"
-      ___textarea: Observações{Detalhes adicionais}
+      ___: Plan{Starter | Pro | Enterprise}
+      ___number: Seats{5} | min="1"
+      ___textarea: Notes{Additional details}
     row-end:
-      @ghost[Cancelar](-1)
-      @primary[Salvar alterações](savePlan)
+      @ghost[Cancel](-1)
+      @primary[Save changes](savePlan)
       
 screen AccountSettings:
   container-narrow:
     $BillingForm
 ```
 </DocsCodePreview>
-Por quê: reutiliza o formulário em diferentes telas mantendo layout padronizado.
+Why: reuses the form on different screens while maintaining a standardized layout.
 
 ## Slots & Props
-| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `tipo` | token (`___`, `___email`, `___password`, `___`, `___textarea`, etc.) | `___` | Determina validação e apresentação do campo. | Sim |
-| `label` | string | — | Texto exibido antes da entrada. | Sim |
-| `placeholder` | string entre `{}` | — | Exemplo ou instrução contextual do campo. | Sim |
-| `opções` | lista `opção A | opção B` | — | Define itens de selects. | Não |
+| `type` | token (`___`, `___email`, `___password`, `___`, `___textarea`, etc.) | `___` | Determines the field's validation and presentation. | Yes |
+| `label` | string | — | Text displayed before the input. | Yes |
+| `placeholder` | string between `{}` | — | Example or contextual instruction for the field. | Yes |
+| `options` | list `option A | option B` | — | Defines select items. | No |
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Placeholder vazio",
+    title: "Empty placeholder",
     code: `
 ___email: E-mail{}
     `,
   }}
   do={{
-    title: "Placeholder claro",
+    title: "Clear placeholder",
     code: `
-___email: E-mail{nome@empresa.com}
+___email: E-mail{name@company.com}
     `,
   }}
 >
-  Por quê: placeholders orientam a digitação e reduzem erros no envio.
+  Why: placeholders guide typing and reduce submission errors.
 </DoDont>
 <DoDont
   dont={{
-    title: "Radios interrompidos",
+    title: "Interrupted radios",
     code: `
-(X) Mensal
+(X) Monthly
 card:
-  > Desconto disponível
-( ) Anual
+  > Discount available
+( ) Annual
     `,
   }}
   do={{
-    title: "Seleção agrupada",
+    title: "Grouped selection",
     code: `
 stack-tight:
-  (X) Mensal
-  ( ) Anual
+  (X) Monthly
+  ( ) Annual
     `,
   }}
 >
-  Por quê: radios precisam estar juntos para comunicar que fazem parte do mesmo grupo.
+  Why: radios need to be together to communicate that they are part of the same group.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Stack`](./stack): controla espaçamento entre campos de formulário.
-- [`Card`](./card): envolve formulários com título e ações.
-- [`Button`](./button): aciona envio ou cancelamento dos dados.
-- [`Login Screen`](./login-screen): guia com fluxo completo de autenticação.
+### Related
+- [`Stack`](./stack): controls spacing between form fields.
+- [`Card`](./card): wraps forms with a title and actions.
+- [`Button`](./button): triggers data submission or cancellation.
+- [`Login Screen`](./login-screen): a guide with a complete authentication flow.
 
-### Composições recomendadas
-- **Input + Stack + Row-end** → formulários lineares com ações claras.
-- **Input + Card + Modal** → capturar informações rápidas sem sair da tela.
-- **Input + Component Definition** → reutilizar formulários em diferentes contextos.
+### Recommended compositions
+- **Input + Stack + Row-end** → linear forms with clear actions.
+- **Input + Card + Modal** → capture quick information without leaving the screen.
+- **Input + Component Definition** → reuse forms in different contexts.
 
-<DocsCodePreview title="Formulário em modal">
+<DocsCodePreview title="Form in a modal">
 ```dsl
 modal InviteModal:
   card:
-    ## Convidar pessoa
+    ## Invite person
     stack-tight:
-      ___: Nome completo{Digite o nome}
-      ___email: E-mail{nome@empresa.com}
+      ___: Full name{Enter the name}
+      ___email: E-mail{name@company.com}
     row-end:
-      @ghost[Cancelar](close)
-      @success[Enviar convite](sendInvite)
+      @ghost[Cancel](close)
+      @success[Send invite](sendInvite)
 ```
 </DocsCodePreview>
-Por quê: permite coletar dados essenciais sem abandonar a tela principal.
+Why: allows collecting essential data without leaving the main screen.

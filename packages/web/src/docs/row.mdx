@@ -1,162 +1,162 @@
 # Row
-Rows alinham elementos horizontalmente, controlando distribuição e espaçamento entre ações, títulos e métricas.
+Rows align elements horizontally, controlling distribution and spacing between actions, titles, and metrics.
 
-## Quando usar
-- Exibir botões lado a lado com espaçamento uniforme.
-- Criar cabeçalhos com título à esquerda e ação à direita.
-- Centralizar mensagens ou estados vazios na horizontal.
-- Agrupar ações de confirmação no rodapé de cards e modais.
+## When to use
+- Display buttons side by side with uniform spacing.
+- Create headers with a title on the left and an action on the right.
+- Center messages or empty states horizontally.
+- Group confirmation actions in the footer of cards and modals.
 
-## Exemplo básico
-<DocsCodePreview title="Rodapé de card com ações alinhadas">
+## Basic example
+<DocsCodePreview title="Card footer with aligned actions">
 ```dsl
 screen Default:
   container:
     card:
-      ## Pedido #3021
-      > Atualize o status ou cancele a operação.
+      ## Order #3021
+      > Update the status or cancel the operation.
       row-end:
-        @ghost[Cancelar](-1)
-        @[Atualizar pedido](UpdateOrder)
+        @ghost[Cancel](-1)
+        @[Update order](UpdateOrder)
 ```
 </DocsCodePreview>
-Por quê: concentra as ações relacionadas ao bloco em uma mesma faixa horizontal.
+Why: concentrates the actions related to the block in the same horizontal band.
 
-## Variantes
-<DocsCodePreview title="Row padrão">
+## Variants
+<DocsCodePreview title="Default row">
 ```dsl
 screen Default:
   container:
     row:
-      @[Exportar CSV](ExportCSV)
-      @[Compartilhar relatório](ShareReport)
+      @[Export CSV](ExportCSV)
+      @[Share report](ShareReport)
 ```
 </DocsCodePreview>
-Quando usar: alinhar ações no início do container com espaçamento consistente.
-Por quê: garante distância uniforme entre botões adjacentes.
+When to use: align actions at the beginning of the container with consistent spacing.
+Why: ensures uniform distance between adjacent buttons.
 
-<DocsCodePreview title="Row-between para título + ação">
+<DocsCodePreview title="Row-between for title + action">
 ```dsl
 screen Default:
   container:
     row-between:
       stack-tight:
-        ## Plano Pro
-        >>> Renovação em 30/09
-      @[Alterar plano](ChangePlan)
+        ## Pro Plan
+        >>> Renewal on 09/30
+      @[Change plan](ChangePlan)
 ```
 </DocsCodePreview>
-Quando usar: distribuir elementos nos extremos mantendo equilíbrio visual.
-Por quê: separa foco textual da ação sem exigir colunas extras.
+When to use: distribute elements at the extremes while maintaining visual balance.
+Why: separates textual focus from the action without requiring extra columns.
 
-<DocsCodePreview title="Row-center para estados">
+<DocsCodePreview title="Row-center for states">
 ```dsl
 screen Default:
   container:
     row-center:
-      @outline-lg[i-RefreshCcw Tentar novamente](Retry)
+      @outline-lg[i-RefreshCcw Try again](Retry)
 ```
 </DocsCodePreview>
-Quando usar: centralizar ações em estados vazios ou mensagens temporárias.
-Por quê: chama atenção para a ação de recuperação em telas sem conteúdo.
+When to use: center actions in empty states or temporary messages.
+Why: calls attention to the recovery action on screens without content.
 
-## Composição (usando com outros)
-- **Row + Stack** — combina textos e ações vertical/horizontal na mesma seção.
-- **Row + Card** — posiciona footers com botões consistentes.
-- **Row + Modal** — alinha ações finais de confirmação ou cancelamento.
+## Composition (using with others)
+- **Row + Stack** — combines vertical/horizontal texts and actions in the same section.
+- **Row + Card** — positions footers with consistent buttons.
+- **Row + Modal** — aligns final confirmation or cancellation actions.
 
-<DocsCodePreview title="Header com row-between e stack interno">
+<DocsCodePreview title="Header with row-between and internal stack">
 ```dsl
 screen Subscription:
   container:
     row-between:
       stack-tight:
-        # Assinatura atual
-        >> Ajuste a cobrança conforme necessário.
-      @[Alterar plano](ChangePlan)
+        # Current subscription
+        >> Adjust billing as needed.
+      @[Change plan](ChangePlan)
 ```
 </DocsCodePreview>
-Por quê: entrega contexto textual e ação no mesmo nível hierárquico.
+Why: delivers textual context and action at the same hierarchical level.
 
 ## Slots & Props
-| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `row` | alinhamento padrão | `row` | Alinha itens na horizontal com espaçamento uniforme. | Não |
-| `row-start`, `row-center`, `row-between`, `row-end` | variações | — | Controlam alinhamento inicial, central, distribuído ou à direita. | Não |
-| `conteúdo interno` | blocos DSL | — | Botões, cards, textos ou componentes posicionados na mesma linha. | Sim |
+| `row` | default alignment | `row` | Aligns items horizontally with uniform spacing. | No |
+| `row-start`, `row-center`, `row-between`, `row-end` | variations | — | Control initial, central, distributed, or right alignment. | No |
+| `internal content` | DSL blocks | — | Buttons, cards, texts, or components positioned on the same line. | Yes |
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Row redundante",
+    title: "Redundant row",
     code: `
 row-between:
   stack:
-    ## Plano Pro
-    >>> Renovação em 30/09
+    ## Pro Plan
+    >>> Renewal on 09/30
   row:
-    @[Alterar plano](ChangePlan)
+    @[Change plan](ChangePlan)
     `,
   }}
   do={{
-    title: "Distribuição direta",
+    title: "Direct distribution",
     code: `
 row-between:
   stack-tight:
-    ## Plano Pro
-    >>> Renovação em 30/09
-  @[Alterar plano](ChangePlan)
+    ## Pro Plan
+    >>> Renewal on 09/30
+  @[Change plan](ChangePlan)
     `,
   }}
 >
-  Por quê: evitar rows aninhados mantém o layout previsível e simples de manter.
+  Why: avoiding nested rows keeps the layout predictable and simple to maintain.
 </DoDont>
 <DoDont
   dont={{
-    title: "Botões empilhados sem alinhamento",
+    title: "Stacked buttons without alignment",
     code: `
 card:
-  ## Configurações
-  @[Cancelar](close)
-  @[Salvar](saveSettings)
+  ## Settings
+  @[Cancel](close)
+  @[Save](saveSettings)
     `,
   }}
   do={{
-    title: "Ações alinhadas",
+    title: "Aligned actions",
     code: `
 card:
-  ## Configurações
+  ## Settings
   row-end:
-    @ghost[Cancelar](close)
-    @[Salvar](saveSettings)
+    @ghost[Cancel](close)
+    @[Save](saveSettings)
     `,
   }}
 >
-  Por quê: rows garantem espaçamento consistente e hierarquia clara entre ações.
+  Why: rows ensure consistent spacing and a clear hierarchy between actions.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Stack`](./stack): organiza conteúdos verticais antes de distribuí-los em uma row.
-- [`Card`](./card): usa rows em rodapés e cabeçalhos.
-- [`Modal`](./modal): alinhamento padrão para botões de confirmação.
-- [`Button`](./button): elemento mais comum dentro de rows.
+### Related
+- [`Stack`](./stack): organizes vertical content before distributing it in a row.
+- [`Card`](./card): uses rows in footers and headers.
+- [`Modal`](./modal): default alignment for confirmation buttons.
+- [`Button`](./button): the most common element within rows.
 
-### Composições recomendadas
-- **Row + Card** → rodapé com ações agrupadas.
-- **Row-between + Stack** → cabeçalhos com contexto e CTA.
-- **Row-end + Modal** → confirmações com foco na ação principal.
+### Recommended compositions
+- **Row + Card** → footer with grouped actions.
+- **Row-between + Stack** → headers with context and CTA.
+- **Row-end + Modal** → confirmations with a focus on the main action.
 
-<DocsCodePreview title="Modal com row-end">
+<DocsCodePreview title="Modal with row-end">
 ```dsl
 modal ConfirmAction:
   card:
-    ## Aprovar orçamento?
-    > Essa aprovação notifica todo o time.
+    ## Approve budget?
+    > This approval notifies the entire team.
     row-end:
-      @ghost[Cancelar](close)
-      @success[Aprovar](approveBudget)
+      @ghost[Cancel](close)
+      @success[Approve](approveBudget)
 ```
 </DocsCodePreview>
-Por quê: row-end destaca a ação principal sem perder a opção de cancelamento.
+Why: row-end highlights the main action without losing the cancellation option.

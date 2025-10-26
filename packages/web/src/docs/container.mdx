@@ -1,174 +1,174 @@
 # Container
-Containers definem largura, centralizam conteúdo e oferecem padding seguro para estruturar as telas do Proto-Typed.
+Containers define width, center content, and provide safe padding to structure Proto-Typed screens.
 
-## Quando usar
-- Definir a coluna principal de uma tela antes de adicionar componentes.
-- Alternar entre leitura focada (`container-narrow`) e dashboards amplos (`container-wide`).
-- Garantir espaçamento horizontal consistente em páginas responsivas.
-- Combinar múltiplos layouts (grid, stack, cards) mantendo alinhamento previsível.
+## When to use
+- Define the main column of a screen before adding components.
+- Switch between focused reading (`container-narrow`) and wide dashboards (`container-wide`).
+- Ensure consistent horizontal spacing on responsive pages.
+- Combine multiple layouts (grid, stack, cards) while maintaining predictable alignment.
 
-## Exemplo básico
-<DocsCodePreview title="Container padrão em tela informativa">
+## Basic example
+<DocsCodePreview title="Standard container on an informational screen">
 ```dsl
 screen Overview:
   container:
-    # Visão geral
-    > Acompanhe os indicadores principais da semana.
-    @[Abrir dashboard](Dashboard)
+    # Overview
+    > Track the main indicators of the week.
+    @[Open dashboard](Dashboard)
 ```
 </DocsCodePreview>
-Por quê: estabelece a coluna central e prepara o espaço para conteúdo complementar.
+Why: establishes the central column and prepares the space for complementary content.
 
-## Variantes
-<DocsCodePreview title="Container estreito para foco">
+## Variants
+<DocsCodePreview title="Narrow container for focus">
 ```dsl
 screen Default:
   container-narrow:
     card:
-      ## Solicitar acesso
-      ___email: E-mail{pessoa@empresa.com}
+      ## Request access
+      ___email: E-mail{person@company.com}
       row-end:
-        @ghost[Cancelar](-1)
-        @[Enviar convite](Invite)
+        @ghost[Cancel](-1)
+        @[Send invite](Invite)
 ```
 </DocsCodePreview>
-Quando usar: concentrar atenção em formulários ou leitura longa.
-Por quê: a largura reduzida guia o olhar para campos e instruções.
+When to use: concentrate attention on forms or long reading.
+Why: the reduced width guides the eye to fields and instructions.
 
-<DocsCodePreview title="Container amplo para dashboards">
+<DocsCodePreview title="Wide container for dashboards">
 ```dsl
 screen Default:
   container-wide:
     grid-3:
       card:
-        ## Total de leads
-        # 1.240
+        ## Total leads
+        # 1,240
       card:
-        ## Conversões
+        ## Conversions
         # 134
       card:
-        ## Receita
-        # R$ 87K
+        ## Revenue
+        # $87K
 ```
 </DocsCodePreview>
-Quando usar: disponibilizar múltiplas colunas de conteúdo de forma equilibrada.
-Por quê: evita compressão de cards ao distribuir métricas em colunas amplas.
+When to use: provide multiple columns of content in a balanced way.
+Why: avoids card compression by distributing metrics in wide columns.
 
-<DocsCodePreview title="Largura total com layout controlado">
+<DocsCodePreview title="Full width with controlled layout">
 ```dsl
 screen Default:
   container-full:
     stack-tight:
       # Release Notes
-      > Atualizações e correções da versão.
+      > Updates and fixes for the version.
       row-end:
-        @[Ver detalhes](Changelog)
-        @secondary[Compartilhar](ShareModal)
+        @[View details](Changelog)
+        @secondary[Share](ShareModal)
 ```
 </DocsCodePreview>
-Quando usar: ocupar toda a largura, delegando o espaçamento ao layout interno.
-Por quê: permite heróis e painéis que controlam padding dentro do próprio layout.
+When to use: occupy the entire width, delegating spacing to the internal layout.
+Why: allows for heroes and panels that control padding within the layout itself.
 
-## Composição (usando com outros)
-- **Container + Stack** — estrutura seções verticais com espaçamento previsível.
-- **Container + Grid** — alinha dashboards e coleções de cards.
-- **Container + Navigator** — agrupa header, abas e conteúdo principal na mesma tela.
+## Composition (using with others)
+- **Container + Stack** — structures vertical sections with predictable spacing.
+- **Container + Grid** — aligns dashboards and card collections.
+- **Container + Navigator** — groups header, tabs, and main content on the same screen.
 
-<DocsCodePreview title="Container com header e conteúdo">
+<DocsCodePreview title="Container with header and content">
 ```dsl
 screen Settings:
   navigator:
-    - Perfil | Profile
-    - Segurança | Security
+    - Profile | Profile
+    - Security | Security
 
   container:
-    # Segurança
-    > Ajuste autenticação e dispositivos confiáveis.
+    # Security
+    > Adjust authentication and trusted devices.
     stack:
       card:
-        ## Mudança de senha
-        @[Atualizar](UpdatePassword)
+        ## Change password
+        @[Update](UpdatePassword)
       card:
-        ## Dispositivos reconhecidos
-          - MacBook | Último acesso ontem
-          - iPhone | Último acesso hoje
+        ## Recognized devices
+          - MacBook | Last access yesterday
+          - iPhone | Last access today
 ```
 </DocsCodePreview>
-Por quê: separa navegação e conteúdo mantendo alinhamento central.
+Why: separates navigation and content while maintaining central alignment.
 
 ## Slots & Props
-| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `variante` | enum (`container`, `container-narrow`, `container-wide`, `container-full`) | `container` | Define largura máxima e gutters laterais. | Não |
-| `conteúdo interno` | blocos DSL | — | Elementos, componentes, stacks e grids renderizados dentro do container. | Sim |
-| `multiplos containers` | sequência | — | Permite combinar larguras diferentes na mesma tela. | Não |
+| `variant` | enum (`container`, `container-narrow`, `container-wide`, `container-full`) | `container` | Defines maximum width and side gutters. | No |
+| `internal content` | DSL blocks | — | Elements, components, stacks, and grids rendered inside the container. | Yes |
+| `multiple containers` | sequence | — | Allows combining different widths on the same screen. | No |
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Container duplicado",
+    title: "Duplicate container",
     code: `
 container:
   container:
-    # Relatório semanal
+    # Weekly report
     `,
   }}
   do={{
-    title: "Stack dentro do container",
+    title: "Stack inside the container",
     code: `
 container:
   stack-loose:
-    # Relatório semanal
-    > Atualize dados sempre às segundas.
+    # Weekly report
+    > Update data every Monday.
     `,
   }}
 >
-  Por quê: stacks organizam seções internas sem duplicar controles de largura.
+  Why: stacks organize internal sections without duplicating width controls.
 </DoDont>
 <DoDont
   dont={{
-    title: "Conteúdo alinhado à borda",
+    title: "Content aligned to the border",
     code: `
 container-full:
-  # Atualizações
-  > Texto colado na lateral.
+  # Updates
+  > Text stuck to the side.
     `,
   }}
   do={{
-    title: "Stack controla o espaçamento",
+    title: "Stack controls the spacing",
     code: `
 container-full:
   stack-loose:
-    # Atualizações
-    > Texto com margens confortáveis.
+    # Updates
+    > Text with comfortable margins.
     `,
   }}
 >
-  Por quê: `container-full` ocupa toda a largura e depende do layout interno para aplicar padding.
+  Why: `container-full` occupies the entire width and depends on the internal layout to apply padding.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Screen`](./screen): define a estrutura principal antes dos containers.
-- [`Stack`](./stack): organiza conteúdo vertical dentro do container.
-- [`Grid`](./grid): distribui cards e métricas em múltiplas colunas.
-- [`Dashboard`](./dashboard): guia completo sobre montagem de telas analíticas.
+### Related
+- [`Screen`](./screen): defines the main structure before containers.
+- [`Stack`](./stack): organizes content vertically within the container.
+- [`Grid`](./grid): distributes cards and metrics into multiple columns.
+- [`Dashboard`](./dashboard): complete guide on assembling analytical screens.
 
-### Composições recomendadas
-- **Container + Stack** → sequência de seções com leitura fluida.
-- **Container + Grid** → dashboards responsivos com cards alinhados.
-- **Container + Drawer** → mantém conteúdo principal visível quando há painéis laterais.
+### Recommended compositions
+- **Container + Stack** → sequence of sections with fluid reading.
+- **Container + Grid** → responsive dashboards with aligned cards.
+- **Container + Drawer** → keeps main content visible when there are side panels.
 
-<DocsCodePreview title="Container com painel lateral">
+<DocsCodePreview title="Container with side panel">
 ```dsl
 screen Accounts:
   container-wide:
     grid-2:
       card:
-        ## Contas ativas
-        - Plano Pro
-        - Plano Enterprise
+        ## Active accounts
+        - Pro Plan
+        - Enterprise Plan
 ```
 </DocsCodePreview>
-Por quê: combina largura maior com drawer para contexto secundário.
+Why: combines a wider width with a drawer for secondary context.

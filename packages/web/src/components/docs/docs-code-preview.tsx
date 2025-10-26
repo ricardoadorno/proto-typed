@@ -11,7 +11,7 @@ import {
 import { CheckIcon, CopyIcon } from 'lucide-react'
 
 import { useParse } from '@/hooks/use-parse'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 import {
   Button,
   EditorPanel,

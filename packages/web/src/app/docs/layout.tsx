@@ -1,5 +1,5 @@
-import DocsLayout from '@/components/layouts/docs-layout'
+import DocsLayoutWrapper from '@/components/layouts/docs-layout-wrapper'
 
 export default function LayoutDoc({ children }: { children: React.ReactNode }) {
-  return <DocsLayout>{children}</DocsLayout>
+  return <DocsLayoutWrapper>{children}</DocsLayoutWrapper>
 }

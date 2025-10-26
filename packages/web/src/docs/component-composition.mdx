@@ -1,73 +1,73 @@
 # Component Composition
-## Por que importa
-Compor componentes permite criar layouts complexos a partir de blocos menores, mantendo coesão visual e facilitando manutenção. O padrão garante que mudanças estruturais sejam aplicadas em um único ponto e repercutam em todo o sistema.
+## Why it matters
+Composing components allows you to create complex layouts from smaller blocks, maintaining visual cohesion and facilitating maintenance. The pattern ensures that structural changes are applied in a single place and reflected throughout the system.
 
-## Forma canônica (sintaxe mínima)
-<DocsCodePreview title="Componente maior reutilizando um auxiliar">
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Larger component reusing a helper">
 ```dsl
 component HeaderBar:
   row-between:
     > %title
-    @[Ação principal](%action)
+    @[Main action](%action)
 
 component Section:
   container:
     $HeaderBar:
-      - Projetos ativos | NewProject
+      - Active projects | NewProject
     stack-loose:
       > %description
 
 screen Dashboard:
   $Section:
-    - Revisão semanal das iniciativas
+    - Weekly review of initiatives
 ```
 </DocsCodePreview>
-Por quê: mostra como um componente principal reaproveita outro componente passando dados específicos.
+Why: shows how a main component reuses another component by passing specific data.
 
-## Padrões de uso
-<DocsCodePreview title="Seção com header e grid de cards">
+## Usage patterns
+<DocsCodePreview title="Section with header and grid of cards">
 ```dsl
 component ProjectCard:
   card:
     ## %name
     >>> %owner
     > %status
-    @[Abrir](%destination)
+    @[Open](%destination)
 
 component ProjectSection:
   container:
     row-between:
       # %title
-      @[Criar projeto](%action)
+      @[Create project](%action)
     grid-3 $ProjectCard:
-      - Nova plataforma | Ana Souza | Em QA | ProjectDetail
-      - Pesquisa usuários | Carla Dias | Em discovery | ResearchBoard
+      - New platform | Ana Souza | In QA | ProjectDetail
+      - User research | Carla Dias | In discovery | ResearchBoard
 
 screen Dashboard:
   $ProjectSection:
-    - Projetos ativos
+    - Active projects
     - ProjectForm
 ```
 </DocsCodePreview>
-Quando usar: agrupar header, ações e coleção de cards em uma única unidade reaproveitável.
-Por quê: uma única mudança reflete em todas as telas que usam a seção composta.
+When to use: group header, actions, and a collection of cards into a single reusable unit.
+Why: a single change is reflected on all screens that use the composite section.
 
-<DocsCodePreview title="Componentes auxiliares para slots complexos">
+<DocsCodePreview title="Helper components for complex slots">
 ```dsl
 component EmptyState:
   card:
     ## %title
     > %message
     row-center:
-      @[Criar item](%action)
+      @[Create item](%action)
 
 component Module:
   container:
     # %moduleTitle
     stack:
       $EmptyState:
-        - Nenhum lead
-        - Comece registrando contatos.
+        - No leads
+        - Start by registering contacts.
         - LeadForm
 
 screen Leads:
@@ -75,64 +75,64 @@ screen Leads:
     - Leads
 ```
 </DocsCodePreview>
-Quando usar: encapsular estados vazios e reutilizá-los em diferentes módulos.
-Por quê: mantém linguagem consistente de empty state em todo o produto.
+When to use: encapsulate empty states and reuse them in different modules.
+Why: maintains a consistent empty state language throughout the product.
 
-<DocsCodePreview title="Componente composto dentro de list">
+<DocsCodePreview title="Composite component within a list">
 ```dsl
 component TaskRow:
   row-between:
     stack-tight:
       > %title
       >>> %due
-    @[Detalhar](%action)
+    @[Details](%action)
 
 component TaskSection:
   container:
     # %title
     list $TaskRow:
-      - Revisar backlog | 22/09 | show:backlog
-      - Preparar demo | 25/09 | show:demo
+      - Review backlog | 22/09 | show:backlog
+      - Prepare demo | 25/09 | show:demo
 
 screen Tasks:
   $TaskSection:
-    - Tarefas da semana
+    - Tasks of the week
 ```
 </DocsCodePreview>
-Quando usar: separar responsabilidades entre componente de seção e componente de linha.
-Por quê: facilita evoluções isoladas de layout sem quebrar a lista principal.
+When to use: separate responsibilities between the section component and the row component.
+Why: facilitates isolated layout evolutions without breaking the main list.
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Cabeçalhos replicados",
+    title: "Replicated headers",
     code: `
 component DashboardHeader:
   row-between:
-    # Projetos ativos
-    @[Criar projeto](ProjectForm)
+    # Active projects
+    @[Create project](ProjectForm)
 
 component ProjectsHeader:
   row-between:
-    # Projetos ativos
-    @[Criar projeto](ProjectForm)
+    # Active projects
+    @[Create project](ProjectForm)
     `,
   }}
   do={{
-    title: "Cabeçalho reutilizável",
+    title: "Reusable header",
     code: `
 component SectionHeader:
   row-between:
     # %title
-    @[Criar projeto](%action)
+    @[Create project](%action)
     `,
   }}
 >
-  Por quê: centralizar estruturas idênticas reduz divergências e esforço de manutenção.
+  Why: centralizing identical structures reduces discrepancies and maintenance effort.
 </DoDont>
 <DoDont
   dont={{
-    title: "Valor ignorado",
+    title: "Ignored value",
     code: `
 component Section:
   container:
@@ -142,7 +142,7 @@ component Section:
     `,
   }}
   do={{
-    title: "Props encadeados",
+    title: "Chained props",
     code: `
 component Section:
   container:
@@ -152,46 +152,46 @@ component Section:
 
 screen Dashboard:
   $Section:
-    - Projetos ativos
+    - Active projects
     - ProjectForm
     `,
   }}
 >
-  Por quê: componentes intermediários precisam repassar os dados esperados pelos utilitários que encapsulam.
+  Why: intermediate components need to pass on the data expected by the utilities they encapsulate.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Component Definition`](./component-definition): base de cada bloco reutilizável.
-- [`Component Props`](./component-props): gerenciamento de dados passados entre componentes.
-- [`Component List`](./component-list): listas alimentadas por componentes compostos.
-- [`Dashboard`](./dashboard): guia que demonstra composições avançadas.
+### Related
+- [`Component Definition`](./component-definition): the basis of each reusable block.
+- [`Component Props`](./component-props): management of data passed between components.
+- [`Component List`](./component-list): lists powered by composite components.
+- [`Dashboard`](./dashboard): guide demonstrating advanced compositions.
 
-### Composições recomendadas
-- **Component Composition + Grid** → seções completas com vitrines reutilizáveis.
-- **Component Composition + Modal** → reutiliza cabeçalhos e conteúdos em sobreposições.
-- **Component Composition + Drawer** → painéis laterais complexos com subcomponentes.
+### Recommended compositions
+- **Component Composition + Grid** → complete sections with reusable showcases.
+- **Component Composition + Modal** → reuses headers and content in overlays.
+- **Component Composition + Drawer** → complex side panels with subcomponents.
 
-<DocsCodePreview title="Componente composto aplicado em drawer">
+<DocsCodePreview title="Composite component applied in a drawer">
 ```dsl
 component DrawerHeader:
   row-between:
     ## %title
-    @ghost[Fechar](close)
+    @ghost[Close](close)
 
 component DetailsDrawer:
   card:
     $DrawerHeader:
-      - Detalhes do cliente
+      - Customer details
     stack-loose:
       > %summary
-      @[Abrir perfil](%action)
+      @[Open profile](%action)
 
 drawer CustomerDetails:
   $DetailsDrawer:
-    - Revise as informações antes de avançar.
+    - Review the information before proceeding.
     - CustomerProfile
 ```
 </DocsCodePreview>
-Por quê: combina cabeçalho reutilizável e conteúdo customizado dentro do drawer.
+Why: combines a reusable header and custom content within the drawer.

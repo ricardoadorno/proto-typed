@@ -1,162 +1,162 @@
-# Erros comuns
+# Common Errors
 
-## Por que importa
-Conhecer os anti-padrões mais recorrentes evita retrabalho, reduz bugs de navegação e mantém a experiência coerente em todas as telas. Um catálogo claro acelera revisões e dá segurança para evoluir a DSL sem quebrar fluxos existentes.
+## Why it matters
+Knowing the most recurrent anti-patterns avoids rework, reduces navigation bugs, and maintains a coherent experience across all screens. A clear catalog speeds up reviews and provides confidence to evolve the DSL without breaking existing flows.
 
-## Forma canônica (sintaxe mínima)
-<DocsCodePreview title="Separar itens textuais de ações">
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Separate textual items from actions">
 ```dsl
 screen Default:
   container:
     card:
-      ## Próximos passos
-      - Revisar backlog
-      - Preparar release
+      ## Next steps
+      - Review backlog
+      - Prepare release
       row-end:
-        @ghost[Cancelar](close)
-        @[Abrir planejamento](Planning)
+        @ghost[Cancel](close)
+        @[Open planning](Planning)
 ```
 </DocsCodePreview>
-Por quê: destaca que `` abriga apenas texto, enquanto ações ficam em blocos dedicados como `row-end`.
+Why: highlights that `` only holds text, while actions are in dedicated blocks like `row-end`.
 
-## Padrões de uso
-<DocsCodePreview title="Destacar ações destrutivas">
+## Usage patterns
+<DocsCodePreview title="Highlight destructive actions">
 ```dsl
 screen Default:
   container:
     row-end:
-      @ghost[Cancelar](close)
-      @destructive[Excluir conta](ConfirmDelete)
+      @ghost[Cancel](close)
+      @destructive[Delete account](ConfirmDelete)
 ```
 </DocsCodePreview>
-Quando usar: qualquer operação que remova dados ou interrompa fluxos críticos.
-Por quê: a variante destrutiva comunica risco e ajuda a prevenir cliques acidentais.
+When to use: any operation that removes data or interrupts critical flows.
+Why: the destructive variant communicates risk and helps prevent accidental clicks.
 
-<DocsCodePreview title="Navigator consistente entre telas irmãs">
+<DocsCodePreview title="Consistent navigator between sibling screens">
 ```dsl
 screen Home:
   navigator:
     - Home | Home
-    - Tarefas | Tasks
-    - Configurações | Settings
+    - Tasks | Tasks
+    - Settings | Settings
 
 screen Tasks:
   navigator:
     - Home | Home
-    - Tarefas | Tasks
-    - Configurações | Settings
+    - Tasks | Tasks
+    - Settings | Settings
 ```
 </DocsCodePreview>
-Quando usar: grupos de telas que compartilham o mesmo menu persistente.
-Por quê: manter itens idênticos evita destinos ocultos e reduz confusão ao alternar telas.
+When to use: groups of screens that share the same persistent menu.
+Why: keeping identical items avoids hidden destinations and reduces confusion when switching screens.
 
-<DocsCodePreview title="Overlays com caminho de saída claro">
+<DocsCode-preview title="Overlays with a clear exit path">
 ```dsl
 drawer Filters:
   card:
-    ## Ajustar filtros
+    ## Adjust filters
     row-end:
-      @ghost[Cancelar](close)
-      @[Aplicar](applyFilters)
+      @ghost[Cancel](close)
+      @[Apply](applyFilters)
 ```
 </DocsCodePreview>
-Quando usar: sempre que um drawer ou modal assumir o foco da interação.
-Por quê: o botão de fechar garante retorno imediato ao contexto original.
+When to use: whenever a drawer or modal takes over the interaction focus.
+Why: the close button ensures an immediate return to the original context.
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Links na lista",
+    title: "Links in the list",
     code: `
 card:
-  ## Tarefas
+  ## Tasks
   
-    - Revisar backlog #[Abrir](Backlog)
+    - Review backlog #[Open](Backlog)
     `,
   }}
   do={{
-    title: "Ações fora da lista",
+    title: "Actions outside the list",
     code: `
 card:
-  ## Tarefas
+  ## Tasks
   
-    - Revisar backlog
+    - Review backlog
   row-end:
-    @[Abrir backlog](Backlog)
+    @[Open backlog](Backlog)
     `,
   }}
 >
-  Por quê: `` aceita apenas texto; botões e links devem ficar em rows ou navigator.
+  Why: `` only accepts text; buttons and links should be in rows or navigator.
 </DoDont>
 <DoDont
   dont={{
-    title: "Drawer sem saída",
+    title: "Drawer without an exit",
     code: `
 drawer Filters:
   card:
-    ## Filtros
-    @[Aplicar](applyFilters)
+    ## Filters
+    @[Apply](applyFilters)
     `,
   }}
   do={{
-    title: "Drawer com retorno",
+    title: "Drawer with a return",
     code: `
 drawer Filters:
   card:
-    ## Filtros
+    ## Filters
     row-end:
-      @ghost[Cancelar](close)
-      @[Aplicar](applyFilters)
+      @ghost[Cancel](close)
+      @[Apply](applyFilters)
     `,
   }}
 >
-  Por quê: oferecer saída explícita evita bloqueios e mantém o fluxo previsível.
+  Why: offering an explicit exit avoids dead ends and keeps the flow predictable.
 </DoDont>
 <DoDont
   dont={{
-    title: "Fechamentos mistos",
+    title: "Mixed closings",
     code: `
 modal ConfirmAction:
   row-end:
-    @ghost[Cancelar](-1)
-    @[Confirmar](close)
+    @ghost[Cancel](-1)
+    @[Confirm](close)
     `,
   }}
   do={{
-    title: "Fechamento consistente",
+    title: "Consistent closing",
     code: `
 modal ConfirmAction:
   row-end:
-    @ghost[Cancelar](close)
-    @[Confirmar](applyAction)
+    @ghost[Cancel](close)
+    @[Confirm](applyAction)
     `,
   }}
 >
-  Por quê: consistência reduz dúvidas sobre o resultado de cada botão.
+  Why: consistency reduces doubts about the result of each button.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Sintaxe básica`](./syntax): reforça regras de estrutura que evitam anti-padrões.
-- [`Diretrizes de composição`](./composition-guidelines): orienta combinações seguras entre blocos.
-- [`Component Composition`](./component-composition): mostra como reutilizar layouts sem introduzir erros.
-- [`Flow`](./flow): garante navegação coerente ao aplicar correções.
+### Related
+- [`Basic Syntax`](./syntax): reinforces structure rules that avoid anti-patterns.
+- [`Composition Guidelines`](./composition-guidelines): guides safe combinations between blocks.
+- [`Component Composition`](./component-composition): shows how to reuse layouts without introducing errors.
+- [`Flow`](./flow): ensures coherent navigation when applying corrections.
 
-### Composições recomendadas
-- **Erros comuns + Component Definition** → componentes reaproveitados já chegam corrigidos.
-- **Erros comuns + Navigator** → valida menus persistentes antes da publicação.
-- **Erros comuns + Modal Flow** → revê confirmações encadeadas para evitar bloqueios.
+### Recommended compositions
+- **Common Errors + Component Definition** → reused components already arrive corrected.
+- **Common Errors + Navigator** → validates persistent menus before publication.
+- **Common Errors + Modal Flow** → reviews chained confirmations to avoid dead ends.
 
-<DocsCodePreview title="Checklist final de revisão">
+<DocsCodePreview title="Final review checklist">
 ```dsl
 screen Default:
   container:
     card:
-      ## Antes de publicar
-      - Conferir lista sem ações inline.
-      - Garantir overlays com botões de fechamento.
-      - Verificar consistência dos destinos de navegação.
+      ## Before publishing
+      - Check list without inline actions.
+      - Ensure overlays with close buttons.
+      - Verify consistency of navigation destinations.
 ```
 </DocsCodePreview>
-Por quê: padroniza a inspeção e evita que anti-padrões sejam enviados para produção.
+Why: standardizes inspection and prevents anti-patterns from being sent to production.

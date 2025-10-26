@@ -1,26 +1,26 @@
 # Component Definition
-## Por que importa
-Componentes definidos com `component Nome:` concentram estrutura, estilo e comportamento visual em um só lugar. Eles evitam duplicação, facilitam manutenção e garantem consistência em telas complexas.
+## Why it matters
+Components defined with `component Name:` concentrate structure, style, and visual behavior in one place. They avoid duplication, facilitate maintenance, and ensure consistency across complex screens.
 
-## Forma canônica (sintaxe mínima)
-<DocsCodePreview title="Definição e instância básica">
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Basic definition and instance">
 ```dsl
 component HeroBanner:
   card:
     ## %title
     > %subtitle
-    @[Saiba mais](%destination)
+    @[Learn more](%destination)
 
 screen Home:
   container:
     $HeroBanner:
-      - Prototipe mais rápido | Construa telas em minutos | Guides
+      - Prototype faster | Build screens in minutes | Guides
 ```
 </DocsCodePreview>
-Por quê: demonstra o ciclo completo — declarar o componente e instanciá-lo com dados via lista.
+Why: demonstrates the full cycle — declaring the component and instantiating it with data via a list.
 
-## Padrões de uso
-<DocsCodePreview title="Componentes para vitrines de métricas">
+## Usage patterns
+<DocsCodePreview title="Components for metric showcases">
 ```dsl
 component MetricCard:
   card:
@@ -32,66 +32,66 @@ screen Dashboard:
   container-wide:
     grid-3:
       $MetricCard:
-        - Leads captados | 1.240 | +8%
+        - Leads captured | 1,240 | +8%
       $MetricCard:
-        - Conversões | 134 | +5%
+        - Conversions | 134 | +5%
       $MetricCard:
-        - Satisfação | 92% | +3%
+        - Satisfaction | 92% | +3%
 ```
 </DocsCodePreview>
-Quando usar: replicar o mesmo layout com dados diferentes em dashboards e relatórios.
-Por quê: reduz manutenção ao trocar apenas os valores, não o markup.
+When to use: replicate the same layout with different data in dashboards and reports.
+Why: reduces maintenance by changing only the values, not the markup.
 
-<DocsCodePreview title="Componente para linhas de lista">
+<DocsCodePreview title="Component for list rows">
 ```dsl
 component TaskRow:
   row-between:
     stack-tight:
       > %title
       >>> %due
-    @[Detalhar](%action)
+    @[Details](%action)
 screen Default:
   list $TaskRow:
-    - Atualizar roadmap | Até 22/09 | show:roadmap
-    - Revisar backlog | Até 24/09 | show:backlog
+    - Update roadmap | By 22/09 | show:roadmap
+    - Review backlog | By 24/09 | show:backlog
 ```
 </DocsCodePreview>
-Quando usar: padronizar linhas de lista que exigem múltiplos campos e ações.
-Por quê: encapsula lógica de exibição e mantém consistência em toda a lista.
+When to use: standardize list rows that require multiple fields and actions.
+Why: encapsulates display logic and maintains consistency throughout the list.
 
-<DocsCodePreview title="Componente com fallback interno">
+<DocsCodePreview title="Component with internal fallback">
 ```dsl
 component EmptyState:
   card:
     ## %title
     > %message
     row-center:
-      @[Criar primeiro item](%action)
+      @[Create first item](%action)
 
 screen Leads:
   container:
     $EmptyState:
-      - Nenhum lead ainda
-      - Comece registrando contatos da equipe comercial.
+      - No leads yet
+      - Start by registering contacts from the sales team.
       - LeadForm
 ```
 </DocsCodePreview>
-Quando usar: oferecer vazio padrão para diferentes contextos sem reescrever layout.
-Por quê: padroniza estados vazios com mensagem, ação e visual coerentes.
+When to use: offer a default empty state for different contexts without rewriting the layout.
+Why: standardizes empty states with a consistent message, action, and visual appearance.
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Instância sem definição",
+    title: "Instance without definition",
     code: `
 screen Home:
   container:
     $HeroBanner:
-      - Bem-vindo | Explore recursos | Dashboard
+      - Welcome | Explore features | Dashboard
     `,
   }}
   do={{
-    title: "Declaração + uso",
+    title: "Declaration + usage",
     code: `
 component HeroBanner:
   card:
@@ -101,15 +101,15 @@ component HeroBanner:
 screen Home:
   container:
     $HeroBanner:
-      - Bem-vindo | Explore recursos
+      - Welcome | Explore features
     `,
   }}
 >
-  Por quê: a instância precisa conhecer a estrutura para interpolar `%props`.
+  Why: the instance needs to know the structure to interpolate `%props`.
 </DoDont>
 <DoDont
   dont={{
-    title: "Props faltando",
+    title: "Missing props",
     code: `
 component PlanCard:
   card:
@@ -118,29 +118,29 @@ component PlanCard:
     >> %price
 
 $PlanCard:
-  - Plano Pro | Experiência completa
+  - Pro Plan | Full experience
     `,
   }}
   do={{
-    title: "Props completos",
+    title: "Complete props",
     code: `
 $PlanCard:
-  - Plano Pro | Experiência completa | R$ 89/mês
+  - Pro Plan | Full experience | $89/month
     `,
   }}
 >
-  Por quê: a ordem dos valores precisa corresponder a cada `%prop` declarado.
+  Why: the order of values must correspond to each declared `%prop`.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Component Props`](./component-props): detalha interpolação e manipulação de `%props`.
-- [`Component List`](./component-list): gera coleções a partir de componentes.
-- [`Component Composition`](./component-composition): orienta como combinar componentes entre si.
-- [`List`](./list): alimenta componentes com dados tabulares.
+### Related
+- [`Component Props`](./component-props): details interpolation and handling of `%props`.
+- [`Component List`](./component-list): generates collections from components.
+- [`Component Composition`](./component-composition): guides on how to combine components with each other.
+- [`List`](./list): feeds components with tabular data.
 
-### Composições recomendadas
-- **Component Definition + List** → repete um layout para cada item de dados.
-- **Component Definition + Grid** → monta vitrines e dashboards reutilizáveis.
-- **Component Definition + Modal** → cria modais padronizados para confirmação ou formulários.
+### Recommended compositions
+- **Component Definition + List** → repeats a layout for each data item.
+- **Component Definition + Grid** → builds reusable showcases and dashboards.
+- **Component Definition + Modal** → creates standardized modals for confirmation or forms.

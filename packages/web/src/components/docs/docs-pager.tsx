@@ -2,18 +2,21 @@ import Link from 'next/link'
 import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 import { DocItem } from '@/utils/toc'
 
 interface DocsPagerProps {
   prev?: DocItem | null
   next?: DocItem | null
+  lang?: string
 }
 
-export function DocsPager({ prev, next }: DocsPagerProps) {
+export function DocsPager({ prev, next, lang = 'en' }: DocsPagerProps) {
   if (!prev && !next) {
     return null
   }
+
+  const langPrefix = lang === 'en' ? '' : `/${lang}`
 
   return (
     <nav
@@ -25,7 +28,7 @@ export function DocsPager({ prev, next }: DocsPagerProps) {
           direction="prev"
           label="Anterior"
           title={prev.title}
-          href={`/docs/${prev.slug}`}
+          href={`${langPrefix}/docs/${prev.slug}`}
         />
       ) : (
         <div className="hidden flex-1 md:block" />
@@ -35,7 +38,7 @@ export function DocsPager({ prev, next }: DocsPagerProps) {
           direction="next"
           label="Próximo"
           title={next.title}
-          href={`/docs/${next.slug}`}
+          href={`${langPrefix}/docs/${next.slug}`}
         />
       ) : (
         <div className="hidden flex-1 md:block" />

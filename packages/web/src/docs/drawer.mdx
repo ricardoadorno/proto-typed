@@ -1,194 +1,194 @@
 # Drawer
-Drawers exibem painéis laterais sobre a tela atual para oferecer filtros, detalhes ou ações auxiliares sem quebrar o contexto.
+Drawers display side panels over the current screen to offer filters, details, or auxiliary actions without breaking the context.
 
-## Quando usar
-- Expor filtros avançados enquanto a tela principal permanece visível.
-- Mostrar detalhes de um item selecionado sem navegar para outra rota.
-- Oferecer menus contextuais quando o espaço horizontal está disponível.
-- Complementar fluxos que precisam de feedback rápido após uma ação principal.
+## When to use
+- Expose advanced filters while the main screen remains visible.
+- Show details of a selected item without navigating to another route.
+- Offer contextual menus when horizontal space is available.
+- Complement flows that need quick feedback after a main action.
 
-## Exemplo básico
-<DocsCodePreview title="Drawer de filtros em dashboard">
+## Basic example
+<DocsCodePreview title="Filter drawer in a dashboard">
 ```dsl
 drawer FilterDrawer:
   container:
-    # Filtros avançados
-    ___: Status[Todos | Em andamento | Concluído]
-    ___: Responsável[Ana | Bruno | Carla]
+    # Advanced filters
+    ___: Status[All | In progress | Completed]
+    ___: Assignee[Ana | Bruno | Carla]
     row-end:
-      @ghost[Cancelar](close)
-      @[Aplicar filtros](applyFilters)
+      @ghost[Cancel](close)
+      @[Apply filters](applyFilters)
 
 screen Dashboard:
   container-wide:
-    # Visão geral
-    @[Abrir filtros](FilterDrawer)
+    # Overview
+    @[Open filters](FilterDrawer)
     grid-3:
       card:
         ## Leads
-        # 1.240
+        # 1,240
       card:
-        ## Conversões
+        ## Conversions
         # 134
       card:
-        ## Receita
-        # R$ 87K
+        ## Revenue
+        # $87K
 ```
 </DocsCodePreview>
-Por quê: mantém indicadores visíveis enquanto a pessoa ajusta critérios no painel lateral.
+Why: keeps indicators visible while the person adjusts criteria in the side panel.
 
-## Variantes
-<DocsCodePreview title="Drawer com stack para configurações">
+## Variants
+<DocsCodePreview title="Drawer with stack for settings">
 ```dsl
 drawer SettingsDrawer:
   stack-loose:
-    # Configurações rápidas
-    ___switch: Notificações{Ativado}
-    ___switch: Modo escuro{Ativado}
+    # Quick settings
+    ___switch: Notifications{Enabled}
+    ___switch: Dark mode{Enabled}
     row-end:
-      @ghost[Fechar](close)
-      @[Salvar ajustes](saveSettings)
+      @ghost[Close](close)
+      @[Save settings](saveSettings)
 ```
 </DocsCodePreview>
-Quando usar: organizar controles simples com espaçamento consistente.
-Por quê: distribui ajustes rápidos no painel sem poluir a tela principal.
+When to use: organize simple controls with consistent spacing.
+Why: distributes quick adjustments in the panel without polluting the main screen.
 
-<DocsCodePreview title="Drawer com lista resumida">
+<DocsCodePreview title="Drawer with summary list">
 ```dsl
 drawer SummaryDrawer:
   card:
-    ## Histórico
+    ## History
     
-      - Pedido #3021 | Hoje 10h
-      - Pedido #3018 | Ontem 16h
+      - Order #3021 | Today 10am
+      - Order #3018 | Yesterday 4pm
 ```
 </DocsCodePreview>
-Quando usar: apresentar resumos curtos que complementam a tela principal.
-Por quê: mantém contexto rápido à mão enquanto a tela principal segue visível.
+When to use: present short summaries that complement the main screen.
+Why: keeps quick context at hand while the main screen remains visible.
 
-<DocsCodePreview title="Drawer com formulário contextual">
+<DocsCodePreview title="Drawer with contextual form">
 ```dsl
 drawer NoteDrawer:
   container:
-    # Adicionar nota
-    ___textarea: Comentário{Descreva o contexto}
+    # Add note
+    ___textarea: Comment{Describe the context}
     row-end:
-      @ghost[Cancelar](close)
-      @success[Salvar nota](saveNote)
+      @ghost[Cancel](close)
+      @success[Save note](saveNote)
 ```
 </DocsCodePreview>
-Quando usar: capturar entradas rápidas enquanto a pessoa analisa outro conteúdo.
-Por quê: o drawer oferece formulário breve sem interromper a navegação atual.
+When to use: capture quick entries while the person analyzes other content.
+Why: the drawer offers a brief form without interrupting the current navigation.
 
-## Composição (usando com outros)
-- **Drawer + Button** — aciona o painel a partir de CTAs contextuais.
-- **Drawer + List** — apresenta coleções resumidas com ações fora da lista.
-- **Drawer + Screen principal** — mantém fluxo contínuo sem redirecionar.
+## Composition (using with others)
+- **Drawer + Button** — triggers the panel from contextual CTAs.
+- **Drawer + List** — presents summarized collections with actions outside the list.
+- **Drawer + Main screen** — maintains a continuous flow without redirecting.
 
-<DocsCodePreview title="Tela com drawer de detalhes">
+<DocsCodePreview title="Screen with detail drawer">
 ```dsl
 screen Accounts:
   container-wide:
-    # Contas ativas
+    # Active accounts
     
-      - Grupo Norte
-      - Grupo Sul
+      - North Group
+      - South Group
 
 drawer AccountDrawer:
   card:
-    ## Grupo Norte
-    > Dados atualizados do cliente.
+    ## North Group
+    > Updated customer data.
     row-end:
-      @ghost[Fechar](close)
-      @[Editar conta](AccountEdit)
+      @ghost[Close](close)
+      @[Edit account](AccountEdit)
 ```
 </DocsCodePreview>
-Por quê: permite investigar dados sem sair da lista principal.
+Why: allows investigating data without leaving the main list.
 
 ## Slots & Props
-| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `nome` | identificador | — | Define o slug do drawer (PascalCase recomendado). | Sim |
-| `conteúdo interno` | blocos DSL | — | Recebe stacks, containers, cards, listas e formulários. | Sim |
-| `ações de fechamento` | botões | — | Normalmente `@ghost[Fechar](close)` ou `@ghost[Cancelar](-1)`. | Sim |
-| `acionadores` | botões/links | — | Elementos que chamam o drawer (`@[Abrir](DrawerName)`). | Sim |
+| `name` | identifier | — | Defines the drawer's slug (PascalCase recommended). | Yes |
+| `internal content` | DSL blocks | — | Receives stacks, containers, cards, lists, and forms. | Yes |
+| `closing actions` | buttons | — | Usually `@ghost[Close](close)` or `@ghost[Cancel](-1)`. | Yes |
+| `triggers` | buttons/links/FAB | — | Elements that call the drawer (`@[Open](DrawerName)`). | Yes |
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Lista com links navegáveis",
+    title: "List with navigable links",
     code: `
 drawer MainMenu:
   
     - #[Dashboard](Dashboard)
-    - #[Relatórios](Reports)
+    - #[Reports](Reports)
     `,
   }}
   do={{
-    title: "Navegação estruturada",
+    title: "Structured navigation",
     code: `
 drawer MainMenu:
   navigator:
     - Dashboard | Dashboard
-    - Relatórios | Reports
+    - Reports | Reports
     `,
   }}
 >
-  Por quê: menus interativos devem usar `navigator` para manter semântica correta.
+  Why: interactive menus should use `navigator` to maintain correct semantics.
 </DoDont>
 <DoDont
   dont={{
-    title: "Fechamentos inconsistentes",
+    title: "Inconsistent closings",
     code: `
 drawer ConfirmDrawer:
   row-end:
-    @ghost[Cancelar](-1)
-    @[Salvar](close)
+    @ghost[Cancel](-1)
+    @[Save](close)
     `,
   }}
   do={{
-    title: "Padrão consistente",
+    title: "Consistent pattern",
     code: `
 drawer ConfirmDrawer:
   row-end:
-    @ghost[Cancelar](close)
-    @[Salvar](saveDrawer)
+    @ghost[Cancel](close)
+    @[Save](saveDrawer)
     `,
   }}
 >
-  Por quê: manter um único padrão evita confusão sobre o comportamento do fechamento.
+  Why: maintaining a single pattern avoids confusion about the closing behavior.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Modal`](./modal): variação sobreposta para confirmações rápidas.
-- [`Navigator`](./navigator): constrói menus e abas para navegação lateral.
-- [`Drawer Detail`](./drawer-detail): guia com receita completa para detalhes no drawer.
-- [`Button`](./button): principal acionador para abrir drawers.
+### Related
+- [`Modal`](./modal): an overlay variation for quick confirmations.
+- [`Navigator`](./navigator): builds menus and tabs for side navigation.
+- [`Drawer Detail`](./drawer-detail): a guide with a complete recipe for details in the drawer.
+- [`Button`](./button): the main trigger for opening drawers.
 
-### Composições recomendadas
-- **Drawer + Button** → painel acionado sob demanda mantendo contexto.
-- **Drawer + List** → exibe resumos enquanto a tela principal fica visível.
-- **Drawer + Modal** → combine quando precisar confirmar ações iniciadas no drawer.
+### Recommended compositions
+- **Drawer + Button** → on-demand panel triggered while maintaining context.
+- **Drawer + List** → displays summaries while the main screen remains visible.
+- **Drawer + Modal** → combine when you need to confirm actions initiated in the drawer.
 
-<DocsCodePreview title="Fluxo drawer + modal">
+<DocsCodePreview title="Drawer + modal flow">
 ```dsl
 drawer BillingDrawer:
   card:
-    ## Atualizar plano
-    > Escolha o plano desejado e confirme a mudança.
+    ## Update plan
+    > Choose the desired plan and confirm the change.
     row-end:
-      @ghost[Cancelar](close)
-      @[Avançar](ConfirmBilling)
+      @ghost[Cancel](close)
+      @[Next](ConfirmBilling)
 
 modal ConfirmBilling:
   card:
-    # Confirmar atualização
-    > A alteração entra em vigor imediatamente.
+    # Confirm update
+    > The change takes effect immediately.
     row-end:
-      @ghost[Voltar](close)
-      @success[Confirmar](applyBilling)
+      @ghost[Back](close)
+      @success[Confirm](applyBilling)
 ```
 </DocsCodePreview>
-Por quê: inicia ajustes no drawer e confirma em modal separado para reforçar a decisão.
+Why: starts adjustments in the drawer and confirms in a separate modal to reinforce the decision.

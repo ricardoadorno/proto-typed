@@ -1,114 +1,114 @@
 # Icon
-Ícones (`i-Nome`) reforçam significado visual de ações, listas e títulos sem quebrar o fluxo textual.
+Icons (`i-Name`) reinforce the visual meaning of actions, lists, and titles without breaking the textual flow.
 
-## Quando usar
-- Complementar botões e links com um sinal visual imediato.
-- Diferenciar itens em listas ou navegadores com pistas visuais consistentes.
-- Indicar status em cards e mensagens sem adicionar textos redundantes.
-- Apoiar FABs e ações destacadas em telas responsivas.
+## When to use
+- Complement buttons and links with an immediate visual cue.
+- Differentiate items in lists or navigators with consistent visual clues.
+- Indicate status in cards and messages without adding redundant text.
+- Support FABs and highlighted actions on responsive screens.
 
-## Exemplo básico
-<DocsCodePreview title="Ícones em botões e lista">
+## Basic example
+<DocsCodePreview title="Icons in buttons and list">
 ```dsl
 screen Shortcuts:
   container:
-    # Atalhos rápidos
+    # Quick shortcuts
     
       - i-Home Dashboard | Dashboard
       - i-Calendar Agenda | Agenda
 
     row-start:
-      @[i-Plus Nova tarefa](TaskForm)
-      @outline[i-Download Exportar CSV](ExportCSV)
+      @[i-Plus New task](TaskForm)
+      @outline[i-Download Export CSV](ExportCSV)
 ```
 </DocsCodePreview>
-Por quê: combina pistas visuais e texto para acelerar o reconhecimento da ação.
+Why: combines visual cues and text to speed up action recognition.
 
-## Variantes
-<DocsCodePreview title="Ícone em parágrafo informativo">
+## Variants
+<DocsCodePreview title="Icon in an informational paragraph">
 ```dsl
 screen Default:
   container:
     card:
-      *> i-Info A implantação está em andamento.
+      *> i-Info The deployment is in progress.
 ```
 </DocsCodePreview>
-Quando usar: destacar avisos sem recorrer a blocos adicionais.
-Por quê: adiciona ênfase visual sem precisar de layouts extras.
+When to use: highlight warnings without resorting to additional blocks.
+Why: adds visual emphasis without needing extra layouts.
 
-<DocsCodePreview title="Ícone em navigator">
+<DocsCodePreview title="Icon in navigator">
 ```dsl
 screen Default:
   container:
-    # Conteúdo da tela
+    # Screen content
   navigator:
-    - i-Home Início | Home
+    - i-Home Home | Home
     - i-Server Deploys | Deploys
     - i-AlertCircle Logs | Logs
 ```
 </DocsCodePreview>
-Quando usar: guiar navegação com pistas imediatas sobre cada aba.
-Por quê: acelera a identificação dos destinos ao percorrer o menu.
+When to use: guide navigation with immediate clues about each tab.
+Why: speeds up the identification of destinations when browsing the menu.
 
-<DocsCodePreview title="Ícone em FAB">
+<DocsCodePreview title="Icon in FAB">
 ```dsl
 screen Default:
   container:
-    # Conteúdo da tela
+    # Screen content
   fab:
     - i-Plus | TaskForm
     - i-Filter | FilterDrawer
 ```
 </DocsCodePreview>
-Quando usar: diferenciar ações globais no FAB mantendo o layout limpo.
-Por quê: o ícone sintetiza a finalidade de cada ação sem texto adicional.
+When to use: differentiate global actions in the FAB while keeping the layout clean.
+Why: the icon summarizes the purpose of each action without additional text.
 
-## Composição (usando com outros)
-- **Icon + Button** — reforça intenção do CTA.
-- **Icon + List** — transforma listas em atalhos visuais.
-- **Icon + Card** — sinaliza status sem poluir títulos.
+## Composition (using with others)
+- **Icon + Button** — reinforces the CTA's intention.
+- **Icon + List** — transforms lists into visual shortcuts.
+- **Icon + Card** — signals status without polluting titles.
 
-<DocsCodePreview title="Card com ícones de status">
+<DocsCodePreview title="Card with status icons">
 ```dsl
 screen Default:
   container:
     card:
-      ## Status da implantação
+      ## Deployment status
       stack-tight:
-        > i-Check Build concluída
-        > i-Check Testes finalizados
-        > i-AlertCircle Acompanhar logs
+        > i-Check Build completed
+        > i-Check Tests finished
+        > i-AlertCircle Monitor logs
 ```
 </DocsCodePreview>
-Por quê: permite acompanhar estados rapidamente dentro de um bloco resumido.
+Why: allows tracking states quickly within a summary block.
 
 ## Slots & Props
-| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `token` | string `i-Nome` | — | Nome do ícone disponível na biblioteca Lucide. | Sim |
-| `posição` | inline | — | Inserido antes do texto do botão, lista ou título. | Não |
-| `semântica` | contexto | — | Escolha ícones que reforcem a mensagem sem ambiguidade. | Sim |
+| `token` | string `i-Name` | — | Name of the icon available in the Lucide library. | Yes |
+| `position` | inline | — | Inserted before the text of the button, list, or title. | No |
+| `semantics` | context | — | Choose icons that reinforce the message without ambiguity. | Yes |
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Token incompleto",
+    title: "Incomplete token",
     code: `
-@[Download Exportar CSV](ExportCSV)
+@[Download Export CSV](ExportCSV)
     `,
   }}
   do={{
-    title: "Token válido",
+    title: "Valid token",
     code: `
-@[i-Download Exportar CSV](ExportCSV)
+@[i-Download Export CSV](ExportCSV)
     `,
   }}
 >
-  Por quê: o prefixo `i-` identifica o recurso na biblioteca de ícones.
+  Why: the `i-` prefix identifies the resource in the icon library.
 </DoDont>
 <DoDont
   dont={{
-    title: "Ícones isolados",
+    title: "Isolated icons",
     code: `
 row:
   > i-AlertTriangle
@@ -117,40 +117,40 @@ row:
     `,
   }}
   do={{
-    title: "Contexto explícito",
+    title: "Explicit context",
     code: `
 row:
-  > i-AlertTriangle Alertas críticos
+  > i-AlertTriangle Critical alerts
     `,
   }}
 >
-  Por quê: o texto garante acessibilidade e evita interpretações ambíguas.
+  Why: the text ensures accessibility and avoids ambiguous interpretations.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Button`](./button): usa ícones para reforçar propósito de ações.
-- [`List`](./list): incorpora ícones como marcadores visuais.
-- [`Navigator`](./navigator): abastece menus e abas com ícones.
-- [`Fab`](./fab): depende de ícones para diferenciar ações flutuantes.
+### Related
+- [`Button`](./button): uses icons to reinforce the purpose of actions.
+- [`List`](./list): incorporates icons as visual markers.
+- [`Navigator`](./navigator): supplies menus and tabs with icons.
+- [`Fab`](./fab): relies on icons to differentiate floating actions.
 
-### Composições recomendadas
-- **Icon + Button** → CTA com sinalização visual imediata.
-- **Icon + List** → atalhos com leitura rápida.
-- **Icon + Navigator** → menus contextualizados por ícones.
+### Recommended compositions
+- **Icon + Button** → CTA with immediate visual signaling.
+- **Icon + List** → shortcuts with quick reading.
+- **Icon + Navigator** → menus contextualized by icons.
 
-<DocsCodePreview title="Navigator com ícones e conteúdo">
+<DocsCodePreview title="Navigator with icons and content">
 ```dsl
 screen Settings:
   navigator:
-    - i-User Perfil | Profile
-    - i-Shield Segurança | Security
-    - i-Bell Notificações | Notifications
+    - i-User Profile | Profile
+    - i-Shield Security | Security
+    - i-Bell Notifications | Notifications
 
   container:
-    # Perfil
-    > Atualize dados pessoais e preferências.
+    # Profile
+    > Update personal data and preferences.
 ```
 </DocsCodePreview>
-Por quê: associa ícones à seção correspondente e acelera a orientação do usuário.
+Why: associates icons with the corresponding section and speeds up user orientation.

@@ -1,9 +1,9 @@
 # Styles Block
-## Por que importa
-O bloco `styles:` centraliza tokens de cor, tipografia e espaçamento. Ajustes feitos aqui propagam para todo o DSL, garantindo identidade visual consistente e facilitando a manutenção de temas.
+## Why it matters
+The `styles:` block centralizes color, typography, and spacing tokens. Adjustments made here propagate throughout the entire DSL, ensuring a consistent visual identity and facilitating theme maintenance.
 
-## Forma canônica (sintaxe mínima)
-<DocsCodePreview title="Bloco de estilos básico">
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Basic styles block">
 ```dsl
 styles:
   --primary: oklch(0.70 0.15 220);
@@ -11,13 +11,13 @@ styles:
 
 screen Default:
   container:
-    # Exemplo usando os estilos
+    # Example using the styles
 ```
 </DocsCodePreview>
-Por quê: define o conjunto mínimo de variáveis para controlar a cor primária e seu contraste.
+Why: defines the minimum set of variables to control the primary color and its contrast.
 
-## Padrões de uso
-<DocsCodePreview title="Personalização de cores e raio">
+## Usage patterns
+<DocsCodePreview title="Customization of colors and radius">
 ```dsl
 styles:
   --primary: oklch(0.68 0.15 210);
@@ -27,17 +27,17 @@ styles:
 
 screen CustomTheme:
   container:
-    # Tema adaptado
-    > Botões e cards refletem os tokens configurados.
+    # Adapted theme
+    > Buttons and cards reflect the configured tokens.
     row:
-      @[Ação principal](Action)
-      @secondary[Secundário](Secondary)
+      @[Main action](Action)
+      @secondary[Secondary](Secondary)
 ```
 </DocsCodePreview>
-Quando usar: alinhar a interface à identidade de marca ajustando tokens globais.
-Por quê: todas as telas refletem imediatamente as novas cores e raios.
+When to use: align the interface with the brand identity by adjusting global tokens.
+Why: all screens immediately reflect the new colors and radii.
 
-<DocsCodePreview title="Tokens customizados reutilizáveis">
+<DocsCodePreview title="Reusable custom tokens">
 ```dsl
 styles:
   --brand-color: #0f172a;
@@ -48,13 +48,13 @@ component Hero:
     ## %title
     > %subtitle
     row-end:
-      @[Começar agora](%destination)
+      @[Get started now](%destination)
 ```
 </DocsCodePreview>
-Quando usar: criar variáveis específicas que serão utilizadas em múltiplos componentes.
-Por quê: tokens customizados evitam repetir valores hexadecimais ou medidas locais.
+When to use: create specific variables that will be used in multiple components.
+Why: custom tokens avoid repeating hexadecimal values or local measurements.
 
-<DocsCodePreview title="Combinação com temas">
+<DocsCodePreview title="Combination with themes">
 ```dsl
 styles:
   --primary: var(--theme-primary);
@@ -62,17 +62,17 @@ styles:
 
 screen ThemedDashboard:
   container:
-    # Dashboard temático
-    > As cores respondem ao tema ativo.
+    # Themed dashboard
+    > The colors respond to the active theme.
 ```
 </DocsCodePreview>
-Quando usar: integrar o bloco de estilos com estratégias definidas em `themes`.
-Por quê: permite alternar paletas completas apenas trocando os valores de tema.
+When to use: integrate the styles block with strategies defined in `themes`.
+Why: allows switching complete palettes just by changing the theme values.
 
-## Erros comuns (Do/Don’t)
+## Common errors (Do/Don’t)
 <DoDont
   dont={{
-    title: "Token fora do bloco",
+    title: "Token outside the block",
     code: `
 component Hero:
   card:
@@ -81,7 +81,7 @@ component Hero:
     `,
   }}
   do={{
-    title: "Token global",
+    title: "Global token",
     code: `
 styles:
   --brand-color: #0f172a;
@@ -89,45 +89,45 @@ styles:
 component Hero:
   card:
     ## %title
-    >>> Usa var(--brand-color) no tema.
+    >>> Uses var(--brand-color) in the theme.
     `,
   }}
 >
-  Por quê: manter tokens no `styles:` evita divergências e facilita auditoria.
+  Why: keeping tokens in `styles:` avoids discrepancies and facilitates auditing.
 </DoDont>
 <DoDont
   dont={{
-    title: "Sintaxe incompleta",
+    title: "Incomplete syntax",
     code: `
 styles:
   --primary: #1f2937
     `,
   }}
   do={{
-    title: "Linha terminada",
+    title: "Terminated line",
     code: `
 styles:
   --primary: #1f2937;
     `,
   }}
 >
-  Por quê: o parser requer `;` para reconhecer cada declaração.
+  Why: the parser requires `;` to recognize each declaration.
 </DoDont>
 
-## Referências cruzadas
+## Cross-references
 
-### Relacionados
-- [`Themes`](./themes): amplia personalização com múltiplos conjuntos de tokens.
-- [`Button`](./button): responde diretamente a cores e raios definidos no bloco.
-- [`Card`](./card): utiliza variáveis de espaçamento e cor globais.
-- [`Dashboard`](./dashboard): demonstra aplicação prática de temas customizados.
+### Related
+- [`Themes`](./themes): expands customization with multiple sets of tokens.
+- [`Button`](./button): responds directly to colors and radii defined in the block.
+- [`Card`](./card): uses global spacing and color variables.
+- [`Dashboard`](./dashboard): demonstrates the practical application of custom themes.
 
-### Composições recomendadas
-- **Styles Block + Themes** → controla variações de marca em ambientes diferentes.
-- **Styles Block + Component Composition** → usa tokens customizados em componentes complexos.
-- **Styles Block + Modal** → garante contraste adequado em overlays.
+### Recommended compositions
+- **Styles Block + Themes** → controls brand variations in different environments.
+- **Styles Block + Component Composition** → uses custom tokens in complex components.
+- **Styles Block + Modal** → ensures adequate contrast in overlays.
 
-<DocsCodePreview title="Estilos aplicados em modal">
+<DocsCodePreview title="Styles applied in a modal">
 ```dsl
 styles:
   --modal-background: #0f172a;
@@ -135,10 +135,10 @@ styles:
 
 modal DarkModal:
   card:
-    ## Atenção
-    > Overlays usam tokens customizados definidos no bloco.
+    ## Attention
+    > Overlays use custom tokens defined in the block.
     row-end:
-      @[Entendi](close)
+      @[Got it](close)
 ```
 </DocsCodePreview>
-Por quê: o bloco garante contraste certo entre fundo e texto do modal.
+Why: the block ensures the right contrast between the modal's background and text.

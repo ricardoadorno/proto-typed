@@ -1,0 +1,155 @@
+# Component Props
+## Por que importa
+Props conectam dados dinâmicos à estrutura do componente, permitindo reaproveitar o mesmo layout com conteúdos diferentes. O posicionamento consistente evita duplicação e erros em coleções.
+
+## Forma canônica (sintaxe mínima)
+<DocsCodePreview title="Template com dois `%props`">
+```dsl
+component UserCard:
+  card:
+    ## %name
+    >> %email
+
+screen Default:
+  container:
+    $UserCard:
+      - Ana Souza | ana@empresa.com
+```
+</DocsCodePreview>
+Por quê: demonstra como cada valor separado por `|` preenche o `%prop` correspondente.
+
+## Padrões de uso
+<DocsCodePreview title="Props em listas">
+```dsl
+component TaskRow:
+  row-between:
+    > %title
+    >>> %due
+screen Default:
+  list $TaskRow:
+    - Revisar backlog | 22/09
+    - Preparar demo | 25/09
+```
+</DocsCodePreview>
+Quando usar: gerar linhas repetidas com dados que mudam a cada item.
+Por quê: cria coleções extensíveis sem duplicar estrutura manualmente.
+
+<DocsCodePreview title="Props com ações">
+```dsl
+component ActionCard:
+  card:
+    ## %title
+    > %description
+    row-end:
+      @[Abrir](%action)
+
+screen Default:
+  container:
+    $ActionCard:
+      - Configurar integrações | Ajuste APIs conectadas | Integrations
+```
+</DocsCodePreview>
+Quando usar: parametrizar destinos de botões e textos no mesmo componente.
+Por quê: facilita ajustes futuros do fluxo trocando somente os valores usados nas props.
+
+<DocsCodePreview title="Props com percentuais e tendências">
+```dsl
+component MetricCard:
+  card:
+    >>> %label
+    # %value
+    >> %trend
+
+screen Default:
+  container:
+    grid-3:
+      $MetricCard:
+        - Leads captados | 1.240 | +8%
+      $MetricCard:
+        - Conversões | 134 | +5%
+      $MetricCard:
+        - Satisfação | 92% | +3%
+```
+</DocsCodePreview>
+Quando usar: atualizar métricas com múltiplos campos sem alterar o layout.
+Por quê: mantém a apresentação das métricas alinhada mesmo com novos dados.
+
+## Erros comuns (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Valor extra sem placeholder",
+    code: `
+component HeroBanner:
+  card:
+    ## %title
+    > %subtitle
+
+$HeroBanner:
+  - Prototipe rápido | Construa telas em minutos | Dashboard
+    `,
+  }}
+  do={{
+    title: "Props alinhados",
+    code: `
+$HeroBanner:
+  - Prototipe rápido | Construa telas em minutos
+    `,
+  }}
+>
+  Por quê: valores extras ficam sem destino, gerando inconsistências na renderização.
+</DoDont>
+<DoDont
+  dont={{
+    title: "`%title` usado como label e ação",
+    code: `
+component QuickLink:
+  card:
+    ## %title
+    @[Abrir %title](%title)
+    `,
+  }}
+  do={{
+    title: "Props separados",
+    code: `
+component QuickLink:
+  card:
+    ## %label
+    @[Abrir %label](%action)
+    `,
+  }}
+>
+  Por quê: separar props mantém clareza semântica e facilita ajustes futuros.
+</DoDont>
+
+## Referências cruzadas
+
+### Relacionados
+- [`Component Definition`](./component-definition): ensina a estruturar o componente que receberá props.
+- [`Component List`](./component-list): renderiza coleções de componentes com dados tabulares.
+- [`Component Composition`](./component-composition): combina componentes parametrizados entre si.
+- [`List`](./list): fornece dados em formato `- valor | valor` para alimentar props.
+
+### Composições recomendadas
+- **Component Props + List** → coleções dinâmicas sem duplicar layout.
+- **Component Props + Grid** → dashboards com métricas parametrizadas.
+- **Component Props + Modal** → formularios ou confirmações reaproveitados.
+
+<DocsCodePreview title="Props aplicados em modal reutilizável">
+```dsl
+component ConfirmationModal:
+  card:
+    ## %title
+    > %message
+    row-end:
+      @ghost[Cancelar](close)
+      @success[%cta](%action)
+
+modal ConfirmInvite:
+  $ConfirmationModal:
+    - Confirmar convite
+    - Confirme para enviar o convite ao time.
+    - Enviar convite
+    - sendInvite
+```
+</DocsCodePreview>
+Por quê: parametriza título, mensagem e ações mantendo uma única estrutura de modal.

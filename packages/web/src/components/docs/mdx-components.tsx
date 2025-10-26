@@ -1,7 +1,7 @@
 import type { ComponentPropsWithoutRef } from 'react'
 
 import { Alert } from '@/components/ui'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 import { DocsCodeBlock } from './docs-code-block'
 import { DocsDoDont } from './docs-do-dont'
 import { DocHeading } from './doc-heading'

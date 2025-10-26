@@ -16,18 +16,16 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui'
-import docSections from '@/utils/toc'
 import { withAssetPath } from '@/utils/base-path'
+import { getDictionary } from '@/lib/get-dictionary'
+import docSections from '@/utils/toc'
 
-const primaryDoc = docSections[0]?.items[0]
+const lang = 'en'
 
-const highlightItems = [
-  'Fluxo passo a passo para sair da ideia ao protótipo clicável.',
-  'Playgrounds integrados e blocos de código com copy instantâneo.',
-  'Guia de tokens, layouts e padrões visuais do proto-typed.',
-]
+export default async function DocsHomePage() {
+  const dict = await getDictionary(lang)
+  const primaryDoc = docSections[0]?.items[0]
 
-export default function DocsHomePage() {
   return (
     <div className="min-h-screen bg-[var(--bg-main)] text-[var(--fg-primary)]">
       <main className="flex flex-col gap-16 cotainer mx-auto px-4 py-10 sm:px-6 lg:px-10">
@@ -51,20 +49,17 @@ export default function DocsHomePage() {
                 Proto-typed · Docs
               </Badge>
               <h1 className="text-4xl font-bold leading-[2.75rem] text-[var(--fg-primary)] sm:text-5xl sm:leading-[3.25rem]">
-                Documentação enxuta para prototipar rápido no universo
-                proto-typed
+                {dict.docs.title}
               </h1>
               <p className="text-lg leading-relaxed text-[var(--fg-secondary)]">
-                Aprenda a usar a DSL, componentes e tokens oficiais para
-                construir experiências navegáveis em minutos. Tudo pensado para
-                um fluxo coeso entre design e desenvolvimento.
+                {dict.docs.description}
               </p>
               <div className="flex flex-wrap gap-3 pt-2">
                 {primaryDoc ? (
                   <Button asChild size="lg" className="gap-2">
                     <Link href={`/docs/${primaryDoc.slug}`}>
                       <SparklesIcon className="h-5 w-5" />
-                      Começar agora
+                      {dict.docs.startNow}
                     </Link>
                   </Button>
                 ) : null}
@@ -74,9 +69,9 @@ export default function DocsHomePage() {
                   size="lg"
                   className="gap-2 border-[var(--border-muted)] text-[var(--fg-secondary)] hover:text-[var(--accent-light)]"
                 >
-                  <Link href={'/playground'}>
+                  <Link href="/">
                     <CompassIcon className="h-5 w-5" />
-                    Ir para o playground
+                    {dict.docs.goToPlayground}
                   </Link>
                 </Button>
               </div>
@@ -87,15 +82,14 @@ export default function DocsHomePage() {
                 <CardHeader className="pb-4">
                   <CardTitle className="flex items-center gap-2 text-xs uppercase tracking-[0.32em] text-[var(--accent)]">
                     <Wand2Icon className="h-4 w-4" />
-                    Destaques
+                    {dict.docs.highlights}
                   </CardTitle>
                   <CardDescription>
-                    Os pontos essenciais para dominar o proto-typed do zero ao
-                    avançado.
+                    {dict.docs.highlightsDescription}
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm text-[var(--fg-secondary)]">
-                  {highlightItems.map((item) => (
+                  {dict.docs.highlightItems.map((item) => (
                     <p key={item} className="flex items-start gap-2">
                       <span className="mt-1 h-1.5 w-1.5 rounded-full bg-[var(--brand-400)]" />
                       <span>{item}</span>
@@ -107,35 +101,14 @@ export default function DocsHomePage() {
           </div>
         </section>
 
-        {/* <section className="space-y-6">
-          <div className="flex items-center gap-3">
-            <SparklesIcon className="h-5 w-5 text-[var(--accent-light)]" />
-            <h2 className="text-xl font-semibold text-[var(--fg-primary)]">Navegação rápida</h2>
-          </div>
-          <Separator className="border-[var(--border-muted)]" />
-          <div className="flex flex-wrap gap-3">
-            {flatDocs.slice(0, 14).map((doc) => (
-              <Badge
-                key={doc.slug}
-                variant="outline"
-                className="border-[color:rgba(139,92,246,0.24)] bg-[color:rgba(139,92,246,0.08)] px-4 py-2 text-[10px] uppercase tracking-[0.28em] text-[var(--accent)] transition-colors hover:bg-[color:rgba(139,92,246,0.12)]"
-              >
-                <Link href={(`/docs/${doc.slug}`)}>{doc.title}</Link>
-              </Badge>
-            ))}
-          </div>
-        </section> */}
-
         <section className="space-y-6">
           <div className="flex flex-col gap-2 text-balance sm:flex-row sm:items-end sm:justify-between">
             <div className="space-y-2">
               <h2 className="text-2xl font-semibold text-[var(--fg-primary)]">
-                Explorar por capítulos
+                {dict.docs.exploreByChapters}
               </h2>
               <p className="max-w-xl text-sm text-[var(--fg-secondary)]">
-                A documentação é organizada em capítulos temáticos. Avance
-                conforme a sua necessidade, sem perder o contexto do fluxo
-                completo.
+                {dict.docs.exploreByChaptersDescription}
               </p>
             </div>
           </div>
@@ -174,7 +147,7 @@ export default function DocsHomePage() {
                       className="gap-2 text-[var(--accent-light)]"
                     >
                       <Link href={`/docs/${section.items[0].slug}`}>
-                        Abrir primeiro tópico
+                        {dict.docs.openFirstTopic}
                         <ArrowRightIcon className="h-4 w-4" />
                       </Link>
                     </Button>
