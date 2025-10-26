@@ -28,7 +28,7 @@ import { exampleConfigs } from '@/examples'
 import { exportDocument } from '@/utils/export-document'
 import { SimpleSelect } from '@/components/ui/select'
 import { DSLEditor } from '@/components/editor'
-import { getDictionary } from '@/lib/get-dictionary'
+import { getDictionary, type Dictionary } from '@/lib/get-dictionary'
 import type { Locale } from '@/utils/types'
 
 const DEFAULT_EXAMPLE = exampleConfigs[0]?.code ?? ''
@@ -36,7 +36,7 @@ const DEFAULT_EXAMPLE = exampleConfigs[0]?.code ?? ''
 export default function PlaygroundPage() {
   const params = useParams()
   const lang = (params?.lang as Locale) ?? 'en'
-  const [dict, setDict] = useState<any>(null)
+  const [dict, setDict] = useState<Dictionary | null>(null)
 
   useEffect(() => {
     getDictionary(lang).then(setDict)

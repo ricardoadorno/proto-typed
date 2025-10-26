@@ -88,7 +88,6 @@ function getPager(slug: string): {
 
 export default async function PostPage({ params }: Props) {
   const { slug } = await params
-  const lang = 'en' // Fixed to English for root docs
 
   const filePath = path.join(process.cwd(), 'src/docs', `${slug}.mdx`)
   const source = fs.readFileSync(filePath, 'utf8')

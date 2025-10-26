@@ -5,12 +5,10 @@ import * as React from 'react'
 import { cn } from '@/utils/cn'
 
 /**
- * @interface InputProps
- * @extends React.InputHTMLAttributes<HTMLInputElement>
+ * @type InputProps
  * @description The props for the Input component.
  */
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement>
 
 /**
  * @function Input

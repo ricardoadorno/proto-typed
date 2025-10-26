@@ -1,5 +1,3 @@
-import PlaygroundPage from './[lang]/playground-client'
+import PlaygroundPage from './[lang]/page'
 
-export default function Home() {
-  return <PlaygroundPage />
-}
+export default PlaygroundPage

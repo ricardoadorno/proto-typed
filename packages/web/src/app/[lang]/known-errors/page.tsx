@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react'
 import { Badge, GlowCard, SectionHeader, Button } from '@/components/ui'
 import { DocsHeader } from '@/components/layouts/components/docs-header'
 import DocsFooter from '@/components/layouts/components/docs-footer'
-import { getDictionary } from '@/lib/get-dictionary'
+import { getDictionary, type Dictionary } from '@/lib/get-dictionary'
 import type { Locale } from '@/utils/types'
 
 type KnownError = {
@@ -48,7 +48,7 @@ const ErrorSeverityBadge = ({ level }: { level: KnownError['severity'] }) => {
 export default function KnownErrorsPage() {
   const params = useParams()
   const lang = (params?.lang as Locale) ?? 'en'
-  const [dict, setDict] = useState<any>(null)
+  const [dict, setDict] = useState<Dictionary | null>(null)
 
   useEffect(() => {
     getDictionary(lang).then(setDict)

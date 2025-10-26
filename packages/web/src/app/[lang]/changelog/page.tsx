@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react'
 import { DocsHeader } from '@/components/layouts/components/docs-header'
 import DocsFooter from '@/components/layouts/components/docs-footer'
 import { GlowCard, SectionHeader, Button, Separator } from '@/components/ui'
-import { getDictionary } from '@/lib/get-dictionary'
+import { getDictionary, type Dictionary } from '@/lib/get-dictionary'
 import type { Locale } from '@/utils/types'
 
 type ChangelogEntry = {
@@ -34,7 +34,7 @@ type ChangelogEntry = {
 export default function ChangelogPage() {
   const params = useParams()
   const lang = (params?.lang as Locale) ?? 'en'
-  const [dict, setDict] = useState<any>(null)
+  const [dict, setDict] = useState<Dictionary | null>(null)
 
   useEffect(() => {
     getDictionary(lang).then(setDict)

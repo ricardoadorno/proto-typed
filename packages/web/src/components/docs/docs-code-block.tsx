@@ -28,11 +28,7 @@ export function DocsCodeBlock({
     )
   }
 
-  const {
-    'data-title': dataTitle,
-    'data-playground': _dataPlayground,
-    'data-language': dataLanguage,
-  } = rest
+  const { 'data-title': dataTitle, 'data-language': dataLanguage } = rest
 
   const codeContent =
     typeof child.props.children === 'string'
@@ -40,8 +36,6 @@ export function DocsCodeBlock({
       : Array.isArray(child.props.children)
         ? child.props.children.join('').trimEnd()
         : ''
-
-  const { children: _codeChildren } = child.props
   const metaFromChild =
     typeof child.props === 'object' && child.props
       ? (child.props as { [key: string]: string | undefined })['data-meta']

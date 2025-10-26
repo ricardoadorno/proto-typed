@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { Separator } from '@/components/ui'
-import { getDictionary } from '@/lib/get-dictionary'
+import { getDictionary, type Dictionary } from '@/lib/get-dictionary'
 import type { Locale } from '@/utils/types'
 
 const appVersion = process.env.NEXT_PUBLIC_APP_VERSION ?? 'v0.1.0'
@@ -13,7 +13,7 @@ const appVersion = process.env.NEXT_PUBLIC_APP_VERSION ?? 'v0.1.0'
 export function DocsFooter() {
   const params = useParams()
   const lang = (params?.lang as Locale) ?? 'en'
-  const [dict, setDict] = useState<any>(null)
+  const [dict, setDict] = useState<Dictionary | null>(null)
 
   useEffect(() => {
     getDictionary(lang).then(setDict)

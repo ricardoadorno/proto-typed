@@ -29,7 +29,7 @@ import DocsSearch from '@/components/docs/docs-search'
 import SidebarMobile from './sidebar-mobile'
 import DocsSidebar from './docs-sidebar'
 import { withAssetPath } from '@/utils/base-path'
-import { getDictionary } from '@/lib/get-dictionary'
+import { getDictionary, type Dictionary } from '@/lib/get-dictionary'
 import type { Locale } from '@/utils/types'
 import type { DocSection } from '@/utils/toc'
 
@@ -58,7 +58,7 @@ export function DocsHeader({ children: _children, isDocs }: DocsHeaderProps) {
   const [scrolled, setScrolled] = useState(false)
   const { theme, setTheme } = useTheme()
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
-  const [dict, setDict] = useState<any>(null)
+  const [dict, setDict] = useState<Dictionary | null>(null)
   const [docSections, setDocSections] = useState<DocSection[]>([])
 
   useEffect(() => {
