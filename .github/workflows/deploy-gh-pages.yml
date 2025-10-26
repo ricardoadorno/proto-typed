@@ -1,58 +1,126 @@
-# Nome do Workflow
-name: Deploy Vite React App to GitHub Pages
+# Deploy Proto-Typed to GitHub Pages
+name: Deploy to GitHub Pages
 
-# Gatilhos: Executa o workflow em pushes para o branch main
+# Trigger on push to main branch
 on:
   push:
     branches:
-      - main # Ou 'master', dependendo do nome do seu branch principal
+      - main
+  workflow_dispatch: # Allow manual trigger
 
-# Permissões: Necessário para permitir que a action publique no GitHub Pages
+# Permissions required for GitHub Pages deployment
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Jobs: Define uma sequência de tarefas que serão executadas
+# Allow one concurrent deployment
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest # Executa as tarefas em uma máquina virtual Ubuntu
+  # Job 1: Quality Checks (Tests, Linting, Type Checking)
+  quality-checks:
+    name: Quality Checks
+    runs-on: ubuntu-latest
 
     steps:
-      # Passo 1: Checkout do código do repositório
       - name: Checkout code
-        uses: actions/checkout@v4 # Ação oficial para checkout
+        uses: actions/checkout@v4
 
-      # Passo 2: Configurar o Node.js
       - name: Setup Node.js
-        uses: actions/setup-node@v4 # Ação oficial para configurar o Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '20' # Especifique a versão do Node.js que seu projeto usa
-          cache: 'npm' # Habilita o cache para o npm para acelerar builds futuros
+          node-version: '20'
 
-      # Passo 3: Instalar as dependências do projeto
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Install dependencies
-        run: npm install # Ou 'yarn install' se você usa Yarn
+        run: pnpm install --frozen-lockfile
 
-      # Passo 4: Fazer o build do projeto Vite
-      # Certifique-se de que o 'base' no seu vite.config.js ou vite.config.ts está configurado corretamente
-      # para o nome do seu repositório se não for um domínio customizado.
-      # Exemplo: base: '/<NOME_DO_REPOSITORIO>/'
-      - name: Build project
-        run: npm run build # Ou 'yarn build'
+      - name: Run linting
+        run: pnpm lint
 
-      # Passo 5: Configurar o GitHub Pages
-      - name: Setup Pages
-        uses: actions/configure-pages@v5 # Ação oficial para configurar o GitHub Pages
+      - name: Run type checking
+        run: pnpm typecheck
 
-      # Passo 6: Fazer o upload do artefato (arquivos do build) para o GitHub Pages
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3 # Ação oficial para fazer upload do artefato
+      - name: Run tests (@core)
+        run: pnpm --filter @proto-typed/core test:run
+
+      - name: Run tests (@web)
+        run: pnpm --filter @web/app vitest run
+
+  # Job 2: Build and Deploy
+  build-deploy:
+    name: Build and Deploy
+    needs: quality-checks # Only run if quality checks pass
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          # Pasta que contém os arquivos estáticos do build (dist/client para Vike SSG)
-          path: './out'
+          node-version: '20'
 
-      # Passo 7: Deploy no GitHub Pages
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build @core package
+        run: pnpm --filter @proto-typed/core build
+
+      - name: Build @web application
+        run: pnpm --filter @web/app build
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './packages/web/out'
+
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 # Ação oficial para deploy no GitHub Pages
+        uses: actions/deploy-pages@v4

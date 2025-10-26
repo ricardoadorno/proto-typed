@@ -60,6 +60,123 @@
     "title": "Proto-Typed — describe interfaces, see prototypes, iterate with AI.",
     "description": "A textual prototyping format: you write what the interface is (screens, lists, buttons, navigation) and the system takes care of the rest — no dragging blocks, no JSX, no friction."
   },
+  "principles_page": {
+    "hero": {
+      "title": "Proto-Typed — describe interfaces, see prototypes, iterate with AI.",
+      "description": "A textual prototyping format: you write what the interface is (screens, lists, buttons, navigation) and the system takes care of the rest — no dragging blocks, no JSX, no friction.",
+      "cta_experiment": "Try it out",
+      "cta_examples": "See examples",
+      "cta_philosophy": "Read the philosophy",
+      "highlight1_title": "No dragging blocks",
+      "highlight1_description": "You describe the interface and the system takes care of the rest.",
+      "highlight2_title": "Ready-made patterns",
+      "highlight2_description": "Cards, lists, and flows with good visual decisions by default.",
+      "highlight3_title": "Built with AI in mind",
+      "highlight3_description": "Stable syntax for humans and models to iterate with confidence.",
+      "magic_value_label": "Magic value",
+      "magic_value_text": "From concept to prototype in minutes. Instead of \"asking for a change\" in the UI, you describe the change. Instead of tweaking pixel by pixel, you rewrite the section or ask an AI to do it. The draft is always updatable and shareable.",
+      "flow_describe": "Describe",
+      "flow_describe_desc": "Capture screens, lists, and actions in readable and versionable text.",
+      "flow_visualize": "Visualize",
+      "flow_visualize_desc": "Generate navigable prototypes with consistent patterns immediately.",
+      "flow_iterate": "Iterate",
+      "flow_iterate_desc": "Request adjustments in natural language and let AI rewrite sections.",
+      "flow_export": "Export",
+      "flow_export_desc": "Take HTML today and open doors to other runtimes tomorrow."
+    },
+    "context": {
+      "eyebrow": "Context",
+      "title": "The problem and the textual format",
+      "problem_title": "The problem",
+      "problem_text1": "Creating UIs is still heavy: graphical tools are great for drawing, but slow to iterate; code is precise, but verbose. And AIs understand intentions, but don't \"edit\" visual files fluidly.",
+      "problem_text2": "Proto-Typed was born to be the common language of prototyping between people and AIs — fast to write, easy to read, and simple to version.",
+      "what_is_title": "What it is",
+      "what_is_text1": "Proto-Typed is a textual interface format. You describe content, structure, and actions; it generates a navigable prototype.",
+      "what_is_text2": "Key thinking: you focus on the intention (what is a \"card\", a \"header\", a \"list\"), and the system decides how to render with good defaults. It's the logic of \"content first, appearance later\" — like in scientific text editors — applied to UI."
+    },
+    "audience": {
+      "eyebrow": "Who it's for",
+      "title": "When interface becomes text, everyone gains speed",
+      "description": "Three profiles that gain speed when interface becomes text.",
+      "card1_title": "PMs and Managers",
+      "card1_description": "Quickly align flow and visual behavior — without opening design tools.",
+      "card2_title": "Backend and full-stack devs",
+      "card2_description": "Build prototype screens without diving into CSS/JSX.",
+      "card3_title": "LLMs and agents",
+      "card3_description": "Edit with humans in a stable, secure, and versionable textual format."
+    },
+    "process": {
+      "eyebrow": "Process",
+      "title": "How it works",
+      "subtitle": "Describe → Visualize → Iterate → Export.",
+      "description": "Underneath, there's a semantic representation of the interface (a \"tree\" that understands what a screen, card, list is). Today we render in HTML; tomorrow, React Native/Flutter and other targets. The rendering destination is secondary: priority to editing fluidity and iteration speed."
+    },
+    "principles": {
+      "title": "Principles guiding Proto-Typed",
+      "description": "The fundamental decisions behind the textual format.",
+      "principle1": "Simplicity over extreme customization. Good decisions by default.",
+      "principle2": "Semantics before appearance. You describe \"what it is\"; the system chooses \"how it looks\".",
+      "principle3": "AI-friendly. Short, predictable syntax that's easy for models to generate.",
+      "principle4": "Portable by design. A single semantic model, multiple renderers.",
+      "principle5": "Cover ~90% of cases. Focus on what unlocks prototyping."
+    },
+    "influences": {
+      "eyebrow": "Influences",
+      "title": "Influences and design choices",
+      "influence1_heading": "Instant response, background update.",
+      "influence1_body": "Inspired by TanStack Query patterns: show something now and refine later. In prototypes, this becomes \"see fast, improve soon after\".",
+      "influence2_heading": "Leverage the platform, degrade gracefully.",
+      "influence2_body": "Remix's progressive enhancement philosophy guides our robustness: essential content and behavior work first, the rest is incremental improvement.",
+      "influence3_heading": "Hybrid by nature, choose the best place to execute.",
+      "influence3_body": "From Next.js, we inherit the idea of multiple rendering strategies. In Proto-Typed, it means emitting the same intention to different runtimes without rewriting."
+    },
+    "example": {
+      "eyebrow": "Example",
+      "title": "What you write (short example)",
+      "result_text": "What you get: a navigable prototype with layout and style patterns; ask the AI to \"duplicate the metrics card\" or \"change the button to large secondary\" and see the change in seconds."
+    },
+    "manifesto": {
+      "eyebrow": "Manifesto",
+      "title": "Vision manifesto (summary)",
+      "point1": "Why it exists: prototyping interfaces shouldn't require dragging boxes, memorizing frameworks, or translating intentions to pixels. Most UIs repeat predictable patterns; what changes is content, flow, and intention.",
+      "point2": "What it does: transforms these patterns into clear descriptions, readable by humans and AIs, shortening the path between idea and navigable interface.",
+      "point3": "How it does it: covers ~90% of cases with canonical layouts and semantic components, favoring fluid and natural editing, with a model decoupled from the rendering destination.",
+      "point4": "Where it's going: truly fluid human-AI co-creation — describe, visualize, request adjustments, version, and export to multiple targets without friction."
+    },
+    "architecture": {
+      "eyebrow": "Architecture",
+      "title": "Interface text → Semantic representation → Renderer(s).",
+      "description": "The \"tree\" represents interface, not HTML. This allows adding new destinations (e.g.: mobile) without changing the original description — the same separation between intention and execution that we see in modern frameworks.",
+      "item1_title": "Interface text",
+      "item1_description": "Everything starts by describing the experience in structured natural language.",
+      "item2_title": "Semantic representation",
+      "item2_description": "We transform the text into a \"tree\" that understands screens, cards, and lists — interface, not HTML.",
+      "item3_title": "Renderers",
+      "item3_description": "Today we render in HTML; tomorrow, React Native/Flutter and other targets, without changing the original description."
+    },
+    "future": {
+      "eyebrow": "The future",
+      "title": "Where Proto-Typed is heading",
+      "item1": "Increasingly fluid human-AI co-creation: describe, visualize, adjust through conversation.",
+      "item2": "Multi-target rendering: HTML today; React Native/Flutter tomorrow — a single source of truth.",
+      "item3": "Richer interaction patterns: dynamic lists, loading states, flows, and validations — in the same language."
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "FAQ (quick philosophy)",
+      "q1": "Does this replace design tools?",
+      "a1": "No. We cover the space of fast textual prototyping and intention communication. Visual tools remain great for refinement and pixel-perfection.",
+      "q2": "Why text?",
+      "a2": "Because it's editable, versionable, and conversable — by people and AIs. Iteration becomes language, not clicks.",
+      "q3": "Where does real data come in?",
+      "a3": "When necessary, you can simulate data or connect external sources in the renderers — keeping the focus on UI intention. The general philosophy is \"show something now, refine later\"."
+    },
+    "cta_final": {
+      "badge": "Try It Now",
+      "title": "Start prototyping in seconds.",
+      "description": "Open the editor, describe a screen, and watch the prototype emerge. Then iterate with your team — and with your AI."
+    }
+  },
   "nav": {
     "playground": "Playground",
     "docs": "Docs",
