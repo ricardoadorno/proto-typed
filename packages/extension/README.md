@@ -1,107 +1,262 @@
-# Proto-Typed VSCode Extension
+# 🚀 Proto-Typed VS Code Extension
 
-Extensão VSCode para syntax highlighting e preview da linguagem Proto-Typed DSL (`.pty`).
+Extensão completa para a DSL Proto-Typed com syntax highlighting, IntelliSense e preview em tempo real.
 
-## 🚀 Desenvolvimento
+## ✨ Features
 
-### Pré-requisitos
+### 🎨 Syntax Highlighting
+
+- **Tema:** Proto-Typed Dark
+- **Cores semânticas:**
+  - Views (`screen`, `modal`, `drawer`) - Vermelho bold
+  - Nomes de views/components - Cyan bold
+  - Layouts (`row`, `col`, `grid`) - Rosa bold
+  - Typography (`#`, `>`, `>>`) - Verde
+  - Buttons (`@`) - Azul bold
+  - Forms (`___`) - Roxo
+  - Delimitadores (`|`, `:`, `[]`, `{}`) - Amarelo
+
+### 💡 IntelliSense
+
+- Completions context-aware
+- Trigger characters: `@`, `#`, `>`, `_`, `$`, `%`
+- Snippets com tab stops
+- Documentação rica com exemplos
+- 50+ sugestões de código
+
+### 📺 Preview
+
+- Live reload automático
+- Device mockup (iPhone)
+- Navegação entre screens
+- Renderização via `@proto-typed/core`
+
+## 🎯 Como Testar
+
+### 1. Compilar
 
 ```bash
-pnpm install
+pnpm compile:extension
 ```
 
-### Compilar
+### 2. Iniciar Extension Development Host
 
-```bash
-# Na raiz do projeto
-pnpm run compile
+1. Abra VS Code no diretório raiz
+2. Pressione **F5**
+3. Nova janela abrirá
 
-# Ou diretamente nesta pasta
-cd packages/extension
-pnpm run compile
-```
+### 3. Abrir Arquivo de Teste
 
-### Executar em modo desenvolvimento
+- Abra: `packages/extension/test.pty`
+- Veja o **QUICK-START.md** para guia completo
 
-1. Abra a **pasta raiz do projeto** no VSCode
-2. Pressione `F5` (ou Run > Start Debugging)
-3. Uma nova janela do VSCode abrirá com a extensão carregada
-4. Nessa janela, abra um arquivo `.pty` (ex: `example.pty`)
-5. Clique no ícone de preview no canto superior direito 📄
-6. O logo do Proto-Typed aparecerá no cabeçalho do preview
+### 4. Ativar Tema
 
-### Recursos
+- `Ctrl+K Ctrl+T` → "Proto-Typed Dark"
 
-- ✅ **Syntax Highlighting**: Cores automáticas para palavras-chave, strings, comentários em arquivos `.pty`
-- ✅ **Ícone de arquivo**: Logo do Proto-Typed para arquivos `.pty`
-- ✅ **Preview em tempo real**: Botão no canto superior direito abre preview HTML
-- ✅ **Logo no preview**: Cabeçalho visual com logo do Proto-Typed
-- ✅ **Snippets**: Autocomplete para estruturas comuns (screen, button, etc.)
-- ✅ **Validação**: Erros de parsing mostrados no preview
+### 5. Testar IntelliSense
 
-### Estrutura
+- Digite `sc` + `Ctrl+Space` → Selecione "screen"
+- Digite `@` → Lista de botões aparece
+
+### 6. Abrir Preview
+
+- Clique no ícone 📄 no canto superior direito
+- Ou: `Ctrl+Shift+P` → "Proto-Typed: Open Preview"
+
+## 📁 Estrutura
 
 ```
 packages/extension/
 ├── src/
-│   ├── extension.ts          # Código principal da extensão
-│   └── getWebviewContent.ts  # Template HTML do preview
+│   ├── extension.ts              # Entry point
+│   ├── getWebviewContent.ts      # Preview HTML
+│   └── language/
+│       └── completion.ts         # IntelliSense provider
 ├── syntaxes/
-│   └── proto-typed.tmLanguage.json  # Regras de syntax highlighting
+│   └── proto-typed.tmLanguage.json  # TextMate grammar
+├── themes/
+│   └── proto-typed-dark.json     # Tema escuro
 ├── snippets/
-│   └── snippets.json         # Code snippets
-├── dist/                     # Arquivos compilados (gerados)
-├── logo.svg                 # Logo do Proto-Typed
-├── example.pty              # Arquivo de exemplo para testes
-└── TESTING.md               # Guia detalhado de testes
-
+│   └── snippets.json             # Code snippets
+├── language-configuration.json   # Config da linguagem
+├── test.pty                      # Arquivo de teste completo
+├── QUICK-START.md               # Guia rápido
+└── package.json                 # Manifesto da extensão
 ```
 
-## 📝 Comandos disponíveis
+## 🔧 Implementação
 
-- **Proto-Typed: Open Preview to the Side**: Abre preview ao lado do editor atual
-  - Atalho: Clique no ícone 📄 no canto superior direito
-  - Ou: `Ctrl+Shift+P` > "Proto-Typed: Open Preview to the Side"
+### TextMate Grammar
 
-## 🐛 Troubleshooting
+- **Arquivo:** `syntaxes/proto-typed.tmLanguage.json`
+- Baseado nas regras Monarch do Monaco Editor
+- Scopes semânticos para cada token
+- Suporta todos os elementos da DSL
 
-### Comando não encontrado
+### Completion Provider
+
+- **Arquivo:** `src/language/completion.ts`
+- Context-aware (baseado na posição do cursor)
+- Trigger characters automáticos
+- Rich snippets com tab stops
+- Documentação em Markdown
+
+### Tema
+
+- **Arquivo:** `themes/proto-typed-dark.json`
+- Cores idênticas ao Monaco web
+- Esquema de cores semântico
+- Alto contraste para legibilidade
+
+### Webview Preview
+
+- **Arquivo:** `src/getWebviewContent.ts`
+- Device mockup (iPhone)
+- Live reload automático
+- Navegação entre screens
+- Integração com `@proto-typed/core`
+
+## 📝 Diferenças em Relação ao Monaco Web
+
+### ✅ Implementado
+
+- Syntax highlighting (via TextMate grammar)
+- IntelliSense (via Completion Provider)
+- Tema dark
+- Preview com live reload
+- Navegação entre screens
+
+### ❌ Não Aplicável
+
+- ErrorBus integration (VS Code usa DiagnosticCollection)
+- Monaco-specific APIs (React hooks, etc.)
+- Editor options (configurável via settings.json)
+
+### ⏳ Futuras Melhorias
+
+- Hover Provider (documentação ao passar mouse)
+- Definition Provider (go to definition)
+- Diagnostic Provider (erros inline)
+- Formatting Provider (auto-format)
+- Color Provider (preview de cores CSS)
+- Folding Provider (colapsar blocos)
+
+## 🎨 Elementos Suportados
+
+### Views
+
+- `screen Name:`
+- `modal Name:`
+- `drawer Name:`
+
+### Components
+
+- `component Name:`
+- `$ComponentInstance`
+- `%propName`
+
+### Typography
+
+- `# Heading 1` até `###### Heading 6`
+- `> Paragraph`
+- `>> Text`
+- `>>> Muted text`
+- `*> Note`
+- `"> Quote`
+
+### Buttons
+
+- `@[Text](action)` - Default
+- `@primary[Text](action)`
+- `@secondary[Text](action)`
+- `@ghost[Text](action)`
+- `@outline[Text](action)`
+- `@destructive[Text](action)`
+- `@[Text]{icon}(action)` - Com ícone
+
+### Links & Images
+
+- `#[Link Text](destination)`
+- `![Alt Text](url)`
+- `i-IconName` - Ícones Lucide
+
+### Forms
+
+- `___:Label{Placeholder}` - Input
+- `___*:Password{...}` - Password
+- `___:Label{...}[Opt1 | Opt2]` - Select
+- `[X]` / `[ ]` - Checkbox
+- `(X)` / `( )` - Radio
+
+### Layouts
+
+- `row:`, `col:`, `grid:`, `container:`, `card:`
+
+### Structures
+
+- `list:` com `- items`
+- `header:`
+- `navigator:` com `- Label | Destination`
+- `fab{icon}(action)`
+- `---` - Separator
+
+### Styles
+
+- `styles:` com `--custom-property: value;`
+
+## 🚫 Observações Importantes
+
+- **Não há suporte a comentários** na linguagem
+- Use text plain ou outros elementos visuais para documentação
+- Indentação é significativa (use tabs ou espaços consistentes)
+- Arquivos devem ter extensão `.pty`
+
+## 📚 Documentação
+
+- **QUICK-START.md** - Guia de início rápido
+- **test.pty** - Arquivo de teste com todos os elementos
+- **package.json** - Configuração e comandos
+
+## 🛠️ Comandos
 
 ```bash
-# Compile a extensão
-pnpm run compile
-# Depois pressione F5
+# Compilar
+pnpm compile:extension
+
+# Typecheck
+cd packages/extension && pnpm run typecheck
+
+# Lint
+cd packages/extension && pnpm run lint
+
+# Watch mode (desenvolvimento)
+cd packages/extension && pnpm run watch
 ```
 
-### Preview não atualiza
+## 📊 Status
 
-- Salve o arquivo `.ptd`
-- Ou feche e reabra o preview
+✅ **Pronto para uso!**
 
-### Mudanças no código não aparecem
+- Syntax highlighting: ✅
+- IntelliSense: ✅
+- Tema: ✅
+- Preview: ✅
+- Live reload: ✅
+- Navegação: ✅
 
-1. Recompile: `pnpm run compile`
-2. Na janela de desenvolvimento: `Ctrl+R` (ou `Cmd+R`)
-3. Ou: `Ctrl+Shift+P` > "Developer: Reload Window"
-
-### Erro ao ativar extensão
-
-Certifique-se de que:
-
-1. O pacote `@proto-typed/core` está compilado: `cd ../core && pnpm run build`
-2. A extensão está compilada: `pnpm run compile`
-3. As dependências estão instaladas: `pnpm install` (na raiz)
-
-## 📦 Build para produção
-
-Para criar um pacote `.vsix` instalável:
+## 🎉 Teste Agora!
 
 ```bash
-# Instalar o empacotador (se necessário)
-pnpm add -D @vscode/vsce
+# 1. Compile
+pnpm compile:extension
 
-# Criar o pacote
-npx @vscode/vsce package
+# 2. Abra no VS Code
+code .
+
+# 3. Pressione F5
+
+# 4. Abra test.pty
+
+# 5. Divirta-se! 🚀
 ```
-
-Isso criará um arquivo `proto-typed-vscode-0.0.1.vsix` que pode ser instalado em qualquer VSCode.

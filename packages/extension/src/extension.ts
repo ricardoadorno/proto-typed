@@ -6,6 +6,7 @@ import {
   createRouteManagerGateway,
 } from '@proto-typed/core'
 import { getWebviewContent } from './getWebviewContent'
+import { createCompletionProvider } from './language/completion'
 
 export function activate(context: vscode.ExtensionContext) {
   let currentPanel: vscode.WebviewPanel | undefined = undefined
@@ -17,6 +18,9 @@ export function activate(context: vscode.ExtensionContext) {
   const routeManager = new RouteManager()
   const routeManagerGateway = createRouteManagerGateway(routeManager)
   let currentScreen: string | undefined = undefined
+
+  // Register language features
+  context.subscriptions.push(createCompletionProvider())
 
   function updateWebview() {
     if (!currentPanel) {

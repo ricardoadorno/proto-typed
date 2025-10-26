@@ -1,89 +1,218 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
-  "name": "Proto-Typed",
+  "name": "Proto-Typed DSL",
   "scopeName": "source.pty",
+  "fileTypes": [".pty"],
   "patterns": [
-    {
-      "include": "#comments"
-    },
-    {
-      "include": "#strings"
-    },
-    {
-      "include": "#keywords"
-    },
-    {
-      "include": "#entities"
-    },
-    {
-      "include": "#constants"
-    }
+    { "include": "#views" },
+    { "include": "#components" },
+    { "include": "#styles" },
+    { "include": "#typography" },
+    { "include": "#buttons" },
+    { "include": "#links-images" },
+    { "include": "#forms" },
+    { "include": "#layouts" },
+    { "include": "#structures" },
+    { "include": "#delimiters" }
   ],
   "repository": {
-    "comments": {
+    "views": {
       "patterns": [
         {
-          "name": "comment.line.double-slash.ptd",
-          "match": "//.*"
+          "name": "meta.view.pty",
+          "match": "^\\s*(screen|modal|drawer)\\s+(\\w+)\\s*(:)",
+          "captures": {
+            "1": { "name": "keyword.view.pty" },
+            "2": { "name": "entity.name.view.pty" },
+            "3": { "name": "delimiter.colon.pty" }
+          }
+        }
+      ]
+    },
+
+    "components": {
+      "patterns": [
+        {
+          "name": "meta.component.definition.pty",
+          "match": "^\\s*(component)\\s+(\\w+)\\s*(:)",
+          "captures": {
+            "1": { "name": "keyword.component.pty" },
+            "2": { "name": "entity.name.component.pty" },
+            "3": { "name": "delimiter.colon.pty" }
+          }
         },
         {
-          "name": "comment.block.ptd",
-          "begin": "/\\*",
-          "end": "\\*/"
-        }
-      ]
-    },
-    "strings": {
-      "patterns": [
-        {
-          "name": "string.quoted.double.ptd",
-          "begin": "\"",
-          "end": "\"",
-          "patterns": [
-            {
-              "name": "constant.character.escape.ptd",
-              "match": "\\\\."
-            }
-          ]
+          "name": "variable.component.pty",
+          "match": "\\$[A-Z]\\w*"
         },
         {
-          "name": "string.quoted.single.ptd",
-          "begin": "'",
-          "end": "'",
-          "patterns": [
-            {
-              "name": "constant.character.escape.ptd",
-              "match": "\\\\."
-            }
-          ]
+          "name": "variable.prop.pty",
+          "match": "%\\w+"
         }
       ]
     },
-    "keywords": {
+
+    "styles": {
       "patterns": [
         {
-          "name": "keyword.control.ptd",
-          "match": "\\b(screen|component|styles|colors|fonts|spacing|fontSizes|radii|breakpoints|theme|layout|element|properties|variants|events|actions|navigation|data|state|import|export|const|let|var|if|else|for|while|return|function|new|true|false|null|undefined|this|of|in|as|from|select|case|default|switch|try|catch|finally|throw|debugger|with|delete|typeof|instanceof|void)\\b"
-        }
-      ]
-    },
-    "entities": {
-      "patterns": [
-        {
-          "name": "entity.name.function.ptd",
-          "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*(?=\\()"
+          "name": "keyword.styles.pty",
+          "match": "^\\s*styles\\s*:"
         },
         {
-          "name": "entity.name.type.ptd",
-          "match": "\\b([A-Z][a-zA-Z0-9_]*)"
+          "name": "variable.css.pty",
+          "match": "--[\\w-]+"
         }
       ]
     },
-    "constants": {
+
+    "typography": {
       "patterns": [
         {
-          "name": "constant.numeric.ptd",
-          "match": "\\b[0-9]+(\\.[0-9]+)?\\b"
+          "name": "markup.heading.pty",
+          "match": "^\\s*#{1,6}\\s+.*$"
+        },
+        {
+          "name": "markup.muted.pty",
+          "match": "^\\s*>>>\\s+.*$"
+        },
+        {
+          "name": "markup.text.pty",
+          "match": "^\\s*>>\\s+.*$"
+        },
+        {
+          "name": "markup.paragraph.pty",
+          "match": "^\\s*>\\s+.*$"
+        },
+        {
+          "name": "markup.note.pty",
+          "match": "^\\s*\\*>\\s+.*$"
+        },
+        {
+          "name": "markup.quote.pty",
+          "match": "^\\s*\">\\s+.*$"
+        }
+      ]
+    },
+
+    "buttons": {
+      "patterns": [
+        {
+          "name": "keyword.button.pty",
+          "match": "@(primary|secondary|outline|ghost|destructive|link|success|warning)(?:-(xs|sm|md|lg))?(?=\\[)"
+        },
+        {
+          "name": "keyword.button.pty",
+          "match": "@{1,3}[_+\\-=!]?(?=\\[)"
+        }
+      ]
+    },
+
+    "links-images": {
+      "patterns": [
+        {
+          "name": "keyword.link.pty",
+          "match": "#(?=\\[)"
+        },
+        {
+          "name": "keyword.image.pty",
+          "match": "!(?=\\[)"
+        },
+        {
+          "name": "entity.name.icon.pty",
+          "match": "\\bi-[A-Z]\\w*\\b"
+        },
+        {
+          "name": "entity.name.view.pty",
+          "match": "(?<=\\]\\()[A-Z]\\w*(?=\\))"
+        }
+      ]
+    },
+
+    "forms": {
+      "patterns": [
+        {
+          "name": "keyword.input.email.pty",
+          "match": "___(?:email)\\b",
+          "caseInsensitive": true
+        },
+        {
+          "name": "keyword.input.password.pty",
+          "match": "___(?:password)\\b",
+          "caseInsensitive": true
+        },
+        {
+          "name": "keyword.input.date.pty",
+          "match": "___(?:date)\\b",
+          "caseInsensitive": true
+        },
+        {
+          "name": "keyword.input.number.pty",
+          "match": "___(?:number)\\b",
+          "caseInsensitive": true
+        },
+        {
+          "name": "keyword.input.textarea.pty",
+          "match": "___(?:textarea)\\b",
+          "caseInsensitive": true
+        },
+        {
+          "name": "keyword.input.pty",
+          "match": "___[\\*\\-]?"
+        },
+        {
+          "name": "keyword.checkbox.pty",
+          "match": "\\[[X\\s]\\]"
+        },
+        {
+          "name": "keyword.radio.pty",
+          "match": "^\\s*\\([X\\s]\\)"
+        }
+      ]
+    },
+
+    "layouts": {
+      "patterns": [
+        {
+          "name": "keyword.layout.pty",
+          "match": "\\b(container-narrow|container-wide|container-full|container|stack-flush|stack-tight|stack-loose|stack|row-start|row-center|row-between|row-end|row|col|grid-2|grid-3|grid-4|grid-auto|grid|card-compact|card-feature|card|sidebar|navigator|list|fab)\\b"
+        }
+      ]
+    },
+
+    "structures": {
+      "patterns": [
+        {
+          "name": "keyword.structure.pty",
+          "match": "\\bheader\\b"
+        },
+        {
+          "name": "delimiter.separator.pty",
+          "match": "^\\s*---+\\s*$"
+        },
+        {
+          "name": "markup.list.pty",
+          "match": "^\\s*-\\s+"
+        }
+      ]
+    },
+
+    "delimiters": {
+      "patterns": [
+        {
+          "name": "delimiter.pipe.pty",
+          "match": "\\|"
+        },
+        {
+          "name": "delimiter.bracket.pty",
+          "match": "[\\[\\]]"
+        },
+        {
+          "name": "delimiter.brace.pty",
+          "match": "[{}]"
+        },
+        {
+          "name": "delimiter.colon.pty",
+          "match": ":"
         }
       ]
     }
