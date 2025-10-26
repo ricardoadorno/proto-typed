@@ -52,41 +52,41 @@ export function getLucideSvg(iconName: string): string {
     return ''
   }
 
-  // Lucide icons are arrays of path/element data
-  // Each element has a tag name and attributes
+  // Lucide icon structure: [tag, attrs, children[]]
+  // type IconNode = readonly [tag: string, attrs: SVGProps, children?: IconNodeChild[]];
+  // type IconNodeChild = readonly [tag: string, attrs: SVGProps];
   try {
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-    svg.setAttribute('width', '16')
-    svg.setAttribute('height', '16')
-    svg.setAttribute('viewBox', '0 0 24 24')
-    svg.setAttribute('fill', 'none')
-    svg.setAttribute('stroke', 'currentColor')
-    svg.setAttribute('stroke-width', '2')
-    svg.setAttribute('stroke-linecap', 'round')
-    svg.setAttribute('stroke-linejoin', 'round')
-    svg.setAttribute('style', 'margin-left: 0.5rem; margin-right: 0.5rem;')
-    svg.classList.add('inline-block')
+    // Build SVG as string instead of using DOM methods
+    // This works both on server and client side
+    let svgContent = ''
 
-    // Add the icon paths - Lucide icons are arrays of [tagName, attributes]
-    icon.forEach((element: unknown) => {
-      if (Array.isArray(element) && element.length >= 2) {
-        const [tagName, attributes] = element
-        if (tagName && typeof tagName === 'string') {
-          const svgElement = document.createElementNS(
-            'http://www.w3.org/2000/svg',
-            tagName
-          )
-          if (attributes && typeof attributes === 'object') {
-            Object.entries(attributes).forEach(([key, value]) => {
-              svgElement.setAttribute(key, String(value))
-            })
+    // Icon is a tuple: [tag, attrs, children]
+    if (Array.isArray(icon) && icon.length >= 2) {
+      // The icon root element (index 0, 1) represents the <svg> tag itself
+      // The children (index 2) contains the actual SVG path/element content
+      const children = icon[2] as
+        | Array<readonly [string, Record<string, string | number>]>
+        | undefined
+
+      if (children && Array.isArray(children)) {
+        children.forEach((child) => {
+          if (Array.isArray(child) && child.length >= 2) {
+            const [tagName, attributes] = child
+            if (tagName && typeof tagName === 'string') {
+              const attrs =
+                attributes && typeof attributes === 'object'
+                  ? Object.entries(attributes)
+                      .map(([key, value]) => `${key}="${String(value)}"`)
+                      .join(' ')
+                  : ''
+              svgContent += `<${tagName}${attrs ? ' ' + attrs : ''} />`
+            }
           }
-          svg.appendChild(svgElement)
-        }
+        })
       }
-    })
+    }
 
-    return svg.outerHTML
+    return `<svg class="inline-block" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 0.5rem; margin-right: 0.5rem;">${svgContent}</svg>`
   } catch (error) {
     console.warn(
       `Error rendering Lucide icon ${actualIconName} (from ${iconName}):`,

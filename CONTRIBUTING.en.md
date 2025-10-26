@@ -63,19 +63,19 @@ This project follows the [Conventional Commits](https://www.conventionalcommits.
 
 ### Allowed Types
 
-| Type       | Description                        |
-| ---------- | -------------------------------- |
-| `feat`     | New feature              |
-| `fix`      | Bug fix                  |
+| Type       | Description                 |
+| ---------- | --------------------------- |
+| `feat`     | New feature                 |
+| `fix`      | Bug fix                     |
 | `docs`     | Documentation changes       |
 | `style`    | Formatting, semicolons, etc |
 | `refactor` | Code refactoring            |
-| `perf`     | Performance improvement          |
-| `test`     | Adding or modifying tests  |
-| `build`    | Changes to the build system     |
-| `ci`       | Changes to CI/CD                |
-| `chore`    | Maintenance tasks            |
-| `revert`   | Revert a previous commit      |
+| `perf`     | Performance improvement     |
+| `test`     | Adding or modifying tests   |
+| `build`    | Changes to the build system |
+| `ci`       | Changes to CI/CD            |
+| `chore`    | Maintenance tasks           |
+| `revert`   | Revert a previous commit    |
 
 ### Examples
 

@@ -68,15 +68,17 @@ describe('useParse hook', () => {
     expect(metadata?.defaultScreen).toBe('Home')
     expect(metadata?.currentScreen).toBe('Home')
 
-    expect(result.current.renderedHtml).toContain('data-preview-container="true"')
+    expect(result.current.renderedHtml).toContain(
+      'data-preview-container="true"'
+    )
     expect(result.current.renderedHtml).toContain('id="screen-Home"')
     expect(result.current.renderedHtml).toContain('Ir para detalhes')
 
     const astJson = JSON.parse(result.current.astResultJson)
     expect(Array.isArray(astJson)).toBe(true)
-    expect(astJson.some((node: { type: string }) => node.type === 'Screen')).toBe(
-      true
-    )
+    expect(
+      astJson.some((node: { type: string }) => node.type === 'Screen')
+    ).toBe(true)
   })
 
   it('navega entre telas atualizando currentScreen e HTML renderizado', async () => {
