@@ -2,7 +2,12 @@
  * Generate webview content with device mockup
  * Takes HTML content from astToHtmlStringPreview and wraps it with device frame
  */
-export function getWebviewContent(previewHtml: string, logoUri?: string) {
+export function getWebviewContent(
+  previewHtml: string,
+  logoUri?: string,
+  screenButtons?: string,
+  currentScreen?: string
+) {
   const deviceStyles = getDeviceMockupStyles()
 
   return `<!DOCTYPE html>
@@ -30,7 +35,10 @@ export function getWebviewContent(previewHtml: string, logoUri?: string) {
     <div class="preview-header">
         ${logoUri ? `<img src="${logoUri}" alt="Proto-Typed" class="preview-logo" />` : ''}
         <span class="preview-title">Proto-Typed Preview</span>
+        ${currentScreen ? `<span class="current-screen">Screen: ${currentScreen}</span>` : ''}
     </div>
+    <!-- Debug: screenButtons length: ${screenButtons?.length || 0} -->
+    ${screenButtons ? `<div class="screen-navigation">${screenButtons}</div>` : '<div style="padding: 8px 20px; background: #ff0000; color: white;">⚠️ No screen buttons generated</div>'}
     <div class="preview-container">
         <div class="device-frame">
             <div class="iphone-mockup">
@@ -38,8 +46,10 @@ export function getWebviewContent(previewHtml: string, logoUri?: string) {
                 <div class="notch"></div>
                 <div class="speaker"></div>
                 <div class="camera"><div class="camera-inner"></div></div>
-                <div class="device-content">
-                    ${previewHtml}
+                <div class="device-content" style="position: relative; overflow: auto;">
+                    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: auto;">
+                        ${previewHtml}
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,6 +75,54 @@ export function getWebviewContent(previewHtml: string, logoUri?: string) {
         childList: true,
         subtree: true
       });
+      
+      // Communication with VS Code
+      const vscode = acquireVsCodeApi();
+      
+      window.navigateToScreen = function(screenName) {
+        console.log('🔄 Navigating to screen:', screenName);
+        vscode.postMessage({
+          command: 'navigateToScreen',
+          screen: screenName
+        });
+      };
+      
+      // Debug: Log when page loads
+      console.log('✅ Webview loaded');
+      console.log('📍 Screen buttons container:', document.querySelector('.screen-navigation'));
+      console.log('📍 Device content:', document.querySelector('.device-content'));
+      
+      // Handle clicks in rendered content (buttons, links, etc.)
+      const deviceContent = document.querySelector('.device-content');
+      if (deviceContent) {
+        deviceContent.addEventListener('click', function(e) {
+          const target = e.target;
+          
+          // Check if clicked element or parent has data-action or data-destination
+          let element = target;
+          let maxDepth = 5;
+          let depth = 0;
+          
+          while (element && depth < maxDepth) {
+            const action = element.getAttribute?.('data-action');
+            const destination = element.getAttribute?.('data-destination');
+            
+            if (action || destination) {
+              e.preventDefault();
+              e.stopPropagation();
+              
+              const targetScreen = destination || action;
+              if (targetScreen && targetScreen !== '-1' && targetScreen !== 'close') {
+                navigateToScreen(targetScreen);
+              }
+              return;
+            }
+            
+            element = element.parentElement;
+            depth++;
+          }
+        });
+      }
     </script>
 </body>
 </html>`
@@ -110,7 +168,7 @@ function getDeviceMockupStyles() {
         }
         
         .preview-container {
-            height: calc(100vh - 48px);
+            height: calc(100vh - 48px - 40px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -225,6 +283,51 @@ function getDeviceMockupStyles() {
         
         .device-content::-webkit-scrollbar-thumb:hover {
             background: rgba(169, 175, 191, 0.5);
+        }
+        
+        /* Screen Navigation */
+        .screen-navigation {
+            padding: 8px 20px;
+            background: #16171f;
+            border-bottom: 1px solid rgba(169, 175, 191, 0.15);
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            max-height: 120px;
+            overflow-y: auto;
+            position: relative;
+            z-index: 100;
+        }
+        
+        .screen-btn {
+            padding: 6px 12px;
+            background: #1e293b;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 8px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .screen-btn:hover {
+            background: #2d3748;
+            border-color: rgba(139, 92, 246, 0.6);
+            color: rgba(255, 255, 255, 0.95);
+        }
+        
+        .screen-btn.active {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #8b5cf6;
+            color: #a78bfa;
+        }
+        
+        .current-screen {
+            margin-left: auto;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 400;
         }
         
         /* Browser Mockup */

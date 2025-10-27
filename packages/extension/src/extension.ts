@@ -1,23 +1,10 @@
 import * as vscode from 'vscode'
-import {
-  parseAndBuildAst,
-  astToHtmlStringPreview,
-  RouteManager,
-  createRouteManagerGateway,
-} from '@proto-typed/core'
-import { getWebviewContent } from './getWebviewContent'
+import { parseAndBuildAst, astToHtmlDocument } from '@proto-typed/core'
 import { createCompletionProvider } from './language/completion'
 
 export function activate(context: vscode.ExtensionContext) {
   let currentPanel: vscode.WebviewPanel | undefined = undefined
-
-  // Logo URI que será reutilizado
-  const logoPath = vscode.Uri.joinPath(context.extensionUri, 'logo.svg')
-
-  // Route manager para gerenciar navegação (como no useParse)
-  const routeManager = new RouteManager()
-  const routeManagerGateway = createRouteManagerGateway(routeManager)
-  let currentScreen: string | undefined = undefined
+  let updateTimeout: ReturnType<typeof setTimeout> | undefined = undefined
 
   // Register language features
   context.subscriptions.push(createCompletionProvider())
@@ -35,48 +22,93 @@ export function activate(context: vscode.ExtensionContext) {
     const document = editor.document
     const text = document.getText()
 
-    // Converte o URI do logo para uso no webview
-    const logoUri = currentPanel.webview.asWebviewUri(logoPath)
-
     try {
       if (!text.trim()) {
-        currentPanel.webview.html = getWebviewContent('', logoUri.toString())
+        currentPanel.webview.html = `<!DOCTYPE html>
+        <html lang="en" class="dark">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Proto-Typed Preview</title>
+        </head>
+        <body style="display: flex; align-items: center; justify-content: center; height: 100vh; background: #0f172a; color: #e2e8f0; font-family: system-ui;">
+            <div style="text-align: center;">
+                <h2>Empty Document</h2>
+                <p>Start typing to see the preview</p>
+            </div>
+        </body>
+        </html>`
         return
       }
 
-      // Parse AST (como no useParse)
+      // Parse AST
       const ast = parseAndBuildAst(text)
 
-      // Initialize routes
-      routeManagerGateway.initialize(ast)
-      const metadata = routeManagerGateway.getRouteMetadata()
+      // Render using astToHtmlDocument (generates complete standalone HTML with navigation)
+      let htmlDocument = astToHtmlDocument(ast)
 
-      // Determine current screen
-      if (!currentScreen && metadata.defaultScreen) {
-        currentScreen = metadata.defaultScreen
-      }
+      // Debug logging (visible in Extension Host console)
+      const timestamp = new Date().toLocaleTimeString()
+      console.log('\n🔄 [' + timestamp + '] Preview Updated')
+      console.log('   📄 File:', editor.document.fileName.split(/[\\/]/).pop())
+      console.log('   📏 HTML size:', htmlDocument.length, 'chars')
+      console.log('   ✅ Ready to render')
 
-      // Render usando astToHtmlStringPreview (como a web app)
-      const renderResult = astToHtmlStringPreview(
-        ast,
-        { currentScreen },
-        routeManager
+      // Inject CSP meta tag for webview security
+      const cspMetaTag = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://cdn.tailwindcss.com; script-src 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://unpkg.com; img-src https: data:; font-src https:;">`
+      htmlDocument = htmlDocument.replace('<head>', '<head>\n  ' + cspMetaTag)
+
+      // Inject console log indicator into the webview
+      const consoleIndicator = `
+      <script>
+        console.log('🎨 Webview loaded at ${timestamp}');
+        console.log('📱 Proto-Typed Preview Active');
+      </script>
+      `
+      htmlDocument = htmlDocument.replace(
+        '</body>',
+        consoleIndicator + '\n</body>'
       )
 
-      currentPanel.webview.html = getWebviewContent(
-        renderResult.html,
-        logoUri.toString()
-      )
+      // Use the complete HTML document with CSP
+      currentPanel.webview.html = htmlDocument
     } catch (error) {
-      console.error('Error parsing or rendering DSL:', error)
-      const errorHtml = `<div style="padding: 20px; color: #ef4444;">
-        <h3>Error rendering preview</h3>
-        <pre style="background: #16171f; padding: 12px; border-radius: 8px; overflow-x: auto;">${String(error)}</pre>
-      </div>`
-      currentPanel.webview.html = getWebviewContent(
-        errorHtml,
-        logoUri.toString()
-      )
+      console.error('\n❌ ERROR parsing or rendering:')
+      console.error('   ', error)
+      console.error('   File:', editor.document.fileName)
+      currentPanel.webview.html = `<!DOCTYPE html>
+      <html lang="en" class="dark">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Error</title>
+          <style>
+            body { 
+              display: flex; 
+              align-items: center; 
+              justify-content: center; 
+              height: 100vh; 
+              background: #0f172a; 
+              color: #e2e8f0; 
+              font-family: system-ui;
+              padding: 20px;
+            }
+            pre {
+              background: #16171f;
+              padding: 12px;
+              border-radius: 8px;
+              overflow-x: auto;
+              max-width: 800px;
+            }
+          </style>
+      </head>
+      <body>
+          <div>
+              <h3 style="color: #ef4444;">Error rendering preview</h3>
+              <pre>${String(error)}</pre>
+          </div>
+      </body>
+      </html>`
     }
   }
 
@@ -101,6 +133,9 @@ export function activate(context: vscode.ExtensionContext) {
             enableScripts: true,
             retainContextWhenHidden: true,
             localResourceRoots: [context.extensionUri],
+            enableCommandUris: true,
+            // Allow loading from CDNs
+            enableFindWidget: true,
           }
         )
 
@@ -112,12 +147,22 @@ export function activate(context: vscode.ExtensionContext) {
           context.subscriptions
         )
 
+        // Real-time update with debounce (updates while typing)
         vscode.workspace.onDidChangeTextDocument((event) => {
           if (
             event.document.uri.toString() ===
             vscode.window.activeTextEditor?.document.uri.toString()
           ) {
-            updateWebview()
+            // Clear previous timeout
+            if (updateTimeout) {
+              clearTimeout(updateTimeout)
+            }
+
+            // Update after 300ms of no typing (debounce)
+            updateTimeout = setTimeout(() => {
+              console.log('⌨️  Text changed, updating preview...')
+              updateWebview()
+            }, 300)
           }
         })
 
