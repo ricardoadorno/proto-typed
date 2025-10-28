@@ -16,9 +16,8 @@ pnpm install
 # In the project root
 pnpm run compile
 
-# Or directly in this folder
-cd packages/extension
-pnpm run compile
+# Or targeting only this package
+pnpm --filter @proto-typed/extension run compile
 ```
 
 ### Run in development mode
@@ -88,7 +87,7 @@ pnpm run compile
 
 Make sure that:
 
-1. The `@proto-typed/core` package is compiled: `cd ../core && pnpm run build`
+1. The `@proto-typed/core` package is compiled: `pnpm compile:core`
 2. The extension is compiled: `pnpm run compile`
 3. The dependencies are installed: `pnpm install` (in the root)
 

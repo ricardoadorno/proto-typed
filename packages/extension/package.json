@@ -80,7 +80,7 @@
   },
   "scripts": {
     "vscode:prepublish": "pnpm run compile",
-    "compile": "cd ../core && pnpm run build && cd ../extension && tsc -p ./",
+    "compile": "pnpm --workspace-root run compile:core && pnpm --workspace-root exec tsc -p packages/extension/tsconfig.json",
     "watch": "tsc -watch -p ./",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

@@ -225,13 +225,13 @@ packages/extension/
 pnpm compile:extension
 
 # Typecheck
-cd packages/extension && pnpm run typecheck
+pnpm --filter @proto-typed/extension run typecheck
 
 # Lint
-cd packages/extension && pnpm run lint
+pnpm --filter @proto-typed/extension run lint
 
 # Watch mode (desenvolvimento)
-cd packages/extension && pnpm run watch
+pnpm --filter @proto-typed/extension run watch
 ```
 
 ## 📊 Status

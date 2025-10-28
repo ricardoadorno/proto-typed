@@ -7,7 +7,7 @@
     "dev": "pnpm -F @web/app dev",
     "build": "pnpm -F @web/app build",
     "compile": "pnpm -F @proto-typed/extension compile",
-    "compile:core": "pnpm -F @proto-typed/core build",
+    "compile:core": "pnpm exec tsc -p packages/core/tsconfig.json",
     "compile:extension": "pnpm run compile",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",

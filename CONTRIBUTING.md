@@ -334,11 +334,11 @@ pnpm test:e2e:debug
 ```bash
 # Limpar node_modules
 pnpm clean
-rm -rf node_modules
+node -e "require('fs').rmSync('node_modules', { recursive: true, force: true })"
 pnpm install
 
 # Limpar build
-rm -rf packages/*/dist
+node -e "const fs=require('fs');const path=require('path');for (const dir of fs.readdirSync('packages')){const dist=path.join('packages',dir,'dist');if(fs.existsSync(dist)) fs.rmSync(dist,{recursive:true,force:true});}"
 pnpm compile:core
 ```
 
