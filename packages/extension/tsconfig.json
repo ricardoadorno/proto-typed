@@ -8,7 +8,7 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["vscode"]
+    "types": ["vscode", "node", "mocha"]
   },
   "include": ["src"],
   "exclude": ["node_modules", ".vscode-test"]

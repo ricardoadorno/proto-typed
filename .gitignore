@@ -20,6 +20,7 @@ coverage
 playwright-report
 test-results
 html
+packages/extension/.vscode-test/
 
 # Editor directories and files
 .idea

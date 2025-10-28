@@ -13,6 +13,37 @@ cd packages/extension
 pnpm run compile
 ```
 
+## 🧪 Testes Automatizados da Extensão
+
+### Requisitos
+
+- Dependências dev instaladas na raiz (`pnpm install`)
+- Dependências específicas da extensão (`pnpm install --filter @proto-typed/extension`)
+- Navegadores do Playwright instalados (uma vez):
+  `pnpm exec playwright install chromium`
+
+### Executar a suíte de testes
+
+```bash
+pnpm --filter @proto-typed/extension test
+```
+
+O runner abre o VS Code em modo headless, renderiza um arquivo `.pty` de exemplo e valida:
+
+- Registro do comando `proto-typed.showPreview`
+- HTML gerado contra um snapshot estável
+- Screenshot do preview (comparação pixel a pixel)
+
+### Atualizar snapshots (HTML e PNG)
+
+Após mudanças que alteram a renderização, atualize os snapshots:
+
+```bash
+pnpm --filter @proto-typed/extension test:update-snapshots
+```
+
+Arquivos criados/atualizados em `packages/extension/test-snapshots/` devem ser versionados.
+
 ### 2. Iniciar a extensão em modo de desenvolvimento
 
 **Opção A: Usar F5**

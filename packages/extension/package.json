@@ -86,13 +86,26 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "pretest": "pnpm run compile",
+    "test": "node ./dist/test/runTest.js",
+    "test:update-snapshots": "cross-env UPDATE_SNAPSHOTS=1 pnpm test"
   },
   "dependencies": {
     "@proto-typed/core": "workspace:*"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^18.19.0",
     "@types/vscode": "^1.83.0",
+    "@vscode/test-electron": "^2.3.8",
+    "chai": "^4.3.10",
+    "cross-env": "^7.0.3",
+    "mocha": "^10.4.0",
+    "pixelmatch": "^5.3.0",
+    "playwright-core": "^1.56.1",
+    "pngjs": "^7.0.0",
     "typescript": "^5.2.2"
   }
 }

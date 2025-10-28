@@ -2,9 +2,16 @@ import * as vscode from 'vscode'
 import { parseAndBuildAst, astToHtmlDocument } from '@proto-typed/core'
 import { createCompletionProvider } from './language/completion'
 
+let currentPanel: vscode.WebviewPanel | undefined = undefined
+let updateTimeout: ReturnType<typeof setTimeout> | undefined = undefined
+let lastRenderedHtml: string | undefined = undefined
+const getLastRenderedHtml = () => lastRenderedHtml
+const getCurrentPanel = () => currentPanel
+
 export function activate(context: vscode.ExtensionContext) {
-  let currentPanel: vscode.WebviewPanel | undefined = undefined
-  let updateTimeout: ReturnType<typeof setTimeout> | undefined = undefined
+  currentPanel = undefined
+  updateTimeout = undefined
+  lastRenderedHtml = undefined
 
   // Register language features
   context.subscriptions.push(createCompletionProvider())
@@ -72,6 +79,7 @@ export function activate(context: vscode.ExtensionContext) {
 
       // Use the complete HTML document with CSP
       currentPanel.webview.html = htmlDocument
+      lastRenderedHtml = htmlDocument
     } catch (error) {
       console.error('\n❌ ERROR parsing or rendering:')
       console.error('   ', error)
@@ -109,6 +117,7 @@ export function activate(context: vscode.ExtensionContext) {
           </div>
       </body>
       </html>`
+      lastRenderedHtml = currentPanel.webview.html
     }
   }
 
@@ -142,6 +151,7 @@ export function activate(context: vscode.ExtensionContext) {
         currentPanel.onDidDispose(
           () => {
             currentPanel = undefined
+            lastRenderedHtml = undefined
           },
           null,
           context.subscriptions
@@ -177,6 +187,18 @@ export function activate(context: vscode.ExtensionContext) {
   )
 
   context.subscriptions.push(disposable)
+
+  return {
+    getCurrentPanel,
+    getLastRenderedHtml,
+  }
 }
 
-export function deactivate() {}
+export function deactivate() {
+  if (updateTimeout) {
+    clearTimeout(updateTimeout)
+    updateTimeout = undefined
+  }
+  currentPanel = undefined
+  lastRenderedHtml = undefined
+}

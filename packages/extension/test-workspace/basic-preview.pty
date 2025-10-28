@@ -1,0 +1,10 @@
+screen Home:
+  header:
+    # Proto-Typed Demo
+
+  container:
+    > Welcome to Proto-Typed
+    card:
+      ## Quick Links
+      @[Open Docs](Docs)
+      @ghost[Cancel](-)
