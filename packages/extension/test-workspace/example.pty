@@ -29,7 +29,7 @@ screen Contacts:
   container:
     > Your contacts organized in one place
     list $ContactCard:
-      - John Silva | john@email.com2312232
+      - John Silva | john@email.com23231223222
       - Maria Santos | maria@email.com
       - Pedro Costa | pedro@email.com
 

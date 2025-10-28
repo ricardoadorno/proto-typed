@@ -1,0 +1,12 @@
+screen Home:
+  container:
+    ## Modal Test
+    > Click the button below to open modal
+    @primary[Open Modal](TestModal)
+
+modal TestModal:
+  card:
+    ## Modal Title
+    > This is modal content
+    @ghost[Close](close)
+

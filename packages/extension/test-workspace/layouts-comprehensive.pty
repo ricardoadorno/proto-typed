@@ -1,0 +1,33 @@
+screen LayoutTests:
+  header:
+    # Layout Tests
+    > Testing all layout types
+
+  container:
+    ## Container Test
+    > This is inside a container2312
+
+  card:
+    ## Card Test
+    > This is inside a card12
+    @primary[Action Button](Modal1)
+
+  stack:
+    ## Stack Layout
+    > First item in stack
+    > Second item in stack
+
+  row:
+    ## Row Layout
+    > Left side | > Right side
+
+modal Modal1:
+  header:
+    # Modal Title
+  
+  container:
+    > Modal content in container
+    card:
+      ## Nested Card in Modal
+      > Card inside modal
+
