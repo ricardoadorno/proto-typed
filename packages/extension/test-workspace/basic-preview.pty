@@ -3,7 +3,7 @@ screen Home:
     # Proto-Typed Demo
 
   container:
-    > Welcome to Proto-Typed
+    > Welcome to Proto-Typed2112
     card:
       ## Quick Links
       @[Open Docs](Docs)

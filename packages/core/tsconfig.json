@@ -6,8 +6,9 @@
     "declarationMap": true,
     "sourceMap": true,
     "noEmit": false,
-    "module": "commonjs",
-    "moduleResolution": "node"
+    "module": "ES2020",
+    "moduleResolution": "bundler",
+    "target": "ES2020"
   },
   "include": ["src"],
   "exclude": ["tests", "**/*.test.ts", "**/*.spec.ts", "vitest.config.ts"]

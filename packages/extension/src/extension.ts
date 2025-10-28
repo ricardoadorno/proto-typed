@@ -1,132 +1,52 @@
-import * as vscode from 'vscode'
-import { parseAndBuildAst, astToHtmlDocument } from '@proto-typed/core'
-import { createCompletionProvider } from './language/completion'
+/**
+ * Proto-Typed Extension
+ * VS Code extension with webview playground
+ */
 
-let currentPanel: vscode.WebviewPanel | undefined = undefined
-let updateTimeout: ReturnType<typeof setTimeout> | undefined = undefined
-let lastRenderedHtml: string | undefined = undefined
-const getLastRenderedHtml = () => lastRenderedHtml
-const getCurrentPanel = () => currentPanel
+import * as vscode from 'vscode'
+import { createCompletionProvider } from './language/completion'
+import { MessageRouter } from './messaging/message-router'
+import { TextDocumentSynchronizer } from './utils/text-document-synchronizer'
+import { PlaygroundPanel } from './panels/playground/playground-panel'
+import { createMessage } from './messaging/message-types'
+import type {
+  RequestExportMessage,
+  RequestSetTextMessage,
+  LogEventMessage,
+  NavigationUpdateMessage,
+} from './messaging/message-types'
+
+let currentPanel: PlaygroundPanel | undefined = undefined
+let messageRouter: MessageRouter | undefined = undefined
+let synchronizer: TextDocumentSynchronizer | undefined = undefined
 
 export function activate(context: vscode.ExtensionContext) {
-  currentPanel = undefined
-  updateTimeout = undefined
-  lastRenderedHtml = undefined
+  console.log('🚀 [Proto-Typed] Extension activating...')
+
+  // Initialize message router
+  messageRouter = new MessageRouter({
+    logMessages: true,
+    telemetry: false,
+  })
+
+  // Initialize synchronizer for proto-typed files
+  synchronizer = new TextDocumentSynchronizer({
+    debounceMs: 300,
+    filterLanguageIds: ['proto-typed'],
+    logChanges: true,
+  })
 
   // Register language features
   context.subscriptions.push(createCompletionProvider())
 
-  function updateWebview() {
-    if (!currentPanel) {
-      return
-    }
+  // Register message handlers
+  setupMessageHandlers(context)
 
-    const editor = vscode.window.activeTextEditor
-    if (!editor) {
-      return
-    }
-
-    const document = editor.document
-    const text = document.getText()
-
-    try {
-      if (!text.trim()) {
-        currentPanel.webview.html = `<!DOCTYPE html>
-        <html lang="en" class="dark">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Proto-Typed Preview</title>
-        </head>
-        <body style="display: flex; align-items: center; justify-content: center; height: 100vh; background: #0f172a; color: #e2e8f0; font-family: system-ui;">
-            <div style="text-align: center;">
-                <h2>Empty Document</h2>
-                <p>Start typing to see the preview</p>
-            </div>
-        </body>
-        </html>`
-        return
-      }
-
-      // Parse AST
-      const ast = parseAndBuildAst(text)
-
-      // Render using astToHtmlDocument (generates complete standalone HTML with navigation)
-      let htmlDocument = astToHtmlDocument(ast)
-
-      // Debug logging (visible in Extension Host console)
-      const timestamp = new Date().toLocaleTimeString()
-      console.log('\n🔄 [' + timestamp + '] Preview Updated')
-      console.log('   📄 File:', editor.document.fileName.split(/[\\/]/).pop())
-      console.log('   📏 HTML size:', htmlDocument.length, 'chars')
-      console.log('   ✅ Ready to render')
-
-      // Inject CSP meta tag for webview security
-      const cspMetaTag = `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline' https://cdn.tailwindcss.com; script-src 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://unpkg.com; img-src https: data:; font-src https:;">`
-      htmlDocument = htmlDocument.replace('<head>', '<head>\n  ' + cspMetaTag)
-
-      // Inject console log indicator into the webview
-      const consoleIndicator = `
-      <script>
-        console.log('🎨 Webview loaded at ${timestamp}');
-        console.log('📱 Proto-Typed Preview Active');
-      </script>
-      `
-      htmlDocument = htmlDocument.replace(
-        '</body>',
-        consoleIndicator + '\n</body>'
-      )
-
-      // Use the complete HTML document with CSP
-      currentPanel.webview.html = htmlDocument
-      lastRenderedHtml = htmlDocument
-    } catch (error) {
-      console.error('\n❌ ERROR parsing or rendering:')
-      console.error('   ', error)
-      console.error('   File:', editor.document.fileName)
-      currentPanel.webview.html = `<!DOCTYPE html>
-      <html lang="en" class="dark">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Error</title>
-          <style>
-            body { 
-              display: flex; 
-              align-items: center; 
-              justify-content: center; 
-              height: 100vh; 
-              background: #0f172a; 
-              color: #e2e8f0; 
-              font-family: system-ui;
-              padding: 20px;
-            }
-            pre {
-              background: #16171f;
-              padding: 12px;
-              border-radius: 8px;
-              overflow-x: auto;
-              max-width: 800px;
-            }
-          </style>
-      </head>
-      <body>
-          <div>
-              <h3 style="color: #ef4444;">Error rendering preview</h3>
-              <pre>${String(error)}</pre>
-          </div>
-      </body>
-      </html>`
-      lastRenderedHtml = currentPanel.webview.html
-    }
-  }
-
-  const disposable = vscode.commands.registerCommand(
+  // Register command to show preview
+  const showPreviewCommand = vscode.commands.registerCommand(
     'proto-typed.showPreview',
     () => {
       const editor = vscode.window.activeTextEditor
-
-      // Abre o preview ao lado do editor ativo
       const viewColumn = editor
         ? (editor.viewColumn || 0) + 1
         : vscode.ViewColumn.Two
@@ -134,71 +54,139 @@ export function activate(context: vscode.ExtensionContext) {
       if (currentPanel) {
         currentPanel.reveal(viewColumn)
       } else {
-        currentPanel = vscode.window.createWebviewPanel(
-          'protoTypedPreview',
-          'Proto-Typed Preview',
-          viewColumn,
+        if (!messageRouter || !synchronizer) {
+          vscode.window.showErrorMessage('Extension not properly initialized')
+          return
+        }
+
+        currentPanel = PlaygroundPanel.create(
           {
-            enableScripts: true,
-            retainContextWhenHidden: true,
-            localResourceRoots: [context.extensionUri],
-            enableCommandUris: true,
-            // Allow loading from CDNs
-            enableFindWidget: true,
-          }
-        )
-
-        currentPanel.onDidDispose(
-          () => {
-            currentPanel = undefined
-            lastRenderedHtml = undefined
+            extensionContext: context,
+            messageRouter,
+            synchronizer,
           },
-          null,
-          context.subscriptions
+          viewColumn
         )
 
-        // Real-time update with debounce (updates while typing)
-        vscode.workspace.onDidChangeTextDocument((event) => {
-          if (
-            event.document.uri.toString() ===
-            vscode.window.activeTextEditor?.document.uri.toString()
-          ) {
-            // Clear previous timeout
-            if (updateTimeout) {
-              clearTimeout(updateTimeout)
-            }
-
-            // Update after 300ms of no typing (debounce)
-            updateTimeout = setTimeout(() => {
-              console.log('⌨️  Text changed, updating preview...')
-              updateWebview()
-            }, 300)
-          }
-        })
-
-        vscode.window.onDidChangeActiveTextEditor((editor) => {
-          if (editor) {
-            updateWebview()
-          }
-        })
+        console.log('✅ [Proto-Typed] Playground panel created')
       }
-      updateWebview()
     }
   )
 
-  context.subscriptions.push(disposable)
+  context.subscriptions.push(showPreviewCommand)
+  context.subscriptions.push(messageRouter)
+  context.subscriptions.push(synchronizer)
+
+  console.log('✅ [Proto-Typed] Extension activated')
 
   return {
-    getCurrentPanel,
-    getLastRenderedHtml,
+    getCurrentPanel: () => currentPanel,
+    getRouter: () => messageRouter,
   }
 }
 
-export function deactivate() {
-  if (updateTimeout) {
-    clearTimeout(updateTimeout)
-    updateTimeout = undefined
+function setupMessageHandlers(context: vscode.ExtensionContext): void {
+  if (!messageRouter || !synchronizer) {
+    return
   }
-  currentPanel = undefined
-  lastRenderedHtml = undefined
+
+  // Handle export requests
+  messageRouter.registerHandler(
+    'REQUEST_EXPORT',
+    async (message: RequestExportMessage) => {
+      const { html, suggestedFileName } = message.payload
+
+      try {
+        const uri = await vscode.window.showSaveDialog({
+          defaultUri: vscode.Uri.file(suggestedFileName),
+          filters: {
+            'HTML Files': ['html'],
+          },
+        })
+
+        if (uri) {
+          await vscode.workspace.fs.writeFile(uri, Buffer.from(html, 'utf-8'))
+          vscode.window.showInformationMessage(`Exported to ${uri.fsPath}`)
+        }
+      } catch (error) {
+        console.error('❌ Error exporting HTML:', error)
+        vscode.window.showErrorMessage(
+          `Failed to export: ${error instanceof Error ? error.message : String(error)}`
+        )
+      }
+    }
+  )
+
+  // Handle text set requests (e.g., from example selection)
+  messageRouter.registerHandler(
+    'REQUEST_SET_TEXT',
+    async (message: RequestSetTextMessage) => {
+      const { text, reason } = message.payload
+
+      try {
+        const success = await synchronizer!.applyText(text, reason)
+        if (!success) {
+          vscode.window.showWarningMessage('Failed to update editor text')
+        }
+      } catch (error) {
+        console.error('❌ Error applying text:', error)
+      }
+    }
+  )
+
+  // Handle log events
+  messageRouter.registerHandler('LOG_EVENT', (message: LogEventMessage) => {
+    const { level, message: logMessage, data } = message.payload
+
+    const prefix = `[Webview] ${logMessage}`
+    const dataStr = data ? ` ${JSON.stringify(data)}` : ''
+
+    switch (level) {
+      case 'info':
+        console.log(`ℹ️  ${prefix}${dataStr}`)
+        break
+      case 'warn':
+        console.warn(`⚠️  ${prefix}${dataStr}`)
+        break
+      case 'error':
+        console.error(`❌ ${prefix}${dataStr}`)
+        // Show error to user for critical issues
+        if (logMessage.includes('Parse error')) {
+          // Don't show every parse error as it would be annoying while typing
+          // Just log it
+        } else {
+          vscode.window.showErrorMessage(`Webview Error: ${logMessage}`)
+        }
+        break
+    }
+  })
+
+  // Handle navigation updates (just log for now)
+  messageRouter.registerHandler(
+    'NAVIGATION_UPDATE',
+    (message: NavigationUpdateMessage) => {
+      console.log(`🧭 [Navigation] Screen: ${message.payload.screen}`)
+    }
+  )
+}
+
+export function deactivate() {
+  console.log('🛑 [Proto-Typed] Extension deactivating...')
+
+  if (currentPanel) {
+    currentPanel.dispose()
+    currentPanel = undefined
+  }
+
+  if (synchronizer) {
+    synchronizer.dispose()
+    synchronizer = undefined
+  }
+
+  if (messageRouter) {
+    messageRouter.dispose()
+    messageRouter = undefined
+  }
+
+  console.log('✅ [Proto-Typed] Extension deactivated')
 }

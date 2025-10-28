@@ -1,0 +1,151 @@
+styles:
+  --primary: #8b5cf6;
+  --accent: #6366f1;
+
+
+screen Home:
+  header:
+    >> Layout Test
+    @ghost-sm[Menu](MainMenu)
+
+  container:
+    # Welcome to Layout Test
+    > This DSL tests proper indentation for layouts and cards
+
+    ---
+
+    card:
+      ## Quick Links
+      > Access important sections
+      @[Open Docs](Docs)
+      @ghost[Cancel](-1)
+
+    ---
+
+    grid-2:
+      card-compact:
+        ### Feature 1
+        >> First feature description
+        @outline-sm[Learn More](Docs)
+      card-compact:
+        ### Feature 2
+        >> Second feature description
+        @outline-sm[Learn More](Docs)
+
+    ---
+
+    stack:
+      > This is a stack layout
+
+      card:
+        #### Inside Card in Stack
+        >>> This card is properly indented inside a stack
+        row-end:
+          @secondary[Action 1](Home)
+          @primary[Action 2](Home)
+
+      card-feature:
+        #### Featured Card
+        > This is a feature card with padding and shadow
+        ![Placeholder](https://via.placeholder.com/200)
+        @primary[Get Started](Settings)
+
+
+modal ConfirmModal:
+  card:
+    ## Confirm Action
+    > Are you sure you want to proceed?
+
+    row-between:
+      @ghost[Cancel](close)
+      @primary[Confirm](Home)
+
+
+drawer MainMenu:
+  stack:
+    ## Main Menu
+    >>> Navigation options
+
+    card:
+      @[Home](Home)
+      @[Docs](Docs)
+      @[Settings](Settings)
+
+    ---
+
+    >>> More Options
+
+    @destructive[Sign Out](Home)
+
+
+screen Docs:
+  header:
+    >> Documentation
+    @ghost-sm[Back](Home)
+
+  container-narrow:
+    stack-loose:
+      card:
+        ## Getting Started
+        > Learn how to use Proto-Typed
+
+        stack-tight:
+          >>> Step 1: Create a screen
+          >>> Step 2: Add layouts
+          >>> Step 3: Add content
+
+        @primary[Continue](Settings)
+
+      ---
+
+      card-compact:
+        ### Tips
+        > Remember to indent correctly!
+        *> Each child element must be indented more than its parent
+
+      ---
+
+      row-center:
+        @ghost[Back to Home](Home)
+
+
+screen Settings:
+  header:
+    >> Settings
+    @ghost-sm[Menu](MainMenu)
+
+  container:
+    stack:
+      card:
+        ### Account Settings
+
+        ___: Full Name{Enter your name} | required
+        ___email: Email{your@email.com} | required
+
+        ---
+
+        #### Preferences
+
+        [X] Enable dark mode
+        [X] Show notifications
+        [ ] Auto-save
+
+        ---
+
+        row-between:
+          @ghost[Cancel](Home)
+          @primary[Save Changes](Home)
+
+      ---
+
+      card:
+        ### Danger Zone
+        > These actions cannot be undone
+
+        @destructive[Delete Account](ConfirmModal)
+
+  navigator:
+    - Home | Home
+    - Docs | Docs
+    - Settings | Settings
+
