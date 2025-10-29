@@ -3,7 +3,7 @@
   "displayName": "proto-typed",
   "description": "VSCode extension for the Proto-Typed.",
   "version": "0.0.1",
-  "publisher": "Ricardo Adorno",
+  "publisher": "proto-typed",
   "repository": {
     "type": "git",
     "url": "https://github.com/ricardoadorno/proto-typed"
