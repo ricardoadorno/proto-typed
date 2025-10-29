@@ -53,13 +53,6 @@
         "path": "./snippets/snippets.json"
       }
     ],
-    "themes": [
-      {
-        "label": "Proto-Typed Dark Tokens",
-        "uiTheme": "vs-dark",
-        "path": "./themes/proto-typed-dark.json"
-      }
-    ],
     "commands": [
       {
         "command": "proto-typed.showPreview",

@@ -19,12 +19,12 @@
     "views": {
       "patterns": [
         {
-          "name": "meta.section.proto.view",
+          "name": "meta.section.view.pty",
           "match": "^\\s*(screen|modal|drawer)\\s+(\\w+)\\s*(:)",
           "captures": {
-            "1": { "name": "keyword.view.proto" },
-            "2": { "name": "entity.name.view.proto" },
-            "3": { "name": "punctuation.separator.key-value.proto" }
+            "1": { "name": "keyword.control.pty" },
+            "2": { "name": "entity.name.class.pty" },
+            "3": { "name": "punctuation.separator.pty" }
           }
         }
       ]
@@ -33,97 +33,58 @@
     "components": {
       "patterns": [
         {
-          "name": "meta.section.proto.component",
+          "name": "meta.section.component.pty",
           "match": "^\\s*(component)\\s+(\\w+)\\s*(:)",
           "captures": {
-            "1": { "name": "keyword.component.proto" },
-            "2": { "name": "entity.name.component.proto" },
-            "3": { "name": "punctuation.separator.key-value.proto" }
+            "1": { "name": "keyword.control.pty" },
+            "2": { "name": "entity.name.function.pty" },
+            "3": { "name": "punctuation.separator.pty" }
           }
         },
-        {
-          "name": "variable.other.component.instance.proto",
-          "match": "\\$[A-Z]\\w*"
-        },
-        {
-          "name": "variable.parameter.component.prop.proto",
-          "match": "%\\w+"
-        }
+        { "match": "\\$[A-Z]\\w*", "name": "entity.name.function.pty" },
+        { "match": "%\\w+", "name": "variable.parameter.pty" }
       ]
     },
 
     "styles": {
       "patterns": [
-        {
-          "name": "keyword.styles.proto",
-          "match": "^\\s*styles\\s*:"
-        },
-        {
-          "name": "support.type.property-name.css.proto",
-          "match": "--[\\w-]+"
-        }
+        { "match": "^\\s*styles\\s*:", "name": "keyword.other.pty" },
+        { "match": "--[\\w-]+", "name": "support.constant.property-name.pty" }
       ]
     },
 
     "typography": {
       "patterns": [
-        {
-          "name": "markup.heading.proto",
-          "match": "^\\s*(#{1,6})(?=\\s)"
-        },
-        {
-          "name": "markup.muted.proto",
-          "match": "^\\s*(>>>)(?=\\s)"
-        },
-        {
-          "name": "markup.text.proto",
-          "match": "^\\s*(>>)(?=\\s)"
-        },
-        {
-          "name": "markup.paragraph.proto",
-          "match": "^\\s*(>)(?=\\s)"
-        },
-        {
-          "name": "markup.note.proto",
-          "match": "^\\s*(\\*>)(?=\\s)"
-        },
-        {
-          "name": "markup.quote.proto",
-          "match": "^\\s*(\">)(?=\\s)"
-        }
+        { "match": "^\\s*(#{1,6})(?=\\s)", "name": "entity.name.function.pty" },
+        { "match": "^\\s*(>>>)(?=\\s)", "name": "entity.name.function.pty" },
+        { "match": "^\\s*(>>)(?=\\s)", "name": "entity.name.function.pty" },
+        { "match": "^\\s*(>)(?=\\s)", "name": "entity.name.function.pty" },
+        { "match": "^\\s*(\\*>)(?=\\s)", "name": "entity.name.function.pty" },
+        { "match": "^\\s*(\">)(?=\\s)", "name": "entity.name.function.pty" }
       ]
     },
-
     "buttons": {
       "patterns": [
         {
-          "name": "keyword.button.proto",
-          "match": "@(primary|secondary|outline|ghost|destructive|link|success|warning)(?:-(xs|sm|md|lg))?(?=\\[)"
+          "match": "@(primary|secondary|outline|ghost|destructive|link|success|warning)(?:-(xs|sm|md|lg))?(?=\\[)",
+          "name": "variable.other.constant.pty"
         },
-        {
-          "name": "keyword.button.proto",
-          "match": "@(?=\\[)"
-        }
+        { "match": "@(?=\\[)", "name": "variable.other.constant.pty" }
       ]
     },
 
     "linksAndImages": {
       "patterns": [
+        { "match": "#(?=\\[)", "name": "variable.other.constant.pty" },
+        { "match": "!(?=\\[)", "name": "variable.other.constant.pty" },
+        { "match": "\\bi-[A-Z]\\w*\\b", "name": "variable.other.constant.pty" },
         {
-          "name": "keyword.link.proto",
-          "match": "#(?=\\[)"
+          "match": "(?<=\\]\\()[A-Z]\\w*(?=\\))",
+          "name": "entity.name.type.pty"
         },
         {
-          "name": "keyword.image.proto",
-          "match": "!(?=\\[)"
-        },
-        {
-          "name": "entity.name.icon.proto",
-          "match": "\\bi-[A-Z]\\w*\\b"
-        },
-        {
-          "name": "entity.name.reference.proto",
-          "match": "(?<=\\]\\()[A-Z]\\w*(?=\\))"
+          "match": "(?<=\\()\\s*https?:\\/\\/[^\\s)]+(?=\\))",
+          "name": "entity.name.type.pty"
         }
       ]
     },
@@ -131,36 +92,14 @@
     "forms": {
       "patterns": [
         {
-          "name": "keyword.input.email.proto",
-          "match": "(?i:___(?:email)\\b)"
+          "match": "(?i:___(?:email|password|date|number|textarea)\\b)",
+          "name": "string.pty"
         },
+        { "match": "___[\\*\\-]?", "name": "string.pty" },
+        { "match": "\\[[X\\s]\\]", "name": "constant.language.boolean.pty" },
         {
-          "name": "keyword.input.password.proto",
-          "match": "(?i:___(?:password)\\b)"
-        },
-        {
-          "name": "keyword.input.date.proto",
-          "match": "(?i:___(?:date)\\b)"
-        },
-        {
-          "name": "keyword.input.number.proto",
-          "match": "(?i:___(?:number)\\b)"
-        },
-        {
-          "name": "keyword.input.textarea.proto",
-          "match": "(?i:___(?:textarea)\\b)"
-        },
-        {
-          "name": "keyword.input.proto",
-          "match": "___[\\*\\-]?"
-        },
-        {
-          "name": "constant.language.checkbox.proto",
-          "match": "\\[[X\\s]\\]"
-        },
-        {
-          "name": "constant.language.radio.proto",
-          "match": "^\\s*\\([X\\s]\\)"
+          "match": "^\\s*\\([X\\s]\\)",
+          "name": "constant.language.boolean.pty"
         }
       ]
     },
@@ -168,47 +107,23 @@
     "layouts": {
       "patterns": [
         {
-          "name": "keyword.layout.proto",
-          "match": "\\b(container-narrow|container-wide|container-full|container|stack-flush|stack-tight|stack-loose|stack|row-start|row-center|row-between|row-end|row|col|grid-2|grid-3|grid-4|grid-auto|grid|card-compact|card-feature|card|sidebar|navigator|list|fab)\\b"
+          "match": "\\b(header|container-narrow|container-wide|container-full|container|stack-flush|stack-tight|stack-loose|stack|row-start|row-center|row-between|row-end|row|col|grid-2|grid-3|grid-4|grid-auto|grid|card-compact|card-feature|card|sidebar|navigator|list|fab)\\b",
+          "name": "storage.type.pty"
         }
       ]
     },
 
     "structures": {
       "patterns": [
-        {
-          "name": "keyword.structure.proto",
-          "match": "\\bheader\\b"
-        },
-        {
-          "name": "delimiter.separator.proto",
-          "match": "^\\s*---+\\s*$"
-        },
-        {
-          "name": "markup.list.proto",
-          "match": "^\\s*(-)(?=\\s)"
-        }
+        { "match": "^\\s*---+\\s*$", "name": "keyword.operator.symbol.pty" },
+        { "match": "^\\s*-\\s+", "name": "keyword.operator.symbol.pty" }
       ]
     },
 
     "delimiters": {
       "patterns": [
-        {
-          "name": "punctuation.separator.pipe.proto",
-          "match": "\\|"
-        },
-        {
-          "name": "punctuation.section.brackets.proto",
-          "match": "[\\[\\]]"
-        },
-        {
-          "name": "punctuation.section.braces.proto",
-          "match": "[{}]"
-        },
-        {
-          "name": "punctuation.separator.key-value.proto",
-          "match": ":"
-        }
+        { "match": "\\|", "name": "keyword.operator.symbol.pty" },
+        { "match": ":", "name": "keyword.operator.symbol.pty" }
       ]
     }
   }
