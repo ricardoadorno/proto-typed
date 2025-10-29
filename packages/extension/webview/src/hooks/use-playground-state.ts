@@ -80,9 +80,15 @@ export function usePlaygroundState() {
 
       scheduleWork(() => {
         try {
-          if (!text.trim()) {
+          // Normalize indentation and newlines so parser behaves consistently across environments
+          const normalizedText = text
+            .replace(/\r\n?/g, '\n') // CRLF -> LF
+            .replace(/\t/g, '  ') // tabs -> 2 spaces
+            .replace(/\u00A0/g, ' ') // NBSP -> space
+
+          if (!normalizedText.trim()) {
             setStateLocal({
-              dsl: text,
+              dsl: normalizedText,
               html: '',
               metadata: {
                 screens: [],
@@ -106,7 +112,7 @@ export function usePlaygroundState() {
           }
 
           // Parse AST
-          const ast = parseAndBuildAst(text)
+          const ast = parseAndBuildAst(normalizedText)
           astRef.current = ast
 
           // Initialize routes to get metadata
@@ -138,7 +144,7 @@ export function usePlaygroundState() {
           )
 
           const newState: PlaygroundState = {
-            dsl: text,
+            dsl: normalizedText,
             html: result.html,
             metadata: newMetadata,
             currentScreen: newCurrentScreen,
@@ -150,7 +156,7 @@ export function usePlaygroundState() {
 
           // Persist state
           setState({
-            dsl: text,
+            dsl: normalizedText,
             screen: newCurrentScreen,
           })
 
