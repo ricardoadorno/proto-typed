@@ -1,0 +1,36 @@
+# VCS and IDE
+.git/**
+.github/**
+.vscode/**
+**/.DS_Store
+**/Thumbs.db
+
+# Source-only
+src/**
+webview/src/**
+**/*.map
+**/*.tsbuildinfo
+
+# Tests and reports
+coverage/**
+playwright-report/**
+**/tests/**
+**/test-results/**
+**/.vscode-test/**
+
+# Node modules exclusions
+# Keep root node_modules for runtime deps; exclude webview's
+webview/node_modules/**
+
+# Keep only built output and runtime assets
+!dist/**
+!themes/**
+!syntaxes/**
+!snippets/**
+!language-configuration.json
+!logo.svg
+!icons/**
+!package.json
+!README.*
+!CHANGELOG.*
+!LICENSE*

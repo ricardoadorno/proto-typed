@@ -1,18 +1,27 @@
 {
-  "name": "@proto-typed/extension",
-  "displayName": "Proto-Typed DSL",
-  "description": "VSCode extension for the Proto-Typed DSL.",
+  "name": "proto-typed",
+  "displayName": "proto-typed",
+  "description": "VSCode extension for the Proto-Typed.",
   "version": "0.0.1",
-  "publisher": "proto-typed",
+  "publisher": "Ricardo Adorno",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ricardoadorno/proto-typed"
+  },
   "icon": "icons/icon-128.png",
   "engines": {
     "vscode": "^1.83.0"
   },
+  "license": "Apache-2.0",
   "categories": [
     "Programming Languages",
     "Snippets"
   ],
   "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:proto-typed",
+    "onCommand:proto-typed.showPreview"
+  ],
   "contributes": {
     "languages": [
       {
@@ -92,7 +101,14 @@
     "typecheck": "tsc --noEmit",
     "pretest": "pnpm run compile",
     "test": "node ./dist/test/runTest.js",
-    "test:update-snapshots": "cross-env UPDATE_SNAPSHOTS=1 pnpm test"
+    "test:update-snapshots": "cross-env UPDATE_SNAPSHOTS=1 pnpm test",
+    "vsce:login": "npx @vscode/vsce login proto-typed",
+    "vsce:package": "pnpm -w run compile && npx @vscode/vsce package",
+    "vsce:publish": "pnpm -w run compile && npx @vscode/vsce publish",
+    "vsce:publish:patch": "pnpm -w run compile && npx @vscode/vsce publish patch",
+    "vsce:publish:minor": "pnpm -w run compile && npx @vscode/vsce publish minor",
+    "vsce:publish:major": "pnpm -w run compile && npx @vscode/vsce publish major",
+    "ovsx:publish": "pnpm -w run compile && npx ovsx publish --pat $OVSX_TOKEN"
   },
   "dependencies": {
     "@proto-typed/core": "workspace:*"
