@@ -30,6 +30,9 @@ export class PlaygroundPanel implements vscode.Disposable {
   private sessionId: string
   private isHandshakeComplete = false
   private pendingMessages: Array<{ type: string; payload: unknown }> = []
+  private disposed = false
+  private readonly onDidDisposeEmitter = new vscode.EventEmitter<void>()
+  public readonly onDidDispose = this.onDidDisposeEmitter.event
 
   private constructor(
     panel: vscode.WebviewPanel,
@@ -55,7 +58,7 @@ export class PlaygroundPanel implements vscode.Disposable {
     const panel = vscode.window.createWebviewPanel(
       'protoTypedPlayground',
       'Proto-Typed Playground',
-      column,
+      { viewColumn: column, preserveFocus: true },
       {
         enableScripts: true,
         retainContextWhenHidden: true,
@@ -78,6 +81,8 @@ export class PlaygroundPanel implements vscode.Disposable {
     // Handle panel disposal
     this.panel.onDidDispose(
       () => {
+        // Emit before disposing internals so listeners can react
+        this.onDidDisposeEmitter.fire()
         this.dispose()
       },
       null,
@@ -199,7 +204,7 @@ export class PlaygroundPanel implements vscode.Disposable {
    * Reveal the panel
    */
   reveal(column?: vscode.ViewColumn): void {
-    this.panel.reveal(column)
+    this.panel.reveal(column, true)
   }
 
   /**
@@ -318,8 +323,16 @@ export class PlaygroundPanel implements vscode.Disposable {
    * Dispose the panel and all resources
    */
   dispose(): void {
-    this.panel.dispose()
+    if (this.disposed) {
+      return
+    }
+    this.disposed = true
+    // Best-effort dispose of the underlying panel if not already disposed
+    try {
+      this.panel.dispose()
+    } catch {}
     this.disposables.forEach((d) => d.dispose())
     this.disposables = []
+    this.onDidDisposeEmitter.dispose()
   }
 }

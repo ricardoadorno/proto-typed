@@ -5,12 +5,12 @@ styles:
 
 screen Home:
   header:
-    >> Layout Test
+    >> Layout Test233451
     @ghost-sm[Menu](MainMenu)
 
   container:
     # Welcome to Layout Test
-    > This DSL tests proper indentation for layouts and cards
+    > This DSL tests proper2 indent2ation for layouts and cards
 
     ---
 

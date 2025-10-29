@@ -59,6 +59,8 @@ export function activate(context: vscode.ExtensionContext) {
           return
         }
 
+        const previousEditor = vscode.window.activeTextEditor
+
         currentPanel = PlaygroundPanel.create(
           {
             extensionContext: context,
@@ -69,6 +71,20 @@ export function activate(context: vscode.ExtensionContext) {
         )
 
         console.log('✅ [Proto-Typed] Playground panel created')
+
+        // Restore focus to previous editor so new files open in the editor column
+        if (previousEditor) {
+          vscode.window.showTextDocument(
+            previousEditor.document,
+            previousEditor.viewColumn,
+            false
+          )
+        }
+
+        // Clear reference when user closes the webview to avoid "Webview is disposed"
+        currentPanel.onDidDispose(() => {
+          currentPanel = undefined
+        })
       }
     }
   )

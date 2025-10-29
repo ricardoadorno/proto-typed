@@ -24,9 +24,20 @@ export function PreviewSurface({ html }: PreviewSurfaceProps) {
   }
 
   return (
-    <div
-      className="w-full h-full overflow-auto"
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
+    <div className="preview-container">
+      <div className="device-frame">
+        <div className="iphone-mockup">
+          <div className="home-indicator"></div>
+          <div className="notch"></div>
+          <div className="speaker"></div>
+          <div className="camera">
+            <div className="camera-inner"></div>
+          </div>
+          <div className="device-content" style={{ overflow: 'auto' }}>
+            <div dangerouslySetInnerHTML={{ __html: html }} />
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
