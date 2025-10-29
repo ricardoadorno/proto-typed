@@ -119,6 +119,7 @@
     "@types/node": "^18.19.0",
     "@types/vscode": "^1.83.0",
     "@vscode/test-electron": "^2.3.8",
+    "@vscode/vsce": "^3.6.2",
     "chai": "^4.3.10",
     "cross-env": "^7.0.3",
     "mocha": "^10.4.0",
