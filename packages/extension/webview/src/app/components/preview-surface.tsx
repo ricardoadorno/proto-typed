@@ -33,9 +33,11 @@ export function PreviewSurface({ html }: PreviewSurfaceProps) {
           <div className="camera">
             <div className="camera-inner"></div>
           </div>
-          <div className="device-content" style={{ overflow: 'auto' }}>
-            <div dangerouslySetInnerHTML={{ __html: html }} />
-          </div>
+          <div
+            className="device-content"
+            style={{ overflow: 'auto' }}
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
         </div>
       </div>
     </div>

@@ -52,9 +52,7 @@ export function renderIphoneMockup(innerHtml: string): string {
         <div class="notch"></div>
         <div class="speaker"></div>
         <div class="camera"><div class="camera-inner"></div></div>
-        <div class="device-content" style="overflow: auto;">
-          <div>${innerHtml}</div>
-        </div>
+        <div class="device-content" style="overflow: auto;">${innerHtml}</div>
       </div>
     </div>
   `
