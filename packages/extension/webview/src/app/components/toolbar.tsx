@@ -12,10 +12,23 @@ interface ToolbarProps {
 }
 
 export function Toolbar({ onExport, canExport, isLoading }: ToolbarProps) {
+  const logoSrc =
+    typeof document !== 'undefined'
+      ? (document.getElementById('root') as HTMLElement | null)?.dataset.logo ||
+        undefined
+      : undefined
+
   return (
     <div className="border-b border-gray-700 bg-gray-800 px-4 py-2">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
+          {logoSrc ? (
+            <img
+              src={logoSrc}
+              alt="Proto-Typed"
+              className="h-5 w-5 flex-shrink-0 rounded"
+            />
+          ) : null}
           <span className="text-sm font-medium text-gray-300">
             Proto-Typed Playground
           </span>

@@ -220,6 +220,9 @@ export class PlaygroundPanel implements vscode.Disposable {
     const styleUri = webview.asWebviewUri(
       vscode.Uri.joinPath(extensionUri, 'dist', 'webview', 'index.css')
     )
+    const logoUri = webview.asWebviewUri(
+      vscode.Uri.joinPath(extensionUri, 'logo.svg')
+    )
 
     // Generate nonce for CSP
     const nonce = this.getNonce()
@@ -279,7 +282,7 @@ export class PlaygroundPanel implements vscode.Disposable {
     </style>
 </head>
 <body class="dark">
-    <div id="root"></div>
+    <div id="root" data-logo="${logoUri}"></div>
     
     <script nonce="${nonce}">
         // Initialize VS Code API

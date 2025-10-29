@@ -4,16 +4,13 @@
   "description": "VSCode extension for the Proto-Typed DSL.",
   "version": "0.0.1",
   "publisher": "proto-typed",
-  "icon": "logo.svg",
+  "icon": "icons/icon-128.png",
   "engines": {
     "vscode": "^1.83.0"
   },
   "categories": [
     "Programming Languages",
     "Snippets"
-  ],
-  "activationEvents": [
-    "onLanguage:proto-typed"
   ],
   "main": "./dist/extension.js",
   "contributes": {
@@ -29,8 +26,8 @@
         ],
         "configuration": "./language-configuration.json",
         "icon": {
-          "light": "./logo.svg",
-          "dark": "./logo.svg"
+          "light": "./icons/icon-32.png",
+          "dark": "./icons/icon-32.png"
         }
       }
     ],
@@ -59,7 +56,10 @@
         "command": "proto-typed.showPreview",
         "title": "Open Preview to the Side",
         "category": "Proto-Typed",
-        "icon": "./logo.svg"
+        "icon": {
+          "light": "./icons/icon-24.png",
+          "dark": "./icons/icon-24.png"
+        }
       }
     ],
     "menus": {
