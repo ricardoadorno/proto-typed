@@ -110,10 +110,8 @@
     "vsce:publish:major": "pnpm -w run compile && npx @vscode/vsce publish major",
     "ovsx:publish": "pnpm -w run compile && npx ovsx publish --pat $OVSX_TOKEN"
   },
-  "dependencies": {
-    "@proto-typed/core": "workspace:*"
-  },
   "devDependencies": {
+    "@proto-typed/core": "workspace:*",
     "@types/chai": "^4.3.11",
     "@types/mocha": "^10.0.6",
     "@types/node": "^18.19.0",
