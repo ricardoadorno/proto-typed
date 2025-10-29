@@ -65,6 +65,7 @@ export class PlaygroundPanel implements vscode.Disposable {
         localResourceRoots: [
           vscode.Uri.joinPath(options.extensionContext.extensionUri, 'dist'),
           vscode.Uri.joinPath(options.extensionContext.extensionUri, 'media'),
+          options.extensionContext.extensionUri,
         ],
         enableCommandUris: true,
         enableFindWidget: true,

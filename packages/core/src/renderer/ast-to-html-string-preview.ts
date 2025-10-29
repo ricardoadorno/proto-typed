@@ -133,18 +133,23 @@ ${allVariables}
         /* Use CSS variables instead of hardcoded colors */
         background: var(--background);
         color: var(--foreground);
-        min-height: 100vh;
+        min-height: 100%;
+        height: 100%;
         position: relative;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
       }
     </style>`
     : ''
 
   // Return wrapped HTML for preview with only theme-based styling
   return `
-  <div data-preview-container="true" class="h-full w-full overflow-auto">
+  <div data-preview-container="true" class="h-full w-full">
     ${scopedStyles}
-    ${screensHtml}
-    ${globalElementsHtml}
-
-    </div>`
+    <div class="preview-scroll">
+      ${screensHtml}
+      ${globalElementsHtml}
+    </div>
+  </div>`
 }

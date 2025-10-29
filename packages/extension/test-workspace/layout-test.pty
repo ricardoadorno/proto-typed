@@ -11,17 +11,11 @@ screen Home:
   container:
     # Welcome to Layout Test
     > This DSL tests proper2 indent2ation for layouts and cards
-
-    ---
-
     card:
       ## Quick Links
       > Access important sections
       @[Open Docs](Docs)
       @ghost[Cancel](-1)
-
-    ---
-
     grid-2:
       card-compact:
         ### Feature 1
@@ -31,12 +25,8 @@ screen Home:
         ### Feature 2
         >> Second feature description
         @outline-sm[Learn More](Docs)
-
-    ---
-
     stack:
       > This is a stack layout
-
       card:
         #### Inside Card in Stack
         >>> This card is properly indented inside a stack

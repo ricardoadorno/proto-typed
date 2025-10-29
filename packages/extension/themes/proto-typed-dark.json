@@ -1,258 +1,130 @@
 {
-  "name": "Proto-Typed Dark",
+  "name": "Proto-Typed Dark Tokens",
   "type": "dark",
   "semanticHighlighting": true,
-  "colors": {
-    "editor.background": "#0f172a",
-    "editor.foreground": "#e2e8f0",
-    "editorLineNumber.foreground": "#475569",
-    "editorLineNumber.activeForeground": "#94a3b8",
-    "editor.selectionBackground": "#334155",
-    "editor.inactiveSelectionBackground": "#1e293b",
-    "editorCursor.foreground": "#60a5fa",
-    "editor.findMatchBackground": "#fbbf2480",
-    "editor.findMatchHighlightBackground": "#f59e0b40",
-    "editorBracketMatch.background": "#334155",
-    "editorBracketMatch.border": "#60a5fa",
-    "editorIndentGuide.background": "#1e293b",
-    "editorIndentGuide.activeBackground": "#334155",
-    "editorWhitespace.foreground": "#1e293b"
-  },
   "tokenColors": [
     {
-      "name": "Views - Keywords (screen, modal, drawer)",
-      "scope": "keyword.view.pty",
-      "settings": {
-        "foreground": "#ff6b6b",
-        "fontStyle": "bold"
-      }
+      "name": "View keywords",
+      "scope": ["keyword.view.proto", "keyword.structure.proto"],
+      "settings": { "foreground": "#ff6b6b", "fontStyle": "bold" }
     },
     {
-      "name": "View Names",
-      "scope": "entity.name.view.pty",
-      "settings": {
-        "foreground": "#00d9ff",
-        "fontStyle": "bold"
-      }
+      "name": "View names",
+      "scope": ["entity.name.view.proto"],
+      "settings": { "foreground": "#00d9ff", "fontStyle": "bold" }
     },
     {
-      "name": "Components - Keyword",
-      "scope": "keyword.component.pty",
-      "settings": {
-        "foreground": "#ff6b6b",
-        "fontStyle": "bold"
-      }
+      "name": "Component keyword",
+      "scope": ["keyword.component.proto"],
+      "settings": { "foreground": "#ff6b6b", "fontStyle": "bold" }
     },
     {
-      "name": "Component Names",
-      "scope": "entity.name.component.pty",
-      "settings": {
-        "foreground": "#4ade80",
-        "fontStyle": "bold"
-      }
+      "name": "Component names",
+      "scope": [
+        "entity.name.component.proto",
+        "variable.other.component.instance.proto"
+      ],
+      "settings": { "foreground": "#4ade80", "fontStyle": "bold" }
     },
     {
-      "name": "Component Instance ($ComponentName)",
-      "scope": "variable.component.pty",
-      "settings": {
-        "foreground": "#4ade80",
-        "fontStyle": "bold"
-      }
+      "name": "Component props",
+      "scope": ["variable.parameter.component.prop.proto"],
+      "settings": { "foreground": "#f59e0b", "fontStyle": "italic" }
     },
     {
-      "name": "Component Props (%propName)",
-      "scope": "variable.prop.pty",
-      "settings": {
-        "foreground": "#f59e0b",
-        "fontStyle": "italic"
-      }
+      "name": "Styles keyword",
+      "scope": ["keyword.styles.proto"],
+      "settings": { "foreground": "#a78bfa", "fontStyle": "bold" }
     },
     {
-      "name": "Styles Keyword",
-      "scope": "keyword.styles.pty",
-      "settings": {
-        "foreground": "#a78bfa",
-        "fontStyle": "bold"
-      }
+      "name": "CSS custom properties",
+      "scope": ["support.type.property-name.css.proto"],
+      "settings": { "foreground": "#8b5cf6" }
     },
     {
-      "name": "CSS Variables (--custom-property)",
-      "scope": "variable.css.pty",
-      "settings": {
-        "foreground": "#8b5cf6"
-      }
+      "name": "Layouts",
+      "scope": ["keyword.layout.proto"],
+      "settings": { "foreground": "#ec4899", "fontStyle": "bold" }
     },
     {
-      "name": "Layouts (row, col, grid, container, etc)",
-      "scope": "keyword.layout.pty",
-      "settings": {
-        "foreground": "#ec4899",
-        "fontStyle": "bold"
-      }
+      "name": "Typography headings",
+      "scope": ["markup.heading.proto"],
+      "settings": { "foreground": "#34d399", "fontStyle": "bold" }
     },
     {
-      "name": "Structures (header, etc)",
-      "scope": "keyword.structure.pty",
-      "settings": {
-        "foreground": "#ec4899",
-        "fontStyle": "bold"
-      }
+      "name": "Typography text",
+      "scope": [
+        "markup.paragraph.proto",
+        "markup.text.proto",
+        "markup.muted.proto"
+      ],
+      "settings": { "foreground": "#34d399" }
     },
     {
-      "name": "Typography - Headings",
-      "scope": "markup.heading.pty",
-      "settings": {
-        "foreground": "#34d399",
-        "fontStyle": "bold"
-      }
+      "name": "Typography note",
+      "scope": ["markup.note.proto"],
+      "settings": { "foreground": "#34d399", "fontStyle": "italic" }
     },
     {
-      "name": "Typography - Paragraph",
-      "scope": "markup.paragraph.pty",
-      "settings": {
-        "foreground": "#34d399"
-      }
+      "name": "Typography quote",
+      "scope": ["markup.quote.proto"],
+      "settings": { "foreground": "#34d399", "fontStyle": "italic" }
     },
     {
-      "name": "Typography - Text",
-      "scope": "markup.text.pty",
-      "settings": {
-        "foreground": "#34d399"
-      }
-    },
-    {
-      "name": "Typography - Muted Text",
-      "scope": "markup.muted.pty",
-      "settings": {
-        "foreground": "#6ee7b7"
-      }
-    },
-    {
-      "name": "Typography - Note",
-      "scope": "markup.note.pty",
-      "settings": {
-        "foreground": "#34d399",
-        "fontStyle": "italic"
-      }
-    },
-    {
-      "name": "Typography - Quote",
-      "scope": "markup.quote.pty",
-      "settings": {
-        "foreground": "#34d399",
-        "fontStyle": "italic"
-      }
-    },
-    {
-      "name": "Typography - List Items",
-      "scope": "markup.list.pty",
-      "settings": {
-        "foreground": "#fbbf24"
-      }
+      "name": "Lists",
+      "scope": ["markup.list.proto"],
+      "settings": { "foreground": "#fbbf24" }
     },
     {
       "name": "Buttons",
-      "scope": "keyword.button.pty",
-      "settings": {
-        "foreground": "#60a5fa",
-        "fontStyle": "bold"
-      }
+      "scope": ["keyword.button.proto"],
+      "settings": { "foreground": "#60a5fa", "fontStyle": "bold" }
     },
     {
-      "name": "Links",
-      "scope": "keyword.link.pty",
-      "settings": {
-        "foreground": "#60a5fa",
-        "fontStyle": "bold"
-      }
+      "name": "Links & images",
+      "scope": ["keyword.link.proto", "keyword.image.proto"],
+      "settings": { "foreground": "#60a5fa", "fontStyle": "bold" }
     },
     {
-      "name": "Images",
-      "scope": "keyword.image.pty",
-      "settings": {
-        "foreground": "#60a5fa"
-      }
+      "name": "Icons",
+      "scope": ["entity.name.icon.proto"],
+      "settings": { "foreground": "#ff8c00" }
     },
     {
-      "name": "Icons (i-IconName)",
-      "scope": "entity.name.icon.pty",
-      "settings": {
-        "foreground": "#ff8c00"
-      }
+      "name": "Route references",
+      "scope": ["entity.name.reference.proto"],
+      "settings": { "foreground": "#00d9ff" }
     },
     {
-      "name": "Forms - Generic Input",
-      "scope": "keyword.input.pty",
-      "settings": {
-        "foreground": "#a855f7"
-      }
+      "name": "Form fields",
+      "scope": [
+        "keyword.input.proto",
+        "keyword.input.email.proto",
+        "keyword.input.password.proto",
+        "keyword.input.date.proto",
+        "keyword.input.number.proto",
+        "keyword.input.textarea.proto"
+      ],
+      "settings": { "foreground": "#a855f7" }
     },
     {
-      "name": "Forms - Email Input",
-      "scope": "keyword.input.email.pty",
-      "settings": {
-        "foreground": "#a855f7",
-        "fontStyle": "bold"
-      }
+      "name": "Checkboxes & radios",
+      "scope": [
+        "constant.language.checkbox.proto",
+        "constant.language.radio.proto"
+      ],
+      "settings": { "foreground": "#a855f7", "fontStyle": "bold" }
     },
     {
-      "name": "Forms - Password Input",
-      "scope": "keyword.input.password.pty",
-      "settings": {
-        "foreground": "#a855f7",
-        "fontStyle": "bold"
-      }
-    },
-    {
-      "name": "Forms - Checkboxes",
-      "scope": "keyword.checkbox.pty",
-      "settings": {
-        "foreground": "#a855f7",
-        "fontStyle": "bold"
-      }
-    },
-    {
-      "name": "Forms - Radio Buttons",
-      "scope": "keyword.radio.pty",
-      "settings": {
-        "foreground": "#a855f7",
-        "fontStyle": "bold"
-      }
-    },
-    {
-      "name": "Delimiters - Separator (---)",
-      "scope": "delimiter.separator.pty",
-      "settings": {
-        "foreground": "#ffe66d"
-      }
-    },
-    {
-      "name": "Delimiters - Pipe (|)",
-      "scope": "delimiter.pipe.pty",
-      "settings": {
-        "foreground": "#ffe66d"
-      }
-    },
-    {
-      "name": "Delimiters - Brackets",
-      "scope": "delimiter.bracket.pty",
-      "settings": {
-        "foreground": "#ffe66d"
-      }
-    },
-    {
-      "name": "Delimiters - Braces",
-      "scope": "delimiter.brace.pty",
-      "settings": {
-        "foreground": "#ffe66d"
-      }
-    },
-    {
-      "name": "Delimiters - Colon",
-      "scope": "delimiter.colon.pty",
-      "settings": {
-        "foreground": "#ffe66d"
-      }
+      "name": "Delimiters",
+      "scope": [
+        "punctuation.separator.key-value.proto",
+        "punctuation.section.brackets.proto",
+        "punctuation.section.braces.proto",
+        "punctuation.separator.pipe.proto",
+        "delimiter.separator.proto"
+      ],
+      "settings": { "foreground": "#ffe66d" }
     }
   ]
 }

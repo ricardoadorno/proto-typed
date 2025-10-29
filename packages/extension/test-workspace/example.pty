@@ -24,7 +24,7 @@ component GroupItem:
 
 screen Contacts:
   header:
-    >> My Contacts
+    > My Contacts
     @ghost-sm[i-Menu](MainDrawer)
   container:
     > Your contacts organized in one place

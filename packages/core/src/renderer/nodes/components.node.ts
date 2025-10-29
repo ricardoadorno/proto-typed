@@ -2,10 +2,12 @@ import type {
   AstNode,
   ComponentProps,
   ComponentInstanceProps,
+  LayoutProps,
 } from '../../types/ast-node'
 
 // Global variable to store component definitions
 let globalComponentDefinitions: AstNode[] = []
+let headerComponentNames = new Set<string>()
 
 /**
  * @function setComponentDefinitions
@@ -15,6 +17,18 @@ let globalComponentDefinitions: AstNode[] = []
  */
 export function setComponentDefinitions(components: AstNode[]) {
   globalComponentDefinitions = components
+  headerComponentNames = new Set(
+    components
+      .filter((component) =>
+        component.children?.some(
+          (child) =>
+            child.type === 'Layout' &&
+            (child.props as LayoutProps)?.layoutType === 'header'
+        )
+      )
+      .map((component) => (component.props as ComponentProps)?.name)
+      .filter((name): name is string => Boolean(name))
+  )
 }
 
 /**
@@ -25,6 +39,17 @@ export function setComponentDefinitions(components: AstNode[]) {
  */
 export function findComponentDefinitions(): AstNode[] {
   return globalComponentDefinitions
+}
+
+/**
+ * @function isHeaderComponentName
+ * @description Determines if the component name corresponds to a header layout.
+ */
+export function isHeaderComponentName(componentName?: string): boolean {
+  if (!componentName) {
+    return false
+  }
+  return headerComponentNames.has(componentName)
 }
 
 /**

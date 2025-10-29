@@ -292,7 +292,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: 24px;
-  overflow: auto;
+  overflow: hidden;
   background: #0b0d14;
 }
 
@@ -381,8 +381,9 @@ body {
 .device-content {
   height: 100%;
   width: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 /* Ensure screens use full height with header + scrollable content */
@@ -407,4 +408,12 @@ body {
 /* Leave room for sticky bottom navs inside the screen */
 [data-screen] > .h-full .overflow-auto {
   padding-bottom: 72px;
+}
+
+.preview-scroll {
+  flex: 1 1 auto;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }

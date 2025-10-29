@@ -8,7 +8,7 @@ export function getDeviceMockupStyles(): string {
         .preview-logo { width: 24px; height: 24px; }
         .preview-title { font-size: 14px; font-weight: 600; color: rgba(255, 255, 255, 0.95); flex: 1; }
 
-        .preview-container { height: calc(100vh - 48px - 40px); display: flex; align-items: center; justify-content: center; padding: 24px; overflow: auto; background: #0b0d14; }
+        .preview-container { height: calc(100vh - 48px - 40px); display: flex; align-items: center; justify-content: center; padding: 24px; overflow: hidden; background: #0b0d14; }
         .device-frame { transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
 
         /* iPhone Mockup */
@@ -19,11 +19,12 @@ export function getDeviceMockupStyles(): string {
         .camera { position: absolute; left: calc(50% + 70px); top: 3px; height: 10px; width: 10px; border-radius: 50%; background: var(--bg-surface); box-shadow: inset 0 -1px 3px rgba(255, 255, 255, 0.08); z-index: 11; }
         .camera-inner { position: absolute; left: 2.5px; top: 2.5px; height: 5px; width: 5px; border-radius: 50%; background: rgba(139, 92, 246, 0.8); box-shadow: inset 0 -1px 2px rgba(0, 0, 0, 0.25); }
 
-        .device-content { height: 100%; width: 100%; overflow-y: auto; overflow-x: hidden; }
+        .device-content { height: 100%; width: 100%; display: flex; flex-direction: column; overflow: hidden; }
         .device-content::-webkit-scrollbar { width: 6px; }
         .device-content::-webkit-scrollbar-track { background: transparent; }
         .device-content::-webkit-scrollbar-thumb { background: rgba(169, 175, 191, 0.3); border-radius: 3px; }
         .device-content::-webkit-scrollbar-thumb:hover { background: rgba(169, 175, 191, 0.5); }
+        .preview-scroll { flex: 1 1 auto; height: 100%; overflow: hidden; display: flex; flex-direction: column; }
 
         /* Screen Navigation */
         .screen-navigation { padding: 8px 20px; background: #16171f; border-bottom: 1px solid rgba(169, 175, 191, 0.15); display: flex; gap: 8px; flex-wrap: wrap; max-height: 120px; overflow-y: auto; position: relative; z-index: 100; }
@@ -52,7 +53,7 @@ export function renderIphoneMockup(innerHtml: string): string {
         <div class="notch"></div>
         <div class="speaker"></div>
         <div class="camera"><div class="camera-inner"></div></div>
-        <div class="device-content" style="overflow: auto;">${innerHtml}</div>
+        <div class="device-content">${innerHtml}</div>
       </div>
     </div>
   `

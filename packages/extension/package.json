@@ -55,7 +55,7 @@
     ],
     "themes": [
       {
-        "label": "Proto-Typed Dark",
+        "label": "Proto-Typed Dark Tokens",
         "uiTheme": "vs-dark",
         "path": "./themes/proto-typed-dark.json"
       }

@@ -3,10 +3,16 @@
  * Functions for rendering screens in different contexts
  */
 
-import { AstNode, ViewProps, LayoutProps } from '../../types/ast-node'
+import {
+  AstNode,
+  ViewProps,
+  LayoutProps,
+  ComponentInstanceProps,
+} from '../../types/ast-node'
 import { ScreenRenderConfig } from '../../types/render'
 import { renderNode } from '../core/node-renderer'
 import { RouteManager } from '../core/route-manager'
+import { isHeaderComponentName } from '../nodes/components.node'
 
 /**
  * Render a single screen to HTML with full configuration
@@ -106,11 +112,22 @@ export function renderScreenForDocument(
  * Separate screen elements by type for proper positioning
  */
 function separateScreenElements(screen: AstNode) {
+  const isHeaderComponent = (element: AstNode): boolean => {
+    if (element.type !== 'ComponentInstance') {
+      return false
+    }
+
+    const componentName = (element.props as ComponentInstanceProps)
+      ?.componentName
+    return isHeaderComponentName(componentName)
+  }
+
   const headerElements =
     screen.children?.filter(
       (element: AstNode) =>
-        element.type === 'Layout' &&
-        (element.props as LayoutProps)?.layoutType === 'header'
+        (element.type === 'Layout' &&
+          (element.props as LayoutProps)?.layoutType === 'header') ||
+        isHeaderComponent(element)
     ) || []
   const fabElements =
     screen.children?.filter((element: AstNode) => element.type === 'Fab') || []
@@ -125,6 +142,7 @@ function separateScreenElements(screen: AstNode) {
           element.type === 'Layout' &&
           (element.props as LayoutProps)?.layoutType === 'header'
         ) &&
+        !isHeaderComponent(element) &&
         element.type !== 'Fab' &&
         element.type !== 'Navigator' &&
         // Exclude named modals and drawers (they'll be rendered globally)
