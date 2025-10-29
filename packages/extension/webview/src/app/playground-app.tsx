@@ -30,7 +30,7 @@ export function PlaygroundApp() {
 
   return (
     <div className="flex flex-col h-screen bg-gray-900 text-white">
-      <Toolbar onExport={exportHtml} canExport={!!html} />
+      <Toolbar onExport={exportHtml} canExport={!!html} isLoading={isLoading} />
       <ErrorPanel errors={errors} />
       <ScreenNavigator
         metadata={metadata}
