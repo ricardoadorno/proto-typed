@@ -75,7 +75,8 @@ import {
   FontFamily,
   TemplateDefault,
   PropertyValue,
-} from './styles.tokens'
+} from './head.tokens'
+import { Meta, MetaVersion, MetaTitle, MetaValue } from './meta.tokens'
 
 // Export all tokens - Organized by Category
 export {
@@ -181,6 +182,12 @@ export {
   FontFamily,
   TemplateDefault,
   PropertyValue,
+
+  // Meta
+  Meta,
+  MetaVersion,
+  MetaTitle,
+  MetaValue,
 }
 
 // All tokens array - order matters for matching precedence
@@ -199,6 +206,10 @@ export const allTokens = [
   FontBase,
   FontFamily,
   TemplateDefault,
+  // Meta tokens - keywords come early, MetaValue comes later
+  Meta,
+  MetaVersion,
+  MetaTitle,
   Screen,
   Component,
   Modal,
@@ -263,4 +274,5 @@ export const allTokens = [
   Colon,
   Identifier,
   PropertyValue, // Must come AFTER Identifier to avoid capturing component names
+  MetaValue, // Must come AFTER all keywords to avoid capturing them
 ]

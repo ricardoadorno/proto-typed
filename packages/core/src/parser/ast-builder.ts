@@ -29,6 +29,8 @@ import {
   buildComponentInstanceElement,
   // Head configuration builders (formerly Styles)
   buildHead,
+  // Meta configuration builders
+  buildMeta,
 } from './builders'
 
 // Type alias for backward compatibility
@@ -80,7 +82,8 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any[]} An array of all processed global elements, forming the root of the AST.
      */
     program(ctx: Context) {
-      // Process multiple screens, components, modals, drawers, and head configuration as global elements
+      // Process multiple screens, components, modals, drawers, meta and head configuration as global elements
+      const meta = ctx.meta ? ctx.meta.map((m) => this.visit(m as CstNode)) : []
       const head = ctx.head ? ctx.head.map((h) => this.visit(h as CstNode)) : []
       const screens = ctx.screen
         ? ctx.screen.map((screen) => this.visit(screen as CstNode))
@@ -95,7 +98,7 @@ export function createAstBuilder(parserInstance: UiDslParser) {
         ? ctx.drawer.map((drawer) => this.visit(drawer as CstNode))
         : []
 
-      return [...head, ...screens, ...components, ...modals, ...drawers]
+      return [...meta, ...head, ...screens, ...components, ...modals, ...drawers]
     }
 
     // ===== HEAD CONFIGURATION RULES =====
@@ -137,6 +140,16 @@ export function createAstBuilder(parserInstance: UiDslParser) {
 
       console.warn('Unknown element type in context:', Object.keys(ctx))
       return null
+    }
+
+    /**
+     * @method meta
+     * @description Visits a 'meta' CST node and uses the builder function to create a meta configuration AST node.
+     * @param {Context} ctx - The parsing context for the meta block.
+     * @returns {any} The resulting meta AST node.
+     */
+    meta(ctx: Context) {
+      return buildMeta(ctx)
     }
 
     /**

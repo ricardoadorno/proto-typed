@@ -68,6 +68,10 @@ export interface IParser {
   headTemplateSection: ParserRule
   templateProperty: ParserRule
 
+  // Meta rules
+  meta: ParserRule
+  metaProperty: ParserRule
+
   // Helper methods
   consumeIndentedElements: () => void
   containerWithOptionalContent: () => void

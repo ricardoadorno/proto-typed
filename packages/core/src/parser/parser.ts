@@ -8,6 +8,7 @@ import {
   defineLayoutRules,
   defineInputRules,
   defineHeadRules,
+  defineMetaRules,
   defineCoreRules,
   defineHelperMethods,
 } from './rules'
@@ -61,6 +62,8 @@ export class UiDslParser extends CstParser {
   fontProperty!: ParserRule
   headTemplateSection!: ParserRule
   templateProperty!: ParserRule
+  meta!: ParserRule
+  metaProperty!: ParserRule
 
   // Helper methods
   consumeIndentedElements!: () => void
@@ -89,8 +92,9 @@ export class UiDslParser extends CstParser {
     )
 
     // Define all parsing rules from modular rule files
-    // Order matters: head and views must be defined before core.program references them
+    // Order matters: head, meta and views must be defined before core.program references them
     defineHeadRules.call(this as unknown as import('../types/parser').IParser)
+    defineMetaRules.call(this as unknown as import('../types/parser').IParser)
     defineViewRules.call(this as unknown as import('../types/parser').IParser)
     defineComponentRules.call(
       this as unknown as import('../types/parser').IParser

@@ -108,6 +108,11 @@ const RENDERERS: Record<NodeType, typeof _render> = {
   FontProperty: () => '',
   HeadTemplate: () => '',
   TemplateProperty: () => '',
+
+  // Meta configuration nodes (no direct HTML output)
+  Meta: () => '',
+  MetaProperty: () => '',
+
   Identifier: () => '',
 }
 

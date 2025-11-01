@@ -47,6 +47,10 @@ export type NodeType =
   | 'HeadTemplate'
   | 'TemplateProperty'
 
+  // Meta configuration (from meta.tokens.ts)
+  | 'Meta'
+  | 'MetaProperty'
+
   // Core (from core.tokens.ts)
   | 'Identifier'
 
