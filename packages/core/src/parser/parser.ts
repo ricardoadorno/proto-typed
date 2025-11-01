@@ -7,7 +7,7 @@ import {
   definePrimitiveRules,
   defineLayoutRules,
   defineInputRules,
-  defineStyleRules,
+  defineHeadRules,
   defineCoreRules,
   defineHelperMethods,
 } from './rules'
@@ -28,7 +28,7 @@ import type { ParserRule } from '../types/parser'
  * - primitives.rules.ts: Button, Link, Image, Heading, Text parsing rules
  * - layouts.rules.ts: Layout, List, Navigator, FAB parsing rules
  * - inputs.rules.ts: Input, Radio, Checkbox parsing rules
- * - styles.rules.ts: Styles parsing rules
+ * - head.rules.ts: Head configuration parsing rules (colors, fonts, templates)
  */
 export class UiDslParser extends CstParser {
   // Declare all rules as properties (required for TypeScript)
@@ -53,8 +53,14 @@ export class UiDslParser extends CstParser {
   inputElement!: ParserRule
   radioButtonGroup!: ParserRule
   checkboxElement!: ParserRule
-  styles!: ParserRule
-  styleDeclaration!: ParserRule
+  head!: ParserRule
+  headColorSection!: ParserRule
+  colorProperty!: ParserRule
+  headFontSection!: ParserRule
+  fontBaseSection!: ParserRule
+  fontProperty!: ParserRule
+  headTemplateSection!: ParserRule
+  templateProperty!: ParserRule
 
   // Helper methods
   consumeIndentedElements!: () => void
@@ -83,8 +89,8 @@ export class UiDslParser extends CstParser {
     )
 
     // Define all parsing rules from modular rule files
-    // Order matters: styles and views must be defined before core.program references them
-    defineStyleRules.call(this as unknown as import('../types/parser').IParser)
+    // Order matters: head and views must be defined before core.program references them
+    defineHeadRules.call(this as unknown as import('../types/parser').IParser)
     defineViewRules.call(this as unknown as import('../types/parser').IParser)
     defineComponentRules.call(
       this as unknown as import('../types/parser').IParser

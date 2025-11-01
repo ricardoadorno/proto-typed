@@ -16,13 +16,13 @@ export const defineCoreRules: RuleDefinitionFunction = function (
 ): void {
   /**
    * @rule program
-   * @description The top-level rule of the grammar. It can parse a sequence of screens, components, modals, drawers, and styles.
+   * @description The top-level rule of the grammar. It can parse a sequence of screens, components, modals, drawers, and head configuration.
    * This allows for defining multiple top-level elements in a single DSL file.
    */
   this.RULE('program', () => {
     this.MANY(() => {
       this.OR([
-        { ALT: () => this.SUBRULE(this.styles) },
+        { ALT: () => this.SUBRULE(this.head) },
         { ALT: () => this.SUBRULE(this.screen) },
         { ALT: () => this.SUBRULE(this.component) },
         { ALT: () => this.SUBRULE(this.modal) },

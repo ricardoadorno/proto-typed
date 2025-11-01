@@ -58,9 +58,15 @@ export interface IParser {
   radioButtonGroup: ParserRule
   checkboxElement: ParserRule
 
-  // Style rules
-  styles: ParserRule
-  styleDeclaration: ParserRule
+  // Head rules (formerly Style rules)
+  head: ParserRule
+  headColorSection: ParserRule
+  colorProperty: ParserRule
+  headFontSection: ParserRule
+  fontBaseSection: ParserRule
+  fontProperty: ParserRule
+  headTemplateSection: ParserRule
+  templateProperty: ParserRule
 
   // Helper methods
   consumeIndentedElements: () => void

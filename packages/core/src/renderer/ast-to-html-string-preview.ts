@@ -40,10 +40,27 @@ export function astToHtmlStringPreview(
     // Reset and process custom properties for this preview
     customPropertiesManager.reset()
 
-    // Process styles first to configure custom properties
+    // Process head configuration first to configure custom properties
+    // The AST may be a single root node (e.g. Screen) that contains Head as a child,
+    // so collect Head nodes recursively from the provided AST(s).
     const astArray = Array.isArray(ast) ? ast : [ast]
-    const stylesNodes = astArray.filter((node) => node.type === 'Styles')
-    customPropertiesManager.processStylesConfig(stylesNodes)
+
+    const collectByType = (nodes: AstNode[], type: string): AstNode[] => {
+      const results: AstNode[] = []
+      for (const n of nodes) {
+        if (!n) continue
+        if (n.type === type) {
+          results.push(n)
+        }
+        if (n.children && n.children.length > 0) {
+          results.push(...collectByType(n.children, type))
+        }
+      }
+      return results
+    }
+
+    const headNodes = collectByType(astArray, 'Head')
+    customPropertiesManager.processHeadConfig(headNodes)
 
     // Process routes through the route manager
     manager.processRoutes(ast, {
@@ -117,19 +134,25 @@ function generatePreviewHtml(
     (context.currentScreen as string | null | undefined) || null
   const screensHtml = renderAllScreens(
     screenRoutes.map((route) => route.node),
-    currentScreen
+    currentScreen,
+    manager
   )
 
   // Render global elements (modals and drawers)
   const globalElementsHtml = renderGlobalElements(manager)
 
-  // Generate complete CSS variables for scoped styling (theme + custom)
+  // Generate complete CSS variables for scoped styling (theme + custom + head overrides)
   const allVariables = customPropertiesManager.generateAllCssVariables(true)
+  const headOverrides = customPropertiesManager.generateHeadThemeOverrides()
+  const googleFontsLink = customPropertiesManager.generateGoogleFontsLink()
+
   const scopedStyles = allVariables
     ? `
+    ${googleFontsLink ? googleFontsLink : ''}
     <style>
       [data-preview-container="true"] {
 ${allVariables}
+${headOverrides ? headOverrides : ''}
         /* Use CSS variables instead of hardcoded colors */
         background: var(--background);
         color: var(--foreground);

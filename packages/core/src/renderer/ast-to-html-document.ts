@@ -29,10 +29,10 @@ export function astToHtmlDocument(
     // Reset custom properties manager for each document generation
     customPropertiesManager.reset()
 
-    // Process styles first to configure custom properties
+    // Process head configuration first to configure custom properties
     const astArray = Array.isArray(ast) ? ast : [ast]
-    const stylesNodes = astArray.filter((node) => node.type === 'Styles')
-    customPropertiesManager.processStylesConfig(stylesNodes)
+    const headNodes = astArray.filter((node) => node.type === 'Head')
+    customPropertiesManager.processHeadConfig(headNodes)
 
     // Process routes through the route manager with possible currentScreen
     routeManager.processRoutes(ast, {
@@ -102,7 +102,7 @@ function generateDocumentHtml(context: RenderContext): string {
   const screensHtml = screenRoutes
     .filter((route) => route.node && route.name)
     .map((route, index) =>
-      renderScreenForDocument(route.node, index, currentScreen)
+      renderScreenForDocument(route.node, index, currentScreen, routeManager)
     )
     .join('\n\n')
 
@@ -152,6 +152,8 @@ function generateHtmlDocumentTemplate(
 
   // Generate CSS variables from theme and custom properties
   const allVariables = customPropertiesManager.generateAllCssVariables(true) // Dark mode
+  const headOverrides = customPropertiesManager.generateHeadThemeOverrides()
+  const googleFontsLink = customPropertiesManager.generateGoogleFontsLink()
 
   return `
 <!DOCTYPE html>
@@ -159,13 +161,14 @@ function generateHtmlDocumentTemplate(
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  ${scripts.tailwindCdn}
+  ${googleFontsLink ? googleFontsLink + '\n  ' : ''}${scripts.tailwindCdn}
   ${scripts.tailwindConfig}
   ${scripts.lucideScript}
   <title>Exported Screens - ${customPropertiesManager.getCurrentThemeName()} theme</title>
   <style>
     :root {
 ${allVariables}
+${headOverrides ? headOverrides : ''}
     }
     
     html, body { 
