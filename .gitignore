@@ -31,3 +31,4 @@ packages/extension/.vscode-test/
 *.njsproj
 *.sln
 *.sw?
+CLAUDE.md

@@ -2,25 +2,424 @@
 
 ## 🎯 Critical Context First
 
-**BEFORE making ANY changes**: Read the actual implementation in `src/core/` to understand current token patterns, parsing rules, and AST structures. This file is a GUIDE - the SOURCE OF TRUTH is the code.
+**BEFORE making ANY changes**: Read the actual implementation in `packages/core/src/` to understand current token patterns, parsing rules, and AST structures. This file is a GUIDE - the SOURCE OF TRUTH is the code.
 
 ### Technology Stack
 
 - **Parse Pipeline**: Chevrotain (Lexer → Parser → AST Builder → Renderer)
-- **Frontend**: React 19 + TypeScript + Vite
-- **Editor**: Monaco with custom DSL syntax
-- **Testing Philosophy**: Runtime validation over automated tests (no test suite)
+- **Core**: TypeScript compiler library (pnpm workspace package)
+- **Web Frontend**: Next.js 15 + React 19 + TypeScript
+- **Editor**: Monaco Editor with custom DSL language registration
+- **VSCode Extension**: Webview-based preview with message passing
+- **Testing Philosophy**: Runtime validation over automated tests (philosophy over tooling)
 
-### Code Architecture
+### Monorepo Structure
 
 ```
-src/core/
-├── lexer/tokens/        ← Token definitions by category
-├── parser/              ← Grammar rules (parser.ts)
-├── parser/builders/     ← CST → AST conversion by category
-├── renderer/            ← AST → HTML generation
-└── themes/              ← CSS variable system
+proto-typed/
+├── packages/
+│   ├── core/              ← DSL compiler engine
+│   │   └── src/
+│   │       ├── lexer/tokens/        # Token definitions by category (9 files)
+│   │       ├── parser/              # Grammar rules + CST
+│   │       ├── parser/builders/     # CST → AST conversion (10 files)
+│   │       ├── renderer/            # AST → HTML (3-tier architecture)
+│   │       ├── themes/              # CSS variable system (shadcn-based)
+│   │       ├── types/               # TypeScript type definitions
+│   │       └── utils/               # Icon utils, ID generation, suggestions
+│   ├── web/               ← Next.js web application
+│   │   └── src/
+│   │       ├── app/                 # Next.js 13+ App Router
+│   │       ├── components/          # React UI components (editor, preview, docs)
+│   │       ├── hooks/               # use-parse.ts (main parsing hook)
+│   │       └── examples/            # Example DSL code
+│   └── extension/         ← VSCode extension
+│       ├── src/                     # Extension host code
+│       │   ├── extension.ts         # Entry point
+│       │   ├── messaging/           # Message router (host ↔ webview)
+│       │   ├── panels/              # Webview panel management
+│       │   └── language/            # IntelliSense completion provider
+│       └── webview/                 # React webview app (uses @proto-typed/core)
+└── .github/
+    └── copilot-instructions.md      ← This file
 ```
+
+### Package Dependencies
+
+```
+@proto-typed/core (compiler library)
+  └─ chevrotain (lexer/parser), lucide (icons)
+
+@web/app (Next.js playground)
+  └─ @proto-typed/core
+  └─ next, react, @monaco-editor/react, tailwindcss
+
+@proto-typed/extension (VSCode)
+  └─ @proto-typed/core
+  └─ vscode API
+  └─ Webview React app → @proto-typed/core
+```
+
+---
+
+## 🏛️ Codebase Architecture Deep Dive
+
+### Compiler Pipeline Overview
+
+The DSL engine follows a classic compiler architecture with 5 distinct phases:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  DSL Text Input                                                  │
+│  "screen Home:\n  button-primary Click me"                       │
+└─────────────────────────────────────────────────────────────────┘
+                               ↓
+┌─────────────────────────────────────────────────────────────────┐
+│  PHASE 1: LEXER (packages/core/src/lexer/)                      │
+│  tokenize(text: string)                                          │
+│    ├─ Custom indentation matcher (matchIndentBase)              │
+│    ├─ Regex-based token matching (precedence-ordered)           │
+│    └─ Returns: { tokens: IToken[], errors: LexError[] }         │
+└─────────────────────────────────────────────────────────────────┘
+                               ↓
+┌─────────────────────────────────────────────────────────────────┐
+│  PHASE 2: PARSER (packages/core/src/parser/)                    │
+│  parser.program()                                                │
+│    ├─ OR([screen, modal, drawer, component, head, meta])        │
+│    ├─ element() dispatcher for nested content                   │
+│    ├─ Indent/Outdent-aware nesting                              │
+│    └─ Returns: CST (Concrete Syntax Tree)                       │
+└─────────────────────────────────────────────────────────────────┘
+                               ↓
+┌─────────────────────────────────────────────────────────────────┐
+│  PHASE 3: AST BUILDER (packages/core/src/parser/builders/)      │
+│  AstBuilder.visit(cst)                                           │
+│    ├─ Delegates to builder functions by node type               │
+│    ├─ Validates props (builder-validation.ts)                   │
+│    ├─ Collects errors (non-throwing)                            │
+│    └─ Returns: AstNode[] (partial tree even with errors)        │
+└─────────────────────────────────────────────────────────────────┘
+                               ↓
+┌─────────────────────────────────────────────────────────────────┐
+│  PHASE 4: ID GENERATION (packages/core/src/utils/)              │
+│  generateDeterministicIds(ast, previousAst)                      │
+│    ├─ Path-based stable ID generation                           │
+│    ├─ Reuses IDs from previousAst for unchanged nodes           │
+│    └─ Returns: AstNode[] with IDs filled (React key stability)  │
+└─────────────────────────────────────────────────────────────────┘
+                               ↓
+┌─────────────────────────────────────────────────────────────────┐
+│  PHASE 5: RENDERER (packages/core/src/renderer/)                │
+│  astToHtmlDocument() or astToHtmlStringPreview()                 │
+│    ├─ Route processing (screens, modals, drawers)               │
+│    ├─ Theme processing (CSS variables)                          │
+│    ├─ Node-by-node HTML generation (40+ renderers)              │
+│    └─ Returns: HTML string (standalone or preview)              │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Token System Architecture (packages/core/src/lexer/tokens/)
+
+**9 Category Files + 1 Index:**
+
+| File | Tokens | Purpose |
+|------|--------|---------|
+| **core.tokens.ts** | WhiteSpace, NewLine, Colon, Identifier, Indent, Outdent | Fundamental language structure |
+| **views.tokens.ts** | Screen, Modal, Drawer | Container views for UI |
+| **primitives.tokens.ts** | Button variants, Text, Heading, Link, Image, Paragraph | Basic UI elements |
+| **layouts.tokens.ts** | Container variants, Stack, Row, Grid, Card, Header, List, Navigator, Separator, Fab | Layout presets (30+ tokens) |
+| **inputs.tokens.ts** | Input, RadioOption, Checkbox | Form controls |
+| **components.tokens.ts** | Component, ComponentInstance, PropVariable | Component system |
+| **head.tokens.ts** | Head, HeadColor, HeadFont, HeadTemplate, properties | Theme configuration |
+| **meta.tokens.ts** | Meta, MetaVersion, MetaTitle, MetaValue | Document metadata |
+| **index.ts** | allTokens array (exports) | Central export with **precedence ordering** |
+
+**Critical Pattern: Token Precedence**
+
+The `allTokens` array order determines matching priority:
+
+```typescript
+export const allTokens = [
+  // 1. Structural tokens first
+  NewLine, WhiteSpace, Indent, Outdent,
+
+  // 2. Keywords before identifiers
+  Screen, Modal, Drawer, Component,
+
+  // 3. Specific button variants before generic ButtonMarker
+  ButtonPrimary, ButtonSecondary, ButtonOutline, ..., ButtonMarker,
+
+  // 4. RadioOption/Checkbox BEFORE Input (more specific patterns first)
+  RadioOption, Checkbox, Input,
+
+  // 5. Identifier before PropertyValue to avoid capturing component names
+  Identifier, PropertyValue, MetaValue
+]
+```
+
+**Why this matters:** If `Input` comes before `RadioOption`, radio patterns won't match correctly.
+
+**Token Creation Pattern:**
+
+```typescript
+export const ButtonPrimary = createToken({
+  name: 'ButtonPrimary',              // Parser reference name
+  pattern: /button-primary|btn-primary/,  // Regex alternatives
+  label: 'primary button',            // Error message display name
+})
+```
+
+### Parser System Architecture (packages/core/src/parser/rules/)
+
+**9 Rule Files Mirroring Token Structure:**
+
+| File | Rules | Pattern |
+|------|-------|---------|
+| **core.rules.ts** | `program`, `element` dispatcher, helper methods | Top-level grammar + routing |
+| **views.rules.ts** | `screen`, `modal`, `drawer` | View container parsing |
+| **primitives.rules.ts** | `buttonElement`, `textElement`, `headingElement`, `linkElement`, `imageElement` | UI primitive parsing |
+| **layouts.rules.ts** | `layoutElement`, `listElement`, `navigatorElement`, `fabElement`, `separatorElement` | Layout and structure parsing |
+| **inputs.rules.ts** | `inputElement`, `radioElement`, `checkboxElement`, `selectElement` | Form control parsing |
+| **components.rules.ts** | `componentDefinition`, `componentInstanceElement` | Component system parsing |
+| **head.rules.ts** | `headBlock`, `headColorProperty`, `headFontProperty`, `headTemplateProperty` | Theme config parsing |
+| **meta.rules.ts** | `metaBlock`, `metaVersionProperty`, `metaTitleProperty` | Metadata parsing |
+| **index.ts** | Exports all rule definition functions | Central export |
+
+**Key Pattern: Rule Definition Functions**
+
+All rules use this pattern:
+
+```typescript
+export const defineViewRules: RuleDefinitionFunction = function(this: IParser): void {
+  // 'this' is the parser instance
+  this.RULE('screen', () => {
+    this.CONSUME(Screen)
+    this.CONSUME(Identifier, { LABEL: 'name' })
+    this.CONSUME(Colon)
+    this.OPTION(() => {
+      this.SUBRULE(this.consumeIndentedElements)
+    })
+  })
+}
+```
+
+**Critical Helper Methods (core.rules.ts):**
+
+1. **`consumeIndentedElements()`** - Handles Python-like nesting:
+   ```typescript
+   this.CONSUME(Indent)
+   this.MANY(() => this.SUBRULE(this.element))
+   this.CONSUME(Outdent)
+   ```
+
+2. **`containerWithOptionalContent()`** - Parses layouts with optional children:
+   ```typescript
+   container:           # No children, self-closing
+   container:           # With children
+     text Hello
+   ```
+
+3. **`listWithOptionalContent()`** - Parses list structures:
+   ```typescript
+   list:
+     - Item 1
+     - Item 2
+   ```
+
+**Central Element Dispatcher:**
+
+The `element` rule acts as a routing point for all nested content:
+
+```typescript
+this.RULE('element', () => {
+  this.OR([
+    { ALT: () => this.SUBRULE(this.componentInstanceElement) },
+    { ALT: () => this.SUBRULE(this.buttonElement) },
+    { ALT: () => this.SUBRULE(this.layoutElement) },
+    { ALT: () => this.SUBRULE(this.textElement) },
+    { ALT: () => this.SUBRULE(this.headingElement) },
+    // ... 20+ alternatives
+  ])
+})
+```
+
+**Why this matters:** Adding a new element requires:
+1. Token definition
+2. Parser rule
+3. Add to `element` dispatcher OR alternatives
+
+### AST Builder System (packages/core/src/parser/builders/)
+
+**10 Builder Files + 1 Validation:**
+
+| File | Builders | Responsibility |
+|------|----------|----------------|
+| **core.builders.ts** | Utility functions | `parseLayoutModifiers`, `parseListItem`, `parseNavigatorItem` |
+| **builder-validation.ts** | Validation helpers | `validateViewName`, `validatePropName`, error collection |
+| **views.builders.ts** | `buildScreen`, `buildModal`, `buildDrawer` | View container CST → AST |
+| **primitives.builders.ts** | `buildButtonElement`, `buildTextElement`, `buildHeadingElement`, etc. | UI primitive CST → AST |
+| **layouts.builders.ts** | `buildLayoutElement`, `buildListElement`, etc. | Layout CST → AST |
+| **inputs.builders.ts** | `buildInputElement`, `buildRadioElement`, `buildCheckboxElement` | Form control CST → AST |
+| **components.builders.ts** | `buildComponentDefinition`, `buildComponentInstanceElement` | Component system CST → AST |
+| **head.builders.ts** | `buildHeadBlock`, property builders | Theme config CST → AST |
+| **meta.builders.ts** | `buildMetaBlock`, property builders | Metadata CST → AST |
+| **index.ts** | Central exports | All builder functions |
+
+**Builder Function Pattern:**
+
+```typescript
+export function buildScreen(ctx: CstContext, visitor: CstVisitor): AstNode {
+  // 1. Extract tokens from CST context
+  const nameToken = ctx.name?.[0] as IToken | undefined
+  const name = nameToken?.image || ''
+
+  // 2. Validate (collect errors, don't throw)
+  if (!name.match(/^[A-Z][a-zA-Z0-9]*$/)) {
+    visitor.__builderErrors?.push({
+      stage: 'builder',
+      severity: 'error',
+      code: ERROR_CODES.BLD_INVALID_PROPS,
+      message: `Screen name must start with uppercase letter`,
+      line: nameToken?.startLine,
+      column: nameToken?.startColumn
+    })
+  }
+
+  // 3. Recursively visit children
+  const children = ctx.element
+    ? ctx.element.map((el) => visitor.visit(el as CstNode))
+    : []
+
+  // 4. Return AST node (ID filled later)
+  return {
+    type: 'Screen',
+    id: '',  // generateDeterministicIds() fills this
+    props: { name },
+    children,
+  }
+}
+```
+
+**Critical Pattern: Error Collection Instead of Throwing**
+
+Builders **never throw** - they collect errors in `visitor.__builderErrors`:
+
+```typescript
+// ❌ DON'T
+if (invalid) throw new Error('Invalid!')
+
+// ✅ DO
+if (invalid) {
+  visitor.__builderErrors?.push({
+    stage: 'builder',
+    severity: 'error',
+    code: ERROR_CODES.BLD_INVALID_PROPS,
+    message: 'Invalid prop value',
+    line, column
+  })
+}
+```
+
+**Why this matters:** Live editors need to show all errors, not crash on the first one.
+
+**Visitor Pattern Integration (ast-builder.ts):**
+
+```typescript
+class AstBuilder extends BaseUiDslCstVisitor {
+  __builderErrors: ProtoError[] = []
+
+  screen(ctx: Context) {
+    return buildScreen(ctx, this)
+  }
+
+  buttonElement(ctx: Context) {
+    return buildButtonElement(ctx, this)
+  }
+
+  // ... 30+ methods delegating to builder functions
+}
+```
+
+### Type System Architecture (packages/core/src/types/)
+
+**6 Type Definition Files:**
+
+| File | Purpose | Key Types |
+|------|---------|-----------|
+| **ast-node.ts** | Core AST types | `NodeType` (union of 50+ types), `AstNode<P>`, props interfaces |
+| **errors.ts** | Error system | `ProtoError` (discriminated union), `ERROR_CODES`, `Severity`, `Stage` |
+| **routing.ts** | Route management | `ScreenRoute`, `GlobalRoute`, `RouteCollection`, `RouteMetadata` |
+| **render.ts** | Renderer types | `RenderContext`, `RenderOptions`, `NodeRenderer` |
+| **parser.ts** | Parser types | `IParser`, `CstContext`, `CstVisitor` |
+| **dom.ts** | DOM event types | `MouseEvent` (browser event types) |
+
+**Critical Type Pattern: Discriminated Unions**
+
+```typescript
+// NodeType union enables exhaustive checking
+export type NodeType =
+  | 'Screen' | 'Modal' | 'Drawer'
+  | 'Button' | 'Link' | 'Image'
+  | 'Layout' | 'List' | 'Navigator'
+  // ... 50+ types
+
+// Generic AstNode with typed props
+export interface AstNode<P extends NodeProps = NodeProps> {
+  type: NodeType
+  id: string
+  children: AstNode[]
+  props: P
+}
+
+// Specific node interfaces
+export interface ButtonNode extends AstNode<ButtonProps> {
+  type: 'Button'
+  props: ButtonProps
+}
+```
+
+**Error Type Pattern (Discriminated by Stage):**
+
+```typescript
+export type ProtoError =
+  | (ProtoErrorBase & { stage: 'lexer'; token?: string })
+  | (ProtoErrorBase & { stage: 'parser'; rule?: string; unexpected?: string })
+  | (ProtoErrorBase & { stage: 'builder'; builder?: string; nodeType?: string })
+  | (ProtoErrorBase & { stage: 'renderer'; renderer?: string })
+  | (ProtoErrorBase & { stage: 'editor'; action?: string })
+
+// Type-safe access to stage-specific properties
+if (error.stage === 'parser') {
+  console.log(error.rule)  // TypeScript knows this exists
+}
+```
+
+**Error Code Convention:**
+
+```typescript
+export const ERROR_CODES = {
+  // Lexer errors (1000s)
+  LEX_INVALID_TOKEN: 'PT-LEX-1001',
+  LEX_UNEXPECTED_CHAR: 'PT-LEX-1002',
+
+  // Parser errors (1000s)
+  PARSE_SYNTAX_ERROR: 'PT-PARSE-1001',
+  PARSE_UNEXPECTED_TOKEN: 'PT-PARSE-1002',
+
+  // Builder errors (2000s)
+  BLD_INVALID_PROPS: 'PT-BLD-2002',
+  BLD_MISSING_REQUIRED: 'PT-BLD-2003',
+
+  // Renderer errors (3000s)
+  REND_GENERIC_ERROR: 'PT-REND-3001',
+  REND_INVALID_NODE: 'PT-REND-3002',
+
+  // Editor errors (4000s)
+  EDIT_PARSE_FAILURE: 'PT-EDIT-4001',
+}
+```
+
+**Why this matters:** Consistent error codes enable filtering, telemetry, documentation.
 
 ---
 
@@ -443,6 +842,892 @@ const RENDERERS: Record<NodeType, typeof _render> = {
    - Update `themes/theme-definitions.ts` for theme variables
    - Use `customPropertiesManager` for DSL `styles:` blocks
    - Ensure dark mode compatibility (no light colors)
+
+---
+
+## 🌐 Web Application Architecture (packages/web/)
+
+### Next.js App Structure
+
+The web package provides the online playground at https://ricardoadorno.github.io/proto-typed/
+
+```
+packages/web/src/
+├── app/                              # Next.js 13+ App Router
+│   ├── [lang]/                       # i18n routes (en, pt)
+│   │   ├── page.tsx                 # Home (redirects to /playground)
+│   │   ├── playground/
+│   │   │   └── page.tsx            # Main playground page
+│   │   ├── docs/
+│   │   │   ├── [slug]/page.tsx     # Dynamic doc pages (MDX)
+│   │   │   └── layout.tsx          # Docs layout with sidebar
+│   │   ├── changelog/
+│   │   ├── principles/
+│   │   └── known-errors/
+│   ├── layout.tsx                   # Root layout (theme provider)
+│   ├── globals.css                  # Global styles + CSS variables
+│   └── page.tsx                     # Root redirect
+├── components/
+│   ├── editor/
+│   │   └── dsl-editor.tsx          # Monaco editor wrapper
+│   ├── ui/                          # shadcn/ui components
+│   │   ├── editor-panel.tsx        # Editor panel with toolbar
+│   │   ├── preview-panel.tsx       # Preview with device frames
+│   │   ├── preview-device.tsx      # Mobile/tablet/desktop frames
+│   │   ├── ast-modal.tsx           # AST visualization modal
+│   │   └── ... (30+ UI components)
+│   ├── docs/                        # Documentation components
+│   │   ├── docs-code-preview.tsx   # Live DSL preview in docs
+│   │   ├── docs-sidebar.tsx        # Sidebar navigation
+│   │   ├── docs-toc.tsx            # Table of contents
+│   │   └── mdx-components.tsx      # Custom MDX components
+│   └── layouts/
+│       ├── docs-layout.tsx         # Docs page layout
+│       └── components/
+│           ├── docs-header.tsx
+│           └── docs-footer.tsx
+├── hooks/
+│   ├── use-parse.ts                # 🔥 MAIN PARSING HOOK
+│   ├── use-navigation.ts           # Navigation state management
+│   ├── use-theme.ts                # Theme switching
+│   └── ... (utility hooks)
+├── lib/
+│   ├── get-dictionary.ts           # i18n dictionary loader
+│   └── ... (utilities)
+└── examples/
+    └── index.ts                     # Example DSL snippets
+```
+
+### Key React Components
+
+#### **1. Playground Page (`app/[lang]/playground/page.tsx`)**
+
+Main interactive editor with three-panel layout:
+
+```typescript
+export default function PlaygroundPage() {
+  const [input, setInput] = useState(initialExample)
+  const [currentScreen, setCurrentScreen] = useState<string | null>(null)
+
+  // Main parsing hook orchestrates the entire pipeline
+  const {
+    ast,
+    renderedHtml,
+    errors,
+    metadata,
+    handleParse,
+    navigateToScreen,
+    createClickHandler
+  } = useParse({ currentScreen })
+
+  // Debounced parsing (300ms)
+  useEffect(() => {
+    const timer = setTimeout(() => handleParse(input), 300)
+    return () => clearTimeout(timer)
+  }, [input])
+
+  return (
+    <div className="grid grid-cols-2 gap-4">
+      <EditorPanel value={input} onChange={setInput} errors={errors} />
+      <PreviewPanel html={renderedHtml} onClick={createClickHandler()} />
+      <MetadataPanel ast={ast} errors={errors} metadata={metadata} />
+    </div>
+  )
+}
+```
+
+#### **2. `use-parse.ts` - Central Parsing Hook** 🔥
+
+This is the **heart of the web application** - orchestrates the entire DSL pipeline:
+
+```typescript
+export function useParse(options?: { currentScreen?: string }) {
+  const [ast, setAst] = useState<AstNode[]>([])
+  const [renderedHtml, setRenderedHtml] = useState('')
+  const [errors, setErrors] = useState<ProtoError[]>([])
+  const [metadata, setMetadata] = useState<RouteMetadata>({})
+  const [previousAst, setPreviousAst] = useState<AstNode[]>([])
+
+  const handleParse = useCallback((text: string) => {
+    try {
+      // PHASE 1-4: Lexer → Parser → AST Builder → ID Generation
+      const astWithErrors = parseAndBuildAst(text, previousAst)
+
+      // Store for next parse (ID reuse)
+      setPreviousAst(astWithErrors)
+
+      // PHASE 5: Render AST to HTML
+      const html = astToHtmlStringPreview(astWithErrors, {
+        currentScreen: options?.currentScreen
+      })
+
+      // Extract route metadata
+      const routeMetadata = routeManagerGateway.getRouteMetadata()
+
+      // Update state
+      setAst(astWithErrors)
+      setRenderedHtml(html)
+      setErrors(astWithErrors.__errors || [])
+      setMetadata(routeMetadata)
+
+    } catch (error) {
+      // Graceful degradation - show error in UI
+      setErrors([{
+        stage: 'editor',
+        severity: 'fatal',
+        code: ERROR_CODES.EDIT_PARSE_FAILURE,
+        message: error.message
+      }])
+    }
+  }, [previousAst, options?.currentScreen])
+
+  const navigateToScreen = useCallback((screen: string) => {
+    routeManagerGateway.navigateTo(screen)
+    handleParse(/* re-render with new currentScreen */)
+  }, [handleParse])
+
+  const createClickHandler = useCallback(() => {
+    return routeManagerGateway.createNavigationClickHandler((screen) => {
+      navigateToScreen(screen)
+    })
+  }, [navigateToScreen])
+
+  return {
+    ast,
+    renderedHtml,
+    errors,
+    metadata,
+    handleParse,
+    navigateToScreen,
+    createClickHandler
+  }
+}
+```
+
+**Why this matters:**
+- Single source of truth for parsing state
+- Handles debouncing, error recovery, ID reuse
+- Integrates route manager for navigation
+- Used by both playground and docs code previews
+
+#### **3. Monaco Editor Integration (`components/editor/dsl-editor.tsx`)**
+
+Custom Monaco editor with DSL language registration:
+
+```typescript
+import Editor from '@monaco-editor/react'
+import { registerProtoTypedLanguage } from '@proto-typed/core/editor'
+
+export function DSLEditor({ value, onChange, errors }: DSLEditorProps) {
+  const handleEditorWillMount = useCallback((monaco: Monaco) => {
+    // Register custom DSL language
+    registerProtoTypedLanguage(monaco)
+
+    // Configure language features
+    monaco.languages.setLanguageConfiguration('proto-typed', {
+      comments: { lineComment: '//' },
+      brackets: [['(', ')'], ['[', ']']],
+      autoClosingPairs: [
+        { open: '[', close: ']' },
+        { open: '(', close: ')' },
+      ]
+    })
+
+    // Register completion provider
+    monaco.languages.registerCompletionItemProvider('proto-typed', {
+      provideCompletionItems: (model, position) => {
+        return {
+          suggestions: [
+            { label: 'screen', kind: monaco.languages.CompletionItemKind.Keyword },
+            { label: 'button-primary', kind: monaco.languages.CompletionItemKind.Function },
+            // ... 100+ suggestions
+          ]
+        }
+      }
+    })
+
+    // Show errors as markers
+    monaco.editor.setModelMarkers(model, 'proto-typed', errors.map(err => ({
+      startLineNumber: err.line || 1,
+      startColumn: err.column || 1,
+      endLineNumber: err.line || 1,
+      endColumn: err.column || 100,
+      message: err.message,
+      severity: err.severity === 'error'
+        ? monaco.MarkerSeverity.Error
+        : monaco.MarkerSeverity.Warning
+    })))
+  }, [errors])
+
+  return (
+    <Editor
+      language="proto-typed"
+      theme="vs-dark"
+      value={value}
+      onChange={onChange}
+      beforeMount={handleEditorWillMount}
+      options={{
+        minimap: { enabled: false },
+        fontSize: 14,
+        lineNumbers: 'on',
+        roundedSelection: false,
+        scrollBeyondLastLine: false,
+        automaticLayout: true
+      }}
+    />
+  )
+}
+```
+
+#### **4. Preview Panel with Device Frames (`components/ui/preview-panel.tsx`)**
+
+Shows rendered HTML in device mockups:
+
+```typescript
+export function PreviewPanel({ html, onClick }: PreviewPanelProps) {
+  const [device, setDevice] = useState<'mobile' | 'tablet' | 'desktop'>('mobile')
+  const iframeRef = useRef<HTMLIFrameElement>(null)
+
+  useEffect(() => {
+    if (iframeRef.current) {
+      const doc = iframeRef.current.contentDocument
+      if (doc) {
+        doc.open()
+        doc.write(wrapHtmlForPreview(html))
+        doc.close()
+      }
+    }
+  }, [html])
+
+  return (
+    <div className="preview-panel">
+      <div className="toolbar">
+        <DeviceSelector value={device} onChange={setDevice} />
+        <ExportButton onClick={() => exportDocument(html)} />
+      </div>
+
+      <PreviewDevice device={device}>
+        <iframe
+          ref={iframeRef}
+          className="w-full h-full"
+          sandbox="allow-scripts allow-same-origin"
+        />
+      </PreviewDevice>
+    </div>
+  )
+}
+```
+
+#### **5. Docs Live Preview (`components/docs/docs-code-preview.tsx`)**
+
+Embeds live DSL preview in MDX documentation:
+
+```tsx
+export function DocsCodePreview({ code }: { code: string }) {
+  const { renderedHtml, errors } = useParse()
+
+  useEffect(() => {
+    handleParse(code)
+  }, [code])
+
+  return (
+    <div className="docs-preview">
+      <pre><code>{code}</code></pre>
+      {errors.length === 0 ? (
+        <div className="preview" dangerouslySetInnerHTML={{ __html: renderedHtml }} />
+      ) : (
+        <ErrorList errors={errors} />
+      )}
+    </div>
+  )
+}
+```
+
+### Web Application Data Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  User types in Monaco Editor                                │
+└─────────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│  onChange event → setInput(newValue)                        │
+└─────────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│  useEffect debounces (300ms) → handleParse(input)           │
+└─────────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│  use-parse.ts calls parseAndBuildAst(text, previousAst)    │
+│    └─ Phases 1-4: Lexer → Parser → Builder → ID Gen        │
+└─────────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│  use-parse.ts calls astToHtmlStringPreview(ast)             │
+│    └─ Phase 5: Renderer (route manager, theme manager)     │
+└─────────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│  React state updates:                                        │
+│    - setAst(astWithErrors)                                   │
+│    - setRenderedHtml(html)                                   │
+│    - setErrors(ast.__errors)                                 │
+│    - setMetadata(routeMetadata)                              │
+└─────────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│  React re-renders:                                           │
+│    - EditorPanel shows errors as markers                     │
+│    - PreviewPanel updates iframe with new HTML              │
+│    - MetadataPanel shows AST/errors/routes                   │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Web Application Key Patterns
+
+**1. Debounced Parsing:**
+```typescript
+useEffect(() => {
+  const timer = setTimeout(() => handleParse(input), 300)
+  return () => clearTimeout(timer)
+}, [input])
+```
+
+**2. Error Boundaries:**
+```typescript
+<ErrorBoundary fallback={<ErrorDisplay />}>
+  <PlaygroundPage />
+</ErrorBoundary>
+```
+
+**3. Iframe Sandboxing:**
+```typescript
+<iframe sandbox="allow-scripts allow-same-origin" />
+```
+Prevents preview code from accessing parent window.
+
+**4. ID Reuse for React Performance:**
+```typescript
+const astWithErrors = parseAndBuildAst(text, previousAst)
+setPreviousAst(astWithErrors)  // Next parse reuses IDs
+```
+
+**5. Route Manager Integration:**
+```typescript
+const createClickHandler = () => {
+  return routeManagerGateway.createNavigationClickHandler((screen) => {
+    navigateToScreen(screen)
+  })
+}
+```
+
+---
+
+## 🔌 VSCode Extension Architecture (packages/extension/)
+
+### Extension Structure
+
+```
+packages/extension/
+├── src/                              # Extension host code
+│   ├── extension.ts                 # 🔥 ENTRY POINT
+│   ├── language/
+│   │   └── completion.ts            # IntelliSense completion provider
+│   ├── messaging/
+│   │   ├── message-router.ts        # Host ↔ webview communication
+│   │   └── message-types.ts         # Type-safe message definitions
+│   ├── panels/
+│   │   └── playground/
+│   │       └── playground-panel.ts  # Webview panel management
+│   ├── utils/
+│   │   └── text-document-synchronizer.ts  # Editor → webview sync
+│   └── test/                        # Extension tests (Mocha)
+├── webview/                          # React webview app
+│   ├── src/
+│   │   ├── hooks/
+│   │   │   ├── use-playground-state.ts  # Webview parsing state
+│   │   │   ├── use-navigation.ts        # Navigation state
+│   │   │   └── use-vscode-messaging.ts  # VSCode API wrapper
+│   │   ├── messaging/
+│   │   │   └── message-types.ts     # Shared with host
+│   │   └── App.tsx                  # Webview React app
+│   ├── index.html                   # Webview HTML template
+│   ├── vite.config.ts               # Vite build config
+│   └── package.json
+├── syntaxes/
+│   └── proto-typed.tmLanguage.json  # TextMate grammar
+├── snippets/
+│   └── snippets.json                # Code snippets
+├── icons/                            # Extension icons
+├── language-configuration.json       # Language config
+└── package.json                     # Extension manifest
+```
+
+### Extension Host Code
+
+#### **1. Extension Entry Point (`extension.ts`)** 🔥
+
+```typescript
+let messageRouter: MessageRouter | null = null
+let synchronizer: TextDocumentSynchronizer | null = null
+let currentPanel: PlaygroundPanel | null = null
+
+export function activate(context: vscode.ExtensionContext) {
+  console.log('proto-typed extension activated')
+
+  // Initialize message router (type-safe host-webview communication)
+  messageRouter = new MessageRouter({ logMessages: true })
+
+  // Initialize text document synchronizer (300ms debounce)
+  synchronizer = new TextDocumentSynchronizer({
+    debounceMs: 300,
+    filterLanguageIds: ['proto-typed'],  // Only .pty files
+    logChanges: true
+  })
+
+  // Register IntelliSense completion provider
+  context.subscriptions.push(
+    vscode.languages.registerCompletionItemProvider(
+      { language: 'proto-typed' },
+      createCompletionProvider(),
+      ':', '-', '@', '#', '_'  // Trigger characters
+    )
+  )
+
+  // Register command: "Proto-Typed: Open Preview to the Side"
+  context.subscriptions.push(
+    vscode.commands.registerCommand('proto-typed.showPreview', () => {
+      const columnToShowIn = vscode.window.activeTextEditor
+        ? vscode.window.activeTextEditor.viewColumn! + 1
+        : vscode.ViewColumn.Two
+
+      if (currentPanel) {
+        // Panel exists, just reveal it
+        currentPanel.reveal(columnToShowIn)
+      } else {
+        // Create new panel
+        currentPanel = PlaygroundPanel.create({
+          extensionContext: context,
+          messageRouter,
+          synchronizer
+        }, columnToShowIn)
+
+        // Clear reference when panel is closed
+        currentPanel.onDidDispose(() => {
+          currentPanel = null
+        })
+      }
+    })
+  )
+}
+
+export function deactivate() {
+  messageRouter = null
+  synchronizer = null
+  currentPanel = null
+}
+```
+
+#### **2. Message Router (`messaging/message-router.ts`)**
+
+Type-safe bidirectional communication:
+
+```typescript
+export class MessageRouter {
+  private handlers = new Map<string, MessageHandler<any>>()
+  private panel: vscode.WebviewPanel | null = null
+  private options: MessageRouterOptions
+
+  constructor(options: MessageRouterOptions = {}) {
+    this.options = options
+  }
+
+  setPanel(panel: vscode.WebviewPanel) {
+    this.panel = panel
+
+    // Listen to messages from webview
+    panel.webview.onDidReceiveMessage(
+      (message: Message) => this.handleMessage(message),
+      null,
+      []
+    )
+  }
+
+  registerHandler<T extends Message>(
+    type: T['type'],
+    handler: MessageHandler<T>
+  ) {
+    this.handlers.set(type, handler)
+  }
+
+  async handleMessage(message: Message) {
+    if (this.options.logMessages) {
+      console.log('[MessageRouter] Received:', message.type, message.payload)
+    }
+
+    const handler = this.handlers.get(message.type)
+    if (handler) {
+      await handler(message)
+    } else {
+      console.warn('[MessageRouter] No handler for:', message.type)
+    }
+  }
+
+  sendToWebview<T extends Message>(message: T) {
+    if (!this.panel) {
+      console.error('[MessageRouter] No panel set')
+      return
+    }
+
+    if (this.options.logMessages) {
+      console.log('[MessageRouter] Sending:', message.type, message.payload)
+    }
+
+    this.panel.webview.postMessage(message)
+  }
+}
+```
+
+#### **3. Message Types (`messaging/message-types.ts`)**
+
+Shared between host and webview:
+
+```typescript
+// Discriminated union for type-safe messages
+export type Message =
+  // Host → Webview
+  | { type: 'TEXT_CHANGED'; payload: { text: string; changes: TextChange[] } }
+  | { type: 'THEME_CHANGED'; payload: { theme: string } }
+  | { type: 'EXPORT_COMPLETE'; payload: { success: boolean; path?: string } }
+
+  // Webview → Host
+  | { type: 'REQUEST_EXPORT'; payload: { html: string; suggestedFileName: string } }
+  | { type: 'LOG_EVENT'; payload: { level: 'info' | 'warn' | 'error'; message: string } }
+  | { type: 'NAVIGATION_UPDATE'; payload: { screen: string } }
+  | { type: 'REQUEST_SET_TEXT'; payload: { text: string; reason: string } }
+
+export type MessageHandler<T extends Message> = (message: T) => void | Promise<void>
+```
+
+#### **4. Text Document Synchronizer (`utils/text-document-synchronizer.ts`)**
+
+Debounced editor-to-webview sync:
+
+```typescript
+export class TextDocumentSynchronizer {
+  private messageRouter: MessageRouter
+  private debounceMs: number
+  private filterLanguageIds: string[]
+  private timeout: NodeJS.Timeout | null = null
+
+  constructor(options: SynchronizerOptions) {
+    this.debounceMs = options.debounceMs || 300
+    this.filterLanguageIds = options.filterLanguageIds || []
+
+    // Listen to text document changes
+    vscode.workspace.onDidChangeTextDocument(
+      (event) => this.handleDocumentChange(event),
+      null,
+      []
+    )
+
+    // Listen to active editor changes
+    vscode.window.onDidChangeActiveTextEditor(
+      (editor) => this.handleEditorChange(editor),
+      null,
+      []
+    )
+  }
+
+  setMessageRouter(router: MessageRouter) {
+    this.messageRouter = router
+  }
+
+  private handleDocumentChange(event: vscode.TextDocumentChangeEvent) {
+    // Filter by language ID
+    if (!this.filterLanguageIds.includes(event.document.languageId)) {
+      return
+    }
+
+    // Debounce changes
+    if (this.timeout) {
+      clearTimeout(this.timeout)
+    }
+
+    this.timeout = setTimeout(() => {
+      this.messageRouter.sendToWebview({
+        type: 'TEXT_CHANGED',
+        payload: {
+          text: event.document.getText(),
+          changes: event.contentChanges.map(change => ({
+            range: {
+              start: { line: change.range.start.line, character: change.range.start.character },
+              end: { line: change.range.end.line, character: change.range.end.character }
+            },
+            text: change.text
+          }))
+        }
+      })
+    }, this.debounceMs)
+  }
+
+  private handleEditorChange(editor: vscode.TextEditor | undefined) {
+    if (!editor || !this.filterLanguageIds.includes(editor.document.languageId)) {
+      return
+    }
+
+    // Send full text when switching editors
+    this.messageRouter.sendToWebview({
+      type: 'TEXT_CHANGED',
+      payload: {
+        text: editor.document.getText(),
+        changes: []
+      }
+    })
+  }
+}
+```
+
+#### **5. IntelliSense Completion Provider (`language/completion.ts`)**
+
+```typescript
+export function createCompletionProvider(): vscode.Disposable {
+  return vscode.languages.registerCompletionItemProvider(
+    { language: 'proto-typed' },
+    {
+      provideCompletionItems(
+        document: vscode.TextDocument,
+        position: vscode.Position
+      ): vscode.CompletionItem[] {
+        const linePrefix = document.lineAt(position).text.substr(0, position.character)
+
+        const completions: vscode.CompletionItem[] = []
+
+        // View keywords
+        completions.push(
+          {
+            label: 'screen',
+            kind: vscode.CompletionItemKind.Keyword,
+            detail: 'Create a new screen',
+            insertText: new vscode.SnippetString('screen ${1:Name}:\n\t$0')
+          },
+          {
+            label: 'modal',
+            kind: vscode.CompletionItemKind.Keyword,
+            detail: 'Create a modal',
+            insertText: new vscode.SnippetString('modal ${1:Name}:\n\t$0')
+          }
+        )
+
+        // Layout presets
+        completions.push(
+          { label: 'container:', kind: vscode.CompletionItemKind.Class },
+          { label: 'container-narrow:', kind: vscode.CompletionItemKind.Class },
+          { label: 'stack:', kind: vscode.CompletionItemKind.Class },
+          { label: 'stack-tight:', kind: vscode.CompletionItemKind.Class },
+          { label: 'row-center:', kind: vscode.CompletionItemKind.Class },
+          // ... 30+ layout completions
+        )
+
+        // Button variants
+        completions.push(
+          { label: 'button-primary', kind: vscode.CompletionItemKind.Function },
+          { label: 'button-secondary', kind: vscode.CompletionItemKind.Function },
+          // ... button variants
+        )
+
+        return completions
+      }
+    },
+    ':', '-', '@', '#', '_'  // Trigger characters
+  )
+}
+```
+
+### Webview React App
+
+#### **6. Webview Playground State (`webview/src/hooks/use-playground-state.ts`)**
+
+```typescript
+export function usePlaygroundState() {
+  const [input, setInput] = useState('')
+  const { ast, renderedHtml, errors, metadata, handleParse } = useParse()
+  const { sendMessage, registerHandler } = useVSCodeMessaging()
+
+  // Listen to text changes from host
+  useEffect(() => {
+    registerHandler('TEXT_CHANGED', (message) => {
+      setInput(message.payload.text)
+    })
+
+    registerHandler('THEME_CHANGED', (message) => {
+      // Update theme
+    })
+  }, [registerHandler])
+
+  // Parse when input changes
+  useEffect(() => {
+    handleParse(input)
+  }, [input, handleParse])
+
+  // Send export request to host
+  const requestExport = useCallback(() => {
+    sendMessage({
+      type: 'REQUEST_EXPORT',
+      payload: {
+        html: renderedHtml,
+        suggestedFileName: 'prototype.html'
+      }
+    })
+  }, [renderedHtml, sendMessage])
+
+  return {
+    input,
+    ast,
+    renderedHtml,
+    errors,
+    metadata,
+    requestExport
+  }
+}
+```
+
+#### **7. VSCode Messaging Hook (`webview/src/hooks/use-vscode-messaging.ts`)**
+
+```typescript
+// Acquire VSCode API (only available in webview context)
+const vscode = acquireVsCodeApi()
+
+export function useVSCodeMessaging() {
+  const handlers = useRef(new Map<string, MessageHandler<any>>())
+
+  // Listen to messages from host
+  useEffect(() => {
+    const messageHandler = (event: MessageEvent) => {
+      const message = event.data as Message
+      const handler = handlers.current.get(message.type)
+      if (handler) {
+        handler(message)
+      }
+    }
+
+    window.addEventListener('message', messageHandler)
+    return () => window.removeEventListener('message', messageHandler)
+  }, [])
+
+  const sendMessage = useCallback(<T extends Message>(message: T) => {
+    vscode.postMessage(message)
+  }, [])
+
+  const registerHandler = useCallback(<T extends Message>(
+    type: T['type'],
+    handler: MessageHandler<T>
+  ) => {
+    handlers.current.set(type, handler)
+  }, [])
+
+  return { sendMessage, registerHandler }
+}
+```
+
+### Extension Communication Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  User types in VSCode editor (.pty file)                    │
+└─────────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│  onDidChangeTextDocument event                               │
+└─────────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│  TextDocumentSynchronizer debounces (300ms)                  │
+└─────────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│  MessageRouter.sendToWebview({                               │
+│    type: 'TEXT_CHANGED',                                     │
+│    payload: { text: document.getText() }                     │
+│  })                                                           │
+└─────────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Webview receives message via window.postMessage()           │
+└─────────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│  use-vscode-messaging.ts handler triggered                   │
+│    → setInput(message.payload.text)                          │
+└─────────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│  useEffect → handleParse(input)                              │
+│    → parseAndBuildAst() → astToHtmlStringPreview()           │
+└─────────────────────────────────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│  React re-renders webview with updated preview               │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Extension Key Patterns
+
+**1. Singleton Webview Panel:**
+```typescript
+if (currentPanel) {
+  currentPanel.reveal()  // Show existing panel
+} else {
+  currentPanel = PlaygroundPanel.create(...)  // Create new panel
+}
+```
+
+**2. Type-Safe Message Passing:**
+```typescript
+// Discriminated union ensures type safety
+type Message =
+  | { type: 'TEXT_CHANGED'; payload: { text: string } }
+  | { type: 'REQUEST_EXPORT'; payload: { html: string } }
+
+// Type-safe handler registration
+messageRouter.registerHandler('TEXT_CHANGED', (msg) => {
+  console.log(msg.payload.text)  // TypeScript knows this exists
+})
+```
+
+**3. Debounced Synchronization:**
+```typescript
+setTimeout(() => {
+  messageRouter.sendToWebview({ type: 'TEXT_CHANGED', payload: { text } })
+}, 300)
+```
+
+**4. Webview State Persistence:**
+```typescript
+// VSCode API provides state persistence across reloads
+const vscode = acquireVsCodeApi()
+vscode.setState({ input: currentInput })
+
+// Restore state on reload
+const previousState = vscode.getState()
+setInput(previousState?.input || '')
+```
+
+**5. Snippet Support:**
+```json
+// snippets/snippets.json
+{
+  "Screen with Container": {
+    "prefix": "screen-container",
+    "body": [
+      "screen ${1:Name}:",
+      "\tcontainer:",
+      "\t\t${2:content}"
+    ]
+  }
+}
+```
 
 ---
 
