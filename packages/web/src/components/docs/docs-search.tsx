@@ -68,11 +68,7 @@ export function DocsSearch({ sections }: DocsSearchProps) {
       <Button variant="ghost" onClick={handleOpen} className="p-2 md:hidden">
         <Search className="h-5 w-5 text-[var(--fg-secondary)]" />
       </Button>
-      <CommandDialog
-        open={open}
-        onOpenChange={setOpen}
-        searchPlaceholder="Buscar na documentação"
-      >
+      <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandList>
           <CommandEmpty>Nenhum resultado.</CommandEmpty>
           {items.map((group) => (
