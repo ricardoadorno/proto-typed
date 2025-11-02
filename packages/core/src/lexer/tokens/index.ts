@@ -45,7 +45,6 @@ import {
   RowCenter,
   RowBetween,
   RowEnd,
-  Col,
   Grid2,
   Grid3,
   Grid4,
@@ -63,7 +62,21 @@ import {
 } from './layouts.tokens'
 import { Input, RadioOption, Checkbox } from './inputs.tokens'
 import { Component, ComponentInstance, PropVariable } from './components.tokens'
-import { Styles, CssProperty } from './styles.tokens'
+import {
+  Head,
+  HeadColor,
+  HeadFont,
+  HeadTemplate,
+  ColorPrimary,
+  ColorSecondary,
+  ColorNeutral,
+  ColorAccent,
+  FontBase,
+  FontFamily,
+  TemplateDefault,
+  PropertyValue,
+} from './head.tokens'
+import { Meta, MetaVersion, MetaTitle, MetaValue } from './meta.tokens'
 
 // Export all tokens - Organized by Category
 export {
@@ -123,7 +136,6 @@ export {
   RowCenter,
   RowBetween,
   RowEnd,
-  Col,
 
   // Layouts - Grids
   Grid2,
@@ -157,18 +169,47 @@ export {
   ComponentInstance,
   PropVariable,
 
-  // Styles
-  Styles,
-  CssProperty,
+  // Head (formerly Styles)
+  Head,
+  HeadColor,
+  HeadFont,
+  HeadTemplate,
+  ColorPrimary,
+  ColorSecondary,
+  ColorNeutral,
+  ColorAccent,
+  FontBase,
+  FontFamily,
+  TemplateDefault,
+  PropertyValue,
+
+  // Meta
+  Meta,
+  MetaVersion,
+  MetaTitle,
+  MetaValue,
 }
 
 // All tokens array - order matters for matching precedence
 export const allTokens = [
   NewLine,
   WhiteSpace,
-  // Styles tokens must come early for proper matching
-  Styles,
-  CssProperty,
+  // Head tokens must come early for proper matching
+  Head,
+  HeadColor,
+  HeadFont,
+  HeadTemplate,
+  ColorPrimary,
+  ColorSecondary,
+  ColorNeutral,
+  ColorAccent,
+  FontBase,
+  FontFamily,
+  TemplateDefault,
+  // Meta tokens - keywords come early, MetaValue comes later
+  Meta,
+  MetaVersion,
+  MetaTitle,
   Screen,
   Component,
   Modal,
@@ -217,7 +258,6 @@ export const allTokens = [
   RowCenter,
   RowBetween,
   RowEnd,
-  Col,
   Grid2,
   Grid3,
   Grid4,
@@ -233,4 +273,6 @@ export const allTokens = [
   Separator,
   Colon,
   Identifier,
+  PropertyValue, // Must come AFTER Identifier to avoid capturing component names
+  MetaValue, // Must come AFTER all keywords to avoid capturing them
 ]

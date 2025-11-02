@@ -12,13 +12,14 @@ import {
 import { ScreenRenderConfig } from '../../types/render'
 import { renderNode } from '../core/node-renderer'
 import { RouteManager } from '../core/route-manager'
+import { customPropertiesManager } from '../core/theme-manager'
 import { isHeaderComponentName } from '../nodes/components.node'
 
 /**
  * Render a single screen to HTML with full configuration
  */
 function renderScreen(config: ScreenRenderConfig): string {
-  const { screen, index, currentScreen } = config
+  const { screen, index, currentScreen, routeManager } = config
 
   const screenName = (screen.props as ViewProps)?.name || '' // Nome original preservado
   const style = getScreenVisibilityStyle(screenName, index, currentScreen)
@@ -40,7 +41,11 @@ function renderScreen(config: ScreenRenderConfig): string {
       .map((element: AstNode) => renderNode(element))
       .join('\n') || ''
 
-  return `
+  // Apply global template if configured in head
+  const headConfig = customPropertiesManager.getHeadConfig()
+  const globalTemplate = headConfig.template?.default
+
+  let screenContent = `
   <div id="${screenName}-screen" class="relative overflow-hidden h-full" ${style}>
       ${headerHtml}
       <div class="h-full overflow-auto">
@@ -49,6 +54,17 @@ function renderScreen(config: ScreenRenderConfig): string {
       ${fabHtml}
       ${navigatorHtml}
   </div>`
+
+  // If global template is defined, wrap the screen content with it
+  if (globalTemplate && routeManager) {
+    screenContent = applyGlobalTemplate(
+      screenContent,
+      globalTemplate,
+      routeManager as RouteManager
+    )
+  }
+
+  return screenContent
 }
 
 /**
@@ -56,7 +72,8 @@ function renderScreen(config: ScreenRenderConfig): string {
  */
 export function renderAllScreens(
   screens: AstNode[],
-  currentScreen?: string | null
+  currentScreen?: string | null,
+  routeManager?: RouteManager
 ): string {
   return screens
     .filter((screen) => screen && (screen.props as ViewProps)?.name)
@@ -65,9 +82,10 @@ export function renderAllScreens(
         screen,
         index,
         currentScreen,
+        routeManager,
       })
     )
-    .join('\n\n')
+    .join('\n')
 }
 
 /**
@@ -76,7 +94,8 @@ export function renderAllScreens(
 export function renderScreenForDocument(
   screen: AstNode,
   index: number,
-  currentScreen?: string | null
+  currentScreen?: string | null,
+  routeManager?: RouteManager
 ): string {
   const screenName = (screen.props as ViewProps)?.name || ''
   // If a currentScreen is explicitly provided, use that for visibility, else fall back to first screen visible
@@ -101,11 +120,25 @@ export function renderScreenForDocument(
       .map((element) => renderNode(element))
       .join('\n      ') || ''
 
-  // Add Tailwind container and screen classes, and id for navigation
-  return `
+  // Apply global template if configured in head
+  const headConfig = customPropertiesManager.getHeadConfig()
+  const globalTemplate = headConfig.template?.default
+
+  let screenContent = `
   <div id="${screenName}-screen" data-screen="${screenName}" class="relative"  ${style}>
       ${elementsHtml}
   </div>`
+
+  // If global template is defined, wrap the screen content with it
+  if (globalTemplate && routeManager) {
+    screenContent = applyGlobalTemplate(
+      screenContent,
+      globalTemplate,
+      routeManager
+    )
+  }
+
+  return screenContent
 }
 
 /**
@@ -189,4 +222,60 @@ export function renderGlobalElements(routeManager: RouteManager): string {
   }
 
   return ''
+}
+
+/**
+ * Apply global template to screen content
+ * Finds the component definition and renders it with screen content injected
+ */
+function applyGlobalTemplate(
+  screenContent: string,
+  templateComponentName: string,
+  routeManager: RouteManager
+): string {
+  // Remove $ prefix if present
+  const componentName = templateComponentName.startsWith('$')
+    ? templateComponentName.slice(1)
+    : templateComponentName
+
+  // Get component definitions from route manager
+  const componentRoutes = routeManager.getRoutesByType('component')
+  const componentDef = componentRoutes.find((route: { node: AstNode }) => {
+    const props = route.node.props as { name?: string }
+    return props.name === componentName
+  })
+
+  if (!componentDef) {
+    console.warn(
+      `Global template component not found: ${componentName}, rendering screen without template`
+    )
+    return screenContent
+  }
+
+  // Render the component template, replacing placeholders with screen content
+  const componentNode = componentDef.node
+  const templateHtml = renderComponentWithContent(componentNode, screenContent)
+
+  return templateHtml
+}
+
+/**
+ * Render component template with injected content
+ * Looks for a special placeholder (e.g., heading with text "Content Here") to inject screen content
+ */
+function renderComponentWithContent(
+  componentNode: AstNode,
+  screenContent: string
+): string {
+  // Render the component's children (not the component itself, as it's just a definition)
+  const children = componentNode.children || []
+  const componentHtml = children.map((child) => renderNode(child)).join('\n')
+
+  // Replace the placeholder with screen content
+  // Look for the heading "Content Here" in the HTML
+  const placeholderPattern =
+    /<h[1-6][^>]*>Content Here<\/h[1-6]>|<h[1-6][^>]*>\s*Content Here\s*<\/h[1-6]>/gi
+  const resultHtml = componentHtml.replace(placeholderPattern, screenContent)
+
+  return resultHtml
 }

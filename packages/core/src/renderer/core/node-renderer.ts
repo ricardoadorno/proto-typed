@@ -99,9 +99,20 @@ const RENDERERS: Record<NodeType, typeof _render> = {
   Checkbox: (n) => renderCheckbox(n),
   Select: (n) => renderSelect(n),
 
-  // Style / meta nodes (no direct HTML output)
-  Styles: () => '',
-  CssProperty: () => '',
+  // Head configuration / meta nodes (no direct HTML output)
+  Head: () => '',
+  HeadColor: () => '',
+  ColorProperty: () => '',
+  HeadFont: () => '',
+  FontBase: () => '',
+  FontProperty: () => '',
+  HeadTemplate: () => '',
+  TemplateProperty: () => '',
+
+  // Meta configuration nodes (no direct HTML output)
+  Meta: () => '',
+  MetaProperty: () => '',
+
   Identifier: () => '',
 }
 

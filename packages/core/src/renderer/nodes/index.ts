@@ -43,5 +43,5 @@ export {
   findComponentDefinitions,
 } from './components.node'
 
-// Style tokens
-export { renderStyles, renderCssProperty } from './styles.node'
+// Head configuration tokens (processed by theme-manager, no HTML output)
+export { renderHead } from './head.node'

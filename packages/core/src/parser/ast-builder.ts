@@ -27,9 +27,10 @@ import {
   buildModal,
   buildDrawer,
   buildComponentInstanceElement,
-  // Styles builders
-  buildStyles,
-  buildStyleDeclaration,
+  // Head configuration builders (formerly Styles)
+  buildHead,
+  // Meta configuration builders
+  buildMeta,
 } from './builders'
 
 // Type alias for backward compatibility
@@ -81,10 +82,9 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      * @returns {any[]} An array of all processed global elements, forming the root of the AST.
      */
     program(ctx: Context) {
-      // Process multiple screens, components, modals, drawers, and styles as global elements
-      const styles = ctx.styles
-        ? ctx.styles.map((style) => this.visit(style as CstNode))
-        : []
+      // Process multiple screens, components, modals, drawers, meta and head configuration as global elements
+      const meta = ctx.meta ? ctx.meta.map((m) => this.visit(m as CstNode)) : []
+      const head = ctx.head ? ctx.head.map((h) => this.visit(h as CstNode)) : []
       const screens = ctx.screen
         ? ctx.screen.map((screen) => this.visit(screen as CstNode))
         : []
@@ -98,10 +98,10 @@ export function createAstBuilder(parserInstance: UiDslParser) {
         ? ctx.drawer.map((drawer) => this.visit(drawer as CstNode))
         : []
 
-      return [...styles, ...screens, ...components, ...modals, ...drawers]
+      return [...meta, ...head, ...screens, ...components, ...modals, ...drawers]
     }
 
-    // ===== STYLES RULES =====
+    // ===== HEAD CONFIGURATION RULES =====
 
     /**
      * @method element
@@ -143,23 +143,23 @@ export function createAstBuilder(parserInstance: UiDslParser) {
     }
 
     /**
-     * @method styles
-     * @description Visits a 'styles' CST node and uses the builder function to create a styles AST node.
-     * @param {Context} ctx - The parsing context for the styles block.
-     * @returns {any} The resulting styles AST node.
+     * @method meta
+     * @description Visits a 'meta' CST node and uses the builder function to create a meta configuration AST node.
+     * @param {Context} ctx - The parsing context for the meta block.
+     * @returns {any} The resulting meta AST node.
      */
-    styles(ctx: Context) {
-      return buildStyles(ctx)
+    meta(ctx: Context) {
+      return buildMeta(ctx)
     }
 
     /**
-     * @method styleDeclaration
-     * @description Visits a 'styleDeclaration' CST node and builds a style declaration AST node.
-     * @param {Context} ctx - The parsing context for the style declaration.
-     * @returns {any} The resulting style declaration AST node.
+     * @method styles
+     * @description Visits a 'head' CST node and uses the builder function to create a head configuration AST node.
+     * @param {Context} ctx - The parsing context for the head block.
+     * @returns {any} The resulting head AST node.
      */
-    styleDeclaration(ctx: Context) {
-      return buildStyleDeclaration(ctx)
+    head(ctx: Context) {
+      return buildHead(ctx)
     }
 
     // ===== VIEW CONTAINER RULES =====

@@ -1,0 +1,6 @@
+meta:
+  version: 1.0.0
+  title: "Test Application"
+
+screen Home:
+  text: "Welcome to the app"

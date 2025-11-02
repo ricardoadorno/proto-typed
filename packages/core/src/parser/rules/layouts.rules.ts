@@ -17,7 +17,6 @@ import {
   RowCenter,
   RowBetween,
   RowEnd,
-  Col,
   Grid2,
   Grid3,
   Grid4,
@@ -68,7 +67,6 @@ export const defineLayoutRules: RuleDefinitionFunction = function (
       { ALT: () => this.CONSUME(RowCenter) },
       { ALT: () => this.CONSUME(RowBetween) },
       { ALT: () => this.CONSUME(RowEnd) },
-      { ALT: () => this.CONSUME(Col) },
       // Grids
       { ALT: () => this.CONSUME(Grid2) },
       { ALT: () => this.CONSUME(Grid3) },

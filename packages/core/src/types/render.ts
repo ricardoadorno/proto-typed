@@ -38,6 +38,7 @@ export interface ScreenRenderConfig {
   screen: AstNode
   index: number
   currentScreen?: string | null
+  routeManager?: unknown // RouteManager type to avoid circular dependency
 }
 
 /**

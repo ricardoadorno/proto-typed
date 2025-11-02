@@ -37,9 +37,19 @@ export type NodeType =
   | 'PropVariable'
   | 'PropValue'
 
-  // Styles (from styles.tokens.ts)
-  | 'Styles'
-  | 'CssProperty'
+  // Head configuration (from styles.tokens.ts - renamed from Styles)
+  | 'Head'
+  | 'HeadColor'
+  | 'ColorProperty'
+  | 'HeadFont'
+  | 'FontBase'
+  | 'FontProperty'
+  | 'HeadTemplate'
+  | 'TemplateProperty'
+
+  // Meta configuration (from meta.tokens.ts)
+  | 'Meta'
+  | 'MetaProperty'
 
   // Core (from core.tokens.ts)
   | 'Identifier'

@@ -24,5 +24,8 @@ export * from './inputs.builders'
 // Components (definitions and instances)
 export * from './components.builders'
 
-// Styles (CSS and theming)
-export * from './styles.builders'
+// Head configuration (colors, fonts, templates - formerly Styles)
+export * from './head.builders'
+
+// Meta configuration (version, title)
+export * from './meta.builders'
