@@ -98,7 +98,14 @@ export function createAstBuilder(parserInstance: UiDslParser) {
         ? ctx.drawer.map((drawer) => this.visit(drawer as CstNode))
         : []
 
-      return [...meta, ...head, ...screens, ...components, ...modals, ...drawers]
+      return [
+        ...meta,
+        ...head,
+        ...screens,
+        ...components,
+        ...modals,
+        ...drawers,
+      ]
     }
 
     // ===== HEAD CONFIGURATION RULES =====

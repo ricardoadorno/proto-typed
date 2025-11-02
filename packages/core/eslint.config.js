@@ -7,19 +7,17 @@ import baseConfig from '../../eslint.config.js'
 export default [
   ...baseConfig,
   {
+    ignores: ['packages/core/tests/**'],
+  },
+  {
     files: ['**/*.ts'],
-    ignorePatterns: ['packages/core/tests/**'],
     languageOptions: {
       globals: {
-        // VSCode extension environment
         acquireVsCodeApi: 'readonly',
       },
     },
     rules: {
-      // VSCode extensions often use console for logging
       'no-console': 'off',
-
-      // Extension-specific rules
       '@typescript-eslint/no-explicit-any': 'warn',
     },
   },

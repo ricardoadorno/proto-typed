@@ -6,3 +6,7 @@ ignoredBuiltDependencies:
   - esbuild
   - sharp
   - unrs-resolver
+
+onlyBuiltDependencies:
+  - '@vscode/vsce-sign'
+  - keytar

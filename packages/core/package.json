@@ -1,7 +1,7 @@
 {
   "name": "@proto-typed/core",
-  "version": "1.0.0",
   "type": "module",
+  "version": "0.0.2",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,19 +13,12 @@
   },
   "scripts": {
     "build": "tsc",
-    "watch": "tsc --watch",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
+    "lint": "eslint . --fix",
     "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "test:run": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test": "vitest"
   },
   "dependencies": {
-    "chevrotain": "^10.5.0",
+    "chevrotain": "^11.0.3",
     "lucide": "^0.468.0"
   }
 }
