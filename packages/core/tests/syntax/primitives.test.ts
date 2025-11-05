@@ -269,9 +269,9 @@ screen Home:
     it('should parse links', () => {
       const input = `
 screen Home:
-  #[Click here](https://example.com)
-  #[Go to Settings](Settings)
-  #[Back](-1)
+  @link[Click here](https://example.com)
+  @link[Go to Settings](Settings)
+  @link[Back](-1)
 `
       const result = parseWithErrors(input)
       expectNoErrors(result)
@@ -313,7 +313,7 @@ screen Home:
     it('should render links and images HTML correctly', () => {
       const input = `
 screen Home:
-  #[Visit Site](https://example.com)
+  @link[Visit Site](https://example.com)
   ![Logo](logo.png)
 `
       const result = parseWithErrors(input)
@@ -338,7 +338,7 @@ screen Dashboard:
   @primary[View Profile](Profile)
   @outline-small[Settings](Settings)
   
-  #[Learn More](https://docs.example.com)
+  @link[Learn More](https://docs.example.com)
   ![Banner](banner.jpg)
 `
       const result = parseWithErrors(input)

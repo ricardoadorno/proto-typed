@@ -135,7 +135,7 @@ fab:                → Botão de ação flutuante
 @[Abrir drawer](NomeDrawer)    → Abre drawer lateral
 @[Voltar](-1)                  → Volta no histórico
 @[Fechar](close)               → Fecha modal/drawer atual
-#[Link externo](https://...)   → URL externa
+@link[Link externo](https://...)   → URL externa
 ```
 
 ### 8. Componentes reutilizáveis

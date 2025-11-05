@@ -1,5 +1,5 @@
 # Link
-Links (`#[Texto](Destino)`) criam navegação inline para telas, modais ou URLs externas sem quebrar o fluxo de leitura.
+Links (`@link[Texto](Destino)`) criam navegação inline para telas, modais ou URLs externas sem quebrar o fluxo de leitura.
 
 ## Quando usar
 - Referenciar telas ou recursos secundários dentro de parágrafos e listas.
@@ -13,11 +13,11 @@ Links (`#[Texto](Destino)`) criam navegação inline para telas, modais ou URLs 
 screen HelpCenter:
   container:
     # Central de ajuda
-    #[documentação oficial](https://proto-typed.dev/docs) para um panorama completo.
+    @link[documentação oficial](https://proto-typed.dev/docs) para um panorama completo.
 
     card:
       ## Precisa redefinir senha?
-      >> Acesse a #[tela de recuperação](RecoverPassword) e siga os passos.
+      >> Acesse a @link[tela de recuperação](RecoverPassword) e siga os passos.
 ```
 </DocsCodePreview>
 Por quê: mantém a leitura fluida e oferece navegação contextual.
@@ -27,7 +27,7 @@ Por quê: mantém a leitura fluida e oferece navegação contextual.
 ```dsl
 screen Default:
   container:
-    #[Ver detalhes](DetailScreen)
+    @link[Ver detalhes](DetailScreen)
 ```
 </DocsCodePreview>
 Quando usar: apontar para telas existentes no fluxo principal.
@@ -37,7 +37,7 @@ Por quê: mantém a navegação coesa sem depender de botões.
 ```dsl
 screen Default:
   container:
-    #[Abrir documentação](https://proto-typed.dev/docs)
+    @link[Abrir documentação](https://proto-typed.dev/docs)
 ```
 </DocsCodePreview>
 Quando usar: referenciar recursos hospedados fora do produto.
@@ -55,15 +55,15 @@ drawer QuickLinks:
   container:
     # Links rápidos
     stack-tight:
-      #[Dashboard](Dashboard)
-      #[Equipe](Team)
-      #[Configurações](Settings)
+      @link[Dashboard](Dashboard)
+      @link[Equipe](Team)
+      @link[Configurações](Settings)
 
 screen HeaderDemo:
   header:
     # Proto-Typed
     row-end:
-      #[Abrir links rápidos](QuickLinks)
+      @link[Abrir links rápidos](QuickLinks)
 ```
 </DocsCodePreview>
 Por quê: agrupa atalhos sem sobrecarregar o cabeçalho com botões.
@@ -71,7 +71,7 @@ Por quê: agrupa atalhos sem sobrecarregar o cabeçalho com botões.
 ## Slots & Props
 | Nome | Tipo | Padrão | Descrição | Obrigatório |
 | --- | --- | --- | --- | --- |
-| `label` | string | — | Texto exibido entre `#[ ]`. | Sim |
+| `label` | string | — | Texto exibido entre `@link[ ]`. | Sim |
 | `destino` | slug ou URL | — | Tela, modal, drawer ou endereço externo. | Sim |
 | `protocolo` | `https://`| `https://` | Determina a ação para links externos. | Não |
 | `ícone inline` | token `i-` | — | Opcional antes do texto para reforçar o contexto. | Não |
@@ -87,7 +87,7 @@ Por quê: agrupa atalhos sem sobrecarregar o cabeçalho com botões.
   do={{
     title: "Link contextual",
     code: `
-#[Ver detalhes](DetailScreen)
+@link[Ver detalhes](DetailScreen)
     `,
   }}
 >
@@ -97,13 +97,13 @@ Por quê: agrupa atalhos sem sobrecarregar o cabeçalho com botões.
   dont={{
     title: "Link sem destino",
     code: `
-#[Leia mais]()
+@link[Leia mais]()
     `,
   }}
   do={{
     title: "Destino declarado",
     code: `
-#[Leia mais](Guides)
+@link[Leia mais](Guides)
     `,
   }}
 >

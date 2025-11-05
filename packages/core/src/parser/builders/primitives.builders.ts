@@ -197,13 +197,13 @@ export function buildLinkElement(ctx: CstContext) {
   let text = '',
     url = ''
 
-  // Updated regex to match the new #[text](url) syntax
-  const markdownMatch = linkText.match(/#\[([^\]]+)\](?:\(([^)]+)\))?/)
+  // Match the @link[text](destination) syntax
+  const inlineMatch = linkText.match(/@link\[([^\]]+)\](?:\(([^)]+)\))?/)
   const dslMatch = linkText.match(/link\s+\["([^"]*)"\]\s+([^\n\r]+)/)
 
-  if (markdownMatch) {
-    text = markdownMatch[1]
-    url = markdownMatch[2] || '' // URL is now optional, default to empty string
+  if (inlineMatch) {
+    text = inlineMatch[1]
+    url = inlineMatch[2] || '' // URL is now optional, default to empty string
   } else if (dslMatch) {
     url = dslMatch[1]
     text = dslMatch[2]

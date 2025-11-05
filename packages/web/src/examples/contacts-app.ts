@@ -14,12 +14,12 @@ component ContactCard:
 
 
 component MenuItem:
-  #[%label](%destination)
+  @link[%label](%destination)
 
 
 component GroupItem:
   stack-tight:
-    #[%name](Contacts)
+    @link[%name](Contacts)
     >>> %count members
 
 

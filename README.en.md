@@ -216,7 +216,7 @@ Props are separated by a pipe (`|`) and interpolated with `%propName`.
 @[Open modal](ModalName)      → Toggle modal
 @[Open drawer](DrawerName)    → Toggle drawer
 @[Back](-1)                  → Go back in history
-#[External link](https://...)   → External URL
+@link[External link](https://...)   → External URL
 ```
 
 ### Mobile components

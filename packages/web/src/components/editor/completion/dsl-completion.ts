@@ -261,11 +261,11 @@ export function registerDSLCompletionProvider(monaco: Monaco) {
         {
           label: 'link',
           kind: monaco.languages.CompletionItemKind.Reference,
-          insertText: '#[${1:Link Text}](${2:destination})',
+          insertText: '@link[${1:Link Text}](${2:destination})',
           insertTextRules:
             monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation:
-            'Navigation link\nExample: #[Go to Settings](Settings)',
+            'Navigation link\nExample: @link[Go to Settings](Settings)',
           range: range,
         },
         {

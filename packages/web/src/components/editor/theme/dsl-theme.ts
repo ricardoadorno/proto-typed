@@ -78,7 +78,7 @@ export function registerDSLTheme(monaco: Monaco) {
       // ========================================
       // LINKS & IMAGES
       // ========================================
-      { token: 'keyword.link', foreground: '60a5fa', fontStyle: 'bold' }, // #[text](dest)
+      { token: 'keyword.link', foreground: '60a5fa', fontStyle: 'bold' }, // @link[text](dest)
       { token: 'keyword.image', foreground: '60a5fa' }, // ![alt](url)
       { token: 'entity.name.icon', foreground: 'ff8c00' }, // i-IconName (bright cyan)
 

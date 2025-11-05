@@ -196,7 +196,7 @@ drawer MainMenu:
     - Home | Home
     - Profile | Profile
     - Settings | Settings
-    - #[Help](https://help.example.com)
+    - @link[Help](https://help.example.com)
 ```
 
 ---
@@ -279,7 +279,7 @@ screen TextDemo:
 | Back              | `(-1)`           | Navigate back in history   |
 | Close overlay     | `(close)`        | Dismiss modal/drawer       |
 | JavaScript        | `(functionName)` | Placeholder for JS action  |
-| External          | Not for buttons  | Use `#[Link](url)` instead |
+| External          | Not for buttons  | Use `@link[Link](url)` instead |
 
 #### Icon Support
 
@@ -331,7 +331,7 @@ screen ButtonDemo:
 
 #### Link
 
-**Syntax**: `#[label](url)`
+**Syntax**: `@link[label](url)`
 
 **Properties**:
 
@@ -344,8 +344,8 @@ screen ButtonDemo:
 ```dsl
 screen LinkDemo:
   container:
-    > Visit our #[website](https://example.com) for more info.
-    > Read the #[documentation](https://docs.example.com/guide).
+    > Visit our @link[website](https://example.com) for more info.
+    > Read the @link[documentation](https://docs.example.com/guide).
 ```
 
 #### Image
@@ -679,7 +679,7 @@ screen Tasks:
 | Back        | `(-1)`         | History back       | `@[Back](-1)`               |
 | Close       | `(close)`      | Close overlay      | `@[Close](close)`           |
 | Action      | `(actionName)` | Placeholder action | `@[Submit](submitForm)`     |
-| External    | `#[Link](url)` | External URL       | `#[Docs](https://docs.com)` |
+| External    | `@link[Link](url)` | External URL       | `@link[Docs](https://docs.com)` |
 
 #### Navigation Flow Example
 
@@ -715,7 +715,7 @@ drawer MainMenu:
   list:
     - Home | Home
     - Profile | Profile
-    - #[Help](https://help.example.com)
+    - @link[Help](https://help.example.com)
 ```
 
 ---
@@ -1753,7 +1753,7 @@ drawer MainMenu:
     - Dashboard | Dashboard
     - Users | Users
     - Settings | Settings
-    - #[Help](https://help.example.com)
+    - @link[Help](https://help.example.com)
 
 screen Dashboard:
   $Header:

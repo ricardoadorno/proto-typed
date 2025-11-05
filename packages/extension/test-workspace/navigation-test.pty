@@ -27,7 +27,7 @@ drawer MainMenu:
     - icon:users Contacts | Contacts
     - icon:user-plus New Contact | NewContact
     - icon:settings Settings | Settings
-    - #[icon:help-circle Help](https://help.example.com)
+    - @link[icon:help-circle Help](https://help.example.com)
 
 screen Contacts:
   $Header:

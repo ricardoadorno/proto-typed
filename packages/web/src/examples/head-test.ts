@@ -117,9 +117,9 @@ drawer MainMenu:
   stack:
     # Main Menu
     ---
-    #[Dashboard](Dashboard)
-    #[Settings](Settings)
-    #[About](About)
+    @link[Dashboard](Dashboard)
+    @link[Settings](Settings)
+    @link[About](About)
     ---
     @destructive[Logout](Login)
 

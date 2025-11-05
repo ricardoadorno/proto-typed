@@ -6,7 +6,7 @@ component LoginForm:
   stack:
     [X] Remember me
     @primary[Login]
-    #[Forgot Password](ForgotPassword)
+    @link[Forgot Password](ForgotPassword)
 
 screen Login:
   container:
@@ -17,7 +17,7 @@ screen Login:
       > Enter your login information below to access your account.
       $LoginForm
       > Don't have an account?
-      #[Signup](Signup)
+      @link[Signup](Signup)
 
 screen Signup:
   container:
@@ -30,7 +30,7 @@ screen Signup:
       ___password: Confirm Password{Confirm your password}
       
       @primary[Sign Up]
-      #[Login](Login)
+      @link[Login](Login)
 
 screen ForgotPassword:
   container:

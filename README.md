@@ -216,7 +216,7 @@ Props são separados por pipe (`|`) e interpolados com `%nomeProp`.
 @[Abrir modal](NomeModal)      → Alternar modal
 @[Abrir drawer](NomeDrawer)    → Alternar drawer
 @[Voltar](-1)                  → Voltar no histórico
-#[Link externo](https://...)   → URL externa
+@link[Link externo](https://...)   → URL externa
 ```
 
 ### Componentes mobile

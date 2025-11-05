@@ -92,8 +92,8 @@ export const ButtonAction = createToken({
 
 export const Link = createToken({
   name: 'Link',
-  pattern: /#\[([^\]]+)\](?:\(([^)]+)\))?/,
-  label: '#[link text](url)',
+  pattern: /@link\[([^\]]+)\](?:\(([^)]+)\))?/,
+  label: '@link[text](destination)',
 })
 
 export const Image = createToken({

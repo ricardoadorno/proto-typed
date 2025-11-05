@@ -261,9 +261,9 @@ function getButtonCompletions(): vscode.CompletionItem[] {
 
 function getLinkCompletions(): vscode.CompletionItem[] {
   const link = new vscode.CompletionItem('link', vscode.CompletionItemKind.Reference)
-  link.insertText = new vscode.SnippetString('#[${1:Link Text}](${2:destination})')
+  link.insertText = new vscode.SnippetString('@link[${1:Link Text}](${2:destination})')
   link.documentation = new vscode.MarkdownString(
-    '**Navigation Link**\n\n`#[Text](Destination)`'
+    '**Navigation Link**\n\n`@link[Text](Destination)`'
   )
   link.sortText = '40-link'
   
