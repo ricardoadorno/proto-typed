@@ -128,6 +128,9 @@ export interface LinkProps extends LayoutProps {
 export interface ImageProps extends LayoutProps {
   src?: string
   alt?: string
+  shape?: 'rounded' | 'circle'
+  widthPx?: number
+  heightPx?: number
 }
 
 // Define input properties

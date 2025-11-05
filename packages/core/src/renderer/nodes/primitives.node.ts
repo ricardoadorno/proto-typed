@@ -94,7 +94,30 @@ export function renderImage(node: AstNode): string {
   const props = node.props as ImageProps
   const src = props.src || ''
   const alt = props.alt || ''
-  return `<img src="${src}" alt="${alt}" class="${elementStyles.image}" />`
+  const classNames = [elementStyles.image]
+
+  if (props.shape === 'circle') {
+    classNames.push(elementStyles.imageCircle)
+  } else if (props.shape === 'rounded') {
+    classNames.push(elementStyles.imageRounded)
+  }
+
+  const styleSegments: string[] = []
+  if (typeof props.widthPx === 'number') {
+    styleSegments.push(`width: ${props.widthPx}px`)
+  }
+  if (typeof props.heightPx === 'number') {
+    styleSegments.push(`height: ${props.heightPx}px`)
+  }
+  if (props.shape === 'circle' && !props.widthPx && !props.heightPx) {
+    styleSegments.push('aspect-ratio: 1 / 1')
+  }
+
+  const styleAttribute = styleSegments.length
+    ? ` style="${styleSegments.join('; ')}"`
+    : ''
+
+  return `<img src="${src}" alt="${alt}" class="${classNames.join(' ')}"${styleAttribute} />`
 }
 
 /**

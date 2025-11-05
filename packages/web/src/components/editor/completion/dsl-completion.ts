@@ -278,6 +278,26 @@ export function registerDSLCompletionProvider(monaco: Monaco) {
             'Image element\nExample: ![Logo](https://example.com/logo.png)',
           range: range,
         },
+        {
+          label: 'image-rounded',
+          kind: monaco.languages.CompletionItemKind.File,
+          insertText: '!rounded[${1:Alt Text}](${2:image-url})',
+          insertTextRules:
+            monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          documentation:
+            'Rounded image\nExample: !rounded[Header](https://example.com/header.png)',
+          range: range,
+        },
+        {
+          label: 'image-circle',
+          kind: monaco.languages.CompletionItemKind.File,
+          insertText: '!circle-${1:64}x${2:64}[${3:Avatar}](${4:image-url})',
+          insertTextRules:
+            monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          documentation:
+            'Circular image (ideal for avatars)\nExample: !circle-64x64[Avatar](https://example.com/avatar.jpg)',
+          range: range,
+        },
 
         // ========================================
         // LAYOUTS (layouts.tokens.ts)

@@ -119,6 +119,7 @@ export function registerDSLLanguage(monaco: Monaco) {
         // LINKS & IMAGES
         // ========================================
         [/@link(?=\[)/, 'keyword.link'], // @link[text](dest)
+        [/!(?:rounded|circle)(?:-\d+x\d+)?(?=\[)/, 'keyword.image'], // !rounded[alt](url), !circle-64x64[alt](url)
         [/!(?=\[)/, 'keyword.image'], // ![alt](url)
 
         // ========================================

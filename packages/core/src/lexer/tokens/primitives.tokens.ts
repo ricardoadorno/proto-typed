@@ -98,8 +98,8 @@ export const Link = createToken({
 
 export const Image = createToken({
   name: 'Image',
-  pattern: /!\[([^\]]+)\](?:\(([^)]+)\))?/,
-  label: '![alt text](url)',
+  pattern: /!(?:(?:rounded|circle)(?:-\d+x\d+)?)?\[([^\]]+)\](?:\(([^)]+)\))?/,
+  label: '![alt](url), !rounded[alt](url), !circle-64x64[alt](url)',
 })
 
 export const Heading = createToken({

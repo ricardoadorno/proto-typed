@@ -273,8 +273,22 @@ function getLinkCompletions(): vscode.CompletionItem[] {
     '**Image**\n\n`![Alt](url)`'
   )
   image.sortText = '40-image'
+
+  const roundedImage = new vscode.CompletionItem('image-rounded', vscode.CompletionItemKind.File)
+  roundedImage.insertText = new vscode.SnippetString('!rounded[${1:Alt Text}](${2:url})')
+  roundedImage.documentation = new vscode.MarkdownString(
+    '**Rounded Image**\n\n`!rounded[Alt](url)`'
+  )
+  roundedImage.sortText = '40-image-rounded'
+
+  const circleImage = new vscode.CompletionItem('image-circle', vscode.CompletionItemKind.File)
+  circleImage.insertText = new vscode.SnippetString('!circle-${1:64}x${2:64}[${3:Avatar}](${4:url})')
+  circleImage.documentation = new vscode.MarkdownString(
+    '**Circular Image**\n\n`!circle-64x64[Avatar](url)`'
+  )
+  circleImage.sortText = '40-image-circle'
   
-  return [link, image]
+  return [link, image, roundedImage, circleImage]
 }
 
 // ==============================================

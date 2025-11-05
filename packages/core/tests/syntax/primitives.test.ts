@@ -310,6 +310,32 @@ screen Home:
       expect(getProps(images[1]).src).toBe('/images/avatar.jpg')
     })
 
+    it('should parse image modifiers and dimensions', () => {
+      const input = `
+screen Home:
+  !rounded[Header](https://example.com/header.png)
+  !circle[Avatar](https://example.com/avatar.png)
+  !circle-64x64[Icon](https://example.com/icon.png)
+`
+      const result = parseWithErrors(input)
+      expectNoErrors(result)
+
+      const screen = result.ast.children?.[0]
+      const images = screen?.children || []
+
+      expect(getProps(images[0]).shape).toBe('rounded')
+      expect(getProps(images[0]).widthPx).toBeUndefined()
+      expect(getProps(images[0]).heightPx).toBeUndefined()
+
+      expect(getProps(images[1]).shape).toBe('circle')
+      expect(getProps(images[1]).widthPx).toBeUndefined()
+      expect(getProps(images[1]).heightPx).toBeUndefined()
+
+      expect(getProps(images[2]).shape).toBe('circle')
+      expect(getProps(images[2]).widthPx).toBe(64)
+      expect(getProps(images[2]).heightPx).toBe(64)
+    })
+
     it('should render links and images HTML correctly', () => {
       const input = `
 screen Home:
@@ -324,6 +350,23 @@ screen Home:
       expect(html).toContain('img')
       expect(html).toContain('alt="Logo"')
       expect(html).toContain('logo.png')
+    })
+
+    it('should render image modifiers in HTML output', () => {
+      const input = `
+screen Home:
+  !rounded[Banners](banner.png)
+  !circle-80x80[Avatar](avatar.png)
+`
+      const result = parseWithErrors(input)
+      expectNoErrors(result)
+
+      const { html } = astToHtmlStringPreview(result.ast)
+
+      expect(html).toContain('rounded-[--radius]')
+      expect(html).toContain('rounded-full')
+      expect(html).toContain('width: 80px')
+      expect(html).toContain('height: 80px')
     })
   })
 

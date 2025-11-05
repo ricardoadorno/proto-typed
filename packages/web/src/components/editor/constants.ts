@@ -42,7 +42,7 @@ export const DSL_TOKEN_TYPES = {
 
   // Links & Images (primitives.tokens.ts)
   link: 'keyword.link', // @link[text](dest)
-  image: 'keyword.image', // ![alt](url)
+  image: 'keyword.image', // ![alt](url), !rounded[alt](url)
   icon: 'entity.name.icon', // i-IconName (icon references)
 
   // Layouts (layouts.tokens.ts)

@@ -231,14 +231,22 @@ export function buildLinkElement(ctx: CstContext) {
 export function buildImageElement(ctx: CstContext) {
   const imageText = (ctx.Image[0] as IToken).image
   let text = '',
-    url = ''
+    url = '',
+    shape: 'rounded' | 'circle' | undefined,
+    widthPx: number | undefined,
+    heightPx: number | undefined
 
-  const markdownMatch = imageText.match(/!\[([^\]]+)\](?:\(([^)]+)\))?/)
+  const markdownMatch = imageText.match(
+    /^!(?:(rounded|circle)(?:-(\d+)x(\d+))?)?\[([^\]]+)\](?:\(([^)]+)\))?/
+  )
   const dslMatch = imageText.match(/image\s+\["([^"]*)"\]\s+([^\n\r]+)/)
 
   if (markdownMatch) {
-    text = markdownMatch[1]
-    url = markdownMatch[2] || '' // URL is now optional, default to empty string
+    shape = (markdownMatch[1] as 'rounded' | 'circle' | undefined) || undefined
+    widthPx = markdownMatch[2] ? Number(markdownMatch[2]) : undefined
+    heightPx = markdownMatch[3] ? Number(markdownMatch[3]) : undefined
+    text = markdownMatch[4]
+    url = markdownMatch[5] || '' // URL is now optional, default to empty string
   } else if (dslMatch) {
     url = dslMatch[1]
     text = dslMatch[2]
@@ -250,6 +258,9 @@ export function buildImageElement(ctx: CstContext) {
     props: {
       src: url,
       alt: text,
+      shape,
+      widthPx,
+      heightPx,
     },
     children: [],
   }

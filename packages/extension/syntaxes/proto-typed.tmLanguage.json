@@ -76,6 +76,10 @@
     "linksAndImages": {
       "patterns": [
         { "match": "#(?=\\[)", "name": "variable.other.constant.pty" },
+        {
+          "match": "!(?:rounded|circle)(?:-\\d+x\\d+)?(?=\\[)",
+          "name": "variable.other.constant.pty"
+        },
         { "match": "!(?=\\[)", "name": "variable.other.constant.pty" },
         { "match": "\\bi-[A-Z]\\w*\\b", "name": "variable.other.constant.pty" },
         {

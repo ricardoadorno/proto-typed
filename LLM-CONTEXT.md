@@ -350,12 +350,18 @@ screen LinkDemo:
 
 #### Image
 
-**Syntax**: `![alt text](image-url)`
+**Syntax**:
+
+- `![Alt](image-url)`
+- `!rounded[Alt](image-url)`
+- `!circle[Alt](image-url)`
+- `!circle-64x64[Alt](image-url)` (explicit width × height)
 
 **Properties**:
 
-- Standard Markdown image syntax
-- Renders as `<img>` with responsive classes
+- Standard Markdown-compatible syntax with optional semantic modifiers
+- `rounded` adds gentle corner radius, `circle` renders a circular avatar-style image
+- Dimension suffix uses pixels (`!rounded-300x150[...]`) to set explicit size
 - Alt text required for accessibility
 
 **Examples**:
@@ -364,7 +370,8 @@ screen LinkDemo:
 screen ImageDemo:
   container:
     ![Company Logo](https://example.com/logo.png)
-    ![Product Screenshot](https://example.com/product.png)
+    !rounded[Hero Banner](https://example.com/banner.png)
+    !circle-96x96[Team Avatar](https://example.com/avatar.jpg)
 ```
 
 ---

@@ -104,7 +104,9 @@ export const elementStyles = {
 
   // Utility using CSS variables
   separator: 'my-6 border-border',
-  image: 'max-w-full h-auto rounded-[--radius] shadow-md',
+  image: 'max-w-full h-auto',
+  imageRounded: 'rounded-[--radius] shadow-md',
+  imageCircle: 'rounded-full object-cover shadow-md',
 } as const
 
 /**
