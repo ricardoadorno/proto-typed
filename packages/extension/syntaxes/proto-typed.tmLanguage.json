@@ -110,7 +110,7 @@
     "layouts": {
       "patterns": [
         {
-          "match": "\\b(header|container-narrow|container-wide|container-full|container|stack-flush|stack-tight|stack-loose|stack|row-start|row-center|row-between|row-end|row|col|grid-2|grid-3|grid-4|grid-auto|grid|card-compact|card-feature|card|sidebar|navigator|list|fab)\\b",
+          "match": "\\b(header|container-narrow|container-wide|container-full|container|stack-none|stack-flush|stack-tight|stack-loose|stack|row-start|row-center|row-between|row-end|row|grid-2|grid-3|grid-4|grid-responsive|grid-auto|grid|layer-overlay|layer-sticky|layer-fixed|layer-absolute|layer-relative|layer-static|scroll-x|scroll-y|scroll-auto|scroll-hidden|card-compact|card-feature|card|sidebar|navigator|list|fab)\\b",
           "name": "storage.type.pty"
         }
       ]

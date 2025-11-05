@@ -44,11 +44,11 @@ screen Default:
 When to use: compare content in two columns with balanced focus.
 Why: two slots maintain a balance between reading and visual breathing room.
 
-<DocsCodePreview title="Grid-auto for flexible collections">
+<DocsCodePreview title="Grid-responsive for flexible collections">
 ```dsl
 screen Default:
   container:
-    grid-auto:
+    grid-responsive:
       card:
         ## Highlight 1
         > Automatically adjusts the width.
@@ -62,6 +62,9 @@ screen Default:
 </DocsCodePreview>
 When to use: distribute items with dynamic width without defining a fixed number of columns.
 Why: automatic adjustment avoids broken columns on smaller screens.
+<Tip title="Legacy alias">
+`grid-auto` remains available as an alias for `grid-responsive` to preserve older snippets.
+</Tip>
 
 <DocsCodePreview title="Grid-4 on wide screens">
 ```dsl
@@ -110,7 +113,7 @@ Why: standardizes the layout of metrics, reducing code repetition.
 ## Slots & Props
 | Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `variant` | enum (`grid-2`, `grid-3`, `grid-4`, `grid-auto`) | `grid-3` | Defines the number of columns or automatic adjustment. | No |
+| `variant` | enum (`grid-2`, `grid-3`, `grid-4`, `grid-responsive`) | `grid-3` | Defines the number of columns or automatic adjustment. | No |
 | `internal content` | DSL blocks | — | Cards, components, and layouts rendered in the cells. | Yes |
 | `container` support | layout | — | It is recommended to wrap the grid in `container` or `container-wide`. | No |
 

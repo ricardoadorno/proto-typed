@@ -30,28 +30,47 @@ import {
  */
 const LAYOUT_PRESETS: Record<string, string> = {
   // Containers
-  container: 'max-w-5xl mx-auto px-4',
-  'container-narrow': 'max-w-2xl mx-auto px-4',
-  'container-wide': 'max-w-7xl mx-auto px-6',
-  'container-full': 'w-full',
+  container: 'container mx-auto max-w-4xl px-6',
+  'container-narrow': 'container mx-auto max-w-2xl px-6',
+  'container-wide': 'container mx-auto max-w-6xl px-8',
+  'container-full': 'mx-auto w-full px-4 sm:px-8',
 
   // Stacks (Vertical)
-  stack: 'flex flex-col gap-4',
-  'stack-tight': 'flex flex-col gap-2',
+  stack: 'flex flex-col gap-6',
+  'stack-tight': 'flex flex-col gap-3',
   'stack-loose': 'flex flex-col gap-8',
-  'stack-flush': 'flex flex-col',
+  'stack-none': 'flex flex-col gap-0',
+  'stack-flush': 'flex flex-col gap-0',
 
   // Rows (Horizontal)
-  'row-start': 'flex items-center gap-4',
-  'row-center': 'flex items-center justify-center gap-4',
-  'row-between': 'flex items-center justify-between',
-  'row-end': 'flex items-center justify-end gap-4',
+  row: 'flex flex-row items-center gap-6',
+  'row-start': 'flex flex-row items-start gap-4',
+  'row-center': 'flex flex-row items-center justify-center gap-4',
+  'row-between': 'flex flex-row items-center justify-between gap-4',
+  'row-end': 'flex flex-row items-center justify-end gap-4',
 
   // Grids
-  'grid-2': 'grid grid-cols-2 gap-4',
-  'grid-3': 'grid grid-cols-3 gap-4',
-  'grid-4': 'grid grid-cols-4 gap-4',
-  'grid-auto': 'grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4',
+  grid: 'grid grid-cols-1 gap-6',
+  'grid-2': 'grid grid-cols-1 md:grid-cols-2 gap-6',
+  'grid-3': 'grid grid-cols-1 md:grid-cols-3 gap-6',
+  'grid-4': 'grid grid-cols-1 lg:grid-cols-4 gap-6',
+  'grid-responsive':
+    'grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-6',
+  'grid-auto': 'grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-6',
+
+  // Layer / Position
+  'layer-static': 'static',
+  'layer-relative': 'relative',
+  'layer-absolute': 'absolute inset-0',
+  'layer-fixed': 'fixed inset-0',
+  'layer-sticky': 'sticky top-0',
+  'layer-overlay': 'fixed inset-0 z-50 bg-background/80 backdrop-blur-sm',
+
+  // Overflow
+  'scroll-auto': 'overflow-auto',
+  'scroll-x': 'overflow-x-auto',
+  'scroll-y': 'overflow-y-auto',
+  'scroll-hidden': 'overflow-hidden',
 
   // Cards
   card: 'border rounded-lg p-6',

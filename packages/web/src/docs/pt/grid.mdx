@@ -44,11 +44,11 @@ screen Default:
 Quando usar: comparar conteúdos em duas colunas com foco equilibrado.
 Por quê: dois slots mantêm equilíbrio entre leitura e respiro visual.
 
-<DocsCodePreview title="Grid-auto para coleções flexíveis">
+<DocsCodePreview title="Grid-responsive para coleções flexíveis">
 ```dsl
 screen Default:
   container:
-    grid-auto:
+    grid-responsive:
       card:
         ## Destaque 1
         > Ajusta automaticamente a largura.
@@ -62,6 +62,9 @@ screen Default:
 </DocsCodePreview>
 Quando usar: distribuir itens com largura dinâmica sem definir número fixo de colunas.
 Por quê: o ajuste automático evita colunas quebradas em telas menores.
+<Tip title="Alias legado">
+`grid-auto` continua disponível como alias de `grid-responsive` para manter snippets antigos válidos.
+</Tip>
 
 <DocsCodePreview title="Grid-4 em telas amplas">
 ```dsl
@@ -110,7 +113,7 @@ Por quê: padroniza o layout das métricas reduzindo repetição de código.
 ## Slots & Props
 | Nome | Tipo | Padrão | Descrição | Obrigatório |
 | --- | --- | --- | --- | --- |
-| `variante` | enum (`grid-2`, `grid-3`, `grid-4`, `grid-auto`) | `grid-3` | Define número de colunas ou ajuste automático. | Não |
+| `variante` | enum (`grid-2`, `grid-3`, `grid-4`, `grid-responsive`) | `grid-3` | Define número de colunas ou ajuste automático. | Não |
 | `conteúdo interno` | blocos DSL | — | Cards, componentes e layouts renderizados nas células. | Sim |
 | `container` suporte | layout | — | Recomenda-se envolver a grid em `container` ou `container-wide`. | Não |
 

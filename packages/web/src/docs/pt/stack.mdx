@@ -4,7 +4,7 @@ Stacks empilham elementos verticalmente, controlando o espaçamento entre blocos
 ## Quando usar
 - Organizar títulos, textos e ações em sequência lógica.
 - Montar formulários com múltiplos campos e botões alinhados.
-- Alternar densidade de leitura com variantes `tight`, `loose` e `flush`.
+- Alternar densidade de leitura com variantes `tight`, `loose` e `none` (alias legado `flush`).
 - Agrupar componentes reutilizáveis mantendo hierarquia visual coesa.
 
 ## Exemplo básico
@@ -53,11 +53,11 @@ screen Default:
 Quando usar: agrupar itens curtos ou checklists sem perder legibilidade.
 Por quê: o gap reduzido aproxima conteúdos relacionados e acelera leitura.
 
-<DocsCodePreview title="Stack-flush para cards compactos">
+<DocsCodePreview title="Stack-none para cards compactos">
 ```dsl
 screen Default:
   container:
-    stack-flush:
+    stack-none:
       card-compact:
         > Última atualização em 18/09.
       card-compact:
@@ -66,6 +66,9 @@ screen Default:
 </DocsCodePreview>
 Quando usar: empilhar elementos que já possuem padding próprio.
 Por quê: evita espaçamento duplo quando os componentes internos já trazem margem.
+<Tip title="Compatibilidade">
+`stack-flush` continua funcionando como alias de `stack-none`, mantendo snippets antigos válidos.
+</Tip>
 
 ## Composição (usando com outros)
 - **Stack + Card** — coloca conteúdos sequenciais dentro de um bloco estruturado.
@@ -93,7 +96,7 @@ Por quê: separa campos verticalmente e alinha ações no rodapé.
 | Nome | Tipo | Padrão | Descrição | Obrigatório |
 | --- | --- | --- | --- | --- |
 | `stack` | layout vertical | `stack` | Empilha elementos com espaçamento padrão. | Não |
-| `stack-tight`, `stack-loose`, `stack-flush` | variações | — | Ajustam densidade entre itens (compacto, amplo, sem gap). | Não |
+| `stack-tight`, `stack-loose`, `stack-none` (`stack-flush`) | variações | — | Ajustam densidade entre itens (compacto, amplo, sem gap). | Não |
 | `conteúdo interno` | blocos DSL | — | Itens empilhados, como textos, inputs e componentes. | Sim |
 
 ## Erros comuns (Do/Don’t)

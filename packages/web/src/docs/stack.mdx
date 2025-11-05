@@ -4,7 +4,7 @@ Stacks pile elements vertically, controlling the spacing between content blocks.
 ## When to use
 - Organize titles, texts, and actions in a logical sequence.
 - Assemble forms with multiple fields and aligned buttons.
-- Alternate reading density with `tight`, `loose`, and `flush` variants.
+- Alternate reading density with `tight`, `loose`, and `none` (legacy `flush`) variants.
 - Group reusable components while maintaining a cohesive visual hierarchy.
 
 ## Basic example
@@ -53,11 +53,11 @@ screen Default:
 When to use: group short items or checklists without losing readability.
 Why: the reduced gap brings related content closer and speeds up reading.
 
-<DocsCodePreview title="Stack-flush for compact cards">
+<DocsCodePreview title="Stack-none for compact cards">
 ```dsl
 screen Default:
   container:
-    stack-flush:
+    stack-none:
       card-compact:
         > Last update on 09/18.
       card-compact:
@@ -66,6 +66,9 @@ screen Default:
 </DocsCodePreview>
 When to use: stack elements that already have their own padding.
 Why: avoids double spacing when the internal components already bring a margin.
+<Tip title="Backward compatibility">
+`stack-flush` continues to work as an alias for `stack-none` so older snippets remain valid.
+</Tip>
 
 ## Composition (using with others)
 - **Stack + Card** — places sequential content within a structured block.
@@ -93,7 +96,7 @@ Why: separates fields vertically and aligns actions in the footer.
 | Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
 | `stack` | vertical layout | `stack` | Stacks elements with default spacing. | No |
-| `stack-tight`, `stack-loose`, `stack-flush` | variations | — | Adjust density between items (compact, wide, no gap). | No |
+| `stack-tight`, `stack-loose`, `stack-none` (`stack-flush`) | variations | — | Adjust density between items (compact, wide, no gap). | No |
 | `internal content` | DSL blocks | — | Stacked items, such as texts, inputs, and components. | Yes |
 
 ## Common errors (Do/Don’t)

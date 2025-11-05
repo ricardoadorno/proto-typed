@@ -6,11 +6,12 @@ import { createToken } from 'chevrotain'
 //
 // Categories:
 // - Containers: container, container-narrow, container-wide, container-full
-// - Stacks: stack, stack-tight, stack-loose (vertical flow)
-// - Rows: row-start, row-center, row-between, row-end (horizontal flow)
-// - Grids: grid-2, grid-3, grid-4, grid-auto
-// - Cards: card, card-compact, card-feature
-// - Special: header, sidebar, list
+// - Stacks: stack, stack-tight, stack-loose, stack-none
+// - Rows: row, row-start, row-center, row-between, row-end
+// - Grids: grid, grid-2, grid-3, grid-4, grid-responsive
+// - Layer / Position: layer-static, layer-relative, layer-absolute, layer-fixed, layer-sticky, layer-overlay
+// - Overflow: scroll-auto, scroll-x, scroll-y, scroll-hidden
+// - Cards & Special layouts remain available (card, header, sidebar, list, etc.)
 
 // Container Layouts
 export const ContainerNarrow = createToken({
@@ -33,18 +34,11 @@ export const ContainerFull = createToken({
 
 export const Container = createToken({
   name: 'Container',
-  pattern: /container/,
+  pattern: /container(?!-)/,
   label: 'container',
-  longer_alt: ContainerNarrow,
 })
 
 // Stack Layouts (Vertical)
-export const Stack = createToken({
-  name: 'Stack',
-  pattern: /stack/,
-  label: 'stack',
-})
-
 export const StackTight = createToken({
   name: 'StackTight',
   pattern: /stack-tight/,
@@ -57,10 +51,16 @@ export const StackLoose = createToken({
   label: 'stack-loose',
 })
 
-export const StackFlush = createToken({
-  name: 'StackFlush',
-  pattern: /stack-flush/,
-  label: 'stack-flush',
+export const StackNone = createToken({
+  name: 'StackNone',
+  pattern: /(stack-none|stack-flush)/,
+  label: 'stack-none',
+})
+
+export const Stack = createToken({
+  name: 'Stack',
+  pattern: /stack(?!-)/,
+  label: 'stack',
 })
 
 // Row Layouts (Horizontal)
@@ -88,6 +88,12 @@ export const RowEnd = createToken({
   label: 'row-end',
 })
 
+export const Row = createToken({
+  name: 'Row',
+  pattern: /row(?!-)/,
+  label: 'row',
+})
+
 // Grid Layouts
 export const Grid2 = createToken({
   name: 'Grid2',
@@ -107,10 +113,78 @@ export const Grid4 = createToken({
   label: 'grid-4',
 })
 
-export const GridAuto = createToken({
-  name: 'GridAuto',
-  pattern: /grid-auto/,
-  label: 'grid-auto',
+export const GridResponsive = createToken({
+  name: 'GridResponsive',
+  pattern: /grid-(responsive|auto)/,
+  label: 'grid-responsive',
+})
+
+export const Grid = createToken({
+  name: 'Grid',
+  pattern: /grid(?!-)/,
+  label: 'grid',
+})
+
+// Layer / Position Layouts
+export const LayerStatic = createToken({
+  name: 'LayerStatic',
+  pattern: /layer-static/,
+  label: 'layer-static',
+})
+
+export const LayerRelative = createToken({
+  name: 'LayerRelative',
+  pattern: /layer-relative/,
+  label: 'layer-relative',
+})
+
+export const LayerAbsolute = createToken({
+  name: 'LayerAbsolute',
+  pattern: /layer-absolute/,
+  label: 'layer-absolute',
+})
+
+export const LayerFixed = createToken({
+  name: 'LayerFixed',
+  pattern: /layer-fixed/,
+  label: 'layer-fixed',
+})
+
+export const LayerSticky = createToken({
+  name: 'LayerSticky',
+  pattern: /layer-sticky/,
+  label: 'layer-sticky',
+})
+
+export const LayerOverlay = createToken({
+  name: 'LayerOverlay',
+  pattern: /layer-overlay/,
+  label: 'layer-overlay',
+})
+
+// Overflow Layouts
+export const ScrollAuto = createToken({
+  name: 'ScrollAuto',
+  pattern: /scroll-auto/,
+  label: 'scroll-auto',
+})
+
+export const ScrollX = createToken({
+  name: 'ScrollX',
+  pattern: /scroll-x/,
+  label: 'scroll-x',
+})
+
+export const ScrollY = createToken({
+  name: 'ScrollY',
+  pattern: /scroll-y/,
+  label: 'scroll-y',
+})
+
+export const ScrollHidden = createToken({
+  name: 'ScrollHidden',
+  pattern: /scroll-hidden/,
+  label: 'scroll-hidden',
 })
 
 // Card Layouts

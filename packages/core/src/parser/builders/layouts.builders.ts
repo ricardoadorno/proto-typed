@@ -34,18 +34,31 @@ export function buildLayoutElement(ctx: CstContext, visitor: CstVisitor) {
   else if (ctx.Stack) layoutType = 'stack'
   else if (ctx.StackTight) layoutType = 'stack-tight'
   else if (ctx.StackLoose) layoutType = 'stack-loose'
-  else if (ctx.StackFlush) layoutType = 'stack-flush'
+  else if (ctx.StackNone) layoutType = 'stack-none'
   // Rows
   else if (ctx.RowStart) layoutType = 'row-start'
   else if (ctx.RowCenter) layoutType = 'row-center'
   else if (ctx.RowBetween) layoutType = 'row-between'
   else if (ctx.RowEnd) layoutType = 'row-end'
-  else if (ctx.Col) layoutType = 'col'
+  else if (ctx.Row) layoutType = 'row'
   // Grids
   else if (ctx.Grid2) layoutType = 'grid-2'
   else if (ctx.Grid3) layoutType = 'grid-3'
   else if (ctx.Grid4) layoutType = 'grid-4'
-  else if (ctx.GridAuto) layoutType = 'grid-auto'
+  else if (ctx.GridResponsive) layoutType = 'grid-responsive'
+  else if (ctx.Grid) layoutType = 'grid'
+  // Layer / Position
+  else if (ctx.LayerOverlay) layoutType = 'layer-overlay'
+  else if (ctx.LayerSticky) layoutType = 'layer-sticky'
+  else if (ctx.LayerFixed) layoutType = 'layer-fixed'
+  else if (ctx.LayerAbsolute) layoutType = 'layer-absolute'
+  else if (ctx.LayerRelative) layoutType = 'layer-relative'
+  else if (ctx.LayerStatic) layoutType = 'layer-static'
+  // Overflow
+  else if (ctx.ScrollX) layoutType = 'scroll-x'
+  else if (ctx.ScrollY) layoutType = 'scroll-y'
+  else if (ctx.ScrollAuto) layoutType = 'scroll-auto'
+  else if (ctx.ScrollHidden) layoutType = 'scroll-hidden'
   // Cards
   else if (ctx.Card) layoutType = 'card'
   else if (ctx.CardCompact) layoutType = 'card-compact'
@@ -53,7 +66,7 @@ export function buildLayoutElement(ctx: CstContext, visitor: CstVisitor) {
   // Special
   else if (ctx.Header) layoutType = 'header'
   else if (ctx.Sidebar) layoutType = 'sidebar'
-  else layoutType = 'container-narrow' // fallback
+  else layoutType = 'container' // fallback
 
   if (ctx.element && ctx.element.length > 0) {
     for (const el of ctx.element) {

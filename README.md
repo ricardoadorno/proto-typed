@@ -171,25 +171,59 @@ ___[País][Selecione[Brasil | Portugal | Angola]]
 
 ### Layouts
 
-Layouts predefinidos com classes Tailwind e estilo shadcn:
+Tokens canônicos mapeados para classes Tailwind/shadcn:
+
+| Token | Grupo | Descrição curta | Classes base |
+| --- | --- | --- | --- |
+| `container` | Containers | Largura equilibrada para páginas gerais | `container mx-auto max-w-4xl px-6` |
+| `container-narrow` | Containers | Coluna de leitura ou formulários longos | `container mx-auto max-w-2xl px-6` |
+| `container-wide` | Containers | Dashboards, coleções amplas | `container mx-auto max-w-6xl px-8` |
+| `container-full` | Containers | Layout fluido ocupando 100% | `mx-auto w-full px-4 sm:px-8` |
+| `stack` | Stack (vertical) | Blocos verticais com gap médio | `flex flex-col gap-6` |
+| `stack-tight` | Stack (vertical) | Densidade alta para listas curtas | `flex flex-col gap-3` |
+| `stack-loose` | Stack (vertical) | Espaço generoso entre seções | `flex flex-col gap-8` |
+| `stack-none` (`stack-flush`) | Stack (vertical) | Sem gap entre itens empilhados | `flex flex-col gap-0` |
+| `row` | Row (horizontal) | Linha padrão com alinhamento central | `flex flex-row items-center gap-6` |
+| `row-start` | Row (horizontal) | Conteúdo alinhado ao topo/esquerda | `flex flex-row items-start gap-4` |
+| `row-center` | Row (horizontal) | Centralização total | `flex flex-row items-center justify-center gap-4` |
+| `row-between` | Row (horizontal) | Distribui itens com espaço entre | `flex flex-row items-center justify-between gap-4` |
+| `row-end` | Row (horizontal) | Ações alinhadas à direita | `flex flex-row items-center justify-end gap-4` |
+| `grid` | Grid | Uma coluna responsiva base | `grid grid-cols-1 gap-6` |
+| `grid-2` | Grid | Duas colunas em `md` | `grid grid-cols-1 md:grid-cols-2 gap-6` |
+| `grid-3` | Grid | Três colunas para catálogos | `grid grid-cols-1 md:grid-cols-3 gap-6` |
+| `grid-4` | Grid | Quatro colunas em telas largas | `grid grid-cols-1 lg:grid-cols-4 gap-6` |
+| `grid-responsive` (`grid-auto`) | Grid | Auto fit com `minmax(16rem,1fr)` | `grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-6` |
+| `layer-static` | Layer / Position | Mantém fluxo padrão | `static` |
+| `layer-relative` | Layer / Position | Referência para elementos absolutos | `relative` |
+| `layer-absolute` | Layer / Position | Posiciona dentro do ancestral relativo | `absolute inset-0` |
+| `layer-fixed` | Layer / Position | Fixa na viewport | `fixed inset-0` |
+| `layer-sticky` | Layer / Position | Mantém sticky dentro do container | `sticky top-0` |
+| `layer-overlay` | Layer / Position | Sobreposição com blur leve | `fixed inset-0 z-50 bg-background/80 backdrop-blur-sm` |
+| `scroll-auto` | Overflow | Usa overflow padrão para ambos eixos | `overflow-auto` |
+| `scroll-x` | Overflow | Habilita scroll horizontal | `overflow-x-auto` |
+| `scroll-y` | Overflow | Habilita scroll vertical | `overflow-y-auto` |
+| `scroll-hidden` | Overflow | Esconde qualquer overflow | `overflow-hidden` |
+| `card` | Cards | Card padrão para blocos de conteúdo | `border rounded-lg p-6` |
+| `card-compact` | Cards | Versão enxuta para listas densas | `border rounded-lg p-4` |
+| `card-feature` | Cards | Card destacado com borda dupla | `border-2 rounded-xl p-8 shadow-lg` |
+| `header` | Special | Cabeçalho fixo com borda | `sticky top-0 z-10 border-b px-6` |
+| `sidebar` | Special | Nave lateral fixa | `fixed h-full border-r p-4 pt-8` |
+Compatibilidade: `stack-flush` e `grid-auto` seguem aceitos como aliases.
 
 ```dsl
-container:          → Container padrão
-container-narrow:   → Container estreito
-stack:              → Pilha vertical (gap-4)
-stack-tight:        → Pilha vertical compacta (gap-2)
-row-center:         → Linha horizontal centralizada
-row-between:        → Linha com space-between
-row-end:            → Linha alinhada à direita
-grid-2:             → Grid 2 colunas
-grid-3:             → Grid 3 colunas
-card:               → Card padrão
-card-compact:       → Card compacto
-header:             → Cabeçalho de página
-list:               → Container de lista
-navigator:          → Navegação inferior
-fab:                → Botão de ação flutuante
----                 → Separador
+container-narrow:
+  stack-loose:
+    card:
+      ## Perfil
+      stack-tight:
+        row-between:
+          > Nome
+          > @proto
+    layer-overlay:
+      scroll-y:
+        card:
+          ### Alterar avatar
+          > Upload limitado a 2 MB
 ```
 
 ### Componentes com props
