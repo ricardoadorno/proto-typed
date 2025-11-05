@@ -108,7 +108,7 @@ export function buildTextElement(ctx: CstContext) {
  */
 export function buildButtonElement(ctx: CstContext, visitor: CstVisitor) {
   let variant = 'primary' // Default variant
-  let size = 'md' // Default size
+  let size: string | undefined // Default size determined later
   let text = ''
   let action = ''
 
@@ -135,16 +135,13 @@ export function buildButtonElement(ctx: CstContext, visitor: CstVisitor) {
   // Validate variant
   variant = validateButtonVariant(visitor, variant, line, column)
 
-  size = validateButtonSize(visitor, size, line, column)
-
   // Determine size from which token is present
-  if (ctx.ButtonSizeXs) size = 'extra-small'
-  else if (ctx.ButtonSizeSm) size = 'small'
-  else if (ctx.ButtonSizeMd) size = 'medium'
-  else if (ctx.ButtonSizeLg) size = 'large'
-  // Otherwise keep default 'md'
+  if (ctx.ButtonSizeSmall) size = 'small'
+  else if (ctx.ButtonSizeIcon) size = 'icon'
+  else if (ctx.ButtonSizeLarge) size = 'large'
 
-  // Validate size
+  // Validate size and fallback to default when undefined
+  const resolvedSize = validateButtonSize(visitor, size, line, column)
 
   // Extract label text from ButtonLabel token
   if (ctx.ButtonLabel && ctx.ButtonLabel[0]) {
@@ -172,7 +169,7 @@ export function buildButtonElement(ctx: CstContext, visitor: CstVisitor) {
       action,
       text,
       variant,
-      size,
+      size: resolvedSize,
     },
     children: [],
   }

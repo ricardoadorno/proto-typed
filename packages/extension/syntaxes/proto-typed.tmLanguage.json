@@ -66,7 +66,7 @@
     "buttons": {
       "patterns": [
         {
-          "match": "@(primary|secondary|outline|ghost|destructive|link|success|warning)(?:-(xs|sm|md|lg))?(?=\\[)",
+          "match": "@(primary|secondary|outline|ghost|destructive|link|success|warning)(?:-(small|icon|large))?(?=\\[)",
           "name": "variable.other.constant.pty"
         },
         { "match": "@(?=\\[)", "name": "variable.other.constant.pty" }

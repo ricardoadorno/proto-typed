@@ -37,7 +37,7 @@ Por quê: destaca o comando principal com contraste máximo.
 screen Default:
   container:
     row:
-      @secondary-sm[Ver histórico](History)
+      @secondary-small[Ver histórico](History)
 ```
 </DocsCodePreview>
 Quando usar: ofereça opção complementar sem competir com o CTA principal.
@@ -77,7 +77,7 @@ Por quê: combina CTA principal e opção de saída dentro do mesmo bloco.
 | Nome | Tipo | Padrão | Descrição | Obrigatório |
 | --- | --- | --- | --- | --- |
 | `variante` | enum (`@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@link`, `@success`, `@warning`) | `@primary` | Define hierarquia visual da ação. | Não |
-| `tamanho` | enum (`-xs`, `-sm`, `-md`, `-lg`) | `-md` | Ajusta altura e espaçamento do botão. | Não |
+| `tamanho` | enum (`-small`, `-icon`, `-large`) | — (sem modificador) | Ajusta altura e espaçamento do botão. | Não |
 | `label` | string | — | Texto visível do botão; pode incluir ícone. | Sim |
 | `ícone` | token `i-` | — | Ícone opcional exibido antes do label. | Não |
 | `destino` | slug/rota | — | Tela, modal, drawer, ação (`-1`, `close`, `alert`). | Sim |

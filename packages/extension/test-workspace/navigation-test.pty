@@ -9,8 +9,8 @@ component ContactCard:
     > %email
     >>> %phone
     row-end:
-      @outline-sm[Edit](%editAction)
-      @ghost-sm[icon:trash-2](DeleteConfirm)
+      @outline-small[Edit](%editAction)
+      @ghost-icon[icon:trash-2](DeleteConfirm)
 
 modal DeleteConfirm:
   card:

@@ -104,7 +104,7 @@ screen Home:
         action: string
       }>(button)
       expect(props.variant).toBe('primary')
-      expect(props.size).toBe('md')
+      expect(props.size).toBe('default')
       expect(props.label).toBe('Click Me')
       expect(props.action).toBe('action')
     })
@@ -138,10 +138,9 @@ screen Home:
     it('should parse button with size modifiers', () => {
       const input = `
 screen Home:
-  @-xs[Tiny](action)
-  @-sm[Small](action)
-  @-md[Medium](action)
-  @-lg[Large](action)
+  @-small[Compact](action)
+  @-icon[Icon Only](action)
+  @-large[Prominent](action)
 `
       const result = parseWithErrors(input)
       expectNoErrors(result)
@@ -149,18 +148,17 @@ screen Home:
       const screen = result.ast.children?.[0]
       const buttons = screen?.children || []
 
-      expect(getProps(buttons[0]).size).toBe('xs')
-      expect(getProps(buttons[1]).size).toBe('sm')
-      expect(getProps(buttons[2]).size).toBe('md')
-      expect(getProps(buttons[3]).size).toBe('lg')
+      expect(getProps(buttons[0]).size).toBe('small')
+      expect(getProps(buttons[1]).size).toBe('icon')
+      expect(getProps(buttons[2]).size).toBe('large')
     })
 
     it('should parse button with variant and size', () => {
       const input = `
 screen Home:
-  @secondary-lg[Submit](submit)
-  @outline-sm[Cancel](close)
-  @destructive-xs[Delete](delete)
+  @secondary-large[Submit](submit)
+  @outline-small[Cancel](close)
+  @destructive-icon[Delete](delete)
 `
       const result = parseWithErrors(input)
       expectNoErrors(result)
@@ -169,19 +167,19 @@ screen Home:
       const buttons = screen?.children || []
 
       expect(getProps(buttons[0]).variant).toBe('secondary')
-      expect(getProps(buttons[0]).size).toBe('lg')
+      expect(getProps(buttons[0]).size).toBe('large')
 
       expect(getProps(buttons[1]).variant).toBe('outline')
-      expect(getProps(buttons[1]).size).toBe('sm')
+      expect(getProps(buttons[1]).size).toBe('small')
 
       expect(getProps(buttons[2]).variant).toBe('destructive')
-      expect(getProps(buttons[2]).size).toBe('xs')
+      expect(getProps(buttons[2]).size).toBe('icon')
     })
 
     it('should render button HTML correctly', () => {
       const input = `
 screen Home:
-  @secondary-lg[Submit](submit)
+  @secondary-large[Submit](submit)
 `
       const result = parseWithErrors(input)
       const { html } = astToHtmlStringPreview(result.ast)
@@ -338,7 +336,7 @@ screen Dashboard:
   >>> Last login: 2 hours ago
   
   @primary[View Profile](Profile)
-  @outline-sm[Settings](Settings)
+  @outline-small[Settings](Settings)
   
   #[Learn More](https://docs.example.com)
   ![Banner](banner.jpg)

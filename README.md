@@ -140,14 +140,14 @@ Padrão: `@<variante>?-<tamanho>?\[texto\]\(ação\)`
 
 - `@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@link`, `@success`, `@warning`
 
-**Tamanhos** (opcional, padrão: md):
+**Tamanhos** (opcional, padrão sem modificador):
 
-- `-xs`, `-sm`, `-md`, `-lg`
+- `-small`, `-icon`, `-large`
 
 ```dsl
 @[Botão padrão](acao)
-@secondary-lg[Botão secundário grande](acao)
-@outline-sm[Cancelar pequeno](acao)
+@secondary-large[Botão secundário grande](acao)
+@outline-small[Cancelar pequeno](acao)
 @destructive[Excluir](delete)
 ```
 

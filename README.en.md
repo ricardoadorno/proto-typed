@@ -140,14 +140,14 @@ Pattern: `@<variant>?-<size>?[text](action)`
 
 - `@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@link`, `@success`, `@warning`
 
-**Sizes** (optional, default: md):
+**Sizes** (optional, default: no modifier):
 
-- `-xs`, `-sm`, `-md`, `-lg`
+- `-small`, `-icon`, `-large`
 
 ```dsl
 @[Default button](action)
-@secondary-lg[Large secondary button](action)
-@outline-sm[Small cancel](action)
+@secondary-large[Large secondary button](action)
+@outline-small[Small cancel](action)
 @destructive[Delete](delete)
 ```
 

@@ -61,26 +61,21 @@ export const ButtonMarker = createToken({
   ],
 })
 
-// Button size tokens (optional, default is md)
-export const ButtonSizeXs = createToken({
-  name: 'ButtonSizeXs',
-  pattern: /-xs/,
-  label: '-xs',
+// Button size tokens (optional, default without modifier)
+export const ButtonSizeSmall = createToken({
+  name: 'ButtonSizeSmall',
+  pattern: /-small/,
+  label: '-small',
 })
-export const ButtonSizeSm = createToken({
-  name: 'ButtonSizeSm',
-  pattern: /-sm/,
-  label: '-sm',
+export const ButtonSizeIcon = createToken({
+  name: 'ButtonSizeIcon',
+  pattern: /-icon/,
+  label: '-icon',
 })
-export const ButtonSizeMd = createToken({
-  name: 'ButtonSizeMd',
-  pattern: /-md/,
-  label: '-md',
-})
-export const ButtonSizeLg = createToken({
-  name: 'ButtonSizeLg',
-  pattern: /-lg/,
-  label: '-lg',
+export const ButtonSizeLarge = createToken({
+  name: 'ButtonSizeLarge',
+  pattern: /-large/,
+  label: '-large',
 })
 
 // Button label and action

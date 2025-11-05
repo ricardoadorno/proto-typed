@@ -1,14 +1,20 @@
-
 0.2.0
-    [] Refactor Button
+[] Refactor Button - small, large, icon - remove #[link] syntax
 
     [] Refactor Image
+        - !shape[]
 
     [] Refactor Inputs
+        - {} syntax
+        - : syntax
 
-    [] Refactor Layouts
+    [] Refactor Layouts patterns
+
+    [] Refactor Text patterns
 
     [] Refactor Components Props
+        - $foo syntax
+        - Inline component?
 
     [] Implement Syntax Test on Core
 

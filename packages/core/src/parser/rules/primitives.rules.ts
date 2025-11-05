@@ -14,10 +14,9 @@ import {
   ButtonSuccess,
   ButtonWarning,
   ButtonMarker,
-  ButtonSizeXs,
-  ButtonSizeSm,
-  ButtonSizeMd,
-  ButtonSizeLg,
+  ButtonSizeSmall,
+  ButtonSizeIcon,
+  ButtonSizeLarge,
   ButtonLabel,
   ButtonAction,
   // Other primitives
@@ -82,10 +81,9 @@ export const definePrimitiveRules: RuleDefinitionFunction = function (
     // Parse optional size
     this.OPTION(() => {
       this.OR2([
-        { ALT: () => this.CONSUME(ButtonSizeXs) },
-        { ALT: () => this.CONSUME(ButtonSizeSm) },
-        { ALT: () => this.CONSUME(ButtonSizeMd) },
-        { ALT: () => this.CONSUME(ButtonSizeLg) },
+        { ALT: () => this.CONSUME(ButtonSizeSmall) },
+        { ALT: () => this.CONSUME(ButtonSizeIcon) },
+        { ALT: () => this.CONSUME(ButtonSizeLarge) },
       ])
     })
 

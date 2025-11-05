@@ -29,13 +29,13 @@ component FeatureCard:
     stack-tight:
       ## %title
       > %description
-      @primary-sm[%action](Details)
+      @primary-small[%action](Details)
 
 
 screen Dashboard:
   header:
     >> Dashboard
-    @ghost-sm[i-Menu](MainMenu)
+    @ghost-icon[i-Menu](MainMenu)
   
   container:
     # Welcome to Proto-Typed
@@ -77,7 +77,7 @@ screen Dashboard:
 screen Settings:
   header:
     >> Settings
-    @ghost-sm[i-ArrowLeft](-1)
+    @ghost-icon[i-ArrowLeft](-1)
   
   container:
     # Application Settings

@@ -100,10 +100,10 @@ export function registerDSLLanguage(monaco: Monaco) {
         // BUTTONS
         // New system: @variant-size[text](action)
         // Variants: @primary, @secondary, @outline, @ghost, @destructive, @link, @success, @warning
-        // Sizes: -xs, -sm, -md, -lg (optional, default is md)
+        // Sizes: -small, -icon, -large (optional, default without modifier)
         // ========================================
         [
-          /@(primary|secondary|outline|ghost|destructive|link|success|warning)(?:-(xs|sm|md|lg))?(?=\[)/,
+          /@(primary|secondary|outline|ghost|destructive|link|success|warning)(?:-(small|icon|large))?(?=\[)/,
           'keyword.button',
         ],
         [/@(?=\[)/, 'keyword.button'], // Default button (no variant specified)

@@ -37,7 +37,7 @@ Why: highlights the main command with maximum contrast.
 screen Default:
   container:
     row:
-      @secondary-sm[View history](History)
+      @secondary-small[View history](History)
 ```
 </DocsCodePreview>
 When to use: offer a complementary option without competing with the main CTA.
@@ -77,7 +77,7 @@ Why: combines the main CTA and exit option within the same block.
 | Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
 | `variant` | enum (`@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@link`, `@success`, `@warning`) | `@primary` | Defines the visual hierarchy of the action. | No |
-| `size` | enum (`-xs`, `-sm`, `-md`, `-lg`) | `-md` | Adjusts the button's height and spacing. | No |
+| `size` | enum (`-small`, `-icon`, `-large`) | — (no modifier) | Adjusts the button's height and spacing. | No |
 | `label` | string | — | Visible text of the button; can include an icon. | Yes |
 | `icon` | token `i-` | — | Optional icon displayed before the label. | No |
 | `destination` | slug/route | — | Screen, modal, drawer, action (`-1`, `close`, `alert`). | Yes |

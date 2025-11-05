@@ -10,7 +10,7 @@ component ContactCard:
       stack-tight:
         >> %name
         >>> %email
-      @outline-sm[i-Edit](EditContact)
+      @outline-small[i-Edit](EditContact)
 
 
 component MenuItem:
@@ -26,7 +26,7 @@ component GroupItem:
 screen Contacts:
   header:
     >> My Contacts
-    @ghost-sm[i-Menu](MainDrawer)
+    @ghost-icon[i-Menu](MainDrawer)
   container:
     > Your contacts organized in one place
     list $ContactCard:
@@ -66,8 +66,8 @@ modal CreateContact:
     [ ] Sync with cloud
 
     row-between:
-      @secondary-md[Cancel](-1)
-      @primary-md[i-Save Save](Contacts)
+      @secondary[Cancel](-1)
+      @primary[i-Save Save](Contacts)
 
 
 modal ConfirmDelete:
@@ -80,8 +80,8 @@ modal ConfirmDelete:
     "> Consider archiving instead of deleting
 
     row-between:
-      @outline-md[Cancel](-1)
-      @destructive-md[i-Trash Delete](Contacts)
+      @outline[Cancel](-1)
+      @destructive[i-Trash Delete](Contacts)
 
 
 drawer MainDrawer:
@@ -101,11 +101,11 @@ drawer MainDrawer:
     card:
       >> Premium Features
       >>> Unlock advanced tools
-      @primary-md[i-Crown Upgrade](Premium)
+      @primary[i-Crown Upgrade](Premium)
 
     ---
 
-    @destructive-md[i-LogOut Sign Out](Contacts)
+    @destructive[i-LogOut Sign Out](Contacts)
 
 
 screen Favorites:
@@ -121,7 +121,7 @@ screen Favorites:
       
       *> Tap the star icon to add contacts
 
-      @primary-md[i-ArrowLeft Back](Contacts)
+      @primary[i-ArrowLeft Back](Contacts)
 
   navigator:
     - i-Users | Contacts
@@ -144,7 +144,7 @@ screen Groups:
 
     ---
 
-    @primary-md[i-Plus New Group](Contacts)
+    @primary[i-Plus New Group](Contacts)
 
   navigator:
     - i-Users | Contacts
@@ -179,7 +179,7 @@ screen Settings:
     ---
 
     row-center:
-      @destructive-md[Clear Cache](Contacts)
+      @destructive[Clear Cache](Contacts)
 
   navigator:
     - i-Users | Contacts
@@ -222,7 +222,7 @@ screen ExportScreen:
 
     ---
 
-    @primary-md[i-Download Export Now](Settings)
+    @primary[i-Download Export Now](Settings)
 
 
 screen Premium:
@@ -255,7 +255,7 @@ screen Premium:
 
       ---
 
-      @primary-md[i-Crown Subscribe](Contacts)
+      @primary[i-Crown Subscribe](Contacts)
       @ghost[Maybe Later](-1)
 
 `

@@ -6,7 +6,7 @@ styles:
 screen Home:
   header:
     >> Layout Test233451
-    @ghost-sm[Menu](MainMenu)
+    @ghost-small[Menu](MainMenu)
 
   container:
     # Welcome to Layout Test
@@ -20,11 +20,11 @@ screen Home:
       card-compact:
         ### Feature 1
         >> First feature description
-        @outline-sm[Learn More](Docs)
+        @outline-small[Learn More](Docs)
       card-compact:
         ### Feature 2
         >> Second feature description
-        @outline-sm[Learn More](Docs)
+        @outline-small[Learn More](Docs)
     stack:
       > This is a stack layout
       card:
@@ -71,7 +71,7 @@ drawer MainMenu:
 screen Docs:
   header:
     >> Documentation
-    @ghost-sm[Back](Home)
+    @ghost-small[Back](Home)
 
   container-narrow:
     stack-loose:
@@ -102,7 +102,7 @@ screen Docs:
 screen Settings:
   header:
     >> Settings
-    @ghost-sm[Menu](MainMenu)
+    @ghost-small[Menu](MainMenu)
 
   container:
     stack:

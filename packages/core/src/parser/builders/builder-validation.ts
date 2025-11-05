@@ -130,13 +130,13 @@ export function validateButtonSize(
   line?: number,
   column?: number
 ): string {
-  const validSizes = ['xs', 'sm', 'md', 'lg']
+  const validSizes = ['small', 'icon', 'large']
 
   return validateLayoutModifier(
     visitor,
     size,
     validSizes,
-    'md',
+    'default',
     'Button',
     line,
     column

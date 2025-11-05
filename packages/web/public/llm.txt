@@ -82,12 +82,12 @@ Padrão: `@<variante>?-<tamanho>?\[texto\]\(ação\)`
 ```dsl
 @[Texto](destino)                    → Botão primário padrão
 @secondary[Texto](destino)           → Botão secundário
-@destructive-lg[Excluir](confirma)   → Botão destrutivo grande
+@destructive-large[Excluir](confirma) → Botão destrutivo grande
 @ghost[Fechar](close)                → Botão ghost
 ```
 
 **Variantes**: `primary`, `secondary`, `outline`, `ghost`, `destructive`, `link`, `success`, `warning`  
-**Tamanhos**: `xs`, `sm`, `md` (padrão), `lg`
+**Tamanhos**: `small`, `icon`, `large` (padrão sem modificador)
 
 ### 5. Formulários usam underscores
 

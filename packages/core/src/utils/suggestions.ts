@@ -184,7 +184,7 @@ export function suggestButtonVariant(input: string): string | null {
  * Sugere button size baseado em dicionário conhecido
  */
 export function suggestButtonSize(input: string): string | null {
-  const VALID_SIZES = ['xs', 'sm', 'md', 'lg']
+  const VALID_SIZES = ['small', 'icon', 'large']
 
   return suggestClosest(input, VALID_SIZES, 1) // Distância 1 (mais restritivo)
 }
