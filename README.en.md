@@ -124,12 +124,12 @@ drawer Menu:
 ### Typography
 
 ```dsl
-# to ######  → Headings (H1-H6)
->           → Paragraph
->>          → Text (no bottom margin)
->>>         → Secondary/muted text
-*>          → Note text
-">          → Quote
+# to ####    → Headings (H1-H4)
+>           → Paragraph (body)
+>>          → Small/secondary text
+>>>         → Muted helper text
+*>          → Blockquote
+**>         → Note callout
 ```
 
 ### Buttons

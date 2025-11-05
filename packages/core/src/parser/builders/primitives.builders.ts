@@ -10,14 +10,15 @@ import {
   validateRequiredProps,
 } from './builder-validation'
 import type { CstContext, CstVisitor } from '../../types/parser'
+import type { TextKind } from '../../types/ast-node'
 
 /**
  * @function buildHeadingElement
- * @description Builds a 'Heading' AST node from the corresponding CST node.
+ * @description Builds a typography heading 'Text' AST node from the corresponding CST node.
  * It determines the heading level by counting the '#' characters and extracts the content.
  *
  * @param {Context} ctx - The Chevrotain CST node context for the heading.
- * @returns {object | null} A 'Heading' AST node, or null if the token is invalid.
+ * @returns {object | null} A 'Text' AST node, or null if the token is invalid.
  */
 export function buildHeadingElement(ctx: CstContext) {
   if (!ctx.Heading || !ctx.Heading[0]) {
@@ -35,65 +36,71 @@ export function buildHeadingElement(ctx: CstContext) {
   const contentMatch = headingText.match(/#+\s+([^\n\r#[\]"=:]+)/)
   const content = contentMatch ? contentMatch[1].trim() : ''
 
+  const kindMap: Record<number, TextKind> = {
+    1: 'h1',
+    2: 'h2',
+    3: 'h3',
+    4: 'h4',
+  }
+  const kind = kindMap[level as keyof typeof kindMap] || 'h4'
+
   return {
-    type: 'Heading',
+    type: 'Text',
     id: '', // ID will be generated later
     props: {
-      level,
-      content,
+      kind,
+      value: content,
     },
     children: [],
+    kind,
+    value: content,
   }
 }
 
 /**
  * @function buildTextElement
- * @description Builds a 'Text' or 'Paragraph' AST node from the corresponding CST node.
- * It determines the text variant (text, paragraph, muted, note, quote) and extracts the content.
+ * @description Builds a typography 'Text' AST node from the corresponding CST node.
+ * It determines the semantic kind (paragraph, small, muted, blockquote, note) and extracts the content.
  *
  * @param {Context} ctx - The Chevrotain CST node context for the text element.
- * @returns {object} A 'Text' or 'Paragraph' AST node.
+ * @returns {object} A 'Text' AST node with semantic typography metadata.
  */
 export function buildTextElement(ctx: CstContext) {
-  let variant = 'text'
-  let content = ''
-  let type = 'Text'
+  let kind: TextKind = 'p'
+  let value = ''
 
-  if (ctx.Text) {
-    const match = (ctx.Text[0] as IToken).image.match(/>\s+([^\n\r]+)/)
-    content = match ? match[1].trim() : ''
-    variant = 'text'
-    type = 'Text'
-  } else if (ctx.Paragraph) {
+  if (ctx.Paragraph) {
     const match = (ctx.Paragraph[0] as IToken).image.match(/>\s+([^\n\r]+)/)
-    content = match ? match[1].trim() : ''
-    variant = 'paragraph'
-    type = 'Paragraph'
+    value = match ? match[1].trim() : ''
+    kind = 'p'
+  } else if (ctx.SmallText) {
+    const match = (ctx.SmallText[0] as IToken).image.match(/>>\s+([^\n\r]+)/)
+    value = match ? match[1].trim() : ''
+    kind = 'small'
   } else if (ctx.MutedText) {
     const match = (ctx.MutedText[0] as IToken).image.match(/>>>\s+([^\n\r]+)/)
-    content = match ? match[1].trim() : ''
-    variant = 'muted'
-    type = 'MutedText'
+    value = match ? match[1].trim() : ''
+    kind = 'muted'
+  } else if (ctx.Blockquote) {
+    const match = (ctx.Blockquote[0] as IToken).image.match(/\*(?!\*)>\s+([^\n\r]+)/)
+    value = match ? match[1].trim() : ''
+    kind = 'blockquote'
   } else if (ctx.Note) {
-    const match = (ctx.Note[0] as IToken).image.match(/\*>\s+([^\n\r]+)/)
-    content = match ? match[1].trim() : ''
-    variant = 'note'
-    type = 'Text'
-  } else if (ctx.Quote) {
-    const match = (ctx.Quote[0] as IToken).image.match(/">\s+([^\n\r]+)/)
-    content = match ? match[1].trim() : ''
-    variant = 'quote'
-    type = 'Text'
+    const match = (ctx.Note[0] as IToken).image.match(/\*\*>[ \t]+([^\n\r]+)/)
+    value = match ? match[1].trim() : ''
+    kind = 'note'
   }
 
   return {
-    type,
+    type: 'Text',
     id: '', // ID will be generated later
     props: {
-      variant,
-      content,
+      kind,
+      value,
     },
     children: [],
+    kind,
+    value,
   }
 }
 

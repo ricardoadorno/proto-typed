@@ -32,7 +32,9 @@ function extractStableProps(props: Record<string, unknown>): string {
   if (props.componentName)
     stableFields.push(`componentName=${props.componentName}`)
   if (props.text) stableFields.push(`text=${props.text}`)
+  if (props.value) stableFields.push(`value=${props.value}`)
   if (props.content) stableFields.push(`content=${props.content}`)
+  if (props.kind) stableFields.push(`kind=${props.kind}`)
   if (props.children) stableFields.push(`children=${props.children}`)
 
   return stableFields.join('|')
@@ -43,9 +45,12 @@ function extractStableProps(props: Record<string, unknown>): string {
  */
 function generateFingerprint(node: AstNode, parentType?: string): string {
   const stableProps = extractStableProps(node.props as Record<string, unknown>)
+  const intrinsic: string[] = []
+  if (node.value) intrinsic.push(`value=${node.value}`)
+  if (node.kind) intrinsic.push(`kind=${node.kind}`)
   const parentPart = parentType ? `parent=${parentType}` : ''
 
-  const parts = [`type=${node.type}`, stableProps, parentPart].filter(Boolean)
+  const parts = [`type=${node.type}`, stableProps, intrinsic.join('|'), parentPart].filter(Boolean)
   return parts.join('|')
 }
 

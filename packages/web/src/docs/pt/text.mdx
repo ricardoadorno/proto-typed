@@ -83,10 +83,20 @@ Por quê: explica o contexto e oferece o próximo passo em um único bloco.
 ## Slots & Props
 | Nome | Tipo | Padrão | Descrição | Obrigatório |
 | --- | --- | --- | --- | --- |
-| `# … ######` | títulos | — | Define hierarquia de seções (use um `#` por tela). | Não |
-| `>`, `>>`, `>>>` | parágrafos | — | Parágrafos principal, secundário e metadado. | Não |
-| `*>` | nota | — | Realça alertas, dicas e mensagens importantes. | Não |
-| `">` | citação | — | Registra depoimentos ou mensagens destacadas. | Não |
+| `# … ####` | títulos | — | Define hierarquia de seções (um `#` nível 1 por tela). | Não |
+| `>`, `>>`, `>>>` | parágrafos | — | Corpo principal, texto secundário e anotação muted. | Não |
+| `*>` | citação | — | Realça depoimentos ou mensagens com borda lateral. | Não |
+| `**>` | nota | — | Realça alertas, dicas e mensagens importantes. | Não |
+
+<DocsCodePreview title="Citações e notas">
+```dsl
+screen Callouts:
+  container:
+    *> "ProtoTyped acelerou o discovery do time."
+    **> Compartilhe o resumo com a equipe antes da daily.
+```
+</DocsCodePreview>
+Use `*>` para registrar depoimentos e `**>` para notas importantes no fluxo.
 
 ## Erros comuns (Do/Don’t)
 <DoDont

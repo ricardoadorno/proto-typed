@@ -357,6 +357,8 @@ export function generateThemeCssVariables(
   return `
     --background: ${colors.background};
     --foreground: ${colors.foreground};
+    --fg-primary: ${colors.foreground};
+    --fg-secondary: ${colors.mutedForeground};
     --card: ${colors.card};
     --card-foreground: ${colors.cardForeground};
     --popover: ${colors.popover};
@@ -372,8 +374,10 @@ export function generateThemeCssVariables(
     --destructive: ${colors.destructive};
     --destructive-foreground: ${colors.destructiveForeground};
     --border: ${colors.border};
+    --border-muted: ${colors.border};
     --input: ${colors.input};
     --ring: ${colors.ring};
+    --bg-raised: ${colors.card};
     --chart-1: ${colors.chart1};
     --chart-2: ${colors.chart2};
     --chart-3: ${colors.chart3};

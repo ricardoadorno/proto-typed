@@ -62,12 +62,12 @@ export function registerDSLTheme(monaco: Monaco) {
       // ========================================
       // TYPOGRAPHY
       // ========================================
-      { token: 'markup.heading', foreground: '34d399', fontStyle: 'bold' }, // # to ######
+      { token: 'markup.heading', foreground: '34d399', fontStyle: 'bold' }, // # to ####
       { token: 'markup.paragraph', foreground: '34d399' }, // >
-      { token: 'markup.text', foreground: '34d399' }, // >>
+      { token: 'markup.text', foreground: '34d399' }, // >> (small)
       { token: 'markup.muted', foreground: '6ee7b7' }, // >>>
-      { token: 'markup.note', foreground: '34d399', fontStyle: 'italic' }, // *>
-      { token: 'markup.quote', foreground: '34d399', fontStyle: 'italic' }, // ">
+      { token: 'markup.note', foreground: '34d399', fontStyle: 'italic' }, // **>
+      { token: 'markup.quote', foreground: '34d399', fontStyle: 'italic' }, // *>
       { token: 'markup.list', foreground: 'fbbf24' }, // - (list items)
 
       // ========================================

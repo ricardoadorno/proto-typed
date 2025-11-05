@@ -88,7 +88,7 @@ drawer MainDrawer:
   stack:
     ![App Logo](https://via.placeholder.com/150x50)
     
-    ###### Main Menu
+    #### Main Menu
 
     list $MenuItem:
       - Contacts | Contacts

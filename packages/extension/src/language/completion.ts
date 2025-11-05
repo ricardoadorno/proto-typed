@@ -40,7 +40,7 @@ export function createCompletionProvider(): vscode.Disposable {
         }
         
         // Typography completions (after >, #, etc.)
-        if (/^\s*[>#*"]?\s*$/.test(linePrefix)) {
+        if (/^\s*(?:[>#"]|\*{1,2})?\s*$/.test(linePrefix)) {
           completions.push(...getTypographyCompletions())
         }
         
@@ -72,7 +72,7 @@ export function createCompletionProvider(): vscode.Disposable {
       }
     },
     // Trigger characters
-    '@', '#', '>', '_', '$', '%', '-', '!'
+    '@', '#', '>', '_', '$', '%', '-', '!', '*'
   )
 }
 
@@ -152,7 +152,7 @@ function getTypographyCompletions(): vscode.CompletionItem[] {
   const items: vscode.CompletionItem[] = []
   
   // Headings
-  for (let i = 1; i <= 6; i++) {
+  for (let i = 1; i <= 4; i++) {
     const heading = new vscode.CompletionItem(
       `heading${i}`,
       vscode.CompletionItemKind.Text
@@ -165,50 +165,50 @@ function getTypographyCompletions(): vscode.CompletionItem[] {
     items.push(heading)
   }
   
-  // Paragraph
+  // Paragraph (body text)
   const paragraph = new vscode.CompletionItem('paragraph', vscode.CompletionItemKind.Text)
   paragraph.insertText = new vscode.SnippetString('> ${1:Paragraph text}')
   paragraph.documentation = new vscode.MarkdownString(
-    '**Paragraph**\n\nText with bottom margin.\n\n`> Text`'
+    '**Paragraph (body)**\n\nPrimary body copy using shadcn typography.\n\n`> Text`'
   )
   paragraph.sortText = '11-paragraph'
   items.push(paragraph)
-  
-  // Text
-  const text = new vscode.CompletionItem('text', vscode.CompletionItemKind.Text)
-  text.insertText = new vscode.SnippetString('>> ${1:Text content}')
-  text.documentation = new vscode.MarkdownString(
-    '**Text**\n\nText without bottom margin.\n\n`>> Text`'
+
+  // Small text
+  const small = new vscode.CompletionItem('small', vscode.CompletionItemKind.Text)
+  small.insertText = new vscode.SnippetString('>> ${1:Secondary text}')
+  small.documentation = new vscode.MarkdownString(
+    '**Small**\n\nCompact secondary text.\n\n`>> Text`'
   )
-  text.sortText = '11-text'
-  items.push(text)
-  
+  small.sortText = '11-small'
+  items.push(small)
+
   // Muted text
-  const muted = new vscode.CompletionItem('muted-text', vscode.CompletionItemKind.Text)
+  const muted = new vscode.CompletionItem('muted', vscode.CompletionItemKind.Text)
   muted.insertText = new vscode.SnippetString('>>> ${1:Muted text}')
   muted.documentation = new vscode.MarkdownString(
-    '**Muted Text**\n\nSecondary/muted text style.\n\n`>>> Text`'
+    '**Muted**\n\nLow-emphasis helper text.\n\n`>>> Text`'
   )
   muted.sortText = '11-muted'
   items.push(muted)
-  
+
+  // Blockquote
+  const blockquote = new vscode.CompletionItem('blockquote', vscode.CompletionItemKind.Text)
+  blockquote.insertText = new vscode.SnippetString('*> ${1:Quoted text}')
+  blockquote.documentation = new vscode.MarkdownString(
+    '**Blockquote**\n\nQuoted content with left border.\n\n`*> Text`'
+  )
+  blockquote.sortText = '11-blockquote'
+  items.push(blockquote)
+
   // Note
   const note = new vscode.CompletionItem('note', vscode.CompletionItemKind.Text)
-  note.insertText = new vscode.SnippetString('*> ${1:Note text}')
+  note.insertText = new vscode.SnippetString('**> ${1:Note text}')
   note.documentation = new vscode.MarkdownString(
-    '**Note**\n\nHighlighted note.\n\n`*> Text`'
+    '**Note**\n\nCallout note with raised surface.\n\n`**> Text`'
   )
   note.sortText = '11-note'
   items.push(note)
-  
-  // Quote
-  const quote = new vscode.CompletionItem('quote', vscode.CompletionItemKind.Text)
-  quote.insertText = new vscode.SnippetString('"> ${1:Quote text}')
-  quote.documentation = new vscode.MarkdownString(
-    '**Quote**\n\nQuoted text.\n\n`"> Text`'
-  )
-  quote.sortText = '11-quote'
-  items.push(quote)
   
   return items
 }

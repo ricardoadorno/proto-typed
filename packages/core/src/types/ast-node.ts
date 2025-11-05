@@ -9,12 +9,7 @@ export type NodeType =
   | 'Button'
   | 'Link'
   | 'Image'
-  | 'Heading'
   | 'Text'
-  | 'Paragraph'
-  | 'MutedText'
-  | 'Note'
-  | 'Quote'
 
   // Layouts (from layouts.tokens.ts - canonical presets + structural elements)
   | 'Layout' // Canonical layout presets (container-narrow, stack, row-center, grid-3, card, header, etc.)
@@ -119,10 +114,20 @@ export interface LayoutProps {
 
 // Define text-specific properties
 export interface TextProps extends LayoutProps {
-  content?: string
-  level?: number // For headings (1-6)
-  variant?: string
+  value?: string
+  kind?: TextKind
 }
+
+export type TextKind =
+  | 'h1'
+  | 'h2'
+  | 'h3'
+  | 'h4'
+  | 'p'
+  | 'small'
+  | 'muted'
+  | 'blockquote'
+  | 'note'
 
 // Define button properties
 export interface ButtonProps extends LayoutProps {
@@ -250,6 +255,8 @@ export interface AstNode<P extends NodeProps = NodeProps> {
   id: string
   children: AstNode[]
   props: P
+  kind?: TextKind
+  value?: string
 }
 
 // AST with errors attached

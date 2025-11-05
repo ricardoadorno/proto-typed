@@ -91,12 +91,12 @@ export function registerDSLLanguage(monaco: Monaco) {
         // ========================================
         // TYPOGRAPHY
         // ========================================
-        [/^\s*#{1,6}\s+/, 'markup.heading'], // # to ######
+        [/^\s*#{1,4}\s+/, 'markup.heading'], // # to ####
+        [/^\s*\*\*>\s/, 'markup.note'], // **> note
+        [/^\s*\*(?!\*)>\s/, 'markup.quote'], // *> blockquote
         [/^\s*>>>\s/, 'markup.muted'], // >>> (must be before >>)
-        [/^\s*>>\s/, 'markup.text'], // >>
-        [/^\s*>\s/, 'markup.paragraph'], // >
-        [/^\s*\*>\s/, 'markup.note'], // *>
-        [/^\s*">\s/, 'markup.quote'], // ">
+        [/^\s*>>\s/, 'markup.text'], // >> small
+        [/^\s*>\s/, 'markup.paragraph'], // > paragraph
 
         // ========================================
         // BUTTONS

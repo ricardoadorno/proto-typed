@@ -1,11 +1,11 @@
 /**
  * Monaco Editor   // Typography (primitives.tokens.ts)
-  heading: 'markup.heading',         // # to ######
+  heading: 'markup.heading',         // # to ####
   paragraph: 'markup.paragraph',     // >
-  text: 'markup.text',               // >>
+  text: 'markup.text',               // >> (small)
   mutedText: 'markup.muted',         // >>>
-  note: 'markup.note',               // *>
-  quote: 'markup.quote',             // ">
+  note: 'markup.note',               // **>
+  quote: 'markup.quote',             // *>
   listItem: 'markup.list',           // - (list items)ts for proto-typed DSL
  * 
  * This file defines core constants for Monaco Editor integration.
@@ -29,12 +29,12 @@ export const DSL_TOKEN_TYPES = {
   viewName: 'entity.name.view', // Screen/Modal/Drawer names
 
   // Typography (primitives.tokens.ts)
-  heading: 'markup.heading', // # to ######
+  heading: 'markup.heading', // # to ####
   paragraph: 'markup.paragraph', // >
-  text: 'markup.text', // >>
+  text: 'markup.text', // >> (small)
   mutedText: 'markup.muted', // >>>
-  note: 'markup.note', // *>
-  quote: 'markup.quote', // ">
+  note: 'markup.note', // **>
+  quote: 'markup.quote', // *>
 
   // Buttons (primitives.tokens.ts)
   // Pattern: (@{1,3})([_+\-=!]?)\[text\](?:\{icon\})?(?:\(action\))?

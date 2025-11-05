@@ -124,12 +124,12 @@ drawer Menu:
 ### Tipografia
 
 ```dsl
-# a ######  → Títulos (H1-H6)
->           → Parágrafo
->>          → Texto (sem margem inferior)
->>>         → Texto secundário/muted
-*>          → Texto de nota
-">          → Citação
+# a ####    → Títulos (H1-H4)
+>           → Parágrafo (body)
+>>          → Texto secundário (small)
+>>>         → Texto muted
+*>          → Blockquote
+**>         → Nota em destaque
 ```
 
 ### Botões

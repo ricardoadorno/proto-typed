@@ -6,10 +6,7 @@ import {
   renderButton,
   renderLink,
   renderImage,
-  renderHeading,
   renderText,
-  renderParagraph,
-  renderMutedText,
 } from '../nodes/primitives.node'
 import {
   renderLayout,
@@ -77,12 +74,7 @@ const RENDERERS: Record<NodeType, typeof _render> = {
   Button: (n) => renderButton(n),
   Link: (n) => renderLink(n),
   Image: (n) => renderImage(n),
-  Heading: (n) => renderHeading(n),
   Text: (n) => renderText(n),
-  Paragraph: (n) => renderParagraph(n),
-  MutedText: (n) => renderMutedText(n),
-  Note: () => '',
-  Quote: () => '',
 
   // Layout (canonical presets + structural elements)
   Layout: (n) => renderLayout(n, _render),

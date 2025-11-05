@@ -2,8 +2,6 @@ import {
   elementStyles,
   getButtonClasses,
   getButtonInlineStyles,
-  getHeadingInlineStyles,
-  getParagraphInlineStyles,
   getLinkInlineStyles,
 } from './styles/styles'
 import { NavigationMediator } from '../infrastructure/navigation-mediator'
@@ -18,6 +16,7 @@ import type {
   LinkProps,
   ImageProps,
   TextProps,
+  TextKind,
 } from '../../types/ast-node'
 
 /**
@@ -94,7 +93,7 @@ export function renderImage(node: AstNode): string {
   const props = node.props as ImageProps
   const src = props.src || ''
   const alt = props.alt || ''
-  const classNames = [elementStyles.image]
+  const classNames: string[] = [elementStyles.image]
 
   if (props.shape === 'circle') {
     classNames.push(elementStyles.imageCircle)
@@ -120,100 +119,58 @@ export function renderImage(node: AstNode): string {
   return `<img src="${src}" alt="${alt}" class="${classNames.join(' ')}"${styleAttribute} />`
 }
 
-/**
- * @function renderHeading
- * @description Renders a 'Heading' AST node to its HTML representation.
- *
- * @param {AstNode} node - The 'Heading' AST node.
- * @returns {string} The HTML string for the heading.
- */
-export function renderHeading(node: AstNode): string {
-  const props = node.props as TextProps
-  const level = props.level || 1
-  const content = props.content || ''
+export const TYPO_CLASSES: Record<TextKind, string> = {
+  h1: 'scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]',
+  h2: 'scroll-m-20 text-3xl font-semibold tracking-tight text-[var(--fg-primary)]',
+  h3: 'scroll-m-20 text-2xl font-semibold tracking-tight text-[var(--fg-primary)]',
+  h4: 'scroll-m-20 text-xl font-semibold tracking-tight text-[var(--fg-primary)]',
+  p: 'text-base leading-7 text-[var(--fg-secondary)]',
+  small: 'text-sm leading-6 text-[var(--fg-secondary)]',
+  muted: 'text-sm leading-6 text-muted-foreground',
+  blockquote: 'mt-6 border-l-2 pl-6 italic text-muted-foreground',
+  note: 'text-sm text-[var(--fg-secondary)] rounded-lg border border-[var(--border-muted)] bg-[var(--bg-raised)] px-3 py-2',
+}
 
-  // Use header-specific styles when in header context
-  const headingStyles =
-    elementStyles.heading[level as keyof typeof elementStyles.heading] ||
-    elementStyles.heading[1]
+const TYPO_TAG: Record<TextKind, string> = {
+  h1: 'h1',
+  h2: 'h2',
+  h3: 'h3',
+  h4: 'h4',
+  p: 'p',
+  small: 'p',
+  muted: 'p',
+  blockquote: 'blockquote',
+  note: 'div',
+}
 
-  // Support inline icons in heading text
-  const renderedContent = renderTextWithIcons(content)
-
-  return `<h${level} class="${headingStyles}" style="${getHeadingInlineStyles()}">${renderedContent}</h${level}>`
+function normalizeKind(kind?: string | null): TextKind {
+  if (!kind) return 'p'
+  if (Object.hasOwn(TYPO_CLASSES, kind as TextKind)) {
+    return kind as TextKind
+  }
+  return 'p'
 }
 
 /**
  * @function renderText
- * @description Renders a 'Text' AST node to its HTML representation.
+ * @description Renders a typography 'Text' AST node using shadcn/ui classes.
  *
  * @param {AstNode} node - The 'Text' AST node.
- * @returns {string} The HTML string for the text.
+ * @returns {string} The HTML string for the typography element.
  */
 export function renderText(node: AstNode): string {
   const props = node.props as TextProps
-  const rawVariant = props.variant
-  const effectiveVariant =
-    typeof rawVariant === 'string' && rawVariant in elementStyles.paragraph
-      ? (rawVariant as keyof typeof elementStyles.paragraph)
-      : 'text'
-
-  const textClasses = elementStyles.paragraph[effectiveVariant]
-  const inlineStyles = getParagraphInlineStyles(effectiveVariant)
-  const content = props.content || ''
+  const resolvedKind = normalizeKind(props.kind ?? node.kind)
+  const value = props.value ?? node.value ?? ''
+  const classes = TYPO_CLASSES[resolvedKind]
+  const tag = TYPO_TAG[resolvedKind] || 'p'
 
   // Support inline icons in text content
-  const renderedContent = renderTextWithIcons(content)
+  const renderedContent = renderTextWithIcons(value)
 
-  return `<span class="${textClasses}" style="${inlineStyles}">${renderedContent}</span>`
-}
+  if (resolvedKind === 'note') {
+    return `<${tag} class="${classes}" role="note">${renderedContent}</${tag}>`
+  }
 
-/**
- * @function renderParagraph
- * @description Renders a 'Paragraph' AST node to its HTML representation.
- *
- * @param {AstNode} node - The 'Paragraph' AST node.
- * @returns {string} The HTML string for the paragraph.
- */
-export function renderParagraph(node: AstNode): string {
-  const props = node.props as TextProps
-  const rawVariant = props.variant
-  const effectiveVariant =
-    typeof rawVariant === 'string' && rawVariant in elementStyles.paragraph
-      ? (rawVariant as keyof typeof elementStyles.paragraph)
-      : 'paragraph'
-
-  const paragraphClasses = elementStyles.paragraph[effectiveVariant]
-  const inlineStyles = getParagraphInlineStyles(effectiveVariant)
-  const content = props.content || ''
-
-  // Support inline icons in paragraph content
-  const renderedContent = renderTextWithIcons(content)
-
-  return `<p class="${paragraphClasses}" style="${inlineStyles}">${renderedContent}</p>`
-}
-
-/**
- * @function renderMutedText
- * @description Renders a 'MutedText' AST node to its HTML representation.
- *
- * @param {AstNode} node - The 'MutedText' AST node.
- * @returns {string} The HTML string for the muted text.
- */
-export function renderMutedText(node: AstNode): string {
-  const props = node.props as TextProps
-  const rawVariant = props.variant
-  const effectiveVariant =
-    typeof rawVariant === 'string' && rawVariant in elementStyles.paragraph
-      ? (rawVariant as keyof typeof elementStyles.paragraph)
-      : 'muted'
-
-  const mutedClasses = elementStyles.paragraph[effectiveVariant]
-  const inlineStyles = getParagraphInlineStyles(effectiveVariant)
-  const content = props.content || ''
-
-  // Support inline icons in muted text content
-  const renderedContent = renderTextWithIcons(content)
-
-  return `<span class="${mutedClasses}" style="${inlineStyles}">${renderedContent}</span>`
+  return `<${tag} class="${classes}">${renderedContent}</${tag}>`
 }

@@ -37,25 +37,6 @@ export const elementStyles = {
   textarea:
     'w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1',
 
-  // Typography - using base classes only
-  heading: {
-    1: 'text-4xl font-bold mb-6',
-    2: 'text-3xl font-bold mb-5',
-    3: 'text-2xl font-bold mb-4',
-    4: 'text-xl font-bold mb-3',
-    5: 'text-lg font-bold mb-2',
-    6: 'text-base font-bold mb-2',
-  },
-
-  paragraph: {
-    default: 'mb-4 leading-relaxed',
-    text: 'leading-relaxed',
-    paragraph: 'mb-4 leading-relaxed',
-    muted: 'leading-relaxed',
-    note: 'px-4 py-2 m-2 shadow-lg',
-    quote: 'px-4 py-2 m-2 shadow-lg border-l-4',
-  },
-
   link: 'underline transition-colors duration-200',
 
   // Layout components - responsive by default using only existing tokens
@@ -233,27 +214,6 @@ export function getRadioInlineStyles(): string {
 /**
  * Generate inline styles for typography elements using CSS variables
  */
-export function getHeadingInlineStyles(): string {
-  return 'color: var(--foreground);'
-}
-
-export function getParagraphInlineStyles(
-  variant: 'default' | 'text' | 'paragraph' | 'muted' | 'note' | 'quote'
-): string {
-  const baseStyle = 'border-radius: var(--radius);'
-
-  switch (variant) {
-    case 'muted':
-      return 'color: var(--muted-foreground);'
-    case 'note':
-      return `${baseStyle} background-color: var(--destructive); color: var(--destructive-foreground);`
-    case 'quote':
-      return `${baseStyle} background-color: var(--muted); color: var(--muted-foreground); border-left-color: var(--primary);`
-    default:
-      return 'color: var(--foreground);'
-  }
-}
-
 export function getLinkInlineStyles(): string {
   return 'color: var(--primary);'
 }

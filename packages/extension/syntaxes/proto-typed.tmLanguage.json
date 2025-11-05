@@ -55,12 +55,12 @@
 
     "typography": {
       "patterns": [
-        { "match": "^\\s*(#{1,6})(?=\\s)", "name": "entity.name.function.pty" },
+        { "match": "^\\s*(#{1,4})(?=\\s)", "name": "entity.name.function.pty" },
+        { "match": "^\\s*(\\*\\*>)(?=\\s)", "name": "entity.name.function.pty" },
+        { "match": "^\\s*(\\*(?!\\*)>)(?=\\s)", "name": "entity.name.function.pty" },
         { "match": "^\\s*(>>>)(?=\\s)", "name": "entity.name.function.pty" },
         { "match": "^\\s*(>>)(?=\\s)", "name": "entity.name.function.pty" },
-        { "match": "^\\s*(>)(?=\\s)", "name": "entity.name.function.pty" },
-        { "match": "^\\s*(\\*>)(?=\\s)", "name": "entity.name.function.pty" },
-        { "match": "^\\s*(\">)(?=\\s)", "name": "entity.name.function.pty" }
+        { "match": "^\\s*(>)(?=\\s)", "name": "entity.name.function.pty" }
       ]
     },
     "buttons": {

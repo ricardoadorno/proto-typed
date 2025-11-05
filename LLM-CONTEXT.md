@@ -208,12 +208,12 @@ drawer MainMenu:
 | **Heading 1**   | `# Text`           | `<h1>`                 | Page title     |
 | **Heading 2**   | `## Text`          | `<h2>`                 | Section title  |
 | **Heading 3**   | `### Text`         | `<h3>`                 | Subsection     |
-| **Heading 4-6** | `####` to `######` | `<h4>` - `<h6>`        | Minor headings |
+| **Heading 4**   | `#### Text`        | `<h4>`                 | Subheading     |
 | **Paragraph**   | `> Text`           | `<p>` (with margin)    | Body text      |
-| **Text**        | `>> Text`          | `<span>` (no margin)   | Inline text    |
-| **Muted Text**  | `>>> Text`         | `<span class="muted">` | Secondary text |
-| **Note**        | `*> Text`          | Note element           | Callouts       |
-| **Quote**       | `"> Text`          | `<blockquote>`         | Quotes         |
+| **Small Text**  | `>> Text`          | `<p class="small">`    | Secondary copy |
+| **Muted Text**  | `>>> Text`         | `<p class="muted">`    | Metadata text  |
+| **Blockquote**  | `*> Text`          | `<blockquote>`         | Quotes         |
+| **Note**        | `**> Text`         | `<div role="note">`    | Informational callout |
 
 **Examples**:
 
@@ -223,10 +223,10 @@ screen TextDemo:
     # Main Title
     ## Section Heading
     > This is a paragraph with bottom margin.
-    >> This is inline text without margin.
-    >>> This is muted/secondary text.
-    *> Important note here.
-    "> This is a quote.
+    >> This is small secondary text.
+    >>> This is muted helper text.
+    *> This is a blockquote callout.
+    **> Important note with raised styling.
 ```
 
 ---
@@ -2757,12 +2757,12 @@ Common error messages and their solutions:
 
 ### Typography Tokens
 
-- `Heading` - `/#{1,6} (.+)/` - H1-H6
+- `Heading` - `/#{1,4} (.+)/` - H1-H4
 - `Paragraph` - `/> (.+)/` - Paragraph
-- `Text` - `/>> (.+)/` - Text
+- `SmallText` - `/>>(?!>) (.+)/` - Small text
 - `MutedText` - `/>>> (.+)/` - Muted text
-- `Note` - `/\*> (.+)/` - Note
-- `Quote` - `/"> (.+)/` - Quote
+- `Blockquote` - `/\*(?!\*)> (.+)/` - Blockquote
+- `Note` - `/\*\*> (.+)/` - Note callout
 
 ### Link & Image Tokens
 
@@ -2831,12 +2831,7 @@ type NodeType =
   | 'Button' // { label, action, variant?, size?, iconBefore?, iconAfter?, iconOnly? }
   | 'Link' // { label, url }
   | 'Image' // { alt, src }
-  | 'Heading' // { level: 1-6, text }
-  | 'Paragraph' // { text }
-  | 'Text' // { text }
-  | 'MutedText' // { text }
-  | 'Note' // { text }
-  | 'Quote' // { text }
+  | 'Text' // { kind: 'h1' | 'h2' | 'h3' | 'h4' | 'p' | 'small' | 'muted' | 'blockquote' | 'note'; value }
   | 'Layout' // { layoutType, modifier? }
   | 'List' // { componentName?, isComponentBased }
   | 'UnorderedListItem' // { text }

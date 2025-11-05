@@ -83,10 +83,20 @@ Why: explains the context and offers the next step in a single block.
 ## Slots & Props
 | Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `# … ######` | titles | — | Defines section hierarchy (use one `#` per screen). | No |
-| `>`, `>>`, `>>>` | paragraphs | — | Main, secondary, and metadata paragraphs. | No |
-| `*>` | note | — | Highlights alerts, tips, and important messages. | No |
-| `">` | quote | — | Records testimonials or highlighted messages. | No |
+| `# … ####` | titles | — | Defines section hierarchy (one level-1 title per screen). | No |
+| `>`, `>>`, `>>>` | paragraphs | — | Body text, small secondary text, and muted helper text. | No |
+| `*>` | blockquote | — | Highlights testimonials or quoted content with a border. | No |
+| `**>` | note | — | Raises critical alerts, tips, and contextual notes. | No |
+
+<DocsCodePreview title="Callouts and quotes">
+```dsl
+screen Callouts:
+  container:
+    *> "ProtoTyped acelerou o discovery do time."
+    **> Lembre-se de revisar as decisões com a equipe.
+```
+</DocsCodePreview>
+Use blockquotes to capture testimonials and pair notes to reinforce guidance.
 
 ## Common errors (Do/Don’t)
 <DoDont
@@ -113,17 +123,17 @@ screen Summary:
 </DoDont>
 <DoDont
   dont={{
-    title: "Quote with a button",
+    title: "Blockquote with a button",
     code: `
 card:
-  "> Proto-Typed speeds up deliveries. @[Learn more](Guides)
+  *> Proto-Typed speeds up deliveries. @[Learn more](Guides)
     `,
   }}
   do={{
-    title: "Quote and action organized",
+    title: "Blockquote and action organized",
     code: `
 card:
-  "> Proto-Typed speeds up deliveries.
+  *> Proto-Typed speeds up deliveries.
   row-end:
     @[Learn more](Guides)
     `,

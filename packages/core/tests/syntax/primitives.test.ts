@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import { parseAndBuildAst } from '../../src/parser/parse-and-build-ast'
 import { astToHtmlStringPreview } from '../../src/renderer/ast-to-html-string-preview'
 import { astToHtmlDocument } from '../../src/renderer/ast-to-html-document'
@@ -191,15 +191,13 @@ screen Home:
   })
 
   describe('Typography Primitives', () => {
-    it('should parse headings (h1-h6)', () => {
+    it('should parse headings (h1-h4)', () => {
       const input = `
 screen Home:
   # Heading 1
   ## Heading 2
   ### Heading 3
   #### Heading 4
-  ##### Heading 5
-  ###### Heading 6
 `
       const result = parseWithErrors(input)
       expectNoErrors(result)
@@ -207,25 +205,36 @@ screen Home:
       const screen = result.ast.children?.[0]
       const headings = screen?.children || []
 
-      expect(headings[0]?.type).toBe('Heading')
-      expect(getProps(headings[0]).level).toBe(1)
-      expect(getProps(headings[0]).text).toBe('Heading 1')
+      expect(headings).toHaveLength(4)
+      expect(headings.every((node: AstNode) => node.type === 'Text')).toBe(true)
+      expect(headings[0]?.kind).toBe('h1')
+      expect(headings[1]?.kind).toBe('h2')
+      expect(headings[2]?.kind).toBe('h3')
+      expect(headings[3]?.kind).toBe('h4')
 
-      expect(getProps(headings[1]).level).toBe(2)
-      expect(getProps(headings[2]).level).toBe(3)
-      expect(getProps(headings[3]).level).toBe(4)
-      expect(getProps(headings[4]).level).toBe(5)
-      expect(getProps(headings[5]).level).toBe(6)
+      expect(getProps(headings[0]).kind).toBe('h1')
+      expect(getProps(headings[0]).value).toBe('Heading 1')
+    })
+
+    it('should report unsupported heading levels', () => {
+      const input = `
+screen Home:
+  ##### Unsupported
+  ###### Still unsupported
+`
+      const result = parseWithErrors(input)
+      expect(result.hasErrors).toBe(true)
+      expect(result.hasLexerErrors || result.hasParserErrors).toBe(true)
     })
 
     it('should parse paragraph and text variants', () => {
       const input = `
 screen Home:
   > This is a paragraph
-  >> This is text
+  >> This is small
   >>> This is muted text
-  *> This is a note
-  "> This is a quote
+  *> This is a blockquote
+  **> This is a note
 `
       const result = parseWithErrors(input)
       expectNoErrors(result)
@@ -233,20 +242,28 @@ screen Home:
       const screen = result.ast.children?.[0]
       const texts = screen?.children || []
 
-      expect(texts[0]?.type).toBe('Paragraph')
-      expect(getProps(texts[0]).text).toBe('This is a paragraph')
+      expect(texts.map((n: AstNode) => n.type)).toEqual([
+        'Text',
+        'Text',
+        'Text',
+        'Text',
+        'Text',
+      ])
 
-      expect(texts[1]?.type).toBe('Text')
-      expect(getProps(texts[1]).text).toBe('This is text')
+      expect(texts[0]?.kind).toBe('p')
+      expect(getProps(texts[0]).value).toBe('This is a paragraph')
 
-      expect(texts[2]?.type).toBe('MutedText')
-      expect(getProps(texts[2]).text).toBe('This is muted text')
+      expect(texts[1]?.kind).toBe('small')
+      expect(getProps(texts[1]).value).toBe('This is small')
 
-      expect(texts[3]?.type).toBe('Note')
-      expect(getProps(texts[3]).text).toBe('This is a note')
+      expect(texts[2]?.kind).toBe('muted')
+      expect(getProps(texts[2]).value).toBe('This is muted text')
 
-      expect(texts[4]?.type).toBe('Quote')
-      expect(getProps(texts[4]).text).toBe('This is a quote')
+      expect(texts[3]?.kind).toBe('blockquote')
+      expect(getProps(texts[3]).value).toBe('This is a blockquote')
+
+      expect(texts[4]?.kind).toBe('note')
+      expect(getProps(texts[4]).value).toBe('This is a note')
     })
 
     it('should render typography HTML correctly', () => {
@@ -259,9 +276,24 @@ screen Home:
       const result = parseWithErrors(input)
       const { html } = astToHtmlStringPreview(result.ast)
 
-      expect(html).toContain('h1')
       expect(html).toContain('Main Title')
+      expect(html).toContain('scroll-m-20 text-4xl font-extrabold')
+      expect(html).toContain('text-base leading-7 text-[var(--fg-secondary)]')
+      expect(html).toContain('text-muted-foreground')
       expect(html).toContain('Welcome to the app')
+    })
+
+    it('should render blockquote and note with semantic wrappers', () => {
+      const input = `
+screen Home:
+  *> Inspiring quote
+  **> Important note
+`
+      const result = parseWithErrors(input)
+      const { html } = astToHtmlStringPreview(result.ast)
+
+      expect(html).toMatch(/<blockquote class=\"[^\"]*border-l-2[^\"]*\">Inspiring quote<\/blockquote>/)
+      expect(html).toMatch(/<div class=\"[^\"]*border-\\[var\\(--border-muted\\)\\][^\"]*\" role=\"note\">Important note<\/div>/)
     })
   })
 
@@ -396,11 +428,14 @@ screen Dashboard:
       const children = screen?.children || []
       expect(children.length).toBeGreaterThan(0)
 
-      // Verify different primitive types exist
+      // Verify different typography kinds exist
+      const textKinds = children
+        .filter((c: AstNode) => c.type === 'Text')
+        .map((c: AstNode) => c.kind)
       const types = children.map((c: AstNode) => c.type)
-      expect(types).toContain('Heading')
-      expect(types).toContain('Paragraph')
-      expect(types).toContain('MutedText')
+      expect(textKinds).toContain('h1')
+      expect(textKinds).toContain('p')
+      expect(textKinds).toContain('muted')
       expect(types).toContain('Button')
       expect(types).toContain('Link')
       expect(types).toContain('Image')

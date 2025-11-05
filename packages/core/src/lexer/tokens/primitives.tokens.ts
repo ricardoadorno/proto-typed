@@ -104,19 +104,13 @@ export const Image = createToken({
 
 export const Heading = createToken({
   name: 'Heading',
-  pattern: /#{1,6}(?!#)\s+([^\n\r#[\]"=:]+)/,
-  label: '# heading',
-})
-
-export const Text = createToken({
-  name: 'Text',
-  pattern: />>\s+([^\n\r]+)/,
-  label: '>> text',
+  pattern: /#{1,4}(?!#)\s+([^\n\r#[\]"=:]+)/,
+  label: '# heading (h1-h4)',
 })
 
 export const Paragraph = createToken({
   name: 'Paragraph',
-  pattern: />\s+([^\n\r]+)/,
+  pattern: />(?!>|\*)\s+([^\n\r]+)/,
   label: '> paragraph',
 })
 
@@ -126,14 +120,20 @@ export const MutedText = createToken({
   label: '>>> muted text',
 })
 
-export const Note = createToken({
-  name: 'Note',
-  pattern: /\*>\s+([^\n\r]+)/,
-  label: '*> note',
+export const SmallText = createToken({
+  name: 'SmallText',
+  pattern: />>(?!>)\s+([^\n\r]+)/,
+  label: '>> small text',
 })
 
-export const Quote = createToken({
-  name: 'Quote',
-  pattern: /">\s+([^\n\r]+)/,
-  label: '"> quote',
+export const Blockquote = createToken({
+  name: 'Blockquote',
+  pattern: /\*(?!\*)>\s+([^\n\r]+)/,
+  label: '*> blockquote',
+})
+
+export const Note = createToken({
+  name: 'Note',
+  pattern: /\*\*>[ \t]+([^\n\r]+)/,
+  label: '**> note',
 })

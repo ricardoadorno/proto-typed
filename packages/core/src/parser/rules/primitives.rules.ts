@@ -23,11 +23,11 @@ import {
   Link,
   Image,
   Heading,
-  Text,
   Paragraph,
+  SmallText,
   MutedText,
+  Blockquote,
   Note,
-  Quote,
 } from '../../lexer/tokens'
 import type { IParser, RuleDefinitionFunction } from '../../types/parser'
 
@@ -48,15 +48,15 @@ export const definePrimitiveRules: RuleDefinitionFunction = function (
 
   /**
    * @rule textElement
-   * @description Parses various types of text elements, such as 'Text', 'Paragraph', 'MutedText', 'Note', and 'Quote'.
+   * @description Parses various types of text elements, covering paragraph, small, muted, blockquote, and note styles.
    */
   this.RULE('textElement', () => {
     this.OR([
-      { ALT: () => this.CONSUME(Text) },
       { ALT: () => this.CONSUME(Paragraph) },
+      { ALT: () => this.CONSUME(SmallText) },
       { ALT: () => this.CONSUME(MutedText) },
+      { ALT: () => this.CONSUME(Blockquote) },
       { ALT: () => this.CONSUME(Note) },
-      { ALT: () => this.CONSUME(Quote) },
     ])
   })
 

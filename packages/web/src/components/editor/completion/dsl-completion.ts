@@ -100,24 +100,6 @@ export function registerDSLCompletionProvider(monaco: Monaco) {
           range: range,
         },
         {
-          label: 'heading5',
-          kind: monaco.languages.CompletionItemKind.Text,
-          insertText: '##### ${1:Heading Text}',
-          insertTextRules:
-            monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-          documentation: 'Heading level 5',
-          range: range,
-        },
-        {
-          label: 'heading6',
-          kind: monaco.languages.CompletionItemKind.Text,
-          insertText: '###### ${1:Heading Text}',
-          insertTextRules:
-            monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-          documentation: 'Heading level 6 (smallest)',
-          range: range,
-        },
-        {
           label: 'paragraph',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: '> ${1:Paragraph text}',
@@ -128,40 +110,42 @@ export function registerDSLCompletionProvider(monaco: Monaco) {
           range: range,
         },
         {
-          label: 'text',
+          label: 'small',
           kind: monaco.languages.CompletionItemKind.Text,
-          insertText: '>> ${1:Text content}',
+          insertText: '>> ${1:Secondary text}',
           insertTextRules:
             monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-          documentation: 'Text without bottom margin\nExample: >> Inline text',
+          documentation:
+            'Small text without bottom margin\nExample: >> Inline caption',
           range: range,
         },
         {
-          label: 'muted-text',
+          label: 'muted',
           kind: monaco.languages.CompletionItemKind.Text,
           insertText: '>>> ${1:Muted text}',
           insertTextRules:
             monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation:
-            'Muted/secondary text\nExample: >>> Last updated 5 mins ago',
+            'Muted helper text\nExample: >>> Last updated 5 mins ago',
+          range: range,
+        },
+        {
+          label: 'blockquote',
+          kind: monaco.languages.CompletionItemKind.Text,
+          insertText: '*> ${1:Blockquoted text}',
+          insertTextRules:
+            monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          documentation:
+            'Blockquote with left border\nExample: *> Customer insight',
           range: range,
         },
         {
           label: 'note',
           kind: monaco.languages.CompletionItemKind.Text,
-          insertText: '*> ${1:Note text}',
+          insertText: '**> ${1:Note text}',
           insertTextRules:
             monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-          documentation: 'Note styled text\nExample: *> Important reminder',
-          range: range,
-        },
-        {
-          label: 'quote',
-          kind: monaco.languages.CompletionItemKind.Text,
-          insertText: '"> ${1:Quote text}',
-          insertTextRules:
-            monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-          documentation: 'Quote styled text\nExample: "> User feedback',
+          documentation: 'Raised note\nExample: **> Important reminder',
           range: range,
         },
 

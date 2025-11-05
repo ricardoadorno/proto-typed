@@ -23,6 +23,7 @@ export {
   type NodeProps,
   type LayoutProps,
   type TextProps,
+  type TextKind,
   type MobileProps,
 } from './types/ast-node'
 export {

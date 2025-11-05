@@ -11,10 +11,8 @@ export {
   renderButton,
   renderLink,
   renderImage,
-  renderHeading,
   renderText,
-  renderParagraph,
-  renderMutedText,
+  TYPO_CLASSES,
 } from './primitives.node'
 
 // Layout tokens (includes all layout & structural elements)

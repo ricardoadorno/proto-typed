@@ -158,12 +158,12 @@ packages/extension/
 
 ### Typography
 
-- `# Heading 1` até `###### Heading 6`
+- `# Heading 1` até `#### Heading 4`
 - `> Paragraph`
-- `>> Text`
+- `>> Small text`
 - `>>> Muted text`
-- `*> Note`
-- `"> Quote`
+- `*> Blockquote`
+- `**> Note`
 
 ### Buttons
 

@@ -257,6 +257,8 @@ export class PlaygroundPanel implements vscode.Disposable {
       :root {
         --background: #0f172a;
         --foreground: #e2e8f0;
+        --fg-primary: #e2e8f0;
+        --fg-secondary: #94a3b8;
         --card: #1e293b;
         --card-foreground: #e2e8f0;
         --primary: #8b5cf6;
@@ -270,8 +272,10 @@ export class PlaygroundPanel implements vscode.Disposable {
         --destructive: #ef4444;
         --destructive-foreground: #ffffff;
         --border: #334155;
+        --border-muted: #475569;
         --input: #334155;
         --ring: #8b5cf6;
+        --bg-raised: #243049;
         --radius: 0.5rem;
       }
       
