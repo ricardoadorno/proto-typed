@@ -6,7 +6,7 @@
 
 ## Passo a passo
 1. Estruture a tela com `container` e `card` para delimitar o formulário.
-2. Adicione campos obrigatórios (`___email`, `___password`) com placeholders claros e validações.
+2. Adicione campos obrigatórios (`___email[`, `___password`) com placeholders claros e validações.]
 3. Crie links auxiliares para recuperação e criação de conta.
 4. Configure o botão principal para redirecionar ao dashboard ou próxima etapa segura.
 
@@ -17,8 +17,8 @@ screen Login:
     # Acesse sua conta
     card:
       stack-loose:
-        ___email: E-mail{usuario@empresa.com} | required
-        ___password: Senha{Mínimo 8 caracteres} | required minlength="8"
+        ___email[E-mail][usuario@empresa.com] | required
+        ___password[Senha][Mínimo 8 caracteres] | required minlength="8"
         [X] Permanecer conectado
 
       row-end:
@@ -28,7 +28,7 @@ screen Login:
 screen Recover:
   container-narrow:
     # Recuperar senha
-    ___email: E-mail cadastrado{usuario@empresa.com} | required
+    ___email[E-mail cadastrado][usuario@empresa.com] | required
     row-end:
       @ghost[Cancelar](Login)
       @[Enviar instruções](sendReset)
@@ -37,9 +37,9 @@ screen Signup:
   container-narrow:
     # Criar conta
     stack-loose:
-      ___: Nome completo{Seu nome}
-      ___email: E-mail{email@empresa.com} | required
-      ___password: Senha{Mínimo 8 caracteres} | required minlength="8"
+      ___[Nome completo][Seu nome]
+      ___email[E-mail][email@empresa.com] | required
+      ___password[Senha][Mínimo 8 caracteres] | required minlength="8"
     row-end:
       @ghost[Voltar](Login)
       @primary[Começar agora](createAccount)
@@ -49,7 +49,7 @@ Por quê: organiza credenciais, links auxiliares e fluxos de suporte em uma úni
 
 ## Depuração rápida
 - Botão principal não navega → confirme o slug `Dashboard` no destino.
-- Placeholder ausente → garanta `{placeholder}` em todos os inputs.
+- Placeholder ausente → garanta `[placeholder]` em todos os inputs.
 - Validação mínima ignorada → inclua `required` ou atributos como `minlength="8"`.
 - Link de recuperação não retorna → ajuste `@ghost[Cancelar](Login)` para voltar à tela de login.
 - Checkbox desalinhado → coloque `[X]` dentro do mesmo `stack` dos inputs.

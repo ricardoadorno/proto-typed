@@ -34,7 +34,7 @@ screen Default:
 
 modal InviteMember:
     ## Invite new person
-    ___email: E-mail{name@company.com} | required
+    ___email[E-mail][name@company.com] | required
     row-end:
       @ghost[Cancel](close)
       @success[Send invite](sendInvite)

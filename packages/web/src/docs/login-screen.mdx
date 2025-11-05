@@ -6,7 +6,7 @@
 
 ## Step-by-step
 1. Structure the screen with `container` and `card` to define the form.
-2. Add required fields (`___email`, `___password`) with clear placeholders and validations.
+2. Add required fields (`___email[`, `___password`) with clear placeholders and validations.]
 3. Create auxiliary links for recovery and account creation.
 4. Configure the main button to redirect to the dashboard or the next secure step.
 
@@ -17,8 +17,8 @@ screen Login:
     # Access your account
     card:
       stack-loose:
-        ___email: E-mail{user@company.com} | required
-        ___password: Password{Minimum 8 characters} | required minlength="8"
+        ___email[E-mail][user@company.com] | required
+        ___password[Password][Minimum 8 characters] | required minlength="8"
         [X] Stay logged in
 
       row-end:
@@ -28,7 +28,7 @@ screen Login:
 screen Recover:
   container-narrow:
     # Recover password
-    ___email: Registered e-mail{user@company.com} | required
+    ___email[Registered e-mail][user@company.com] | required
     row-end:
       @ghost[Cancel](Login)
       @[Send instructions](sendReset)
@@ -37,9 +37,9 @@ screen Signup:
   container-narrow:
     # Create account
     stack-loose:
-      ___: Full name{Your name}
-      ___email: E-mail{email@company.com} | required
-      ___password: Password{Minimum 8 characters} | required minlength="8"
+      ___[Full name][Your name]
+      ___email[E-mail][email@company.com] | required
+      ___password[Password][Minimum 8 characters] | required minlength="8"
     row-end:
       @ghost[Back](Login)
       @primary[Start now](createAccount)
@@ -49,7 +49,7 @@ Why: organizes credentials, auxiliary links, and support flows in a single exper
 
 ## Quick debugging
 - Main button does not navigate → confirm the `Dashboard` slug in the destination.
-- Missing placeholder → ensure `{placeholder}` in all inputs.
+- Missing placeholder → ensure `[placeholder]` in all inputs.
 - Minimum validation ignored → include `required` or attributes like `minlength="8"`.
 - Recovery link does not return → adjust `@ghost[Cancel](Login)` to return to the login screen.
 - Misaligned checkbox → place `[X]` within the same `stack` as the inputs.

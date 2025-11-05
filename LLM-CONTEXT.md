@@ -469,27 +469,26 @@ screen LayoutDemo:
 
 #### Input Field
 
-**Syntax**: `___<type>?: Label{placeholder}[options] | attributes`
+**Syntax**: `___[<type>?: Label][placeholder[options]] | attributes`
 
 **Components**:
 
 - `___` = Input marker (3 underscores)
-- `<type>` = Optional type (default: `text`)
-- `:` = Separator
-- `Label` = Field label
-- `{placeholder}` = Placeholder text
-- `[options]` = For select dropdowns
-- `| attributes` = HTML attributes
+- `<type>` = Optional type suffix (default: `text`)
+- `[Label]` = Required label block
+- `[placeholder]` = Optional placeholder block
+- `[placeholder[options]]` = Placeholder with inline select options
+- `| attributes` = Optional HTML attributes (`key="value"` or flags)
 
 **Input Types**:
 | Type | Syntax | HTML Type |
 |------|--------|-----------|
-| Text (default) | `___:` | `type="text"` |
-| Email | `___email:` | `type="email"` |
-| Password | `___password:` | `type="password"` |
-| Date | `___date:` | `type="date"` |
-| Number | `___number:` | `type="number"` |
-| Textarea | `___textarea:` | `<textarea>` |
+| Text (default) | `___[Label]` | `type="text"` |
+| Email | `___email[Label]` | `type="email"` |
+| Password | `___password[Label]` | `type="password"` |
+| Date | `___date[Label]` | `type="date"` |
+| Number | `___number[Label]` | `type="number"` |
+| Textarea | `___textarea[Label]` | `<textarea>` |
 
 **Examples**:
 
@@ -499,18 +498,18 @@ screen FormDemo:
     card:
       ## Contact Form
 
-      ___: Full Name{Enter your name}
-      ___email: Email Address{Enter your email}
-      ___password: Password{Enter password}
-      ___date: Birth Date{Select date}
-      ___number: Age{Enter age}
-      ___textarea: Message{Type your message here}
+      ___[Full Name][Enter your name]
+      ___email[Email Address][Enter your email]
+      ___password[Password][Enter password]
+      ___date[Birth Date][Select date]
+      ___number[Age][Enter age]
+      ___textarea[Message][Type your message here]
 
       # With Select
-      ___: Country{Select country}[USA | Canada | Mexico | Brazil]
+      ___[Country][Select country[USA | Canada | Mexico | Brazil]]
 
       # With Attributes
-      ___: Email{Your email} | required placeholder="user@example.com"
+      ___[Email][Your email] | required placeholder="user@example.com"
 
       @[Submit](submitForm)
 ```
@@ -1807,8 +1806,8 @@ screen Settings:
     card:
       ## Settings
 
-      ___: App Name{Enter app name}
-      ___email: Email{Enter email}
+      ___[App Name][Enter app name]
+      ___email[Email][Enter email]
 
       [X] Enable notifications
       [ ] Dark mode
@@ -2797,7 +2796,7 @@ Common error messages and their solutions:
 
 ### Input Tokens
 
-- `Input` - `/___(?:email|password|date|number|textarea)?:([^{[|]+)(?:\{([^}]+)\})?(?:\[([^\]]+)\])?(?:\|(.+))?/` - Input field
+- `Input` - `/___(?:[a-z-]+)?\s*\[[^\]\n\r]+\](?:\s*\[[^\]\n\r]*(?:\[[^\]\n\r]+\])?\])?(?:\s*\|\s*[^\n\r]+)?/` - Input field
 - `Checkbox` - `/\[(X| )\] (.+)/` - Checkbox
 - `RadioOption` - `/\((X| )\) (.+)/` - Radio button
 

@@ -41,8 +41,8 @@ modal FormModal:
     ## Form Modal
     >>> Fill the form below
     
-    ___: Name{Enter your name}
-    ___email: Email{your@email.com}
+    ___[Name][Enter your name]
+    ___email[Email][your@email.com]
     
     [X] Subscribe to newsletter
     [ ] Receive updates

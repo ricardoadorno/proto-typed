@@ -486,46 +486,46 @@ export function registerDSLCompletionProvider(monaco: Monaco) {
 
         // ========================================
         // FORMS (inputs.tokens.ts)
-        // Pattern: ___[\*\-]?(?::Label)?(?:\{Placeholder\})?(?:\[Options\])?
+        // Pattern: ___<type?>[Label][Placeholder[Options]] | attributes
         // ========================================
         {
           label: 'input',
           kind: monaco.languages.CompletionItemKind.Field,
-          insertText: '___:${1:Label}{${2:Placeholder}}',
+          insertText: '___[${1:Label}][${2:Placeholder}]',
           insertTextRules:
             monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-          documentation: 'Text input field\nExample: ___:Email{Enter email}',
+          documentation: 'Text input field\nExample: ___[Email][Enter email]',
           range: range,
         },
         {
           label: 'password',
           kind: monaco.languages.CompletionItemKind.Field,
-          insertText: '___*:${1:Password}{${2:Enter password}}',
+          insertText: '___password[${1:Password}][${2:Enter password}]',
           insertTextRules:
             monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation:
-            'Password input field\nExample: ___*:Password{Enter password}',
+            'Password input field\nExample: ___password[Password][Enter password]',
           range: range,
         },
         {
           label: 'disabled-input',
           kind: monaco.languages.CompletionItemKind.Field,
-          insertText: '___-:${1:Label}{${2:Cannot edit}}',
+          insertText: '___[${1:Label}][${2:Cannot edit}] | disabled',
           insertTextRules:
             monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation:
-            'Disabled input field\nExample: ___-:Username{Cannot edit}',
+            'Disabled input field\nExample: ___[Username][Cannot edit] | disabled',
           range: range,
         },
         {
           label: 'select',
           kind: monaco.languages.CompletionItemKind.Field,
           insertText:
-            '___:${1:Label}{${2:Select}}[${3:Option1} | ${4:Option2} | ${5:Option3}]',
+            '___[${1:Label}][${2:Placeholder}[${3:Option1} | ${4:Option2} | ${5:Option3}]]',
           insertTextRules:
             monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
           documentation:
-            'Select dropdown\nExample: ___:Country{Select}[USA | Canada | Mexico]',
+            'Select dropdown\nExample: ___[Country][Select[USA | Canada | Mexico]]',
           range: range,
         },
         {

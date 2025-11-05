@@ -85,7 +85,7 @@ export function registerDSLTheme(monaco: Monaco) {
       // ========================================
       // FORMS
       // ========================================
-      { token: 'keyword.input', foreground: 'a855f7' }, // ___, ___*, ___-
+      { token: 'keyword.input', foreground: 'a855f7' }, // ___, ___email, ___password
       { token: 'keyword.checkbox', foreground: 'a855f7', fontStyle: 'bold' }, // [X], [ ]
       { token: 'keyword.radio', foreground: 'a855f7', fontStyle: 'bold' }, // (X), ( )
 

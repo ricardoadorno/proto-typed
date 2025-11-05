@@ -92,10 +92,9 @@
     "forms": {
       "patterns": [
         {
-          "match": "(?i:___(?:email|password|date|number|textarea)\\b)",
+          "match": "(?i:___(?:email|password|date|number|textarea|text|select)?)(?=\\s*\\[)",
           "name": "string.pty"
         },
-        { "match": "___[\\*\\-]?", "name": "string.pty" },
         { "match": "\\[[X\\s]\\]", "name": "constant.language.boolean.pty" },
         {
           "match": "^\\s*\\([X\\s]\\)",

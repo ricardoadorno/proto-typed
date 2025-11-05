@@ -28,7 +28,7 @@ screen Tasks:
 modal TaskForm:
   card:
     ## New task
-    ___: Title{Task name}
+    ___[Title][Task name]
     row-end:
       @ghost[Cancel](close)
       @[Save](saveTask)
@@ -69,7 +69,7 @@ Why: distributes content into clear zones (wide view vs. complementary actions).
 screen Settings:
   container-narrow:
     # Settings
-    ___email: E-mail{name@company.com}
+    ___email[E-mail][name@company.com]
     row-end:
       @ghost[Cancel](-1)
       @[Save changes](saveSettings)

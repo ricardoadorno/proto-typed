@@ -79,9 +79,9 @@ screen Default:
     card:
       ## Update profile
       stack-loose:
-        ___: Full name{Enter your name}
-        ___email: E-mail{name@company.com}
-        ___textarea: Bio{Tell us about your work}
+        ___[Full name][Enter your name]
+        ___email[E-mail][name@company.com]
+        ___textarea[Bio][Tell us about your work]
       row-end:
         @ghost[Cancel](close)
         @[Save changes](saveProfile)

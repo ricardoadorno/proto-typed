@@ -86,9 +86,9 @@ screen Settings:
     card:
       ## Theme Configuration
       
-      ___: Primary Color{#0047AB}
-      ___: Secondary Color{#F4C542}
-      ___: Accent Color{#00AEEF}
+      ___[Primary Color][#0047AB]
+      ___[Secondary Color][#F4C542]
+      ___[Accent Color][#00AEEF]
       
       stack-tight:
         [X] Use custom theme
@@ -105,8 +105,8 @@ modal CreateNew:
     ## Create New Item
     >>> Enter item details
     
-    ___: Item Name{Enter name} | required
-    ___textarea: Description{Enter description}
+    ___[Item Name][Enter name] | required
+    ___textarea[Description][Enter description]
     
     row-end:
       @outline[Cancel](CreateNew)

@@ -91,13 +91,13 @@ Padrão: `@<variante>?-<tamanho>?\[texto\]\(ação\)`
 
 ### 5. Formulários usam underscores
 
-Padrão: `___<tipo>?: Label{placeholder}`
+Padrão: `___[<tipo>?: Label][placeholder[opções]] | atributos`
 
 ```dsl
-___: Email{Digite seu email}
-___email: Email{seu@email.com}
-___password: Senha{••••••}
-___: País{Selecione}[Brasil | Portugal | Angola]
+___[Email][Digite seu email]
+___email[Email][seu@email.com]
+___password[Senha][••••••]
+___[País][Selecione[Brasil | Portugal | Angola]]
 
 [X] Checkbox marcado
 [ ] Checkbox desmarcado
@@ -263,8 +263,8 @@ screen Login:
       # Bem-vindo de volta
       > Entre com suas credenciais
 
-      ___email: Email{seu@email.com}
-      ___password: Senha{••••••}
+      ___email[Email][seu@email.com]
+      ___password[Senha][••••••]
 
       row-end:
         @[Entrar](Dashboard)
@@ -347,7 +347,7 @@ Sempre mencione que o protótipo pode ser testado online: https://ricardoadorno.
 
 1. **Indentação define hierarquia** — esqueça chaves
 2. **Layouts sempre vêm primeiro** — `container:`, `card:`, `stack:`
-3. **Prefixos semânticos** — `#` título, `>` parágrafo, `@` botão, `___` input
+3. **Prefixos semânticos** — `#` título, `>` parágrafo, `@` botão, `___[...]` input]
 4. **Sem atributos arbitrários** — use tokens canônicos
 5. **Props com pipe** — `nome | email | telefone`
 6. **Navegação declarativa** — `@[Texto](Destino)`

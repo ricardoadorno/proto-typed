@@ -109,8 +109,8 @@ screen Settings:
       card:
         ### Account Settings
 
-        ___: Full Name{Enter your name} | required
-        ___email: Email{your@email.com} | required
+        ___[Full Name][Enter your name] | required
+        ___email[Email][your@email.com] | required
 
         ---
 

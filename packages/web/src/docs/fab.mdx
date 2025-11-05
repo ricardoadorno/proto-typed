@@ -52,7 +52,7 @@ screen Default:
 drawer FilterDrawer:
   container:
     # Advanced filters
-    ___: Status[All | In progress | Completed]
+    ___[Status][All | In progress | Completed]
     row-end:
       @ghost[Cancel](close)
       @[Apply](applyFilters)
@@ -159,7 +159,7 @@ screen Dashboard:
 drawer FilterDrawer:
   container:
     # Adjust filters
-    ___: Period[7 days | 30 days | 90 days]
+    ___[Period][7 days | 30 days | 90 days]
     row-end:
       @ghost[Cancel](close)
       @[Apply](applyFilters)

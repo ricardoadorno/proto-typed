@@ -4,7 +4,7 @@ Input fields collect structured data, supporting texts, options, numbers, and co
 ## When to use
 - Capture essential information in forms, checklists, and settings.
 - Validate specific formats like email, password, or date with declarative syntax.
-- Allow long descriptions without leaving the main screen (`___textarea`).
+- Allow long descriptions without leaving the main screen (`___textarea[`).]
 - Confirm consents or unique choices with checkboxes and radios.
 
 ## Basic example
@@ -15,11 +15,11 @@ screen Signup:
     card:
       ## Create account
       stack-loose:
-        ___: Full name{Your name} | required
-        ___email: E-mail{user@company.com} | required
-        ___password: Password{Minimum 8 characters} | required minlength="8"
-        ___date: Subscription start{Select a date}
-        ___textarea: Goals{Tell us how you plan to use the product}
+        ___[Full name][Your name] | required
+        ___email[E-mail][user@company.com] | required
+        ___password[Password][Minimum 8 characters] | required minlength="8"
+        ___date[Subscription start][Select a date]
+        ___textarea[Goals][Tell us how you plan to use the product]
         [X] I accept the terms and policies
       row-end:
         @ghost[Cancel](-1)
@@ -33,7 +33,7 @@ Why: gathers different types of input in a compact and complete flow.
 ```dsl
 screen Default:
   container:
-    ___: Status[Under review | Approved | Rejected]
+    ___[Status][Under review | Approved | Rejected]
 ```
 </DocsCodePreview>
 When to use: limit the choice to a predetermined set.
@@ -71,9 +71,9 @@ component BillingForm:
   card:
     ## Configure plan
     stack-loose:
-      ___: Plan{Starter | Pro | Enterprise}
-      ___number: Seats{5} | min="1"
-      ___textarea: Notes{Additional details}
+      ___[Plan][Starter | Pro | Enterprise]
+      ___number[Seats][5] | min="1"
+      ___textarea[Notes][Additional details]
     row-end:
       @ghost[Cancel](-1)
       @primary[Save changes](savePlan)
@@ -88,23 +88,23 @@ Why: reuses the form on different screens while maintaining a standardized layou
 ## Slots & Props
 | Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `type` | token (`___`, `___email`, `___password`, `___`, `___textarea`, etc.) | `___` | Determines the field's validation and presentation. | Yes |
+| `type` | token (`___`, `___email`, `___password`, `___textarea`, etc.) | `___` | Determines the field's validation and presentation. | Yes |
 | `label` | string | — | Text displayed before the input. | Yes |
-| `placeholder` | string between `{}` | — | Example or contextual instruction for the field. | Yes |
-| `options` | list `option A | option B` | — | Defines select items. | No |
+| `placeholder` | string inside `[]` | — | Example or contextual instruction for the field. | Yes |
+| `options` | list `option A | option B` nested inside the placeholder block | — | Defines select items. | No |
 
 ## Common errors (Do/Don’t)
 <DoDont
   dont={{
     title: "Empty placeholder",
     code: `
-___email: E-mail{}
+___email[E-mail]
     `,
   }}
   do={{
     title: "Clear placeholder",
     code: `
-___email: E-mail{name@company.com}
+___email[E-mail][name@company.com]
     `,
   }}
 >
@@ -151,8 +151,8 @@ modal InviteModal:
   card:
     ## Invite person
     stack-tight:
-      ___: Full name{Enter the name}
-      ___email: E-mail{name@company.com}
+      ___[Full name][Enter the name]
+      ___email[E-mail][name@company.com]
     row-end:
       @ghost[Cancel](close)
       @success[Send invite](sendInvite)

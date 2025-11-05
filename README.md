@@ -153,15 +153,15 @@ Padrão: `@<variante>?-<tamanho>?\[texto\]\(ação\)`
 
 ### Formulários
 
-Padrão: `___<tipo>?: Label{placeholder}[opções] | atributos`
+Padrão: `___[<tipo>?: Label][placeholder[opções]] | atributos`
 
 **Tipos de input**: `email`, `password`, `date`, `number`, `textarea`
 
 ```dsl
-___: Email{Digite o email}
-___email: Email{Digite o email}
-___password: Senha{Digite a senha}
-___: País{Selecione}[Brasil | Portugal | Angola]
+___[Email][Digite o email]
+___email[Email][Digite o email]
+___password[Senha][Digite a senha]
+___[País][Selecione[Brasil | Portugal | Angola]]
 
 [X] Checkbox marcado
 [ ] Checkbox desmarcado

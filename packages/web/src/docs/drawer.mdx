@@ -13,8 +13,8 @@ Drawers display side panels over the current screen to offer filters, details, o
 drawer FilterDrawer:
   container:
     # Advanced filters
-    ___: Status[All | In progress | Completed]
-    ___: Assignee[Ana | Bruno | Carla]
+    ___[Status][All | In progress | Completed]
+    ___[Assignee][Ana | Bruno | Carla]
     row-end:
       @ghost[Cancel](close)
       @[Apply filters](applyFilters)
@@ -43,8 +43,8 @@ Why: keeps indicators visible while the person adjusts criteria in the side pane
 drawer SettingsDrawer:
   stack-loose:
     # Quick settings
-    ___switch: Notifications{Enabled}
-    ___switch: Dark mode{Enabled}
+    ___switch[Notifications][Enabled]
+    ___switch[Dark mode][Enabled]
     row-end:
       @ghost[Close](close)
       @[Save settings](saveSettings)
@@ -71,7 +71,7 @@ Why: keeps quick context at hand while the main screen remains visible.
 drawer NoteDrawer:
   container:
     # Add note
-    ___textarea: Comment{Describe the context}
+    ___textarea[Comment][Describe the context]
     row-end:
       @ghost[Cancel](close)
       @success[Save note](saveNote)

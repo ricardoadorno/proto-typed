@@ -4,7 +4,7 @@ Campos de entrada coletam dados estruturados, suportando textos, opções, núme
 ## Quando usar
 - Capturar informações essenciais em formulários, checklists e configurações.
 - Validar formatos específicos como e-mail, senha ou data com sintaxe declarativa.
-- Permitir descrições longas sem sair da tela principal (`___textarea`).
+- Permitir descrições longas sem sair da tela principal (`___textarea[`).]
 - Confirmar consentimentos ou escolhas únicas com checkboxes e radios.
 
 ## Exemplo básico
@@ -15,11 +15,11 @@ screen Signup:
     card:
       ## Criar conta
       stack-loose:
-        ___: Nome completo{Seu nome} | required
-        ___email: E-mail{usuario@empresa.com} | required
-        ___password: Senha{Mínimo 8 caracteres} | required minlength="8"
-        ___date: Início da assinatura{Selecione uma data}
-        ___textarea: Objetivos{Conte como pretende usar o produto}
+        ___[Nome completo][Seu nome] | required
+        ___email[E-mail][usuario@empresa.com] | required
+        ___password[Senha][Mínimo 8 caracteres] | required minlength="8"
+        ___date[Início da assinatura][Selecione uma data]
+        ___textarea[Objetivos][Conte como pretende usar o produto]
         [X] Aceito os termos e políticas
       row-end:
         @ghost[Cancelar](-1)
@@ -33,7 +33,7 @@ Por quê: reúne diferentes tipos de entrada em um fluxo compacto e completo.
 ```dsl
 screen Default:
   container:
-    ___: Status[Em análise | Aprovado | Reprovado]
+    ___[Status][Em análise | Aprovado | Reprovado]
 ```
 </DocsCodePreview>
 Quando usar: limitar a escolha a um conjunto predeterminado.
@@ -71,9 +71,9 @@ component BillingForm:
   card:
     ## Configurar plano
     stack-loose:
-      ___: Plano{Starter | Pro | Enterprise}
-      ___number: Assentos{5} | min="1"
-      ___textarea: Observações{Detalhes adicionais}
+      ___[Plano][Starter | Pro | Enterprise]
+      ___number[Assentos][5] | min="1"
+      ___textarea[Observações][Detalhes adicionais]
     row-end:
       @ghost[Cancelar](-1)
       @primary[Salvar alterações](savePlan)
@@ -88,23 +88,23 @@ Por quê: reutiliza o formulário em diferentes telas mantendo layout padronizad
 ## Slots & Props
 | Nome | Tipo | Padrão | Descrição | Obrigatório |
 | --- | --- | --- | --- | --- |
-| `tipo` | token (`___`, `___email`, `___password`, `___`, `___textarea`, etc.) | `___` | Determina validação e apresentação do campo. | Sim |
+| `tipo` | token (`___`, `___email`, `___password`, `___textarea`, etc.) | `___` | Determina validação e apresentação do campo. | Sim |
 | `label` | string | — | Texto exibido antes da entrada. | Sim |
-| `placeholder` | string entre `{}` | — | Exemplo ou instrução contextual do campo. | Sim |
-| `opções` | lista `opção A | opção B` | — | Define itens de selects. | Não |
+| `placeholder` | string dentro de `[]` | — | Exemplo ou instrução contextual do campo. | Sim |
+| `opções` | lista `opção A | opção B` aninhada no bloco de placeholder | — | Define itens de selects. | Não |
 
 ## Erros comuns (Do/Don’t)
 <DoDont
   dont={{
     title: "Placeholder vazio",
     code: `
-___email: E-mail{}
+___email[E-mail]
     `,
   }}
   do={{
     title: "Placeholder claro",
     code: `
-___email: E-mail{nome@empresa.com}
+___email[E-mail][nome@empresa.com]
     `,
   }}
 >
@@ -151,8 +151,8 @@ modal InviteModal:
   card:
     ## Convidar pessoa
     stack-tight:
-      ___: Nome completo{Digite o nome}
-      ___email: E-mail{nome@empresa.com}
+      ___[Nome completo][Digite o nome]
+      ___email[E-mail][nome@empresa.com]
     row-end:
       @ghost[Cancelar](close)
       @success[Enviar convite](sendInvite)

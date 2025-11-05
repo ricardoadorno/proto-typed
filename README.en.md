@@ -153,15 +153,15 @@ Pattern: `@<variant>?-<size>?[text](action)`
 
 ### Forms
 
-Pattern: `___<type>?: Label{placeholder}[options] | attributes`
+Pattern: `___[<type>?: Label][placeholder[options]] | attributes`
 
 **Input types**: `email`, `password`, `date`, `number`, `textarea`
 
 ```dsl
-___: Email{Enter email}
-___email: Email{Enter email}
-___password: Password{Enter password}
-___: Country{Select}[Brazil | Portugal | Angola]
+___[Email][Enter email]
+___email[Email][Enter email]
+___password[Password][Enter password]
+___[Country][Select[Brazil | Portugal | Angola]]
 
 [X] Checked checkbox
 [ ] Unchecked checkbox

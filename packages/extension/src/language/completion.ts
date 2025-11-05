@@ -285,27 +285,27 @@ function getFormCompletions(): vscode.CompletionItem[] {
   const items: vscode.CompletionItem[] = []
   
   const input = new vscode.CompletionItem('input', vscode.CompletionItemKind.Field)
-  input.insertText = new vscode.SnippetString('___:${1:Label}{${2:Placeholder}}')
+  input.insertText = new vscode.SnippetString('___[${1:Label}][${2:Placeholder}]')
   input.documentation = new vscode.MarkdownString(
-    '**Text Input**\n\n`___:Label{Placeholder}`'
+    '**Text Input**\n\n`___[Label][Placeholder]`'
   )
   input.sortText = '50-input'
   items.push(input)
-  
+
   const password = new vscode.CompletionItem('password', vscode.CompletionItemKind.Field)
-  password.insertText = new vscode.SnippetString('___*:${1:Password}{${2:Enter password}}')
+  password.insertText = new vscode.SnippetString('___password[${1:Password}][${2:Enter password}]')
   password.documentation = new vscode.MarkdownString(
-    '**Password Input**\n\n`___*:Password{Enter password}`'
+    '**Password Input**\n\n`___password[Password][Enter password]`'
   )
   password.sortText = '50-password'
   items.push(password)
-  
+
   const select = new vscode.CompletionItem('select', vscode.CompletionItemKind.Field)
   select.insertText = new vscode.SnippetString(
-    '___:${1:Label}{${2:Select}}[${3:Option1} | ${4:Option2}]'
+    '___[${1:Label}][${2:Placeholder}[${3:Option1} | ${4:Option2}]]'
   )
   select.documentation = new vscode.MarkdownString(
-    '**Select Dropdown**\n\n`___:Label{Placeholder}[Option1 | Option2]`'
+    '**Select Dropdown**\n\n`___[Label][Placeholder[Option1 | Option2]]`'
   )
   select.sortText = '50-select'
   items.push(select)
@@ -409,4 +409,3 @@ function getStylesCompletions(): vscode.CompletionItem[] {
   
   return [styles]
 }
-

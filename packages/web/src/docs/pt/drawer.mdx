@@ -13,8 +13,8 @@ Drawers exibem painéis laterais sobre a tela atual para oferecer filtros, detal
 drawer FilterDrawer:
   container:
     # Filtros avançados
-    ___: Status[Todos | Em andamento | Concluído]
-    ___: Responsável[Ana | Bruno | Carla]
+    ___[Status][Todos | Em andamento | Concluído]
+    ___[Responsável][Ana | Bruno | Carla]
     row-end:
       @ghost[Cancelar](close)
       @[Aplicar filtros](applyFilters)
@@ -43,8 +43,8 @@ Por quê: mantém indicadores visíveis enquanto a pessoa ajusta critérios no p
 drawer SettingsDrawer:
   stack-loose:
     # Configurações rápidas
-    ___switch: Notificações{Ativado}
-    ___switch: Modo escuro{Ativado}
+    ___switch[Notificações][Ativado]
+    ___switch[Modo escuro][Ativado]
     row-end:
       @ghost[Fechar](close)
       @[Salvar ajustes](saveSettings)
@@ -71,7 +71,7 @@ Por quê: mantém contexto rápido à mão enquanto a tela principal segue visí
 drawer NoteDrawer:
   container:
     # Adicionar nota
-    ___textarea: Comentário{Descreva o contexto}
+    ___textarea[Comentário][Descreva o contexto]
     row-end:
       @ghost[Cancelar](close)
       @success[Salvar nota](saveNote)

@@ -79,9 +79,9 @@ screen Default:
     card:
       ## Atualizar perfil
       stack-loose:
-        ___: Nome completo{Digite seu nome}
-        ___email: E-mail{nome@empresa.com}
-        ___textarea: Bio{Conte sobre seu trabalho}
+        ___[Nome completo][Digite seu nome]
+        ___email[E-mail][nome@empresa.com]
+        ___textarea[Bio][Conte sobre seu trabalho]
       row-end:
         @ghost[Cancelar](close)
         @[Salvar mudanças](saveProfile)

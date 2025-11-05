@@ -61,8 +61,8 @@ export const DSL_TOKEN_TYPES = {
   separator: 'delimiter.separator', // ---
 
   // Forms (inputs.tokens.ts)
-  // Pattern: ___[\*\-]?(?::Label)?(?:\{Placeholder\})?(?:\[Options\])?
-  input: 'keyword.input', // ___, ___*, ___-
+  // Pattern: ___<type?>[Label][Placeholder[Options]] | attributes
+  input: 'keyword.input', // ___, ___text, ___password, ___select
   checkbox: 'keyword.checkbox', // [X], [ ]
   radio: 'keyword.radio', // (X), ( )
 

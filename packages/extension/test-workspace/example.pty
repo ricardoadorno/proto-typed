@@ -47,10 +47,10 @@ modal CreateContact:
     ## New Contact
     >>> Fill contact information
 
-    ___: Full Name{Enter name} | required
-    ___email: Email{email@example.com} | required
-    ___: Phone{(11) 99999-9999}
-    ___: ID{Auto-generated} | disabled
+    ___[Full Name][Enter name] | required
+    ___email[Email][email@example.com] | required
+    ___[Phone][(11) 99999-9999]
+    ___[ID][Auto-generated] | disabled
 
     ---
 

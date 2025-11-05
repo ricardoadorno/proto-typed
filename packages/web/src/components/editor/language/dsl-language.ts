@@ -123,17 +123,14 @@ export function registerDSLLanguage(monaco: Monaco) {
 
         // ========================================
         // FORMS
-        // Radio buttons only at start of line (with optional whitespace)
+        // Highlight specific input types when followed by the new bracket syntax
         // ========================================
-        // FORMS
-        // Radio buttons only at start of line (with optional whitespace)
-        // Highlight specific input labels: Email, Password, Date, Number (case-insensitive, allow common misspellings)
-        [/___(?:email)\b/i, 'keyword.input.email'],
-        [/___(?:password)\b/i, 'keyword.input.password'],
-        [/___(?:date)\b/i, 'keyword.input.date'],
-        [/___(?:number)\b/i, 'keyword.input.number'],
-        [/___(?:textarea)\b/i, 'keyword.input.textarea'],
-        [/___/, 'keyword.input'], // ___, ___*, ___-
+        [/___(?:email)(?=\s*\[)/i, 'keyword.input.email'],
+        [/___(?:password)(?=\s*\[)/i, 'keyword.input.password'],
+        [/___(?:date)(?=\s*\[)/i, 'keyword.input.date'],
+        [/___(?:number)(?=\s*\[)/i, 'keyword.input.number'],
+        [/___(?:textarea)(?=\s*\[)/i, 'keyword.input.textarea'],
+        [/___(?=\s*\[)/, 'keyword.input'],
         [/\[[X\s]\]/, 'keyword.checkbox'], // [X], [ ]
         [/^\s*\([X\s]\)/, 'keyword.radio'], // (X), ( ) at start of line only
 

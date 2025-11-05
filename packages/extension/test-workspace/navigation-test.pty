@@ -61,11 +61,11 @@ screen NewContact:
       ## New Contact
       > Fill contact information
 
-      ___: Full Name{Enter name}
-      ___email: Email Address{Enter your email}
-      ___: Phone{Enter phone number}
+      ___[Full Name][Enter name]
+      ___email[Email Address][Enter your email]
+      ___[Phone][Enter phone number]
       
-      ___: Category{Select category}[Personal | Work | Family | Other]
+      ___[Category][Select category[Personal | Work | Family | Other]]
 
       [X] Add to favorites
       [ ] Sync with cloud
@@ -88,11 +88,11 @@ screen EditContact:
       ## Edit Contact
       > Update contact information
 
-      ___: Full Name{John Silva}
-      ___email: Email Address{john@email.com}
-      ___: Phone{+55 11 99999-0001}
+      ___[Full Name][John Silva]
+      ___email[Email Address][john@email.com]
+      ___[Phone][+55 11 99999-0001]
       
-      ___: Category{Select category}[Personal | Work | Family | Other]
+      ___[Category][Select category[Personal | Work | Family | Other]]
 
       ### Options
       [X] Add to favorites
@@ -119,8 +119,8 @@ screen Settings:
       card:
         ## General Settings
         
-        ___: App Name{My Contacts}
-        ___email: Email{user@example.com}
+        ___[App Name][My Contacts]
+        ___email[Email][user@example.com]
 
       card:
         ## Preferences

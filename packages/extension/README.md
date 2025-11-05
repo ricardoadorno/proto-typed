@@ -13,7 +13,7 @@ Extensão completa para a DSL Proto-Typed com syntax highlighting, IntelliSense 
   - Layouts (`row`, `col`, `grid`) - Rosa bold
   - Typography (`#`, `>`, `>>`) - Verde
   - Buttons (`@`) - Azul bold
-  - Forms (`___`) - Roxo
+  - Forms (`___[...]`) - Roxo
   - Delimitadores (`|`, `:`, `[]`, `{}`) - Amarelo
 
 ### 💡 IntelliSense
@@ -183,9 +183,9 @@ packages/extension/
 
 ### Forms
 
-- `___:Label{Placeholder}` - Input
-- `___*:Password{...}` - Password
-- `___:Label{...}[Opt1 | Opt2]` - Select
+- `___[Label][Placeholder]`
+- `___password[Password][...]`
+- `___[Label][Placeholder[Opt1 | Opt2]]`
 - `[X]` / `[ ]` - Checkbox
 - `(X)` / `( )` - Radio
 

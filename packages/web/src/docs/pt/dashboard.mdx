@@ -54,8 +54,8 @@ screen Dashboard:
 drawer FilterDrawer:
   container:
     # Filtros do painel
-    ___: Intervalo[7 dias | 14 dias | 30 dias]
-    ___: Equipe[Todos | Produto | Engenharia | Suporte]
+    ___[Intervalo][7 dias | 14 dias | 30 dias]
+    ___[Equipe][Todos | Produto | Engenharia | Suporte]
     row-end:
       @ghost[Cancelar](close)
       @primary[Aplicar](applyFilters)
@@ -63,8 +63,8 @@ drawer FilterDrawer:
 modal NewMetric:
   card:
     # Registrar métrica manual
-    ___: Título{Nome da métrica}
-    ___number: Valor{0}
+    ___[Título][Nome da métrica]
+    ___number[Valor][0]
     row-end:
       @ghost[Cancelar](close)
       @[Salvar](saveMetric)
