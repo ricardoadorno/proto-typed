@@ -1,25 +1,22 @@
 0.2.0
 [] Refactor Button - small, large, icon - ensure @link syntax is consistent
 
-    [] Refactor Image
-        - !shape[]
+[] Refactor Image - !shape[]
 
-    [] Refactor Inputs
-        - {} syntax
-        - : syntax
+[] Refactor Inputs - {} syntax - : syntax
 
-    [] Refactor Layouts patterns
+[] Refactor Layouts patterns
 
-    [] Refactor Text patterns
+[] Refactor Text patterns
 
-    [] Refactor Components Props
-        - $foo syntax
-        - Inline component?
+[] Refactor Components Props - $foo syntax
 
-    [] Implement Syntax Test on Core
+---
 
-    [] Implement Global Syntax Highlight
+[] Implement Syntax Test on Core
 
-    [] Implement Lint and formmater
+[] Implement Global Syntax Highlight
 
-    [] Implement Better error meessage
+[] Implement Lint and formmater
+
+[] Implement Better error meessage
