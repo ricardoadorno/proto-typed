@@ -9,7 +9,6 @@ export { renderScreen, renderModal, renderDrawer } from './views.node'
 // Primitive tokens
 export {
   renderButton,
-  renderLink,
   renderImage,
   renderText,
   TYPO_CLASSES,

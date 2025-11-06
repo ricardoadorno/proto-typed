@@ -1,5 +1,5 @@
 # Link
-Links (`@link[Text](Destination)`) create inline navigation to screens, modals, or external URLs without breaking the reading flow.
+Links (`[Text](Destination)`) create inline navigation to screens, modals, or external URLs without breaking the reading flow.
 
 ## When to use
 - Reference secondary screens or resources within paragraphs and lists.
@@ -13,11 +13,11 @@ Links (`@link[Text](Destination)`) create inline navigation to screens, modals, 
 screen HelpCenter:
   container:
     # Help center
-    @link[official documentation](https://proto-typed.dev/docs) for a complete overview.
+    > [official documentation](https://proto-typed.dev/docs) for a complete overview.
 
     card:
       ## Need to reset your password?
-      >> Access the @link[recovery screen](RecoverPassword) and follow the steps.
+      >> Access the [recovery screen](RecoverPassword) and follow the steps.
 ```
 </DocsCodePreview>
 Why: maintains a fluid reading and offers contextual navigation.
@@ -27,7 +27,7 @@ Why: maintains a fluid reading and offers contextual navigation.
 ```dsl
 screen Default:
   container:
-    @link[View details](DetailScreen)
+    > [View details](DetailScreen)
 ```
 </DocsCodePreview>
 When to use: point to existing screens in the main flow.
@@ -37,7 +37,7 @@ Why: keeps navigation cohesive without relying on buttons.
 ```dsl
 screen Default:
   container:
-    @link[Open documentation](https://proto-typed.dev/docs)
+    > [Open documentation](https://proto-typed.dev/docs)
 ```
 </DocsCodePreview>
 When to use: reference resources hosted outside the product.
@@ -55,15 +55,15 @@ drawer QuickLinks:
   container:
     # Quick links
     stack-tight:
-      @link[Dashboard](Dashboard)
-      @link[Team](Team)
-      @link[Settings](Settings)
+      > [Dashboard](Dashboard)
+      > [Team](Team)
+      > [Settings](Settings)
 
 screen HeaderDemo:
   header:
     # Proto-Typed
     row-end:
-      @link[Open quick links](QuickLinks)
+      > [Open quick links](QuickLinks)
 ```
 </DocsCodePreview>
 Why: groups shortcuts without overloading the header with buttons.
@@ -71,10 +71,8 @@ Why: groups shortcuts without overloading the header with buttons.
 ## Slots & Props
 | Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `label` | string | — | Text displayed between `@link[ ]`. | Yes |
+| `label` | string | — | Text displayed between `[ ]`. | Yes |
 | `destination` | slug or URL | — | Screen, modal, drawer, or external address. | Yes |
-| `protocol` | `https://`| `https://` | Determines the action for external links. | No |
-| `inline icon` | token `i-` | — | Optional before the text to reinforce the context. | No |
 
 ## Common errors (Do/Don’t)
 <DoDont
@@ -87,23 +85,23 @@ Why: groups shortcuts without overloading the header with buttons.
   do={{
     title: "Contextual link",
     code: `
-@link[View details](DetailScreen)
+> [View details](DetailScreen)
     `,
   }}
 >
-  Why: `@` executes actions; `#` references destinations without button behavior.
+  Why: buttons (`@`) execute actions; inline links keep navigation contextual.
 </DoDont>
 <DoDont
   dont={{
     title: "Link without destination",
     code: `
-@link[Read more]()
+> [Read more]()
     `,
   }}
   do={{
     title: "Declared destination",
     code: `
-@link[Read more](Guides)
+> [Read more](Guides)
     `,
   }}
 >

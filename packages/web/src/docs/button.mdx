@@ -5,7 +5,7 @@ Buttons trigger immediate actions and guide people through the main flows of Pro
 - Highlight the most important action on the screen or card.
 - Guide to subsequent screens, modals, or drawers with clear context.
 - Confirm submissions and save forms without ambiguity.
-- Offer return paths with lighter variants (`@ghost`, `@link`).
+- Offer return paths with lighter variants (e.g., `@ghost`).
 
 ## Basic example
 <DocsCodePreview title="Main action on a task screen">
@@ -76,7 +76,7 @@ Why: combines the main CTA and exit option within the same block.
 ## Slots & Props
 | Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `variant` | enum (`@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@link`, `@success`, `@warning`) | `@primary` | Defines the visual hierarchy of the action. | No |
+| `variant` | enum (`@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@success`, `@warning`) | `@primary` | Defines the visual hierarchy of the action. | No |
 | `size` | enum (`-small`, `-icon`, `-large`) | — (no modifier) | Adjusts the button's height and spacing. | No |
 | `label` | string | — | Visible text of the button; can include an icon. | Yes |
 | `icon` | token `i-` | — | Optional icon displayed before the label. | No |
@@ -88,7 +88,7 @@ Why: combines the main CTA and exit option within the same block.
     title: "Link used as action",
     code: `
 row:
-  @link[Send invite](ConfirmInvite)
+  > [Send invite](ConfirmInvite)
     `,
   }}
   do={{
@@ -99,7 +99,7 @@ row:
     `,
   }}
 >
-  Why: `@` executes actions in the flow; `#` is only for declarative navigation.
+  Why: Buttons (`@`) execute actions; inline links (`[label](dest)`) keep navigation readable without triggering flows.
 </DoDont>
 <DoDont
   dont={{

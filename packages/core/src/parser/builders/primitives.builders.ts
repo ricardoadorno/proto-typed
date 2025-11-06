@@ -134,7 +134,6 @@ export function buildButtonElement(ctx: CstContext, visitor: CstVisitor) {
   else if (ctx.ButtonOutline) variant = 'outline'
   else if (ctx.ButtonGhost) variant = 'ghost'
   else if (ctx.ButtonDestructive) variant = 'destructive'
-  else if (ctx.ButtonLink) variant = 'link'
   else if (ctx.ButtonSuccess) variant = 'success'
   else if (ctx.ButtonWarning) variant = 'warning'
   else if (ctx.ButtonMarker) variant = 'primary' // Default marker maps to primary
@@ -177,51 +176,6 @@ export function buildButtonElement(ctx: CstContext, visitor: CstVisitor) {
       text,
       variant,
       size: resolvedSize,
-    },
-    children: [],
-  }
-}
-
-/**
- * @function buildLinkElement
- * @description Builds a 'Link' AST node from the corresponding CST node.
- * It parses the link's text and URL from both Markdown and DSL syntaxes.
- *
- * @param {Context} ctx - The Chevrotain CST node context for the link.
- * @returns {object} A 'Link' AST node.
- */
-export function buildLinkElement(ctx: CstContext) {
-  if (!ctx.Link || !ctx.Link[0]) {
-    return {
-      type: 'Link',
-      id: '',
-      props: { destination: '', text: '' },
-      children: [],
-    }
-  }
-
-  const linkText = (ctx.Link[0] as IToken).image
-  let text = '',
-    url = ''
-
-  // Match the @link[text](destination) syntax
-  const inlineMatch = linkText.match(/@link\[([^\]]+)\](?:\(([^)]+)\))?/)
-  const dslMatch = linkText.match(/link\s+\["([^"]*)"\]\s+([^\n\r]+)/)
-
-  if (inlineMatch) {
-    text = inlineMatch[1]
-    url = inlineMatch[2] || '' // URL is now optional, default to empty string
-  } else if (dslMatch) {
-    url = dslMatch[1]
-    text = dslMatch[2]
-  }
-
-  return {
-    type: 'Link',
-    id: '', // ID will be generated later
-    props: {
-      destination: url,
-      text,
     },
     children: [],
   }

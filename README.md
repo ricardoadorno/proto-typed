@@ -138,7 +138,7 @@ Padrão: `@<variante>?-<tamanho>?\[texto\]\(ação\)`
 
 **Variantes** (opcional, padrão: primary):
 
-- `@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@link`, `@success`, `@warning`
+- `@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@success`, `@warning`
 
 **Tamanhos** (opcional, padrão sem modificador):
 
@@ -246,11 +246,12 @@ Props são separados por pipe (`|`) e interpolados com `%nomeProp`.
 ### Navegação
 
 ```dsl
-@[Ir para tela](NomeTela)      → Navegar para tela
-@[Abrir modal](NomeModal)      → Alternar modal
-@[Abrir drawer](NomeDrawer)    → Alternar drawer
-@[Voltar](-1)                  → Voltar no histórico
-@link[Link externo](https://...)   → URL externa
+> [Detalhes](NomeTela)            → Link interno
+> [Link externo](https://...)     → URL externa
+@[Ir para tela](NomeTela)         → Navegar para tela
+@[Abrir modal](NomeModal)         → Alternar modal
+@[Abrir drawer](NomeDrawer)       → Alternar drawer
+@[Voltar](-1)                     → Voltar no histórico
 ```
 
 ### Componentes mobile

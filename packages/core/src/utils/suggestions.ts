@@ -172,7 +172,6 @@ export function suggestButtonVariant(input: string): string | null {
     'outline',
     'ghost',
     'destructive',
-    'link',
     'success',
     'warning',
   ]

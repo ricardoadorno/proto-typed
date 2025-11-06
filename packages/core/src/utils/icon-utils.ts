@@ -2,6 +2,11 @@
  * Utility functions for handling Lucide icons
  */
 import { icons } from 'lucide'
+import { NavigationMediator } from '../renderer/infrastructure/navigation-mediator'
+import {
+  elementStyles,
+  getLinkInlineStyles,
+} from '../renderer/nodes/styles/styles'
 
 // Cache para melhorar performance
 let lucideIconsCache: Set<string> | null = null
@@ -193,35 +198,20 @@ export function parseTextWithIcons(text: string): TextWithIconParts {
  * @param options - Rendering options
  * @returns HTML string with icons replaced by SVG elements
  */
-export function renderTextWithIcons(
-  text: string,
-  options: {
-    /** Wrap the output in a span element (default: false) */
-    wrapInSpan?: boolean
-    /** Additional CSS classes for the wrapper span */
-    wrapperClass?: string
-    /** Additional inline styles for the wrapper span */
-    wrapperStyle?: string
-  } = {}
-): string {
+interface InlineRenderOptions {
+  wrapInSpan?: boolean
+  wrapperClass?: string
+  wrapperStyle?: string
+}
+
+function renderIcons(text: string): string {
   const parsed = parseTextWithIcons(text)
 
-  // If no icons, return the original text
   if (!parsed.hasIcons) {
-    if (options.wrapInSpan) {
-      const classAttr = options.wrapperClass
-        ? ` class="${options.wrapperClass}"`
-        : ''
-      const styleAttr = options.wrapperStyle
-        ? ` style="${options.wrapperStyle}"`
-        : ''
-      return `<span${classAttr}${styleAttr}>${text}</span>`
-    }
     return text
   }
 
-  // Build HTML from parts
-  const html = parsed.parts
+  return parsed.parts
     .map((part) => {
       if (part.type === 'icon') {
         return getLucideSvg(part.content)
@@ -229,17 +219,84 @@ export function renderTextWithIcons(
       return part.content
     })
     .join('')
+}
 
-  // Wrap in span if requested
-  if (options.wrapInSpan) {
-    const classAttr = options.wrapperClass
-      ? ` class="${options.wrapperClass}"`
-      : ''
-    const styleAttr = options.wrapperStyle
-      ? ` style="${options.wrapperStyle}"`
-      : ''
-    return `<span${classAttr}${styleAttr}>${html}</span>`
+function wrapInlineContent(
+  html: string,
+  options: InlineRenderOptions
+): string {
+  if (!options.wrapInSpan) {
+    return html
   }
 
-  return html
+  const classAttr = options.wrapperClass
+    ? ` class="${options.wrapperClass}"`
+    : ''
+  const styleAttr = options.wrapperStyle
+    ? ` style="${options.wrapperStyle}"`
+    : ''
+
+  return `<span${classAttr}${styleAttr}>${html}</span>`
+}
+
+function renderLinkAnchor(label: string, destination: string): string {
+  const trimmedDestination = destination.trim()
+  const linkClass = elementStyles.link
+  const linkStyle = getLinkInlineStyles()
+  const attributes = [
+    linkClass ? `class="${linkClass}"` : '',
+    linkStyle ? `style="${linkStyle}"` : '',
+    NavigationMediator.generateHrefAttribute(trimmedDestination),
+    NavigationMediator.generateNavigationAttributes(trimmedDestination),
+  ]
+    .filter(Boolean)
+    .join(' ')
+
+  return `<a ${attributes}>${label}</a>`
+}
+
+export function renderInlineContent(
+  text: string,
+  options: InlineRenderOptions = {}
+): string {
+  if (!text || typeof text !== 'string') {
+    return text || ''
+  }
+
+  const linkPattern = /\[([^\]]+)\]\(([^)]+)\)/g
+  let match: RegExpExecArray | null
+  let lastIndex = 0
+  let hasLinks = false
+  const output: string[] = []
+
+  while ((match = linkPattern.exec(text)) !== null) {
+    hasLinks = true
+
+    if (match.index > lastIndex) {
+      const before = text.slice(lastIndex, match.index)
+      if (before) {
+        output.push(renderIcons(before))
+      }
+    }
+
+    const label = match[1]
+    const destination = match[2]
+    output.push(renderLinkAnchor(label, destination))
+
+    lastIndex = linkPattern.lastIndex
+  }
+
+  if (!hasLinks) {
+    return wrapInlineContent(renderIcons(text), options)
+  }
+
+  if (lastIndex < text.length) {
+    const trailing = text.slice(lastIndex)
+    if (trailing) {
+      output.push(renderIcons(trailing))
+    }
+  }
+
+  const html = output.join('')
+  return wrapInlineContent(html, options)
 }

@@ -2,12 +2,7 @@ import { safeRender } from './safe-render'
 
 // Import all node renderers from the modular organization
 import { renderScreen, renderModal, renderDrawer } from '../nodes/views.node'
-import {
-  renderButton,
-  renderLink,
-  renderImage,
-  renderText,
-} from '../nodes/primitives.node'
+import { renderButton, renderImage, renderText } from '../nodes/primitives.node'
 import {
   renderLayout,
   renderList,
@@ -72,7 +67,6 @@ const RENDERERS: Record<NodeType, typeof _render> = {
 
   // Primitives
   Button: (n) => renderButton(n),
-  Link: (n) => renderLink(n),
   Image: (n) => renderImage(n),
   Text: (n) => renderText(n),
 

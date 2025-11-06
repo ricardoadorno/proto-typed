@@ -177,7 +177,7 @@ packages/extension/
 
 ### Links & Images
 
-- `@link[Link Text](destination)`
+- `> [Link Text](destination)`
 - `![Alt Text](url)`
 - `i-IconName` - Ícones Lucide
 

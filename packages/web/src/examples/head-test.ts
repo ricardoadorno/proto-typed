@@ -117,9 +117,9 @@ drawer MainMenu:
   stack:
     # Main Menu
     ---
-    @link[Dashboard](Dashboard)
-    @link[Settings](Settings)
-    @link[About](About)
+    > [Dashboard](Dashboard)
+    > [Settings](Settings)
+    > [About](About)
     ---
     @destructive[Logout](Login)
 
@@ -143,7 +143,8 @@ screen About:
         >>> ✓ Template system
         >>> ✓ Component composition
       
-      @link[Back to Dashboard](Dashboard)
+      > [Back to Dashboard](Dashboard)
 `
 
 export default headTestExample
+

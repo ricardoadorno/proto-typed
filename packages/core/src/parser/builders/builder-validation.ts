@@ -105,7 +105,6 @@ export function validateButtonVariant(
     'outline',
     'ghost',
     'destructive',
-    'link',
     'success',
     'warning',
   ]

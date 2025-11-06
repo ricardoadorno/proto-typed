@@ -7,7 +7,6 @@ import {
   buildHeadingElement,
   buildTextElement,
   buildButtonElement,
-  buildLinkElement,
   buildImageElement,
   // Form builders
   buildInputElement,
@@ -253,16 +252,6 @@ export function createAstBuilder(parserInstance: UiDslParser) {
      */
     buttonElement(ctx: Context) {
       return buildButtonElement(ctx, this)
-    }
-
-    /**
-     * @method linkElement
-     * @description Visits a 'linkElement' CST node.
-     * @param {Context} ctx - The parsing context.
-     * @returns {any} The resulting link AST node.
-     */
-    linkElement(ctx: Context) {
-      return buildLinkElement(ctx)
     }
 
     /**

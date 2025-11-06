@@ -13,12 +13,12 @@ component ContactCard:
 
 
 component MenuItem:
-  @link[%label](%destination)
+  > [%label](%destination)
 
 
 component GroupItem:
   stack-tight:
-    @link[%name](Contacts)
+    > [%name](Contacts)
     >>> %count members
 
 
@@ -256,3 +256,4 @@ screen Premium:
 
       @primary[i-Crown Subscribe](Contacts)
       @ghost[Maybe Later](-1)
+

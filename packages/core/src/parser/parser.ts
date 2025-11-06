@@ -26,7 +26,7 @@ import type { ParserRule } from '../types/parser'
  * - core.rules.ts: Program and element dispatcher rules
  * - views.rules.ts: Screen, Modal, Drawer parsing rules
  * - components.rules.ts: Component and ComponentInstance parsing rules
- * - primitives.rules.ts: Button, Link, Image, Heading, Text parsing rules
+ * - primitives.rules.ts: Button, Image, Heading, Text parsing rules
  * - layouts.rules.ts: Layout, List, Navigator, FAB parsing rules
  * - inputs.rules.ts: Input, Radio, Checkbox parsing rules
  * - head.rules.ts: Head configuration parsing rules (colors, fonts, templates)
@@ -41,7 +41,6 @@ export class UiDslParser extends CstParser {
   component!: ParserRule
   componentInstanceElement!: ParserRule
   buttonElement!: ParserRule
-  linkElement!: ParserRule
   imageElement!: ParserRule
   headingElement!: ParserRule
   textElement!: ParserRule

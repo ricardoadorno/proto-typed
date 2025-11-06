@@ -70,6 +70,7 @@ export const ERROR_CODES = {
   REND_COMPONENT_ERROR: 'PT-REND-3004',
   EDIT_FATAL_ERROR: 'PT-EDIT-4001',
   EDIT_MONACO_ERROR: 'PT-EDIT-4002',
+  DSL_DEPRECATED_LINK: 'PT-DSL-5001',
 } as const
 
 export function isMoreSevere(a: Severity, b: Severity): boolean {

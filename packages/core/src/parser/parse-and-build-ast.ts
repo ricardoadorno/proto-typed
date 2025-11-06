@@ -9,6 +9,52 @@ import type {
   BuilderWithErrors,
 } from '../types/ast-node'
 
+function normalizeDeprecatedLinkSyntax(
+  source: string
+): { text: string; warnings: ProtoError[] } {
+  const lines = source.split(/\r?\n/)
+  const warnings: ProtoError[] = []
+  const linkPattern = /@link\[([^\]]+)\](?:\(([^)]*)\))?/g
+
+  const processedLines = lines.map((line, index) => {
+    if (!line.includes('@link[')) {
+      return line
+    }
+
+    linkPattern.lastIndex = 0
+
+    let match: RegExpExecArray | null
+    while ((match = linkPattern.exec(line)) !== null) {
+      const label = match[1]
+      const destination = match[2] || ''
+      warnings.push({
+        stage: 'parser',
+        severity: 'warning',
+        code: ERROR_CODES.DSL_DEPRECATED_LINK,
+        message: '@link foi descontinuado; use [label](href).',
+        hint: destination
+          ? `Use [${label}](${destination}) no lugar de @link.`
+          : `Use [${label}](destino) no lugar de @link.`,
+        line: index + 1,
+        column: match.index + 1,
+      })
+    }
+
+    const trimmed = line.trimStart()
+    const leadingWhitespace = line.slice(0, line.length - trimmed.length)
+    if (trimmed.startsWith('@link[')) {
+      const remainder = trimmed.slice('@link'.length)
+      const needsSpace =
+        remainder.startsWith(' ') || remainder.startsWith('>') ? '' : ' '
+      return `${leadingWhitespace}>${needsSpace}${remainder}`
+    }
+
+    return line.replace(/@link/g, '')
+  })
+
+  return { text: processedLines.join('\n'), warnings }
+}
+
 /**
  * @function parseAndBuildAst
  * @description Parses the input DSL text, builds a Concrete Syntax Tree (CST), and then transforms it into an Abstract Syntax Tree (AST).
@@ -27,10 +73,16 @@ export function parseAndBuildAst(
 ): AstWithErrors {
   const collectedErrors: ProtoError[] = []
 
+  const { text: normalizedText, warnings: deprecatedLinkWarnings } =
+    normalizeDeprecatedLinkSyntax(text)
+  if (deprecatedLinkWarnings.length > 0) {
+    collectedErrors.push(...deprecatedLinkWarnings)
+  }
+
   // ========================================================
   // LEXER PHASE: Tokenize with error collection
   // ========================================================
-  const lexResult = tokenize(text)
+  const lexResult = tokenize(normalizedText)
 
   // Collect lexer errors
   if (lexResult.errors.length > 0) {

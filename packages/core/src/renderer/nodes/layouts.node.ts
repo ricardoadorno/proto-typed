@@ -17,11 +17,7 @@ import type {
   ComponentProps,
   FabProps,
 } from '../../types/ast-node'
-import {
-  getLucideSvg,
-  isLucideIcon,
-  renderTextWithIcons,
-} from '../../utils/icon-utils'
+import { getLucideSvg, isLucideIcon, renderInlineContent } from '../../utils/icon-utils'
 
 /**
  * @const LAYOUT_PRESETS
@@ -275,7 +271,7 @@ export function renderFAB(node: AstNode): string {
   // Handle icon rendering - can be lucide icon or text
   const iconHtml = isLucideIcon(icon)
     ? getLucideSvg(icon)
-    : renderTextWithIcons(icon)
+    : renderInlineContent(icon)
 
   return `
     <div class="${elementStyles.fabContainer}">
@@ -319,8 +315,8 @@ export function renderNavigator(node: AstNode): string {
         // Both icon and text - stack them vertically
         // Icon is always just an icon reference (no embedded text)
         const iconHtml = isLucideIcon(icon) ? getLucideSvg(icon) : icon
-        // Text might have embedded icons, so use renderTextWithIcons
-        const textHtml = renderTextWithIcons(text)
+        // Text might have embedded icons or inline links, so use renderInlineContent
+        const textHtml = renderInlineContent(text)
 
         content = `
         <div class="${elementStyles.navItemIcon}">${iconHtml}</div>
@@ -331,8 +327,8 @@ export function renderNavigator(node: AstNode): string {
         const iconHtml = isLucideIcon(icon) ? getLucideSvg(icon) : icon
         content = `<div class="${elementStyles.navItemIcon}" style="margin-bottom: 0;">${iconHtml}</div>`
       } else if (text) {
-        // Only text - might have embedded icons
-        const textHtml = renderTextWithIcons(text)
+        // Only text - might have embedded icons or inline links
+        const textHtml = renderInlineContent(text)
         content = `<div class="${elementStyles.navItemLabel}" style="margin-top: 0;">${textHtml}</div>`
       }
 

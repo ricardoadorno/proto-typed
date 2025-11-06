@@ -138,7 +138,7 @@ Pattern: `@<variant>?-<size>?[text](action)`
 
 **Variants** (optional, default: primary):
 
-- `@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@link`, `@success`, `@warning`
+- `@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@success`, `@warning`
 
 **Sizes** (optional, default: no modifier):
 
@@ -247,11 +247,12 @@ Props are separated by a pipe (`|`) and interpolated with `%propName`.
 ### Navigation
 
 ```dsl
-@[Go to screen](ScreenName)      → Navigate to screen
+> [Docs](ScreenName)            → Inline navigation link
+> [External link](https://...)  → External URL
+@[Go to screen](ScreenName)   → Button navigation
 @[Open modal](ModalName)      → Toggle modal
 @[Open drawer](DrawerName)    → Toggle drawer
-@[Back](-1)                  → Go back in history
-@link[External link](https://...)   → External URL
+@[Back](-1)                   → Go back in history
 ```
 
 ### Mobile components

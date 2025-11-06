@@ -13,7 +13,6 @@ import {
   ButtonOutline,
   ButtonGhost,
   ButtonDestructive,
-  ButtonLink,
   ButtonSuccess,
   ButtonWarning,
   ButtonMarker,
@@ -22,7 +21,6 @@ import {
   ButtonSizeLarge,
   ButtonLabel,
   ButtonAction,
-  Link,
   Image,
   Heading,
   Note,
@@ -109,7 +107,6 @@ export {
   ButtonOutline,
   ButtonGhost,
   ButtonDestructive,
-  ButtonLink,
   ButtonSuccess,
   ButtonWarning,
   ButtonMarker,
@@ -120,7 +117,6 @@ export {
   ButtonAction,
 
   // Primitives - Other
-  Link,
   Image,
   Heading,
   Paragraph,
@@ -253,7 +249,6 @@ export const allTokens = [
   ButtonOutline,
   ButtonGhost,
   ButtonDestructive,
-  ButtonLink,
   ButtonSuccess,
   ButtonWarning,
   ButtonMarker, // Must come after all specific variants
@@ -262,7 +257,6 @@ export const allTokens = [
   ButtonSizeLarge,
   ButtonLabel,
   ButtonAction,
-  Link,
   Image,
   Heading,
   Paragraph,

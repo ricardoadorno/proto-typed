@@ -196,7 +196,7 @@ drawer MainMenu:
     - Home | Home
     - Profile | Profile
     - Settings | Settings
-    - @link[Help](https://help.example.com)
+    - Help | https://help.example.com
 ```
 
 ---
@@ -256,7 +256,6 @@ screen TextDemo:
 | Outline           | `@outline[Text]`     | Border only                |
 | Ghost             | `@ghost[Text]`       | Transparent, hover effect  |
 | Destructive       | `@destructive[Text]` | `--destructive` background |
-| Link              | `@link[Text]`        | Text link style            |
 | Success           | `@success[Text]`     | Success/confirm style      |
 | Warning           | `@warning[Text]`     | Warning style              |
 
@@ -279,7 +278,7 @@ screen TextDemo:
 | Back              | `(-1)`           | Navigate back in history   |
 | Close overlay     | `(close)`        | Dismiss modal/drawer       |
 | JavaScript        | `(functionName)` | Placeholder for JS action  |
-| External          | Not for buttons  | Use `@link[Link](url)` instead |
+| External          | Not for buttons  | Use `[Link](url)` inline instead |
 
 #### Icon Support
 
@@ -303,7 +302,6 @@ screen ButtonDemo:
       @outline[Outline Style](Action)
       @ghost[Ghost Style](Action)
       @destructive[Delete](ConfirmDelete)
-      @link[Link Style](Action)
 
     # Button Sizes
     stack:
@@ -331,21 +329,21 @@ screen ButtonDemo:
 
 #### Link
 
-**Syntax**: `@link[label](url)`
+**Syntax**: `[label](destination)`
 
 **Properties**:
 
-- External URLs: `https://`, `http://`
-- Internal screens: `#ScreenName` (not common, use buttons)
-- Opens in new tab for external URLs
+- Inline usage inside typography tokens (`>`, `>>`, `>>>`, etc.)
+- Destination accepts screen names, modal/drawer IDs, or full URLs
+- Keeps navigation contextual without triggering button actions
 
 **Examples**:
 
 ```dsl
 screen LinkDemo:
   container:
-    > Visit our @link[website](https://example.com) for more info.
-    > Read the @link[documentation](https://docs.example.com/guide).
+    > Visit our [website](https://example.com) for more info.
+    > Read the [documentation](https://docs.example.com/guide).
 ```
 
 #### Image
@@ -685,7 +683,7 @@ screen Tasks:
 | Back        | `(-1)`         | History back       | `@[Back](-1)`               |
 | Close       | `(close)`      | Close overlay      | `@[Close](close)`           |
 | Action      | `(actionName)` | Placeholder action | `@[Submit](submitForm)`     |
-| External    | `@link[Link](url)` | External URL       | `@link[Docs](https://docs.com)` |
+| External    | `[Link](url)` | External URL (inline link) | `[Docs](https://docs.com)` |
 
 #### Navigation Flow Example
 
@@ -721,7 +719,7 @@ drawer MainMenu:
   list:
     - Home | Home
     - Profile | Profile
-    - @link[Help](https://help.example.com)
+    - Help | https://help.example.com
 ```
 
 ---
@@ -1759,7 +1757,7 @@ drawer MainMenu:
     - Dashboard | Dashboard
     - Users | Users
     - Settings | Settings
-    - @link[Help](https://help.example.com)
+    - Help | https://help.example.com
 
 screen Dashboard:
   $Header:
@@ -2744,7 +2742,6 @@ Common error messages and their solutions:
 - `ButtonOutline` - `/@outline/`
 - `ButtonGhost` - `/@ghost/`
 - `ButtonDestructive` - `/@destructive/`
-- `ButtonLink` - `/@link/`
 - `ButtonSuccess` - `/@success/`
 - `ButtonWarning` - `/@warning/`
 - `ButtonMarker` - `/@/` - Default button

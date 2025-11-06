@@ -7,7 +7,6 @@ export type NodeType =
 
   // Primitives (from primitives.tokens.ts)
   | 'Button'
-  | 'Link'
   | 'Image'
   | 'Text'
 
@@ -138,12 +137,6 @@ export interface ButtonProps extends LayoutProps {
   size?: string
 }
 
-// Define link properties
-export interface LinkProps extends LayoutProps {
-  text?: string
-  destination?: string
-}
-
 // Define image properties
 export interface ImageProps extends LayoutProps {
   src?: string
@@ -234,7 +227,6 @@ export type NodeProps =
   | LayoutProps
   | TextProps
   | ButtonProps
-  | LinkProps
   | ImageProps
   | InputProps
   | SelectProps

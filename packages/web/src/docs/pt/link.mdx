@@ -1,5 +1,5 @@
 # Link
-Links (`@link[Texto](Destino)`) criam navegação inline para telas, modais ou URLs externas sem quebrar o fluxo de leitura.
+Links (`[Texto](Destino)`) criam navegação inline para telas, modais ou URLs externas sem quebrar o fluxo de leitura.
 
 ## Quando usar
 - Referenciar telas ou recursos secundários dentro de parágrafos e listas.
@@ -13,11 +13,11 @@ Links (`@link[Texto](Destino)`) criam navegação inline para telas, modais ou U
 screen HelpCenter:
   container:
     # Central de ajuda
-    @link[documentação oficial](https://proto-typed.dev/docs) para um panorama completo.
+    > [documentação oficial](https://proto-typed.dev/docs) para um panorama completo.
 
     card:
       ## Precisa redefinir senha?
-      >> Acesse a @link[tela de recuperação](RecoverPassword) e siga os passos.
+      >> Acesse a [tela de recuperação](RecoverPassword) e siga os passos.
 ```
 </DocsCodePreview>
 Por quê: mantém a leitura fluida e oferece navegação contextual.
@@ -27,7 +27,7 @@ Por quê: mantém a leitura fluida e oferece navegação contextual.
 ```dsl
 screen Default:
   container:
-    @link[Ver detalhes](DetailScreen)
+    > [Ver detalhes](DetailScreen)
 ```
 </DocsCodePreview>
 Quando usar: apontar para telas existentes no fluxo principal.
@@ -37,7 +37,7 @@ Por quê: mantém a navegação coesa sem depender de botões.
 ```dsl
 screen Default:
   container:
-    @link[Abrir documentação](https://proto-typed.dev/docs)
+    > [Abrir documentação](https://proto-typed.dev/docs)
 ```
 </DocsCodePreview>
 Quando usar: referenciar recursos hospedados fora do produto.
@@ -55,15 +55,15 @@ drawer QuickLinks:
   container:
     # Links rápidos
     stack-tight:
-      @link[Dashboard](Dashboard)
-      @link[Equipe](Team)
-      @link[Configurações](Settings)
+      > [Dashboard](Dashboard)
+      > [Equipe](Team)
+      > [Configurações](Settings)
 
 screen HeaderDemo:
   header:
     # Proto-Typed
     row-end:
-      @link[Abrir links rápidos](QuickLinks)
+      > [Abrir links rápidos](QuickLinks)
 ```
 </DocsCodePreview>
 Por quê: agrupa atalhos sem sobrecarregar o cabeçalho com botões.
@@ -71,10 +71,8 @@ Por quê: agrupa atalhos sem sobrecarregar o cabeçalho com botões.
 ## Slots & Props
 | Nome | Tipo | Padrão | Descrição | Obrigatório |
 | --- | --- | --- | --- | --- |
-| `label` | string | — | Texto exibido entre `@link[ ]`. | Sim |
+| `label` | string | — | Texto exibido entre `[ ]`. | Sim |
 | `destino` | slug ou URL | — | Tela, modal, drawer ou endereço externo. | Sim |
-| `protocolo` | `https://`| `https://` | Determina a ação para links externos. | Não |
-| `ícone inline` | token `i-` | — | Opcional antes do texto para reforçar o contexto. | Não |
 
 ## Erros comuns (Do/Don’t)
 <DoDont
@@ -87,23 +85,23 @@ Por quê: agrupa atalhos sem sobrecarregar o cabeçalho com botões.
   do={{
     title: "Link contextual",
     code: `
-@link[Ver detalhes](DetailScreen)
+> [Ver detalhes](DetailScreen)
     `,
   }}
 >
-  Por quê: `@` executa ações; `#` referencia destinos sem comportamento de botão.
+  Por quê: botões (`@`) executam ações; links inline mantêm a navegação contextual.
 </DoDont>
 <DoDont
   dont={{
     title: "Link sem destino",
     code: `
-@link[Leia mais]()
+> [Leia mais]()
     `,
   }}
   do={{
     title: "Destino declarado",
     code: `
-@link[Leia mais](Guides)
+> [Leia mais](Guides)
     `,
   }}
 >
@@ -122,4 +120,3 @@ Por quê: agrupa atalhos sem sobrecarregar o cabeçalho com botões.
 - **Link + Card** → blocos informativos com referências adicionais.
 - **Link + List** → coleções de atalhos sem usar botões.
 - **Link + Drawer** → catálogos laterais de documentação ou suporte.
-

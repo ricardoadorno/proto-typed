@@ -28,11 +28,6 @@ export const ButtonDestructive = createToken({
   pattern: /@destructive/,
   label: '@destructive',
 })
-export const ButtonLink = createToken({
-  name: 'ButtonLink',
-  pattern: /@link/,
-  label: '@link',
-})
 export const ButtonSuccess = createToken({
   name: 'ButtonSuccess',
   pattern: /@success/,
@@ -55,7 +50,6 @@ export const ButtonMarker = createToken({
     ButtonOutline,
     ButtonGhost,
     ButtonDestructive,
-    ButtonLink,
     ButtonSuccess,
     ButtonWarning,
   ],
@@ -88,12 +82,6 @@ export const ButtonAction = createToken({
   name: 'ButtonAction',
   pattern: /\(([^)]+)\)/,
   label: '(action)',
-})
-
-export const Link = createToken({
-  name: 'Link',
-  pattern: /@link\[([^\]]+)\](?:\(([^)]+)\))?/,
-  label: '@link[text](destination)',
 })
 
 export const Image = createToken({

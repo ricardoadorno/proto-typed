@@ -137,7 +137,7 @@ Cada layout tem comportamento fixo — **sem modificadores inline**.
 @[Abrir drawer](NomeDrawer)    → Abre drawer lateral
 @[Voltar](-1)                  → Volta no histórico
 @[Fechar](close)               → Fecha modal/drawer atual
-@link[Link externo](https://...)   → URL externa
+> [Link externo](https://...)   → URL externa
 ```
 
 ### 8. Componentes reutilizáveis
@@ -363,3 +363,4 @@ Sempre mencione que o protótipo pode ser testado online: https://ricardoadorno.
 
 **Playground**: https://ricardoadorno.github.io/proto-typed/  
 **Docs completas**: https://ricardoadorno.github.io/proto-typed/docs
+

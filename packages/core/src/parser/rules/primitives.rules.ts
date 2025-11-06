@@ -1,6 +1,6 @@
 /**
  * Primitive Element Parsing Rules
- * Defines parsing rules for basic UI primitives like Buttons, Links, Images, Headings, and Text
+ * Defines parsing rules for basic UI primitives like Buttons, Images, Headings, and Text
  */
 
 import {
@@ -10,7 +10,6 @@ import {
   ButtonOutline,
   ButtonGhost,
   ButtonDestructive,
-  ButtonLink,
   ButtonSuccess,
   ButtonWarning,
   ButtonMarker,
@@ -20,7 +19,6 @@ import {
   ButtonLabel,
   ButtonAction,
   // Other primitives
-  Link,
   Image,
   Heading,
   Paragraph,
@@ -72,7 +70,6 @@ export const definePrimitiveRules: RuleDefinitionFunction = function (
       { ALT: () => this.CONSUME(ButtonOutline) },
       { ALT: () => this.CONSUME(ButtonGhost) },
       { ALT: () => this.CONSUME(ButtonDestructive) },
-      { ALT: () => this.CONSUME(ButtonLink) },
       { ALT: () => this.CONSUME(ButtonSuccess) },
       { ALT: () => this.CONSUME(ButtonWarning) },
       { ALT: () => this.CONSUME(ButtonMarker) }, // Default: primary
@@ -95,15 +92,6 @@ export const definePrimitiveRules: RuleDefinitionFunction = function (
       this.CONSUME(ButtonAction)
     })
   })
-
-  /**
-   * @rule linkElement
-   * @description Parses a link element.
-   */
-  this.RULE('linkElement', () => {
-    this.CONSUME(Link)
-  })
-
   /**
    * @rule imageElement
    * @description Parses an image element.

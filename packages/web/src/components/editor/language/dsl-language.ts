@@ -101,11 +101,11 @@ export function registerDSLLanguage(monaco: Monaco) {
         // ========================================
         // BUTTONS
         // New system: @variant-size[text](action)
-        // Variants: @primary, @secondary, @outline, @ghost, @destructive, @link, @success, @warning
+        // Variants: @primary, @secondary, @outline, @ghost, @destructive, @success, @warning
         // Sizes: -small, -icon, -large (optional, default without modifier)
         // ========================================
         [
-          /@(primary|secondary|outline|ghost|destructive|link|success|warning)(?:-(small|icon|large))?(?=\[)/,
+          /@(primary|secondary|outline|ghost|destructive|success|warning)(?:-(small|icon|large))?(?=\[)/,
           'keyword.button',
         ],
         [/@(?=\[)/, 'keyword.button'], // Default button (no variant specified)
@@ -120,7 +120,7 @@ export function registerDSLLanguage(monaco: Monaco) {
         // ========================================
         // LINKS & IMAGES
         // ========================================
-        [/@link(?=\[)/, 'keyword.link'], // @link[text](dest)
+        [/(?<!\!)\[[^\]]+\]\(([^)]+)\)/, 'keyword.link'], // [text](destination)
         [/!(?:rounded|circle)(?:-\d+x\d+)?(?=\[)/, 'keyword.image'], // !rounded[alt](url), !circle-64x64[alt](url)
         [/!(?=\[)/, 'keyword.image'], // ![alt](url)
 

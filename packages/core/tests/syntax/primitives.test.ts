@@ -1,13 +1,14 @@
 import { describe, it, expect } from 'vitest'
 import { parseAndBuildAst } from '../../src/parser/parse-and-build-ast'
 import { renderNode } from '../../src/renderer/core/node-renderer'
+import type { ProtoError } from '../../src/types/errors'
 
 /**
  * Primitives Domain Tests
  *
  * Tests syntax and rendering for primitive elements:
  * - Button: Interactive button with variants and sizes
- * - Link: Hyperlink element
+ * - Inline links rendered in text content
  * - Image: Image with optional shape modifiers
  * - Text: Typography elements (Heading, Paragraph, Small, Muted, Blockquote, Note)
  */
@@ -82,17 +83,6 @@ describe('Primitives Domain - Syntax Tests', () => {
       expect(buttonNode.props).toHaveProperty('variant', 'ghost')
     })
 
-    it('should render button with link variant', () => {
-      const dsl = `screen Test:
-  @link[Learn More](learn)`
-
-      const ast = parseAndBuildAst(dsl)
-      expect(ast.__errors).toHaveLength(0)
-
-      const buttonNode = ast.children![0].children![0]
-      expect(buttonNode.props).toHaveProperty('variant', 'link')
-    })
-
     it('should render button with size modifier', () => {
       const dsl = `screen Test:
   @secondary-large[Big Button](action)`
@@ -120,37 +110,67 @@ describe('Primitives Domain - Syntax Tests', () => {
     })
   })
 
-  describe('Link', () => {
-    it('should render a basic link', () => {
+  describe('Inline links', () => {
+    it('renders Markdown link inside paragraph text', () => {
       const dsl = `screen Test:
-  #[Visit Site](https://example.com)`
+  > Read the [documentation](Docs) for more details.`
 
       const ast = parseAndBuildAst(dsl)
       expect(ast.__errors).toHaveLength(0)
 
-      const linkNode = ast.children![0].children![0]
-      expect(linkNode.type).toBe('Link')
-      expect(linkNode.props).toHaveProperty('text', 'Visit Site')
-      expect(linkNode.props).toHaveProperty('destination', 'https://example.com')
-
-      const html = renderNode(linkNode)
+      const textNode = ast.children![0].children![0]
+      expect(textNode.type).toBe('Text')
+      const html = renderNode(textNode)
       expect(html).toContain('<a')
-      expect(html).toContain('Visit Site')
-      expect(html).toContain('</a>')
+      expect(html).toContain('href="#Docs"')
+      expect(html).toContain('documentation')
     })
 
-    it('should render a link with internal navigation', () => {
+    it('renders external links with absolute href', () => {
       const dsl = `screen Test:
-  #[Home Page](HomePage)`
+  > Visit [Proto-Typed](https://proto-typed.dev)`
 
       const ast = parseAndBuildAst(dsl)
       expect(ast.__errors).toHaveLength(0)
 
-      const linkNode = ast.children![0].children![0]
-      expect(linkNode.props).toHaveProperty('destination', 'HomePage')
+      const textNode = ast.children![0].children![0]
+      const html = renderNode(textNode)
+      expect(html).toContain('href="https://proto-typed.dev"')
+      expect(html).toContain('Proto-Typed')
+    })
 
-      const html = renderNode(linkNode)
-      expect(html).toContain('Home Page')
+    it('does not mix icon tokens inside link labels', () => {
+      const dsl = `screen Test:
+  > Mixed [i-zap Help](Support) example`
+
+      const ast = parseAndBuildAst(dsl)
+      expect(ast.__errors).toHaveLength(0)
+
+      const textNode = ast.children![0].children![0]
+      const html = renderNode(textNode)
+      const anchorStart = html.indexOf('<a')
+      expect(anchorStart).toBeGreaterThan(-1)
+      const anchorEnd = html.indexOf('</a>', anchorStart)
+      const anchorContent = html.slice(anchorStart, anchorEnd)
+      expect(anchorContent).not.toContain('<svg')
+      expect(anchorContent).toContain('i-zap Help')
+    })
+
+    it('emits a warning for deprecated @link syntax and converts output', () => {
+      const dsl = `screen Test:
+  @link[Legacy Docs](Docs)`
+
+      const ast = parseAndBuildAst(dsl)
+      expect(ast.__errors).toHaveLength(1)
+      const [warning] = ast.__errors as ProtoError[]
+      expect(warning.severity).toBe('warning')
+      expect(warning.code).toBe('PT-DSL-5001')
+
+      const textNode = ast.children![0].children![0]
+      expect(textNode.type).toBe('Text')
+      const html = renderNode(textNode)
+      expect(html).toContain('href="#Docs"')
+      expect(html).toContain('Legacy Docs')
     })
   })
 

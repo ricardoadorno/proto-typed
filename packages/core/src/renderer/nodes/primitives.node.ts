@@ -1,19 +1,13 @@
-import {
-  elementStyles,
-  getButtonClasses,
-  getButtonInlineStyles,
-  getLinkInlineStyles,
-} from './styles/styles'
+import { elementStyles, getButtonClasses, getButtonInlineStyles } from './styles/styles'
 import { NavigationMediator } from '../infrastructure/navigation-mediator'
 import {
   getLucideSvg,
   isLucideIcon,
-  renderTextWithIcons,
+  renderInlineContent,
 } from '../../utils/icon-utils'
 import type {
   AstNode,
   ButtonProps,
-  LinkProps,
   ImageProps,
   TextProps,
   TextKind,
@@ -50,36 +44,14 @@ export function renderButton(node: AstNode): string {
     }
   }
 
-  // Strategy 2: Use the global renderTextWithIcons utility
+  // Strategy 2: Use the global renderInlineContent utility
   // This handles any combination:
   // - "i-home" -> icon only
   // - "i-home Dashboard" -> icon + text
   // - "Click i-plus here" -> text + icon + text
-  const renderedContent = renderTextWithIcons(buttonText)
+  const renderedContent = renderInlineContent(buttonText)
 
   return `<button class="${buttonClasses}" style="${buttonInlineStyles}" ${buttonNavAttrs}>${renderedContent}</button>`
-}
-
-/**
- * @function renderLink
- * @description Renders a 'Link' AST node to its HTML representation.
- *
- * @param {AstNode} node - The 'Link' AST node.
- * @returns {string} The HTML string for the link.
- */
-export function renderLink(node: AstNode): string {
-  const props = node.props as LinkProps
-  const destination = props.destination || '#'
-  const linkText = props.text || ''
-
-  const linkNavAttrs =
-    NavigationMediator.generateNavigationAttributes(destination)
-  const linkHref = NavigationMediator.generateHrefAttribute(destination)
-
-  // Support inline icons in link text
-  const renderedContent = renderTextWithIcons(linkText)
-
-  return `<a class="${elementStyles.link}" style="${getLinkInlineStyles()}" ${linkHref} ${linkNavAttrs}>${renderedContent}</a>`
 }
 
 /**
@@ -165,8 +137,8 @@ export function renderText(node: AstNode): string {
   const classes = TYPO_CLASSES[resolvedKind]
   const tag = TYPO_TAG[resolvedKind] || 'p'
 
-  // Support inline icons in text content
-  const renderedContent = renderTextWithIcons(value)
+  // Support inline icons and markdown links in text content
+  const renderedContent = renderInlineContent(value)
 
   if (resolvedKind === 'note') {
     return `<${tag} class="${classes}" role="note">${renderedContent}</${tag}>`

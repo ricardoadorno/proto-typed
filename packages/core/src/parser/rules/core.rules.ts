@@ -50,7 +50,6 @@ export const defineCoreRules: RuleDefinitionFunction = function (
       { ALT: () => this.SUBRULE(this.componentInstanceElement) },
       // Primitives
       { ALT: () => this.SUBRULE(this.buttonElement) },
-      { ALT: () => this.SUBRULE(this.linkElement) },
       { ALT: () => this.SUBRULE(this.imageElement) },
       { ALT: () => this.SUBRULE(this.headingElement) },
       { ALT: () => this.SUBRULE(this.textElement) },

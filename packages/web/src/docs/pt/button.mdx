@@ -5,7 +5,7 @@ Botões disparam ações imediatas e conduzem pessoas pelos fluxos principais do
 - Destacar a ação mais importante da tela ou do card.
 - Guiar para telas subsequentes, modais ou drawers com contexto claro.
 - Confirmar envios e salvar formulários sem ambiguidade.
-- Oferecer caminhos de retorno com variantes mais leves (`@ghost`, `@link`).
+- Oferecer caminhos de retorno com variantes mais leves (ex.: `@ghost`).
 
 ## Exemplo básico
 <DocsCodePreview title="Ação principal em tela de tarefas">
@@ -76,7 +76,7 @@ Por quê: combina CTA principal e opção de saída dentro do mesmo bloco.
 ## Slots & Props
 | Nome | Tipo | Padrão | Descrição | Obrigatório |
 | --- | --- | --- | --- | --- |
-| `variante` | enum (`@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@link`, `@success`, `@warning`) | `@primary` | Define hierarquia visual da ação. | Não |
+| `variante` | enum (`@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@success`, `@warning`) | `@primary` | Define hierarquia visual da ação. | Não |
 | `tamanho` | enum (`-small`, `-icon`, `-large`) | — (sem modificador) | Ajusta altura e espaçamento do botão. | Não |
 | `label` | string | — | Texto visível do botão; pode incluir ícone. | Sim |
 | `ícone` | token `i-` | — | Ícone opcional exibido antes do label. | Não |
@@ -88,7 +88,7 @@ Por quê: combina CTA principal e opção de saída dentro do mesmo bloco.
     title: "Link usado como ação",
     code: `
 row:
-  @link[Enviar convite](ConfirmInvite)
+  > [Enviar convite](ConfirmInvite)
     `,
   }}
   do={{
@@ -99,7 +99,7 @@ row:
     `,
   }}
 >
-  Por quê: `@` executa ações no fluxo; `#` serve apenas para navegação declarativa.
+  Por quê: botões (`@`) executam ações; links inline (`[label](destino)`) mantêm a navegação dentro do texto.
 </DoDont>
 <DoDont
   dont={{
