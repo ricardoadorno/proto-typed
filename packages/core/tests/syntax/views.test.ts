@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { parseAndBuildAst } from '../../src/parser/parse-and-build-ast'
 import { renderNode } from '../../src/renderer/core/node-renderer'
 import type { AstNode } from '../../src/types/ast-node'
+import { viewsFixtures } from './fixtures/views.fixtures'
 
 /**
  * Views Domain Tests
@@ -126,6 +127,64 @@ describe('Views Domain - Syntax Tests', () => {
       expect(html).toContain('Home')
       expect(html).toContain('Settings')
       expect(html).toContain('Logout')
+    })
+  })
+
+  describe('Snapshot Tests', () => {
+    /**
+     * Helper function to test DSL parsing and rendering with snapshots.
+     * Captures both AST structure and rendered HTML output.
+     */
+    function testSnapshot(name: string, dsl: string) {
+      it(name, () => {
+        const ast = parseAndBuildAst(dsl)
+        expect(ast.__errors).toHaveLength(0)
+
+        // Snapshot the full AST structure
+        const astSnapshot = {
+          type: ast.type,
+          children: ast.children?.map((node) => ({
+            type: node.type,
+            props: node.props,
+            childrenTypes: node.children?.map((c) => c.type),
+          })),
+        }
+        expect(astSnapshot).toMatchSnapshot('AST')
+
+        // Snapshot each view node's rendered HTML output
+        ast.children?.forEach((viewNode, index) => {
+          const html = renderNode(viewNode)
+          expect(html).toMatchSnapshot(`HTML-${viewNode.type}-${index}`)
+        })
+      })
+    }
+
+    describe('Screens', () => {
+      testSnapshot('empty screen', viewsFixtures.screens.empty)
+      testSnapshot('screen with title', viewsFixtures.screens.withTitle)
+      testSnapshot('screen with content', viewsFixtures.screens.withContent)
+      testSnapshot('complex screen', viewsFixtures.screens.complex)
+      testSnapshot('multiple screens', viewsFixtures.screens.multiple)
+    })
+
+    describe('Modals', () => {
+      testSnapshot('empty modal', viewsFixtures.modals.empty)
+      testSnapshot('simple modal', viewsFixtures.modals.simple)
+      testSnapshot('confirmation modal', viewsFixtures.modals.confirmation)
+      testSnapshot('complex modal', viewsFixtures.modals.complex)
+    })
+
+    describe('Drawers', () => {
+      testSnapshot('empty drawer', viewsFixtures.drawers.empty)
+      testSnapshot('simple drawer', viewsFixtures.drawers.simple)
+      testSnapshot('navigation drawer', viewsFixtures.drawers.navigation)
+      testSnapshot('complex drawer', viewsFixtures.drawers.complex)
+    })
+
+    describe('Mixed Views', () => {
+      testSnapshot('screen and modal', viewsFixtures.mixed.screenAndModal)
+      testSnapshot('screen and drawer', viewsFixtures.mixed.screenAndDrawer)
+      testSnapshot('all view types', viewsFixtures.mixed.all)
     })
   })
 })

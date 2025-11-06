@@ -87,8 +87,6 @@
     "dev:webview": "cd webview && pnpm run dev",
     "watch": "tsc -watch -p ./",
     "watch:webview": "cd webview && pnpm run dev",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",

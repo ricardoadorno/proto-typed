@@ -1,0 +1,572 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Drawers > complex drawer > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Sidebar",
+      },
+      "type": "Drawer",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Drawers > complex drawer > HTML-Drawer-0 1`] = `
+"<div class="drawer-container hidden" id="drawer-Sidebar" data-drawer="Sidebar">
+    <div class="drawer-overlay backdrop-blur-sm absolute inset-0 bg-black/30 z-[1040]"></div>
+    <aside class="drawer absolute top-0 left-0 z-20 w-64 h-full bg-card border-r border-border shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-[1050]" style="background-color: var(--card); border-right: 1px solid var(--border);">
+      <div class="p-4">
+        <button class="modal-close absolute top-4 right-4 text-muted-foreground hover:text-foreground w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent transition-colors" style="color: var(--muted-foreground);" data-nav="Sidebar" data-nav-type="toggle">&times;</button>
+        <div class="flex flex-col gap-6" style=""><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">User Info</h1>
+<div class="flex flex-row items-center gap-6" style=""><img src="avatar.jpg" alt="Avatar" class="max-w-full h-auto rounded-full object-cover shadow-md" style="width: 48px; height: 48px" />
+<div class="flex flex-col gap-3" style=""><h2 class="scroll-m-20 text-3xl font-semibold tracking-tight text-[var(--fg-primary)]">John Doe</h2>
+<p class="text-sm leading-6 text-muted-foreground">john@example.com</p></div></div>
+<hr class="my-6 border-border" />
+<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Navigation</h1>
+<li class="mb-2" style="margin: 0 0 1rem 1rem; color: var(--foreground);">Home</li>
+<li class="mb-2" style="margin: 0 0 1rem 1rem; color: var(--foreground);">Projects</li>
+<li class="mb-2" style="margin: 0 0 1rem 1rem; color: var(--foreground);">Tasks</li>
+<hr class="my-6 border-border" />
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--destructive); color: var(--destructive-foreground);" data-nav="logout" data-nav-type="internal">Logout</button></div>
+      </div>
+    </aside>
+  </div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Drawers > empty drawer > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [],
+      "props": {
+        "name": "Menu",
+      },
+      "type": "Drawer",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Drawers > empty drawer > HTML-Drawer-0 1`] = `
+"<div class="drawer-container hidden" id="drawer-Menu" data-drawer="Menu">
+    <div class="drawer-overlay backdrop-blur-sm absolute inset-0 bg-black/30 z-[1040]"></div>
+    <aside class="drawer absolute top-0 left-0 z-20 w-64 h-full bg-card border-r border-border shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-[1050]" style="background-color: var(--card); border-right: 1px solid var(--border);">
+      <div class="p-4">
+        <button class="modal-close absolute top-4 right-4 text-muted-foreground hover:text-foreground w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent transition-colors" style="color: var(--muted-foreground);" data-nav="Menu" data-nav-type="toggle">&times;</button>
+        
+      </div>
+    </aside>
+  </div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Drawers > navigation drawer > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+        "Layout",
+      ],
+      "props": {
+        "name": "MainMenu",
+      },
+      "type": "Drawer",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Drawers > navigation drawer > HTML-Drawer-0 1`] = `
+"<div class="drawer-container hidden" id="drawer-MainMenu" data-drawer="MainMenu">
+    <div class="drawer-overlay backdrop-blur-sm absolute inset-0 bg-black/30 z-[1040]"></div>
+    <aside class="drawer absolute top-0 left-0 z-20 w-64 h-full bg-card border-r border-border shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-[1050]" style="background-color: var(--card); border-right: 1px solid var(--border);">
+      <div class="p-4">
+        <button class="modal-close absolute top-4 right-4 text-muted-foreground hover:text-foreground w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent transition-colors" style="color: var(--muted-foreground);" data-nav="MainMenu" data-nav-type="toggle">&times;</button>
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Navigation</h1>
+<div class="flex flex-col gap-3" style=""><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: transparent; color: var(--foreground);" data-nav="HomePage" data-nav-type="internal">i-home Home</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: transparent; color: var(--foreground);" data-nav="SearchPage" data-nav-type="internal">i-search Search</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: transparent; color: var(--foreground);" data-nav="ProfilePage" data-nav-type="internal">i-user Profile</button>
+<hr class="my-6 border-border" />
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: transparent; color: var(--foreground);" data-nav="SettingsPage" data-nav-type="internal">i-settings Settings</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: transparent; color: var(--foreground);" data-nav="HelpPage" data-nav-type="internal">i-help Help</button></div>
+      </div>
+    </aside>
+  </div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Drawers > simple drawer > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+        "Button",
+        "Button",
+      ],
+      "props": {
+        "name": "Navigation",
+      },
+      "type": "Drawer",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Drawers > simple drawer > HTML-Drawer-0 1`] = `
+"<div class="drawer-container hidden" id="drawer-Navigation" data-drawer="Navigation">
+    <div class="drawer-overlay backdrop-blur-sm absolute inset-0 bg-black/30 z-[1040]"></div>
+    <aside class="drawer absolute top-0 left-0 z-20 w-64 h-full bg-card border-r border-border shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-[1050]" style="background-color: var(--card); border-right: 1px solid var(--border);">
+      <div class="p-4">
+        <button class="modal-close absolute top-4 right-4 text-muted-foreground hover:text-foreground w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent transition-colors" style="color: var(--muted-foreground);" data-nav="Navigation" data-nav-type="toggle">&times;</button>
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Menu</h1>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="HomePage" data-nav-type="internal">Home</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="SettingsPage" data-nav-type="internal">Settings</button>
+      </div>
+    </aside>
+  </div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Mixed Views > all view types > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+        "Layout",
+      ],
+      "props": {
+        "name": "Main",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Text",
+        "Text",
+        "Button",
+      ],
+      "props": {
+        "name": "InfoModal",
+      },
+      "type": "Modal",
+    },
+    {
+      "childrenTypes": [
+        "Text",
+        "Button",
+        "Button",
+      ],
+      "props": {
+        "name": "NavDrawer",
+      },
+      "type": "Drawer",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Mixed Views > all view types > HTML-Drawer-2 1`] = `
+"<div class="drawer-container hidden" id="drawer-NavDrawer" data-drawer="NavDrawer">
+    <div class="drawer-overlay backdrop-blur-sm absolute inset-0 bg-black/30 z-[1040]"></div>
+    <aside class="drawer absolute top-0 left-0 z-20 w-64 h-full bg-card border-r border-border shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-[1050]" style="background-color: var(--card); border-right: 1px solid var(--border);">
+      <div class="p-4">
+        <button class="modal-close absolute top-4 right-4 text-muted-foreground hover:text-foreground w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent transition-colors" style="color: var(--muted-foreground);" data-nav="NavDrawer" data-nav-type="toggle">&times;</button>
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Navigation</h1>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="Main" data-nav-type="internal">Home</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="About" data-nav-type="internal">About</button>
+      </div>
+    </aside>
+  </div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Mixed Views > all view types > HTML-Modal-1 1`] = `
+"<div class="modal hidden" id="modal-InfoModal" data-modal="InfoModal">
+    <div class="modal-backdrop absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-20" >
+      <div class="modal-content bg-card rounded-[--radius] shadow-xl max-w-md w-full mx-4 p-6 relative border border-border" style="background-color: var(--card); border-radius: var(--radius); border: 1px solid var(--border);" >
+        <button class="modal-close absolute top-4 right-4 text-muted-foreground hover:text-foreground w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent transition-colors" style="color: var(--muted-foreground);" data-nav="InfoModal" data-nav-type="toggle">&times;</button>
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Information</h1>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Details here</p>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="InfoModal" data-nav-type="internal">Close</button>
+      </div>
+    </div>
+  </div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Mixed Views > all view types > HTML-Screen-0 1`] = `
+"<div class="screen container Main" data-screen="Main"><header class="sticky top-0 left-0 right-0 z-10 bg-background px-6  flex items-center justify-between min-h-[4rem] border-b border-border" style=""><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: transparent; color: var(--foreground);" data-nav="NavDrawer" data-nav-type="internal">Menu</button>
+<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">App Title</h1></header>
+<div class="container mx-auto max-w-4xl px-6" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Main content</p>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="InfoModal" data-nav-type="internal">Show Modal</button></div></div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Mixed Views > screen and drawer > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Button",
+        "Text",
+      ],
+      "props": {
+        "name": "Dashboard",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Text",
+        "Button",
+      ],
+      "props": {
+        "name": "MainDrawer",
+      },
+      "type": "Drawer",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Mixed Views > screen and drawer > HTML-Drawer-1 1`] = `
+"<div class="drawer-container hidden" id="drawer-MainDrawer" data-drawer="MainDrawer">
+    <div class="drawer-overlay backdrop-blur-sm absolute inset-0 bg-black/30 z-[1040]"></div>
+    <aside class="drawer absolute top-0 left-0 z-20 w-64 h-full bg-card border-r border-border shadow-lg transform -translate-x-full transition-transform duration-300 ease-in-out z-[1050]" style="background-color: var(--card); border-right: 1px solid var(--border);">
+      <div class="p-4">
+        <button class="modal-close absolute top-4 right-4 text-muted-foreground hover:text-foreground w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent transition-colors" style="color: var(--muted-foreground);" data-nav="MainDrawer" data-nav-type="toggle">&times;</button>
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Menu</h1>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="HomePage" data-nav-type="internal">Home</button>
+      </div>
+    </aside>
+  </div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Mixed Views > screen and drawer > HTML-Screen-0 1`] = `
+"<div class="screen container Dashboard" data-screen="Dashboard"><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: transparent; color: var(--foreground);" data-nav="MainDrawer" data-nav-type="internal">Menu</button>
+<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Dashboard Content</h1></div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Mixed Views > screen and modal > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+        "Button",
+      ],
+      "props": {
+        "name": "Home",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Text",
+        "Text",
+        "Button",
+      ],
+      "props": {
+        "name": "ConfirmDialog",
+      },
+      "type": "Modal",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Mixed Views > screen and modal > HTML-Modal-1 1`] = `
+"<div class="modal hidden" id="modal-ConfirmDialog" data-modal="ConfirmDialog">
+    <div class="modal-backdrop absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-20" >
+      <div class="modal-content bg-card rounded-[--radius] shadow-xl max-w-md w-full mx-4 p-6 relative border border-border" style="background-color: var(--card); border-radius: var(--radius); border: 1px solid var(--border);" >
+        <button class="modal-close absolute top-4 right-4 text-muted-foreground hover:text-foreground w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent transition-colors" style="color: var(--muted-foreground);" data-nav="ConfirmDialog" data-nav-type="toggle">&times;</button>
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Confirm</h1>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Are you sure?</p>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="confirm" data-nav-type="internal">Yes</button>
+      </div>
+    </div>
+  </div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Mixed Views > screen and modal > HTML-Screen-0 1`] = `
+"<div class="screen container Home" data-screen="Home"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Welcome</h1>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="ConfirmDialog" data-nav-type="internal">Open Dialog</button></div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Modals > complex modal > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+        "Layout",
+        "Layout",
+      ],
+      "props": {
+        "name": "UserDetails",
+      },
+      "type": "Modal",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Modals > complex modal > HTML-Modal-0 1`] = `
+"<div class="modal hidden" id="modal-UserDetails" data-modal="UserDetails">
+    <div class="modal-backdrop absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-20" >
+      <div class="modal-content bg-card rounded-[--radius] shadow-xl max-w-md w-full mx-4 p-6 relative border border-border" style="background-color: var(--card); border-radius: var(--radius); border: 1px solid var(--border);" >
+        <button class="modal-close absolute top-4 right-4 text-muted-foreground hover:text-foreground w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent transition-colors" style="color: var(--muted-foreground);" data-nav="UserDetails" data-nav-type="toggle">&times;</button>
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">User Information</h1>
+<div class="flex flex-col gap-6" style=""><label class="block text-sm font-medium" style="color: var(--foreground);">Name:
+  <input type="text" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="Enter name" />
+</label>
+<label class="block text-sm font-medium" style="color: var(--foreground);">Email:
+  <input type="email" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="your@email.com" />
+</label>
+<label class="block text-sm font-medium" style="color: var(--foreground);">Bio:
+  <textarea class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1"
+    cols="30"
+    rows="10"
+    style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="Tell us about yourself"></textarea>
+</label></div>
+<div class="flex flex-row items-center justify-between gap-4" style=""><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--secondary); color: var(--secondary-foreground);" data-nav="UserDetails" data-nav-type="internal">Cancel</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="save" data-nav-type="internal">Save</button></div>
+      </div>
+    </div>
+  </div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Modals > confirmation modal > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+        "Text",
+        "Layout",
+      ],
+      "props": {
+        "name": "DeleteConfirm",
+      },
+      "type": "Modal",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Modals > confirmation modal > HTML-Modal-0 1`] = `
+"<div class="modal hidden" id="modal-DeleteConfirm" data-modal="DeleteConfirm">
+    <div class="modal-backdrop absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-20" >
+      <div class="modal-content bg-card rounded-[--radius] shadow-xl max-w-md w-full mx-4 p-6 relative border border-border" style="background-color: var(--card); border-radius: var(--radius); border: 1px solid var(--border);" >
+        <button class="modal-close absolute top-4 right-4 text-muted-foreground hover:text-foreground w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent transition-colors" style="color: var(--muted-foreground);" data-nav="DeleteConfirm" data-nav-type="toggle">&times;</button>
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Are you sure?</h1>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">This action cannot be undone</p>
+<div class="flex flex-row items-center gap-6" style=""><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--secondary); color: var(--secondary-foreground);" data-nav="DeleteConfirm" data-nav-type="internal">Cancel</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--destructive); color: var(--destructive-foreground);" data-nav="confirm" data-nav-type="internal">Delete</button></div>
+      </div>
+    </div>
+  </div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Modals > empty modal > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [],
+      "props": {
+        "name": "Confirmation",
+      },
+      "type": "Modal",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Modals > empty modal > HTML-Modal-0 1`] = `
+"<div class="modal hidden" id="modal-Confirmation" data-modal="Confirmation">
+    <div class="modal-backdrop absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-20" >
+      <div class="modal-content bg-card rounded-[--radius] shadow-xl max-w-md w-full mx-4 p-6 relative border border-border" style="background-color: var(--card); border-radius: var(--radius); border: 1px solid var(--border);" >
+        <button class="modal-close absolute top-4 right-4 text-muted-foreground hover:text-foreground w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent transition-colors" style="color: var(--muted-foreground);" data-nav="Confirmation" data-nav-type="toggle">&times;</button>
+        
+      </div>
+    </div>
+  </div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Modals > simple modal > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+        "Text",
+        "Button",
+      ],
+      "props": {
+        "name": "Alert",
+      },
+      "type": "Modal",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Modals > simple modal > HTML-Modal-0 1`] = `
+"<div class="modal hidden" id="modal-Alert" data-modal="Alert">
+    <div class="modal-backdrop absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center z-20" >
+      <div class="modal-content bg-card rounded-[--radius] shadow-xl max-w-md w-full mx-4 p-6 relative border border-border" style="background-color: var(--card); border-radius: var(--radius); border: 1px solid var(--border);" >
+        <button class="modal-close absolute top-4 right-4 text-muted-foreground hover:text-foreground w-8 h-8 flex items-center justify-center rounded-full hover:bg-accent transition-colors" style="color: var(--muted-foreground);" data-nav="Alert" data-nav-type="toggle">&times;</button>
+        <h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Alert</h1>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">This is an alert message</p>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="close" data-nav-type="internal">OK</button>
+      </div>
+    </div>
+  </div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Screens > complex screen > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+        "Layout",
+        "Navigator",
+      ],
+      "props": {
+        "name": "Home",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Screens > complex screen > HTML-Screen-0 1`] = `
+"<div class="screen container Home" data-screen="Home"><header class="sticky top-0 left-0 right-0 z-10 bg-background px-6  flex items-center justify-between min-h-[4rem] border-b border-border" style=""><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">My App</h1></header>
+<div class="container mx-auto max-w-4xl px-6" style=""><h2 class="scroll-m-20 text-3xl font-semibold tracking-tight text-[var(--fg-primary)]">Welcome</h2>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Get started with our application</p>
+<div class="flex flex-row items-center gap-6" style=""><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="signup" data-nav-type="internal">Sign Up</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--secondary); color: var(--secondary-foreground);" data-nav="learn" data-nav-type="internal">Learn More</button></div></div>
+
+    <nav class="sticky bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border flex flex-row justify-around py-2 z-20 w-full shadow-2xl" style="background-color: var(--background); border-top-color: var(--border);">
+      
+      <button class="flex flex-col items-center justify-center py-2 px-3 text-xs font-medium text-muted-foreground hover:text-primary active:text-primary/80 transition-all duration-200 rounded-[--radius] hover:bg-accent min-w-[60px]" style="background-color: var(--background); border-top-color: var(--border);" data-nav="Home" data-nav-type="internal">
+        <div class="text-xs font-medium" style="margin-top: 0;">home</div>
+      </button>
+    
+      <button class="flex flex-col items-center justify-center py-2 px-3 text-xs font-medium text-muted-foreground hover:text-primary active:text-primary/80 transition-all duration-200 rounded-[--radius] hover:bg-accent min-w-[60px]" style="background-color: var(--background); border-top-color: var(--border);" data-nav="Search" data-nav-type="internal">
+        <div class="text-xs font-medium" style="margin-top: 0;">search</div>
+      </button>
+    
+      <button class="flex flex-col items-center justify-center py-2 px-3 text-xs font-medium text-muted-foreground hover:text-primary active:text-primary/80 transition-all duration-200 rounded-[--radius] hover:bg-accent min-w-[60px]" style="background-color: var(--background); border-top-color: var(--border);" data-nav="Profile" data-nav-type="internal">
+        <div class="text-xs font-medium" style="margin-top: 0;">profile</div>
+      </button>
+    
+    </nav></div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Screens > empty screen > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [],
+      "props": {
+        "name": "Home",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Screens > empty screen > HTML-Screen-0 1`] = `"<div class="screen container Home" data-screen="Home"></div>"`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Screens > multiple screens > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "First",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Second",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Screens > multiple screens > HTML-Screen-0 1`] = `"<div class="screen container First" data-screen="First"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">First Screen</h1></div>"`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Screens > multiple screens > HTML-Screen-1 1`] = `"<div class="screen container Second" data-screen="Second"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Second Screen</h1></div>"`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Screens > screen with content > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+        "Text",
+        "Button",
+      ],
+      "props": {
+        "name": "Profile",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Screens > screen with content > HTML-Screen-0 1`] = `
+"<div class="screen container Profile" data-screen="Profile"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">User Profile</h1>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">This is the profile page</p>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="edit" data-nav-type="internal">Edit</button></div>"
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Screens > screen with title > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Dashboard",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Views Domain - Syntax Tests > Snapshot Tests > Screens > screen with title > HTML-Screen-0 1`] = `"<div class="screen container Dashboard" data-screen="Dashboard"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Welcome</h1></div>"`;

@@ -1,0 +1,654 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Buttons > all button variants > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Buttons > all button variants > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="flex flex-col gap-6" style=""><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="action" data-nav-type="internal">Primary</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--secondary); color: var(--secondary-foreground);" data-nav="action" data-nav-type="internal">Secondary</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--background); border: 1px solid var(--input); color: var(--foreground);" data-nav="action" data-nav-type="internal">Outline</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: transparent; color: var(--foreground);" data-nav="action" data-nav-type="internal">Ghost</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--destructive); color: var(--destructive-foreground);" data-nav="action" data-nav-type="internal">Destructive</button></div></div>"
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Buttons > basic button > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Button",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Buttons > basic button > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="action" data-nav-type="internal">Click Me</button></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Buttons > buttons with sizes > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Button",
+        "Button",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Buttons > buttons with sizes > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-12 px-6 text-base" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--secondary); color: var(--secondary-foreground);" data-nav="action" data-nav-type="internal">Big Button</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-9 px-4 text-xs" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="action" data-nav-type="internal">Tiny Button</button></div>"
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Buttons > destructive button > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Button",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Buttons > destructive button > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--destructive); color: var(--destructive-foreground);" data-nav="delete" data-nav-type="internal">Delete</button></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Buttons > ghost button > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Button",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Buttons > ghost button > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: transparent; color: var(--foreground);" data-nav="menu" data-nav-type="internal">Menu</button></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Buttons > navigation buttons > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Button",
+        "Button",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Buttons > navigation buttons > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="SettingsScreen" data-nav-type="internal">Go to Settings</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="HomePage" data-nav-type="internal">Go Home</button></div>"
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Buttons > outline button > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Button",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Buttons > outline button > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--background); border: 1px solid var(--input); color: var(--foreground);" data-nav="cancel" data-nav-type="internal">Cancel</button></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Buttons > secondary button > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Button",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Buttons > secondary button > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--secondary); color: var(--secondary-foreground);" data-nav="submit" data-nav-type="internal">Submit</button></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Headings > h1 heading > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Headings > h1 heading > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Main Title</h1></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Headings > h2 heading > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Headings > h2 heading > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><h2 class="scroll-m-20 text-3xl font-semibold tracking-tight text-[var(--fg-primary)]">Section Title</h2></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Headings > h3 heading > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Headings > h3 heading > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><h3 class="scroll-m-20 text-2xl font-semibold tracking-tight text-[var(--fg-primary)]">Subsection</h3></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Headings > h4 heading > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Headings > h4 heading > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><h4 class="scroll-m-20 text-xl font-semibold tracking-tight text-[var(--fg-primary)]">Small Heading</h4></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Headings > heading hierarchy > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+        "Text",
+        "Text",
+        "Text",
+        "Text",
+        "Text",
+        "Text",
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Headings > heading hierarchy > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Page Title</h1>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Introduction paragraph</p>
+<h2 class="scroll-m-20 text-3xl font-semibold tracking-tight text-[var(--fg-primary)]">First Section</h2>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Section content</p>
+<h3 class="scroll-m-20 text-2xl font-semibold tracking-tight text-[var(--fg-primary)]">Subsection</h3>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Subsection content</p>
+<h4 class="scroll-m-20 text-xl font-semibold tracking-tight text-[var(--fg-primary)]">Detail</h4>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Detail content</p></div>"
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Icons > basic icons > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+        "Text",
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Icons > basic icons > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><p class="text-base leading-7 text-[var(--fg-secondary)]">i-home Home Icon</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">i-user User Icon</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">i-settings Settings Icon</p></div>"
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Icons > icons in text > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Icons > icons in text > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><p class="text-base leading-7 text-[var(--fg-secondary)]">Click i-arrow-right to continue</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Settings i-gear available in menu</p></div>"
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Icons > icons with sizes > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+        "Text",
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Icons > icons with sizes > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><p class="text-base leading-7 text-[var(--fg-secondary)]">i-16-home Small Home</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">i-24-user Medium User</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">i-32-settings Large Settings</p></div>"
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Images > basic image > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Image",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Images > basic image > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><img src="logo.png" alt="Logo" class="max-w-full h-auto" /></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Images > circle image > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Image",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Images > circle image > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><img src="profile.jpg" alt="Profile" class="max-w-full h-auto rounded-full object-cover shadow-md" style="aspect-ratio: 1 / 1" /></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Images > images with dimensions > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Image",
+        "Image",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Images > images with dimensions > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><img src="user.jpg" alt="Avatar" class="max-w-full h-auto rounded-full object-cover shadow-md" style="width: 64px; height: 64px" />
+<img src="banner.png" alt="Banner" class="max-w-full h-auto rounded-[--radius] shadow-md" style="width: 200px; height: 150px" /></div>"
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Images > multiple images > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Images > multiple images > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="flex flex-col gap-6" style=""><img src="header.jpg" alt="Header" class="max-w-full h-auto" />
+<img src="thumb.png" alt="Thumbnail" class="max-w-full h-auto rounded-[--radius] shadow-md" />
+<img src="icon.png" alt="Icon" class="max-w-full h-auto rounded-full object-cover shadow-md" style="width: 48px; height: 48px" /></div></div>"
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Images > rounded image > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Image",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Images > rounded image > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><img src="avatar.jpg" alt="Avatar" class="max-w-full h-auto rounded-[--radius] shadow-md" /></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Inline Links > external link > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Inline Links > external link > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><p class="text-base leading-7 text-[var(--fg-secondary)]">Visit <a class="underline transition-colors duration-200" style="color: var(--primary);" href="https://proto-typed.dev" data-nav="https://proto-typed.dev" data-nav-type="external">Proto-Typed</a> website.</p></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Inline Links > internal link > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Inline Links > internal link > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><p class="text-base leading-7 text-[var(--fg-secondary)]">Read the <a class="underline transition-colors duration-200" style="color: var(--primary);" href="#Docs" data-nav="Docs" data-nav-type="internal">documentation</a> for more details.</p></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Inline Links > link with icon > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Inline Links > link with icon > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><p class="text-base leading-7 text-[var(--fg-secondary)]">Mixed <a class="underline transition-colors duration-200" style="color: var(--primary);" href="#Support" data-nav="Support" data-nav-type="internal">i-zap Help</a> example</p></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Inline Links > multiple links > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Inline Links > multiple links > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><p class="text-base leading-7 text-[var(--fg-secondary)]">Check <a class="underline transition-colors duration-200" style="color: var(--primary);" href="#Guides" data-nav="Guides" data-nav-type="internal">guides</a> and <a class="underline transition-colors duration-200" style="color: var(--primary);" href="#Examples" data-nav="Examples" data-nav-type="internal">examples</a> or visit <a class="underline transition-colors duration-200" style="color: var(--primary);" href="https://example.com" data-nav="https://example.com" data-nav-type="external">site</a>.</p></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Text Variants > blockquote > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Text Variants > blockquote > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><blockquote class="mt-6 border-l-2 pl-6 italic text-muted-foreground">This is a quote</blockquote></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Text Variants > mixed text styles > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+        "Text",
+        "Text",
+        "Text",
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Text Variants > mixed text styles > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><p class="text-base leading-7 text-[var(--fg-secondary)]">Regular paragraph</p>
+<p class="text-sm leading-6 text-[var(--fg-secondary)]">Small text for details</p>
+<p class="text-sm leading-6 text-muted-foreground">Muted secondary info</p>
+<blockquote class="mt-6 border-l-2 pl-6 italic text-muted-foreground">"A memorable quote"</blockquote>
+<div class="text-sm text-[var(--fg-secondary)] rounded-lg border border-[var(--border-muted)] bg-[var(--bg-raised)] px-3 py-2" role="note">Don't forget this important point</div></div>"
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Text Variants > muted text > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Text Variants > muted text > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><p class="text-sm leading-6 text-muted-foreground">Muted text here</p></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Text Variants > note > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Text Variants > note > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><div class="text-sm text-[var(--fg-secondary)] rounded-lg border border-[var(--border-muted)] bg-[var(--bg-raised)] px-3 py-2" role="note">Important note</div></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Text Variants > paragraph > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Text Variants > paragraph > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><p class="text-base leading-7 text-[var(--fg-secondary)]">This is a paragraph</p></div>"`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Text Variants > small text > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Primitives Domain - Syntax Tests > Snapshot Tests > Text Variants > small text > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><p class="text-sm leading-6 text-[var(--fg-secondary)]">Small text here</p></div>"`;

@@ -1,0 +1,929 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Cards > basic card > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Cards > basic card > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Card Title</h1>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Card content</p></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Cards > compact card > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Cards > compact card > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><div class="border rounded-lg p-4" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><p class="text-base leading-7 text-[var(--fg-secondary)]">Compact card</p></div></div>"`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Cards > feature card > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Cards > feature card > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="border-2 rounded-xl p-8 shadow-lg" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Feature Card</h1>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Highlighted content</p></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Cards > multiple cards > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Cards > multiple cards > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="flex flex-col gap-6" style=""><div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Card 1</h1>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Content 1</p></div>
+<div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Card 2</h1>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Content 2</p></div>
+<div class="border-2 rounded-xl p-8 shadow-lg" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Featured</h1>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Special content</p></div></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Containers > basic container > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Containers > basic container > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><div class="container mx-auto max-w-4xl px-6" style=""><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Content</h1></div></div>"`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Containers > full container > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Containers > full container > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><div class="mx-auto w-full px-4 sm:px-8" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Full width content</p></div></div>"`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Containers > narrow container > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Containers > narrow container > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><div class="container mx-auto max-w-2xl px-6" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Narrow content for reading</p></div></div>"`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Containers > nested containers > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Containers > nested containers > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="container mx-auto max-w-4xl px-6" style=""><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Main Container</h1>
+<div class="container mx-auto max-w-2xl px-6" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Nested narrow section</p></div></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Containers > wide container > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Containers > wide container > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><div class="container mx-auto max-w-6xl px-8" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Wide content for dashboards</p></div></div>"`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Grids > 2-column grid > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Grids > 2-column grid > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="grid grid-cols-1 md:grid-cols-2 gap-6" style=""><div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Card 1</h1></div>
+<div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Card 2</h1></div></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Grids > 3-column grid > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Grids > 3-column grid > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="grid grid-cols-1 md:grid-cols-3 gap-6" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Col 1</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Col 2</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Col 3</p></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Grids > 4-column grid > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Grids > 4-column grid > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="grid grid-cols-1 lg:grid-cols-4 gap-6" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Col 1</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Col 2</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Col 3</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Col 4</p></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Grids > basic grid > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Grids > basic grid > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="grid grid-cols-1 gap-6" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Item 1</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Item 2</p></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Grids > nested grid > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Grids > nested grid > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="grid grid-cols-1 md:grid-cols-2 gap-6" style=""><div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><div class="flex flex-col gap-6" style=""><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Left Card</h1>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Content</p></div></div>
+<div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><div class="flex flex-col gap-6" style=""><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Right Card</h1>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Content</p></div></div></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Grids > responsive grid > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Grids > responsive grid > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-6" style=""><div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Auto 1</h1></div>
+<div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Auto 2</h1></div>
+<div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Auto 3</h1></div></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Layers > absolute layer > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Layers > absolute layer > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><div class="absolute inset-0" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Overlay content</p></div></div>"`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Layers > fixed layer > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Layers > fixed layer > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><div class="fixed inset-0" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Fixed position</p></div></div>"`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Layers > relative layer > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Layers > relative layer > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><div class="relative" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Content</p></div></div>"`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Layers > sticky layer > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Layers > sticky layer > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><div class="sticky top-0" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Sticky header</p></div></div>"`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Lists > nested list > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "UnorderedListItem",
+        "UnorderedListItem",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Lists > nested list > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><li class="mb-2" style="margin: 0 0 1rem 1rem; color: var(--foreground);">Item with content</li>
+<li class="mb-2" style="margin: 0 0 1rem 1rem; color: var(--foreground);">Item with button</li></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Lists > simple list > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "UnorderedListItem",
+        "UnorderedListItem",
+        "UnorderedListItem",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Lists > simple list > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><li class="mb-2" style="margin: 0 0 1rem 1rem; color: var(--foreground);">First item</li>
+<li class="mb-2" style="margin: 0 0 1rem 1rem; color: var(--foreground);">Second item</li>
+<li class="mb-2" style="margin: 0 0 1rem 1rem; color: var(--foreground);">Third item</li></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Lists > standalone items > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "UnorderedListItem",
+        "UnorderedListItem",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Lists > standalone items > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><li class="mb-2" style="margin: 0 0 1rem 1rem; color: var(--foreground);">Single item</li>
+<li class="mb-2" style="margin: 0 0 1rem 1rem; color: var(--foreground);">Another item</li></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Rows > basic row > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Rows > basic row > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="flex flex-row items-center gap-6" style=""><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="action1" data-nav-type="internal">Button 1</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="action2" data-nav-type="internal">Button 2</button></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Rows > centered row > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Rows > centered row > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><div class="flex flex-row items-center justify-center gap-4" style=""><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="action" data-nav-type="internal">Centered</button></div></div>"`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Rows > complex row layout > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Rows > complex row layout > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="flex flex-row items-center justify-between gap-4" style=""><div class="flex flex-col gap-3" style=""><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Title</h1>
+<p class="text-sm leading-6 text-[var(--fg-secondary)]">Subtitle</p></div>
+<div class="flex flex-row items-center gap-6" style=""><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--secondary); color: var(--secondary-foreground);" data-nav="cancel" data-nav-type="internal">Cancel</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="confirm" data-nav-type="internal">Confirm</button></div></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Rows > end-aligned row > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Rows > end-aligned row > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><div class="flex flex-row items-center justify-end gap-4" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">End aligned</p></div></div>"`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Rows > space-between row > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Rows > space-between row > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="flex flex-row items-center justify-between gap-4" style=""><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="left" data-nav-type="internal">Left</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="right" data-nav-type="internal">Right</button></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Rows > start-aligned row > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Rows > start-aligned row > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><div class="flex flex-row items-start gap-4" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Start aligned</p></div></div>"`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Scroll > auto scroll > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Scroll > auto scroll > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><div class="overflow-auto" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Scrollable content</p></div></div>"`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Scroll > horizontal scroll > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Scroll > horizontal scroll > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><div class="overflow-x-auto" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Horizontal scroll</p></div></div>"`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Scroll > vertical scroll > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Scroll > vertical scroll > HTML 1`] = `"<div class="screen container Test" data-screen="Test"><div class="overflow-y-auto" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Vertical scroll</p></div></div>"`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > fab > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Fab",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > fab > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test">
+    <div class="sticky bottom-20 mr-5 z-20 flex flex-col items-end justify-end p-0  ml-auto w-auto">
+      <button class="absolute w-14 h-14 rounded-full bg-primary shadow-2xl flex items-center justify-center text-xl font-bold text-primary-foreground z-20" style="background-color: var(--primary); color: var(--primary-foreground);" >
+        plus
+      </button>
+    </div>
+  </div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > fab with icon > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Fab",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > fab with icon > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test">
+    <div class="sticky bottom-20 mr-5 z-20 flex flex-col items-end justify-end p-0  ml-auto w-auto">
+      <button class="absolute w-14 h-14 rounded-full bg-primary shadow-2xl flex items-center justify-center text-xl font-bold text-primary-foreground z-20" style="background-color: var(--primary); color: var(--primary-foreground);" >
+        plus
+      </button>
+    </div>
+  </div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > header > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > header > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><header class="sticky top-0 left-0 right-0 z-10 bg-background px-6  flex items-center justify-between min-h-[4rem] border-b border-border" style=""><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">App Title</h1>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Subtitle</p></header></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > navigator > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Navigator",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > navigator > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test">
+    <nav class="sticky bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border flex flex-row justify-around py-2 z-20 w-full shadow-2xl" style="background-color: var(--background); border-top-color: var(--border);">
+      
+      <button class="flex flex-col items-center justify-center py-2 px-3 text-xs font-medium text-muted-foreground hover:text-primary active:text-primary/80 transition-all duration-200 rounded-[--radius] hover:bg-accent min-w-[60px]" style="background-color: var(--background); border-top-color: var(--border);" data-nav="Home" data-nav-type="internal">
+        <div class="text-xs font-medium" style="margin-top: 0;">home</div>
+      </button>
+    
+      <button class="flex flex-col items-center justify-center py-2 px-3 text-xs font-medium text-muted-foreground hover:text-primary active:text-primary/80 transition-all duration-200 rounded-[--radius] hover:bg-accent min-w-[60px]" style="background-color: var(--background); border-top-color: var(--border);" data-nav="Search" data-nav-type="internal">
+        <div class="text-xs font-medium" style="margin-top: 0;">search</div>
+      </button>
+    
+      <button class="flex flex-col items-center justify-center py-2 px-3 text-xs font-medium text-muted-foreground hover:text-primary active:text-primary/80 transition-all duration-200 rounded-[--radius] hover:bg-accent min-w-[60px]" style="background-color: var(--background); border-top-color: var(--border);" data-nav="Profile" data-nav-type="internal">
+        <div class="text-xs font-medium" style="margin-top: 0;">profile</div>
+      </button>
+    
+    </nav></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > separator > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+        "Separator",
+        "Text",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > separator > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><p class="text-base leading-7 text-[var(--fg-secondary)]">Before</p>
+<hr class="my-6 border-border" />
+<p class="text-base leading-7 text-[var(--fg-secondary)]">After</p></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > sidebar > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > sidebar > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><nav class="h-full fixed border-r p-4 pt-8" style="background-color: var(--background); border-color: var(--border);"><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="page1" data-nav-type="internal">Nav Item 1</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="page2" data-nav-type="internal">Nav Item 2</button></nav></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Stacks > basic stack > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Stacks > basic stack > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="flex flex-col gap-6" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Item 1</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Item 2</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Item 3</p></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Stacks > loose stack > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Stacks > loose stack > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="flex flex-col gap-8" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Spaced item 1</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Spaced item 2</p></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Stacks > nested stacks > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Stacks > nested stacks > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="flex flex-col gap-6" style=""><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Section 1</h1>
+<div class="flex flex-col gap-3" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Detail A</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Detail B</p></div>
+<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Section 2</h1>
+<div class="flex flex-col gap-3" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Detail C</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Detail D</p></div></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Stacks > stack with no gap > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Stacks > stack with no gap > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="flex flex-col gap-0" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">No gap item 1</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">No gap item 2</p></div></div>"
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Stacks > tight stack > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Stacks > tight stack > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="flex flex-col gap-3" style=""><p class="text-base leading-7 text-[var(--fg-secondary)]">Compact item 1</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Compact item 2</p></div></div>"
+`;

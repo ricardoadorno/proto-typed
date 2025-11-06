@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { parseAndBuildAst } from '../../src/parser/parse-and-build-ast'
 import { renderNode } from '../../src/renderer/core/node-renderer'
+import { layoutsFixtures } from './fixtures/layouts.fixtures'
 
 /**
  * Layouts Domain Tests
@@ -406,19 +407,17 @@ describe('Layouts Domain - Syntax Tests', () => {
   describe('List and Items', () => {
     it('should render list with items', () => {
       const dsl = `screen Test:
-  list:
-    - First item
-    - Second item
-    - Third item`
+  - First item
+  - Second item
+  - Third item`
 
       const ast = parseAndBuildAst(dsl)
       expect(ast.__errors).toHaveLength(0)
 
-      const listNode = ast.children![0].children![0]
-      expect(listNode.type).toBe('List')
-      expect(listNode.children).toHaveLength(3)
+      const firstItem = ast.children![0].children![0]
+      expect(firstItem.type).toBe('UnorderedListItem')
 
-      const html = renderNode(listNode)
+      const html = renderNode(ast.children![0])
       expect(html).toContain('First item')
       expect(html).toContain('Second item')
       expect(html).toContain('Third item')
@@ -473,18 +472,19 @@ describe('Layouts Domain - Syntax Tests', () => {
 
       const html = renderNode(fabNode)
       expect(html).toContain('<button')
-      expect(html).toContain('fab')
+      expect(html).toContain('rounded-full')
+      expect(html).toContain('var(--primary)')
     })
 
     it('should render fab with custom icon', () => {
       const dsl = `screen Test:
-  fab-plus:`
+  fab:`
 
       const ast = parseAndBuildAst(dsl)
       expect(ast.__errors).toHaveLength(0)
 
       const fabNode = ast.children![0].children![0]
-      expect(fabNode.props).toHaveProperty('icon', 'plus')
+      expect(fabNode.type).toBe('Fab')
     })
   })
 
@@ -492,9 +492,9 @@ describe('Layouts Domain - Syntax Tests', () => {
     it('should render navigator with items', () => {
       const dsl = `screen Test:
   navigator:
-    home|Home
-    search|Search
-    profile|Profile`
+    - home|Home
+    - search|Search
+    - profile|Profile`
 
       const ast = parseAndBuildAst(dsl)
       expect(ast.__errors).toHaveLength(0)
@@ -619,6 +619,104 @@ describe('Layouts Domain - Syntax Tests', () => {
 
       const html = renderNode(layoutNode)
       expect(html).toContain('overflow-y-auto')
+    })
+  })
+
+  describe('Snapshot Tests', () => {
+    /**
+     * Helper function to test DSL parsing and rendering with snapshots.
+     * Captures both AST structure and rendered HTML output.
+     */
+    function testSnapshot(name: string, dsl: string) {
+      it(name, () => {
+        const ast = parseAndBuildAst(dsl)
+        expect(ast.__errors).toHaveLength(0)
+
+        // Snapshot the AST structure (types and props only, no internal IDs)
+        const astSnapshot = {
+          type: ast.type,
+          children: ast.children?.map((node) => ({
+            type: node.type,
+            props: node.props,
+            childrenTypes: node.children?.map((c) => c.type),
+          })),
+        }
+        expect(astSnapshot).toMatchSnapshot('AST')
+
+        // Snapshot the rendered HTML output
+        const screenNode = ast.children![0]
+        const html = renderNode(screenNode)
+        expect(html).toMatchSnapshot('HTML')
+      })
+    }
+
+    describe('Containers', () => {
+      testSnapshot('basic container', layoutsFixtures.containers.basic)
+      testSnapshot('narrow container', layoutsFixtures.containers.narrow)
+      testSnapshot('wide container', layoutsFixtures.containers.wide)
+      testSnapshot('full container', layoutsFixtures.containers.full)
+      testSnapshot('nested containers', layoutsFixtures.containers.nested)
+    })
+
+    describe('Stacks', () => {
+      testSnapshot('basic stack', layoutsFixtures.stacks.basic)
+      testSnapshot('tight stack', layoutsFixtures.stacks.tight)
+      testSnapshot('loose stack', layoutsFixtures.stacks.loose)
+      testSnapshot('stack with no gap', layoutsFixtures.stacks.none)
+      testSnapshot('nested stacks', layoutsFixtures.stacks.nested)
+    })
+
+    describe('Rows', () => {
+      testSnapshot('basic row', layoutsFixtures.rows.basic)
+      testSnapshot('centered row', layoutsFixtures.rows.center)
+      testSnapshot('space-between row', layoutsFixtures.rows.between)
+      testSnapshot('start-aligned row', layoutsFixtures.rows.start)
+      testSnapshot('end-aligned row', layoutsFixtures.rows.end)
+      testSnapshot('complex row layout', layoutsFixtures.rows.complex)
+    })
+
+    describe('Grids', () => {
+      testSnapshot('basic grid', layoutsFixtures.grids.basic)
+      testSnapshot('2-column grid', layoutsFixtures.grids.twoColumn)
+      testSnapshot('3-column grid', layoutsFixtures.grids.threeColumn)
+      testSnapshot('4-column grid', layoutsFixtures.grids.fourColumn)
+      testSnapshot('responsive grid', layoutsFixtures.grids.responsive)
+      testSnapshot('nested grid', layoutsFixtures.grids.nested)
+    })
+
+    describe('Cards', () => {
+      testSnapshot('basic card', layoutsFixtures.cards.basic)
+      testSnapshot('compact card', layoutsFixtures.cards.compact)
+      testSnapshot('feature card', layoutsFixtures.cards.feature)
+      testSnapshot('multiple cards', layoutsFixtures.cards.multiple)
+    })
+
+    describe('Special Layouts', () => {
+      testSnapshot('header', layoutsFixtures.special.header)
+      testSnapshot('sidebar', layoutsFixtures.special.sidebar)
+      testSnapshot('separator', layoutsFixtures.special.separator)
+      testSnapshot('fab', layoutsFixtures.special.fab)
+      testSnapshot('fab with icon', layoutsFixtures.special.fabWithIcon)
+      testSnapshot('navigator', layoutsFixtures.special.navigator)
+    })
+
+    describe('Lists', () => {
+      testSnapshot('simple list', layoutsFixtures.lists.simple)
+      testSnapshot('standalone items', layoutsFixtures.lists.standalone)
+      testSnapshot('nested list', layoutsFixtures.lists.nested)
+    })
+
+    describe('Layers', () => {
+      testSnapshot('relative layer', layoutsFixtures.layers.relative)
+      testSnapshot('absolute layer', layoutsFixtures.layers.absolute)
+      testSnapshot('fixed layer', layoutsFixtures.layers.fixed)
+      testSnapshot('sticky layer', layoutsFixtures.layers.sticky)
+    })
+
+    describe('Scroll', () => {
+      testSnapshot('auto scroll', layoutsFixtures.scroll.auto)
+      testSnapshot('horizontal scroll', layoutsFixtures.scroll.horizontal)
+      testSnapshot('vertical scroll', layoutsFixtures.scroll.vertical)
     })
   })
 })

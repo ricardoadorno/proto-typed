@@ -13,7 +13,6 @@
   },
   "scripts": {
     "build": "tsc",
-    "lint": "eslint . --fix",
     "format": "prettier --write .",
     "test": "vitest"
   },

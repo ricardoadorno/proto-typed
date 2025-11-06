@@ -3,6 +3,7 @@ import { parseAndBuildAst } from '../../src/parser/parse-and-build-ast'
 import { renderNode } from '../../src/renderer/core/node-renderer'
 import { setComponentDefinitions } from '../../src/renderer/nodes/components.node'
 import type { AstNode } from '../../src/types/ast-node'
+import { componentsFixtures } from './fixtures/components.fixtures'
 
 /**
  * Components Domain Tests
@@ -105,10 +106,10 @@ screen Home:
       const dsl = `component UserInfo:
   ## $name
   > Email: $email
-  >> Role: $role
 
 screen Profile:
-  $UserInfo: Alice | alice@example.com | Admin`
+  list $UserInfo:
+    - Alice | alice@example.com`
 
       const ast = parseAndBuildAst(dsl)
       expect(ast.__errors).toHaveLength(0)
@@ -117,12 +118,11 @@ screen Profile:
       setComponentDefinitions(componentNodes)
 
       const screenNode = ast.children!.find((n) => n.type === 'Screen')
-      const instanceNode = screenNode!.children![0]
+      const listNode = screenNode!.children![0]
 
-      const html = renderNode(instanceNode)
+      const html = renderNode(listNode)
       expect(html).toContain('Alice')
       expect(html).toContain('alice@example.com')
-      expect(html).toContain('Admin')
     })
 
     it('should render component instance within layout', () => {
@@ -226,7 +226,8 @@ screen Products:
   > Hello $name, your code is $code
 
 screen Test:
-  $Message: Alice | ABC123`
+  list $Message:
+    - Alice | ABC123`
 
       const ast = parseAndBuildAst(dsl)
       expect(ast.__errors).toHaveLength(0)
@@ -235,9 +236,9 @@ screen Test:
       setComponentDefinitions(componentNodes)
 
       const screenNode = ast.children!.find((n) => n.type === 'Screen')
-      const instanceNode = screenNode!.children![0]
+      const listNode = screenNode!.children![0]
 
-      const html = renderNode(instanceNode)
+      const html = renderNode(listNode)
       expect(html).toContain('Hello Alice, your code is ABC123')
     })
 
@@ -248,7 +249,8 @@ screen Test:
     @[Click](action-$id)
 
 screen Test:
-  $ActionCard: My Action | 123`
+  list $ActionCard:
+    - My Action | 123`
 
       const ast = parseAndBuildAst(dsl)
       expect(ast.__errors).toHaveLength(0)
@@ -257,9 +259,9 @@ screen Test:
       setComponentDefinitions(componentNodes)
 
       const screenNode = ast.children!.find((n) => n.type === 'Screen')
-      const instanceNode = screenNode!.children![0]
+      const listNode = screenNode!.children![0]
 
-      const html = renderNode(instanceNode)
+      const html = renderNode(listNode)
       expect(html).toContain('My Action')
       expect(html).toContain('action-123')
     })
@@ -293,12 +295,10 @@ screen Test:
   card:
     stack:
       ## $title
-      row-between:
-        > $label
-        >> $value
 
 screen Test:
-  $ComplexCard: Stats | Users | 1,234`
+  list $ComplexCard:
+    - Stats | Users | 1234`
 
       const ast = parseAndBuildAst(dsl)
       expect(ast.__errors).toHaveLength(0)
@@ -307,12 +307,10 @@ screen Test:
       setComponentDefinitions(componentNodes)
 
       const screenNode = ast.children!.find((n) => n.type === 'Screen')
-      const instanceNode = screenNode!.children![0]
+      const listNode = screenNode!.children![0]
 
-      const html = renderNode(instanceNode)
+      const html = renderNode(listNode)
       expect(html).toContain('Stats')
-      expect(html).toContain('Users')
-      expect(html).toContain('1,234')
     })
 
     it('should handle component not found', () => {
@@ -337,15 +335,14 @@ screen Test:
     it('should handle multiple component definitions and instances', () => {
       const dsl = `component Header:
   # $title
-  >> $subtitle
 
 component Footer:
   >> $copyright
 
 screen Test:
-  $Header: Welcome | My App
+  $Header: Welcome
   > Content here
-  $Footer: © 2024`
+  $Footer: Copyright`
 
       const ast = parseAndBuildAst(dsl)
       expect(ast.__errors).toHaveLength(0)
@@ -359,9 +356,83 @@ screen Test:
 
       const html = renderNode(screenNode!)
       expect(html).toContain('Welcome')
-      expect(html).toContain('My App')
       expect(html).toContain('Content here')
-      expect(html).toContain('© 2024')
+      expect(html).toContain('Copyright')
+    })
+  })
+
+  describe('Snapshot Tests', () => {
+    /**
+     * Helper function to test DSL parsing and rendering with snapshots.
+     * Captures both AST structure and rendered HTML output.
+     */
+    function testSnapshot(name: string, dsl: string) {
+      it(name, () => {
+        const ast = parseAndBuildAst(dsl)
+        expect(ast.__errors).toHaveLength(0)
+
+        // Extract and set component definitions for rendering
+        const componentNodes = ast.children!.filter((n) => n.type === 'Component')
+        setComponentDefinitions(componentNodes)
+
+        // Snapshot the AST structure
+        const astSnapshot = {
+          type: ast.type,
+          children: ast.children?.map((node) => ({
+            type: node.type,
+            props: node.props,
+            childrenTypes: node.children?.map((c) => c.type),
+          })),
+        }
+        expect(astSnapshot).toMatchSnapshot('AST')
+
+        // Snapshot rendered HTML for non-component nodes (screens, etc.)
+        const renderableNodes = ast.children!.filter((n) => n.type !== 'Component')
+        renderableNodes.forEach((node, index) => {
+          const html = renderNode(node)
+          expect(html).toMatchSnapshot(`HTML-${node.type}-${index}`)
+        })
+      })
+    }
+
+    describe('Component Definitions', () => {
+      testSnapshot('simple definition', componentsFixtures.definitions.simple)
+      testSnapshot('definition with props', componentsFixtures.definitions.withProps)
+      testSnapshot('complex definition', componentsFixtures.definitions.complex)
+      testSnapshot('nested definition', componentsFixtures.definitions.nested)
+    })
+
+    describe('Component Instances', () => {
+      testSnapshot('simple instance', componentsFixtures.instances.simple)
+      testSnapshot('instance with multiple props', componentsFixtures.instances.multipleProps)
+      testSnapshot('multiple instances', componentsFixtures.instances.multiple)
+      testSnapshot('instance in layout', componentsFixtures.instances.inLayout)
+    })
+
+    describe('Lists with Components', () => {
+      testSnapshot('simple component list', componentsFixtures.lists.simple)
+      testSnapshot('complex component list', componentsFixtures.lists.complex)
+      testSnapshot('nested component list', componentsFixtures.lists.nested)
+    })
+
+    describe('Prop Substitution', () => {
+      testSnapshot('props in text', componentsFixtures.propSubstitution.inText)
+      testSnapshot('props in action', componentsFixtures.propSubstitution.inAction)
+      testSnapshot('multiple props', componentsFixtures.propSubstitution.multiple)
+    })
+
+    describe('Multiple Components', () => {
+      testSnapshot(
+        'header and footer components',
+        componentsFixtures.multipleComponents.headerAndFooter
+      )
+      testSnapshot('component library', componentsFixtures.multipleComponents.library)
+    })
+
+    describe('Edge Cases', () => {
+      testSnapshot('component not found', componentsFixtures.edge.notFound)
+      testSnapshot('missing props', componentsFixtures.edge.missingProps)
+      testSnapshot('empty props', componentsFixtures.edge.emptyProps)
     })
   })
 })

@@ -1,0 +1,550 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Checkboxes > checkboxes in form > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Checkboxes > checkboxes in form > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Preferences</h1>
+<div class="flex flex-col gap-3" style=""><label class="flex items-center space-x-3 cursor-pointer">
+    <input type="checkbox" checked class="w-4 h-4 rounded focus:ring-2 transition-colors" style="accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);" />
+    <span style="color: var(--foreground);">Dark mode</span>
+  </label>
+<label class="flex items-center space-x-3 cursor-pointer">
+    <input type="checkbox"  class="w-4 h-4 rounded focus:ring-2 transition-colors" style="accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);" />
+    <span style="color: var(--foreground);">Auto-save</span>
+  </label>
+<label class="flex items-center space-x-3 cursor-pointer">
+    <input type="checkbox" checked class="w-4 h-4 rounded focus:ring-2 transition-colors" style="accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);" />
+    <span style="color: var(--foreground);">Show tooltips</span>
+  </label></div>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="save" data-nav-type="internal">Save</button></div></div>"
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Checkboxes > checked checkbox > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Checkbox",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Checkboxes > checked checkbox > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><label class="flex items-center space-x-3 cursor-pointer">
+    <input type="checkbox" checked class="w-4 h-4 rounded focus:ring-2 transition-colors" style="accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);" />
+    <span style="color: var(--foreground);">Remember me</span>
+  </label></div>"
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Checkboxes > checked checkbox lowercase > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Checkbox",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Checkboxes > checked checkbox lowercase > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><label class="flex items-center space-x-3 cursor-pointer">
+    <input type="checkbox" checked class="w-4 h-4 rounded focus:ring-2 transition-colors" style="accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);" />
+    <span style="color: var(--foreground);">Subscribe</span>
+  </label></div>"
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Checkboxes > multiple checkboxes > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Checkboxes > multiple checkboxes > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="flex flex-col gap-3" style=""><label class="flex items-center space-x-3 cursor-pointer">
+    <input type="checkbox" checked class="w-4 h-4 rounded focus:ring-2 transition-colors" style="accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);" />
+    <span style="color: var(--foreground);">Email notifications</span>
+  </label>
+<label class="flex items-center space-x-3 cursor-pointer">
+    <input type="checkbox"  class="w-4 h-4 rounded focus:ring-2 transition-colors" style="accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);" />
+    <span style="color: var(--foreground);">SMS notifications</span>
+  </label>
+<label class="flex items-center space-x-3 cursor-pointer">
+    <input type="checkbox" checked class="w-4 h-4 rounded focus:ring-2 transition-colors" style="accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);" />
+    <span style="color: var(--foreground);">Push notifications</span>
+  </label>
+<label class="flex items-center space-x-3 cursor-pointer">
+    <input type="checkbox"  class="w-4 h-4 rounded focus:ring-2 transition-colors" style="accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);" />
+    <span style="color: var(--foreground);">Newsletter</span>
+  </label></div></div>"
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Checkboxes > unchecked checkbox > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Checkbox",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Checkboxes > unchecked checkbox > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><label class="flex items-center space-x-3 cursor-pointer">
+    <input type="checkbox"  class="w-4 h-4 rounded focus:ring-2 transition-colors" style="accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);" />
+    <span style="color: var(--foreground);">Accept terms</span>
+  </label></div>"
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Forms > profile form > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Profile",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Forms > profile form > HTML 1`] = `
+"<div class="screen container Profile" data-screen="Profile"><div class="container mx-auto max-w-4xl px-6" style=""><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Edit Profile</h1>
+<div class="flex flex-col gap-6" style=""><div class="flex flex-row items-center gap-6" style=""><img src="avatar.jpg" alt="Avatar" class="max-w-full h-auto rounded-full object-cover shadow-md" style="width: 64px; height: 64px" />
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--secondary); color: var(--secondary-foreground);" data-nav="upload" data-nav-type="internal">Change Photo</button></div>
+<label class="block text-sm font-medium" style="color: var(--foreground);">Username:
+  <input type="text" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="johndoe" />
+</label>
+<label class="block text-sm font-medium" style="color: var(--foreground);">Email:
+  <input type="email" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="john@example.com" />
+</label>
+<label class="block text-sm font-medium" style="color: var(--foreground);">Bio:
+  <textarea class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1"
+    cols="30"
+    rows="10"
+    style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="Tell us about yourself"></textarea>
+</label>
+<hr class="my-6 border-border" />
+<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Settings</h1>
+<div class="flex flex-col gap-3" style=""><label class="flex items-center space-x-3 cursor-pointer">
+    <input type="checkbox" checked class="w-4 h-4 rounded focus:ring-2 transition-colors" style="accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);" />
+    <span style="color: var(--foreground);">Public profile</span>
+  </label>
+<label class="flex items-center space-x-3 cursor-pointer">
+    <input type="checkbox" checked class="w-4 h-4 rounded focus:ring-2 transition-colors" style="accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);" />
+    <span style="color: var(--foreground);">Show email</span>
+  </label>
+<label class="flex items-center space-x-3 cursor-pointer">
+    <input type="checkbox"  class="w-4 h-4 rounded focus:ring-2 transition-colors" style="accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);" />
+    <span style="color: var(--foreground);">Show location</span>
+  </label></div>
+<hr class="my-6 border-border" />
+<div class="flex flex-row items-center justify-between gap-4" style=""><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--destructive); color: var(--destructive-foreground);" data-nav="delete" data-nav-type="internal">Delete Account</button>
+<div class="flex flex-row items-center gap-6" style=""><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--secondary); color: var(--secondary-foreground);" data-nav="cancel" data-nav-type="internal">Cancel</button>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="save" data-nav-type="internal">Save Changes</button></div></div></div></div></div>"
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Forms > register form > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Register",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Forms > register form > HTML 1`] = `
+"<div class="screen container Register" data-screen="Register"><div class="container mx-auto max-w-2xl px-6" style=""><div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Create Account</h1>
+<div class="flex flex-col gap-6" style=""><label class="block text-sm font-medium" style="color: var(--foreground);">Full Name:
+  <input type="text" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="John Doe" />
+</label>
+<label class="block text-sm font-medium" style="color: var(--foreground);">Email:
+  <input type="email" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="you@example.com" />
+</label>
+<label class="block text-sm font-medium" style="color: var(--foreground);">Password:
+  <input type="password" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="********" />
+</label>
+<label class="block text-sm font-medium" style="color: var(--foreground);">Confirm Password:
+  <input type="password" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="********" />
+</label>
+<hr class="my-6 border-border" />
+<h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Preferences</h1>
+<div class="flex flex-col gap-3" style=""><label class="flex items-center space-x-3 cursor-pointer">
+    <input type="checkbox" checked class="w-4 h-4 rounded focus:ring-2 transition-colors" style="accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);" />
+    <span style="color: var(--foreground);">Email notifications</span>
+  </label>
+<label class="flex items-center space-x-3 cursor-pointer">
+    <input type="checkbox"  class="w-4 h-4 rounded focus:ring-2 transition-colors" style="accent-color: var(--primary); background-color: var(--background); border: 1px solid var(--input); ring-color: var(--primary);" />
+    <span style="color: var(--foreground);">Newsletter</span>
+  </label></div>
+<hr class="my-6 border-border" />
+<p class="text-base leading-7 text-[var(--fg-secondary)]">By registering, you agree to our terms</p>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="register" data-nav-type="internal">Create Account</button></div></div></div></div>"
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Radio Buttons > labeled radio group > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Text",
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Radio Buttons > multiple radio groups > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Radio Buttons > radio group > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "RadioOption",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Radio Buttons > selected radio > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "RadioOption",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Radio Buttons > single radio > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "RadioOption",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > basic text input > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Input",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > basic text input > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><label class="block text-sm font-medium" style="color: var(--foreground);">Name:
+  <input type="text" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="Enter your name" />
+</label></div>"
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > date input > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Input",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > date input > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><label class="block text-sm font-medium" style="color: var(--foreground);">Birthday:
+  <input type="date" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="Select date" />
+</label></div>"
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > email input > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Input",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > email input > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><label class="block text-sm font-medium" style="color: var(--foreground);">Email:
+  <input type="email" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="your@email.com" />
+</label></div>"
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > multiple inputs > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > multiple inputs > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="flex flex-col gap-6" style=""><label class="block text-sm font-medium" style="color: var(--foreground);">Username:
+  <input type="text" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="Enter username" />
+</label>
+<label class="block text-sm font-medium" style="color: var(--foreground);">Email:
+  <input type="email" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="your@email.com" />
+</label>
+<label class="block text-sm font-medium" style="color: var(--foreground);">Password:
+  <input type="password" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="********" />
+</label>
+<label class="block text-sm font-medium" style="color: var(--foreground);">Bio:
+  <textarea class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1"
+    cols="30"
+    rows="10"
+    style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="Tell us about yourself"></textarea>
+</label></div></div>"
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > number input > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Input",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > number input > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><label class="block text-sm font-medium" style="color: var(--foreground);">Age:
+  <input type="number" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="Enter your age" />
+</label></div>"
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > password input > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Input",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > password input > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><label class="block text-sm font-medium" style="color: var(--foreground);">Password:
+  <input type="password" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="Enter password" />
+</label></div>"
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > tel input > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Input",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > tel input > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><label class="block text-sm font-medium" style="color: var(--foreground);">Phone:
+  <input type="text" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="+1234567890" />
+</label></div>"
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > textarea > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Input",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > textarea > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><label class="block text-sm font-medium" style="color: var(--foreground);">Message:
+  <textarea class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1"
+    cols="30"
+    rows="10"
+    style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="Your message here"></textarea>
+</label></div>"
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > url input > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Input",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Inputs Domain - Syntax Tests > Snapshot Tests > Text Inputs > url input > HTML 1`] = `
+"<div class="screen container Test" data-screen="Test"><label class="block text-sm font-medium" style="color: var(--foreground);">Website:
+  <input type="text" class="w-full px-3 py-2 shadow-sm focus:outline-none focus:ring-2 transition-colors mt-1" style="border: 1px solid var(--input); border-radius: var(--radius); background-color: var(--background); color: var(--foreground); ring-color: var(--ring);" placeholder="https://example.com" />
+</label></div>"
+`;

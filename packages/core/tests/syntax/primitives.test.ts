@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { parseAndBuildAst } from '../../src/parser/parse-and-build-ast'
 import { renderNode } from '../../src/renderer/core/node-renderer'
 import type { ProtoError } from '../../src/types/errors'
+import { primitivesFixtures } from './fixtures/primitives.fixtures'
 
 /**
  * Primitives Domain Tests
@@ -379,6 +380,118 @@ describe('Primitives Domain - Syntax Tests', () => {
       const html = renderNode(textNode)
       expect(html).toContain('role="note"')
       expect(html).toContain('Important note')
+    })
+  })
+
+  describe('Snapshot Tests', () => {
+    /**
+     * Helper function to test DSL parsing and rendering with snapshots.
+     * Validates both snapshot consistency and expected HTML patterns/output.
+     *
+     * Validation modes:
+     * 1. If htmlOutput is provided: validates exact HTML match (strict)
+     * 2. If htmlContains is provided: validates patterns present (flexible)
+     * 3. Both can be used together for comprehensive validation
+     */
+    function testSnapshot(
+      name: string,
+      fixture: {
+        dsl: string
+        expected: {
+          htmlOutput?: string
+          htmlContains: string[]
+          htmlNotContains?: string[]
+        }
+      }
+    ) {
+      it(name, () => {
+        const { dsl, expected } = fixture
+        const ast = parseAndBuildAst(dsl)
+        expect(ast.__errors).toHaveLength(0)
+
+        // Snapshot the AST structure (types and props only, no internal IDs)
+        const astSnapshot = {
+          type: ast.type,
+          children: ast.children?.map((node) => ({
+            type: node.type,
+            props: node.props,
+            childrenTypes: node.children?.map((c) => c.type),
+          })),
+        }
+        expect(astSnapshot).toMatchSnapshot('AST')
+
+        // Render HTML and validate expected output
+        const screenNode = ast.children![0]
+        const html = renderNode(screenNode)
+
+        // Validate exact HTML output if provided (strict validation)
+        if (expected.htmlOutput) {
+          expect(html).toBe(expected.htmlOutput)
+        }
+
+        // Validate expected HTML patterns (flexible validation)
+        expected.htmlContains.forEach((pattern) => {
+          expect(html).toContain(pattern)
+        })
+
+        if (expected.htmlNotContains) {
+          expected.htmlNotContains.forEach((pattern) => {
+            expect(html).not.toContain(pattern)
+          })
+        }
+
+        // Snapshot the rendered HTML output
+        expect(html).toMatchSnapshot('HTML')
+      })
+    }
+
+    describe('Buttons', () => {
+      testSnapshot('basic button', primitivesFixtures.buttons.basic)
+      testSnapshot('secondary button', primitivesFixtures.buttons.secondary)
+      testSnapshot('destructive button', primitivesFixtures.buttons.destructive)
+      testSnapshot('outline button', primitivesFixtures.buttons.outline)
+      testSnapshot('ghost button', primitivesFixtures.buttons.ghost)
+      testSnapshot('buttons with sizes', primitivesFixtures.buttons.withSize)
+      testSnapshot('navigation buttons', primitivesFixtures.buttons.navigation)
+      testSnapshot('all button variants', primitivesFixtures.buttons.allVariants)
+    })
+
+    describe('Inline Links', () => {
+      testSnapshot('internal link', primitivesFixtures.inlineLinks.internal)
+      testSnapshot('external link', primitivesFixtures.inlineLinks.external)
+      testSnapshot('multiple links', primitivesFixtures.inlineLinks.multiple)
+      testSnapshot('link with icon', primitivesFixtures.inlineLinks.withIcon)
+    })
+
+    describe('Images', () => {
+      testSnapshot('basic image', primitivesFixtures.images.basic)
+      testSnapshot('rounded image', primitivesFixtures.images.rounded)
+      testSnapshot('circle image', primitivesFixtures.images.circle)
+      testSnapshot('images with dimensions', primitivesFixtures.images.withDimensions)
+      testSnapshot('multiple images', primitivesFixtures.images.multiple)
+    })
+
+    describe('Headings', () => {
+      testSnapshot('h1 heading', primitivesFixtures.headings.h1)
+      testSnapshot('h2 heading', primitivesFixtures.headings.h2)
+      testSnapshot('h3 heading', primitivesFixtures.headings.h3)
+      testSnapshot('h4 heading', primitivesFixtures.headings.h4)
+      testSnapshot('heading hierarchy', primitivesFixtures.headings.hierarchy)
+    })
+
+    describe('Text Variants', () => {
+      testSnapshot('paragraph', primitivesFixtures.text.paragraph)
+      testSnapshot('small text', primitivesFixtures.text.small)
+      testSnapshot('muted text', primitivesFixtures.text.muted)
+      testSnapshot('blockquote', primitivesFixtures.text.blockquote)
+      testSnapshot('note', primitivesFixtures.text.note)
+      testSnapshot('mixed text styles', primitivesFixtures.text.mixed)
+    })
+
+    describe('Icons', () => {
+      testSnapshot('basic icons', primitivesFixtures.icons.basic)
+      testSnapshot('icons with sizes', primitivesFixtures.icons.sizes)
+      testSnapshot('icons in text', primitivesFixtures.icons.inText)
     })
   })
 })
