@@ -98,7 +98,7 @@ export function buildListElement(ctx: CstContext) {
   let componentName = ''
   if (ctx.ComponentInstance) {
     const instanceText = (ctx.ComponentInstance[0] as IToken).image
-    const match = instanceText.match(/\$([^\s\n\r:]+)/)
+    const match = instanceText.match(/\$([A-Z][A-Za-z0-9]*)/)
     if (match) {
       componentName = match[1]
     }

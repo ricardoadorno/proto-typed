@@ -195,7 +195,9 @@ export function renderList(
     // Pré-extração ordenada de placeholders para manter comportamento consistente com instâncias isoladas
     const templateText = JSON.stringify(componentElements)
     const placeholderMatches = Array.from(
-      templateText.matchAll(/%([a-zA-Z_][a-zA-Z0-9_]*)/g)
+      templateText.matchAll(
+        /\$([a-z][a-zA-Z0-9]*(?:-[a-z][a-zA-Z0-9]*)*)/g
+      )
     )
     const orderedUniqueNames: string[] = []
     placeholderMatches.forEach((m) => {

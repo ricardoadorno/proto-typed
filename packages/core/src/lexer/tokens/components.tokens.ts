@@ -9,12 +9,12 @@ export const Component = createToken({
 
 export const ComponentInstance = createToken({
   name: 'ComponentInstance',
-  pattern: /\$([^\s\n\r:]+)/,
+  pattern: /\$[A-Z][A-Za-z0-9]*/,
   label: '$ComponentName',
 })
 
 export const PropVariable = createToken({
   name: 'PropVariable',
-  pattern: /%([a-zA-Z_][a-zA-Z0-9_]*)/,
-  label: '%propName',
+  pattern: /\$(?:[a-z][a-zA-Z0-9]*)(?:-[a-z][a-zA-Z0-9]*)*/,
+  label: '$propName',
 })

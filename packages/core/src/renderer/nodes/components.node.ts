@@ -93,7 +93,7 @@ export function substitutePropsRecursive(
 
 /**
  * @function substitutePropsInString
- * @description Substitutes property placeholders (e.g., `%name`) in a string with their corresponding values.
+ * @description Substitutes property placeholders (e.g., `$name`) in a string with their corresponding values.
  *
  * @param {string} text - The string to perform substitutions on.
  * @param {Record<string, string>} [namedMap] - An optional map of named properties to their values.
@@ -105,10 +105,10 @@ export function substitutePropsInString(
 ): string {
   let result = text
 
-  // 2. Named: %name, %email etc.
+  // 2. Named: $name, $email etc.
   if (namedMap) {
     Object.entries(namedMap).forEach(([name, value]) => {
-      const pattern = new RegExp(`%${name}\\b`, 'g')
+      const pattern = new RegExp(`\\$${name}(?![A-Za-z0-9-])`, 'g')
       result = result.replace(pattern, value)
     })
   }
@@ -213,11 +213,13 @@ export function renderComponentInstance(
   // Render each element in the component with prop substitution
   const componentElements = componentDef.children || []
 
-  // Attempt to derive prop names from placeholders (%name) present in template
-  // Scan first pass of stringified node for %identifier tokens
+  // Attempt to derive prop names from placeholders ($name) present in template
+  // Scan first pass of stringified node for $identifier tokens
   const templateText = JSON.stringify(componentElements)
   const placeholderMatches = Array.from(
-    templateText.matchAll(/%([a-zA-Z_][a-zA-Z0-9_]*)/g)
+    templateText.matchAll(
+      /\$([a-z][a-zA-Z0-9]*(?:-[a-z][a-zA-Z0-9]*)*)/g
+    )
   )
   const orderedUniqueNames: string[] = []
   placeholderMatches.forEach((m) => {

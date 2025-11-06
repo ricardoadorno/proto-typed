@@ -60,7 +60,7 @@ export function buildComponentInstanceElement(
   // Extract component name from ComponentInstance token
   if (ctx.ComponentInstance && ctx.ComponentInstance[0]) {
     const instanceText = (ctx.ComponentInstance[0] as { image: string }).image
-    const match = instanceText.match(/\$([^\s\n\r:]+)/)
+    const match = instanceText.match(/\$([A-Z][A-Za-z0-9]*)/)
     if (match) {
       componentName = match[1]
     }
