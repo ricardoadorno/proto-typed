@@ -34,7 +34,7 @@
         "extensions": [
           ".pty"
         ],
-        "configuration": "./node_modules/@proto-typed/core/language/grammar/language-configuration.json",
+        "configuration": "./syntaxes/language-configuration.json",
         "icon": {
           "light": "./icons/icon-32.png",
           "dark": "./icons/icon-32.png"
@@ -45,7 +45,7 @@
       {
         "language": "proto-typed",
         "scopeName": "source.pty",
-        "path": "./node_modules/@proto-typed/core/language/grammar/proto-typed.tmLanguage.json"
+        "path": "./syntaxes/proto-typed.tmLanguage.json"
       }
     ],
     "snippets": [
@@ -83,7 +83,8 @@
   },
   "scripts": {
     "vscode:prepublish": "pnpm run compile",
-    "compile": "pnpm run build:webview && pnpm --workspace-root run compile:core && pnpm --workspace-root exec tsc -p packages/extension/tsconfig.json",
+    "sync:grammar": "node ./scripts/sync-grammar.mjs",
+    "compile": "pnpm run sync:grammar && pnpm run build:webview && pnpm --workspace-root run compile:core && pnpm --workspace-root exec tsc -p packages/extension/tsconfig.json",
     "build:webview": "cd webview && pnpm install && pnpm run build",
     "dev:webview": "cd webview && pnpm run dev",
     "watch": "tsc -watch -p ./",
@@ -91,9 +92,10 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
-    "pretest": "pnpm run compile",
-    "test": "node ./dist/test/runTest.js",
-    "test:update-snapshots": "cross-env UPDATE_SNAPSHOTS=1 pnpm test",
+    "test": "pnpm run test:unit && pnpm run test:webview",
+    "test:unit": "vitest run tests/language-engine.spec.ts",
+    "test:webview": "playwright test -c tests/playwright.config.ts",
+    "test:update-snapshots": "cross-env UPDATE_SNAPSHOTS=1 pnpm run test",
     "vsce:login": "npx @vscode/vsce login proto-typed",
     "vsce:package": "npx @vscode/vsce package",
     "vsce:publish": "npx @vscode/vsce publish",
@@ -112,10 +114,14 @@
     "@vscode/vsce": "^3.6.2",
     "chai": "^4.3.10",
     "cross-env": "^7.0.3",
+    "http-server": "^14.1.1",
     "mocha": "^10.4.0",
     "pixelmatch": "^5.3.0",
     "playwright-core": "^1.56.1",
     "pngjs": "^7.0.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vscode-languageserver-protocol": "^3.17.5",
+    "vscode-languageserver-textdocument": "^1.0.12",
+    "vscode-languageserver-types": "^3.17.5"
   }
 }

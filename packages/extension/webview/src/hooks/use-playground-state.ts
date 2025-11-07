@@ -52,6 +52,7 @@ export function usePlaygroundState() {
   const parseTimeoutRef = useRef<ReturnType<typeof setTimeout>>()
   const lastDslRef = useRef<string>('')
   const astRef = useRef<AstNode | AstNode[]>([])
+  const activeUriRef = useRef<string | null>(null)
 
   // Parse DSL and update state
   const handleParse = useCallback(
@@ -87,11 +88,11 @@ export function usePlaygroundState() {
             .replace(/\u00A0/g, ' ') // NBSP -> space
 
           if (!normalizedText.trim()) {
-            setStateLocal({
-              dsl: normalizedText,
-              html: '',
-              metadata: {
-                screens: [],
+          const emptyState: PlaygroundState = {
+            dsl: normalizedText,
+            html: '',
+            metadata: {
+              screens: [],
                 components: [],
                 modals: [],
                 drawers: [],
@@ -102,14 +103,24 @@ export function usePlaygroundState() {
                 currentHistoryIndex: -1,
                 canNavigateBack: false,
               },
-              currentScreen: null,
-              errors: [],
-              isLoading: false,
-            })
-            routeManagerGateway.initialize([] as AstNode[])
-            routeManagerGateway.resetNavigation()
-            return
+            currentScreen: null,
+            errors: [],
+            isLoading: false,
           }
+          setStateLocal(emptyState)
+          routeManagerGateway.initialize([] as AstNode[])
+          routeManagerGateway.resetNavigation()
+          sendMessage(
+            createMessage('RENDER_COMPLETE', {
+              html: '',
+              screen: null,
+              errors: [],
+              uri: activeUriRef.current ?? undefined,
+              metadata: emptyState.metadata,
+            })
+          )
+          return
+        }
 
           // Parse AST
           const ast = parseAndBuildAst(normalizedText)
@@ -153,6 +164,15 @@ export function usePlaygroundState() {
           }
 
           setStateLocal(newState)
+          sendMessage(
+            createMessage('RENDER_COMPLETE', {
+              html: result.html,
+              screen: newState.currentScreen,
+              errors: newState.errors,
+              uri: activeUriRef.current ?? undefined,
+              metadata: newState.metadata,
+            })
+          )
 
           // Persist state
           setState({
@@ -187,6 +207,14 @@ export function usePlaygroundState() {
               level: 'error',
               message: 'Parse error',
               data: { error: errorMessage },
+            })
+          )
+          sendMessage(
+            createMessage('RENDER_COMPLETE', {
+              html: '',
+              screen: state.currentScreen,
+              errors: [errorMessage],
+              uri: activeUriRef.current ?? undefined,
             })
           )
         }
@@ -270,7 +298,8 @@ export function usePlaygroundState() {
   // Handle DSL updates from host
   useEffect(() => {
     const cleanup = onMessage('DSL_UPDATE', (message: DslUpdateMessage) => {
-      const { text } = message.payload
+      const { text, uri } = message.payload
+      activeUriRef.current = uri
       handleParse(text)
     })
 

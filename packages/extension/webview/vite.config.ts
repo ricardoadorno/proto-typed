@@ -8,11 +8,12 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
+  base: './',
   build: {
     outDir: '../dist/webview',
     emptyOutDir: true,
     rollupOptions: {
-      input: path.resolve(__dirname, 'src/main.tsx'),
+      input: path.resolve(__dirname, 'index.html'),
       output: {
         entryFileNames: 'index.js',
         assetFileNames: 'index.[ext]',

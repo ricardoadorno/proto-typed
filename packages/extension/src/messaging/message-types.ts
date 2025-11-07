@@ -104,6 +104,19 @@ export type HandshakeAckMessage = MessageEnvelope<
   HandshakeAckPayload
 >
 
+// Render complete notification (used for testing/snapshots)
+export interface RenderCompletePayload {
+  html: string
+  screen: string | null
+  errors: string[]
+  uri?: string
+  metadata?: unknown
+}
+export type RenderCompleteMessage = MessageEnvelope<
+  'RENDER_COMPLETE',
+  RenderCompletePayload
+>
+
 // Generic acknowledgment
 export interface AckPayload {
   requestId: string
@@ -127,6 +140,7 @@ export type WebviewToHostMessage =
   | LogEventMessage
   | NavigationUpdateMessage
   | HandshakeAckMessage
+  | RenderCompleteMessage
   | AckMessage
 
 export type AnyMessage = HostToWebviewMessage | WebviewToHostMessage

@@ -25,11 +25,20 @@ import type {
   RequestSetTextMessage,
   LogEventMessage,
   NavigationUpdateMessage,
+  RenderCompleteMessage,
 } from './messaging/message-types'
 
 let currentPanel: PlaygroundPanel | undefined = undefined
 let messageRouter: MessageRouter | undefined = undefined
 let synchronizer: TextDocumentSynchronizer | undefined = undefined
+interface RenderSnapshot {
+  html: string
+  screen: string | null
+  errors: string[]
+  uri?: string
+  timestamp: number
+}
+let lastRenderSnapshot: RenderSnapshot | null = null
 
 function createLanguageHost(): {
   host: LanguageHost
@@ -191,6 +200,16 @@ export function activate(context: vscode.ExtensionContext) {
   return {
     getCurrentPanel: () => currentPanel,
     getRouter: () => messageRouter,
+    getLastRenderedHtml: () => lastRenderSnapshot?.html ?? null,
+    resetLastRenderedHtml: () => {
+      lastRenderSnapshot = null
+    },
+    disposePanel: () => {
+      if (currentPanel) {
+        currentPanel.dispose()
+        currentPanel = undefined
+      }
+    },
   }
 }
 
@@ -275,6 +294,20 @@ function setupMessageHandlers(context: vscode.ExtensionContext): void {
     'NAVIGATION_UPDATE',
     (message: NavigationUpdateMessage) => {
       console.log(`🧭 [Navigation] Screen: ${message.payload.screen}`)
+    }
+  )
+
+  // Capture render results for snapshot tests
+  messageRouter.registerHandler(
+    'RENDER_COMPLETE',
+    (message: RenderCompleteMessage) => {
+      lastRenderSnapshot = {
+        html: message.payload.html,
+        screen: message.payload.screen,
+        errors: message.payload.errors,
+        uri: message.payload.uri,
+        timestamp: Date.now(),
+      }
     }
   )
 }
