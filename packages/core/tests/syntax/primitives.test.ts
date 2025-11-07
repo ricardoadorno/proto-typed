@@ -453,7 +453,10 @@ describe('Primitives Domain - Syntax Tests', () => {
       testSnapshot('ghost button', primitivesFixtures.buttons.ghost)
       testSnapshot('buttons with sizes', primitivesFixtures.buttons.withSize)
       testSnapshot('navigation buttons', primitivesFixtures.buttons.navigation)
-      testSnapshot('all button variants', primitivesFixtures.buttons.allVariants)
+      testSnapshot(
+        'all button variants',
+        primitivesFixtures.buttons.allVariants
+      )
     })
 
     describe('Inline Links', () => {
@@ -467,7 +470,10 @@ describe('Primitives Domain - Syntax Tests', () => {
       testSnapshot('basic image', primitivesFixtures.images.basic)
       testSnapshot('rounded image', primitivesFixtures.images.rounded)
       testSnapshot('circle image', primitivesFixtures.images.circle)
-      testSnapshot('images with dimensions', primitivesFixtures.images.withDimensions)
+      testSnapshot(
+        'images with dimensions',
+        primitivesFixtures.images.withDimensions
+      )
       testSnapshot('multiple images', primitivesFixtures.images.multiple)
     })
 

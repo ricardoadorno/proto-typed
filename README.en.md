@@ -173,41 +173,41 @@ ___[Country][Select[Brazil | Portugal | Angola]]
 
 Canonical layout tokens mapped to Tailwind/shadcn classes:
 
-| Token | Group | Short description | Base classes |
-| --- | --- | --- | --- |
-| `container` | Containers | Balanced width for general pages | `container mx-auto max-w-4xl px-6` |
-| `container-narrow` | Containers | Reading column or long form | `container mx-auto max-w-2xl px-6` |
-| `container-wide` | Containers | Dashboards and dense content | `container mx-auto max-w-6xl px-8` |
-| `container-full` | Containers | Fluid layout spanning full width | `mx-auto w-full px-4 sm:px-8` |
-| `stack` | Stack (vertical) | Vertical blocks with medium gap | `flex flex-col gap-6` |
-| `stack-tight` | Stack (vertical) | High density for short items | `flex flex-col gap-3` |
-| `stack-loose` | Stack (vertical) | Spacious sections with breathing room | `flex flex-col gap-8` |
-| `stack-none` (`stack-flush`) | Stack (vertical) | No gap between stacked items | `flex flex-col gap-0` |
-| `row` | Row (horizontal) | Default horizontal alignment | `flex flex-row items-center gap-6` |
-| `row-start` | Row (horizontal) | Align items to the start | `flex flex-row items-start gap-4` |
-| `row-center` | Row (horizontal) | Fully centered distribution | `flex flex-row items-center justify-center gap-4` |
-| `row-between` | Row (horizontal) | Spread items with space-between | `flex flex-row items-center justify-between gap-4` |
-| `row-end` | Row (horizontal) | Right-aligned actions | `flex flex-row items-center justify-end gap-4` |
-| `grid` | Grid | Single-column responsive baseline | `grid grid-cols-1 gap-6` |
-| `grid-2` | Grid | Two columns at `md` breakpoint | `grid grid-cols-1 md:grid-cols-2 gap-6` |
-| `grid-3` | Grid | Three columns for catalogs | `grid grid-cols-1 md:grid-cols-3 gap-6` |
-| `grid-4` | Grid | Four columns on wide screens | `grid grid-cols-1 lg:grid-cols-4 gap-6` |
-| `grid-responsive` (`grid-auto`) | Grid | Auto-fit columns with `minmax(16rem,1fr)` | `grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-6` |
-| `layer-static` | Layer / Position | Keeps flow untouched | `static` |
-| `layer-relative` | Layer / Position | Reference for positioned children | `relative` |
-| `layer-absolute` | Layer / Position | Absolute fill inside relative parent | `absolute inset-0` |
-| `layer-fixed` | Layer / Position | Fix element to the viewport | `fixed inset-0` |
-| `layer-sticky` | Layer / Position | Sticky inside scrolling container | `sticky top-0` |
-| `layer-overlay` | Layer / Position | Overlay with blur and backdrop | `fixed inset-0 z-50 bg-background/80 backdrop-blur-sm` |
-| `scroll-auto` | Overflow | Default overflow behaviour | `overflow-auto` |
-| `scroll-x` | Overflow | Enable horizontal scrolling | `overflow-x-auto` |
-| `scroll-y` | Overflow | Enable vertical scrolling | `overflow-y-auto` |
-| `scroll-hidden` | Overflow | Hide overflowing content | `overflow-hidden` |
-| `card` | Cards | Default card container | `border rounded-lg p-6` |
-| `card-compact` | Cards | Tight card for dense data | `border rounded-lg p-4` |
-| `card-feature` | Cards | Highlighted card with extra emphasis | `border-2 rounded-xl p-8 shadow-lg` |
-| `header` | Special | Sticky page header with border | `sticky top-0 z-10 border-b px-6` |
-| `sidebar` | Special | Fixed lateral navigation | `fixed h-full border-r p-4 pt-8` |
+| Token                           | Group            | Short description                         | Base classes                                                |
+| ------------------------------- | ---------------- | ----------------------------------------- | ----------------------------------------------------------- |
+| `container`                     | Containers       | Balanced width for general pages          | `container mx-auto max-w-4xl px-6`                          |
+| `container-narrow`              | Containers       | Reading column or long form               | `container mx-auto max-w-2xl px-6`                          |
+| `container-wide`                | Containers       | Dashboards and dense content              | `container mx-auto max-w-6xl px-8`                          |
+| `container-full`                | Containers       | Fluid layout spanning full width          | `mx-auto w-full px-4 sm:px-8`                               |
+| `stack`                         | Stack (vertical) | Vertical blocks with medium gap           | `flex flex-col gap-6`                                       |
+| `stack-tight`                   | Stack (vertical) | High density for short items              | `flex flex-col gap-3`                                       |
+| `stack-loose`                   | Stack (vertical) | Spacious sections with breathing room     | `flex flex-col gap-8`                                       |
+| `stack-none` (`stack-flush`)    | Stack (vertical) | No gap between stacked items              | `flex flex-col gap-0`                                       |
+| `row`                           | Row (horizontal) | Default horizontal alignment              | `flex flex-row items-center gap-6`                          |
+| `row-start`                     | Row (horizontal) | Align items to the start                  | `flex flex-row items-start gap-4`                           |
+| `row-center`                    | Row (horizontal) | Fully centered distribution               | `flex flex-row items-center justify-center gap-4`           |
+| `row-between`                   | Row (horizontal) | Spread items with space-between           | `flex flex-row items-center justify-between gap-4`          |
+| `row-end`                       | Row (horizontal) | Right-aligned actions                     | `flex flex-row items-center justify-end gap-4`              |
+| `grid`                          | Grid             | Single-column responsive baseline         | `grid grid-cols-1 gap-6`                                    |
+| `grid-2`                        | Grid             | Two columns at `md` breakpoint            | `grid grid-cols-1 md:grid-cols-2 gap-6`                     |
+| `grid-3`                        | Grid             | Three columns for catalogs                | `grid grid-cols-1 md:grid-cols-3 gap-6`                     |
+| `grid-4`                        | Grid             | Four columns on wide screens              | `grid grid-cols-1 lg:grid-cols-4 gap-6`                     |
+| `grid-responsive` (`grid-auto`) | Grid             | Auto-fit columns with `minmax(16rem,1fr)` | `grid grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-6` |
+| `layer-static`                  | Layer / Position | Keeps flow untouched                      | `static`                                                    |
+| `layer-relative`                | Layer / Position | Reference for positioned children         | `relative`                                                  |
+| `layer-absolute`                | Layer / Position | Absolute fill inside relative parent      | `absolute inset-0`                                          |
+| `layer-fixed`                   | Layer / Position | Fix element to the viewport               | `fixed inset-0`                                             |
+| `layer-sticky`                  | Layer / Position | Sticky inside scrolling container         | `sticky top-0`                                              |
+| `layer-overlay`                 | Layer / Position | Overlay with blur and backdrop            | `fixed inset-0 z-50 bg-background/80 backdrop-blur-sm`      |
+| `scroll-auto`                   | Overflow         | Default overflow behaviour                | `overflow-auto`                                             |
+| `scroll-x`                      | Overflow         | Enable horizontal scrolling               | `overflow-x-auto`                                           |
+| `scroll-y`                      | Overflow         | Enable vertical scrolling                 | `overflow-y-auto`                                           |
+| `scroll-hidden`                 | Overflow         | Hide overflowing content                  | `overflow-hidden`                                           |
+| `card`                          | Cards            | Default card container                    | `border rounded-lg p-6`                                     |
+| `card-compact`                  | Cards            | Tight card for dense data                 | `border rounded-lg p-4`                                     |
+| `card-feature`                  | Cards            | Highlighted card with extra emphasis      | `border-2 rounded-xl p-8 shadow-lg`                         |
+| `header`                        | Special          | Sticky page header with border            | `sticky top-0 z-10 border-b px-6`                           |
+| `sidebar`                       | Special          | Fixed lateral navigation                  | `fixed h-full border-r p-4 pt-8`                            |
 
 Compatibility: `stack-flush` and `grid-auto` remain available as aliases.
 

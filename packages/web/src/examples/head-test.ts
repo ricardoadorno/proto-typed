@@ -147,4 +147,3 @@ screen About:
 `
 
 export default headTestExample
-

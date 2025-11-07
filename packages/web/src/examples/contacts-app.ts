@@ -261,4 +261,3 @@ screen Premium:
 `
 
 export default contactsAppExample
-

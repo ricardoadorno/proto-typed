@@ -17,7 +17,11 @@ import type {
   ComponentProps,
   FabProps,
 } from '../../types/ast-node'
-import { getLucideSvg, isLucideIcon, renderInlineContent } from '../../utils/icon-utils'
+import {
+  getLucideSvg,
+  isLucideIcon,
+  renderInlineContent,
+} from '../../utils/icon-utils'
 
 /**
  * @const LAYOUT_PRESETS
@@ -191,9 +195,7 @@ export function renderList(
     // Pré-extração ordenada de placeholders para manter comportamento consistente com instâncias isoladas
     const templateText = JSON.stringify(componentElements)
     const placeholderMatches = Array.from(
-      templateText.matchAll(
-        /\$([a-z][a-zA-Z0-9]*(?:-[a-z][a-zA-Z0-9]*)*)/g
-      )
+      templateText.matchAll(/\$([a-z][a-zA-Z0-9]*(?:-[a-z][a-zA-Z0-9]*)*)/g)
     )
     const orderedUniqueNames: string[] = []
     placeholderMatches.forEach((m) => {

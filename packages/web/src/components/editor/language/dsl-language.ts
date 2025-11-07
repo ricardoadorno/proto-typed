@@ -72,10 +72,22 @@ export function registerDSLLanguage(monaco: Monaco) {
           /\b(container-narrow|container-wide|container-full|container)\b/,
           'keyword.layout',
         ],
-        [/\b(stack-none|stack-flush|stack-tight|stack-loose|stack)\b/, 'keyword.layout'],
-        [/\b(row-start|row-center|row-between|row-end|row)\b/, 'keyword.layout'],
-        [/\b(grid-2|grid-3|grid-4|grid-responsive|grid-auto|grid)\b/, 'keyword.layout'],
-        [/\b(layer-overlay|layer-sticky|layer-fixed|layer-absolute|layer-relative|layer-static)\b/, 'keyword.layout'],
+        [
+          /\b(stack-none|stack-flush|stack-tight|stack-loose|stack)\b/,
+          'keyword.layout',
+        ],
+        [
+          /\b(row-start|row-center|row-between|row-end|row)\b/,
+          'keyword.layout',
+        ],
+        [
+          /\b(grid-2|grid-3|grid-4|grid-responsive|grid-auto|grid)\b/,
+          'keyword.layout',
+        ],
+        [
+          /\b(layer-overlay|layer-sticky|layer-fixed|layer-absolute|layer-relative|layer-static)\b/,
+          'keyword.layout',
+        ],
         [/\b(scroll-x|scroll-y|scroll-auto|scroll-hidden)\b/, 'keyword.layout'],
         [/\b(card-compact|card-feature|card)\b/, 'keyword.layout'],
         [/\b(sidebar)\b/, 'keyword.layout'],

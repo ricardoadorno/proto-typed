@@ -82,7 +82,9 @@ export function buildTextElement(ctx: CstContext) {
     value = match ? match[1].trim() : ''
     kind = 'muted'
   } else if (ctx.Blockquote) {
-    const match = (ctx.Blockquote[0] as IToken).image.match(/\*(?!\*)>\s+([^\n\r]+)/)
+    const match = (ctx.Blockquote[0] as IToken).image.match(
+      /\*(?!\*)>\s+([^\n\r]+)/
+    )
     value = match ? match[1].trim() : ''
     kind = 'blockquote'
   } else if (ctx.Note) {

@@ -50,7 +50,12 @@ function generateFingerprint(node: AstNode, parentType?: string): string {
   if (node.kind) intrinsic.push(`kind=${node.kind}`)
   const parentPart = parentType ? `parent=${parentType}` : ''
 
-  const parts = [`type=${node.type}`, stableProps, intrinsic.join('|'), parentPart].filter(Boolean)
+  const parts = [
+    `type=${node.type}`,
+    stableProps,
+    intrinsic.join('|'),
+    parentPart,
+  ].filter(Boolean)
   return parts.join('|')
 }
 

@@ -61,13 +61,10 @@ export const useParse = (): UseParseResult => {
     return new RouteManager()
   }, [parseLogger])
 
-  const routeManagerGateway = useMemo(
-    () => {
-      parseLogger.debug('Creating RouteManager gateway')
-      return createRouteManagerGateway(localRouteManager)
-    },
-    [localRouteManager, parseLogger]
-  )
+  const routeManagerGateway = useMemo(() => {
+    parseLogger.debug('Creating RouteManager gateway')
+    return createRouteManagerGateway(localRouteManager)
+  }, [localRouteManager, parseLogger])
 
   const [ast, setAst] = useState<AstNode[] | AstNode>([])
   const [astResultJson, setAstResultJson] = useState<string>('')
@@ -163,22 +160,31 @@ export const useParse = (): UseParseResult => {
             (screen) => screen.name === currentScreen
           )
           if (screenExists) {
-            parseLogger.debug('Keeping current screen', { screen: currentScreen })
+            parseLogger.debug('Keeping current screen', {
+              screen: currentScreen,
+            })
             newCurrentScreen = currentScreen
           } else {
-            parseLogger.debug('Current screen no longer exists, switching to default', {
-              oldScreen: currentScreen,
-              newScreen: newMetadata.defaultScreen,
-            })
+            parseLogger.debug(
+              'Current screen no longer exists, switching to default',
+              {
+                oldScreen: currentScreen,
+                newScreen: newMetadata.defaultScreen,
+              }
+            )
             newCurrentScreen = newMetadata.defaultScreen || null
           }
         } else {
-          parseLogger.debug('Setting default screen', { screen: newMetadata.defaultScreen })
+          parseLogger.debug('Setting default screen', {
+            screen: newMetadata.defaultScreen,
+          })
           newCurrentScreen = newMetadata.defaultScreen || null
         }
 
         // Generate rendered HTML with the determined screen
-        parseLogger.debug('Rendering AST to HTML', { currentScreen: newCurrentScreen })
+        parseLogger.debug('Rendering AST to HTML', {
+          currentScreen: newCurrentScreen,
+        })
         const renderResult = astToHtmlStringPreview(
           parsedAst,
           { currentScreen: newCurrentScreen || undefined },

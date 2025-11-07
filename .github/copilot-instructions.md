@@ -122,17 +122,17 @@ The DSL engine follows a classic compiler architecture with 5 distinct phases:
 
 **9 Category Files + 1 Index:**
 
-| File | Tokens | Purpose |
-|------|--------|---------|
-| **core.tokens.ts** | WhiteSpace, NewLine, Colon, Identifier, Indent, Outdent | Fundamental language structure |
-| **views.tokens.ts** | Screen, Modal, Drawer | Container views for UI |
-| **primitives.tokens.ts** | Button variants, Text, Heading, Link, Image, Paragraph | Basic UI elements |
-| **layouts.tokens.ts** | Container variants, Stack, Row, Grid, Card, Header, List, Navigator, Separator, Fab | Layout presets (30+ tokens) |
-| **inputs.tokens.ts** | Input, RadioOption, Checkbox | Form controls |
-| **components.tokens.ts** | Component, ComponentInstance, PropVariable | Component system |
-| **head.tokens.ts** | Head, HeadColor, HeadFont, HeadTemplate, properties | Theme configuration |
-| **meta.tokens.ts** | Meta, MetaVersion, MetaTitle, MetaValue | Document metadata |
-| **index.ts** | allTokens array (exports) | Central export with **precedence ordering** |
+| File                     | Tokens                                                                              | Purpose                                     |
+| ------------------------ | ----------------------------------------------------------------------------------- | ------------------------------------------- |
+| **core.tokens.ts**       | WhiteSpace, NewLine, Colon, Identifier, Indent, Outdent                             | Fundamental language structure              |
+| **views.tokens.ts**      | Screen, Modal, Drawer                                                               | Container views for UI                      |
+| **primitives.tokens.ts** | Button variants, Text, Heading, Link, Image, Paragraph                              | Basic UI elements                           |
+| **layouts.tokens.ts**    | Container variants, Stack, Row, Grid, Card, Header, List, Navigator, Separator, Fab | Layout presets (30+ tokens)                 |
+| **inputs.tokens.ts**     | Input, RadioOption, Checkbox                                                        | Form controls                               |
+| **components.tokens.ts** | Component, ComponentInstance, PropVariable                                          | Component system                            |
+| **head.tokens.ts**       | Head, HeadColor, HeadFont, HeadTemplate, properties                                 | Theme configuration                         |
+| **meta.tokens.ts**       | Meta, MetaVersion, MetaTitle, MetaValue                                             | Document metadata                           |
+| **index.ts**             | allTokens array (exports)                                                           | Central export with **precedence ordering** |
 
 **Critical Pattern: Token Precedence**
 
@@ -163,9 +163,9 @@ export const allTokens = [
 
 ```typescript
 export const ButtonPrimary = createToken({
-  name: 'ButtonPrimary',              // Parser reference name
-  pattern: /button-primary|btn-primary/,  // Regex alternatives
-  label: 'primary button',            // Error message display name
+  name: 'ButtonPrimary', // Parser reference name
+  pattern: /button-primary|btn-primary/, // Regex alternatives
+  label: 'primary button', // Error message display name
 })
 ```
 
@@ -173,24 +173,26 @@ export const ButtonPrimary = createToken({
 
 **9 Rule Files Mirroring Token Structure:**
 
-| File | Rules | Pattern |
-|------|-------|---------|
-| **core.rules.ts** | `program`, `element` dispatcher, helper methods | Top-level grammar + routing |
-| **views.rules.ts** | `screen`, `modal`, `drawer` | View container parsing |
-| **primitives.rules.ts** | `buttonElement`, `textElement`, `headingElement`, `linkElement`, `imageElement` | UI primitive parsing |
-| **layouts.rules.ts** | `layoutElement`, `listElement`, `navigatorElement`, `fabElement`, `separatorElement` | Layout and structure parsing |
-| **inputs.rules.ts** | `inputElement`, `radioElement`, `checkboxElement`, `selectElement` | Form control parsing |
-| **components.rules.ts** | `componentDefinition`, `componentInstanceElement` | Component system parsing |
-| **head.rules.ts** | `headBlock`, `headColorProperty`, `headFontProperty`, `headTemplateProperty` | Theme config parsing |
-| **meta.rules.ts** | `metaBlock`, `metaVersionProperty`, `metaTitleProperty` | Metadata parsing |
-| **index.ts** | Exports all rule definition functions | Central export |
+| File                    | Rules                                                                                | Pattern                      |
+| ----------------------- | ------------------------------------------------------------------------------------ | ---------------------------- |
+| **core.rules.ts**       | `program`, `element` dispatcher, helper methods                                      | Top-level grammar + routing  |
+| **views.rules.ts**      | `screen`, `modal`, `drawer`                                                          | View container parsing       |
+| **primitives.rules.ts** | `buttonElement`, `textElement`, `headingElement`, `linkElement`, `imageElement`      | UI primitive parsing         |
+| **layouts.rules.ts**    | `layoutElement`, `listElement`, `navigatorElement`, `fabElement`, `separatorElement` | Layout and structure parsing |
+| **inputs.rules.ts**     | `inputElement`, `radioElement`, `checkboxElement`, `selectElement`                   | Form control parsing         |
+| **components.rules.ts** | `componentDefinition`, `componentInstanceElement`                                    | Component system parsing     |
+| **head.rules.ts**       | `headBlock`, `headColorProperty`, `headFontProperty`, `headTemplateProperty`         | Theme config parsing         |
+| **meta.rules.ts**       | `metaBlock`, `metaVersionProperty`, `metaTitleProperty`                              | Metadata parsing             |
+| **index.ts**            | Exports all rule definition functions                                                | Central export               |
 
 **Key Pattern: Rule Definition Functions**
 
 All rules use this pattern:
 
 ```typescript
-export const defineViewRules: RuleDefinitionFunction = function(this: IParser): void {
+export const defineViewRules: RuleDefinitionFunction = function (
+  this: IParser
+): void {
   // 'this' is the parser instance
   this.RULE('screen', () => {
     this.CONSUME(Screen)
@@ -206,6 +208,7 @@ export const defineViewRules: RuleDefinitionFunction = function(this: IParser): 
 **Critical Helper Methods (core.rules.ts):**
 
 1. **`consumeIndentedElements()`** - Handles Python-like nesting:
+
    ```typescript
    this.CONSUME(Indent)
    this.MANY(() => this.SUBRULE(this.element))
@@ -213,6 +216,7 @@ export const defineViewRules: RuleDefinitionFunction = function(this: IParser): 
    ```
 
 2. **`containerWithOptionalContent()`** - Parses layouts with optional children:
+
    ```typescript
    container:           # No children, self-closing
    container:           # With children
@@ -244,6 +248,7 @@ this.RULE('element', () => {
 ```
 
 **Why this matters:** Adding a new element requires:
+
 1. Token definition
 2. Parser rule
 3. Add to `element` dispatcher OR alternatives
@@ -252,18 +257,18 @@ this.RULE('element', () => {
 
 **10 Builder Files + 1 Validation:**
 
-| File | Builders | Responsibility |
-|------|----------|----------------|
-| **core.builders.ts** | Utility functions | `parseLayoutModifiers`, `parseListItem`, `parseNavigatorItem` |
-| **builder-validation.ts** | Validation helpers | `validateViewName`, `validatePropName`, error collection |
-| **views.builders.ts** | `buildScreen`, `buildModal`, `buildDrawer` | View container CST → AST |
-| **primitives.builders.ts** | `buildButtonElement`, `buildTextElement`, `buildHeadingElement`, etc. | UI primitive CST → AST |
-| **layouts.builders.ts** | `buildLayoutElement`, `buildListElement`, etc. | Layout CST → AST |
-| **inputs.builders.ts** | `buildInputElement`, `buildRadioElement`, `buildCheckboxElement` | Form control CST → AST |
-| **components.builders.ts** | `buildComponentDefinition`, `buildComponentInstanceElement` | Component system CST → AST |
-| **head.builders.ts** | `buildHeadBlock`, property builders | Theme config CST → AST |
-| **meta.builders.ts** | `buildMetaBlock`, property builders | Metadata CST → AST |
-| **index.ts** | Central exports | All builder functions |
+| File                       | Builders                                                              | Responsibility                                                |
+| -------------------------- | --------------------------------------------------------------------- | ------------------------------------------------------------- |
+| **core.builders.ts**       | Utility functions                                                     | `parseLayoutModifiers`, `parseListItem`, `parseNavigatorItem` |
+| **builder-validation.ts**  | Validation helpers                                                    | `validateViewName`, `validatePropName`, error collection      |
+| **views.builders.ts**      | `buildScreen`, `buildModal`, `buildDrawer`                            | View container CST → AST                                      |
+| **primitives.builders.ts** | `buildButtonElement`, `buildTextElement`, `buildHeadingElement`, etc. | UI primitive CST → AST                                        |
+| **layouts.builders.ts**    | `buildLayoutElement`, `buildListElement`, etc.                        | Layout CST → AST                                              |
+| **inputs.builders.ts**     | `buildInputElement`, `buildRadioElement`, `buildCheckboxElement`      | Form control CST → AST                                        |
+| **components.builders.ts** | `buildComponentDefinition`, `buildComponentInstanceElement`           | Component system CST → AST                                    |
+| **head.builders.ts**       | `buildHeadBlock`, property builders                                   | Theme config CST → AST                                        |
+| **meta.builders.ts**       | `buildMetaBlock`, property builders                                   | Metadata CST → AST                                            |
+| **index.ts**               | Central exports                                                       | All builder functions                                         |
 
 **Builder Function Pattern:**
 
@@ -281,7 +286,7 @@ export function buildScreen(ctx: CstContext, visitor: CstVisitor): AstNode {
       code: ERROR_CODES.BLD_INVALID_PROPS,
       message: `Screen name must start with uppercase letter`,
       line: nameToken?.startLine,
-      column: nameToken?.startColumn
+      column: nameToken?.startColumn,
     })
   }
 
@@ -293,7 +298,7 @@ export function buildScreen(ctx: CstContext, visitor: CstVisitor): AstNode {
   // 4. Return AST node (ID filled later)
   return {
     type: 'Screen',
-    id: '',  // generateDeterministicIds() fills this
+    id: '', // generateDeterministicIds() fills this
     props: { name },
     children,
   }
@@ -315,7 +320,8 @@ if (invalid) {
     severity: 'error',
     code: ERROR_CODES.BLD_INVALID_PROPS,
     message: 'Invalid prop value',
-    line, column
+    line,
+    column,
   })
 }
 ```
@@ -344,24 +350,30 @@ class AstBuilder extends BaseUiDslCstVisitor {
 
 **6 Type Definition Files:**
 
-| File | Purpose | Key Types |
-|------|---------|-----------|
-| **ast-node.ts** | Core AST types | `NodeType` (union of 50+ types), `AstNode<P>`, props interfaces |
-| **errors.ts** | Error system | `ProtoError` (discriminated union), `ERROR_CODES`, `Severity`, `Stage` |
-| **routing.ts** | Route management | `ScreenRoute`, `GlobalRoute`, `RouteCollection`, `RouteMetadata` |
-| **render.ts** | Renderer types | `RenderContext`, `RenderOptions`, `NodeRenderer` |
-| **parser.ts** | Parser types | `IParser`, `CstContext`, `CstVisitor` |
-| **dom.ts** | DOM event types | `MouseEvent` (browser event types) |
+| File            | Purpose          | Key Types                                                              |
+| --------------- | ---------------- | ---------------------------------------------------------------------- |
+| **ast-node.ts** | Core AST types   | `NodeType` (union of 50+ types), `AstNode<P>`, props interfaces        |
+| **errors.ts**   | Error system     | `ProtoError` (discriminated union), `ERROR_CODES`, `Severity`, `Stage` |
+| **routing.ts**  | Route management | `ScreenRoute`, `GlobalRoute`, `RouteCollection`, `RouteMetadata`       |
+| **render.ts**   | Renderer types   | `RenderContext`, `RenderOptions`, `NodeRenderer`                       |
+| **parser.ts**   | Parser types     | `IParser`, `CstContext`, `CstVisitor`                                  |
+| **dom.ts**      | DOM event types  | `MouseEvent` (browser event types)                                     |
 
 **Critical Type Pattern: Discriminated Unions**
 
 ```typescript
 // NodeType union enables exhaustive checking
 export type NodeType =
-  | 'Screen' | 'Modal' | 'Drawer'
-  | 'Button' | 'Link' | 'Image'
-  | 'Layout' | 'List' | 'Navigator'
-  // ... 50+ types
+  | 'Screen'
+  | 'Modal'
+  | 'Drawer'
+  | 'Button'
+  | 'Link'
+  | 'Image'
+  | 'Layout'
+  | 'List'
+  | 'Navigator'
+// ... 50+ types
 
 // Generic AstNode with typed props
 export interface AstNode<P extends NodeProps = NodeProps> {
@@ -390,7 +402,7 @@ export type ProtoError =
 
 // Type-safe access to stage-specific properties
 if (error.stage === 'parser') {
-  console.log(error.rule)  // TypeScript knows this exists
+  console.log(error.rule) // TypeScript knows this exists
 }
 ```
 
@@ -948,43 +960,50 @@ export function useParse(options?: { currentScreen?: string }) {
   const [metadata, setMetadata] = useState<RouteMetadata>({})
   const [previousAst, setPreviousAst] = useState<AstNode[]>([])
 
-  const handleParse = useCallback((text: string) => {
-    try {
-      // PHASE 1-4: Lexer → Parser → AST Builder → ID Generation
-      const astWithErrors = parseAndBuildAst(text, previousAst)
+  const handleParse = useCallback(
+    (text: string) => {
+      try {
+        // PHASE 1-4: Lexer → Parser → AST Builder → ID Generation
+        const astWithErrors = parseAndBuildAst(text, previousAst)
 
-      // Store for next parse (ID reuse)
-      setPreviousAst(astWithErrors)
+        // Store for next parse (ID reuse)
+        setPreviousAst(astWithErrors)
 
-      // PHASE 5: Render AST to HTML
-      const html = astToHtmlStringPreview(astWithErrors, {
-        currentScreen: options?.currentScreen
-      })
+        // PHASE 5: Render AST to HTML
+        const html = astToHtmlStringPreview(astWithErrors, {
+          currentScreen: options?.currentScreen,
+        })
 
-      // Extract route metadata
-      const routeMetadata = routeManagerGateway.getRouteMetadata()
+        // Extract route metadata
+        const routeMetadata = routeManagerGateway.getRouteMetadata()
 
-      // Update state
-      setAst(astWithErrors)
-      setRenderedHtml(html)
-      setErrors(astWithErrors.__errors || [])
-      setMetadata(routeMetadata)
+        // Update state
+        setAst(astWithErrors)
+        setRenderedHtml(html)
+        setErrors(astWithErrors.__errors || [])
+        setMetadata(routeMetadata)
+      } catch (error) {
+        // Graceful degradation - show error in UI
+        setErrors([
+          {
+            stage: 'editor',
+            severity: 'fatal',
+            code: ERROR_CODES.EDIT_PARSE_FAILURE,
+            message: error.message,
+          },
+        ])
+      }
+    },
+    [previousAst, options?.currentScreen]
+  )
 
-    } catch (error) {
-      // Graceful degradation - show error in UI
-      setErrors([{
-        stage: 'editor',
-        severity: 'fatal',
-        code: ERROR_CODES.EDIT_PARSE_FAILURE,
-        message: error.message
-      }])
-    }
-  }, [previousAst, options?.currentScreen])
-
-  const navigateToScreen = useCallback((screen: string) => {
-    routeManagerGateway.navigateTo(screen)
-    handleParse(/* re-render with new currentScreen */)
-  }, [handleParse])
+  const navigateToScreen = useCallback(
+    (screen: string) => {
+      routeManagerGateway.navigateTo(screen)
+      handleParse(/* re-render with new currentScreen */)
+    },
+    [handleParse]
+  )
 
   const createClickHandler = useCallback(() => {
     return routeManagerGateway.createNavigationClickHandler((screen) => {
@@ -999,12 +1018,13 @@ export function useParse(options?: { currentScreen?: string }) {
     metadata,
     handleParse,
     navigateToScreen,
-    createClickHandler
+    createClickHandler,
   }
 }
 ```
 
 **Why this matters:**
+
 - Single source of truth for parsing state
 - Handles debouncing, error recovery, ID reuse
 - Integrates route manager for navigation
@@ -1132,9 +1152,14 @@ export function DocsCodePreview({ code }: { code: string }) {
 
   return (
     <div className="docs-preview">
-      <pre><code>{code}</code></pre>
+      <pre>
+        <code>{code}</code>
+      </pre>
       {errors.length === 0 ? (
-        <div className="preview" dangerouslySetInnerHTML={{ __html: renderedHtml }} />
+        <div
+          className="preview"
+          dangerouslySetInnerHTML={{ __html: renderedHtml }}
+        />
       ) : (
         <ErrorList errors={errors} />
       )}
@@ -1187,6 +1212,7 @@ export function DocsCodePreview({ code }: { code: string }) {
 ### Web Application Key Patterns
 
 **1. Debounced Parsing:**
+
 ```typescript
 useEffect(() => {
   const timer = setTimeout(() => handleParse(input), 300)
@@ -1195,6 +1221,7 @@ useEffect(() => {
 ```
 
 **2. Error Boundaries:**
+
 ```typescript
 <ErrorBoundary fallback={<ErrorDisplay />}>
   <PlaygroundPage />
@@ -1202,18 +1229,22 @@ useEffect(() => {
 ```
 
 **3. Iframe Sandboxing:**
+
 ```typescript
 <iframe sandbox="allow-scripts allow-same-origin" />
 ```
+
 Prevents preview code from accessing parent window.
 
 **4. ID Reuse for React Performance:**
+
 ```typescript
 const astWithErrors = parseAndBuildAst(text, previousAst)
-setPreviousAst(astWithErrors)  // Next parse reuses IDs
+setPreviousAst(astWithErrors) // Next parse reuses IDs
 ```
 
 **5. Route Manager Integration:**
+
 ```typescript
 const createClickHandler = () => {
   return routeManagerGateway.createNavigationClickHandler((screen) => {
@@ -1282,8 +1313,8 @@ export function activate(context: vscode.ExtensionContext) {
   // Initialize text document synchronizer (300ms debounce)
   synchronizer = new TextDocumentSynchronizer({
     debounceMs: 300,
-    filterLanguageIds: ['proto-typed'],  // Only .pty files
-    logChanges: true
+    filterLanguageIds: ['proto-typed'], // Only .pty files
+    logChanges: true,
   })
 
   // Register IntelliSense completion provider
@@ -1291,7 +1322,11 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.languages.registerCompletionItemProvider(
       { language: 'proto-typed' },
       createCompletionProvider(),
-      ':', '-', '@', '#', '_'  // Trigger characters
+      ':',
+      '-',
+      '@',
+      '#',
+      '_' // Trigger characters
     )
   )
 
@@ -1307,11 +1342,14 @@ export function activate(context: vscode.ExtensionContext) {
         currentPanel.reveal(columnToShowIn)
       } else {
         // Create new panel
-        currentPanel = PlaygroundPanel.create({
-          extensionContext: context,
-          messageRouter,
-          synchronizer
-        }, columnToShowIn)
+        currentPanel = PlaygroundPanel.create(
+          {
+            extensionContext: context,
+            messageRouter,
+            synchronizer,
+          },
+          columnToShowIn
+        )
 
         // Clear reference when panel is closed
         currentPanel.onDidDispose(() => {
@@ -1402,12 +1440,20 @@ export type Message =
   | { type: 'EXPORT_COMPLETE'; payload: { success: boolean; path?: string } }
 
   // Webview → Host
-  | { type: 'REQUEST_EXPORT'; payload: { html: string; suggestedFileName: string } }
-  | { type: 'LOG_EVENT'; payload: { level: 'info' | 'warn' | 'error'; message: string } }
+  | {
+      type: 'REQUEST_EXPORT'
+      payload: { html: string; suggestedFileName: string }
+    }
+  | {
+      type: 'LOG_EVENT'
+      payload: { level: 'info' | 'warn' | 'error'; message: string }
+    }
   | { type: 'NAVIGATION_UPDATE'; payload: { screen: string } }
   | { type: 'REQUEST_SET_TEXT'; payload: { text: string; reason: string } }
 
-export type MessageHandler<T extends Message> = (message: T) => void | Promise<void>
+export type MessageHandler<T extends Message> = (
+  message: T
+) => void | Promise<void>
 ```
 
 #### **4. Text Document Synchronizer (`utils/text-document-synchronizer.ts`)**
@@ -1460,20 +1506,29 @@ export class TextDocumentSynchronizer {
         type: 'TEXT_CHANGED',
         payload: {
           text: event.document.getText(),
-          changes: event.contentChanges.map(change => ({
+          changes: event.contentChanges.map((change) => ({
             range: {
-              start: { line: change.range.start.line, character: change.range.start.character },
-              end: { line: change.range.end.line, character: change.range.end.character }
+              start: {
+                line: change.range.start.line,
+                character: change.range.start.character,
+              },
+              end: {
+                line: change.range.end.line,
+                character: change.range.end.character,
+              },
             },
-            text: change.text
-          }))
-        }
+            text: change.text,
+          })),
+        },
       })
     }, this.debounceMs)
   }
 
   private handleEditorChange(editor: vscode.TextEditor | undefined) {
-    if (!editor || !this.filterLanguageIds.includes(editor.document.languageId)) {
+    if (
+      !editor ||
+      !this.filterLanguageIds.includes(editor.document.languageId)
+    ) {
       return
     }
 
@@ -1482,8 +1537,8 @@ export class TextDocumentSynchronizer {
       type: 'TEXT_CHANGED',
       payload: {
         text: editor.document.getText(),
-        changes: []
-      }
+        changes: [],
+      },
     })
   }
 }
@@ -1500,7 +1555,9 @@ export function createCompletionProvider(): vscode.Disposable {
         document: vscode.TextDocument,
         position: vscode.Position
       ): vscode.CompletionItem[] {
-        const linePrefix = document.lineAt(position).text.substr(0, position.character)
+        const linePrefix = document
+          .lineAt(position)
+          .text.substr(0, position.character)
 
         const completions: vscode.CompletionItem[] = []
 
@@ -1510,13 +1567,13 @@ export function createCompletionProvider(): vscode.Disposable {
             label: 'screen',
             kind: vscode.CompletionItemKind.Keyword,
             detail: 'Create a new screen',
-            insertText: new vscode.SnippetString('screen ${1:Name}:\n\t$0')
+            insertText: new vscode.SnippetString('screen ${1:Name}:\n\t$0'),
           },
           {
             label: 'modal',
             kind: vscode.CompletionItemKind.Keyword,
             detail: 'Create a modal',
-            insertText: new vscode.SnippetString('modal ${1:Name}:\n\t$0')
+            insertText: new vscode.SnippetString('modal ${1:Name}:\n\t$0'),
           }
         )
 
@@ -1526,21 +1583,28 @@ export function createCompletionProvider(): vscode.Disposable {
           { label: 'container-narrow:', kind: vscode.CompletionItemKind.Class },
           { label: 'stack:', kind: vscode.CompletionItemKind.Class },
           { label: 'stack-tight:', kind: vscode.CompletionItemKind.Class },
-          { label: 'row-center:', kind: vscode.CompletionItemKind.Class },
+          { label: 'row-center:', kind: vscode.CompletionItemKind.Class }
           // ... 30+ layout completions
         )
 
         // Button variants
         completions.push(
           { label: 'button-primary', kind: vscode.CompletionItemKind.Function },
-          { label: 'button-secondary', kind: vscode.CompletionItemKind.Function },
+          {
+            label: 'button-secondary',
+            kind: vscode.CompletionItemKind.Function,
+          }
           // ... button variants
         )
 
         return completions
-      }
+      },
     },
-    ':', '-', '@', '#', '_'  // Trigger characters
+    ':',
+    '-',
+    '@',
+    '#',
+    '_' // Trigger characters
   )
 }
 ```
@@ -1577,8 +1641,8 @@ export function usePlaygroundState() {
       type: 'REQUEST_EXPORT',
       payload: {
         html: renderedHtml,
-        suggestedFileName: 'prototype.html'
-      }
+        suggestedFileName: 'prototype.html',
+      },
     })
   }, [renderedHtml, sendMessage])
 
@@ -1588,7 +1652,7 @@ export function usePlaygroundState() {
     renderedHtml,
     errors,
     metadata,
-    requestExport
+    requestExport,
   }
 }
 ```
@@ -1620,12 +1684,12 @@ export function useVSCodeMessaging() {
     vscode.postMessage(message)
   }, [])
 
-  const registerHandler = useCallback(<T extends Message>(
-    type: T['type'],
-    handler: MessageHandler<T>
-  ) => {
-    handlers.current.set(type, handler)
-  }, [])
+  const registerHandler = useCallback(
+    <T extends Message>(type: T['type'], handler: MessageHandler<T>) => {
+      handlers.current.set(type, handler)
+    },
+    []
+  )
 
   return { sendMessage, registerHandler }
 }
@@ -1675,6 +1739,7 @@ export function useVSCodeMessaging() {
 ### Extension Key Patterns
 
 **1. Singleton Webview Panel:**
+
 ```typescript
 if (currentPanel) {
   currentPanel.reveal()  // Show existing panel
@@ -1684,6 +1749,7 @@ if (currentPanel) {
 ```
 
 **2. Type-Safe Message Passing:**
+
 ```typescript
 // Discriminated union ensures type safety
 type Message =
@@ -1692,11 +1758,12 @@ type Message =
 
 // Type-safe handler registration
 messageRouter.registerHandler('TEXT_CHANGED', (msg) => {
-  console.log(msg.payload.text)  // TypeScript knows this exists
+  console.log(msg.payload.text) // TypeScript knows this exists
 })
 ```
 
 **3. Debounced Synchronization:**
+
 ```typescript
 setTimeout(() => {
   messageRouter.sendToWebview({ type: 'TEXT_CHANGED', payload: { text } })
@@ -1704,6 +1771,7 @@ setTimeout(() => {
 ```
 
 **4. Webview State Persistence:**
+
 ```typescript
 // VSCode API provides state persistence across reloads
 const vscode = acquireVsCodeApi()
@@ -1715,16 +1783,13 @@ setInput(previousState?.input || '')
 ```
 
 **5. Snippet Support:**
+
 ```json
 // snippets/snippets.json
 {
   "Screen with Container": {
     "prefix": "screen-container",
-    "body": [
-      "screen ${1:Name}:",
-      "\tcontainer:",
-      "\t\t${2:content}"
-    ]
+    "body": ["screen ${1:Name}:", "\tcontainer:", "\t\t${2:content}"]
   }
 }
 ```

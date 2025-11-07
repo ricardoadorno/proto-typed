@@ -1,4 +1,8 @@
-import { elementStyles, getButtonClasses, getButtonInlineStyles } from './styles/styles'
+import {
+  elementStyles,
+  getButtonClasses,
+  getButtonInlineStyles,
+} from './styles/styles'
 import { NavigationMediator } from '../infrastructure/navigation-mediator'
 import {
   getLucideSvg,

@@ -46,4 +46,3 @@ screen ForgotPassword:
 `
 
 export default login
-

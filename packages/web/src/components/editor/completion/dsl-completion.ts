@@ -248,8 +248,7 @@ export function registerDSLCompletionProvider(monaco: Monaco) {
           insertText: '> [${1:Link Text}](${2:destination})',
           insertTextRules:
             monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-          documentation:
-            'Inline link\nExample: > [Go to Settings](Settings)',
+          documentation: 'Inline link\nExample: > [Go to Settings](Settings)',
           range: range,
         },
         {

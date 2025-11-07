@@ -76,7 +76,7 @@ class Logger {
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
-      fractionalSecondDigits: 3
+      fractionalSecondDigits: 3,
     })
     return `[${time}]`
   }
@@ -114,13 +114,14 @@ class Logger {
     const formattedMessage = this.formatMessage(level, message)
 
     // Choose console method based on level
-    const consoleMethod = level === 'error'
-      ? console.error
-      : level === 'warn'
-      ? console.warn
-      : level === 'debug'
-      ? console.debug
-      : console.log
+    const consoleMethod =
+      level === 'error'
+        ? console.error
+        : level === 'warn'
+          ? console.warn
+          : level === 'debug'
+            ? console.debug
+            : console.log
 
     // Log message
     consoleMethod(formattedMessage)
