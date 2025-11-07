@@ -21,10 +21,6 @@ import type {
 import { InsertTextFormat } from 'vscode-languageserver-types'
 import { TextDocument } from 'vscode-languageserver-textdocument'
 
-// Re-export DiagnosticSeverity as a runtime value for toLspSeverity
-import * as _vscode from 'vscode'
-const DiagnosticSeverity = _vscode.DiagnosticSeverity
-
 export function activateVSCodeAdapter(
   vscodeApi: typeof vscode,
   context: vscode.ExtensionContext,
@@ -458,14 +454,15 @@ function isSameDiagnostic(
 function toLspSeverity(
   severity: vscode.DiagnosticSeverity | undefined
 ): Diagnostic['severity'] {
+  // Map vscode.DiagnosticSeverity enum values (0-3) to LSP severity (1-4)
   switch (severity) {
-    case DiagnosticSeverity.Error:
+    case 0: // vscode.DiagnosticSeverity.Error
       return 1
-    case DiagnosticSeverity.Warning:
+    case 1: // vscode.DiagnosticSeverity.Warning
       return 2
-    case DiagnosticSeverity.Information:
+    case 2: // vscode.DiagnosticSeverity.Information
       return 3
-    case DiagnosticSeverity.Hint:
+    case 3: // vscode.DiagnosticSeverity.Hint
       return 4
     default:
       return 3
