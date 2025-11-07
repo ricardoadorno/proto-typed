@@ -14,6 +14,7 @@ import {
   ERROR_CODES,
   sanitizeErrorMessage,
 } from '@proto-typed/core'
+import { logger } from '@/lib/logger'
 
 /**
  * @interface UseParseResult
@@ -52,10 +53,20 @@ interface UseParseResult {
  * @returns {UseParseResult} An object containing the state and functions for parsing and rendering the DSL.
  */
 export const useParse = (): UseParseResult => {
-  const localRouteManager = useMemo(() => new RouteManager(), [])
+  // Create scoped logger for this hook
+  const parseLogger = useMemo(() => logger.scope({ hook: 'use-parse' }), [])
+
+  const localRouteManager = useMemo(() => {
+    parseLogger.debug('Initializing RouteManager')
+    return new RouteManager()
+  }, [parseLogger])
+
   const routeManagerGateway = useMemo(
-    () => createRouteManagerGateway(localRouteManager),
-    [localRouteManager]
+    () => {
+      parseLogger.debug('Creating RouteManager gateway')
+      return createRouteManagerGateway(localRouteManager)
+    },
+    [localRouteManager, parseLogger]
   )
 
   const [ast, setAst] = useState<AstNode[] | AstNode>([])
@@ -76,6 +87,7 @@ export const useParse = (): UseParseResult => {
   const handleParse = useCallback(
     async (input: string) => {
       if (!input.trim()) {
+        parseLogger.debug('Input is empty, resetting state')
         setAst([])
         setAstResultJson('')
         setRenderedHtml('')
@@ -101,6 +113,9 @@ export const useParse = (): UseParseResult => {
         return
       }
 
+      const endTimer = parseLogger.time('Parse and render DSL')
+      parseLogger.info('Starting parse', { inputLength: input.length })
+
       setIsLoading(true)
       setError(null)
 
@@ -109,53 +124,84 @@ export const useParse = (): UseParseResult => {
       const collectedErrors: ProtoError[] = []
 
       try {
+        parseLogger.debug('Calling parseAndBuildAst')
         const parsedAst = parseAndBuildAst(input)
 
         // Extract errors collected during parsing (if any)
         const astWithErrors = parsedAst as AstWithErrors
         if (astWithErrors.__errors) {
           const parsingErrors = astWithErrors.__errors as ProtoError[]
+          parseLogger.warn('Parsing completed with errors', {
+            errorCount: parsingErrors.length,
+          })
           collectedErrors.push(...parsingErrors)
           delete astWithErrors.__errors // Clean up temporary property
+        } else {
+          parseLogger.debug('Parsing completed successfully')
         }
 
         // Initialize routes with parsed AST to generate metadata
+        parseLogger.debug('Initializing routes from AST')
         routeManagerGateway.initialize(parsedAst)
         const newMetadata = routeManagerGateway.getRouteMetadata()
+        parseLogger.debug('Route metadata generated', {
+          screenCount: newMetadata.screens.length,
+          componentCount: newMetadata.components.length,
+          modalCount: newMetadata.modals.length,
+          drawerCount: newMetadata.drawers.length,
+          defaultScreen: newMetadata.defaultScreen,
+        })
 
         // Handle case zero: when there are no routes/screens defined yet
         let newCurrentScreen: string | null
         if (newMetadata.screens.length === 0) {
           // No screens defined - create default metadata for empty case
+          parseLogger.debug('No screens defined in DSL')
           newCurrentScreen = null
         } else if (currentScreen) {
           const screenExists = newMetadata.screens.some(
             (screen) => screen.name === currentScreen
           )
           if (screenExists) {
+            parseLogger.debug('Keeping current screen', { screen: currentScreen })
             newCurrentScreen = currentScreen
           } else {
+            parseLogger.debug('Current screen no longer exists, switching to default', {
+              oldScreen: currentScreen,
+              newScreen: newMetadata.defaultScreen,
+            })
             newCurrentScreen = newMetadata.defaultScreen || null
           }
         } else {
+          parseLogger.debug('Setting default screen', { screen: newMetadata.defaultScreen })
           newCurrentScreen = newMetadata.defaultScreen || null
         }
 
         // Generate rendered HTML with the determined screen
+        parseLogger.debug('Rendering AST to HTML', { currentScreen: newCurrentScreen })
         const renderResult = astToHtmlStringPreview(
           parsedAst,
           { currentScreen: newCurrentScreen || undefined },
           localRouteManager
         )
+        parseLogger.debug('HTML rendering completed', {
+          htmlLength: renderResult.html.length,
+          hasErrors: renderResult.errors && renderResult.errors.length > 0,
+        })
 
         // Extract render errors (if any)
         if (renderResult.errors && renderResult.errors.length > 0) {
+          parseLogger.warn('Rendering completed with errors', {
+            errorCount: renderResult.errors.length,
+          })
           collectedErrors.push(...renderResult.errors)
         }
 
         // Register navigation handlers so clicks inside the rendered preview update React state
+        parseLogger.debug('Registering navigation handlers')
         routeManagerGateway.setHandlers({
           onScreenNavigation: (screenName: string) => {
+            parseLogger.info('Navigation triggered', { to: screenName })
             // Re-render HTML for the new current screen
             const updatedRenderResult = astToHtmlStringPreview(
               parsedAst,
@@ -177,8 +223,10 @@ export const useParse = (): UseParseResult => {
             setMetadata(routeManagerGateway.getRouteMetadata())
           },
           onBackNavigation: () => {
+            parseLogger.info('Back navigation triggered')
             const meta = routeManagerGateway.getRouteMetadata()
             const current = meta.currentScreen || null
+            parseLogger.debug('Navigating back', { to: current })
             const updatedRenderResult = astToHtmlStringPreview(
               parsedAst,
               { currentScreen: current || undefined },
@@ -205,9 +253,21 @@ export const useParse = (): UseParseResult => {
         setRenderedHtml(renderResult.html)
         setMetadata(newMetadata)
         setError(null)
+
+        parseLogger.info('Parse completed successfully', {
+          nodeCount: Array.isArray(parsedAst) ? parsedAst.length : 1,
+          currentScreen: newCurrentScreen,
+          totalErrors: collectedErrors.length,
+        })
+
+        endTimer()
       } catch (err: unknown) {
         const errorMessage =
           (err as Error).message || 'An error occurred during parsing'
+
+        parseLogger.error('Parse failed with exception', err, {
+          errorMessage,
+        })
 
         // Convert to ProtoError for ErrorBus
         const protoError: ProtoError = {
@@ -222,16 +282,21 @@ export const useParse = (): UseParseResult => {
 
         setAstResultJson('')
         setError(errorMessage)
+
+        endTimer()
       } finally {
         // Emit all collected errors to ErrorBus
         if (collectedErrors.length > 0) {
+          parseLogger.debug('Emitting errors to ErrorBus', {
+            errorCount: collectedErrors.length,
+          })
           ErrorBus.get().bulk(collectedErrors)
         }
 
         setIsLoading(false)
       }
     },
-    [currentScreen, routeManagerGateway, localRouteManager]
+    [currentScreen, routeManagerGateway, localRouteManager, parseLogger]
   )
 
   /**
@@ -239,11 +304,15 @@ export const useParse = (): UseParseResult => {
    * @description A function to programmatically navigate to a specific screen.
    * @param {string} screenName - The name of the screen to navigate to.
    */
-  const navigateToScreen = (screenName: string) => {
-    routeManagerGateway.navigateToScreen(screenName)
-    setMetadata(routeManagerGateway.getRouteMetadata())
-    setCurrentScreen(screenName)
-  }
+  const navigateToScreen = useCallback(
+    (screenName: string) => {
+      parseLogger.info('Programmatic navigation', { to: screenName })
+      routeManagerGateway.navigateToScreen(screenName)
+      setMetadata(routeManagerGateway.getRouteMetadata())
+      setCurrentScreen(screenName)
+    },
+    [routeManagerGateway, parseLogger]
+  )
 
   /**
    * @function createClickHandler
@@ -251,7 +320,10 @@ export const useParse = (): UseParseResult => {
    * to handle navigation events within the preview.
    * @returns {(e: React.MouseEvent) => void} A click handler function.
    */
-  const createClickHandler = () => routeManagerGateway.createClickHandler()
+  const createClickHandler = useCallback(() => {
+    parseLogger.debug('Creating click handler for preview')
+    return routeManagerGateway.createClickHandler()
+  }, [routeManagerGateway, parseLogger])
 
   return {
     ast,

@@ -20,6 +20,7 @@ coverage
 # Test results
 playwright-report
 test-results
+__snapshots__
 
 # Logs
 *.log
