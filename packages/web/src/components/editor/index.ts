@@ -25,9 +25,9 @@
  */
 
 import { EditorProps, Monaco } from '@monaco-editor/react'
-import { registerDSLCompletionProvider } from './completion/dsl-completion'
-import { registerDSLLanguage } from './language/dsl-language'
+import { attachToMonaco, type LanguageHost } from '@proto-typed/core/language'
 import { registerDSLTheme } from './theme/dsl-theme'
+import type * as monacoEditor from 'monaco-editor'
 
 // Re-export components and hooks
 export { DSLEditor } from './components/dsl-editor'
@@ -41,10 +41,34 @@ export { useMonacoDSL } from './hooks/use-monaco-dsl'
  *
  * @param monaco - Monaco instance from @monaco-editor/react
  */
-export function initializeMonacoDSL(monaco: Monaco) {
-  registerDSLLanguage(monaco)
+export async function initializeMonacoDSL(
+  monaco: Monaco,
+  editor: monacoEditor.editor.IStandaloneCodeEditor,
+  languageHost: LanguageHost,
+  onDispose: (uri: string) => void
+) {
   registerDSLTheme(monaco)
-  registerDSLCompletionProvider(monaco)
+
+  await attachToMonaco(
+    monaco as unknown as typeof monacoEditor,
+    editor,
+    languageHost,
+    {
+      getOnigWasm: async () => {
+        const response = await fetch('/onig.wasm')
+        if (!response.ok) {
+          throw new Error('Failed to load Oniguruma WASM bundle from /onig.wasm')
+        }
+        return response.arrayBuffer()
+      },
+    }
+  )
+
+  const model = editor.getModel()
+  const uri = model?.uri.toString()
+  if (uri) {
+    editor.onDidDispose(() => onDispose(uri))
+  }
 }
 
 /**

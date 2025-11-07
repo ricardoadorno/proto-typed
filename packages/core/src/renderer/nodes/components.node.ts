@@ -217,9 +217,7 @@ export function renderComponentInstance(
   // Scan first pass of stringified node for $identifier tokens
   const templateText = JSON.stringify(componentElements)
   const placeholderMatches = Array.from(
-    templateText.matchAll(
-      /\$([a-z][a-zA-Z0-9]*(?:-[a-z][a-zA-Z0-9]*)*)/g
-    )
+    templateText.matchAll(/\$([a-z][a-zA-Z0-9]*(?:-[a-z][a-zA-Z0-9]*)*)/g)
   )
   const orderedUniqueNames: string[] = []
   placeholderMatches.forEach((m) => {

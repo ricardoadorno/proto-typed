@@ -4,7 +4,18 @@
  */
 
 import * as vscode from 'vscode'
-import { createCompletionProvider } from './language/completion'
+import {
+  activateVSCodeAdapter,
+  type LanguageHost,
+} from '@proto-typed/core/language'
+import {
+  parseAndBuildAst,
+  ErrorBus,
+  ERROR_CODES,
+  sanitizeErrorMessage,
+  type ProtoError,
+  type AstWithErrors,
+} from '@proto-typed/core'
 import { MessageRouter } from './messaging/message-router'
 import { TextDocumentSynchronizer } from './utils/text-document-synchronizer'
 import { PlaygroundPanel } from './panels/playground/playground-panel'
@@ -20,8 +31,79 @@ let currentPanel: PlaygroundPanel | undefined = undefined
 let messageRouter: MessageRouter | undefined = undefined
 let synchronizer: TextDocumentSynchronizer | undefined = undefined
 
+function createLanguageHost(): {
+  host: LanguageHost
+  clear: (uri: string) => void
+  dispose: () => void
+} {
+  const bus = ErrorBus.get()
+  const errorCache = new Map<string, ProtoError[]>()
+
+  const host: LanguageHost = {
+    parse(text, uri) {
+      let ast: unknown = null
+      let errors: ProtoError[] = []
+
+      try {
+        const parsed = parseAndBuildAst(text)
+        const astWithErrors = parsed as AstWithErrors
+        if ('__errors' in astWithErrors && Array.isArray(astWithErrors.__errors)) {
+          errors = [...(astWithErrors.__errors as ProtoError[])]
+          delete (astWithErrors as Partial<AstWithErrors>).__errors
+        }
+        ast = parsed
+      } catch (error) {
+        const message = sanitizeErrorMessage(error)
+        errors = [
+          {
+            stage: 'editor',
+            severity: 'fatal',
+            code: ERROR_CODES.EDIT_FATAL_ERROR,
+            message,
+          },
+        ]
+        ast = null
+      }
+
+      errorCache.set(uri, errors)
+      rebuildErrorBus(bus, errorCache)
+      return { ast, errors }
+    },
+
+    onErrors(uri, cb) {
+      return bus.subscribe(() => {
+        cb(errorCache.get(uri) ?? [])
+      })
+    },
+  }
+
+  return {
+    host,
+    clear(uri: string) {
+      errorCache.delete(uri)
+      rebuildErrorBus(bus, errorCache)
+    },
+    dispose() {
+      errorCache.clear()
+      bus.clear()
+    },
+  }
+}
+
+function rebuildErrorBus(bus: ErrorBus, cache: Map<string, ProtoError[]>) {
+  bus.clear()
+  for (const errors of cache.values()) {
+    if (errors.length) {
+      bus.bulk(errors)
+    }
+  }
+}
+
 export function activate(context: vscode.ExtensionContext) {
   console.log('🚀 [Proto-Typed] Extension activating...')
+
+  const languageIntegration = createLanguageHost()
+  activateVSCodeAdapter(vscode, context, languageIntegration.host)
 
   // Initialize message router
   messageRouter = new MessageRouter({
@@ -36,8 +118,13 @@ export function activate(context: vscode.ExtensionContext) {
     logChanges: true,
   })
 
-  // Register language features
-  context.subscriptions.push(createCompletionProvider())
+  context.subscriptions.push(
+    vscode.workspace.onDidCloseTextDocument((doc) => {
+      if (doc.languageId === 'proto-typed') {
+        languageIntegration.clear(doc.uri.toString())
+      }
+    })
+  )
 
   // Register message handlers
   setupMessageHandlers(context)
@@ -92,6 +179,9 @@ export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(showPreviewCommand)
   context.subscriptions.push(messageRouter)
   context.subscriptions.push(synchronizer)
+  context.subscriptions.push({
+    dispose: () => languageIntegration.dispose(),
+  })
 
   console.log('✅ [Proto-Typed] Extension activated')
 

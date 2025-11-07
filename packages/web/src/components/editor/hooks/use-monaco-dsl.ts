@@ -24,9 +24,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useMonaco } from '@monaco-editor/react'
 import { initializeMonacoDSL } from '../index'
-import { ErrorBus } from '@proto-typed/core'
-import type { ProtoError, Severity } from '@proto-typed/core'
-import { SEVERITY_RANK } from '@proto-typed/core'
+import { createLanguageHost } from '../language-host'
 
 // Extract editor type from Monaco
 type IStandaloneCodeEditor = Parameters<
@@ -46,50 +44,37 @@ export function useMonacoDSL() {
   const [error, setError] = useState<string | null>(null)
   const editorRef = useRef<IStandaloneCodeEditor | null>(null)
   const [isEditorMounted, setIsEditorMounted] = useState(false)
+  const hostRef = useRef<ReturnType<typeof createLanguageHost> | null>(null)
 
   useEffect(() => {
-    if (!monaco || isInitialized) return
+    if (!monaco || !isEditorMounted || !editorRef.current || hostRef.current) {
+      return
+    }
+
+    const integration = createLanguageHost()
+    hostRef.current = integration
+
     ;(async () => {
       try {
-        await initializeMonacoDSL(monaco)
+        setError(null)
+        await initializeMonacoDSL(
+          monaco,
+          editorRef.current!,
+          integration.host,
+          (uri) => integration.clear(uri)
+        )
         setIsInitialized(true)
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error')
       }
     })()
-  }, [monaco, isInitialized])
 
-  useEffect(() => {
-    const editor = editorRef.current
-    if (!editor || !monaco || !isEditorMounted) return
-    const model = editor.getModel()
-    if (!model) return
-
-    const applyMarkers = (errors: ProtoError[]) => {
-      if (!errors.length) {
-        monaco.editor.setModelMarkers(model, 'proto-typed', [])
-        return
-      }
-
-      const bestByLine = getBestErrorPerLine(errors)
-      const markers = [...bestByLine.values()].map((err) => ({
-        startLineNumber: err.line || 1,
-        startColumn: err.column || 1,
-        endLineNumber: err.line || 1,
-        endColumn: model.getLineMaxColumn(err.line || 1),
-        message: formatErrorMessage(err),
-        severity: toMonacoSeverity(err.severity),
-        source: `proto-typed-${err.stage}`,
-      }))
-
-      monaco.editor.setModelMarkers(model, 'proto-typed', markers)
+    return () => {
+      integration.dispose()
+      hostRef.current = null
+      setIsInitialized(false)
     }
-
-    // Subscribe will immediately call applyMarkers with current errors
-    const unsubscribe = ErrorBus.get().subscribe(applyMarkers)
-
-    return () => unsubscribe()
-  }, [isInitialized, monaco, isEditorMounted])
+  }, [monaco, isEditorMounted])
 
   const handleEditorMount = (editor: IStandaloneCodeEditor) => {
     editorRef.current = editor
@@ -97,63 +82,4 @@ export function useMonacoDSL() {
   }
 
   return { monaco, isInitialized, error, editorRef, handleEditorMount }
-}
-
-// ============================================================
-// Helper Functions for Diagnostics
-// ============================================================
-
-/**
- * Groups errors by line, keeping only the highest severity error per line
- * Prevents visual clutter from multiple markers on the same line
- */
-function getBestErrorPerLine(errors: ProtoError[]): Map<number, ProtoError> {
-  const bestByLine = new Map<number, ProtoError>()
-
-  for (const err of errors) {
-    if (!err.line) continue
-
-    const prev = bestByLine.get(err.line)
-    if (!prev || SEVERITY_RANK[err.severity] > SEVERITY_RANK[prev.severity]) {
-      bestByLine.set(err.line, err)
-    }
-  }
-
-  return bestByLine
-}
-
-/**
- * Formats error message for Monaco display
- * Format: [stage] message — hint
- */
-function formatErrorMessage(err: ProtoError): string {
-  let msg = `[${err.stage}] ${err.message}`
-  if (err.hint) {
-    msg += ` — ${err.hint}`
-  }
-  return msg
-}
-
-export enum MarkerSeverity {
-  Hint = 1,
-  Info = 2,
-  Warning = 4,
-  Error = 8,
-}
-
-/**
- * Converts Proto-Typed Severity to Monaco MarkerSeverity
- */
-function toMonacoSeverity(severity: Severity): MarkerSeverity {
-  switch (severity) {
-    case 'fatal':
-    case 'error':
-      return MarkerSeverity.Error
-    case 'warning':
-      return MarkerSeverity.Warning
-    case 'info':
-      return MarkerSeverity.Info
-    default:
-      return MarkerSeverity.Hint
-  }
 }

@@ -15,7 +15,7 @@
  */
 
 // Language identifier for Monaco Editor registration
-export const DSL_LANGUAGE_ID = 'proto-typed-dsl'
+export const DSL_LANGUAGE_ID = 'proto-typed'
 
 /**
  * Token types for syntax highlighting based on actual DSL implementation

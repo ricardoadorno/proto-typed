@@ -57,34 +57,30 @@ export function DSLEditor({
     onEditorReady?.(editor)
   }
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center h-full bg-red-900/20">
-        <div className="text-center">
-          <div className="text-red-400 mb-2">Failed to initialize editor</div>
-          <div className="text-sm text-red-300">{error}</div>
-        </div>
-      </div>
-    )
-  }
-
-  if (!isInitialized) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <LoadingSpinner message="Loading DSL editor..." />
-      </div>
-    )
-  }
-
   return (
-    <Editor
-      height={height}
-      language={DSL_LANGUAGE_ID}
-      theme={theme}
-      value={value}
-      onChange={onChange}
-      options={getDSLEditorOptions(options)}
-      onMount={handleEditorDidMount}
-    />
+    <div className="relative h-full">
+      {!isInitialized && !error && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-background/80 backdrop-blur-sm">
+          <LoadingSpinner message="Loading DSL editor..." />
+        </div>
+      )}
+      {error && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center bg-red-900/20 backdrop-blur-sm">
+          <div className="text-center">
+            <div className="text-red-400 mb-2">Failed to initialize editor</div>
+            <div className="text-sm text-red-300">{error}</div>
+          </div>
+        </div>
+      )}
+      <Editor
+        height={height}
+        language={DSL_LANGUAGE_ID}
+        theme={theme}
+        value={value}
+        onChange={onChange}
+        options={getDSLEditorOptions(options)}
+        onMount={handleEditorDidMount}
+      />
+    </div>
   )
 }

@@ -219,7 +219,14 @@ export function buildInputElement(ctx: CstContext, visitor: CstVisitor) {
   }
 
   // Validate required props
-  validateRequiredProps(visitor, { label: labelValue }, ['label'], 'Input', line, column)
+  validateRequiredProps(
+    visitor,
+    { label: labelValue },
+    ['label'],
+    'Input',
+    line,
+    column
+  )
 
   return {
     type: isSelect ? 'Select' : 'Input',

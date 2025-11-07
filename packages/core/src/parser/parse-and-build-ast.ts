@@ -9,9 +9,10 @@ import type {
   BuilderWithErrors,
 } from '../types/ast-node'
 
-function normalizeDeprecatedLinkSyntax(
-  source: string
-): { text: string; warnings: ProtoError[] } {
+function normalizeDeprecatedLinkSyntax(source: string): {
+  text: string
+  warnings: ProtoError[]
+} {
   const lines = source.split(/\r?\n/)
   const warnings: ProtoError[] = []
   const linkPattern = /@link\[([^\]]+)\](?:\(([^)]*)\))?/g

@@ -33,7 +33,7 @@
         "extensions": [
           ".pty"
         ],
-        "configuration": "./language-configuration.json",
+        "configuration": "./node_modules/@proto-typed/core/language/grammar/language-configuration.json",
         "icon": {
           "light": "./icons/icon-32.png",
           "dark": "./icons/icon-32.png"
@@ -44,7 +44,7 @@
       {
         "language": "proto-typed",
         "scopeName": "source.pty",
-        "path": "./syntaxes/proto-typed.tmLanguage.json"
+        "path": "./node_modules/@proto-typed/core/language/grammar/proto-typed.tmLanguage.json"
       }
     ],
     "snippets": [

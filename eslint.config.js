@@ -29,6 +29,8 @@ export default [
       '**/.turbo/**',
       '**/playwright-report/**',
       '**/test-results/**',
+      '.lintstagedrc.js',
+      '.prettierrc.js',
     ],
   },
 
@@ -64,7 +66,12 @@ export default [
     },
     rules: {
       // Prettier integration
-      'prettier/prettier': 'warn',
+      'prettier/prettier': [
+        'warn',
+        {
+          endOfLine: 'lf',
+        },
+      ],
 
       // TypeScript specific rules
       '@typescript-eslint/no-unused-vars': [

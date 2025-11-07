@@ -221,10 +221,7 @@ function renderIcons(text: string): string {
     .join('')
 }
 
-function wrapInlineContent(
-  html: string,
-  options: InlineRenderOptions
-): string {
+function wrapInlineContent(html: string, options: InlineRenderOptions): string {
   if (!options.wrapInSpan) {
     return html
   }

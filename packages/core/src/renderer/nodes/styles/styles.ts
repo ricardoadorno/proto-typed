@@ -23,8 +23,7 @@ export const elementStyles = {
   buttonLarge: 'h-12 px-6 text-base', // 128x48px equivalent
   buttonMedium: 'h-10 px-5 text-sm', // Default size
   buttonSmall: 'h-9 px-4 text-xs', // Compact text button
-  buttonIcon:
-    'h-10 w-10 p-0 text-base flex items-center justify-center', // Icon-only button
+  buttonIcon: 'h-10 w-10 p-0 text-base flex items-center justify-center', // Icon-only button
 
   // Form elements - using base classes only
   input:
