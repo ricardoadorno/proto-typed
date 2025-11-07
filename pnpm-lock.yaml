@@ -74,9 +74,6 @@ importers:
       '@shikijs/monaco':
         specifier: ^1.3.0
         version: 1.29.2
-      '@shikijs/themes':
-        specifier: ^1.3.0
-        version: 1.29.2
       chevrotain:
         specifier: ^11.0.3
         version: 11.0.3

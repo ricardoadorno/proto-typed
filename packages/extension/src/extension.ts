@@ -40,14 +40,17 @@ function createLanguageHost(): {
   const errorCache = new Map<string, ProtoError[]>()
 
   const host: LanguageHost = {
-    parse(text, uri) {
+    parse(text: string, uri: string) {
       let ast: unknown = null
       let errors: ProtoError[] = []
 
       try {
         const parsed = parseAndBuildAst(text)
         const astWithErrors = parsed as AstWithErrors
-        if ('__errors' in astWithErrors && Array.isArray(astWithErrors.__errors)) {
+        if (
+          '__errors' in astWithErrors &&
+          Array.isArray(astWithErrors.__errors)
+        ) {
           errors = [...(astWithErrors.__errors as ProtoError[])]
           delete (astWithErrors as Partial<AstWithErrors>).__errors
         }
@@ -70,7 +73,7 @@ function createLanguageHost(): {
       return { ast, errors }
     },
 
-    onErrors(uri, cb) {
+    onErrors(uri: string, cb: (errors: ProtoError[]) => void) {
       return bus.subscribe(() => {
         cb(errorCache.get(uri) ?? [])
       })

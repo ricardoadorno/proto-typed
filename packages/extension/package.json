@@ -1,8 +1,9 @@
 {
-  "name": "proto-typed",
+  "name": "proto-typed-vscode-extension",
   "displayName": "proto-typed",
   "description": "VSCode extension for the Proto-Typed.",
   "version": "0.0.1",
+  "type": "module",
   "publisher": "proto-typed",
   "repository": {
     "type": "git",
@@ -94,12 +95,12 @@
     "test": "node ./dist/test/runTest.js",
     "test:update-snapshots": "cross-env UPDATE_SNAPSHOTS=1 pnpm test",
     "vsce:login": "npx @vscode/vsce login proto-typed",
-    "vsce:package": "pnpm -w run compile && npx @vscode/vsce package",
-    "vsce:publish": "pnpm -w run compile && npx @vscode/vsce publish",
-    "vsce:publish:patch": "pnpm -w run compile && npx @vscode/vsce publish patch",
-    "vsce:publish:minor": "pnpm -w run compile && npx @vscode/vsce publish minor",
-    "vsce:publish:major": "pnpm -w run compile && npx @vscode/vsce publish major",
-    "ovsx:publish": "pnpm -w run compile && npx ovsx publish --pat $OVSX_TOKEN"
+    "vsce:package": "npx @vscode/vsce package",
+    "vsce:publish": "npx @vscode/vsce publish",
+    "vsce:publish:patch": "npx @vscode/vsce publish patch",
+    "vsce:publish:minor": "npx @vscode/vsce publish minor",
+    "vsce:publish:major": "npx @vscode/vsce publish major",
+    "ovsx:publish": "npx ovsx publish --pat $OVSX_TOKEN"
   },
   "devDependencies": {
     "@proto-typed/core": "workspace:*",
