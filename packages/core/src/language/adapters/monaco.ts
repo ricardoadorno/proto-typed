@@ -300,20 +300,12 @@ function getCompletionRange(
   model: monacoEditor.editor.ITextModel,
   position: monacoEditor.Position
 ): monacoEditor.IRange {
-  const lineContent = model.getLineContent(position.lineNumber)
-  let startColumn = position.column
-  while (startColumn > 1) {
-    const char = lineContent.charAt(startColumn - 2)
-    if (/\s/.test(char)) {
-      break
-    }
-    startColumn -= 1
-  }
+  const word = model.getWordUntilPosition(position)
   return {
     startLineNumber: position.lineNumber,
-    startColumn,
+    startColumn: word.startColumn,
     endLineNumber: position.lineNumber,
-    endColumn: position.column,
+    endColumn: word.endColumn,
   }
 }
 
