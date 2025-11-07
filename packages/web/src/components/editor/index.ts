@@ -27,6 +27,8 @@
 import { EditorProps, Monaco } from '@monaco-editor/react'
 import { attachToMonaco, type LanguageHost } from '@proto-typed/core/language'
 import { registerDSLTheme } from './theme/dsl-theme'
+import { DSL_THEME_NAME } from './theme/dsl-theme-data'
+import { registerDSLMonarchLanguage } from './grammar/register-monarch'
 import type * as monacoEditor from 'monaco-editor'
 
 // Re-export components and hooks
@@ -54,15 +56,12 @@ export async function initializeMonacoDSL(
     editor,
     languageHost,
     {
-      getOnigWasm: async () => {
-        const response = await fetch('/onig.wasm')
-        if (!response.ok) {
-          throw new Error('Failed to load Oniguruma WASM bundle from /onig.wasm')
-        }
-        return response.arrayBuffer()
+      registerGrammar: async ({ monaco: monacoNamespace, languageId }) => {
+        registerDSLMonarchLanguage(monacoNamespace, languageId)
       },
     }
   )
+  monaco.editor.setTheme(DSL_THEME_NAME)
 
   const model = editor.getModel()
   const uri = model?.uri.toString()

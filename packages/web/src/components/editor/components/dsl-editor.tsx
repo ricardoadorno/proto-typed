@@ -24,6 +24,8 @@ import { Editor, EditorProps } from '@monaco-editor/react'
 import { useMonacoDSL } from '../hooks/use-monaco-dsl'
 import { getDSLEditorOptions } from '../index'
 import { DSL_LANGUAGE_ID } from '../constants'
+import { registerDSLTheme } from '../theme/dsl-theme'
+import { DSL_THEME_NAME } from '../theme/dsl-theme-data'
 import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
 interface DSLEditorProps {
@@ -44,11 +46,16 @@ export function DSLEditor({
   value,
   onChange,
   height = '100%',
-  theme = 'proto-typed-dark',
+  theme = DSL_THEME_NAME,
   onEditorReady,
   options = {},
 }: DSLEditorProps) {
   const { isInitialized, error, handleEditorMount } = useMonacoDSL()
+  const handleBeforeMount = (
+    monacoInstance: Parameters<NonNullable<EditorProps['beforeMount']>>[0]
+  ) => {
+    registerDSLTheme(monacoInstance)
+  }
 
   const handleEditorDidMount = (
     editor: Parameters<NonNullable<EditorProps['onMount']>>[0]
@@ -76,6 +83,7 @@ export function DSLEditor({
         height={height}
         language={DSL_LANGUAGE_ID}
         theme={theme}
+        beforeMount={handleBeforeMount}
         value={value}
         onChange={onChange}
         options={getDSLEditorOptions(options)}

@@ -118,6 +118,7 @@ export async function attachToMonaco(
   monaco.languages.registerCompletionItemProvider(languageId, {
     triggerCharacters: [...TRIGGER_CHARACTERS],
     provideCompletionItems(model, position, context) {
+      const range = getCompletionRange(model, position)
       const params: CompletionParams = {
         textDocument: { uri: model.uri.toString() },
         position: {
@@ -134,7 +135,7 @@ export async function attachToMonaco(
         },
       }
       const list = engine.getCompletions(params)
-      return toMonacoCompletionList(monaco, list)
+      return toMonacoCompletionList(monaco, list, range)
     },
   })
 
@@ -244,17 +245,21 @@ function toMonacoSeverity(
 
 function toMonacoCompletionList(
   monaco: typeof monacoEditor,
-  list: CompletionList
+  list: CompletionList,
+  range: monacoEditor.IRange
 ): monacoEditor.languages.CompletionList {
   return {
     incomplete: list.isIncomplete ?? false,
-    suggestions: list.items.map((item) => toMonacoCompletionItem(monaco, item)),
+    suggestions: list.items.map((item) =>
+      toMonacoCompletionItem(monaco, item, range)
+    ),
   }
 }
 
 function toMonacoCompletionItem(
   monaco: typeof monacoEditor,
-  item: CompletionItem
+  item: CompletionItem,
+  range: monacoEditor.IRange
 ): monacoEditor.languages.CompletionItem {
   const label =
     typeof item.label === 'string'
@@ -268,12 +273,7 @@ function toMonacoCompletionItem(
     filterText: item.filterText,
     detail: item.detail,
     // Provide a minimal valid range to satisfy strict typings
-    range: {
-      startLineNumber: 1,
-      startColumn: 1,
-      endLineNumber: 1,
-      endColumn: 1,
-    },
+    range,
   }
 
   if (item.insertTextFormat === InsertTextFormat.Snippet) {
@@ -294,6 +294,27 @@ function toMonacoCompletionItem(
     }
   }
   return suggestion
+}
+
+function getCompletionRange(
+  model: monacoEditor.editor.ITextModel,
+  position: monacoEditor.Position
+): monacoEditor.IRange {
+  const lineContent = model.getLineContent(position.lineNumber)
+  let startColumn = position.column
+  while (startColumn > 1) {
+    const char = lineContent.charAt(startColumn - 2)
+    if (/\s/.test(char)) {
+      break
+    }
+    startColumn -= 1
+  }
+  return {
+    startLineNumber: position.lineNumber,
+    startColumn,
+    endLineNumber: position.lineNumber,
+    endColumn: position.column,
+  }
 }
 
 function toMonacoHover(
