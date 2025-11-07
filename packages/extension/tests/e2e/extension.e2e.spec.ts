@@ -5,12 +5,16 @@
 
 import * as path from 'path'
 import * as fs from 'fs'
+import { fileURLToPath } from 'url'
 import {
   runTests,
   downloadAndUnzipVSCode,
   resolveCliArgsFromVSCodeExecutablePath,
 } from '@vscode/test-electron'
 import { spawn } from 'child_process'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 async function main() {
   try {

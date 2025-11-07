@@ -1,12 +1,15 @@
 {
-  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/tests/e2e",
-    "module": "commonjs",
+    "rootDir": ".",
+    "module": "ESNext",
     "target": "ES2020",
     "lib": ["ES2020"],
     "types": ["mocha", "node"],
-    "sourceMap": true
+    "sourceMap": true,
+    "strict": false,
+    "esModuleInterop": true,
+    "moduleResolution": "bundler"
   },
-  "include": ["**/*.ts"]
+  "include": ["./**/*.ts"]
 }

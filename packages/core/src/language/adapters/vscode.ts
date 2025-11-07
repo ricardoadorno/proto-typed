@@ -41,9 +41,12 @@ export function activateVSCodeAdapter(
   })
   context.subscriptions.push({ dispose: unsubscribeDiagnostics })
 
-  vscodeApi.workspace.textDocuments
-    .filter(isProtoTypedDocument)
-    .forEach((doc) => engine.open(toLspDocument(doc)))
+  // Defer initial parsing to avoid blocking activation
+  // setTimeout(() => {
+  //   vscodeApi.workspace.textDocuments
+  //     .filter(isProtoTypedDocument)
+  //     .forEach((doc) => engine.open(toLspDocument(doc)))
+  // }, 100)
 
   context.subscriptions.push(
     vscodeApi.workspace.onDidOpenTextDocument((doc) => {

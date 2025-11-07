@@ -67,7 +67,7 @@ suite('Proto-Typed Webview Preview', () => {
     const extension = vscode.extensions.getExtension('proto-typed.proto-typed-vscode-extension')
 
     if (extension) {
-      assert.ok(extension.isActive || extension.isActivated, 'Extension should be active')
+      assert.ok(extension.isActive, 'Extension should be active')
       console.log('✅ Extension is active!')
     } else {
       console.log('⚠️ Extension not found in installed extensions')

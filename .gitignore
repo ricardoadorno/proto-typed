@@ -33,3 +33,4 @@ packages/extension/.vscode-test/
 *.sln
 *.sw?
 CLAUDE.md
+GEMINI.md
