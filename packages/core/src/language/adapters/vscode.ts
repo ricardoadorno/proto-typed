@@ -31,13 +31,15 @@ export function activateVSCodeAdapter(
     vscodeApi.languages.createDiagnosticCollection('proto-typed')
   context.subscriptions.push(collection)
 
-  engine.onDiagnostics((uri, diagnostics) => {
+  // Capture the cleanup function returned by onDiagnostics to prevent memory leaks
+  const unsubscribeDiagnostics = engine.onDiagnostics((uri, diagnostics) => {
     const vscodeUri = vscodeApi.Uri.parse(uri)
     collection.set(
       vscodeUri,
       diagnostics.map((diag) => toVsCodeDiagnostic(vscodeApi, diag))
     )
   })
+  context.subscriptions.push({ dispose: unsubscribeDiagnostics })
 
   vscodeApi.workspace.textDocuments
     .filter(isProtoTypedDocument)
