@@ -35,7 +35,7 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^18.19.130",
     "@types/vscode": "^1.105.0",
-    "@vitest/ui": "^4.0.7",
+    "@vitest/ui": "^4.0.8",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
@@ -43,8 +43,8 @@
     "happy-dom": "^20.0.10",
     "lint-staged": "^16.2.6",
     "prettier": "^3.6.2",
-    "typescript": "~5.7.3",
+    "typescript": "~5.9.3",
     "typescript-eslint": "^8.46.3",
-    "vitest": "^4.0.7"
+    "vitest": "^4.0.8"
   }
 }

@@ -9,6 +9,7 @@ lerna-debug.log*
 .next
 out
 .pnpm-store/
+.claude/
 
 node_modules
 dist
@@ -23,6 +24,7 @@ playwright-report-*
 test-results
 html
 packages/extension/.vscode-test/
+__snapshots__
 
 # Editor directories and files
 .idea
