@@ -207,11 +207,12 @@ Props são separados por pipe (`|`) e interpolados com `%nomeProp`.
 ### Navegação
 
 ```dsl
-@[Ir para tela](NomeTela)      → Navegar para tela
-@[Abrir modal](NomeModal)      → Alternar modal
-@[Abrir drawer](NomeDrawer)    → Alternar drawer
-@[Voltar](-1)                  → Voltar no histórico
-#[Link externo](https://...)   → URL externa
+@[Ir para tela](NomeTela)        → Navegar para tela (botão)
+@[Abrir modal](NomeModal)        → Alternar modal (botão)
+@[Abrir drawer](NomeDrawer)      → Alternar drawer (botão)
+@[Voltar](-1)                    → Voltar no histórico (botão)
+@core[Link interno](NomeTela)    → Link inline para navegação interna
+@web[Link externo](https://...)  → Link inline externo (abre em nova aba)
 ```
 
 ### Componentes mobile

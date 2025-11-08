@@ -12,12 +12,16 @@ export const ButtonLink = createToken({ name: "ButtonLink", pattern: /@link/, la
 export const ButtonSuccess = createToken({ name: "ButtonSuccess", pattern: /@success/, label: "@success" });
 export const ButtonWarning = createToken({ name: "ButtonWarning", pattern: /@warning/, label: "@warning" });
 
+// Link variant tokens
+export const LinkCore = createToken({ name: "LinkCore", pattern: /@core/, label: "@core" });
+export const LinkWeb = createToken({ name: "LinkWeb", pattern: /@web/, label: "@web" });
+
 // Default button marker (when no variant specified, defaults to primary)
-export const ButtonMarker = createToken({ 
-  name: "ButtonMarker", 
+export const ButtonMarker = createToken({
+  name: "ButtonMarker",
   pattern: /@/,
   label: "@",
-  longer_alt: [ButtonPrimary, ButtonSecondary, ButtonOutline, ButtonGhost, ButtonDestructive, ButtonLink, ButtonSuccess, ButtonWarning]
+  longer_alt: [ButtonPrimary, ButtonSecondary, ButtonOutline, ButtonGhost, ButtonDestructive, ButtonLink, ButtonSuccess, ButtonWarning, LinkCore, LinkWeb]
 });
 
 // Button size tokens (optional, default is md)
@@ -30,11 +34,9 @@ export const ButtonSizeLg = createToken({ name: "ButtonSizeLg", pattern: /-lg/, 
 export const ButtonLabel = createToken({ name: "ButtonLabel", pattern: /\[([^\]]+)\]/, label: "[text]" });
 export const ButtonAction = createToken({ name: "ButtonAction", pattern: /\(([^)]+)\)/, label: "(action)" });
 
-export const Link = createToken({
-  name: "Link",
-  pattern: /#\[([^\]]+)\](?:\(([^)]+)\))?/,
-  label: "#[link text](url)"
-});
+// Link label and destination
+export const LinkLabel = createToken({ name: "LinkLabel", pattern: /\[([^\]]+)\]/, label: "[text]" });
+export const LinkDestination = createToken({ name: "LinkDestination", pattern: /\(([^)]+)\)/, label: "(destination)" });
 
 export const Image = createToken({ 
   name: "Image", 

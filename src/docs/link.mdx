@@ -1,5 +1,9 @@
 # Link
-Links (`#[Texto](Destino)`) criam navegação inline para telas, modais ou URLs externas sem quebrar o fluxo de leitura.
+Links criam navegação inline para telas, modais ou URLs externas sem quebrar o fluxo de leitura.
+
+**Nova sintaxe (v0.0.2)**:
+- `@core[Texto](Destino)` — navegação interna (telas, modais, drawers)
+- `@web[Texto](URL)` — links externos (abre em nova aba)
 
 ## Quando usar
 - Referenciar telas ou recursos secundários dentro de parágrafos e listas.
@@ -13,35 +17,35 @@ Links (`#[Texto](Destino)`) criam navegação inline para telas, modais ou URLs 
 screen HelpCenter:
   container:
     # Central de ajuda
-    #[documentação oficial](https://proto-typed.dev/docs) para um panorama completo.
+    > Consulte a @web[documentação oficial](https://proto-typed.dev/docs) para um panorama completo.
 
     card:
       ## Precisa redefinir senha?
-      >> Acesse a #[tela de recuperação](RecoverPassword) e siga os passos.
+      >> Acesse a @core[tela de recuperação](RecoverPassword) e siga os passos.
 ```
 </DocsCodePreview>
-Por quê: mantém a leitura fluida e oferece navegação contextual.
+Por quê: mantém a leitura fluida e oferece navegação contextual com semântica clara entre links internos e externos.
 
 ## Variantes
-<DocsCodePreview title="Link interno para screen">
+<DocsCodePreview title="Link interno para screen (@core)">
 ```dsl
 screen Default:
   container:
-    #[Ver detalhes](DetailScreen)
+    @core[Ver detalhes](DetailScreen)
 ```
 </DocsCodePreview>
-Quando usar: apontar para telas existentes no fluxo principal.
-Por quê: mantém a navegação coesa sem depender de botões.
+Quando usar: apontar para telas, modais ou drawers existentes no fluxo.
+Por quê: `@core` indica navegação interna SPA sem recarregar a página.
 
-<DocsCodePreview title="Link externo">
+<DocsCodePreview title="Link externo (@web)">
 ```dsl
 screen Default:
   container:
-    #[Abrir documentação](https://proto-typed.dev/docs)
+    @web[Abrir documentação](https://proto-typed.dev/docs)
 ```
 </DocsCodePreview>
 Quando usar: referenciar recursos hospedados fora do produto.
-Por quê: direciona para documentação ou sites externos preservando contexto.
+Por quê: `@web` abre em nova aba com `target="_blank"` e segurança `rel="noopener noreferrer"`.
 
 
 ## Composição (usando com outros)
@@ -55,55 +59,70 @@ drawer QuickLinks:
   container:
     # Links rápidos
     stack-tight:
-      #[Dashboard](Dashboard)
-      #[Equipe](Team)
-      #[Configurações](Settings)
+      @core[Dashboard](Dashboard)
+      @core[Equipe](Team)
+      @core[Configurações](Settings)
 
 screen HeaderDemo:
   header:
     # Proto-Typed
     row-end:
-      #[Abrir links rápidos](QuickLinks)
+      @[Abrir links rápidos](QuickLinks)
 ```
 </DocsCodePreview>
-Por quê: agrupa atalhos sem sobrecarregar o cabeçalho com botões.
+Por quê: agrupa atalhos de navegação interna sem sobrecarregar o cabeçalho com botões.
 
 ## Slots & Props
 | Nome | Tipo | Padrão | Descrição | Obrigatório |
 | --- | --- | --- | --- | --- |
-| `label` | string | — | Texto exibido entre `#[ ]`. | Sim |
-| `destino` | slug ou URL | — | Tela, modal, drawer ou endereço externo. | Sim |
-| `protocolo` | `https://`| `https://` | Determina a ação para links externos. | Não |
-| `ícone inline` | token `i-` | — | Opcional antes do texto para reforçar o contexto. | Não |
+| `variante` | enum (`@core`, `@web`) | `@core` | Define se é navegação interna ou link externo. | Sim |
+| `label` | string | — | Texto exibido entre `[ ]`. | Sim |
+| `destino` | slug ou URL | — | Tela, modal, drawer ou endereço externo (URL completa para `@web`). | Sim |
 
-## Erros comuns (Do/Don’t)
+## Erros comuns (Do/Don't)
 <DoDont
   dont={{
-    title: "Botão no lugar de link",
+    title: "Usar botão para navegação simples",
     code: `
 @[Ver detalhes](DetailScreen)
     `,
   }}
   do={{
-    title: "Link contextual",
+    title: "Usar link para navegação inline",
     code: `
-#[Ver detalhes](DetailScreen)
+@core[Ver detalhes](DetailScreen)
     `,
   }}
 >
-  Por quê: `@` executa ações; `#` referencia destinos sem comportamento de botão.
+  Por quê: Links são para navegação inline em parágrafos; botões para CTAs destacados.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Usar @core para URL externa",
+    code: `
+@core[Documentação](https://docs.example.com)
+    `,
+  }}
+  do={{
+    title: "Usar @web para URL externa",
+    code: `
+@web[Documentação](https://docs.example.com)
+    `,
+  }}
+>
+  Por quê: `@web` abre em nova aba e aplica segurança adequada para links externos.
 </DoDont>
 <DoDont
   dont={{
     title: "Link sem destino",
     code: `
-#[Leia mais]()
+@core[Leia mais]()
     `,
   }}
   do={{
     title: "Destino declarado",
     code: `
-#[Leia mais](Guides)
+@core[Leia mais](Guides)
     `,
   }}
 >

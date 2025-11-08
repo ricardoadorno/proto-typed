@@ -41,14 +41,21 @@ export function renderLink(node: AstNode): string {
   const props = node.props as any;
   const destination = props?.destination || '#';
   const linkText = props?.text || '';
-
-  const linkNavAttrs = NavigationMediator.generateNavigationAttributes(destination);
-  const linkHref = NavigationMediator.generateHrefAttribute(destination);
+  const variant = props?.variant || 'core'; // 'core' or 'web'
 
   // Support inline icons in link text
   const renderedContent = renderTextWithIcons(linkText);
 
-  return `<a class="${elementStyles.link}" style="${getLinkInlineStyles()}" ${linkHref} ${linkNavAttrs}>${renderedContent}</a>`;
+  // Handle external (@web) links differently from internal (@core) links
+  if (variant === 'web') {
+    // External link: use regular href with target="_blank"
+    return `<a class="${elementStyles.link}" style="${getLinkInlineStyles()}" href="${destination}" target="_blank" rel="noopener noreferrer">${renderedContent}</a>`;
+  } else {
+    // Internal link: use navigation mediator for SPA-like navigation
+    const linkNavAttrs = NavigationMediator.generateNavigationAttributes(destination);
+    const linkHref = NavigationMediator.generateHrefAttribute(destination);
+    return `<a class="${elementStyles.link}" style="${getLinkInlineStyles()}" ${linkHref} ${linkNavAttrs}>${renderedContent}</a>`;
+  }
 }
 
 /**

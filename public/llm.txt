@@ -130,13 +130,19 @@ fab:                → Botão de ação flutuante
 ### 7. Navegação entre views
 
 ```dsl
-@[Ir para tela](NomeTela)      → Navega para screen
-@[Abrir modal](NomeModal)      → Abre modal
-@[Abrir drawer](NomeDrawer)    → Abre drawer lateral
-@[Voltar](-1)                  → Volta no histórico
-@[Fechar](close)               → Fecha modal/drawer atual
-#[Link externo](https://...)   → URL externa
+@[Ir para tela](NomeTela)        → Navega para screen (botão)
+@[Abrir modal](NomeModal)        → Abre modal (botão)
+@[Abrir drawer](NomeDrawer)      → Abre drawer lateral (botão)
+@[Voltar](-1)                    → Volta no histórico (botão)
+@[Fechar](close)                 → Fecha modal/drawer atual (botão)
+@core[Link interno](NomeTela)    → Link inline para navegação interna
+@web[Link externo](https://...)  → Link externo (abre em nova aba)
 ```
+
+**Diferença entre botões (@) e links (@core/@web)**:
+- Botões (`@[texto](ação)`) são CTAs destacados para ações principais
+- Links internos (`@core[texto](tela)`) são para navegação inline em parágrafos
+- Links externos (`@web[texto](url)`) abrem URLs externas em nova aba
 
 ### 8. Componentes reutilizáveis
 

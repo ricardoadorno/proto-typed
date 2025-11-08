@@ -10,8 +10,10 @@ import {
   ButtonLink, ButtonSuccess, ButtonWarning, ButtonMarker,
   ButtonSizeXs, ButtonSizeSm, ButtonSizeMd, ButtonSizeLg,
   ButtonLabel, ButtonAction,
+  // Primitives - Links
+  LinkCore, LinkWeb, LinkLabel, LinkDestination,
   // Primitives - Other
-  Link, Image, Heading, Text, Paragraph, MutedText, Note, Quote,
+  Image, Heading, Text, Paragraph, MutedText, Note, Quote,
   // Canonical Layouts
   ContainerNarrow, ContainerWide, ContainerFull, Container,
   Stack, StackTight, StackLoose, StackFlush,
@@ -274,7 +276,18 @@ export class UiDslParser extends CstParser {
   });
 
   linkElement = this.RULE("linkElement", () => {
-    this.CONSUME(Link);
+    this.OR([
+      { ALT: () => this.CONSUME(LinkCore) },
+      { ALT: () => this.CONSUME(LinkWeb) }
+    ]);
+
+    // Parse label
+    this.CONSUME(LinkLabel);
+
+    // Parse optional destination
+    this.OPTION(() => {
+      this.CONSUME(LinkDestination);
+    });
   });
 
   imageElement = this.RULE("imageElement", () => {

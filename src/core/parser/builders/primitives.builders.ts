@@ -158,27 +158,34 @@ export function buildButtonElement(ctx: Context, visitor: any) {
  * Build link element from context
  */
 export function buildLinkElement(ctx: Context) {
-  const linkText = ctx.Link[0].image;
-  let text = '', url = '';
+  let text = '', destination = '', variant = 'core';
 
-  // Updated regex to match the new #[text](url) syntax
-  const markdownMatch = linkText.match(/#\[([^\]]+)\](?:\(([^)]+)\))?/);
-  const dslMatch = linkText.match(/link\s+\["([^"]*)"\]\s+([^\n\r]+)/);
+  // Determine variant from which token is present
+  if (ctx.LinkCore) {
+    variant = 'core';
+  } else if (ctx.LinkWeb) {
+    variant = 'web';
+  }
 
-  if (markdownMatch) {
-    text = markdownMatch[1];
-    url = markdownMatch[2] || ''; // URL is now optional, default to empty string
-  } else if (dslMatch) {
-    url = dslMatch[1];
-    text = dslMatch[2];
+  // Extract label text from LinkLabel token
+  if (ctx.LinkLabel && ctx.LinkLabel[0]) {
+    const labelMatch = ctx.LinkLabel[0].image.match(/\[([^\]]+)\]/);
+    text = labelMatch ? labelMatch[1] : '';
+  }
+
+  // Extract destination from LinkDestination token (optional)
+  if (ctx.LinkDestination && ctx.LinkDestination[0]) {
+    const destMatch = ctx.LinkDestination[0].image.match(/\(([^)]+)\)/);
+    destination = destMatch ? destMatch[1] : '';
   }
 
   return {
     type: "Link",
     id: "", // ID will be generated later
     props: {
-      destination: url,
-      text
+      destination,
+      text,
+      variant
     },
     children: []
   };

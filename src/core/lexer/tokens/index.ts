@@ -1,12 +1,13 @@
 // Import all token families - New Modular Organization
 import { WhiteSpace, NewLine, BlankLine, Colon, Identifier } from './core.tokens';
 import { Screen, Modal, Drawer } from './views.tokens';
-import { 
-  ButtonPrimary, ButtonSecondary, ButtonOutline, ButtonGhost, ButtonDestructive, 
+import {
+  ButtonPrimary, ButtonSecondary, ButtonOutline, ButtonGhost, ButtonDestructive,
   ButtonLink, ButtonSuccess, ButtonWarning, ButtonMarker,
   ButtonSizeXs, ButtonSizeSm, ButtonSizeMd, ButtonSizeLg,
   ButtonLabel, ButtonAction,
-  Link, Image, Heading, Text, Paragraph, MutedText, Note, Quote 
+  LinkCore, LinkWeb, LinkLabel, LinkDestination,
+  Image, Heading, Text, Paragraph, MutedText, Note, Quote
 } from './primitives.tokens';
 import { 
   ContainerNarrow, ContainerWide, ContainerFull, Container,
@@ -55,9 +56,14 @@ export {
   ButtonSizeLg,
   ButtonLabel,
   ButtonAction,
-  
+
+  // Primitives - Links
+  LinkCore,
+  LinkWeb,
+  LinkLabel,
+  LinkDestination,
+
   // Primitives - Other
-  Link,
   Image,
   Heading,
   Text,
@@ -149,14 +155,18 @@ export const allTokens = [
   ButtonLink,
   ButtonSuccess,
   ButtonWarning,
-  ButtonMarker, // Must come after all specific variants
+  // Link tokens - specific variants before general marker
+  LinkCore,
+  LinkWeb,
+  ButtonMarker, // Must come after all specific variants including Link variants
   ButtonSizeXs,
   ButtonSizeSm,
   ButtonSizeMd,
   ButtonSizeLg,
   ButtonLabel,
   ButtonAction,
-  Link,
+  LinkLabel,
+  LinkDestination,
   Image,
   Heading,
   MutedText,

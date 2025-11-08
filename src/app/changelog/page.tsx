@@ -29,6 +29,32 @@ type ChangelogEntry = {
 
 const changelog: ChangelogEntry[] = [
   {
+    version: "v0.0.2",
+    date: "2025-11-08",
+    highlights: [
+      "Nova sintaxe de links @core e @web para melhor semântica!",
+      "Ajustes no layout do playground para melhor experiência."
+    ],
+    sections: {
+      features: [
+        "Nova sintaxe @core[texto](destino) para navegação interna.",
+        "Nova sintaxe @web[texto](url) para links externos (abre em nova aba).",
+        "Links externos agora incluem target='_blank' e rel='noopener noreferrer' para segurança.",
+      ],
+      qualityImprovements: [
+        "Semântica mais clara entre navegação interna e externa.",
+        "Melhor separação entre botões (CTAs) e links (navegação inline).",
+        "Documentação atualizada com exemplos da nova sintaxe.",
+        "Layout do playground otimizado para melhor usabilidade.",
+      ],
+      internalChanges: [
+        "Tokens LinkCore e LinkWeb adicionados ao lexer.",
+        "Parser atualizado para suportar novas variantes de link.",
+        "Renderer diferencia links internos e externos.",
+      ],
+    },
+  },
+  {
     version: "v0.1.0-beta",
     date: "2025-10-20",
     highlights: ["Lançamento inicial do Proto-Typed!"],

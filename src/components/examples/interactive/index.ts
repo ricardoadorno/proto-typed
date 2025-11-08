@@ -29,20 +29,21 @@ export const interactiveExamples: ExampleCategory = {
     {
       name: "Navigation Links",
       code: `screen NavigationExample:
-  # Internal Navigation
-  #[Dashboard](dashboard-screen)
-  #[User Profile](profile-screen)
-  #[Settings](settings-screen)
-  #[Reports](reports-screen)
-  
-  # External Links
-  #[Visit Website](https://example.com)
-  #[Documentation](https://docs.example.com)
-  
-  # Simple Links
-  #[About Us]
-  #[Contact]`,
-      description: "Create navigational links for internal screens and external URLs using #[text](destination) syntax"
+  container:
+    ## Internal Navigation
+    @core[Dashboard](dashboard-screen)
+    @core[User Profile](profile-screen)
+    @core[Settings](settings-screen)
+    @core[Reports](reports-screen)
+
+    ## External Links
+    @web[Visit Website](https://example.com)
+    @web[Documentation](https://docs.example.com)
+
+    ## Simple Links
+    @core[About Us](about)
+    @core[Contact](contact)`,
+      description: "Create navigational links using @core for internal navigation and @web for external URLs"
     },
     {
       name: "Image Gallery",
@@ -63,26 +64,26 @@ export const interactiveExamples: ExampleCategory = {
     {
       name: "Interactive Dashboard",
       code: `screen InteractiveDashboard:
-  # Control Panel
-  @[Refresh Data]{🔄}(refresh)
-  @+[Export]{📊}(export)
-  @-[Settings]{⚙️}(settings)
-  
-  card:
-    ## Quick Actions
-    row:
-      col:
+  container:
+    ## Control Panel
+    @[Refresh Data](refresh)
+    @secondary[Export](export)
+    @ghost[Settings](settings)
+
+    card:
+      ### Quick Actions
+      row:
         @[New Project](new-project)
         @[View Reports](reports)
-      col:
-        @![Emergency Stop](emergency)
-        @_[Help](help)
-  
-  # Navigation Menu
-  #[Home](home)
-  #[Projects](projects) 
-  #[Analytics](analytics)
-  #[Team](team)`,
+      row:
+        @warning[Emergency Stop](emergency)
+        @ghost[Help](help)
+
+    ## Navigation Menu
+    @core[Home](home)
+    @core[Projects](projects)
+    @core[Analytics](analytics)
+    @core[Team](team)`,
       description: "Combine buttons, links, and layout elements for an interactive dashboard interface"
     },
     {
