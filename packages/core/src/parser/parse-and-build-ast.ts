@@ -1,5 +1,5 @@
 import { tokenize } from '../lexer/lexer'
-import { parser } from './parser'
+import { getParser } from './parser'
 import { createAstBuilder } from './ast-builder'
 import { generateDeterministicIds } from '../utils/deterministic-ids'
 import { ERROR_CODES, ProtoError } from '../types/errors'
@@ -110,6 +110,7 @@ export function parseAndBuildAst(
   // ========================================================
   // PARSER PHASE: Parse with error recovery
   // ========================================================
+  const parser = getParser()
   parser.input = lexResult.tokens
   const cst = parser.program()
 

@@ -31,17 +31,22 @@ export function activateVSCodeAdapter(
     vscodeApi.languages.createDiagnosticCollection('proto-typed')
   context.subscriptions.push(collection)
 
-  engine.onDiagnostics((uri, diagnostics) => {
+  // Capture the cleanup function returned by onDiagnostics to prevent memory leaks
+  const unsubscribeDiagnostics = engine.onDiagnostics((uri, diagnostics) => {
     const vscodeUri = vscodeApi.Uri.parse(uri)
     collection.set(
       vscodeUri,
       diagnostics.map((diag) => toVsCodeDiagnostic(vscodeApi, diag))
     )
   })
+  context.subscriptions.push({ dispose: unsubscribeDiagnostics })
 
-  vscodeApi.workspace.textDocuments
-    .filter(isProtoTypedDocument)
-    .forEach((doc) => engine.open(toLspDocument(doc)))
+  // Defer initial parsing to avoid blocking activation
+  // setTimeout(() => {
+  //   vscodeApi.workspace.textDocuments
+  //     .filter(isProtoTypedDocument)
+  //     .forEach((doc) => engine.open(toLspDocument(doc)))
+  // }, 100)
 
   context.subscriptions.push(
     vscodeApi.workspace.onDidOpenTextDocument((doc) => {

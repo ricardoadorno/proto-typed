@@ -209,7 +209,12 @@ export const primitivesFixtures = {
   !rounded[Avatar](avatar.jpg)`,
       expected: {
         htmlOutput: `<div class="screen container Test" data-screen="Test"><img src="avatar.jpg" alt="Avatar" class="max-w-full h-auto rounded-[--radius] shadow-md" /></div>`,
-        htmlContains: ['<img', 'src="avatar.jpg"', 'alt="Avatar"', 'rounded-[--radius]'],
+        htmlContains: [
+          '<img',
+          'src="avatar.jpg"',
+          'alt="Avatar"',
+          'rounded-[--radius]',
+        ],
       },
     } as Fixture,
 
@@ -269,7 +274,13 @@ export const primitivesFixtures = {
   # Main Title`,
       expected: {
         htmlOutput: `<div class="screen container Test" data-screen="Test"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Main Title</h1></div>`,
-        htmlContains: ['<h1', 'Main Title', '</h1>', 'text-4xl', 'font-extrabold'],
+        htmlContains: [
+          '<h1',
+          'Main Title',
+          '</h1>',
+          'text-4xl',
+          'font-extrabold',
+        ],
       },
     } as Fixture,
 
@@ -278,7 +289,13 @@ export const primitivesFixtures = {
   ## Section Title`,
       expected: {
         htmlOutput: `<div class="screen container Test" data-screen="Test"><h2 class="scroll-m-20 text-3xl font-semibold tracking-tight text-[var(--fg-primary)]">Section Title</h2></div>`,
-        htmlContains: ['<h2', 'Section Title', '</h2>', 'text-3xl', 'font-semibold'],
+        htmlContains: [
+          '<h2',
+          'Section Title',
+          '</h2>',
+          'text-3xl',
+          'font-semibold',
+        ],
       },
     } as Fixture,
 
@@ -331,7 +348,13 @@ export const primitivesFixtures = {
   > This is a paragraph`,
       expected: {
         htmlOutput: `<div class="screen container Test" data-screen="Test"><p class="text-base leading-7 text-[var(--fg-secondary)]">This is a paragraph</p></div>`,
-        htmlContains: ['<p', 'This is a paragraph', '</p>', 'text-base', 'leading-7'],
+        htmlContains: [
+          '<p',
+          'This is a paragraph',
+          '</p>',
+          'text-base',
+          'leading-7',
+        ],
       },
     } as Fixture,
 
@@ -358,7 +381,12 @@ export const primitivesFixtures = {
   *> This is a quote`,
       expected: {
         htmlOutput: `<div class="screen container Test" data-screen="Test"><blockquote class="mt-6 border-l-2 pl-6 italic text-muted-foreground">This is a quote</blockquote></div>`,
-        htmlContains: ['<blockquote', 'This is a quote', '</blockquote>', 'border-l-2'],
+        htmlContains: [
+          '<blockquote',
+          'This is a quote',
+          '</blockquote>',
+          'border-l-2',
+        ],
       },
     } as Fixture,
 
@@ -400,7 +428,14 @@ export const primitivesFixtures = {
   > i-settings Settings Icon`,
       expected: {
         // Note: Icons are currently rendered as text literals, not SVG
-        htmlContains: ['Home Icon', 'User Icon', 'Settings Icon', '<p', 'i-home', 'i-user'],
+        htmlContains: [
+          'Home Icon',
+          'User Icon',
+          'Settings Icon',
+          '<p',
+          'i-home',
+          'i-user',
+        ],
       },
     } as Fixture,
 

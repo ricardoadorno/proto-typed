@@ -28,16 +28,19 @@ export interface HtmlGenerationResult {
  */
 export function generateHtmlOutput(dsl: string): HtmlGenerationResult {
   const ast = parseAndBuildAst(dsl)
-  const errors = ast.__errors?.map((e) => `[${e.severity}] ${e.code}: ${e.message}`) || []
+  const errors =
+    ast.__errors?.map((e) => `[${e.severity}] ${e.code}: ${e.message}`) || []
 
   // Set component definitions if any exist
-  const componentNodes = ast.children?.filter((n) => n.type === 'Component') || []
+  const componentNodes =
+    ast.children?.filter((n) => n.type === 'Component') || []
   if (componentNodes.length > 0) {
     setComponentDefinitions(componentNodes)
   }
 
   // Render screens and other non-component nodes
-  const renderableNodes = ast.children?.filter((n) => n.type !== 'Component') || []
+  const renderableNodes =
+    ast.children?.filter((n) => n.type !== 'Component') || []
   const html = renderableNodes.map((node) => renderNode(node)).join('\n')
 
   return {
@@ -53,7 +56,9 @@ export function generateHtmlOutput(dsl: string): HtmlGenerationResult {
  * @param fixtures - Object containing fixture DSL strings
  * @returns Object with same structure but HTML output included
  */
-export function generateFixtureOutputs(fixtures: Record<string, string>): Record<string, string> {
+export function generateFixtureOutputs(
+  fixtures: Record<string, string>
+): Record<string, string> {
   const results: Record<string, string> = {}
 
   for (const [key, dsl] of Object.entries(fixtures)) {

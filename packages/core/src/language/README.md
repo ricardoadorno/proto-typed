@@ -60,14 +60,14 @@ the environment to retain control over caching and telemetry.
 
 ## Engine Modules
 
-| File | Responsibility |
-| --- | --- |
-| `engine/textdoc-store.ts` | Keeps the canonical `TextDocument` plus latest AST, diagnostics, and ProtoError mirror for every open URI |
-| `engine/diagnostics.ts` | Maps `ProtoError` -> `Diagnostic`, enriches with deterministic codes (`PTDxxx`) and ranges |
-| `engine/completions.ts` | Provides IntelliSense snippets and metadata; driven by trigger characters exported as `TRIGGER_CHARACTERS` |
-| `engine/hover.ts` | Keyword-centric Markdown tooltips for DSL constructs |
-| `engine/code-actions.ts` | Contextual quick fixes (missing colon, missing indent, etc.) |
-| `engine/semantic-tokens.ts` | Placeholder for future semantic-token support (currently returns `null`) |
+| File                        | Responsibility                                                                                             |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `engine/textdoc-store.ts`   | Keeps the canonical `TextDocument` plus latest AST, diagnostics, and ProtoError mirror for every open URI  |
+| `engine/diagnostics.ts`     | Maps `ProtoError` -> `Diagnostic`, enriches with deterministic codes (`PTDxxx`) and ranges                 |
+| `engine/completions.ts`     | Provides IntelliSense snippets and metadata; driven by trigger characters exported as `TRIGGER_CHARACTERS` |
+| `engine/hover.ts`           | Keyword-centric Markdown tooltips for DSL constructs                                                       |
+| `engine/code-actions.ts`    | Contextual quick fixes (missing colon, missing indent, etc.)                                               |
+| `engine/semantic-tokens.ts` | Placeholder for future semantic-token support (currently returns `null`)                                   |
 
 Every helper operates on `vscode-languageserver-*` primitives so we can re-use
 the same logic in both VS Code and Monaco.

@@ -203,17 +203,17 @@ drawer MainMenu:
 
 ### 2.2 Typography
 
-| Token           | Syntax             | HTML Output            | Use Case       |
-| --------------- | ------------------ | ---------------------- | -------------- |
-| **Heading 1**   | `# Text`           | `<h1>`                 | Page title     |
-| **Heading 2**   | `## Text`          | `<h2>`                 | Section title  |
-| **Heading 3**   | `### Text`         | `<h3>`                 | Subsection     |
-| **Heading 4**   | `#### Text`        | `<h4>`                 | Subheading     |
-| **Paragraph**   | `> Text`           | `<p>` (with margin)    | Body text      |
-| **Small Text**  | `>> Text`          | `<p class="small">`    | Secondary copy |
-| **Muted Text**  | `>>> Text`         | `<p class="muted">`    | Metadata text  |
-| **Blockquote**  | `*> Text`          | `<blockquote>`         | Quotes         |
-| **Note**        | `**> Text`         | `<div role="note">`    | Informational callout |
+| Token          | Syntax      | HTML Output         | Use Case              |
+| -------------- | ----------- | ------------------- | --------------------- |
+| **Heading 1**  | `# Text`    | `<h1>`              | Page title            |
+| **Heading 2**  | `## Text`   | `<h2>`              | Section title         |
+| **Heading 3**  | `### Text`  | `<h3>`              | Subsection            |
+| **Heading 4**  | `#### Text` | `<h4>`              | Subheading            |
+| **Paragraph**  | `> Text`    | `<p>` (with margin) | Body text             |
+| **Small Text** | `>> Text`   | `<p class="small">` | Secondary copy        |
+| **Muted Text** | `>>> Text`  | `<p class="muted">` | Metadata text         |
+| **Blockquote** | `*> Text`   | `<blockquote>`      | Quotes                |
+| **Note**       | `**> Text`  | `<div role="note">` | Informational callout |
 
 **Examples**:
 
@@ -270,14 +270,14 @@ screen TextDemo:
 
 #### Actions
 
-| Action Type       | Syntax           | Behavior                   |
-| ----------------- | ---------------- | -------------------------- |
-| Screen navigation | `(ScreenName)`   | Navigate to screen         |
-| Modal toggle      | `(ModalName)`    | Open/close modal           |
-| Drawer toggle     | `(DrawerName)`   | Open/close drawer          |
-| Back              | `(-1)`           | Navigate back in history   |
-| Close overlay     | `(close)`        | Dismiss modal/drawer       |
-| JavaScript        | `(functionName)` | Placeholder for JS action  |
+| Action Type       | Syntax           | Behavior                         |
+| ----------------- | ---------------- | -------------------------------- |
+| Screen navigation | `(ScreenName)`   | Navigate to screen               |
+| Modal toggle      | `(ModalName)`    | Open/close modal                 |
+| Drawer toggle     | `(DrawerName)`   | Open/close drawer                |
+| Back              | `(-1)`           | Navigate back in history         |
+| Close overlay     | `(close)`        | Dismiss modal/drawer             |
+| JavaScript        | `(functionName)` | Placeholder for JS action        |
 | External          | Not for buttons  | Use `[Link](url)` inline instead |
 
 #### Icon Support
@@ -675,15 +675,15 @@ screen Tasks:
 
 #### Navigation Targets
 
-| Target Type | Syntax         | Behavior           | Example                     |
-| ----------- | -------------- | ------------------ | --------------------------- |
-| Screen      | `(ScreenName)` | Navigate to screen | `@[Go](Dashboard)`          |
-| Modal       | `(ModalName)`  | Toggle modal       | `@[Open](ConfirmModal)`     |
-| Drawer      | `(DrawerName)` | Toggle drawer      | `@[Menu](MainDrawer)`       |
-| Back        | `(-1)`         | History back       | `@[Back](-1)`               |
-| Close       | `(close)`      | Close overlay      | `@[Close](close)`           |
-| Action      | `(actionName)` | Placeholder action | `@[Submit](submitForm)`     |
-| External    | `[Link](url)` | External URL (inline link) | `[Docs](https://docs.com)` |
+| Target Type | Syntax         | Behavior                   | Example                    |
+| ----------- | -------------- | -------------------------- | -------------------------- |
+| Screen      | `(ScreenName)` | Navigate to screen         | `@[Go](Dashboard)`         |
+| Modal       | `(ModalName)`  | Toggle modal               | `@[Open](ConfirmModal)`    |
+| Drawer      | `(DrawerName)` | Toggle drawer              | `@[Menu](MainDrawer)`      |
+| Back        | `(-1)`         | History back               | `@[Back](-1)`              |
+| Close       | `(close)`      | Close overlay              | `@[Close](close)`          |
+| Action      | `(actionName)` | Placeholder action         | `@[Submit](submitForm)`    |
+| External    | `[Link](url)`  | External URL (inline link) | `[Docs](https://docs.com)` |
 
 #### Navigation Flow Example
 

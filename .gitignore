@@ -19,6 +19,7 @@ dist-ssr
 coverage
 .nyc_output
 playwright-report
+playwright-report-*
 test-results
 html
 packages/extension/.vscode-test/
@@ -32,3 +33,4 @@ packages/extension/.vscode-test/
 *.sln
 *.sw?
 CLAUDE.md
+GEMINI.md

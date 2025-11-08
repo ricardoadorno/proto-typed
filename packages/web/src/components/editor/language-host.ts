@@ -26,7 +26,10 @@ export function createLanguageHost(): LanguageHostIntegration {
       try {
         const parsed = parseAndBuildAst(text)
         const astWithErrors = parsed as AstWithErrors
-        if ('__errors' in astWithErrors && Array.isArray(astWithErrors.__errors)) {
+        if (
+          '__errors' in astWithErrors &&
+          Array.isArray(astWithErrors.__errors)
+        ) {
           errors = [...(astWithErrors.__errors as ProtoError[])]
           delete (astWithErrors as Partial<AstWithErrors>).__errors
         }

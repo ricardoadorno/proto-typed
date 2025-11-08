@@ -32,11 +32,11 @@ Fixtures use a structured format with **three validation modes**:
 
 ```typescript
 export interface Fixture {
-  dsl: string                    // Input DSL string
+  dsl: string // Input DSL string
   expected: {
-    htmlOutput?: string          // Complete expected HTML (optional, strict validation)
-    htmlContains: string[]       // Patterns that must be present (flexible validation)
-    htmlNotContains?: string[]   // Patterns that must NOT be present
+    htmlOutput?: string // Complete expected HTML (optional, strict validation)
+    htmlContains: string[] // Patterns that must be present (flexible validation)
+    htmlNotContains?: string[] // Patterns that must NOT be present
   }
 }
 ```
@@ -106,7 +106,7 @@ function testSnapshot(name: string, fixture: Fixture) {
     }
 
     // Validate patterns
-    expected.htmlContains.forEach(pattern => {
+    expected.htmlContains.forEach((pattern) => {
       expect(html).toContain(pattern)
     })
 
@@ -123,7 +123,10 @@ function testSnapshot(name: string, fixture: Fixture) {
 Use the `generate-html-output.ts` helper to generate expected HTML:
 
 ```typescript
-import { generateHtmlOutput, printGenerationResult } from './helpers/generate-html-output'
+import {
+  generateHtmlOutput,
+  printGenerationResult,
+} from './helpers/generate-html-output'
 
 const dsl = `screen Test:
   @[Click Me](action)`
@@ -135,6 +138,7 @@ printGenerationResult(result)
 ### Output Format
 
 The helper provides:
+
 - **dsl**: Original input
 - **html**: Generated HTML
 - **errors**: Any parsing errors
@@ -177,6 +181,7 @@ pnpm test packages/core/tests/syntax/helpers/generate-fixtures-html.test.ts
 ### Fixture Examples
 
 #### Basic Example (Pattern Validation)
+
 ```typescript
 basic: {
   dsl: `screen Test:
@@ -188,6 +193,7 @@ basic: {
 ```
 
 #### Complete Example (Exact + Pattern)
+
 ```typescript
 basicButton: {
   dsl: `screen Test:
@@ -205,6 +211,7 @@ basicButton: {
 ```
 
 #### Negative Validation
+
 ```typescript
 linkWithIcon: {
   dsl: `screen Test:
@@ -226,6 +233,7 @@ linkWithIcon: {
 ## Snapshot Files
 
 Snapshots are stored in `__snapshots__/` directory:
+
 - `primitives.test.ts.snap`
 - `layouts.test.ts.snap`
 - `components.test.ts.snap`
@@ -241,7 +249,8 @@ exports[`Primitives > Buttons > basic button > AST 1`] = `
 }
 `
 
-exports[`Primitives > Buttons > basic button > HTML 1`] = `"<div class="screen container Test"...>"`
+exports[`Primitives > Buttons > basic button > HTML 1`] =
+  `"<div class="screen container Test"...>"`
 ```
 
 ## Running Tests
@@ -281,8 +290,12 @@ console.log('Generated HTML:', html)
 ```
 
 Or use the debug helper:
+
 ```typescript
-import { generateHtmlOutput, printGenerationResult } from './helpers/generate-html-output'
+import {
+  generateHtmlOutput,
+  printGenerationResult,
+} from './helpers/generate-html-output'
 
 const result = generateHtmlOutput(yourDSL)
 printGenerationResult(result) // Pretty prints all details
@@ -293,6 +306,7 @@ printGenerationResult(result) // Pretty prints all details
 ### Converting Old Tests to New Format
 
 **Before:**
+
 ```typescript
 it('should render button', () => {
   const dsl = `screen Test:
@@ -304,6 +318,7 @@ it('should render button', () => {
 ```
 
 **After:**
+
 ```typescript
 // 1. Create fixture
 const fixtures = {
@@ -311,9 +326,9 @@ const fixtures = {
     dsl: `screen Test:
   @[Click](action)`,
     expected: {
-      htmlContains: ['<button', 'Click', 'data-nav="action"']
-    }
-  }
+      htmlContains: ['<button', 'Click', 'data-nav="action"'],
+    },
+  },
 }
 
 // 2. Use testSnapshot helper

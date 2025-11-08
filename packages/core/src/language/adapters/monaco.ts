@@ -104,7 +104,8 @@ export async function attachToMonaco(
     })
   )
 
-  engine.onDiagnostics((uri, diagnostics) => {
+  // Capture the cleanup function returned by onDiagnostics to prevent memory leaks
+  const unsubscribeDiagnostics = engine.onDiagnostics((uri, diagnostics) => {
     const targetModel = monaco.editor.getModel(monaco.Uri.parse(uri))
     if (!targetModel) {
       return
@@ -114,6 +115,7 @@ export async function attachToMonaco(
     )
     monaco.editor.setModelMarkers(targetModel, languageId, markers)
   })
+  disposables.push({ dispose: unsubscribeDiagnostics })
 
   monaco.languages.registerCompletionItemProvider(languageId, {
     triggerCharacters: [...TRIGGER_CHARACTERS],

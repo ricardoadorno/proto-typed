@@ -12,10 +12,7 @@ import {
   type ProtoError,
   type AstWithErrors,
 } from '@proto-typed/core'
-import {
-  createEngine,
-  type LanguageHost,
-} from '@proto-typed/core/language'
+import { createEngine, type LanguageHost } from '@proto-typed/core/language'
 
 function createLanguageHost(): LanguageHost {
   const bus = ErrorBus.get()
@@ -28,7 +25,10 @@ function createLanguageHost(): LanguageHost {
       try {
         const parsed = parseAndBuildAst(text)
         const astWithErrors = parsed as AstWithErrors
-        if ('__errors' in astWithErrors && Array.isArray(astWithErrors.__errors)) {
+        if (
+          '__errors' in astWithErrors &&
+          Array.isArray(astWithErrors.__errors)
+        ) {
           errors = [...(astWithErrors.__errors as ProtoError[])]
           delete (astWithErrors as Partial<AstWithErrors>).__errors
         }
@@ -60,9 +60,10 @@ function createLanguageHost(): LanguageHost {
 
 // Determine workspace root based on where tests are running from
 const cwd = process.cwd()
-const workspaceRoot = cwd.endsWith('packages/extension') || cwd.endsWith('packages\\extension')
-  ? path.resolve(cwd, 'test-workspace')
-  : path.resolve(cwd, 'packages/extension/test-workspace')
+const workspaceRoot =
+  cwd.endsWith('packages/extension') || cwd.endsWith('packages\\extension')
+    ? path.resolve(cwd, 'test-workspace')
+    : path.resolve(cwd, 'packages/extension/test-workspace')
 
 const sampleDsl = fs.readFileSync(
   path.join(workspaceRoot, 'basic-preview.pty'),
@@ -128,7 +129,12 @@ describe('VS Code Language Engine snapshots', () => {
     const host = createLanguageHost()
     const engine = createEngine(host)
     const uri = 'file:///invalid.pty'
-    const doc = TextDocument.create(uri, 'proto-typed', 1, 'screen Invalid\n  header')
+    const doc = TextDocument.create(
+      uri,
+      'proto-typed',
+      1,
+      'screen Invalid\n  header'
+    )
     engine.open(doc)
     const diagnostics = engine.getDiagnostics(uri).map((diag) => ({
       message: diag.message,
@@ -270,8 +276,18 @@ describe('VS Code Language Engine snapshots', () => {
     const host = createLanguageHost()
     const engine = createEngine(host)
     const uri = 'file:///lifecycle.pty'
-    const doc1 = TextDocument.create(uri, 'proto-typed', 1, 'screen Invalid\n  header')
-    const doc2 = TextDocument.create(uri, 'proto-typed', 2, 'screen Valid:\n  container:')
+    const doc1 = TextDocument.create(
+      uri,
+      'proto-typed',
+      1,
+      'screen Invalid\n  header'
+    )
+    const doc2 = TextDocument.create(
+      uri,
+      'proto-typed',
+      2,
+      'screen Valid:\n  container:'
+    )
 
     engine.open(doc1)
     let diagnostics1 = engine.getDiagnostics(uri)
@@ -290,7 +306,12 @@ describe('VS Code Language Engine snapshots', () => {
     const host = createLanguageHost()
     const engine = createEngine(host)
     const uri = 'file:///completions-trigger.pty'
-    const doc = TextDocument.create(uri, 'proto-typed', 1, 'screen Home:\n  container:\n    @')
+    const doc = TextDocument.create(
+      uri,
+      'proto-typed',
+      1,
+      'screen Home:\n  container:\n    @'
+    )
     engine.open(doc)
 
     const completions = engine.getCompletions({
@@ -301,7 +322,8 @@ describe('VS Code Language Engine snapshots', () => {
 
     expect(completions.items.length).toBeGreaterThan(0)
     const buttonCompletions = completions.items.filter(
-      (item) => typeof item.label === 'string' && item.label.startsWith('button')
+      (item) =>
+        typeof item.label === 'string' && item.label.startsWith('button')
     )
     expect(buttonCompletions.length).toBeGreaterThan(0)
   })

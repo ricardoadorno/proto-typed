@@ -8,9 +8,9 @@ It documents how we exercise both primary features:
 
 ## Tooling
 
-| Layer        | Runner | Folder                                      |
-| ------------ | ------ | ------------------------------------------- |
-| Language LSP | Vitest | `packages/extension/tests/*.spec.ts`        |
+| Layer        | Runner     | Folder                                       |
+| ------------ | ---------- | -------------------------------------------- |
+| Language LSP | Vitest     | `packages/extension/tests/*.spec.ts`         |
 | Webview      | Playwright | `packages/extension/tests/webview/*.spec.ts` |
 
 Vitest provides fast Node‑based snapshot tests of the reusable language engine
@@ -28,27 +28,32 @@ We spin up `createEngine(host)` with the same host used by the extension,
 attach a `TextDocument` for sample DSL inputs, and assert:
 
 #### **Completions**
+
 - Completion list snapshots (first items, `kind`, `insertText`, snippet format)
 - Trigger character support (`@`, `#`, `_`, etc.)
 - Context-aware completions (buttons, layouts, views, components)
 
 #### **Diagnostics**
+
 - Diagnostic snapshots for malformed DSL (error codes/ranges stay stable)
 - Error detection for missing colons (`PTD102`)
 - Error detection for missing indentation (`PTD103`)
 
 #### **Hover**
+
 - Hover documentation for keywords (`screen`, `modal`, `drawer`, `component`)
 - Hover for layout containers (`container`, `card`, `list`, `header`)
 - Hover for button variants (`@primary`, `@ghost`, `@destructive`, etc.)
 - Null return for unknown tokens
 
 #### **Code Actions**
+
 - Quick fix for missing colon (adds `:` at declaration end)
 - Quick fix for missing indentation (adds tab at line start)
 - Code actions bound to specific diagnostic codes
 
 #### **Document Lifecycle**
+
 - `open()` / `update()` / `close()` event handling
 - Diagnostic updates on document changes
 - State management across document versions
@@ -96,6 +101,7 @@ UPDATE_SNAPSHOTS=1 pnpm run -F proto-typed-vscode-extension test
 ## Extending Coverage
 
 ### Language Server Tests (Vitest)
+
 Current coverage includes completions, diagnostics, hover, code actions, and document
 lifecycle. To extend:
 
@@ -105,6 +111,7 @@ lifecycle. To extend:
 - **Additional code actions** — Test new quick fixes as error codes are added
 
 ### Webview Tests (Playwright)
+
 Current coverage validates DSL-to-HTML rendering matches core renderer output. To extend:
 
 - Create additional DSL fixture files in `test-workspace/` for complex scenarios:
@@ -116,6 +123,7 @@ Current coverage validates DSL-to-HTML rendering matches core renderer output. T
 - Test interactive features (navigation, modal toggles, drawer state)
 
 ### E2E Tests (VS Code Test Runner)
+
 If VS Code APIs need end-to-end coverage (e.g., command registration, preview webview
 lifecycle, syntax highlighting), we can add VS Code Test Runner suites that:
 
@@ -126,16 +134,16 @@ lifecycle, syntax highlighting), we can add VS Code Test Runner suites that:
 
 ## Test Coverage Summary
 
-| Feature | Coverage | Tests Location |
-| --- | --- | --- |
-| Completions | ✅ Full | `language-engine.spec.ts` |
-| Diagnostics | ✅ Full | `language-engine.spec.ts` |
-| Hover | ✅ Full | `language-engine.spec.ts` |
-| Code Actions | ✅ Full | `language-engine.spec.ts` |
-| Semantic Tokens | ⚠️ Stub only | N/A (returns `null`) |
-| Formatting | ⚠️ Stub only | N/A (returns `[]`) |
-| Webview Rendering | ✅ Full | `webview/webview.spec.ts` |
-| Webview Messaging | ✅ Full | `webview/webview.spec.ts` |
+| Feature           | Coverage     | Tests Location            |
+| ----------------- | ------------ | ------------------------- |
+| Completions       | ✅ Full      | `language-engine.spec.ts` |
+| Diagnostics       | ✅ Full      | `language-engine.spec.ts` |
+| Hover             | ✅ Full      | `language-engine.spec.ts` |
+| Code Actions      | ✅ Full      | `language-engine.spec.ts` |
+| Semantic Tokens   | ⚠️ Stub only | N/A (returns `null`)      |
+| Formatting        | ⚠️ Stub only | N/A (returns `[]`)        |
+| Webview Rendering | ✅ Full      | `webview/webview.spec.ts` |
+| Webview Messaging | ✅ Full      | `webview/webview.spec.ts` |
 
-Keeping the test plan in this README ensures contributors know *exactly* how we validate
+Keeping the test plan in this README ensures contributors know _exactly_ how we validate
 both halves of the extension before shipping.

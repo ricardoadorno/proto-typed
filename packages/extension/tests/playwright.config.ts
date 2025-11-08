@@ -10,7 +10,9 @@ const testsDir = path.resolve(__dirname, 'webview')
 export default defineConfig({
   testDir: testsDir,
   fullyParallel: true,
-  reporter: process.env.CI ? 'dot' : [['list'], ['html', { outputFolder: 'playwright-report-extension' }]],
+  reporter: process.env.CI
+    ? 'dot'
+    : [['list'], ['html', { outputFolder: 'playwright-report-extension' }]],
   use: {
     viewport: { width: 1200, height: 800 },
     trace: 'retain-on-failure',
@@ -18,7 +20,8 @@ export default defineConfig({
     video: 'retain-on-failure',
   },
   webServer: {
-    command: 'cd ../packages/extension && pnpm exec http-server dist/webview -p 8765 -c-1 --cors',
+    command:
+      'cd ../packages/extension && pnpm exec http-server dist/webview -p 8765 -c-1 --cors',
     port: 8765,
     cwd: path.resolve(__dirname, '../../'),
     reuseExistingServer: !process.env.CI,

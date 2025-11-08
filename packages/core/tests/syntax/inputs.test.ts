@@ -253,7 +253,11 @@ describe('Inputs Domain - Syntax Tests', () => {
      * Helper function to test DSL parsing and rendering with snapshots.
      * Captures both AST structure and rendered HTML output.
      */
-    function testSnapshot(name: string, dsl: string, options: { skipHtmlSnapshot?: boolean } = {}) {
+    function testSnapshot(
+      name: string,
+      dsl: string,
+      options: { skipHtmlSnapshot?: boolean } = {}
+    ) {
       it(name, () => {
         const ast = parseAndBuildAst(dsl)
         expect(ast.__errors).toHaveLength(0)
@@ -294,18 +298,33 @@ describe('Inputs Domain - Syntax Tests', () => {
     describe('Checkboxes', () => {
       testSnapshot('unchecked checkbox', inputsFixtures.checkboxes.unchecked)
       testSnapshot('checked checkbox', inputsFixtures.checkboxes.checked)
-      testSnapshot('checked checkbox lowercase', inputsFixtures.checkboxes.checkedLowercase)
+      testSnapshot(
+        'checked checkbox lowercase',
+        inputsFixtures.checkboxes.checkedLowercase
+      )
       testSnapshot('multiple checkboxes', inputsFixtures.checkboxes.multiple)
       testSnapshot('checkboxes in form', inputsFixtures.checkboxes.inForm)
     })
 
     describe('Radio Buttons', () => {
       // Skip HTML snapshots for radios due to non-deterministic radio group IDs
-      testSnapshot('single radio', inputsFixtures.radioButtons.single, { skipHtmlSnapshot: true })
-      testSnapshot('selected radio', inputsFixtures.radioButtons.selected, { skipHtmlSnapshot: true })
-      testSnapshot('radio group', inputsFixtures.radioButtons.group, { skipHtmlSnapshot: true })
-      testSnapshot('labeled radio group', inputsFixtures.radioButtons.labeled, { skipHtmlSnapshot: true })
-      testSnapshot('multiple radio groups', inputsFixtures.radioButtons.multiple, { skipHtmlSnapshot: true })
+      testSnapshot('single radio', inputsFixtures.radioButtons.single, {
+        skipHtmlSnapshot: true,
+      })
+      testSnapshot('selected radio', inputsFixtures.radioButtons.selected, {
+        skipHtmlSnapshot: true,
+      })
+      testSnapshot('radio group', inputsFixtures.radioButtons.group, {
+        skipHtmlSnapshot: true,
+      })
+      testSnapshot('labeled radio group', inputsFixtures.radioButtons.labeled, {
+        skipHtmlSnapshot: true,
+      })
+      testSnapshot(
+        'multiple radio groups',
+        inputsFixtures.radioButtons.multiple,
+        { skipHtmlSnapshot: true }
+      )
     })
 
     // TODO: Select with multiple options syntax not yet supported

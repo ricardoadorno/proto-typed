@@ -10,7 +10,7 @@ export default defineConfig({
         singleThread: true,
       },
     },
-    include: ['tests/language-engine.spec.ts'],
+    include: ['tests/**/*.spec.ts'],
     exclude: [
       '**/node_modules/**',
       '**/dist/**',

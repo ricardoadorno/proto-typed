@@ -115,4 +115,12 @@ export class UiDslParser extends CstParser {
  * @description A singleton instance of the UiDslParser.
  * This instance is used throughout the application to parse DSL code.
  */
-export const parser = new UiDslParser()
+let parser: UiDslParser | null = null
+
+export function getParser() {
+  if (parser) {
+    return parser
+  }
+  parser = new UiDslParser()
+  return parser
+}

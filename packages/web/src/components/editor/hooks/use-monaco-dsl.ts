@@ -53,7 +53,6 @@ export function useMonacoDSL() {
 
     const integration = createLanguageHost()
     hostRef.current = integration
-
     ;(async () => {
       try {
         setError(null)

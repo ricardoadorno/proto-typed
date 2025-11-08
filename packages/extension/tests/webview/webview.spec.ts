@@ -39,7 +39,10 @@ test.describe('VS Code webview snapshot', () => {
 
   test('matches renderer snapshot for DSL update', async ({ page }) => {
     if (!fs.existsSync(webviewEntry)) {
-      test.skip(true, 'Webview bundle not found. Run pnpm run build:webview first.')
+      test.skip(
+        true,
+        'Webview bundle not found. Run pnpm run build:webview first.'
+      )
     }
 
     const dsl = fs.readFileSync(dslPath, 'utf8')
@@ -74,11 +77,16 @@ test.describe('VS Code webview snapshot', () => {
     })
 
     // Wait for handshake acknowledgment
-    await page.waitForFunction(() => {
-      // @ts-expect-error - declared in addInitScript
-      return Array.isArray(window.__vscodeMessages__) &&
-        window.__vscodeMessages__.some((msg) => msg.type === 'HANDSHAKE_ACK')
-    }, { timeout: 10000 })
+    await page.waitForFunction(
+      () => {
+        // @ts-expect-error - declared in addInitScript
+        return (
+          Array.isArray(window.__vscodeMessages__) &&
+          window.__vscodeMessages__.some((msg) => msg.type === 'HANDSHAKE_ACK')
+        )
+      },
+      { timeout: 10000 }
+    )
 
     await page.evaluate((dslSource) => {
       const update = {
@@ -94,22 +102,29 @@ test.describe('VS Code webview snapshot', () => {
       window.dispatchEvent(new MessageEvent('message', { data: update }))
     }, dsl)
 
-    const actual = await page.waitForFunction(() => {
-      // @ts-expect-error - declared in addInitScript
-      const messages = window.__vscodeMessages__ ?? []
-      const renderMessage = [...messages].reverse().find(
-        (msg) => msg.type === 'RENDER_COMPLETE'
-      )
-      return renderMessage?.payload?.html ?? undefined
-    }, { timeout: 10000 })
+    const actual = await page.waitForFunction(
+      () => {
+        // @ts-expect-error - declared in addInitScript
+        const messages = window.__vscodeMessages__ ?? []
+        const renderMessage = [...messages]
+          .reverse()
+          .find((msg) => msg.type === 'RENDER_COMPLETE')
+        return renderMessage?.payload?.html ?? undefined
+      },
+      { timeout: 10000 }
+    )
 
     const htmlString = await actual.jsonValue()
     expect(htmlString).toBeTruthy()
     expect(typeof htmlString).toBe('string')
 
     // Normalize HTML: trim and remove data-nav attributes
-    const normalizedActual = htmlString.trim().replace(/\s+data-nav="[^"]*"/g, '')
-    const normalizedExpected = expectedHtml.trim().replace(/\s+data-nav="[^"]*"/g, '')
+    const normalizedActual = htmlString
+      .trim()
+      .replace(/\s+data-nav="[^"]*"/g, '')
+    const normalizedExpected = expectedHtml
+      .trim()
+      .replace(/\s+data-nav="[^"]*"/g, '')
 
     expect(normalizedActual).toEqual(normalizedExpected)
   })
