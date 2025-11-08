@@ -26,6 +26,12 @@ html
 packages/extension/.vscode-test/
 __snapshots__
 
+# Extension test artifacts (compiled test files)
+packages/extension/tests/e2e/**/*.js
+packages/extension/tests/e2e/**/*.js.map
+packages/extension/dist/tests/
+packages/extension/test-results/
+
 # Editor directories and files
 .idea
 .DS_Store

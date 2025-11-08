@@ -4,19 +4,22 @@ This directory centralizes the automated checks for the Proto‑Typed VS Code ex
 It documents how we exercise both primary features:
 
 1. The **language server** (completion, diagnostics, hover, etc.)
-2. The **webview playground** (rendering DSL previews with Monaco + messaging)
+2. The **webview playground** (rendering DSL previews with messaging integration)
 
-## Tooling
+## Testing Strategy
 
-| Layer        | Runner     | Folder                                       |
-| ------------ | ---------- | -------------------------------------------- |
-| Language LSP | Vitest     | `packages/extension/tests/*.spec.ts`         |
-| Webview      | Playwright | `packages/extension/tests/webview/*.spec.ts` |
+We use a **two-layer testing approach** optimized for VS Code extension development:
 
-Vitest provides fast Node‑based snapshot tests of the reusable language engine
-exposed by `@proto-typed/core`, while Playwright renders the built webview bundle
-in Chromium and simulates the vscode messaging contract (handshake, DSL updates,
-render complete notifications).
+| Layer          | Runner                | Location          | Purpose                                    |
+| -------------- | --------------------- | ----------------- | ------------------------------------------ |
+| **Unit Tests** | Vitest (Node)         | `tests/*.spec.ts` | Fast, isolated language engine tests       |
+| **E2E Tests**  | @vscode/test-electron | `tests/e2e/`      | Full integration tests inside real VS Code |
+
+### Why This Approach?
+
+- **Vitest** provides fast, deterministic snapshot tests of the language engine without VS Code overhead
+- **@vscode/test-electron** tests the complete extension (LSP + webview) inside a real VS Code instance
+- **No Playwright** - webviews in VS Code extensions require VS Code APIs (`acquireVsCodeApi`) that can't be properly mocked in isolated browser tests
 
 ## What We Test
 
@@ -60,43 +63,64 @@ attach a `TextDocument` for sample DSL inputs, and assert:
 
 These assertions use inline snapshots so regressions are visible in diff reviews.
 
-### Webview (Playwright)
+### Webview E2E Tests (VS Code Test Runner)
 
-Located in `tests/webview/webview.spec.ts` with config `tests/playwright.config.ts`.
+Located in `tests/e2e/suite/webview.test.ts`.
 
-Steps per spec:
+These tests run inside a **real VS Code instance** to validate:
 
-1. Load the built webview HTML (`dist/webview/index.html`) via `file://`.
-2. Stub `acquireVsCodeApi` so the React app thinks it’s running inside VS Code.
-3. Dispatch `HANDSHAKE_INIT` and wait for the webview to respond with `HANDSHAKE_ACK`.
-4. Dispatch `DSL_UPDATE` using the sample DSL.
-5. Wait for the app to emit `RENDER_COMPLETE` and grab the resulting HTML string.
-6. Compare the payload to the reference renderer output from `@proto-typed/core`
-   (`astToHtmlStringPreview`). This guarantees Monaco, theme state, and messaging
-   match the backend behavior.
+1. **Command registration** - `proto-typed.showPreview` is available
+2. **Webview lifecycle** - Panel opens and initializes correctly
+3. **DSL rendering** - Webview produces correct HTML output via `RENDER_COMPLETE` messaging
+4. **Live updates** - DSL changes trigger re-renders with updated HTML
+5. **Error handling** - Invalid DSL is handled gracefully without crashes
 
-Playwright snapshots can be extended later (screenshots, multiple fixtures), but the current
-HTML comparison already catches most regressions.
+The tests use the **test command** `proto-typed.getLastRender` (registered only when the extension runs)
+to access the `lastRenderSnapshot` captured by the extension host. This validates the complete
+messaging flow: editor → host → webview → render → host notification.
 
 ## Running the Suite
 
-From the repo root (after `pnpm install` and building the webview bundle):
+### ⚠️ **IMPORTANT: E2E Tests Requirement**
+
+**You MUST close ALL VS Code windows before running E2E tests!**
+
+VS Code's test runner (`@vscode/test-electron`) requires exclusive access. If you see:
+
+- `"Running extension tests from the command line is currently only supported if no other instance of Code is running"`
+- `"Extension host is unresponsive"` or tests hanging
+- `"Error mutex already exists"`
+
+→ **Solution**: Close ALL VS Code windows (including this one) and run tests from terminal.
+
+### Running Tests
+
+From the repo root (after `pnpm install` and building the extension):
 
 ```bash
-pnpm run -F proto-typed-vscode-extension build:webview
+# Run all tests (unit + E2E)
 pnpm run -F proto-typed-vscode-extension test
+
+# Run only unit tests (fast, VS Code can remain open)
+pnpm run -F proto-typed-vscode-extension test:unit
+
+# Run only E2E tests (CLOSE VS CODE FIRST!)
+pnpm run -F proto-typed-vscode-extension test:e2e
 ```
-
-Internally this runs:
-
-- `pnpm run test:unit` → Vitest (language engine snapshots)
-- `pnpm run test:webview` → Playwright (webview integration)
 
 Regenerate snapshots with:
 
 ```bash
-UPDATE_SNAPSHOTS=1 pnpm run -F proto-typed-vscode-extension test
+UPDATE_SNAPSHOTS=1 pnpm run -F proto-typed-vscode-extension test:unit
 ```
+
+### Prerequisites
+
+- **Unit tests**: Just `pnpm install` (no build needed, VS Code can be running)
+- **E2E tests**:
+  1. Run `pnpm run compile` (builds extension + webview)
+  2. **CLOSE ALL VS CODE WINDOWS**
+  3. Run tests from external terminal
 
 ## Extending Coverage
 
@@ -110,40 +134,47 @@ lifecycle. To extend:
 - **Advanced hover** — Add tests for more complex DSL elements as they are added
 - **Additional code actions** — Test new quick fixes as error codes are added
 
-### Webview Tests (Playwright)
+### E2E Webview Tests (@vscode/test-electron)
 
-Current coverage validates DSL-to-HTML rendering matches core renderer output. To extend:
+Current coverage validates rendering, live updates, and error handling. To extend:
 
-- Create additional DSL fixture files in `test-workspace/` for complex scenarios:
-  - Modals with multiple screens
-  - Drawers with navigation state
-  - Component instantiation with props
-  - Theme overrides via `styles:` blocks
-- Add visual regression tests using Playwright screenshots
-- Test interactive features (navigation, modal toggles, drawer state)
+- **Navigation testing** — Test screen navigation, modal/drawer toggles
+- **Component props** — Validate component instantiation with dynamic props
+- **Theme switching** — Test theme changes via `styles:` blocks
+- **Error recovery** — Test more edge cases (missing files, syntax errors, etc.)
+- **Performance** — Add timing assertions for render latency
 
-### E2E Tests (VS Code Test Runner)
+### E2E LSP Tests (@vscode/test-electron)
 
-If VS Code APIs need end-to-end coverage (e.g., command registration, preview webview
-lifecycle, syntax highlighting), we can add VS Code Test Runner suites that:
+Current coverage validates hover, completion, and diagnostics. To extend:
 
-- Launch real VS Code instance
-- Open `.pty` files and trigger preview command
-- Leverage the same `RENDER_COMPLETE` messaging hook
-- Validate editor decorations, diagnostics collection, completion UI
+- **Code actions** — Test quick fix application (not just availability)
+- **Definition/references** — Once implemented, test go-to-definition
+- **Rename** — Test symbol rename operations
+- **Formatting** — Test document formatting when implemented
 
 ## Test Coverage Summary
 
-| Feature           | Coverage     | Tests Location            |
-| ----------------- | ------------ | ------------------------- |
-| Completions       | ✅ Full      | `language-engine.spec.ts` |
-| Diagnostics       | ✅ Full      | `language-engine.spec.ts` |
-| Hover             | ✅ Full      | `language-engine.spec.ts` |
-| Code Actions      | ✅ Full      | `language-engine.spec.ts` |
-| Semantic Tokens   | ⚠️ Stub only | N/A (returns `null`)      |
-| Formatting        | ⚠️ Stub only | N/A (returns `[]`)        |
-| Webview Rendering | ✅ Full      | `webview/webview.spec.ts` |
-| Webview Messaging | ✅ Full      | `webview/webview.spec.ts` |
+| Feature           | Coverage     | Test Type | Location                                           |
+| ----------------- | ------------ | --------- | -------------------------------------------------- |
+| Completions       | ✅ Full      | Unit      | `language-engine.spec.ts`                          |
+| Diagnostics       | ✅ Full      | Unit      | `language-engine.spec.ts`                          |
+| Hover             | ✅ Full      | Unit/E2E  | `language-engine.spec.ts`, `e2e/suite/lsp.test.ts` |
+| Code Actions      | ✅ Full      | Unit      | `language-engine.spec.ts`                          |
+| LSP Integration   | ✅ Full      | E2E       | `e2e/suite/lsp.test.ts`                            |
+| Webview Rendering | ✅ Full      | E2E       | `e2e/suite/webview.test.ts`                        |
+| Webview Lifecycle | ✅ Full      | E2E       | `e2e/suite/webview.test.ts`                        |
+| Live Updates      | ✅ Full      | E2E       | `e2e/suite/webview.test.ts`                        |
+| Error Handling    | ✅ Full      | E2E       | `e2e/suite/webview.test.ts`                        |
+| Semantic Tokens   | ⚠️ Stub only | N/A       | N/A (returns `null`)                               |
+| Formatting        | ⚠️ Stub only | N/A       | N/A (returns `[]`)                                 |
+
+### Test Architecture Benefits
+
+✅ **Fast feedback loop** - Unit tests run in ~1s, E2E in ~30s  
+✅ **Real integration** - E2E tests validate actual VS Code behavior  
+✅ **Snapshot stability** - Unit tests catch language engine regressions  
+✅ **Messaging validation** - E2E tests verify host ↔ webview communication
 
 Keeping the test plan in this README ensures contributors know _exactly_ how we validate
 both halves of the extension before shipping.

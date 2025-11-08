@@ -8051,13 +8051,9 @@ snapshots:
 
   core-util-is@1.0.3: {}
 
-<<<<<<< HEAD
   corser@2.0.1: {}
 
-  cosmiconfig-typescript-loader@6.2.0(@types/node@18.19.130)(cosmiconfig@9.0.0(typescript@5.7.3))(typescript@5.7.3):
-=======
   cosmiconfig-typescript-loader@6.2.0(@types/node@18.19.130)(cosmiconfig@9.0.0(typescript@5.9.3))(typescript@5.9.3):
->>>>>>> feat/update-syntax
     dependencies:
       '@types/node': 18.19.130
       cosmiconfig: 9.0.0(typescript@5.9.3)

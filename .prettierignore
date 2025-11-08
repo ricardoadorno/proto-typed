@@ -21,6 +21,8 @@ coverage
 playwright-report
 test-results
 __snapshots__
+.vscode-test
+packages/extension/test-results
 
 # Logs
 *.log

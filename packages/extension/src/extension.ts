@@ -188,7 +188,16 @@ export function activate(context: vscode.ExtensionContext) {
     }
   )
 
+  // Register test command to expose lastRenderSnapshot (for E2E tests)
+  const getLastRenderCommand = vscode.commands.registerCommand(
+    'proto-typed.getLastRender',
+    () => {
+      return lastRenderSnapshot
+    }
+  )
+
   context.subscriptions.push(showPreviewCommand)
+  context.subscriptions.push(getLastRenderCommand)
   context.subscriptions.push(messageRouter)
   context.subscriptions.push(synchronizer)
   context.subscriptions.push({
