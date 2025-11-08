@@ -36,12 +36,13 @@ Duration    2.46s
 ```
 
 #### **LSP Integration Tests** (13 testes)
+
 - ✅ Hover para keywords (screen, modal, drawer, component)
 - ✅ Hover para layouts (container, row, col, grid, card)
 - ✅ Hover para botões (@primary, @secondary, @ghost, etc.)
 - ✅ Autocomplete no início da linha
 - ✅ Autocomplete com trigger @ (botões)
-- ✅ Autocomplete com trigger ___ (inputs)
+- ✅ Autocomplete com trigger \_\_\_ (inputs)
 - ✅ Completions com snippets e placeholders
 - ✅ Diagnostics para erros de sintaxe
 - ✅ Diagnostics cleared para DSL válida
@@ -49,6 +50,7 @@ Duration    2.46s
 - ✅ Code Actions para diagnostics
 
 #### **Language Engine Tests** (9 testes)
+
 - ✅ Completions determinísticos
 - ✅ Diagnostics para DSL inválido
 - ✅ Hover para screen keyword
@@ -79,6 +81,7 @@ packages/extension/tests/e2e/
 ```
 
 #### **LSP E2E Tests** (`lsp.test.ts`)
+
 Testa a funcionalidade completa da LSP no VSCode:
 
 1. ✅ **Hover** - Documentação aparece ao passar mouse
@@ -88,6 +91,7 @@ Testa a funcionalidade completa da LSP no VSCode:
 5. ✅ **Code Actions** - Quick fixes disponíveis
 
 #### **Webview E2E Tests** (`webview.test.ts`)
+
 Testa a funcionalidade do preview da extensão:
 
 1. ✅ **Comando de preview** - Abre webview corretamente
@@ -99,12 +103,14 @@ Testa a funcionalidade do preview da extensão:
 ## 📁 Arquivos Modificados/Criados
 
 ### **Core Package**
+
 - ✅ `packages/core/src/language/grammar/index.ts` - Fix JSON imports
 - ✅ `packages/core/tsconfig.json` - Config para ESNext
 - ✅ `packages/core/src/language/adapters/vscode.ts` - Fix memory leak
 - ✅ `packages/core/src/language/adapters/monaco.ts` - Fix memory leak
 
 ### **Extension Package**
+
 - ✅ `packages/extension/tests/lsp-integration.spec.ts` - 13 novos testes
 - ✅ `packages/extension/tests/e2e/extension.e2e.spec.ts` - E2E runner
 - ✅ `packages/extension/tests/e2e/suite/index.ts` - Suite setup
@@ -115,6 +121,7 @@ Testa a funcionalidade do preview da extensão:
 - ✅ `packages/extension/vitest.config.ts` - Include all tests
 
 ### **Documentation**
+
 - ✅ `LSP-TEST-REPORT.md` - Relatório detalhado de testes LSP
 - ✅ `FINAL-TEST-REPORT.md` - Este relatório final
 
@@ -123,6 +130,7 @@ Testa a funcionalidade do preview da extensão:
 ## 🎮 Como Executar os Testes
 
 ### **Testes Unitários**
+
 ```bash
 # Rodar todos os testes unitários
 pnpm test:unit
@@ -132,6 +140,7 @@ pnpm vitest run tests/lsp-integration.spec.ts
 ```
 
 ### **Testes E2E (VSCode/Electron)**
+
 ```bash
 # Compilar e rodar testes E2E
 pnpm test:e2e
@@ -141,6 +150,7 @@ pnpm test:all
 ```
 
 ### **Build e Compilação**
+
 ```bash
 # Compilar core
 pnpm compile:core
@@ -156,15 +166,15 @@ pnpm run build:webview
 
 ## ✅ Funcionalidades Verificadas
 
-| Funcionalidade | Status | Testes | Arquivo |
-|----------------|--------|--------|---------|
-| **Hover** | ✅ FUNCIONANDO | 15 testes | `lsp-integration.spec.ts` |
-| **Autocomplete** | ✅ FUNCIONANDO | 10 testes | `lsp-integration.spec.ts` |
-| **Suggestions** | ✅ FUNCIONANDO | 8 testes | `lsp-integration.spec.ts` |
-| **Diagnostics** | ✅ FUNCIONANDO | 6 testes | `lsp-integration.spec.ts` |
-| **Code Actions** | ✅ FUNCIONANDO | 4 testes | `lsp-integration.spec.ts` |
-| **Webview** | ✅ COMPILANDO | Build OK | Compila sem erros |
-| **Memory** | ✅ SEM LEAKS | Fixed | Cleanup functions captured |
+| Funcionalidade   | Status         | Testes    | Arquivo                    |
+| ---------------- | -------------- | --------- | -------------------------- |
+| **Hover**        | ✅ FUNCIONANDO | 15 testes | `lsp-integration.spec.ts`  |
+| **Autocomplete** | ✅ FUNCIONANDO | 10 testes | `lsp-integration.spec.ts`  |
+| **Suggestions**  | ✅ FUNCIONANDO | 8 testes  | `lsp-integration.spec.ts`  |
+| **Diagnostics**  | ✅ FUNCIONANDO | 6 testes  | `lsp-integration.spec.ts`  |
+| **Code Actions** | ✅ FUNCIONANDO | 4 testes  | `lsp-integration.spec.ts`  |
+| **Webview**      | ✅ COMPILANDO  | Build OK  | Compila sem erros          |
+| **Memory**       | ✅ SEM LEAKS   | Fixed     | Cleanup functions captured |
 
 ---
 

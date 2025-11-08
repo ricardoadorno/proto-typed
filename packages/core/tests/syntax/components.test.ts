@@ -372,7 +372,9 @@ screen Test:
         expect(ast.__errors).toHaveLength(0)
 
         // Extract and set component definitions for rendering
-        const componentNodes = ast.children!.filter((n) => n.type === 'Component')
+        const componentNodes = ast.children!.filter(
+          (n) => n.type === 'Component'
+        )
         setComponentDefinitions(componentNodes)
 
         // Snapshot the AST structure
@@ -387,7 +389,9 @@ screen Test:
         expect(astSnapshot).toMatchSnapshot('AST')
 
         // Snapshot rendered HTML for non-component nodes (screens, etc.)
-        const renderableNodes = ast.children!.filter((n) => n.type !== 'Component')
+        const renderableNodes = ast.children!.filter(
+          (n) => n.type !== 'Component'
+        )
         renderableNodes.forEach((node, index) => {
           const html = renderNode(node)
           expect(html).toMatchSnapshot(`HTML-${node.type}-${index}`)
@@ -397,14 +401,20 @@ screen Test:
 
     describe('Component Definitions', () => {
       testSnapshot('simple definition', componentsFixtures.definitions.simple)
-      testSnapshot('definition with props', componentsFixtures.definitions.withProps)
+      testSnapshot(
+        'definition with props',
+        componentsFixtures.definitions.withProps
+      )
       testSnapshot('complex definition', componentsFixtures.definitions.complex)
       testSnapshot('nested definition', componentsFixtures.definitions.nested)
     })
 
     describe('Component Instances', () => {
       testSnapshot('simple instance', componentsFixtures.instances.simple)
-      testSnapshot('instance with multiple props', componentsFixtures.instances.multipleProps)
+      testSnapshot(
+        'instance with multiple props',
+        componentsFixtures.instances.multipleProps
+      )
       testSnapshot('multiple instances', componentsFixtures.instances.multiple)
       testSnapshot('instance in layout', componentsFixtures.instances.inLayout)
     })
@@ -417,8 +427,14 @@ screen Test:
 
     describe('Prop Substitution', () => {
       testSnapshot('props in text', componentsFixtures.propSubstitution.inText)
-      testSnapshot('props in action', componentsFixtures.propSubstitution.inAction)
-      testSnapshot('multiple props', componentsFixtures.propSubstitution.multiple)
+      testSnapshot(
+        'props in action',
+        componentsFixtures.propSubstitution.inAction
+      )
+      testSnapshot(
+        'multiple props',
+        componentsFixtures.propSubstitution.multiple
+      )
     })
 
     describe('Multiple Components', () => {
@@ -426,7 +442,10 @@ screen Test:
         'header and footer components',
         componentsFixtures.multipleComponents.headerAndFooter
       )
-      testSnapshot('component library', componentsFixtures.multipleComponents.library)
+      testSnapshot(
+        'component library',
+        componentsFixtures.multipleComponents.library
+      )
     })
 
     describe('Edge Cases', () => {

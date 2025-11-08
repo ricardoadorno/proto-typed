@@ -88,11 +88,11 @@ export function usePlaygroundState() {
             .replace(/\u00A0/g, ' ') // NBSP -> space
 
           if (!normalizedText.trim()) {
-          const emptyState: PlaygroundState = {
-            dsl: normalizedText,
-            html: '',
-            metadata: {
-              screens: [],
+            const emptyState: PlaygroundState = {
+              dsl: normalizedText,
+              html: '',
+              metadata: {
+                screens: [],
                 components: [],
                 modals: [],
                 drawers: [],
@@ -103,24 +103,24 @@ export function usePlaygroundState() {
                 currentHistoryIndex: -1,
                 canNavigateBack: false,
               },
-            currentScreen: null,
-            errors: [],
-            isLoading: false,
-          }
-          setStateLocal(emptyState)
-          routeManagerGateway.initialize([] as AstNode[])
-          routeManagerGateway.resetNavigation()
-          sendMessage(
-            createMessage('RENDER_COMPLETE', {
-              html: '',
-              screen: null,
+              currentScreen: null,
               errors: [],
-              uri: activeUriRef.current ?? undefined,
-              metadata: emptyState.metadata,
-            })
-          )
-          return
-        }
+              isLoading: false,
+            }
+            setStateLocal(emptyState)
+            routeManagerGateway.initialize([] as AstNode[])
+            routeManagerGateway.resetNavigation()
+            sendMessage(
+              createMessage('RENDER_COMPLETE', {
+                html: '',
+                screen: null,
+                errors: [],
+                uri: activeUriRef.current ?? undefined,
+                metadata: emptyState.metadata,
+              })
+            )
+            return
+          }
 
           // Parse AST
           const ast = parseAndBuildAst(normalizedText)

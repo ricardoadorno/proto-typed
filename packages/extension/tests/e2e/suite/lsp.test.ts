@@ -29,7 +29,7 @@ suite('Proto-Typed LSP Features', () => {
     await vscode.window.showTextDocument(document)
 
     // Wait for LSP to activate
-    await new Promise(resolve => setTimeout(resolve, 3000))
+    await new Promise((resolve) => setTimeout(resolve, 3000))
   })
 
   test('Hover provides documentation for screen keyword', async function () {
@@ -68,11 +68,12 @@ suite('Proto-Typed LSP Features', () => {
     const position = new vscode.Position(lastLine, lastLineText.length)
 
     // Trigger completion
-    const completions = await vscode.commands.executeCommand<vscode.CompletionList>(
-      'vscode.executeCompletionItemProvider',
-      document.uri,
-      position
-    )
+    const completions =
+      await vscode.commands.executeCommand<vscode.CompletionList>(
+        'vscode.executeCompletionItemProvider',
+        document.uri,
+        position
+      )
 
     assert.ok(
       completions && completions.items.length > 0,
@@ -80,9 +81,9 @@ suite('Proto-Typed LSP Features', () => {
     )
 
     // Check if we have screen, modal, drawer etc
-    const labels = completions.items.map(item => item.label)
+    const labels = completions.items.map((item) => item.label)
     const hasLayoutKeywords = labels.some(
-      label =>
+      (label) =>
         typeof label === 'string' &&
         (label.includes('screen') ||
           label.includes('modal') ||
@@ -103,23 +104,24 @@ suite('Proto-Typed LSP Features', () => {
     const position = new vscode.Position(5, 4)
 
     // Trigger completion with @ character
-    const completions = await vscode.commands.executeCommand<vscode.CompletionList>(
-      'vscode.executeCompletionItemProvider',
-      document.uri,
-      position,
-      '@'
-    )
+    const completions =
+      await vscode.commands.executeCommand<vscode.CompletionList>(
+        'vscode.executeCompletionItemProvider',
+        document.uri,
+        position,
+        '@'
+      )
 
     assert.ok(
       completions && completions.items.length > 0,
       'Should provide completion items after @'
     )
 
-    const labels = completions.items.map(item =>
+    const labels = completions.items.map((item) =>
       typeof item.label === 'string' ? item.label : item.label.label
     )
     const hasButtonVariants = labels.some(
-      label =>
+      (label) =>
         label.includes('button') ||
         label.includes('@primary') ||
         label.includes('@secondary')
@@ -128,7 +130,12 @@ suite('Proto-Typed LSP Features', () => {
     assert.ok(hasButtonVariants, 'Should provide button variant completions')
 
     console.log('✅ Button autocomplete test passed!')
-    console.log(`Button completions: ${labels.filter(l => l.includes('button') || l.includes('@')).slice(0, 5).join(', ')}`)
+    console.log(
+      `Button completions: ${labels
+        .filter((l) => l.includes('button') || l.includes('@'))
+        .slice(0, 5)
+        .join(', ')}`
+    )
   })
 
   test('Diagnostics show errors for invalid syntax', async function () {
@@ -144,7 +151,7 @@ suite('Proto-Typed LSP Features', () => {
     await vscode.window.showTextDocument(invalidDoc)
 
     // Wait for diagnostics
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await new Promise((resolve) => setTimeout(resolve, 2000))
 
     const diagnostics = vscode.languages.getDiagnostics(invalidDoc.uri)
 
@@ -154,7 +161,7 @@ suite('Proto-Typed LSP Features', () => {
     )
 
     const hasSyntaxError = diagnostics.some(
-      d => d.severity === vscode.DiagnosticSeverity.Error
+      (d) => d.severity === vscode.DiagnosticSeverity.Error
     )
 
     assert.ok(hasSyntaxError, 'Should have at least one error diagnostic')
@@ -180,17 +187,15 @@ suite('Proto-Typed LSP Features', () => {
     await vscode.window.showTextDocument(doc)
 
     // Wait for diagnostics
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await new Promise((resolve) => setTimeout(resolve, 2000))
 
     const diagnostics = vscode.languages.getDiagnostics(doc.uri)
 
     if (diagnostics.length > 0) {
       const firstDiag = diagnostics[0]
-      const codeActions = await vscode.commands.executeCommand<vscode.CodeAction[]>(
-        'vscode.executeCodeActionProvider',
-        doc.uri,
-        firstDiag.range
-      )
+      const codeActions = await vscode.commands.executeCommand<
+        vscode.CodeAction[]
+      >('vscode.executeCodeActionProvider', doc.uri, firstDiag.range)
 
       assert.ok(
         Array.isArray(codeActions),

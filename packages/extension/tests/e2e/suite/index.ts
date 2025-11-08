@@ -18,10 +18,10 @@ export async function run(): Promise<void> {
   const files = await glob('**/**.spec.js', { cwd: testsRoot })
 
   return new Promise((resolve, reject) => {
-    files.forEach(f => mocha.addFile(path.resolve(testsRoot, f)))
+    files.forEach((f) => mocha.addFile(path.resolve(testsRoot, f)))
 
     try {
-      mocha.run(failures => {
+      mocha.run((failures) => {
         if (failures > 0) {
           reject(new Error(`${failures} tests failed.`))
         } else {

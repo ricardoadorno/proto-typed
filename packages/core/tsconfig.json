@@ -12,5 +12,12 @@
     "resolveJsonModule": true
   },
   "include": ["src"],
-  "exclude": ["tests", "**/*.test.ts", "**/*.spec.ts", "vitest.config.ts", "eslint.config.js", "dist"]
+  "exclude": [
+    "tests",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "vitest.config.ts",
+    "eslint.config.js",
+    "dist"
+  ]
 }

@@ -27,7 +27,10 @@ function createLanguageHost(): LanguageHost {
       try {
         const parsed = parseAndBuildAst(text)
         const astWithErrors = parsed as AstWithErrors
-        if ('__errors' in astWithErrors && Array.isArray(astWithErrors.__errors)) {
+        if (
+          '__errors' in astWithErrors &&
+          Array.isArray(astWithErrors.__errors)
+        ) {
           errors = [...(astWithErrors.__errors as ProtoError[])]
           delete (astWithErrors as Partial<AstWithErrors>).__errors
         }
@@ -123,7 +126,10 @@ describe('LSP Integration Tests - Comprehensive', () => {
           textDocument: { uri },
           position: { line, character: char },
         })
-        expect(hover, `Hover for ${keyword} at line ${line}, char ${char} should not be null`).toBeTruthy()
+        expect(
+          hover,
+          `Hover for ${keyword} at line ${line}, char ${char} should not be null`
+        ).toBeTruthy()
         expect((hover?.contents as any).value).toContain(`**${keyword}**`)
       }
     })
@@ -222,10 +228,13 @@ describe('LSP Integration Tests - Comprehensive', () => {
       )
 
       // Should include button completions
-      const buttonLabels = labels.filter((l) =>
-        l.includes('button') || l.includes('@')
+      const buttonLabels = labels.filter(
+        (l) => l.includes('button') || l.includes('@')
       )
-      expect(buttonLabels.length, 'Should have button completions').toBeGreaterThan(0)
+      expect(
+        buttonLabels.length,
+        'Should have button completions'
+      ).toBeGreaterThan(0)
     })
 
     it('should provide form input completions after ___ trigger', () => {
@@ -246,8 +255,13 @@ describe('LSP Integration Tests - Comprehensive', () => {
       )
 
       // Should include form input completions
-      const inputLabels = labels.filter((l) => l.includes('input') || l.includes('___'))
-      expect(inputLabels.length, 'Should have input completions').toBeGreaterThan(0)
+      const inputLabels = labels.filter(
+        (l) => l.includes('input') || l.includes('___')
+      )
+      expect(
+        inputLabels.length,
+        'Should have input completions'
+      ).toBeGreaterThan(0)
     })
 
     it('should provide completions with snippet format', () => {
@@ -263,7 +277,8 @@ describe('LSP Integration Tests - Comprehensive', () => {
       })
 
       const screenCompletion = completions.items.find((item) => {
-        const label = typeof item.label === 'string' ? item.label : item.label.label
+        const label =
+          typeof item.label === 'string' ? item.label : item.label.label
         return label === 'screen'
       })
 
@@ -331,7 +346,12 @@ describe('LSP Integration Tests - Comprehensive', () => {
       expect(diag1.length).toBeGreaterThan(0)
 
       // Update to valid
-      const doc2 = TextDocument.create(uri, 'proto-typed', 2, 'screen Valid:\n  container:')
+      const doc2 = TextDocument.create(
+        uri,
+        'proto-typed',
+        2,
+        'screen Valid:\n  container:'
+      )
       engine.update(doc2)
       let diag2 = engine.getDiagnostics(uri)
       expect(diag2.length).toBe(0)

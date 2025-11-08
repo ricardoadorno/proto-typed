@@ -83,10 +83,7 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
-function buildKeywordPattern(
-  words: string[],
-  allowModifiers = false
-): RegExp {
+function buildKeywordPattern(words: string[], allowModifiers = false): RegExp {
   const choices = words
     .map((word) => {
       const escaped = escapeRegExp(word)

@@ -21,9 +21,8 @@ async function main() {
     const extensionDevelopmentPath = path.resolve(__dirname, '../../../')
     const extensionTestsPath = path.resolve(__dirname, './suite/index.js')
     const vscodeExecutablePath = await downloadAndUnzipVSCode('stable')
-    const [cliPath, ...args] = resolveCliArgsFromVSCodeExecutablePath(
-      vscodeExecutablePath
-    )
+    const [cliPath, ...args] =
+      resolveCliArgsFromVSCodeExecutablePath(vscodeExecutablePath)
 
     // Create test workspace
     const testWorkspace = path.resolve(

@@ -29,7 +29,7 @@ suite('Proto-Typed Webview Preview', () => {
     await vscode.window.showTextDocument(document)
 
     // Wait for extension to activate
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await new Promise((resolve) => setTimeout(resolve, 2000))
   })
 
   test('Can open preview command', async function () {
@@ -40,7 +40,7 @@ suite('Proto-Typed Webview Preview', () => {
       await vscode.commands.executeCommand('proto-typed.showPreview')
 
       // Wait for webview to open
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      await new Promise((resolve) => setTimeout(resolve, 2000))
 
       console.log('✅ Webview preview command executed successfully!')
     } catch (error) {
@@ -64,7 +64,9 @@ suite('Proto-Typed Webview Preview', () => {
     this.timeout(10000)
 
     // Check if extension is active
-    const extension = vscode.extensions.getExtension('proto-typed.proto-typed-vscode-extension')
+    const extension = vscode.extensions.getExtension(
+      'proto-typed.proto-typed-vscode-extension'
+    )
 
     if (extension) {
       assert.ok(extension.isActive, 'Extension should be active')

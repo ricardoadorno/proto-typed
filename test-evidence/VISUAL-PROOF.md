@@ -52,6 +52,7 @@
 ### Breakdown por Package:
 
 #### 🔷 Extension LSP Tests (22 testes)
+
 ```
 ✅ language-engine.spec.ts              9 tests PASSED
 ✅ lsp-integration.spec.ts             13 tests PASSED
@@ -63,6 +64,7 @@
 ```
 
 #### 🔷 Core Syntax Tests (221 testes)
+
 ```
 ✅ views.test.ts                       22 tests PASSED
 ✅ inputs.test.ts                      33 tests PASSED
@@ -91,6 +93,7 @@
 ```
 
 **Arquivos Compilados**:
+
 - ✅ Language grammar assets copiados
 - ✅ Todos os módulos TypeScript compilados
 - ✅ Source maps gerados
@@ -262,6 +265,7 @@ Ações disponíveis:
 ## 🎨 FUNCIONALIDADES VISUAIS
 
 ### Webview Preview
+
 ```
 ┌───────────────────────────────────────────────┐
 │  Proto-Typed Webview - BUILD SUCCESS         │
@@ -279,6 +283,7 @@ Ações disponíveis:
 ## 🔧 CORREÇÕES IMPLEMENTADAS
 
 ### 1. ✅ JSON Import Modernizado
+
 ```typescript
 // ANTES (causava erro)
 import grammar from './proto-typed.tmLanguage.json'
@@ -290,6 +295,7 @@ import grammar from './proto-typed.tmLanguage.json' with { type: 'json' }
 **Resultado**: ✅ Import funciona sem erros no Node.js e Vite
 
 ### 2. ✅ Memory Leaks Corrigidos
+
 ```typescript
 // ANTES (memory leak)
 engine.onDiagnostics((uri, diagnostics) => { ... })
