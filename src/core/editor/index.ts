@@ -28,23 +28,42 @@ import { EditorProps, Monaco } from '@monaco-editor/react';
 import { registerDSLCompletionProvider } from './completion/dsl-completion';
 import { registerDSLLanguage } from './language/dsl-language';
 import { registerDSLTheme } from './theme/dsl-theme';
+import { registerFormatterProvider } from './formatter/dsl-formatter';
+import { registerCodeActionsProvider } from './actions/code-actions';
+import { ErrorBus } from '../error-bus';
+import { DSL_LANGUAGE_ID } from './constants';
 
 // Re-export components and hooks
 export { DSLEditor } from './components/dsl-editor';
 export { useMonacoDSL } from './hooks/use-monaco-dsl';
 
+// Re-export lint and formatter utilities
+export { runLintRules, ALL_LINT_RULES } from './lint/lint-rules';
+export { formatDocument } from './formatter/dsl-formatter';
+
 /**
  * Initialize Monaco DSL language and features
- * 
+ *
  * This function should be called once when Monaco is loaded.
- * It registers the DSL language, theme, and completion provider.
- * 
+ * It registers:
+ * - DSL language (syntax, tokenization)
+ * - Theme configuration
+ * - Completion provider (IntelliSense)
+ * - Document formatter (v0.0.2)
+ * - Code actions provider (Quick Fixes) (v0.0.2)
+ *
  * @param monaco - Monaco instance from @monaco-editor/react
  */
 export function initializeMonacoDSL(monaco: Monaco) {
   registerDSLLanguage(monaco);
   registerDSLTheme(monaco);
   registerDSLCompletionProvider(monaco);
+
+  // v0.0.2: Register formatter provider
+  registerFormatterProvider(monaco, DSL_LANGUAGE_ID);
+
+  // v0.0.2: Register code actions provider (Quick Fixes)
+  registerCodeActionsProvider(monaco, DSL_LANGUAGE_ID, () => ErrorBus.get().getAll());
 }
 
 /**

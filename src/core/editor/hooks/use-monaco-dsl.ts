@@ -21,12 +21,14 @@
  * @returns {object} Monaco instance, initialization state, error state, and editor ref
  */
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useMonaco } from '@monaco-editor/react';
 import { initializeMonacoDSL } from '../index';
 import { ErrorBus } from '../../error-bus';
 import type { ProtoError, Severity } from '../../../types/errors';
 import { SEVERITY_RANK } from '../../../types/errors';
+import { runLintRules } from '../lint/lint-rules';
+import type { LintContext } from '../lint/lint-rules';
 
 /**
  * Custom hook to manage Monaco DSL initialization and diagnostics
@@ -37,6 +39,7 @@ export function useMonacoDSL() {
   const [error, setError] = useState<string | null>(null);
   const editorRef = useRef<any>(null);
   const [isEditorMounted, setIsEditorMounted] = useState(false);
+  const lintTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (!monaco || isInitialized) return;
@@ -49,6 +52,57 @@ export function useMonacoDSL() {
       }
     })();
   }, [monaco, isInitialized]);
+
+  // Run lint rules on content change (debounced)
+  const runLint = useCallback((content: string) => {
+    // Clear previous timeout
+    if (lintTimeoutRef.current) {
+      clearTimeout(lintTimeoutRef.current);
+    }
+
+    // Debounce lint execution (300ms after last change)
+    lintTimeoutRef.current = setTimeout(() => {
+      const lines = content.split('\n');
+      const context: LintContext = {
+        source: content,
+        lines,
+        existingErrors: ErrorBus.get().getAll(),
+      };
+
+      // Clear previous editor-stage lint errors
+      ErrorBus.get().clear('editor');
+
+      // Run lint rules and emit new errors
+      const lintErrors = runLintRules(context);
+      if (lintErrors.length > 0) {
+        ErrorBus.get().bulk(lintErrors);
+      }
+    }, 300);
+  }, []);
+
+  // Subscribe to content changes for lint
+  useEffect(() => {
+    const editor = editorRef.current;
+    if (!editor || !isEditorMounted) return;
+
+    const model = editor.getModel();
+    if (!model) return;
+
+    // Run initial lint
+    runLint(model.getValue());
+
+    // Subscribe to content changes
+    const disposable = model.onDidChangeContent(() => {
+      runLint(model.getValue());
+    });
+
+    return () => {
+      disposable.dispose();
+      if (lintTimeoutRef.current) {
+        clearTimeout(lintTimeoutRef.current);
+      }
+    };
+  }, [isEditorMounted, runLint]);
 
   useEffect(() => {
     const editor = editorRef.current;
@@ -115,13 +169,33 @@ function getBestErrorPerLine(errors: ProtoError[]): Map<number, ProtoError> {
 
 /**
  * Formats error message for Monaco display
- * Format: [stage] message — hint
+ * Enhanced format with stage badge, message, hint, and error code
+ * Format: [STAGE] message — hint (code: ERROR_CODE)
+ *
+ * @version 0.0.2 - Enhanced with error code and better formatting
  */
 function formatErrorMessage(err: ProtoError): string {
-  let msg = `[${err.stage}] ${err.message}`;
-  if (err.hint) {
-    msg += ` — ${err.hint}`;
+  // Stage badge with uppercase
+  const stageBadge = `[${err.stage.toUpperCase()}]`;
+
+  // Main message
+  let msg = `${stageBadge} ${err.message}`;
+
+  // Add node type context if available
+  if (err.nodeType && !err.message.includes(err.nodeType)) {
+    msg += ` (in ${err.nodeType})`;
   }
+
+  // Add hint with clear separator
+  if (err.hint) {
+    msg += `\n💡 ${err.hint}`;
+  }
+
+  // Add error code for reference
+  if (err.code) {
+    msg += `\n📋 Error code: ${err.code}`;
+  }
+
   return msg;
 }
 
