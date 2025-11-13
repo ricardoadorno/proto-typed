@@ -2,9 +2,9 @@
  * Shadcn renderers for layout nodes
  */
 
-import { AstNode } from "../../types/ast-node";
-import { ImportManager } from "../import-manager";
-import { ShadcnRenderContext } from "../types";
+import { AstNode } from "../../../types/ast-node.js";
+import { ImportManager } from "../import-manager.js";
+import { ShadcnRenderContext } from "../types.js";
 
 /**
  * Layout presets mapping to Tailwind classes

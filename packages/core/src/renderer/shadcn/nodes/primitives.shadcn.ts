@@ -2,9 +2,9 @@
  * Shadcn renderers for primitive nodes
  */
 
-import { AstNode } from "../../types/ast-node";
-import { ImportManager } from "../import-manager";
-import { ShadcnRenderContext } from "../types";
+import { AstNode } from "../../../types/ast-node.js";
+import { ImportManager } from "../import-manager.js";
+import { ShadcnRenderContext } from "../types.js";
 
 export function renderButton(
   node: AstNode,
@@ -13,16 +13,17 @@ export function renderButton(
 ): string {
   importManager.addShadcnComponent("Button");
 
-  const interactiveProps = node.props as any;
-  const text = interactiveProps?.text || "Button";
-  const variant = interactiveProps?.variant || "default";
-  const size = interactiveProps?.size || "default";
+  const buttonProps = node.props as any;
+  const text = buttonProps?.text || node.value || "Button";
+  const variant = buttonProps?.variant || "default";
+  const size = buttonProps?.size || "default";
 
   // Handle navigation
-  const navTarget = interactiveProps?.destination || interactiveProps?.action;
+  const navTarget = buttonProps?.action;
   let onClick = "";
 
   if (navTarget) {
+    importManager.addImport('import { useNavigate } from "react-router-dom"');
     if (navTarget === "-1") {
       onClick = `onClick={() => navigate(-1)}`;
     } else if (navTarget.startsWith("http")) {
@@ -48,16 +49,16 @@ export function renderLink(
   importManager: ImportManager,
   context: ShadcnRenderContext
 ): string {
-  const interactiveProps = node.props as any;
-  const text = interactiveProps?.text || "Link";
-  const href = interactiveProps?.destination || interactiveProps?.action || "#";
+  const linkProps = node.props as any;
+  const text = linkProps?.text || node.value || "Link";
+  const destination = linkProps?.destination || "#";
+  const external = linkProps?.external || destination.startsWith("http") || destination.startsWith("mailto:");
 
-  // Check if it's internal or external
-  if (href.startsWith("http") || href.startsWith("mailto:")) {
-    return `<a href="${href}" target="_blank" rel="noopener noreferrer" className="text-primary underline-offset-4 hover:underline">${text}</a>`;
+  if (external) {
+    return `<a href="${destination}" target="_blank" rel="noopener noreferrer" className="text-primary underline-offset-4 hover:underline">${text}</a>`;
   } else {
     importManager.addImport('import { Link } from "react-router-dom"');
-    return `<Link to="/${href.toLowerCase()}" className="text-primary underline-offset-4 hover:underline">${text}</Link>`;
+    return `<Link to="/${destination.toLowerCase()}" className="text-primary underline-offset-4 hover:underline">${text}</Link>`;
   }
 }
 
@@ -66,25 +67,22 @@ export function renderImage(
   importManager: ImportManager,
   context: ShadcnRenderContext
 ): string {
-  const interactiveProps = node.props as any;
-  const src = interactiveProps?.src || "";
-  const alt = interactiveProps?.alt || "";
-  const width = interactiveProps?.width;
-  const height = interactiveProps?.height;
+  const imageProps = node.props as any;
+  const src = imageProps?.src || "";
+  const alt = imageProps?.alt || "";
+  const widthPx = imageProps?.widthPx;
+  const heightPx = imageProps?.heightPx;
+  const shape = imageProps?.shape || "rounded";
 
-  const className = ["rounded-md"];
-
-  if (interactiveProps?.className) {
-    className.push(interactiveProps.className);
-  }
+  const className = shape === "circle" ? "rounded-full" : "rounded-md";
 
   const styleProps = [];
-  if (width) styleProps.push(`width: "${width}"`);
-  if (height) styleProps.push(`height: "${height}"`);
+  if (widthPx) styleProps.push(`width: "${widthPx}px"`);
+  if (heightPx) styleProps.push(`height: "${heightPx}px"`);
 
   const style = styleProps.length > 0 ? ` style={{${styleProps.join(", ")}}}` : "";
 
-  return `<img src="${src}" alt="${alt}" className="${className.join(" ")}"${style} />`;
+  return `<img src="${src}" alt="${alt}" className="${className}"${style} />`;
 }
 
 export function renderHeading(
@@ -93,21 +91,30 @@ export function renderHeading(
   context: ShadcnRenderContext
 ): string {
   const textProps = node.props as any;
-  const level = textProps?.level || 2;
-  const text = textProps?.content || textProps?.text || "";
+  const text = textProps?.value || node.value || "";
+  const kind = node.kind || textProps?.kind || "h2";
 
-  const classMap: Record<number, string> = {
-    1: "text-4xl font-extrabold tracking-tight lg:text-5xl",
-    2: "text-3xl font-semibold tracking-tight",
-    3: "text-2xl font-semibold tracking-tight",
-    4: "text-xl font-semibold tracking-tight",
-    5: "text-lg font-semibold tracking-tight",
-    6: "text-base font-semibold tracking-tight",
+  const headingMap: Record<string, { level: number; className: string }> = {
+    h1: {
+      level: 1,
+      className: "scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl",
+    },
+    h2: {
+      level: 2,
+      className: "scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0",
+    },
+    h3: {
+      level: 3,
+      className: "scroll-m-20 text-2xl font-semibold tracking-tight",
+    },
+    h4: {
+      level: 4,
+      className: "scroll-m-20 text-xl font-semibold tracking-tight",
+    },
   };
 
-  const className = classMap[level] || classMap[2];
-
-  return `<h${level} className="${className}">${text}</h${level}>`;
+  const heading = headingMap[kind] || headingMap["h2"];
+  return `<h${heading.level} className="${heading.className}">${text}</h${heading.level}>`;
 }
 
 export function renderText(
@@ -116,8 +123,18 @@ export function renderText(
   context: ShadcnRenderContext
 ): string {
   const textProps = node.props as any;
-  const text = textProps?.content || textProps?.text || "";
-  return `<p className="text-foreground">${text}</p>`;
+  const text = textProps?.value || node.value || "";
+  const kind = node.kind || textProps?.kind || "p";
+
+  // Map text kinds to shadcn/Tailwind classes
+  const textKindMap: Record<string, string> = {
+    p: "leading-7 [&:not(:first-child)]:mt-6",
+    small: "text-sm font-medium leading-none",
+    muted: "text-sm text-muted-foreground",
+  };
+
+  const className = textKindMap[kind] || textKindMap["p"];
+  return `<p className="${className}">${text}</p>`;
 }
 
 export function renderParagraph(
@@ -126,8 +143,8 @@ export function renderParagraph(
   context: ShadcnRenderContext
 ): string {
   const textProps = node.props as any;
-  const text = textProps?.content || textProps?.text || "";
-  return `<p className="leading-7">${text}</p>`;
+  const text = textProps?.value || node.value || "";
+  return `<p className="leading-7 [&:not(:first-child)]:mt-6">${text}</p>`;
 }
 
 export function renderMutedText(
@@ -136,7 +153,7 @@ export function renderMutedText(
   context: ShadcnRenderContext
 ): string {
   const textProps = node.props as any;
-  const text = textProps?.content || textProps?.text || "";
+  const text = textProps?.value || node.value || "";
   return `<p className="text-sm text-muted-foreground">${text}</p>`;
 }
 
@@ -146,8 +163,8 @@ export function renderNote(
   context: ShadcnRenderContext
 ): string {
   const textProps = node.props as any;
-  const text = textProps?.content || textProps?.text || "";
-  return `<div className="rounded-lg border bg-card p-4">
+  const text = textProps?.value || node.value || "";
+  return `<div className="rounded-lg border bg-card text-card-foreground p-4">
   <p className="text-sm">${text}</p>
 </div>`;
 }
@@ -158,8 +175,8 @@ export function renderQuote(
   context: ShadcnRenderContext
 ): string {
   const textProps = node.props as any;
-  const text = textProps?.content || textProps?.text || "";
-  return `<blockquote className="border-l-2 pl-6 italic">${text}</blockquote>`;
+  const text = textProps?.value || node.value || "";
+  return `<blockquote className="mt-6 border-l-2 pl-6 italic">${text}</blockquote>`;
 }
 
 export function renderSeparator(

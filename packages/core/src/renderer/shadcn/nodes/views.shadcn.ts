@@ -2,9 +2,9 @@
  * Shadcn renderers for view nodes (Screen, Modal, Drawer)
  */
 
-import { AstNode } from "../../types/ast-node";
-import { ImportManager } from "../import-manager";
-import { ShadcnRenderContext } from "../types";
+import { AstNode } from "../../../types/ast-node.js";
+import { ImportManager } from "../import-manager.js";
+import { ShadcnRenderContext } from "../types.js";
 
 export function renderScreen(
   node: AstNode,

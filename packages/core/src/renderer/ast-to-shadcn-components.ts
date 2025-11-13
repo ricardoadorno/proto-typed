@@ -3,11 +3,11 @@
  * Converts proto-typed AST to React components using shadcn/ui
  */
 
-import { AstNode } from "@/types/ast-node";
-import { ImportManager } from "./shadcn/import-manager";
-import { ShadcnNodeRenderer } from "./shadcn/shadcn-node-renderer";
-import { CodeGenerator } from "./shadcn/code-generator";
-import { ShadcnExportResult, NavigationConfig, RouteConfig } from "./shadcn/types";
+import { AstNode } from "../types/ast-node.js";
+import { ImportManager } from "./shadcn/import-manager.js";
+import { ShadcnNodeRenderer } from "./shadcn/shadcn-node-renderer.js";
+import { CodeGenerator } from "./shadcn/code-generator.js";
+import { ShadcnExportResult, NavigationConfig, RouteConfig } from "./shadcn/types.js";
 
 interface ComponentExport {
   name: string;

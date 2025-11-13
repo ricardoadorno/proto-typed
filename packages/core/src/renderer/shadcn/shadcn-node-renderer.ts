@@ -9,8 +9,14 @@ import { ShadcnRenderContext } from "./types";
 // Import node renderers
 import {
   renderButton,
+  renderLink,
   renderImage,
+  renderHeading,
   renderText,
+  renderParagraph,
+  renderMutedText,
+  renderNote,
+  renderQuote,
   renderSeparator,
 } from "./nodes/primitives.shadcn";
 
@@ -102,10 +108,22 @@ export class ShadcnNodeRenderer {
       // Primitives (mostly no children)
       case "Button":
         return renderButton(node, this.importManager, context);
+      case "Link":
+        return renderLink(node, this.importManager, context);
       case "Image":
         return renderImage(node, this.importManager, context);
+      case "Heading":
+        return renderHeading(node, this.importManager, context);
       case "Text":
         return renderText(node, this.importManager, context);
+      case "Paragraph":
+        return renderParagraph(node, this.importManager, context);
+      case "MutedText":
+        return renderMutedText(node, this.importManager, context);
+      case "Note":
+        return renderNote(node, this.importManager, context);
+      case "Quote":
+        return renderQuote(node, this.importManager, context);
       case "Separator":
         return renderSeparator(node, this.importManager, context);
       case "Fab":

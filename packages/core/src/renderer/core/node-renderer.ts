@@ -4,8 +4,14 @@ import { safeRender } from './safe-render.js'
 import { renderScreen, renderModal, renderDrawer } from '../nodes/views.node.js'
 import {
   renderButton,
+  renderLink,
   renderImage,
   renderText,
+  renderHeading,
+  renderParagraph,
+  renderMutedText,
+  renderNote,
+  renderQuote,
 } from '../nodes/primitives.node.js'
 import {
   renderLayout,
@@ -71,8 +77,14 @@ const RENDERERS: Record<NodeType, typeof _render> = {
 
   // Primitives
   Button: (n) => renderButton(n),
+  Link: (n) => renderLink(n),
   Image: (n) => renderImage(n),
   Text: (n) => renderText(n),
+  Heading: (n) => renderHeading(n),
+  Paragraph: (n) => renderParagraph(n),
+  MutedText: (n) => renderMutedText(n),
+  Note: (n) => renderNote(n),
+  Quote: (n) => renderQuote(n),
 
   // Layout (canonical presets + structural elements)
   Layout: (n) => renderLayout(n, _render),
