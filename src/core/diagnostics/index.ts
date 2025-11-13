@@ -6,10 +6,12 @@
  * - Diagnostic factory functions (Phase 1)
  * - Document-scoped diagnostic storage (Phase 2)
  * - Enhanced ErrorBus with backward compatibility (Phase 2)
+ * - Configurable lint rules (Phase 3)
  * - Helper utilities for working with diagnostics
  *
  * **Phase 1**: LSP-compliant fields and error catalog
  * **Phase 2**: Document-scoped diagnostics and publishDiagnostics API
+ * **Phase 3**: Configurable lint rules with severity overrides
  *
  * @see DIAGNOSTICS_EVOLUTION.md for architecture details
  */
@@ -90,3 +92,31 @@ export {
   comparePositions,
   compareRanges
 } from '../../types/diagnostics'
+
+// ==========================================================
+// Phase 3: Configurable Lint Rules (New!)
+// ==========================================================
+
+export {
+  DEFAULT_LINT_CONFIG,
+  mergeLintConfigs,
+  severityToLSP,
+  severityToProtoTyped,
+  applyLintConfig,
+  applyLintConfigBulk,
+  loadLintConfig,
+  validateLintConfig,
+  type LintConfig,
+  type RuleSeverity,
+  type RuleConfig
+} from './lint-config'
+
+export {
+  findConfigFile,
+  loadConfigFile,
+  mergeConfigs,
+  clearConfigCache,
+  watchConfigFile,
+  createDefaultConfigFile,
+  type ProtoTypedConfig
+} from './config-loader'
