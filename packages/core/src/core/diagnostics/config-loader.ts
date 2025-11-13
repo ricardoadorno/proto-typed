@@ -22,8 +22,20 @@
  * ```
  */
 
-import * as fs from 'fs'
-import * as path from 'path'
+// Browser-safe imports - these will be undefined in browser environments
+let fs: any
+let path: any
+
+try {
+  // Only available in Node.js
+  if (typeof require !== 'undefined') {
+    fs = require('fs')
+    path = require('path')
+  }
+} catch {
+  // Browser environment - fs and path will be undefined
+}
+
 import type { LintConfig } from './lint-config'
 import { DEFAULT_LINT_CONFIG, validateLintConfig, mergeLintConfigs } from './lint-config'
 
@@ -82,6 +94,11 @@ const configCache = new Map<string, ProtoTypedConfig>()
  * @returns Absolute path to config file or null if not found
  */
 export function findConfigFile(startDir: string): string | null {
+  // Return null in browser environments
+  if (!fs || !path) {
+    return null
+  }
+
   let currentDir = path.resolve(startDir)
   const root = path.parse(currentDir).root
 
@@ -112,6 +129,11 @@ export function findConfigFile(startDir: string): string | null {
  * @returns Parsed configuration or null if invalid
  */
 export function loadConfigFile(configPath: string): ProtoTypedConfig | null {
+  // Return null in browser environments
+  if (!fs) {
+    return null
+  }
+
   try {
     // Check cache first
     if (configCache.has(configPath)) {
@@ -219,7 +241,12 @@ export function watchConfigFile(
   configPath: string,
   callback?: (config: ProtoTypedConfig | null) => void
 ): () => void {
-  const watcher = fs.watch(configPath, (eventType) => {
+  // Return no-op function in browser environments
+  if (!fs) {
+    return () => {}
+  }
+
+  const watcher = fs.watch(configPath, (eventType: string) => {
     if (eventType === 'change') {
       // Invalidate cache
       configCache.delete(configPath)
@@ -245,6 +272,11 @@ export function createDefaultConfigFile(
   projectRoot: string,
   config?: ProtoTypedConfig
 ): void {
+  // No-op in browser environments
+  if (!fs || !path) {
+    return
+  }
+
   const defaultConfig: ProtoTypedConfig = config || {
     lint: {
       rules: {

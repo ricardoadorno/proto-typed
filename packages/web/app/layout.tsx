@@ -1,18 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Provider } from '@/utils/providers';
 import { withAssetPath } from '@/utils/base-path';
 
-const geistSans = Geist({
+// Using system fonts instead of Google Fonts to avoid network issues during build
+const geistSans = {
     variable: "--font-geist-sans",
-    subsets: ["latin"],
-});
+};
 
-const geistMono = Geist_Mono({
+const geistMono = {
     variable: "--font-geist-mono",
-    subsets: ["latin"],
-});
+};
 
 export const metadata: Metadata = {
     title: "proto-typed",

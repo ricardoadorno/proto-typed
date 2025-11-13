@@ -8,6 +8,7 @@
     "dev": "pnpm --filter @proto-typed/web dev",
     "build": "pnpm -r build",
     "build:core": "pnpm --filter @proto-typed/core build",
+    "build:extension": "pnpm --filter @proto-typed/extension build",
     "build:web": "pnpm --filter @proto-typed/web build",
     "test": "pnpm --filter @proto-typed/core test",
     "clean": "pnpm -r clean && rm -rf node_modules"

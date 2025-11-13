@@ -1,4 +1,4 @@
-import { RouteMetadata } from '../../types/routing';
+import { type RouteMetadata } from '@proto-typed/core';
 
 interface RouteMetadataDisplayProps {
     metadata: RouteMetadata | null;

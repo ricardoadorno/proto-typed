@@ -13,7 +13,7 @@ import { mdxComponents } from '@/components/docs/mdx-components'
 import docSections, { flatDocs, findDocBySlug, type DocItem } from '@/utils/toc'
 import { slugify } from '@/utils/slugify'
 
-type Props = { params: { slug: string } }
+type Props = { params: Promise<{ slug: string }> }
 
 type Heading = {
     level: 1 | 2 | 3
@@ -84,7 +84,7 @@ function getPager(slug: string): { prev: DocItem | null; next: DocItem | null } 
 }
 
 export default async function PostPage({ params }: Props) {
-    const { slug } = params
+    const { slug } = await params
     const filePath = path.join(process.cwd(), 'src/docs', `${slug}.mdx`)
     const source = fs.readFileSync(filePath, 'utf8')
 

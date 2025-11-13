@@ -2,7 +2,7 @@ import { AstNode } from '../../../types/ast-node';
 import { elementStyles, getListInlineStyles, getUnorderedListInlineStyles, getFabInlineStyles, getNavigatorInlineStyles } from './styles/styles';
 import { findComponentDefinitions, substitutePropsInElement } from './components.node';
 import { NavigationMediator } from '../infrastructure/navigation-mediator';
-import { isLucideIcon, getLucideSvg, renderTextWithIcons } from '../../../utils/icon-utils';
+import { isLucideIcon, getLucideSvg, renderTextWithIcons } from '../../utils/icon-utils';
 
 /**
  * Canonical Layout Presets
