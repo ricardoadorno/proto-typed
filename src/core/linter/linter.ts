@@ -37,6 +37,8 @@
 
 import type { AstNode } from '../../types/ast-node';
 import type { ProtoError } from '../../types/errors';
+import type { LintConfig } from '../diagnostics/lint-config';
+import { applyLintConfigBulk, DEFAULT_LINT_CONFIG } from '../diagnostics/lint-config';
 
 // ============================================================
 // Types
@@ -99,11 +101,27 @@ interface LintContext {
  * 3. Checks for unused definitions
  * 4. Reports duplicate definitions
  * 5. Validates navigation destinations
+ * 6. Applies user configuration (Phase 3)
  *
  * @param ast - Array of root AST nodes (screens, components, modals, etc.)
+ * @param config - Optional lint configuration for customizing severity levels
  * @returns Linting result with categorized diagnostics
+ *
+ * @example
+ * ```typescript
+ * // Without config (uses defaults)
+ * const result = lintDocument(ast)
+ *
+ * // With custom config (Phase 3)
+ * const result = lintDocument(ast, {
+ *   rules: {
+ *     'PT-LINT-2001': 'off',    // Disable unused view warnings
+ *     'PT-LINT-2002': 'info',   // Unused components as info
+ *   }
+ * })
+ * ```
  */
-export function lintDocument(ast: AstNode[]): LintResult {
+export function lintDocument(ast: AstNode[], config?: LintConfig): LintResult {
   const result: LintResult = {
     errors: [],
     warnings: [],
@@ -119,6 +137,18 @@ export function lintDocument(ast: AstNode[]): LintResult {
     checkUnusedDefinitions(context, result);
     checkDuplicateDefinitions(context, result);
     checkInvalidNavigation(context, result);
+
+    // Phase 3: Apply user configuration to adjust severities
+    // This allows users to override severity levels or disable rules
+    if (config && config.rules && Object.keys(config.rules).length > 0) {
+      const allDiagnostics = getAllDiagnostics(result);
+      const adjustedDiagnostics = applyLintConfigBulk(allDiagnostics, config);
+
+      // Rebuild result with adjusted diagnostics
+      result.errors = adjustedDiagnostics.filter(d => d.severity === 'error' || d.severity === 'fatal');
+      result.warnings = adjustedDiagnostics.filter(d => d.severity === 'warning');
+      result.info = adjustedDiagnostics.filter(d => d.severity === 'info');
+    }
 
     return result;
   } catch (error) {
