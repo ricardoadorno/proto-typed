@@ -1,0 +1,38 @@
+screen Login:
+  container:
+      card:
+        stack:
+          # Login
+          ___email[Email][you@example.com]
+          ___password[Password][••••••••]
+          @[Sign In](Home)
+          row-center:
+            > [Forgot password?](ResetPassword)
+      row-center:
+        > Don't have an account?
+        > [Sign Up](SignUp)
+
+screen SignUp:
+  container:
+      card:
+        stack:
+          # Sign Up
+          ___text[Full Name][John Doe]
+          ___email[Email][you@example.com]
+          ___password[Password][••••••••]
+          ___password[Confirm Password][••••••••]
+
+          row-between:
+            @ghost[Cancel](Login)
+            @primary[Create Account](Home)
+      row-center:
+        > Already have an account?
+        > [Sign In](Login)
+
+modal ResetPassword:
+    stack:
+      ## Reset Password
+      ___email[Email][you@example.com]
+      row-between:
+        @ghost[Cancel](-1)
+        @primary[Send Link](-1)

@@ -1,0 +1,16 @@
+component ContactCard:
+  card:
+    row-between:
+      stack-tight:
+        >> %name
+        >>> %email
+      @outline-sm[i-Edit](EditContact)
+
+screen Contacts:
+  container:
+    > Your contacts organized in one place
+    list $ContactCard:
+      - John Silva | john@email.com
+      - Maria Santos | maria@email.com
+      - Pedro Costa | pedro@email.com
+
