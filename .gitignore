@@ -42,3 +42,6 @@ packages/extension/test-results/
 *.sw?
 CLAUDE.md
 GEMINI.md
+
+# TypeScript build cache
+*.tsbuildinfo

@@ -1,7 +1,8 @@
 {
-  "name": "tcc",
+  "name": "proto-typed-monorepo",
+  "version": "0.1.0",
   "private": true,
-  "version": "1.0.0",
+  "description": "Proto-Typed DSL monorepo - Core, Web, and Extension",
   "type": "module",
   "scripts": {
     "dev": "pnpm -F @web/app dev",
