@@ -321,3 +321,195 @@ export function compareRanges(a: Range, b: Range): number {
   if (startCompare !== 0) return startCompare
   return comparePositions(a.end, b.end)
 }
+
+// ============================================================
+// LSP Code Actions (Phase 4)
+// ============================================================
+
+/**
+ * Code action kinds as defined by LSP.
+ * Added in LSP 3.8.0
+ */
+export enum CodeActionKind {
+  /**
+   * Empty kind (no specific kind).
+   */
+  Empty = '',
+
+  /**
+   * Base kind for quickfix actions: 'quickfix'.
+   */
+  QuickFix = 'quickfix',
+
+  /**
+   * Base kind for refactoring actions: 'refactor'.
+   */
+  Refactor = 'refactor',
+
+  /**
+   * Base kind for refactoring extraction actions: 'refactor.extract'.
+   */
+  RefactorExtract = 'refactor.extract',
+
+  /**
+   * Base kind for refactoring inline actions: 'refactor.inline'.
+   */
+  RefactorInline = 'refactor.inline',
+
+  /**
+   * Base kind for refactoring rewrite actions: 'refactor.rewrite'.
+   */
+  RefactorRewrite = 'refactor.rewrite',
+
+  /**
+   * Base kind for source actions: 'source'.
+   */
+  Source = 'source',
+
+  /**
+   * Base kind for an organize imports source action: 'source.organizeImports'.
+   */
+  SourceOrganizeImports = 'source.organizeImports',
+
+  /**
+   * Base kind for auto-fix source actions: 'source.fixAll'.
+   */
+  SourceFixAll = 'source.fixAll'
+}
+
+/**
+ * Text edit to apply to a document.
+ */
+export interface TextEdit {
+  /**
+   * The range of the text document to be manipulated.
+   */
+  range: Range
+
+  /**
+   * The string to be inserted. For delete operations use an empty string.
+   */
+  newText: string
+}
+
+/**
+ * Describes textual changes on a single text document.
+ */
+export interface TextDocumentEdit {
+  /**
+   * The text document to change.
+   */
+  textDocument: {
+    /**
+     * The text document's URI.
+     */
+    uri: string
+
+    /**
+     * The version number of the document (optional, for versioning).
+     */
+    version?: number
+  }
+
+  /**
+   * The edits to be applied.
+   */
+  edits: TextEdit[]
+}
+
+/**
+ * A workspace edit represents changes to many resources managed in the workspace.
+ */
+export interface WorkspaceEdit {
+  /**
+   * Holds changes to existing resources (map of URI to text edits).
+   */
+  changes?: {
+    [uri: string]: TextEdit[]
+  }
+
+  /**
+   * Depending on the client capability, the server can provide more
+   * detailed document changes.
+   */
+  documentChanges?: TextDocumentEdit[]
+}
+
+/**
+ * A generic command.
+ */
+export interface Command {
+  /**
+   * Title of the command, like `save`.
+   */
+  title: string
+
+  /**
+   * The identifier of the actual command handler.
+   */
+  command: string
+
+  /**
+   * Arguments that the command handler should be invoked with.
+   */
+  arguments?: any[]
+}
+
+/**
+ * Code action represents a change that can be performed in code,
+ * e.g. to fix a problem or to refactor code.
+ *
+ * A code action must either set `edit` and/or a `command`.
+ * If both are supplied, the `edit` is applied first, then the `command` is executed.
+ */
+export interface CodeAction {
+  /**
+   * A short, human-readable, title for this code action.
+   */
+  title: string
+
+  /**
+   * The kind of the code action.
+   * Used to filter code actions.
+   */
+  kind?: CodeActionKind | string
+
+  /**
+   * The diagnostics that this code action resolves.
+   */
+  diagnostics?: Diagnostic[]
+
+  /**
+   * Marks this as a preferred action. Preferred actions are used by the
+   * `auto fix` command and can be targeted by keybindings.
+   */
+  isPreferred?: boolean
+
+  /**
+   * Marks that the code action cannot currently be applied.
+   */
+  disabled?: {
+    /**
+     * Human readable description of why the code action is currently disabled.
+     */
+    reason: string
+  }
+
+  /**
+   * The workspace edit this code action performs.
+   */
+  edit?: WorkspaceEdit
+
+  /**
+   * A command this code action executes. If a code action
+   * provides an edit and a command, first the edit is
+   * executed and then the command.
+   */
+  command?: Command
+
+  /**
+   * A data entry field that is preserved on a code action between
+   * a `textDocument/codeAction` and a `codeAction/resolve` request.
+   */
+  data?: any
+}
