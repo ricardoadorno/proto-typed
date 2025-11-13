@@ -2,7 +2,11 @@ import { safeRender } from './safe-render.js'
 
 // Import all node renderers from the modular organization
 import { renderScreen, renderModal, renderDrawer } from '../nodes/views.node.js'
-import { renderButton, renderImage, renderText } from '../nodes/primitives.node.js'
+import {
+  renderButton,
+  renderImage,
+  renderText,
+} from '../nodes/primitives.node.js'
 import {
   renderLayout,
   renderList,

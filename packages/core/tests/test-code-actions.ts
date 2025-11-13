@@ -21,7 +21,7 @@ import {
   createDeletionEdit,
   createReplacementEdit,
   type CodeActionProvider,
-  type CodeActionContext
+  type CodeActionContext,
 } from './src/core/diagnostics/code-actions'
 import {
   enhanceWithCodeActions,
@@ -29,7 +29,7 @@ import {
   hasCodeActions,
   getCodeActionsFromDiagnostic,
   getPreferredCodeAction,
-  countCodeActions
+  countCodeActions,
 } from './src/core/diagnostics/diagnostic-enhancer'
 
 // ============================================================
@@ -77,7 +77,7 @@ const undefinedComponentDiagnostic: ProtoError = {
   severity: 'error',
   message: 'Component "Header" is not defined',
   hint: 'Define the component before using it',
-  source: 'monaco'
+  source: 'monaco',
 }
 
 const undefinedNavigationDiagnostic: ProtoError = {
@@ -86,7 +86,7 @@ const undefinedNavigationDiagnostic: ProtoError = {
   severity: 'error',
   message: 'Navigation target "About" does not exist',
   hint: 'Define a screen, modal, or drawer named "About"',
-  source: 'monaco'
+  source: 'monaco',
 }
 
 const unusedViewDiagnostic: ProtoError = {
@@ -98,8 +98,8 @@ const unusedViewDiagnostic: ProtoError = {
   source: 'monaco',
   range: {
     start: { line: 10, character: 0 },
-    end: { line: 15, character: 0 }
-  }
+    end: { line: 15, character: 0 },
+  },
 }
 
 const unusedComponentDiagnostic: ProtoError = {
@@ -111,8 +111,8 @@ const unusedComponentDiagnostic: ProtoError = {
   source: 'monaco',
   range: {
     start: { line: 20, character: 0 },
-    end: { line: 25, character: 0 }
-  }
+    end: { line: 25, character: 0 },
+  },
 }
 
 const testUri = 'file:///test.dsl'
@@ -128,42 +128,66 @@ test('PT-LINT-1001: provides "Create component" action', () => {
   const actions = getCodeActions(undefinedComponentDiagnostic, testUri)
 
   assert(actions.length > 0, 'Should have at least one action')
-  assert(actions.some(a => a.title.includes('Create component')), 'Should have create action')
-  assert(actions.some(a => a.isPreferred), 'Should have preferred action')
+  assert(
+    actions.some((a) => a.title.includes('Create component')),
+    'Should have create action'
+  )
+  assert(
+    actions.some((a) => a.isPreferred),
+    'Should have preferred action'
+  )
 })
 
 test('PT-LINT-1001: creates valid workspace edit', () => {
   const actions = getCodeActions(undefinedComponentDiagnostic, testUri)
-  const createAction = actions.find(a => a.title.includes('Create component'))
+  const createAction = actions.find((a) => a.title.includes('Create component'))
 
   assert(createAction !== undefined, 'Should find create action')
   assert(createAction!.edit !== undefined, 'Should have edit')
   assert(createAction!.edit!.changes !== undefined, 'Should have changes')
-  assert(createAction!.edit!.changes![testUri] !== undefined, 'Should have edits for URI')
+  assert(
+    createAction!.edit!.changes![testUri] !== undefined,
+    'Should have edits for URI'
+  )
 })
 
 test('PT-LINT-1001: inserts correct component template', () => {
   const actions = getCodeActions(undefinedComponentDiagnostic, testUri)
-  const createAction = actions.find(a => a.title.includes('Create component'))
+  const createAction = actions.find((a) => a.title.includes('Create component'))
 
   const edits = createAction!.edit!.changes![testUri]
   assert(edits.length === 1, 'Should have one edit')
-  assert(edits[0].newText.includes('component Header'), 'Should include component name')
+  assert(
+    edits[0].newText.includes('component Header'),
+    'Should include component name'
+  )
   assert(edits[0].newText.includes('TODO'), 'Should include TODO')
 })
 
 test('PT-LINT-1002: provides multiple view type actions', () => {
   const actions = getCodeActions(undefinedNavigationDiagnostic, testUri)
 
-  assert(actions.length >= 3, 'Should have at least 3 actions (screen, modal, drawer)')
-  assert(actions.some(a => a.title.includes('screen')), 'Should have screen option')
-  assert(actions.some(a => a.title.includes('modal')), 'Should have modal option')
-  assert(actions.some(a => a.title.includes('drawer')), 'Should have drawer option')
+  assert(
+    actions.length >= 3,
+    'Should have at least 3 actions (screen, modal, drawer)'
+  )
+  assert(
+    actions.some((a) => a.title.includes('screen')),
+    'Should have screen option'
+  )
+  assert(
+    actions.some((a) => a.title.includes('modal')),
+    'Should have modal option'
+  )
+  assert(
+    actions.some((a) => a.title.includes('drawer')),
+    'Should have drawer option'
+  )
 })
 
 test('PT-LINT-1002: screen action is preferred', () => {
   const actions = getCodeActions(undefinedNavigationDiagnostic, testUri)
-  const screenAction = actions.find(a => a.title.includes('screen'))
+  const screenAction = actions.find((a) => a.title.includes('screen'))
 
   assert(screenAction !== undefined, 'Should find screen action')
   assert(screenAction!.isPreferred === true, 'Screen should be preferred')
@@ -173,14 +197,20 @@ test('PT-LINT-2001: provides "Remove" action when range available', () => {
   const actions = getCodeActions(unusedViewDiagnostic, testUri)
 
   assert(actions.length > 0, 'Should have actions')
-  assert(actions.some(a => a.title.includes('Remove')), 'Should have remove action')
+  assert(
+    actions.some((a) => a.title.includes('Remove')),
+    'Should have remove action'
+  )
 })
 
 test('PT-LINT-2002: provides "Remove" action when range available', () => {
   const actions = getCodeActions(unusedComponentDiagnostic, testUri)
 
   assert(actions.length > 0, 'Should have actions')
-  assert(actions.some(a => a.title.includes('Remove')), 'Should have remove action')
+  assert(
+    actions.some((a) => a.title.includes('Remove')),
+    'Should have remove action'
+  )
 })
 
 test('Unknown code: returns empty actions', () => {
@@ -189,7 +219,7 @@ test('Unknown code: returns empty actions', () => {
     code: 'PT-UNKNOWN-9999',
     severity: 'error',
     message: 'Unknown error',
-    source: 'monaco'
+    source: 'monaco',
   }
 
   const actions = getCodeActions(unknownDiagnostic, testUri)
@@ -202,7 +232,7 @@ test('Missing code: returns empty actions', () => {
     code: '',
     severity: 'error',
     message: 'Error without code',
-    source: 'monaco'
+    source: 'monaco',
   }
 
   const actions = getCodeActions(noDiagnostic, testUri)
@@ -217,15 +247,24 @@ test('getCodeActionsForDiagnostics: handles multiple diagnostics', () => {
   const diagnostics = [
     undefinedComponentDiagnostic,
     undefinedNavigationDiagnostic,
-    unusedViewDiagnostic
+    unusedViewDiagnostic,
   ]
 
   const map = getCodeActionsForDiagnostics(diagnostics, testUri)
 
   assert(map.size === 3, 'Should have actions for all 3 diagnostics')
-  assert(map.get(undefinedComponentDiagnostic)!.length > 0, 'Should have actions for first')
-  assert(map.get(undefinedNavigationDiagnostic)!.length > 0, 'Should have actions for second')
-  assert(map.get(unusedViewDiagnostic)!.length > 0, 'Should have actions for third')
+  assert(
+    map.get(undefinedComponentDiagnostic)!.length > 0,
+    'Should have actions for first'
+  )
+  assert(
+    map.get(undefinedNavigationDiagnostic)!.length > 0,
+    'Should have actions for second'
+  )
+  assert(
+    map.get(unusedViewDiagnostic)!.length > 0,
+    'Should have actions for third'
+  )
 })
 
 test('getCodeActionsForDiagnostics: filters diagnostics without actions', () => {
@@ -234,7 +273,7 @@ test('getCodeActionsForDiagnostics: filters diagnostics without actions', () => 
     code: 'PT-UNKNOWN-9999',
     severity: 'error',
     message: 'Unknown',
-    source: 'monaco'
+    source: 'monaco',
   }
 
   const diagnostics = [undefinedComponentDiagnostic, unknownDiagnostic]
@@ -252,7 +291,7 @@ test('getCodeActionsForDiagnostics: filters diagnostics without actions', () => 
 test('createTextEdit: creates valid edit', () => {
   const range: Range = {
     start: { line: 0, character: 0 },
-    end: { line: 0, character: 5 }
+    end: { line: 0, character: 5 },
   }
   const edit = createTextEdit(range, 'hello')
 
@@ -272,7 +311,7 @@ test('createInsertionEdit: creates insertion at position', () => {
 test('createDeletionEdit: creates deletion', () => {
   const range: Range = {
     start: { line: 0, character: 0 },
-    end: { line: 2, character: 0 }
+    end: { line: 2, character: 0 },
   }
   const edit = createDeletionEdit(range)
 
@@ -283,7 +322,7 @@ test('createDeletionEdit: creates deletion', () => {
 test('createReplacementEdit: creates replacement', () => {
   const range: Range = {
     start: { line: 0, character: 0 },
-    end: { line: 0, character: 5 }
+    end: { line: 0, character: 5 },
   }
   const edit = createReplacementEdit(range, 'replaced')
 
@@ -296,13 +335,21 @@ test('createWorkspaceEdit: creates valid workspace edit', () => {
   const workspaceEdit = createWorkspaceEdit(testUri, edits)
 
   assert(workspaceEdit.changes !== undefined, 'Should have changes')
-  assert(workspaceEdit.changes![testUri] !== undefined, 'Should have edits for URI')
+  assert(
+    workspaceEdit.changes![testUri] !== undefined,
+    'Should have edits for URI'
+  )
   assertEqual(workspaceEdit.changes![testUri].length, 1, 'Should have one edit')
 })
 
 test('createQuickFix: creates valid code action', () => {
   const edit = createWorkspaceEdit(testUri, [])
-  const action = createQuickFix('Fix it', undefinedComponentDiagnostic, edit, true)
+  const action = createQuickFix(
+    'Fix it',
+    undefinedComponentDiagnostic,
+    edit,
+    true
+  )
 
   assertEqual(action.title, 'Fix it', 'Should have title')
   assertEqual(action.kind, 'quickfix', 'Should be quickfix kind')
@@ -318,21 +365,33 @@ test('enhanceWithCodeActions: attaches actions to diagnostic', () => {
   const enhanced = enhanceWithCodeActions(undefinedComponentDiagnostic, testUri)
 
   assert(enhanced.data !== undefined, 'Should have data field')
-  assert((enhanced.data as any).codeActions !== undefined, 'Should have codeActions')
-  assert(Array.isArray((enhanced.data as any).codeActions), 'Code actions should be array')
+  assert(
+    (enhanced.data as any).codeActions !== undefined,
+    'Should have codeActions'
+  )
+  assert(
+    Array.isArray((enhanced.data as any).codeActions),
+    'Code actions should be array'
+  )
   assert((enhanced.data as any).codeActions.length > 0, 'Should have actions')
 })
 
 test('enhanceWithCodeActions: preserves original data', () => {
   const diagnosticWithData: ProtoError = {
     ...undefinedComponentDiagnostic,
-    data: { customField: 'value' }
+    data: { customField: 'value' },
   }
 
   const enhanced = enhanceWithCodeActions(diagnosticWithData, testUri)
 
-  assert((enhanced.data as any).customField === 'value', 'Should preserve custom field')
-  assert((enhanced.data as any).codeActions !== undefined, 'Should add codeActions')
+  assert(
+    (enhanced.data as any).customField === 'value',
+    'Should preserve custom field'
+  )
+  assert(
+    (enhanced.data as any).codeActions !== undefined,
+    'Should add codeActions'
+  )
 })
 
 test('enhanceWithCodeActions: returns unchanged when no actions', () => {
@@ -341,15 +400,22 @@ test('enhanceWithCodeActions: returns unchanged when no actions', () => {
     code: 'PT-UNKNOWN-9999',
     severity: 'error',
     message: 'Unknown',
-    source: 'monaco'
+    source: 'monaco',
   }
 
   const enhanced = enhanceWithCodeActions(unknownDiagnostic, testUri)
-  assertEqual(enhanced, unknownDiagnostic, 'Should return same object when no actions')
+  assertEqual(
+    enhanced,
+    unknownDiagnostic,
+    'Should return same object when no actions'
+  )
 })
 
 test('enhanceDiagnosticsWithCodeActions: enhances array', () => {
-  const diagnostics = [undefinedComponentDiagnostic, undefinedNavigationDiagnostic]
+  const diagnostics = [
+    undefinedComponentDiagnostic,
+    undefinedNavigationDiagnostic,
+  ]
   const enhanced = enhanceDiagnosticsWithCodeActions(diagnostics, testUri)
 
   assertEqual(enhanced.length, 2, 'Should have same count')
@@ -361,7 +427,10 @@ test('hasCodeActions: detects presence of actions', () => {
   const enhanced = enhanceWithCodeActions(undefinedComponentDiagnostic, testUri)
 
   assert(hasCodeActions(enhanced), 'Enhanced should have actions')
-  assert(!hasCodeActions(undefinedComponentDiagnostic), 'Original should not have actions')
+  assert(
+    !hasCodeActions(undefinedComponentDiagnostic),
+    'Original should not have actions'
+  )
 })
 
 test('getCodeActionsFromDiagnostic: retrieves actions', () => {
@@ -388,12 +457,18 @@ test('getPreferredCodeAction: finds preferred action', () => {
 })
 
 test('countCodeActions: counts across diagnostics', () => {
-  const diagnostics = [undefinedComponentDiagnostic, undefinedNavigationDiagnostic]
+  const diagnostics = [
+    undefinedComponentDiagnostic,
+    undefinedNavigationDiagnostic,
+  ]
   const enhanced = enhanceDiagnosticsWithCodeActions(diagnostics, testUri)
   const count = countCodeActions(enhanced)
 
   assert(count > 0, 'Should have actions')
-  assert(count >= diagnostics.length, 'Should have at least one action per diagnostic')
+  assert(
+    count >= diagnostics.length,
+    'Should have at least one action per diagnostic'
+  )
 })
 
 // ============================================================
@@ -404,11 +479,13 @@ test('registerCodeActionProvider: allows custom providers', () => {
   const customProvider: CodeActionProvider = {
     diagnosticCodes: ['PT-CUSTOM-001'],
     provideCodeActions: (context) => {
-      return [{
-        title: 'Custom fix',
-        kind: 'quickfix'
-      }]
-    }
+      return [
+        {
+          title: 'Custom fix',
+          kind: 'quickfix',
+        },
+      ]
+    },
   }
 
   registerCodeActionProvider(customProvider)
@@ -418,12 +495,15 @@ test('registerCodeActionProvider: allows custom providers', () => {
     code: 'PT-CUSTOM-001',
     severity: 'error',
     message: 'Custom error',
-    source: 'monaco'
+    source: 'monaco',
   }
 
   const actions = getCodeActions(customDiagnostic, testUri)
   assert(actions.length > 0, 'Should have custom actions')
-  assert(actions.some(a => a.title === 'Custom fix'), 'Should have custom fix')
+  assert(
+    actions.some((a) => a.title === 'Custom fix'),
+    'Should have custom fix'
+  )
 })
 
 // ============================================================

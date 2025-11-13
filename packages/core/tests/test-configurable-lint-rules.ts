@@ -20,7 +20,7 @@ import {
   applyLintConfig,
   applyLintConfigBulk,
   mergeLintConfigs,
-  validateLintConfig
+  validateLintConfig,
 } from './src/core/diagnostics/lint-config'
 import {
   findConfigFile,
@@ -28,7 +28,7 @@ import {
   loadLintConfig,
   clearConfigCache,
   createDefaultConfigFile,
-  type ProtoTypedConfig
+  type ProtoTypedConfig,
 } from './src/core/diagnostics/config-loader'
 
 // ============================================================
@@ -76,7 +76,7 @@ const sampleError: ProtoError = {
   severity: 'warning',
   message: 'Screen "About" is defined but never used',
   hint: 'Remove unused definitions',
-  source: 'monaco'
+  source: 'monaco',
 }
 
 const sampleInfo: ProtoError = {
@@ -85,7 +85,7 @@ const sampleInfo: ProtoError = {
   severity: 'warning',
   message: 'Component "Header" is defined but never instantiated',
   hint: 'Use the component or remove definition',
-  source: 'monaco'
+  source: 'monaco',
 }
 
 const sampleFatalError: ProtoError = {
@@ -94,7 +94,7 @@ const sampleFatalError: ProtoError = {
   severity: 'error',
   message: 'Component "Footer" is not defined',
   hint: 'Define the component',
-  source: 'monaco'
+  source: 'monaco',
 }
 
 // ============================================================
@@ -140,7 +140,7 @@ test('severityToLSP: converts "hint" to 4', () => {
 
 test('applyLintConfig: returns null when rule is disabled', () => {
   const config: LintConfig = {
-    rules: { 'PT-LINT-2001': 'off' }
+    rules: { 'PT-LINT-2001': 'off' },
   }
   const result = applyLintConfig(sampleError, config)
   assertEqual(result, null, 'Should return null for disabled rule')
@@ -148,7 +148,7 @@ test('applyLintConfig: returns null when rule is disabled', () => {
 
 test('applyLintConfig: overrides severity to error', () => {
   const config: LintConfig = {
-    rules: { 'PT-LINT-2001': 'error' }
+    rules: { 'PT-LINT-2001': 'error' },
   }
   const result = applyLintConfig(sampleError, config)
   assert(result !== null, 'Should not be null')
@@ -157,7 +157,7 @@ test('applyLintConfig: overrides severity to error', () => {
 
 test('applyLintConfig: overrides severity to warn', () => {
   const config: LintConfig = {
-    rules: { 'PT-LINT-1001': 'warn' }  // Error -> Warning
+    rules: { 'PT-LINT-1001': 'warn' }, // Error -> Warning
   }
   const result = applyLintConfig(sampleFatalError, config)
   assert(result !== null, 'Should not be null')
@@ -166,7 +166,7 @@ test('applyLintConfig: overrides severity to warn', () => {
 
 test('applyLintConfig: overrides severity to info', () => {
   const config: LintConfig = {
-    rules: { 'PT-LINT-2001': 'info' }
+    rules: { 'PT-LINT-2001': 'info' },
   }
   const result = applyLintConfig(sampleError, config)
   assert(result !== null, 'Should not be null')
@@ -175,7 +175,7 @@ test('applyLintConfig: overrides severity to info', () => {
 
 test('applyLintConfig: keeps original when no override', () => {
   const config: LintConfig = {
-    rules: { 'PT-LINT-9999': 'off' }  // Different rule
+    rules: { 'PT-LINT-9999': 'off' }, // Different rule
   }
   const result = applyLintConfig(sampleError, config)
   assert(result !== null, 'Should not be null')
@@ -195,9 +195,9 @@ test('applyLintConfigBulk: filters disabled rules', () => {
   const diagnostics = [sampleError, sampleInfo, sampleFatalError]
   const config: LintConfig = {
     rules: {
-      'PT-LINT-2001': 'off',  // Disable first
-      'PT-LINT-2002': 'off'   // Disable second
-    }
+      'PT-LINT-2001': 'off', // Disable first
+      'PT-LINT-2002': 'off', // Disable second
+    },
   }
   const result = applyLintConfigBulk(diagnostics, config)
   assertEqual(result.length, 1, 'Should have 1 diagnostic (only fatal error)')
@@ -208,9 +208,9 @@ test('applyLintConfigBulk: applies multiple overrides', () => {
   const diagnostics = [sampleError, sampleInfo, sampleFatalError]
   const config: LintConfig = {
     rules: {
-      'PT-LINT-2001': 'info',   // Warning -> Info
-      'PT-LINT-1001': 'warn'    // Error -> Warning
-    }
+      'PT-LINT-2001': 'info', // Warning -> Info
+      'PT-LINT-1001': 'warn', // Error -> Warning
+    },
   }
   const result = applyLintConfigBulk(diagnostics, config)
   assertEqual(result.length, 3, 'Should have all 3 diagnostics')
@@ -232,13 +232,13 @@ test('mergeLintConfigs: merges two configs', () => {
   const base: LintConfig = {
     rules: {
       'PT-LINT-2001': 'warn',
-      'PT-LINT-2002': 'error'
-    }
+      'PT-LINT-2002': 'error',
+    },
   }
   const override: LintConfig = {
     rules: {
-      'PT-LINT-2001': 'off'  // Override
-    }
+      'PT-LINT-2001': 'off', // Override
+    },
   }
   const result = mergeLintConfigs(base, override)
   assertEqual(result.rules!['PT-LINT-2001'], 'off', 'Should use override')
@@ -269,8 +269,8 @@ test('validateLintConfig: accepts valid config', () => {
     rules: {
       'PT-LINT-2001': 'warn',
       'PT-LINT-2002': 'off',
-      'PT-LINT-1001': 'error'
-    }
+      'PT-LINT-1001': 'error',
+    },
   }
   const errors = validateLintConfig(config)
   assertEqual(errors.length, 0, 'Should have no errors')
@@ -279,8 +279,8 @@ test('validateLintConfig: accepts valid config', () => {
 test('validateLintConfig: rejects invalid severity', () => {
   const config: LintConfig = {
     rules: {
-      'PT-LINT-2001': 'invalid' as any
-    }
+      'PT-LINT-2001': 'invalid' as any,
+    },
   }
   const errors = validateLintConfig(config)
   assert(errors.length > 0, 'Should have errors')
@@ -319,13 +319,13 @@ test('loadConfigFile: loads valid JSON config', () => {
   const configContent: ProtoTypedConfig = {
     lint: {
       rules: {
-        'PT-LINT-2001': 'warn'
-      }
-    }
+        'PT-LINT-2001': 'warn',
+      },
+    },
   }
   fs.writeFileSync(configPath, JSON.stringify(configContent), 'utf-8')
 
-  clearConfigCache()  // Clear cache
+  clearConfigCache() // Clear cache
   const loaded = loadConfigFile(configPath)
   assert(loaded !== null, 'Should load config')
   assertEqual(loaded!.lint!.rules!['PT-LINT-2001'], 'warn', 'Should have rule')
@@ -353,7 +353,9 @@ test('loadConfigFile: caches loaded configs', () => {
 })
 
 test('loadLintConfig: returns default when no file', () => {
-  const emptyDir = fs.mkdtempSync(path.join(os.tmpdir(), 'proto-typed-noconfig-'))
+  const emptyDir = fs.mkdtempSync(
+    path.join(os.tmpdir(), 'proto-typed-noconfig-')
+  )
   const config = loadLintConfig(emptyDir)
 
   assert(config !== null, 'Should return config')
@@ -362,20 +364,26 @@ test('loadLintConfig: returns default when no file', () => {
 })
 
 test('loadLintConfig: loads from project root', () => {
-  const projectDir = fs.mkdtempSync(path.join(os.tmpdir(), 'proto-typed-project-'))
+  const projectDir = fs.mkdtempSync(
+    path.join(os.tmpdir(), 'proto-typed-project-')
+  )
   const configPath = path.join(projectDir, '.proto-typed.json')
   const configContent: ProtoTypedConfig = {
     lint: {
       rules: {
-        'PT-LINT-2001': 'off'
-      }
-    }
+        'PT-LINT-2001': 'off',
+      },
+    },
   }
   fs.writeFileSync(configPath, JSON.stringify(configContent), 'utf-8')
 
   clearConfigCache()
   const config = loadLintConfig(projectDir)
-  assertEqual(config.rules!['PT-LINT-2001'], 'off', 'Should load rule from file')
+  assertEqual(
+    config.rules!['PT-LINT-2001'],
+    'off',
+    'Should load rule from file'
+  )
 
   // Cleanup
   fs.unlinkSync(configPath)
@@ -383,7 +391,9 @@ test('loadLintConfig: loads from project root', () => {
 })
 
 test('createDefaultConfigFile: creates config file', () => {
-  const projectDir = fs.mkdtempSync(path.join(os.tmpdir(), 'proto-typed-create-'))
+  const projectDir = fs.mkdtempSync(
+    path.join(os.tmpdir(), 'proto-typed-create-')
+  )
   const configPath = path.join(projectDir, '.proto-typed.json')
 
   createDefaultConfigFile(projectDir)
@@ -410,8 +420,8 @@ test('Integration: config disables warnings', () => {
   const userConfig: LintConfig = {
     rules: {
       'PT-LINT-2001': 'off',
-      'PT-LINT-2002': 'off'
-    }
+      'PT-LINT-2002': 'off',
+    },
   }
 
   // Apply config
@@ -427,8 +437,8 @@ test('Integration: config downgrades errors to warnings', () => {
   // User wants soft errors
   const userConfig: LintConfig = {
     rules: {
-      'PT-LINT-1001': 'warn'
-    }
+      'PT-LINT-1001': 'warn',
+    },
   }
 
   const adjusted = applyLintConfigBulk(linterOutput, userConfig)
@@ -443,8 +453,8 @@ test('Integration: config promotes warnings to errors', () => {
   // User wants strict mode
   const userConfig: LintConfig = {
     rules: {
-      'PT-LINT-2001': 'error'
-    }
+      'PT-LINT-2001': 'error',
+    },
   }
 
   const adjusted = applyLintConfigBulk(linterOutput, userConfig)

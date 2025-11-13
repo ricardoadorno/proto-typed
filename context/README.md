@@ -5,7 +5,9 @@ This directory contains comprehensive documentation about the Proto-Typed projec
 ## Documentation Index
 
 ### 1. [Overview](./overview.md)
+
 **High-level introduction to Proto-Typed**
+
 - What is Proto-Typed?
 - Core concepts and capabilities
 - Use cases and distribution
@@ -16,7 +18,9 @@ This directory contains comprehensive documentation about the Proto-Typed projec
 ---
 
 ### 2. [Architecture](./architecture.md)
+
 **Detailed system architecture**
+
 - Repository structure (monorepo)
 - Core package architecture (lexer, parser, AST, renderer)
 - Rendering architecture (3-tier layered design)
@@ -28,7 +32,9 @@ This directory contains comprehensive documentation about the Proto-Typed projec
 ---
 
 ### 3. [Technologies](./technologies.md)
+
 **Libraries and tools used**
+
 - Core technologies (Chevrotain, TypeScript, nanoid)
 - Web stack (Next.js, React, Monaco, Tailwind, Radix UI)
 - VSCode extension stack
@@ -41,7 +47,9 @@ This directory contains comprehensive documentation about the Proto-Typed projec
 ---
 
 ### 4. [Philosophy](./philosophy.md)
+
 **Development philosophy and principles**
+
 - Runtime validation over automated tests
 - Simplicity over complexity
 - Convention over configuration
@@ -57,7 +65,9 @@ This directory contains comprehensive documentation about the Proto-Typed projec
 ---
 
 ### 5. [DSL Syntax](./dsl-syntax.md)
+
 **Complete DSL syntax reference**
+
 - Syntax fundamentals (indentation, blocks, nesting)
 - Views (screen, modal, drawer, component)
 - Layouts (canonical presets)
@@ -73,7 +83,9 @@ This directory contains comprehensive documentation about the Proto-Typed projec
 ---
 
 ### 6. [Rendering Pipeline](./rendering-pipeline.md)
+
 **How DSL is transformed into HTML**
+
 - Pipeline overview (text → tokens → CST → AST → HTML)
 - Stage 1: Lexical analysis (Lexer)
 - Stage 2: Syntax analysis (Parser)
@@ -88,7 +100,9 @@ This directory contains comprehensive documentation about the Proto-Typed projec
 ---
 
 ### 7. [Styling System](./styling-system.md)
+
 **How styling works in Proto-Typed**
+
 - Two-layer approach (Tailwind + CSS variables)
 - CSS variable system (semantic tokens)
 - OKLCH color space (perceptual uniformity)
@@ -107,6 +121,7 @@ This directory contains comprehensive documentation about the Proto-Typed projec
 ### For LLMs Working on Proto-Typed
 
 **If you need to**:
+
 - Understand what the project does → Read [Overview](./overview.md)
 - Understand the codebase structure → Read [Architecture](./architecture.md)
 - Add a new DSL element → Read [DSL Syntax](./dsl-syntax.md) and [Architecture](./architecture.md)
@@ -162,6 +177,7 @@ pnpm typecheck              # Type-check all packages
 ## How This Documentation Was Created
 
 This context documentation was generated to provide comprehensive understanding of the Proto-Typed project for:
+
 - **LLMs**: Quick context loading for code assistance
 - **New Contributors**: Onboarding and understanding the system
 - **Documentation**: Reference material for the project
@@ -173,6 +189,7 @@ Each document focuses on a specific aspect of the system and can be read indepen
 ## Maintenance
 
 When updating the codebase, consider updating these documents if:
+
 - Adding new DSL elements or syntax
 - Changing the architecture or design patterns
 - Adding new technologies or dependencies

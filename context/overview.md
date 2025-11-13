@@ -25,25 +25,30 @@ This generates a fully interactive HTML page with navigation, styling, and mobil
 ## Key Capabilities
 
 ### 1. Multi-View Applications
+
 - **Screens**: Full-page views with client-side routing
 - **Modals**: Overlay dialogs that can be toggled
 - **Drawers**: Side panels (typically mobile bottom sheets)
 - **Components**: Reusable UI blocks with props
 
 ### 2. Rich UI Elements
+
 - **Layouts**: Containers, stacks, rows, grids, cards
 - **Primitives**: Headings, text, images, links, buttons
 - **Inputs**: Text fields, checkboxes, radios, selects, textareas
 - **Navigation**: Internal routing, external links, history navigation
 
 ### 3. Interactive Navigation
+
 All navigation is handled client-side with JavaScript:
+
 - Screen transitions with history management
 - Modal and drawer toggling
 - Back/forward browser navigation
 - External link support
 
 ### 4. Theming & Styling
+
 - Built on shadcn/ui design system principles
 - CSS variable-based theming
 - 12 pre-defined color themes (neutral, slate, blue, red, etc.)
@@ -51,6 +56,7 @@ All navigation is handled client-side with JavaScript:
 - Custom property overrides via `styles:` block
 
 ### 5. Component System with Props
+
 Define reusable components with interpolated props:
 
 ```
@@ -70,12 +76,16 @@ Props are pipe-separated in list items and interpolated with `%propName` syntax.
 ## Output Formats
 
 ### 1. Preview Mode
+
 Generates an HTML fragment suitable for embedding in a Single Page Application (SPA). Used by:
+
 - **Web playground**: Live preview with Monaco editor
 - **VSCode extension**: Webview preview panel
 
 ### 2. Export Mode
+
 Generates a standalone HTML document with:
+
 - Complete `<head>` section with meta tags
 - Tailwind CSS via CDN
 - Embedded navigation JavaScript
@@ -85,18 +95,21 @@ Generates a standalone HTML document with:
 ## Use Cases
 
 ### For Designers
+
 - Rapidly prototype user flows without coding
 - Test navigation patterns and information architecture
 - Share interactive prototypes with stakeholders
 - Export to HTML for handoff
 
 ### For Developers
+
 - Quickly mock up UI before implementation
 - Create throwaway prototypes for user testing
 - Document component structure
 - Generate HTML boilerplate
 
 ### For Product Teams
+
 - Validate ideas before investing in development
 - Create clickable prototypes for user research
 - Communicate design intent clearly
@@ -113,6 +126,7 @@ Proto-Typed is available in three packages:
 ## Philosophy
 
 Proto-Typed embraces:
+
 - **Simplicity over complexity**: Minimal syntax, maximum expressiveness
 - **Convention over configuration**: Sensible defaults, canonical presets
 - **Runtime validation over tests**: Manual testing in the browser
@@ -134,6 +148,7 @@ DSL Text → Lexer → Tokens → Parser → CST → AST Builder → AST → Ren
 ```
 
 The system uses **Chevrotain** for parsing, implementing a clean separation between:
+
 - **Lexical analysis**: Token definitions
 - **Syntax analysis**: Grammar rules and CST
 - **Semantic analysis**: AST construction

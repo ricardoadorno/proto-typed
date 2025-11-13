@@ -69,7 +69,7 @@ export default [
       'prettier/prettier': [
         'warn',
         {
-          endOfLine: 'lf',
+          endOfLine: 'auto',
         },
       ],
 

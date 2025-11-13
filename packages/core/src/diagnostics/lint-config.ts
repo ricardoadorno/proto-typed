@@ -32,7 +32,13 @@ import type { ProtoError, Severity } from '../types/errors'
  * - 'info': Rule violation produces information (severity 3)
  * - 'hint': Rule violation produces a hint (severity 4)
  */
-export type RuleSeverity = 'off' | 'error' | 'warn' | 'warning' | 'info' | 'hint'
+export type RuleSeverity =
+  | 'off'
+  | 'error'
+  | 'warn'
+  | 'warning'
+  | 'info'
+  | 'hint'
 
 /**
  * Rule configuration - can be severity string or complex config object
@@ -74,7 +80,7 @@ export interface LintConfig {
  * in Phase 1. This config represents "no customization".
  */
 export const DEFAULT_LINT_CONFIG: LintConfig = {
-  rules: {}
+  rules: {},
 }
 
 /**
@@ -95,14 +101,14 @@ export const DEFAULT_LINT_CONFIG: LintConfig = {
  */
 export function mergeLintConfigs(...configs: LintConfig[]): LintConfig {
   const merged: LintConfig = {
-    rules: {}
+    rules: {},
   }
 
   for (const config of configs) {
     if (config.rules) {
       merged.rules = {
         ...merged.rules,
-        ...config.rules
+        ...config.rules,
       }
     }
   }
@@ -116,19 +122,21 @@ export function mergeLintConfigs(...configs: LintConfig[]): LintConfig {
  * @param severity - Rule severity ('error', 'warn', 'info', 'hint')
  * @returns LSP severity (1 = error, 2 = warning, 3 = info, 4 = hint)
  */
-export function severityToLSP(severity: RuleSeverity): DiagnosticSeverity | null {
+export function severityToLSP(
+  severity: RuleSeverity
+): DiagnosticSeverity | null {
   switch (severity) {
     case 'off':
-      return null  // Disabled rules produce no diagnostic
+      return null // Disabled rules produce no diagnostic
     case 'error':
-      return 1  // DiagnosticSeverity.Error
+      return 1 // DiagnosticSeverity.Error
     case 'warn':
     case 'warning':
-      return 2  // DiagnosticSeverity.Warning
+      return 2 // DiagnosticSeverity.Warning
     case 'info':
-      return 3  // DiagnosticSeverity.Information
+      return 3 // DiagnosticSeverity.Information
     case 'hint':
-      return 4  // DiagnosticSeverity.Hint
+      return 4 // DiagnosticSeverity.Hint
     default:
       return null
   }
@@ -149,7 +157,7 @@ export function severityToLSP(severity: RuleSeverity): DiagnosticSeverity | null
 export function severityToProtoTyped(severity: RuleSeverity): Severity | null {
   switch (severity) {
     case 'off':
-      return null  // Disabled
+      return null // Disabled
     case 'error':
       return 'error'
     case 'warn':
@@ -203,7 +211,7 @@ export function applyLintConfig(
   // Check if rule has custom configuration
   const ruleConfig = config.rules[diagnostic.code]
   if (!ruleConfig) {
-    return diagnostic  // No override, keep original
+    return diagnostic // No override, keep original
   }
 
   // Simple case: severity string
@@ -218,7 +226,7 @@ export function applyLintConfig(
     // Create new diagnostic with overridden severity
     return {
       ...diagnostic,
-      severity: newSeverity
+      severity: newSeverity,
     }
   }
 
@@ -246,7 +254,7 @@ export function applyLintConfigBulk(
   config: LintConfig
 ): ProtoError[] {
   return diagnostics
-    .map(diag => applyLintConfig(diag, config))
+    .map((diag) => applyLintConfig(diag, config))
     .filter((diag): diag is ProtoError => diag !== null)
 }
 
@@ -277,13 +285,22 @@ export function validateLintConfig(config: LintConfig): string[] {
     return errors
   }
 
-  const validSeverities: RuleSeverity[] = ['off', 'error', 'warn', 'warning', 'info', 'hint']
+  const validSeverities: RuleSeverity[] = [
+    'off',
+    'error',
+    'warn',
+    'warning',
+    'info',
+    'hint',
+  ]
 
   for (const [ruleCode, ruleConfig] of Object.entries(config.rules)) {
     // Check severity string
     if (typeof ruleConfig === 'string') {
       if (!validSeverities.includes(ruleConfig)) {
-        errors.push(`Invalid severity '${ruleConfig}' for rule '${ruleCode}'. Must be one of: ${validSeverities.join(', ')}`)
+        errors.push(
+          `Invalid severity '${ruleConfig}' for rule '${ruleCode}'. Must be one of: ${validSeverities.join(', ')}`
+        )
       }
     }
   }

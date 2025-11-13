@@ -70,7 +70,11 @@ import {
   Separator,
 } from './layouts.tokens.js'
 import { Input, RadioOption, Checkbox } from './inputs.tokens.js'
-import { Component, ComponentInstance, PropVariable } from './components.tokens.js'
+import {
+  Component,
+  ComponentInstance,
+  PropVariable,
+} from './components.tokens.js'
 import {
   Head,
   HeadColor,

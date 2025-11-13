@@ -47,8 +47,8 @@ export function enhanceWithCodeActions(
     ...diagnostic,
     data: {
       ...(diagnostic.data || {}),
-      codeActions
-    }
+      codeActions,
+    },
   }
 }
 
@@ -75,7 +75,7 @@ export function enhanceDiagnosticsWithCodeActions(
   documentUri: string,
   documentText?: string
 ): ProtoError[] {
-  return diagnostics.map(diagnostic =>
+  return diagnostics.map((diagnostic) =>
     enhanceWithCodeActions(diagnostic, documentUri, documentText)
   )
 }
@@ -103,7 +103,9 @@ export function hasCodeActions(diagnostic: ProtoError): boolean {
  * @param diagnostic - The diagnostic
  * @returns Array of code actions or empty array
  */
-export function getCodeActionsFromDiagnostic(diagnostic: ProtoError): CodeAction[] {
+export function getCodeActionsFromDiagnostic(
+  diagnostic: ProtoError
+): CodeAction[] {
   if (!hasCodeActions(diagnostic)) {
     return []
   }
@@ -120,9 +122,11 @@ export function getCodeActionsFromDiagnostic(diagnostic: ProtoError): CodeAction
  * @param diagnostic - The diagnostic
  * @returns Preferred code action or undefined
  */
-export function getPreferredCodeAction(diagnostic: ProtoError): CodeAction | undefined {
+export function getPreferredCodeAction(
+  diagnostic: ProtoError
+): CodeAction | undefined {
   const actions = getCodeActionsFromDiagnostic(diagnostic)
-  return actions.find(action => action.isPreferred)
+  return actions.find((action) => action.isPreferred)
 }
 
 /**

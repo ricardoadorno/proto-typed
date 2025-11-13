@@ -66,28 +66,30 @@ The rendering pipeline transforms DSL text into HTML through a series of well-de
 
 ```typescript
 interface Token {
-  tokenType: TokenType;    // Token definition
-  image: string;           // Matched text
-  startOffset: number;     // Character offset in source
-  endOffset: number;       // End offset
-  startLine: number;       // Line number
-  endLine: number;         // End line
-  startColumn: number;     // Column number
-  endColumn: number;       // End column
+  tokenType: TokenType // Token definition
+  image: string // Matched text
+  startOffset: number // Character offset in source
+  endOffset: number // End offset
+  startLine: number // Line number
+  endLine: number // End line
+  startColumn: number // Column number
+  endColumn: number // End column
 }
 ```
 
 ### Example Transformation
 
 **Input**:
+
 ```
 screen Home:
   ## Welcome
 ```
 
 **Output**:
+
 ```javascript
-[
+;[
   { tokenType: Screen, image: 'screen', startLine: 1, startColumn: 1 },
   { tokenType: Identifier, image: 'Home', startLine: 1, startColumn: 8 },
   { tokenType: Colon, image: ':', startLine: 1, startColumn: 12 },
@@ -96,28 +98,28 @@ screen Home:
   { tokenType: Heading, image: '##', startLine: 2, startColumn: 3 },
   { tokenType: StringContent, image: 'Welcome', startLine: 2, startColumn: 6 },
   { tokenType: Newline, image: '\n', startLine: 2, startColumn: 13 },
-  { tokenType: Outdent, image: '', startLine: 3, startColumn: 1 }
+  { tokenType: Outdent, image: '', startLine: 3, startColumn: 1 },
 ]
 ```
 
 ### Key Tokens
 
-| Token | Pattern | Purpose |
-|-------|---------|---------|
-| `Screen` | `/screen/` | Screen declaration |
-| `Modal` | `/modal/` | Modal declaration |
-| `Drawer` | `/drawer/` | Drawer declaration |
-| `Component` | `/component/` | Component definition |
-| `Container` | `/container(-narrow)?/` | Container layouts |
-| `Stack` | `/stack(-tight)?/` | Stack layouts |
-| `Button` | `/@(\w+-)*(\w+)?\[.*?\]\(.*?\)/` | Button with variants |
-| `Heading` | `/#{1,4}/` | Headings (h1-h4) |
-| `Text` | `/>{1,3}/` | Text paragraphs |
-| `Identifier` | `/[A-Za-z_][A-Za-z0-9_]*/` | Names |
-| `Colon` | `/:/` | Block marker |
-| `Indent` | (synthetic) | Indentation increase |
-| `Outdent` | (synthetic) | Indentation decrease |
-| `Newline` | `/\n/` | Line breaks |
+| Token        | Pattern                          | Purpose              |
+| ------------ | -------------------------------- | -------------------- |
+| `Screen`     | `/screen/`                       | Screen declaration   |
+| `Modal`      | `/modal/`                        | Modal declaration    |
+| `Drawer`     | `/drawer/`                       | Drawer declaration   |
+| `Component`  | `/component/`                    | Component definition |
+| `Container`  | `/container(-narrow)?/`          | Container layouts    |
+| `Stack`      | `/stack(-tight)?/`               | Stack layouts        |
+| `Button`     | `/@(\w+-)*(\w+)?\[.*?\]\(.*?\)/` | Button with variants |
+| `Heading`    | `/#{1,4}/`                       | Headings (h1-h4)     |
+| `Text`       | `/>{1,3}/`                       | Text paragraphs      |
+| `Identifier` | `/[A-Za-z_][A-Za-z0-9_]*/`       | Names                |
+| `Colon`      | `/:/`                            | Block marker         |
+| `Indent`     | (synthetic)                      | Indentation increase |
+| `Outdent`    | (synthetic)                      | Indentation decrease |
+| `Newline`    | `/\n/`                           | Line breaks          |
 
 ### Indentation Handling
 
@@ -159,34 +161,34 @@ Each element has a corresponding parser rule:
 class ProtoTypedParser extends CstParser {
   // View rules
   screenRule() {
-    this.CONSUME(Screen);
-    this.CONSUME(Identifier);
-    this.CONSUME(Colon);
+    this.CONSUME(Screen)
+    this.CONSUME(Identifier)
+    this.CONSUME(Colon)
     this.OPTION(() => {
-      this.CONSUME(Newline);
-      this.CONSUME(Indent);
-      this.MANY(() => this.SUBRULE(this.elementRule));
-      this.CONSUME(Outdent);
-    });
+      this.CONSUME(Newline)
+      this.CONSUME(Indent)
+      this.MANY(() => this.SUBRULE(this.elementRule))
+      this.CONSUME(Outdent)
+    })
   }
 
   // Layout rules
   containerRule() {
-    this.CONSUME(Container);
-    this.CONSUME(Colon);
+    this.CONSUME(Container)
+    this.CONSUME(Colon)
     this.OPTION(() => {
-      this.CONSUME(Newline);
-      this.CONSUME(Indent);
-      this.MANY(() => this.SUBRULE(this.elementRule));
-      this.CONSUME(Outdent);
-    });
+      this.CONSUME(Newline)
+      this.CONSUME(Indent)
+      this.MANY(() => this.SUBRULE(this.elementRule))
+      this.CONSUME(Outdent)
+    })
   }
 
   // Primitive rules
   headingRule() {
-    this.CONSUME(Heading);
-    this.CONSUME(StringContent);
-    this.CONSUME(Newline);
+    this.CONSUME(Heading)
+    this.CONSUME(StringContent)
+    this.CONSUME(Newline)
   }
 
   // Generic element dispatch
@@ -196,7 +198,7 @@ class ProtoTypedParser extends CstParser {
       { ALT: () => this.SUBRULE(this.containerRule) },
       { ALT: () => this.SUBRULE(this.headingRule) },
       // ... 40+ alternatives
-    ]);
+    ])
   }
 }
 ```
@@ -265,34 +267,34 @@ Chevrotain provides automatic error recovery:
 ```typescript
 class AstBuilder extends BaseProtoTypedVisitor {
   constructor() {
-    super();
-    this.validateVisitor();
+    super()
+    this.validateVisitor()
   }
 
   screenRule(ctx: ScreenRuleCstChildren): AstNode {
-    const name = ctx.Identifier[0].image;
+    const name = ctx.Identifier[0].image
     const children = ctx.elementRule
-      ? ctx.elementRule.map(child => this.visit(child))
-      : [];
+      ? ctx.elementRule.map((child) => this.visit(child))
+      : []
 
     return {
       type: 'Screen',
       id: generateId('screen', name),
       props: { name },
-      children
-    };
+      children,
+    }
   }
 
   headingRule(ctx: HeadingRuleCstChildren): AstNode {
-    const level = ctx.Heading[0].image.length; // Count #'s
-    const text = ctx.StringContent[0].image;
+    const level = ctx.Heading[0].image.length // Count #'s
+    const text = ctx.StringContent[0].image
 
     return {
       type: 'Heading',
       id: generateId('heading'),
       props: { level, text },
-      children: []
-    };
+      children: [],
+    }
   }
 
   // ... builders for all 40+ node types
@@ -305,23 +307,39 @@ Every AST node has this structure:
 
 ```typescript
 interface AstNode {
-  type: NodeType;              // Discriminated union type
-  id: string;                  // Unique identifier
-  props: Record<string, any>;  // Node-specific properties
-  children: AstNode[];         // Nested nodes
+  type: NodeType // Discriminated union type
+  id: string // Unique identifier
+  props: Record<string, any> // Node-specific properties
+  children: AstNode[] // Nested nodes
 }
 
 type NodeType =
-  | 'Screen' | 'Modal' | 'Drawer' | 'Component'
-  | 'Container' | 'Stack' | 'Row' | 'Grid' | 'Card'
-  | 'Button' | 'Link' | 'Image' | 'Heading' | 'Text'
-  | 'Input' | 'Checkbox' | 'Select' | 'Radio' | 'Textarea'
-  // ... 40+ types
+  | 'Screen'
+  | 'Modal'
+  | 'Drawer'
+  | 'Component'
+  | 'Container'
+  | 'Stack'
+  | 'Row'
+  | 'Grid'
+  | 'Card'
+  | 'Button'
+  | 'Link'
+  | 'Image'
+  | 'Heading'
+  | 'Text'
+  | 'Input'
+  | 'Checkbox'
+  | 'Select'
+  | 'Radio'
+  | 'Textarea'
+// ... 40+ types
 ```
 
 ### Example AST
 
 **Input DSL**:
+
 ```
 screen Home:
   container:
@@ -330,6 +348,7 @@ screen Home:
 ```
 
 **Output AST**:
+
 ```javascript
 {
   type: 'Screen',
@@ -369,13 +388,13 @@ screen Home:
 Each node gets a unique ID for DOM references:
 
 ```typescript
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid'
 
 function generateId(prefix: string, name?: string): string {
-  const suffix = nanoid(8);
+  const suffix = nanoid(8)
   return name
     ? `${prefix}-${name.toLowerCase()}-${suffix}`
-    : `${prefix}-${suffix}`;
+    : `${prefix}-${suffix}`
 }
 
 // Examples:
@@ -398,6 +417,7 @@ function generateId(prefix: string, name?: string): string {
 #### Tier 1: Top-Level Adapters
 
 **Files**:
+
 - `ast-to-html-document.ts`: Export to standalone HTML
 - `ast-to-html-string-preview.ts`: Preview HTML fragment
 
@@ -412,22 +432,30 @@ function generateId(prefix: string, name?: string): string {
 ```typescript
 export function astToHtmlStringPreview(ast: AstNode): string {
   // Initialize singletons
-  routeManager.reset();
-  customPropertiesManager.reset();
+  routeManager.reset()
+  customPropertiesManager.reset()
 
   // Process AST
-  const html = render(ast);
+  const html = render(ast)
 
   // Return fragment (no <html>, <head>, etc.)
-  return html;
+  return html
 }
 ```
 
 **Example Output**:
+
 ```html
-<div id="screen-home-abc" data-screen="Home" class="screen" style="display: block;">
+<div
+  id="screen-home-abc"
+  data-screen="Home"
+  class="screen"
+  style="display: block;"
+>
   <div class="max-w-7xl mx-auto px-4">
-    <h2 class="text-2xl font-bold" style="color: var(--foreground);">Welcome</h2>
+    <h2 class="text-2xl font-bold" style="color: var(--foreground);">
+      Welcome
+    </h2>
     <button onclick="navigateTo('Settings')">Click Me</button>
   </div>
 </div>
@@ -440,16 +468,19 @@ export function astToHtmlStringPreview(ast: AstNode): string {
 **Output**: Complete HTML document with CDN dependencies
 
 ```typescript
-export function astToHtmlDocument(ast: AstNode, themeName: string = 'neutral'): string {
+export function astToHtmlDocument(
+  ast: AstNode,
+  themeName: string = 'neutral'
+): string {
   // Initialize singletons
-  routeManager.reset();
-  customPropertiesManager.reset();
-  customPropertiesManager.setTheme(themeName);
+  routeManager.reset()
+  customPropertiesManager.reset()
+  customPropertiesManager.setTheme(themeName)
 
   // Process AST
-  const bodyHtml = render(ast);
-  const themeStyles = customPropertiesManager.generateRootStyles();
-  const navigationScript = routeManager.generateNavigationScript();
+  const bodyHtml = render(ast)
+  const themeStyles = customPropertiesManager.generateRootStyles()
+  const navigationScript = routeManager.generateNavigationScript()
 
   // Build complete HTML document
   return `<!DOCTYPE html>
@@ -471,44 +502,56 @@ export function astToHtmlDocument(ast: AstNode, themeName: string = 'neutral'): 
     ${navigationScript}
   </script>
 </body>
-</html>`;
+</html>`
 }
 ```
 
 **Example Output**:
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root {
-      --primary: oklch(0.7 0.15 220);
-      --background: oklch(0.12 0.02 220);
-      /* ... all CSS variables */
-    }
-    .screen { display: none; }
-    .screen:first-child { display: block; }
-  </style>
-</head>
-<body style="background-color: var(--background);">
-  <!-- All screens rendered as hidden divs -->
-  <div id="screen-home-abc" data-screen="Home" class="screen">...</div>
-  <div id="screen-settings-xyz" data-screen="Settings" class="screen">...</div>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root {
+        --primary: oklch(0.7 0.15 220);
+        --background: oklch(0.12 0.02 220);
+        /* ... all CSS variables */
+      }
+      .screen {
+        display: none;
+      }
+      .screen:first-child {
+        display: block;
+      }
+    </style>
+  </head>
+  <body style="background-color: var(--background);">
+    <!-- All screens rendered as hidden divs -->
+    <div id="screen-home-abc" data-screen="Home" class="screen">...</div>
+    <div id="screen-settings-xyz" data-screen="Settings" class="screen">
+      ...
+    </div>
 
-  <script>
-    // Navigation functions
-    function navigateTo(screenName) { /* ... */ }
-    function toggleModal(modalName) { /* ... */ }
-  </script>
-</body>
+    <script>
+      // Navigation functions
+      function navigateTo(screenName) {
+        /* ... */
+      }
+      function toggleModal(modalName) {
+        /* ... */
+      }
+    </script>
+  </body>
 </html>
 ```
 
 #### Tier 2: Infrastructure Layer
 
 **Files**:
+
 - `route-manager-gateway.ts`: Facade for React components
 - `navigation-mediator.ts`: Navigation target analysis
 - `html-render-helper.ts`: Shared rendering utilities
@@ -524,39 +567,39 @@ class NavigationMediator {
     if (target.includes('://')) {
       return {
         type: 'external',
-        handler: `window.open('${target}', '_blank')`
-      };
+        handler: `window.open('${target}', '_blank')`,
+      }
     }
 
     // JavaScript action: contains () or .
     if (target.includes('()') || target.includes('.')) {
       return {
         type: 'action',
-        handler: target
-      };
+        handler: target,
+      }
     }
 
     // History back: negative number
     if (target.match(/^-\d+$/)) {
       return {
         type: 'back',
-        handler: `history.go(${target})`
-      };
+        handler: `history.go(${target})`,
+      }
     }
 
     // Modal/Drawer toggle: check if exists
     if (routeManager.hasModal(target)) {
       return {
         type: 'toggle',
-        handler: `toggleModal('${target}')`
-      };
+        handler: `toggleModal('${target}')`,
+      }
     }
 
     // Default: internal navigation
     return {
       type: 'internal',
-      handler: `navigateTo('${target}')`
-    };
+      handler: `navigateTo('${target}')`,
+    }
   }
 }
 ```
@@ -570,9 +613,20 @@ class NavigationMediator {
 **Purpose**: Dispatch rendering to specific node renderers
 
 ```typescript
-import { renderScreen, renderModal, renderDrawer } from '../nodes/views.node';
-import { renderButton, renderLink, renderHeading, renderText } from '../nodes/primitives.node';
-import { renderContainer, renderStack, renderRow, renderGrid, renderCard } from '../nodes/layouts.node';
+import { renderScreen, renderModal, renderDrawer } from '../nodes/views.node'
+import {
+  renderButton,
+  renderLink,
+  renderHeading,
+  renderText,
+} from '../nodes/primitives.node'
+import {
+  renderContainer,
+  renderStack,
+  renderRow,
+  renderGrid,
+  renderCard,
+} from '../nodes/layouts.node'
 // ... more imports
 
 const RENDERERS: Record<NodeType, (node: AstNode) => string> = {
@@ -602,15 +656,15 @@ const RENDERERS: Record<NodeType, (node: AstNode) => string> = {
   Select: (node) => renderSelect(node),
 
   // ... 40+ renderers
-};
+}
 
 export function render(node: AstNode): string {
-  const renderer = RENDERERS[node.type];
+  const renderer = RENDERERS[node.type]
   if (!renderer) {
-    console.warn(`No renderer for type: ${node.type}`);
-    return '';
+    console.warn(`No renderer for type: ${node.type}`)
+    return ''
   }
-  return renderer(node);
+  return renderer(node)
 }
 ```
 
@@ -622,40 +676,40 @@ export function render(node: AstNode): string {
 
 ```typescript
 class RouteManager {
-  private static instance: RouteManager;
-  private screens: Map<string, { id: string; html: string }> = new Map();
-  private modals: Map<string, { id: string; html: string }> = new Map();
-  private components: Map<string, AstNode> = new Map();
+  private static instance: RouteManager
+  private screens: Map<string, { id: string; html: string }> = new Map()
+  private modals: Map<string, { id: string; html: string }> = new Map()
+  private components: Map<string, AstNode> = new Map()
 
   static getInstance(): RouteManager {
     if (!RouteManager.instance) {
-      RouteManager.instance = new RouteManager();
+      RouteManager.instance = new RouteManager()
     }
-    return RouteManager.instance;
+    return RouteManager.instance
   }
 
   reset(): void {
-    this.screens.clear();
-    this.modals.clear();
-    this.components.clear();
+    this.screens.clear()
+    this.modals.clear()
+    this.components.clear()
   }
 
   addScreen(name: string, id: string, html: string): void {
-    this.screens.set(name, { id, html });
+    this.screens.set(name, { id, html })
   }
 
   addModal(name: string, id: string, html: string): void {
-    this.modals.set(name, { id, html });
+    this.modals.set(name, { id, html })
   }
 
   storeComponentDefinition(name: string, node: AstNode): void {
-    this.components.set(name, node);
+    this.components.set(name, node)
   }
 
   generateNavigationScript(): string {
     const screenMap = Array.from(this.screens.entries())
       .map(([name, { id }]) => `  '${name}': '${id}'`)
-      .join(',\n');
+      .join(',\n')
 
     return `
 const screens = {
@@ -692,7 +746,7 @@ const firstScreen = Object.keys(screens)[0];
 if (firstScreen) {
   navigateTo(firstScreen);
 }
-`;
+`
   }
 }
 ```
@@ -705,34 +759,34 @@ if (firstScreen) {
 
 ```typescript
 class CustomPropertiesManager {
-  private static instance: CustomPropertiesManager;
-  private currentTheme: ThemeDefinition;
-  private customProperties: Record<string, string> = {};
+  private static instance: CustomPropertiesManager
+  private currentTheme: ThemeDefinition
+  private customProperties: Record<string, string> = {}
 
   static getInstance(): CustomPropertiesManager {
     if (!CustomPropertiesManager.instance) {
-      CustomPropertiesManager.instance = new CustomPropertiesManager();
+      CustomPropertiesManager.instance = new CustomPropertiesManager()
     }
-    return CustomPropertiesManager.instance;
+    return CustomPropertiesManager.instance
   }
 
   setTheme(themeName: string): void {
-    this.currentTheme = themeDefinitions[themeName] || themeDefinitions.neutral;
+    this.currentTheme = themeDefinitions[themeName] || themeDefinitions.neutral
   }
 
   setCustomProperties(properties: Record<string, string>): void {
-    this.customProperties = { ...this.customProperties, ...properties };
+    this.customProperties = { ...this.customProperties, ...properties }
   }
 
   generateRootStyles(): string {
-    const themeProps = this.currentTheme;
-    const mergedProps = { ...themeProps, ...this.customProperties };
+    const themeProps = this.currentTheme
+    const mergedProps = { ...themeProps, ...this.customProperties }
 
     const cssVars = Object.entries(mergedProps)
       .map(([key, value]) => `  ${key}: ${value};`)
-      .join('\n');
+      .join('\n')
 
-    return `:root {\n${cssVars}\n}`;
+    return `:root {\n${cssVars}\n}`
   }
 }
 ```
@@ -748,18 +802,18 @@ Each renderer is a pure function that takes an AST node and returns HTML.
 ```typescript
 // nodes/primitives.node.ts
 export function renderButton(node: AstNode): string {
-  const { variant = 'primary', size = 'md', text, target } = node.props;
+  const { variant = 'primary', size = 'md', text, target } = node.props
 
   // Get Tailwind classes
-  const classes = buttonStyles[variant][size];
+  const classes = buttonStyles[variant][size]
 
   // Get CSS variable styles
-  const styles = getButtonInlineStyles(variant);
+  const styles = getButtonInlineStyles(variant)
 
   // Get onclick handler
-  const onclick = navigationMediator.getOnClickHandler(target);
+  const onclick = navigationMediator.getOnClickHandler(target)
 
-  return `<button class="${classes}" style="${styles}" onclick="${onclick}">${text}</button>`;
+  return `<button class="${classes}" style="${styles}" onclick="${onclick}">${text}</button>`
 }
 
 // Styling helper
@@ -768,22 +822,26 @@ const buttonStyles = {
     xs: 'inline-flex items-center px-2 py-1 text-xs rounded-md',
     sm: 'inline-flex items-center px-3 py-1.5 text-sm rounded-md',
     md: 'inline-flex items-center px-4 py-2 text-base rounded-md',
-    lg: 'inline-flex items-center px-6 py-3 text-lg rounded-md'
+    lg: 'inline-flex items-center px-6 py-3 text-lg rounded-md',
   },
-  secondary: { /* ... */ },
-  destructive: { /* ... */ }
-};
+  secondary: {
+    /* ... */
+  },
+  destructive: {
+    /* ... */
+  },
+}
 
 function getButtonInlineStyles(variant: string): string {
   switch (variant) {
     case 'primary':
-      return 'background-color: var(--primary); color: var(--primary-foreground);';
+      return 'background-color: var(--primary); color: var(--primary-foreground);'
     case 'secondary':
-      return 'background-color: var(--secondary); color: var(--secondary-foreground);';
+      return 'background-color: var(--secondary); color: var(--secondary-foreground);'
     case 'destructive':
-      return 'background-color: var(--destructive); color: var(--destructive-foreground);';
+      return 'background-color: var(--destructive); color: var(--destructive-foreground);'
     default:
-      return '';
+      return ''
   }
 }
 ```
@@ -793,21 +851,21 @@ function getButtonInlineStyles(variant: string): string {
 ```typescript
 // nodes/layouts.node.ts
 export function renderContainer(node: AstNode): string {
-  const { variant = 'container' } = node.props;
+  const { variant = 'container' } = node.props
 
   // Get classes
-  const classes = layoutStyles[variant];
+  const classes = layoutStyles[variant]
 
   // Render children recursively
-  const childrenHtml = node.children.map(child => render(child)).join('');
+  const childrenHtml = node.children.map((child) => render(child)).join('')
 
-  return `<div class="${classes}">${childrenHtml}</div>`;
+  return `<div class="${classes}">${childrenHtml}</div>`
 }
 
 const layoutStyles = {
-  'container': 'max-w-7xl mx-auto px-4',
-  'container-narrow': 'max-w-2xl mx-auto px-4'
-};
+  container: 'max-w-7xl mx-auto px-4',
+  'container-narrow': 'max-w-2xl mx-auto px-4',
+}
 ```
 
 #### Example: Screen Renderer
@@ -815,15 +873,15 @@ const layoutStyles = {
 ```typescript
 // nodes/views.node.ts
 export function renderScreen(node: AstNode): string {
-  const { name } = node.props;
-  const { id } = node;
+  const { name } = node.props
+  const { id } = node
 
   // Register screen with RouteManager
-  const childrenHtml = node.children.map(child => render(child)).join('');
-  routeManager.addScreen(name, id, childrenHtml);
+  const childrenHtml = node.children.map((child) => render(child)).join('')
+  routeManager.addScreen(name, id, childrenHtml)
 
   // Render screen div
-  return `<div id="${id}" data-screen="${name}" class="screen">${childrenHtml}</div>`;
+  return `<div id="${id}" data-screen="${name}" class="screen">${childrenHtml}</div>`
 }
 ```
 
@@ -852,7 +910,7 @@ screen Settings:
 ### Stage 1: Lexer Output
 
 ```javascript
-[
+;[
   { tokenType: Theme, image: 'theme' },
   { tokenType: Colon, image: ':' },
   { tokenType: Identifier, image: 'blue' },
@@ -950,76 +1008,84 @@ screen Settings:
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root {
-      --primary: oklch(0.7 0.15 220);
-      --background: oklch(0.12 0.02 220);
-      --foreground: oklch(0.95 0.02 220);
-      /* ... all CSS variables */
-    }
-    .screen { display: none; }
-    .screen:first-child { display: block; }
-  </style>
-</head>
-<body style="background-color: var(--background); color: var(--foreground);">
-  <div id="screen-home-abc123" data-screen="Home" class="screen">
-    <div class="max-w-7xl mx-auto px-4">
-      <h2 class="text-2xl font-bold" style="color: var(--foreground);">Welcome</h2>
-      <button
-        class="inline-flex items-center px-4 py-2 rounded-md"
-        style="background-color: var(--primary); color: var(--primary-foreground);"
-        onclick="navigateTo('Settings')"
-      >
-        Go to Settings
-      </button>
-    </div>
-  </div>
-
-  <div id="screen-settings-jkl012" data-screen="Settings" class="screen">
-    <div class="max-w-7xl mx-auto px-4">
-      <h2 class="text-2xl font-bold" style="color: var(--foreground);">Settings</h2>
-      <button
-        class="inline-flex items-center px-4 py-2 rounded-md"
-        style="background-color: var(--primary); color: var(--primary-foreground);"
-        onclick="history.go(-1)"
-      >
-        Back
-      </button>
-    </div>
-  </div>
-
-  <script>
-    const screens = {
-      'Home': 'screen-home-abc123',
-      'Settings': 'screen-settings-jkl012'
-    };
-
-    function navigateTo(screenName) {
-      document.querySelectorAll('[data-screen]').forEach(screen => {
-        screen.style.display = 'none';
-      });
-      const targetScreen = document.getElementById(screens[screenName]);
-      if (targetScreen) {
-        targetScreen.style.display = 'block';
-        history.pushState({ screen: screenName }, '', `#${screenName}`);
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root {
+        --primary: oklch(0.7 0.15 220);
+        --background: oklch(0.12 0.02 220);
+        --foreground: oklch(0.95 0.02 220);
+        /* ... all CSS variables */
       }
-    }
-
-    window.addEventListener('popstate', (event) => {
-      if (event.state && event.state.screen) {
-        navigateTo(event.state.screen);
+      .screen {
+        display: none;
       }
-    });
+      .screen:first-child {
+        display: block;
+      }
+    </style>
+  </head>
+  <body style="background-color: var(--background); color: var(--foreground);">
+    <div id="screen-home-abc123" data-screen="Home" class="screen">
+      <div class="max-w-7xl mx-auto px-4">
+        <h2 class="text-2xl font-bold" style="color: var(--foreground);">
+          Welcome
+        </h2>
+        <button
+          class="inline-flex items-center px-4 py-2 rounded-md"
+          style="background-color: var(--primary); color: var(--primary-foreground);"
+          onclick="navigateTo('Settings')"
+        >
+          Go to Settings
+        </button>
+      </div>
+    </div>
 
-    const firstScreen = Object.keys(screens)[0];
-    if (firstScreen) {
-      navigateTo(firstScreen);
-    }
-  </script>
-</body>
+    <div id="screen-settings-jkl012" data-screen="Settings" class="screen">
+      <div class="max-w-7xl mx-auto px-4">
+        <h2 class="text-2xl font-bold" style="color: var(--foreground);">
+          Settings
+        </h2>
+        <button
+          class="inline-flex items-center px-4 py-2 rounded-md"
+          style="background-color: var(--primary); color: var(--primary-foreground);"
+          onclick="history.go(-1)"
+        >
+          Back
+        </button>
+      </div>
+    </div>
+
+    <script>
+      const screens = {
+        Home: 'screen-home-abc123',
+        Settings: 'screen-settings-jkl012',
+      }
+
+      function navigateTo(screenName) {
+        document.querySelectorAll('[data-screen]').forEach((screen) => {
+          screen.style.display = 'none'
+        })
+        const targetScreen = document.getElementById(screens[screenName])
+        if (targetScreen) {
+          targetScreen.style.display = 'block'
+          history.pushState({ screen: screenName }, '', `#${screenName}`)
+        }
+      }
+
+      window.addEventListener('popstate', (event) => {
+        if (event.state && event.state.screen) {
+          navigateTo(event.state.screen)
+        }
+      })
+
+      const firstScreen = Object.keys(screens)[0]
+      if (firstScreen) {
+        navigateTo(firstScreen)
+      }
+    </script>
+  </body>
 </html>
 ```
 
@@ -1028,21 +1094,25 @@ screen Settings:
 ## Performance Considerations
 
 ### Lexer Performance
+
 - **O(n)** complexity where n = source length
 - Single pass through source text
 - Regex matching is fast for most tokens
 
 ### Parser Performance
+
 - **O(n)** complexity where n = number of tokens
 - LL(k) parsing with minimal backtracking
 - CST construction is lightweight
 
 ### AST Builder Performance
+
 - **O(n)** complexity where n = number of CST nodes
 - Single traversal of CST
 - Minimal allocations
 
 ### Renderer Performance
+
 - **O(n)** complexity where n = number of AST nodes
 - Single traversal of AST
 - String concatenation (could be optimized with StringBuilder)
@@ -1054,36 +1124,40 @@ screen Settings:
 ## Error Handling Throughout Pipeline
 
 ### Lexer Errors
+
 ```javascript
-const result = lexer.tokenize(source);
+const result = lexer.tokenize(source)
 if (result.errors.length > 0) {
-  console.error('Lexer errors:', result.errors);
+  console.error('Lexer errors:', result.errors)
 }
 ```
 
 ### Parser Errors
+
 ```javascript
-const cst = parser.parse(tokens);
+const cst = parser.parse(tokens)
 if (parser.errors.length > 0) {
-  console.error('Parser errors:', parser.errors);
+  console.error('Parser errors:', parser.errors)
 }
 ```
 
 ### AST Builder Errors
+
 ```javascript
 try {
-  const ast = astBuilder.visit(cst);
+  const ast = astBuilder.visit(cst)
 } catch (error) {
-  console.error('AST builder error:', error);
+  console.error('AST builder error:', error)
 }
 ```
 
 ### Renderer Errors
+
 ```javascript
 try {
-  const html = render(ast);
+  const html = render(ast)
 } catch (error) {
-  console.error('Renderer error:', error);
+  console.error('Renderer error:', error)
 }
 ```
 
@@ -1092,6 +1166,7 @@ try {
 ## Summary
 
 The rendering pipeline is:
+
 1. **Deterministic**: Same input → same output
 2. **Unidirectional**: Data flows in one direction
 3. **Layered**: Clear separation between stages
@@ -1100,6 +1175,7 @@ The rendering pipeline is:
 6. **Performant**: Linear complexity throughout
 
 Each stage transforms the representation:
+
 - **Text** → **Tokens** → **CST** → **AST** → **HTML**
 
 This clean architecture makes the system easy to understand, debug, and extend.

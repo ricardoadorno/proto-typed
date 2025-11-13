@@ -35,7 +35,9 @@ function test(name: string, fn: () => void) {
     passedTests++
   } catch (error) {
     console.log(`❌ FAIL: ${name}`)
-    console.error(`   ${error instanceof Error ? error.message : String(error)}`)
+    console.error(
+      `   ${error instanceof Error ? error.message : String(error)}`
+    )
   }
 }
 
@@ -105,7 +107,10 @@ test('getErrorInfo returns correct entry', () => {
 test('getErrorUrl returns URL for valid code', () => {
   const url = getErrorUrl('PT-LINT-1001')
   assert(url !== undefined, 'Should return URL')
-  assert(url?.includes('proto-typed.dev/errors'), 'URL should be documentation link')
+  assert(
+    url?.includes('proto-typed.dev/errors'),
+    'URL should be documentation link'
+  )
 })
 
 test('getErrorUrl returns undefined for invalid code', () => {
@@ -136,8 +141,16 @@ test('createLegacyDiagnostic populates both formats', () => {
   // New format (should be auto-generated)
   assert(diag.range !== undefined, 'Range should be auto-generated')
   assertEqual(diag.range?.start.line, 4, 'Range line should be 0-indexed (4)')
-  assertEqual(diag.range?.start.character, 9, 'Range character should be 0-indexed (9)')
-  assertEqual(diag.range?.end.character, 12, 'Range end should be start + length (12)')
+  assertEqual(
+    diag.range?.start.character,
+    9,
+    'Range character should be 0-indexed (9)'
+  )
+  assertEqual(
+    diag.range?.end.character,
+    12,
+    'Range end should be start + length (12)'
+  )
 })
 
 // ========================================
@@ -145,7 +158,7 @@ test('createLegacyDiagnostic populates both formats', () => {
 // ========================================
 
 test('createRangeDiagnostic populates both formats', () => {
-  const range = createRange(4, 9, 4, 12)  // 0-based
+  const range = createRange(4, 9, 4, 12) // 0-based
   const diag = createRangeDiagnostic(
     'PT-LINT-1001',
     'error',
@@ -175,7 +188,7 @@ test('createDiagnostic auto-adds codeDescription', () => {
     severity: 'error',
     message: 'Test message',
     line: 5,
-    column: 10
+    column: 10,
   })
 
   assert(diag.codeDescription !== undefined, 'Should have codeDescription')
@@ -191,7 +204,7 @@ test('createDiagnostic auto-adds source field', () => {
     severity: 'error',
     message: 'Test message',
     line: 5,
-    column: 10
+    column: 10,
   })
 
   assertEqual(diag.source, 'proto-typed-lint', 'Should have linter source')
@@ -203,7 +216,7 @@ test('createDiagnostic infers stage from code', () => {
     severity: 'error',
     message: 'Test',
     line: 1,
-    column: 1
+    column: 1,
   })
   assertEqual(lexerDiag.stage, 'lexer')
   assertEqual(lexerDiag.source, 'proto-typed-lexer')
@@ -213,7 +226,7 @@ test('createDiagnostic infers stage from code', () => {
     severity: 'error',
     message: 'Test',
     line: 1,
-    column: 1
+    column: 1,
   })
   assertEqual(parserDiag.stage, 'parser')
   assertEqual(parserDiag.source, 'proto-typed-parser')
@@ -232,7 +245,7 @@ test('Old code still works with legacy fields', () => {
     message: 'Old style error',
     line: 5,
     column: 10,
-    length: 3
+    length: 3,
   }
 
   // Old style access still works
@@ -249,7 +262,7 @@ test('enhanceDiagnostic adds LSP fields to legacy errors', () => {
     message: 'Legacy error',
     line: 5,
     column: 10,
-    length: 3
+    length: 3,
   }
 
   const enhanced = enhanceDiagnostic(legacyError)
@@ -279,7 +292,7 @@ test('createDiagnostic auto-adds hint from registry if missing', () => {
     severity: 'error',
     message: 'Component "Foo" is not defined',
     line: 5,
-    column: 10
+    column: 10,
     // No hint provided
   })
 
@@ -295,7 +308,7 @@ test('createDiagnostic preserves explicit hint', () => {
     message: 'Component "Foo" is not defined',
     line: 5,
     column: 10,
-    hint: explicitHint
+    hint: explicitHint,
   })
 
   assertEqual(diag.hint, explicitHint, 'Should use explicit hint, not registry')

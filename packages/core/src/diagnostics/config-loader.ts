@@ -25,7 +25,11 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import type { LintConfig } from './lint-config'
-import { DEFAULT_LINT_CONFIG, validateLintConfig, mergeLintConfigs } from './lint-config'
+import {
+  DEFAULT_LINT_CONFIG,
+  validateLintConfig,
+  mergeLintConfigs,
+} from './lint-config'
 
 /**
  * Full project configuration schema
@@ -62,7 +66,7 @@ const CONFIG_FILE_NAMES = [
   '.proto-typed.json',
   '.proto-typedrc.json',
   '.proto-typedrc',
-  'proto-typed.config.json'
+  'proto-typed.config.json',
 ]
 
 /**
@@ -97,7 +101,7 @@ export function findConfigFile(startDir: string): string | null {
     // Move up one directory
     const parentDir = path.dirname(currentDir)
     if (parentDir === currentDir) {
-      break  // Reached root
+      break // Reached root
     }
     currentDir = parentDir
   }
@@ -127,7 +131,7 @@ export function loadConfigFile(configPath: string): ProtoTypedConfig | null {
       const errors = validateLintConfig(config.lint)
       if (errors.length > 0) {
         console.error(`[proto-typed] Invalid configuration in ${configPath}:`)
-        errors.forEach(err => console.error(`  - ${err}`))
+        errors.forEach((err) => console.error(`  - ${err}`))
         return null
       }
     }
@@ -135,10 +139,12 @@ export function loadConfigFile(configPath: string): ProtoTypedConfig | null {
     // Cache and return
     configCache.set(configPath, config)
     return config
-
   } catch (error) {
     if (error instanceof SyntaxError) {
-      console.error(`[proto-typed] Invalid JSON in ${configPath}:`, error.message)
+      console.error(
+        `[proto-typed] Invalid JSON in ${configPath}:`,
+        error.message
+      )
     } else {
       console.error(`[proto-typed] Error loading config ${configPath}:`, error)
     }
@@ -249,11 +255,11 @@ export function createDefaultConfigFile(
     lint: {
       rules: {
         // Example: customize severity for common rules
-        'PT-LINT-2001': 'warn',    // Unused views
-        'PT-LINT-2002': 'warn',    // Unused components
+        'PT-LINT-2001': 'warn', // Unused views
+        'PT-LINT-2002': 'warn', // Unused components
         // Add more rule overrides as needed
-      }
-    }
+      },
+    },
   }
 
   const configPath = path.join(projectRoot, '.proto-typed.json')

@@ -12,7 +12,7 @@
 import {
   DiagnosticStore,
   ErrorBusV2,
-  createDiagnostic
+  createDiagnostic,
 } from './src/core/diagnostics'
 
 // ============================================================
@@ -27,20 +27,24 @@ function test(name: string, fn: () => void | Promise<void>) {
   try {
     const result = fn()
     if (result instanceof Promise) {
-      result.then(() => {
-        console.log(`✅ PASS: ${name}`)
-        passedTests++
-      }).catch((error: Error) => {
-        console.log(`❌ FAIL: ${name}`)
-        console.error(`   ${error.message}`)
-      })
+      result
+        .then(() => {
+          console.log(`✅ PASS: ${name}`)
+          passedTests++
+        })
+        .catch((error: Error) => {
+          console.log(`❌ FAIL: ${name}`)
+          console.error(`   ${error.message}`)
+        })
     } else {
       console.log(`✅ PASS: ${name}`)
       passedTests++
     }
   } catch (error) {
     console.log(`❌ FAIL: ${name}`)
-    console.error(`   ${error instanceof Error ? error.message : String(error)}`)
+    console.error(
+      `   ${error instanceof Error ? error.message : String(error)}`
+    )
   }
 }
 
@@ -78,7 +82,7 @@ const diag1 = createDiagnostic({
   severity: 'error',
   message: 'Error 1',
   line: 1,
-  column: 1
+  column: 1,
 })
 
 const diag2 = createDiagnostic({
@@ -86,7 +90,7 @@ const diag2 = createDiagnostic({
   severity: 'warning',
   message: 'Warning 1',
   line: 2,
-  column: 1
+  column: 1,
 })
 
 const diag3 = createDiagnostic({
@@ -94,7 +98,7 @@ const diag3 = createDiagnostic({
   severity: 'info',
   message: 'Info 1',
   line: 3,
-  column: 1
+  column: 1,
 })
 
 // ========================================
@@ -111,7 +115,7 @@ test('DiagnosticStore: publishDiagnostics stores diagnostics', () => {
 
 test('DiagnosticStore: publishDiagnostics empty array clears', () => {
   store.publishDiagnostics(URI1, [diag1])
-  store.publishDiagnostics(URI1, [])  // Clear
+  store.publishDiagnostics(URI1, []) // Clear
 
   const diagnostics = store.getDiagnostics(URI1)
   assertEqual(diagnostics.length, 0, 'Should be cleared')
@@ -177,7 +181,11 @@ test('DiagnosticStore: subscribe gets immediate notification', () => {
   })
 
   assert(notified, 'Should be notified immediately')
-  assertEqual(receivedDiagnostics.length, 1, 'Should receive current diagnostics')
+  assertEqual(
+    receivedDiagnostics.length,
+    1,
+    'Should receive current diagnostics'
+  )
 })
 
 test('DiagnosticStore: subscribe gets updates', () => {
@@ -189,7 +197,7 @@ test('DiagnosticStore: subscribe gets updates', () => {
   })
 
   // Initial notification happened (callCount = 1)
-  store.publishDiagnostics(URI1, [diag1])  // callCount = 2
+  store.publishDiagnostics(URI1, [diag1]) // callCount = 2
 
   assertEqual(callCount, 2, 'Should be called on updates')
 })
@@ -202,11 +210,15 @@ test('DiagnosticStore: unsubscribe works', () => {
     callCount++
   })
 
-  unsubscribe()  // Unsubscribe
+  unsubscribe() // Unsubscribe
 
-  store.publishDiagnostics(URI1, [diag1])  // Should NOT call
+  store.publishDiagnostics(URI1, [diag1]) // Should NOT call
 
-  assertEqual(callCount, 1, 'Should not be called after unsubscribe (only initial)')
+  assertEqual(
+    callCount,
+    1,
+    'Should not be called after unsubscribe (only initial)'
+  )
 })
 
 // ========================================
@@ -312,7 +324,11 @@ test('ErrorBus V2: clearDiagnostics() clears specific URI', () => {
   errorBus.clearDiagnostics(URI1)
 
   assertEqual(errorBus.getDiagnostics(URI1).length, 0)
-  assertEqual(errorBus.getDiagnostics(URI2).length, 1, 'URI2 should be unaffected')
+  assertEqual(
+    errorBus.getDiagnostics(URI2).length,
+    1,
+    'URI2 should be unaffected'
+  )
 })
 
 test('ErrorBus V2: subscribeToDocument() works', () => {
@@ -357,21 +373,33 @@ test('ErrorBus V2: getTotalCount() counts across documents', () => {
 test('ErrorBus V2: hasAnyDiagnostics() detects any', () => {
   errorBus.publishDiagnostics(URI1, [])
   errorBus.publishDiagnostics(URI2, [])
-  errorBus.clear()  // Clear default URI
+  errorBus.clear() // Clear default URI
 
   assertEqual(errorBus.hasAnyDiagnostics(), false, 'Should be false when empty')
 
   errorBus.publishDiagnostics(URI1, [diag1])
 
-  assertEqual(errorBus.hasAnyDiagnostics(), true, 'Should be true when has diagnostics')
+  assertEqual(
+    errorBus.hasAnyDiagnostics(),
+    true,
+    'Should be true when has diagnostics'
+  )
 })
 
 test('ErrorBus V2: hasDiagnostics(uri) checks specific document', () => {
   errorBus.publishDiagnostics(URI1, [diag1])
   errorBus.publishDiagnostics(URI2, [])
 
-  assertEqual(errorBus.hasDiagnostics(URI1), true, 'URI1 should have diagnostics')
-  assertEqual(errorBus.hasDiagnostics(URI2), false, 'URI2 should not have diagnostics')
+  assertEqual(
+    errorBus.hasDiagnostics(URI1),
+    true,
+    'URI1 should have diagnostics'
+  )
+  assertEqual(
+    errorBus.hasDiagnostics(URI2),
+    false,
+    'URI2 should not have diagnostics'
+  )
 })
 
 // ========================================
@@ -379,7 +407,7 @@ test('ErrorBus V2: hasDiagnostics(uri) checks specific document', () => {
 // ========================================
 
 test('ErrorBus V2: legacy and new API coexist', () => {
-  errorBus.clear()  // Clear default URI
+  errorBus.clear() // Clear default URI
 
   // Legacy API
   errorBus.emit(diag1)
@@ -397,7 +425,7 @@ test('ErrorBus V2: isLegacyMode() detects mode', () => {
   errorBus.publishDiagnostics(URI1, [])
   errorBus.publishDiagnostics(URI2, [])
   errorBus.publishDiagnostics(URI3, [])
-  errorBus.clear()  // Clear default URI
+  errorBus.clear() // Clear default URI
 
   // Only default URI has diagnostics
   errorBus.emit(diag1)

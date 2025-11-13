@@ -3,7 +3,10 @@
  * Handles inputs, selects, radio buttons, and checkboxes
  */
 
-import { validateInputType, validateRequiredProps } from './builder-validation.js'
+import {
+  validateInputType,
+  validateRequiredProps,
+} from './builder-validation.js'
 import type { IToken } from 'chevrotain'
 import type { CstContext, CstVisitor } from '../../types/parser.js'
 

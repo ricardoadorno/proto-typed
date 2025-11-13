@@ -31,7 +31,7 @@ import type {
   WorkspaceEdit,
   TextEdit,
   Range,
-  Position
+  Position,
 } from '../types/diagnostics'
 
 // ============================================================
@@ -115,7 +115,7 @@ export function getCodeActions(
   const context: CodeActionContext = {
     diagnostic,
     documentUri,
-    documentText
+    documentText,
   }
 
   const actions: CodeAction[] = []
@@ -127,7 +127,10 @@ export function getCodeActions(
         const providerActions = provider.provideCodeActions(context)
         actions.push(...providerActions)
       } catch (error) {
-        console.error(`Code action provider error for ${diagnostic.code}:`, error)
+        console.error(
+          `Code action provider error for ${diagnostic.code}:`,
+          error
+        )
       }
     }
   }
@@ -180,8 +183,8 @@ export function createWorkspaceEdit(
 ): WorkspaceEdit {
   return {
     changes: {
-      [documentUri]: edits
-    }
+      [documentUri]: edits,
+    },
   }
 }
 
@@ -203,9 +206,9 @@ export function createQuickFix(
   return {
     title,
     kind: 'quickfix' as CodeActionKind,
-    diagnostics: [diagnostic as any],  // Cast to LSP Diagnostic
+    diagnostics: [diagnostic as any], // Cast to LSP Diagnostic
     edit,
-    isPreferred
+    isPreferred,
   }
 }
 
@@ -219,9 +222,9 @@ export function createInsertionEdit(
   return {
     range: {
       start: position,
-      end: position
+      end: position,
     },
-    newText: text
+    newText: text,
   }
 }
 
@@ -231,20 +234,17 @@ export function createInsertionEdit(
 export function createDeletionEdit(range: Range): TextEdit {
   return {
     range,
-    newText: ''
+    newText: '',
   }
 }
 
 /**
  * Create a replacement edit
  */
-export function createReplacementEdit(
-  range: Range,
-  newText: string
-): TextEdit {
+export function createReplacementEdit(range: Range, newText: string): TextEdit {
   return {
     range,
-    newText
+    newText,
   }
 }
 
@@ -279,7 +279,7 @@ class UndefinedComponentProvider implements CodeActionProvider {
     const componentTemplate = `component ${componentName}:\n  # TODO: Implement component\n\n`
 
     const edit = createWorkspaceEdit(documentUri, [
-      createInsertionEdit(insertPosition, componentTemplate)
+      createInsertionEdit(insertPosition, componentTemplate),
     ])
 
     actions.push(
@@ -287,7 +287,7 @@ class UndefinedComponentProvider implements CodeActionProvider {
         `Create component "${componentName}"`,
         diagnostic,
         edit,
-        true  // Preferred action
+        true // Preferred action
       )
     )
 
@@ -311,7 +311,9 @@ class UndefinedNavigationProvider implements CodeActionProvider {
     const actions: CodeAction[] = []
 
     // Extract destination name from message
-    const match = diagnostic.message.match(/Navigation target "([^"]+)" does not exist/)
+    const match = diagnostic.message.match(
+      /Navigation target "([^"]+)" does not exist/
+    )
     if (!match) {
       return actions
     }
@@ -322,41 +324,33 @@ class UndefinedNavigationProvider implements CodeActionProvider {
     // Quick Fix 1: Create screen
     const screenTemplate = `screen ${targetName}:\n  # TODO: Implement screen\n\n`
     const screenEdit = createWorkspaceEdit(documentUri, [
-      createInsertionEdit(insertPosition, screenTemplate)
+      createInsertionEdit(insertPosition, screenTemplate),
     ])
     actions.push(
       createQuickFix(
         `Create screen "${targetName}"`,
         diagnostic,
         screenEdit,
-        true  // Preferred
+        true // Preferred
       )
     )
 
     // Quick Fix 2: Create modal
     const modalTemplate = `modal ${targetName}:\n  # TODO: Implement modal\n\n`
     const modalEdit = createWorkspaceEdit(documentUri, [
-      createInsertionEdit(insertPosition, modalTemplate)
+      createInsertionEdit(insertPosition, modalTemplate),
     ])
     actions.push(
-      createQuickFix(
-        `Create modal "${targetName}"`,
-        diagnostic,
-        modalEdit
-      )
+      createQuickFix(`Create modal "${targetName}"`, diagnostic, modalEdit)
     )
 
     // Quick Fix 3: Create drawer
     const drawerTemplate = `drawer ${targetName}:\n  # TODO: Implement drawer\n\n`
     const drawerEdit = createWorkspaceEdit(documentUri, [
-      createInsertionEdit(insertPosition, drawerTemplate)
+      createInsertionEdit(insertPosition, drawerTemplate),
     ])
     actions.push(
-      createQuickFix(
-        `Create drawer "${targetName}"`,
-        diagnostic,
-        drawerEdit
-      )
+      createQuickFix(`Create drawer "${targetName}"`, diagnostic, drawerEdit)
     )
 
     return actions
@@ -380,7 +374,7 @@ class UnusedDefinitionProvider implements CodeActionProvider {
     // If diagnostic has range, offer to delete
     if (diagnostic.range) {
       const deletionEdit = createWorkspaceEdit(documentUri, [
-        createDeletionEdit(diagnostic.range)
+        createDeletionEdit(diagnostic.range),
       ])
 
       const isView = diagnostic.code === 'PT-LINT-2001'

@@ -5,22 +5,29 @@ Core features of the Proto-Typed DSL.
 ## Features
 
 ### Lexer
+
 Tokenization of Proto-Typed DSL code.
 
 ### Parser
+
 AST generation from tokens using Chevrotain.
 
 ### Builder
+
 Transforms AST to React/React Native code.
 
 ### Formatter
+
 Code formatting and pretty-printing.
 
 ### Linter
+
 Static analysis with configurable rules.
 
 ### Diagnostics (Phases 1-4)
+
 LSP-compliant diagnostic system with:
+
 - **Phase 1**: Error registry and LSP types
 - **Phase 2**: Document-scoped storage
 - **Phase 3**: Configurable lint rules
