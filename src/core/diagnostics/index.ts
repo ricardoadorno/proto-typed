@@ -7,11 +7,13 @@
  * - Document-scoped diagnostic storage (Phase 2)
  * - Enhanced ErrorBus with backward compatibility (Phase 2)
  * - Configurable lint rules (Phase 3)
+ * - Code actions and quick fixes (Phase 4)
  * - Helper utilities for working with diagnostics
  *
  * **Phase 1**: LSP-compliant fields and error catalog
  * **Phase 2**: Document-scoped diagnostics and publishDiagnostics API
  * **Phase 3**: Configurable lint rules with severity overrides
+ * **Phase 4**: Code actions and automated quick fixes
  *
  * @see DIAGNOSTICS_EVOLUTION.md for architecture details
  */
@@ -120,3 +122,43 @@ export {
   createDefaultConfigFile,
   type ProtoTypedConfig
 } from './config-loader'
+
+// ==========================================================
+// Phase 4: Code Actions & Quick Fixes (New!)
+// ==========================================================
+
+export {
+  getCodeActions,
+  getCodeActionsForDiagnostics,
+  registerCodeActionProvider,
+  registerDefaultCodeActionProviders,
+  createQuickFix,
+  createTextEdit,
+  createWorkspaceEdit,
+  createInsertionEdit,
+  createDeletionEdit,
+  createReplacementEdit,
+  type CodeActionProvider,
+  type CodeActionContext
+} from './code-actions'
+
+// Re-export Code Action types from diagnostics
+export type {
+  CodeAction,
+  CodeActionKind,
+  WorkspaceEdit,
+  TextEdit,
+  TextDocumentEdit,
+  Command
+} from '../../types/diagnostics'
+
+export { CodeActionKind as CodeActionKindEnum } from '../../types/diagnostics'
+
+export {
+  enhanceWithCodeActions,
+  enhanceDiagnosticsWithCodeActions,
+  hasCodeActions,
+  getCodeActionsFromDiagnostic,
+  getPreferredCodeAction,
+  countCodeActions
+} from './diagnostic-enhancer'
