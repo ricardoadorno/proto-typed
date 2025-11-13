@@ -1,0 +1,195 @@
+# Drawer
+Drawers display side panels over the current screen to offer filters, details, or auxiliary actions without breaking the context.
+
+## When to use
+- Expose advanced filters while the main screen remains visible.
+- Show details of a selected item without navigating to another route.
+- Offer contextual menus when horizontal space is available.
+- Complement flows that need quick feedback after a main action.
+
+## Basic example
+<DocsCodePreview title="Filter drawer in a dashboard">
+```dsl
+drawer FilterDrawer:
+  container:
+    # Advanced filters
+    ___[Status][All | In progress | Completed]
+    ___[Assignee][Ana | Bruno | Carla]
+    row-end:
+      @ghost[Cancel](close)
+      @[Apply filters](applyFilters)
+
+screen Dashboard:
+  container-wide:
+    # Overview
+    @[Open filters](FilterDrawer)
+    grid-3:
+      card:
+        ## Leads
+        # 1,240
+      card:
+        ## Conversions
+        # 134
+      card:
+        ## Revenue
+        # $87K
+```
+</DocsCodePreview>
+Why: keeps indicators visible while the person adjusts criteria in the side panel.
+
+## Variants
+<DocsCodePreview title="Drawer with stack for settings">
+```dsl
+drawer SettingsDrawer:
+  stack-loose:
+    # Quick settings
+    ___switch[Notifications][Enabled]
+    ___switch[Dark mode][Enabled]
+    row-end:
+      @ghost[Close](close)
+      @[Save settings](saveSettings)
+```
+</DocsCodePreview>
+When to use: organize simple controls with consistent spacing.
+Why: distributes quick adjustments in the panel without polluting the main screen.
+
+<DocsCodePreview title="Drawer with summary list">
+```dsl
+drawer SummaryDrawer:
+  card:
+    ## History
+    
+      - Order #3021 | Today 10am
+      - Order #3018 | Yesterday 4pm
+```
+</DocsCodePreview>
+When to use: present short summaries that complement the main screen.
+Why: keeps quick context at hand while the main screen remains visible.
+
+<DocsCodePreview title="Drawer with contextual form">
+```dsl
+drawer NoteDrawer:
+  container:
+    # Add note
+    ___textarea[Comment][Describe the context]
+    row-end:
+      @ghost[Cancel](close)
+      @success[Save note](saveNote)
+```
+</DocsCodePreview>
+When to use: capture quick entries while the person analyzes other content.
+Why: the drawer offers a brief form without interrupting the current navigation.
+
+## Composition (using with others)
+- **Drawer + Button** — triggers the panel from contextual CTAs.
+- **Drawer + List** — presents summarized collections with actions outside the list.
+- **Drawer + Main screen** — maintains a continuous flow without redirecting.
+
+<DocsCodePreview title="Screen with detail drawer">
+```dsl
+screen Accounts:
+  container-wide:
+    # Active accounts
+    
+      - North Group
+      - South Group
+
+drawer AccountDrawer:
+  card:
+    ## North Group
+    > Updated customer data.
+    row-end:
+      @ghost[Close](close)
+      @[Edit account](AccountEdit)
+```
+</DocsCodePreview>
+Why: allows investigating data without leaving the main list.
+
+## Slots & Props
+| Name | Type | Default | Description | Required |
+| --- | --- | --- | --- | --- |
+| `name` | identifier | — | Defines the drawer's slug (PascalCase recommended). | Yes |
+| `internal content` | DSL blocks | — | Receives stacks, containers, cards, lists, and forms. | Yes |
+| `closing actions` | buttons | — | Usually `@ghost[Close](close)` or `@ghost[Cancel](-1)`. | Yes |
+| `triggers` | buttons/links/FAB | — | Elements that call the drawer (`@[Open](DrawerName)`). | Yes |
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "List with navigable links",
+    code: `
+drawer MainMenu:
+  
+    - [Dashboard](Dashboard)
+    - [Reports](Reports)
+    `,
+  }}
+  do={{
+    title: "Structured navigation",
+    code: `
+drawer MainMenu:
+  navigator:
+    - Dashboard | Dashboard
+    - Reports | Reports
+    `,
+  }}
+>
+  Why: interactive menus should use `navigator` to maintain correct semantics.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Inconsistent closings",
+    code: `
+drawer ConfirmDrawer:
+  row-end:
+    @ghost[Cancel](-1)
+    @[Save](close)
+    `,
+  }}
+  do={{
+    title: "Consistent pattern",
+    code: `
+drawer ConfirmDrawer:
+  row-end:
+    @ghost[Cancel](close)
+    @[Save](saveDrawer)
+    `,
+  }}
+>
+  Why: maintaining a single pattern avoids confusion about the closing behavior.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Modal`](./modal): an overlay variation for quick confirmations.
+- [`Navigator`](./navigator): builds menus and tabs for side navigation.
+- [`Drawer Detail`](./drawer-detail): a guide with a complete recipe for details in the drawer.
+- [`Button`](./button): the main trigger for opening drawers.
+
+### Recommended compositions
+- **Drawer + Button** → on-demand panel triggered while maintaining context.
+- **Drawer + List** → displays summaries while the main screen remains visible.
+- **Drawer + Modal** → combine when you need to confirm actions initiated in the drawer.
+
+<DocsCodePreview title="Drawer + modal flow">
+```dsl
+drawer BillingDrawer:
+  card:
+    ## Update plan
+    > Choose the desired plan and confirm the change.
+    row-end:
+      @ghost[Cancel](close)
+      @[Next](ConfirmBilling)
+
+modal ConfirmBilling:
+  card:
+    # Confirm update
+    > The change takes effect immediately.
+    row-end:
+      @ghost[Back](close)
+      @success[Confirm](applyBilling)
+```
+</DocsCodePreview>
+Why: starts adjustments in the drawer and confirms in a separate modal to reinforce the decision.
+

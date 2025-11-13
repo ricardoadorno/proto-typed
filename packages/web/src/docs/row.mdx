@@ -1,0 +1,162 @@
+# Row
+Rows align elements horizontally, controlling distribution and spacing between actions, titles, and metrics.
+
+## When to use
+- Display buttons side by side with uniform spacing.
+- Create headers with a title on the left and an action on the right.
+- Center messages or empty states horizontally.
+- Group confirmation actions in the footer of cards and modals.
+
+## Basic example
+<DocsCodePreview title="Card footer with aligned actions">
+```dsl
+screen Default:
+  container:
+    card:
+      ## Order #3021
+      > Update the status or cancel the operation.
+      row-end:
+        @ghost[Cancel](-1)
+        @[Update order](UpdateOrder)
+```
+</DocsCodePreview>
+Why: concentrates the actions related to the block in the same horizontal band.
+
+## Variants
+<DocsCodePreview title="Default row">
+```dsl
+screen Default:
+  container:
+    row:
+      @[Export CSV](ExportCSV)
+      @[Share report](ShareReport)
+```
+</DocsCodePreview>
+When to use: align actions at the beginning of the container with consistent spacing.
+Why: ensures uniform distance between adjacent buttons.
+
+<DocsCodePreview title="Row-between for title + action">
+```dsl
+screen Default:
+  container:
+    row-between:
+      stack-tight:
+        ## Pro Plan
+        >>> Renewal on 09/30
+      @[Change plan](ChangePlan)
+```
+</DocsCodePreview>
+When to use: distribute elements at the extremes while maintaining visual balance.
+Why: separates textual focus from the action without requiring extra columns.
+
+<DocsCodePreview title="Row-center for states">
+```dsl
+screen Default:
+  container:
+    row-center:
+      @outline-large[i-RefreshCcw Try again](Retry)
+```
+</DocsCodePreview>
+When to use: center actions in empty states or temporary messages.
+Why: calls attention to the recovery action on screens without content.
+
+## Composition (using with others)
+- **Row + Stack** — combines vertical/horizontal texts and actions in the same section.
+- **Row + Card** — positions footers with consistent buttons.
+- **Row + Modal** — aligns final confirmation or cancellation actions.
+
+<DocsCodePreview title="Header with row-between and internal stack">
+```dsl
+screen Subscription:
+  container:
+    row-between:
+      stack-tight:
+        # Current subscription
+        >> Adjust billing as needed.
+      @[Change plan](ChangePlan)
+```
+</DocsCodePreview>
+Why: delivers textual context and action at the same hierarchical level.
+
+## Slots & Props
+| Name | Type | Default | Description | Required |
+| --- | --- | --- | --- | --- |
+| `row` | default alignment | `row` | Aligns items horizontally with uniform spacing. | No |
+| `row-start`, `row-center`, `row-between`, `row-end` | variations | — | Control initial, central, distributed, or right alignment. | No |
+| `internal content` | DSL blocks | — | Buttons, cards, texts, or components positioned on the same line. | Yes |
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Redundant row",
+    code: `
+row-between:
+  stack:
+    ## Pro Plan
+    >>> Renewal on 09/30
+  row:
+    @[Change plan](ChangePlan)
+    `,
+  }}
+  do={{
+    title: "Direct distribution",
+    code: `
+row-between:
+  stack-tight:
+    ## Pro Plan
+    >>> Renewal on 09/30
+  @[Change plan](ChangePlan)
+    `,
+  }}
+>
+  Why: avoiding nested rows keeps the layout predictable and simple to maintain.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Stacked buttons without alignment",
+    code: `
+card:
+  ## Settings
+  @[Cancel](close)
+  @[Save](saveSettings)
+    `,
+  }}
+  do={{
+    title: "Aligned actions",
+    code: `
+card:
+  ## Settings
+  row-end:
+    @ghost[Cancel](close)
+    @[Save](saveSettings)
+    `,
+  }}
+>
+  Why: rows ensure consistent spacing and a clear hierarchy between actions.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Stack`](./stack): organizes vertical content before distributing it in a row.
+- [`Card`](./card): uses rows in footers and headers.
+- [`Modal`](./modal): default alignment for confirmation buttons.
+- [`Button`](./button): the most common element within rows.
+
+### Recommended compositions
+- **Row + Card** → footer with grouped actions.
+- **Row-between + Stack** → headers with context and CTA.
+- **Row-end + Modal** → confirmations with a focus on the main action.
+
+<DocsCodePreview title="Modal with row-end">
+```dsl
+modal ConfirmAction:
+  card:
+    ## Approve budget?
+    > This approval notifies the entire team.
+    row-end:
+      @ghost[Cancel](close)
+      @success[Approve](approveBudget)
+```
+</DocsCodePreview>
+Why: row-end highlights the main action without losing the cancellation option.

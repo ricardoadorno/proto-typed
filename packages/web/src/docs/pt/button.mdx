@@ -1,0 +1,170 @@
+# Button
+Botões disparam ações imediatas e conduzem pessoas pelos fluxos principais do Proto-Typed.
+
+## Quando usar
+- Destacar a ação mais importante da tela ou do card.
+- Guiar para telas subsequentes, modais ou drawers com contexto claro.
+- Confirmar envios e salvar formulários sem ambiguidade.
+- Oferecer caminhos de retorno com variantes mais leves (ex.: `@ghost`).
+
+## Exemplo básico
+<DocsCodePreview title="Ação principal em tela de tarefas">
+```dsl
+screen Tasks:
+  container:
+    # Minhas tarefas
+    > Priorize as ações do dia.
+    row-end:
+      @[Criar tarefa](TaskForm)
+```
+</DocsCodePreview>
+Por quê: apresenta CTA único alinhado ao objetivo da tela.
+
+## Variantes
+<DocsCodePreview title="Variante primária para CTA principal">
+```dsl
+screen Default:
+  container:
+    row:
+      @[Publicar relatório](PublishReport)
+```
+</DocsCodePreview>
+Quando usar: priorize a ação que move o fluxo adiante.
+Por quê: destaca o comando principal com contraste máximo.
+
+<DocsCodePreview title="Variante secundária de apoio">
+```dsl
+screen Default:
+  container:
+    row:
+      @secondary-small[Ver histórico](History)
+```
+</DocsCodePreview>
+Quando usar: ofereça opção complementar sem competir com o CTA principal.
+Por quê: mantém a hierarquia visual ao apresentar caminhos alternativos.
+
+<DocsCodePreview title="Variante destrutiva para ações críticas">
+```dsl
+screen Default:
+  container:
+    row-end:
+      @destructive[Excluir conta](ConfirmDelete)
+```
+</DocsCodePreview>
+Quando usar: sinalize riscos e peça confirmação antes de executar.
+Por quê: associa o estilo destrutivo a ações de alto impacto e reduz erros.
+
+## Composição (usando com outros)
+- **Card + Button** — encapsula contexto e mantém CTA visível.
+- **Row-end + Button** — alinha múltiplas ações respeitando a hierarquia.
+- **Modal + Button** — confirma decisões sensíveis antes de concluir tarefas.
+
+<DocsCodePreview title="Card com botões alinhados">
+```dsl
+screen Default:
+  container:
+    card:
+      ## Plano mensal
+      > Controle de cobranças recorrentes.
+      row-end:
+        @ghost[Cancelar](-1)
+        @[Atualizar plano](UpdatePlan)
+    ```
+</DocsCodePreview>
+Por quê: combina CTA principal e opção de saída dentro do mesmo bloco.
+
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `variante` | enum (`@primary`, `@secondary`, `@outline`, `@ghost`, `@destructive`, `@success`, `@warning`) | `@primary` | Define hierarquia visual da ação. | Não |
+| `tamanho` | enum (`-small`, `-icon`, `-large`) | — (sem modificador) | Ajusta altura e espaçamento do botão. | Não |
+| `label` | string | — | Texto visível do botão; pode incluir ícone. | Sim |
+| `ícone` | token `i-` | — | Ícone opcional exibido antes do label. | Não |
+| `destino` | slug/rota | — | Tela, modal, drawer, ação (`-1`, `close`, `alert`). | Sim |
+
+## Erros comuns (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Link usado como ação",
+    code: `
+row:
+  > [Enviar convite](ConfirmInvite)
+    `,
+  }}
+  do={{
+    title: "Botão com ação",
+    code: `
+row:
+  @[Enviar convite](ConfirmInvite)
+    `,
+  }}
+>
+  Por quê: botões (`@`) executam ações; links inline (`[label](destino)`) mantêm a navegação dentro do texto.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Exclusão sem destaque",
+    code: `
+row-end:
+  @[Excluir conta](ConfirmDelete)
+    `,
+  }}
+  do={{
+    title: "Exclusão destacada",
+    code: `
+row-end:
+  @destructive[Excluir conta](ConfirmDelete)
+    `,
+  }}
+>
+  Por quê: a variante destrutiva comunica o risco e reduz cliques acidentais.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Label pouco claro",
+    code: `
+row:
+  @[Clique aqui](DownloadReport)
+    `,
+  }}
+  do={{
+    title: "Label orientado a ação",
+    code: `
+row:
+  @[Baixar relatório](DownloadReport)
+    `,
+  }}
+>
+  Por quê: labels específicos ajudam a decisão rápida e evitam dúvidas.
+</DoDont>
+
+## Referências cruzadas
+
+### Relacionados
+- [`Link`](./link): navegação sem executar lógica de negócio.
+- [`Row`](./row): organiza botões lado a lado com alinhamentos.
+- [`Modal`](./modal): confirma decisões sensíveis com mensagens adicionais.
+- [`Navigator`](./navigator): estrutura caminhos alternativos por abas ou menus.
+
+### Composições recomendadas
+- **Button + Row-end** → destaca CTA principal com ações de suporte.
+- **Button + Modal** → envolve confirmações antes de alterações permanentes.
+- **Button + Navigator** → conecta telas relacionadas em fluxos guiados.
+
+<DocsCodePreview title="Button com modal de confirmação">
+```dsl
+screen Default:
+  container:
+    row-end:
+      @destructive[Excluir conta](ConfirmDelete)
+
+modal ConfirmDelete:
+  card:
+    # Confirmar exclusão
+    > Essa ação não pode ser desfeita.
+    row-end:
+      @ghost[Cancelar](close)
+      @destructive[Excluir agora](deleteTenant)
+```
+</DocsCodePreview>
+Por quê: combina CTA crítico com confirmação explícita para evitar erros.

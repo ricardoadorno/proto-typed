@@ -1,0 +1,86 @@
+# Dashboard
+## Prerequisites
+- Know `container`, `grid`, and `card` to structure content.
+- Have basic components like `MetricCard` or `TaskRow` defined.
+- Understand `drawer` and `modal` triggers for filters and data entry.
+
+## Step-by-step
+1. Define the screen header with a title and actions for updating or filtering.
+2. Structure the main area with `container-wide` and `grid-3` for critical metrics.
+3. Add auxiliary sections in `grid-2` or `container-narrow` for lists and tasks.
+4. Create auxiliary overlays (`drawer` for filters, `modal` for quick creation) and link them to the FAB.
+
+<DocsCodePreview title="Complete dashboard structure">
+```dsl
+component MetricCard:
+  card:
+    >>> %label
+    # %value
+    >> %trend
+
+screen Dashboard:
+  header:
+    # Operations Panel
+    row-end:
+      @ghost[i-RefreshCcw Refresh](refresh)
+      @ghost[i-Filter Filters](FilterDrawer)
+
+  container-wide:
+    grid-3:
+      $MetricCard:
+        - MRR Revenue | $92K | +8%
+      $MetricCard:
+        - Active users | 12,304 | +12%
+      $MetricCard:
+        - Churn | 3.2% | -0.6%
+
+    grid-2:
+      card:
+        ## Pipeline
+        
+          - Discovery | 12 deals
+          - Negotiation | 5 deals
+          - Closing | 3 deals
+      card:
+        ## Latest updates
+        
+          - Deploy 1.2 released
+          - Sprint 34 finished
+          - Critical bug resolved
+
+  fab:
+    - i-Plus | NewMetric
+
+drawer FilterDrawer:
+  container:
+    # Panel filters
+    ___[Interval][7 days | 14 days | 30 days]
+    ___[Team][All | Product | Engineering | Support]
+    row-end:
+      @ghost[Cancel](close)
+      @primary[Apply](applyFilters)
+
+modal NewMetric:
+  card:
+    # Register manual metric
+    ___[Title][Metric name]
+    ___number[Value][0]
+    row-end:
+      @ghost[Cancel](close)
+      @[Save](saveMetric)
+```
+</DocsCodePreview>
+Why: combines header, metrics, support lists, and overlays for a complete panel.
+
+## Quick debugging
+- Misaligned metrics → check if all cards are within the same `grid-*`.
+- Filters not closing → confirm that the drawer uses `@ghost[Cancel](close)` or an equivalent action.
+- FAB not opening modal → validate the `NewMetric` slug at both points.
+- Lists with inline actions → move buttons to `row-end` and keep `list` with only text.
+- Cards too wide → adjust the container to `container-wide` or reduce to `grid-2`.
+
+## Next steps
+- Consult [`Grid`](./grid) to adjust responsive layouts.
+- Review [`Drawer`](./drawer) and [`Modal`](./modal) when improving overlays.
+- Explore [`Component Composition`](./component-composition) to modularize sections.
+- Study [`Themes`](./themes) if you need to adapt the palette to the branding.

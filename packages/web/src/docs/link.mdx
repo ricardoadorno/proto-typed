@@ -1,0 +1,122 @@
+# Link
+Links (`[Text](Destination)`) create inline navigation to screens, modals, or external URLs without breaking the reading flow.
+
+## When to use
+- Reference secondary screens or resources within paragraphs and lists.
+- Direct to articles, emails, or external phones outside the Proto-Typed environment.
+- Offer alternative paths while the main CTA remains in buttons.
+- Connect related sections when a `navigator` is not necessary.
+
+## Basic example
+<DocsCodePreview title="Links in support text">
+```dsl
+screen HelpCenter:
+  container:
+    # Help center
+    > [official documentation](https://proto-typed.dev/docs) for a complete overview.
+
+    card:
+      ## Need to reset your password?
+      >> Access the [recovery screen](RecoverPassword) and follow the steps.
+```
+</DocsCodePreview>
+Why: maintains a fluid reading and offers contextual navigation.
+
+## Variants
+<DocsCodePreview title="Internal link to a screen">
+```dsl
+screen Default:
+  container:
+    > [View details](DetailScreen)
+```
+</DocsCodePreview>
+When to use: point to existing screens in the main flow.
+Why: keeps navigation cohesive without relying on buttons.
+
+<DocsCodePreview title="External link">
+```dsl
+screen Default:
+  container:
+    > [Open documentation](https://proto-typed.dev/docs)
+```
+</DocsCodePreview>
+When to use: reference resources hosted outside the product.
+Why: directs to documentation or external sites while preserving context.
+
+
+## Composition (using with others)
+- **Link + Card** — offers additional contexts within informational blocks.
+- **Link + List** — transforms items into shortcuts without the need for buttons.
+- **Link + Drawer** — groups links in side reference panels.
+
+<DocsCodePreview title="Drawer with quick links">
+```dsl
+drawer QuickLinks:
+  container:
+    # Quick links
+    stack-tight:
+      > [Dashboard](Dashboard)
+      > [Team](Team)
+      > [Settings](Settings)
+
+screen HeaderDemo:
+  header:
+    # Proto-Typed
+    row-end:
+      > [Open quick links](QuickLinks)
+```
+</DocsCodePreview>
+Why: groups shortcuts without overloading the header with buttons.
+
+## Slots & Props
+| Name | Type | Default | Description | Required |
+| --- | --- | --- | --- | --- |
+| `label` | string | — | Text displayed between `[ ]`. | Yes |
+| `destination` | slug or URL | — | Screen, modal, drawer, or external address. | Yes |
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Button instead of link",
+    code: `
+@[View details](DetailScreen)
+    `,
+  }}
+  do={{
+    title: "Contextual link",
+    code: `
+> [View details](DetailScreen)
+    `,
+  }}
+>
+  Why: buttons (`@`) execute actions; inline links keep navigation contextual.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Link without destination",
+    code: `
+> [Read more]()
+    `,
+  }}
+  do={{
+    title: "Declared destination",
+    code: `
+> [Read more](Guides)
+    `,
+  }}
+>
+  Why: each link needs to point to an existing destination to avoid navigation errors.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Button`](./button): actions that execute logic or open flows.
+- [`Navigator`](./navigator): structured navigation by tabs or menus.
+- [`Drawer`](./drawer): groups side reference links.
+- [`Screen`](./screen): the most common destination for internal links.
+
+### Recommended compositions
+- **Link + Card** → informational blocks with additional references.
+- **Link + List** → collections of shortcuts without using buttons.
+- **Link + Drawer** → side catalogs of documentation or support.

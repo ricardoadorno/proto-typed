@@ -1,13 +1,13 @@
 /** @type {import('next').NextConfig} */
-import createMDX from "@next/mdx";
+import createMDX from '@next/mdx'
 
-const repo = "proto-typed";
-const isProd = process.env.NODE_ENV === "production";
-const basePath = isProd ? `/${repo}` : "";
-const assetPrefix = basePath ? `${basePath}/` : undefined;
+const repo = 'proto-typed'
+const isProd = process.env.NODE_ENV === 'production'
+const basePath = isProd ? `/${repo}` : ''
+const assetPrefix = basePath ? `${basePath}/` : undefined
 
 const nextConfig = {
-  pageExtensions: ["ts", "tsx", "mdx"],
+  pageExtensions: ['ts', 'tsx', 'mdx'],
   output: 'export',
   basePath,
   assetPrefix,
@@ -23,6 +23,6 @@ const nextConfig = {
 const withMDX = createMDX({
   extension: /\.(md|mdx)$/,
 })
- 
+
 // Merge MDX config with Next.js config
 export default withMDX(nextConfig)

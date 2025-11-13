@@ -1,0 +1,5 @@
+screen InvalidScreen
+  # Missing colon here
+  container:
+    invalid-element:
+      > This should cause errors

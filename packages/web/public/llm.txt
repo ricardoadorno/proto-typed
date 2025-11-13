@@ -82,22 +82,22 @@ Padrão: `@<variante>?-<tamanho>?\[texto\]\(ação\)`
 ```dsl
 @[Texto](destino)                    → Botão primário padrão
 @secondary[Texto](destino)           → Botão secundário
-@destructive-lg[Excluir](confirma)   → Botão destrutivo grande
+@destructive-large[Excluir](confirma) → Botão destrutivo grande
 @ghost[Fechar](close)                → Botão ghost
 ```
 
 **Variantes**: `primary`, `secondary`, `outline`, `ghost`, `destructive`, `link`, `success`, `warning`  
-**Tamanhos**: `xs`, `sm`, `md` (padrão), `lg`
+**Tamanhos**: `small`, `icon`, `large` (padrão sem modificador)
 
 ### 5. Formulários usam underscores
 
-Padrão: `___<tipo>?: Label{placeholder}`
+Padrão: `___[<tipo>?: Label][placeholder[opções]] | atributos`
 
 ```dsl
-___: Email{Digite seu email}
-___email: Email{seu@email.com}
-___password: Senha{••••••}
-___: País{Selecione}[Brasil | Portugal | Angola]
+___[Email][Digite seu email]
+___email[Email][seu@email.com]
+___password[Senha][••••••]
+___[País][Selecione[Brasil | Portugal | Angola]]
 
 [X] Checkbox marcado
 [ ] Checkbox desmarcado
@@ -109,23 +109,25 @@ ___: País{Selecione}[Brasil | Portugal | Angola]
 
 Cada layout tem comportamento fixo — **sem modificadores inline**.
 
-```dsl
-container:          → Container padrão centralizado
-container-narrow:   → Container estreito
-stack:              → Pilha vertical (gap-4)
-stack-tight:        → Pilha vertical compacta (gap-2)
-row-center:         → Linha horizontal centralizada
-row-between:        → Linha com space-between
-row-end:            → Linha alinhada à direita
-grid-2:             → Grid 2 colunas
-grid-3:             → Grid 3 colunas
-card:               → Card com padding e borda
-header:             → Cabeçalho de página
-list:               → Container de lista
-navigator:          → Navegação inferior
-fab:                → Botão de ação flutuante
----                 → Separador
-```
+| Token | Grupo | Uso típico |
+| --- | --- | --- |
+| `container` | Containers | Largura equilibrada para páginas gerais |
+| `container-narrow` | Containers | Colunas de leitura ou formulários longos |
+| `container-wide` | Containers | Dashboards e coleções amplas |
+| `container-full` | Containers | Layout fluido ocupando 100% |
+| `stack` | Stack | Sequência vertical com espaçamento médio |
+| `stack-tight` | Stack | Listas curtas com alta densidade |
+| `stack-loose` | Stack | Seções com respiro generoso |
+| `stack-none` (`stack-flush`) | Stack | Itens empilhados sem gap |
+| `row` | Row | Agrupa itens na horizontal com gap padrão |
+| `row-start` / `row-center` / `row-between` / `row-end` | Row | Controlam alinhamento inicial, central, distribuído e final |
+| `grid` / `grid-2` / `grid-3` / `grid-4` | Grid | Controlam quantidade de colunas responsivas |
+| `grid-responsive` (`grid-auto`) | Grid | Auto-fit com largura mínima de 16rem |
+| `layer-static` / `layer-relative` / `layer-absolute` / `layer-fixed` / `layer-sticky` / `layer-overlay` | Layer / Position | Controlam posicionamento e sobreposições |
+| `scroll-auto` / `scroll-x` / `scroll-y` / `scroll-hidden` | Overflow | Definem o comportamento de rolagem |
+| `card` / `card-compact` / `card-feature` | Cards | Cards padrão, compacto ou destaque |
+| `header` / `sidebar` | Special | Cabeçalhos e navegação lateral fixos |
+| `list` / `navigator` / `fab` | Estruturais | Listas de dados, navegação inferior e botão flutuante |
 
 ### 7. Navegação entre views
 
@@ -135,7 +137,7 @@ fab:                → Botão de ação flutuante
 @[Abrir drawer](NomeDrawer)    → Abre drawer lateral
 @[Voltar](-1)                  → Volta no histórico
 @[Fechar](close)               → Fecha modal/drawer atual
-#[Link externo](https://...)   → URL externa
+> [Link externo](https://...)   → URL externa
 ```
 
 ### 8. Componentes reutilizáveis
@@ -263,8 +265,8 @@ screen Login:
       # Bem-vindo de volta
       > Entre com suas credenciais
 
-      ___email: Email{seu@email.com}
-      ___password: Senha{••••••}
+      ___email[Email][seu@email.com]
+      ___password[Senha][••••••]
 
       row-end:
         @[Entrar](Dashboard)
@@ -347,7 +349,7 @@ Sempre mencione que o protótipo pode ser testado online: https://ricardoadorno.
 
 1. **Indentação define hierarquia** — esqueça chaves
 2. **Layouts sempre vêm primeiro** — `container:`, `card:`, `stack:`
-3. **Prefixos semânticos** — `#` título, `>` parágrafo, `@` botão, `___` input
+3. **Prefixos semânticos** — `#` título, `>` parágrafo, `@` botão, `___[...]` input]
 4. **Sem atributos arbitrários** — use tokens canônicos
 5. **Props com pipe** — `nome | email | telefone`
 6. **Navegação declarativa** — `@[Texto](Destino)`
@@ -361,3 +363,4 @@ Sempre mencione que o protótipo pode ser testado online: https://ricardoadorno.
 
 **Playground**: https://ricardoadorno.github.io/proto-typed/  
 **Docs completas**: https://ricardoadorno.github.io/proto-typed/docs
+

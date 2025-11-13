@@ -1,0 +1,161 @@
+# Input
+Input fields collect structured data, supporting texts, options, numbers, and confirmations within Proto-Typed.
+
+## When to use
+- Capture essential information in forms, checklists, and settings.
+- Validate specific formats like email, password, or date with declarative syntax.
+- Allow long descriptions without leaving the main screen (`___textarea[`).]
+- Confirm consents or unique choices with checkboxes and radios.
+
+## Basic example
+<DocsCodePreview title="Form with various fields">
+```dsl
+screen Signup:
+  container-narrow:
+    card:
+      ## Create account
+      stack-loose:
+        ___[Full name][Your name] | required
+        ___email[E-mail][user@company.com] | required
+        ___password[Password][Minimum 8 characters] | required minlength="8"
+        ___date[Subscription start][Select a date]
+        ___textarea[Goals][Tell us how you plan to use the product]
+        [X] I accept the terms and policies
+      row-end:
+        @ghost[Cancel](-1)
+        @[Create account](submitSignup)
+```
+</DocsCodePreview>
+Why: gathers different types of input in a compact and complete flow.
+
+## Variants
+<DocsCodePreview title="Select with declared options">
+```dsl
+screen Default:
+  container:
+    ___[Status][Under review | Approved | Rejected]
+```
+</DocsCodePreview>
+When to use: limit the choice to a predetermined set.
+Why: avoids invalid entries by restricting available alternatives.
+
+<DocsCodePreview title="Checkbox for confirmation">
+```dsl
+screen Default:
+  container:
+    [X] Receive news by email
+```
+</DocsCodePreview>
+When to use: capture consents that can be checked or unchecked.
+Why: reflects binary decisions while maintaining manual user control.
+
+<DocsCodePreview title="Grouped radios">
+```dsl
+screen Default:
+  container:
+    (X) Monthly billing
+    ( ) Annual billing
+```
+</DocsCodePreview>
+When to use: require an exclusive selection between mutually exclusive options.
+Why: ensures that only one alternative is chosen at a time.
+
+## Composition (using with others)
+- **Input + Card** — groups the fields in a block with a title and actions.
+- **Input + Stack** — ensures consistent vertical spacing between fields.
+- **Input + Row-end** — aligns submission and cancellation buttons.
+
+<DocsCodePreview title="Modular form with stack">
+```dsl
+component BillingForm:
+  card:
+    ## Configure plan
+    stack-loose:
+      ___[Plan][Starter | Pro | Enterprise]
+      ___number[Seats][5] | min="1"
+      ___textarea[Notes][Additional details]
+    row-end:
+      @ghost[Cancel](-1)
+      @primary[Save changes](savePlan)
+      
+screen AccountSettings:
+  container-narrow:
+    $BillingForm
+```
+</DocsCodePreview>
+Why: reuses the form on different screens while maintaining a standardized layout.
+
+## Slots & Props
+| Name | Type | Default | Description | Required |
+| --- | --- | --- | --- | --- |
+| `type` | token (`___`, `___email`, `___password`, `___textarea`, etc.) | `___` | Determines the field's validation and presentation. | Yes |
+| `label` | string | — | Text displayed before the input. | Yes |
+| `placeholder` | string inside `[]` | — | Example or contextual instruction for the field. | Yes |
+| `options` | list `option A | option B` nested inside the placeholder block | — | Defines select items. | No |
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Empty placeholder",
+    code: `
+___email[E-mail]
+    `,
+  }}
+  do={{
+    title: "Clear placeholder",
+    code: `
+___email[E-mail][name@company.com]
+    `,
+  }}
+>
+  Why: placeholders guide typing and reduce submission errors.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Interrupted radios",
+    code: `
+(X) Monthly
+card:
+  > Discount available
+( ) Annual
+    `,
+  }}
+  do={{
+    title: "Grouped selection",
+    code: `
+stack-tight:
+  (X) Monthly
+  ( ) Annual
+    `,
+  }}
+>
+  Why: radios need to be together to communicate that they are part of the same group.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Stack`](./stack): controls spacing between form fields.
+- [`Card`](./card): wraps forms with a title and actions.
+- [`Button`](./button): triggers data submission or cancellation.
+- [`Login Screen`](./login-screen): a guide with a complete authentication flow.
+
+### Recommended compositions
+- **Input + Stack + Row-end** → linear forms with clear actions.
+- **Input + Card + Modal** → capture quick information without leaving the screen.
+- **Input + Component Definition** → reuse forms in different contexts.
+
+<DocsCodePreview title="Form in a modal">
+```dsl
+modal InviteModal:
+  card:
+    ## Invite person
+    stack-tight:
+      ___[Full name][Enter the name]
+      ___email[E-mail][name@company.com]
+    row-end:
+      @ghost[Cancel](close)
+      @success[Send invite](sendInvite)
+```
+</DocsCodePreview>
+Why: allows collecting essential data without leaving the main screen.

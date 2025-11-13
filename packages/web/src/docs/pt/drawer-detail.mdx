@@ -1,0 +1,70 @@
+# Drawer Detail
+## Pré-requisitos
+- Ter domínio de `drawer` para abertura e fechamento via ações.
+- Definir componentes de linha (`component CustomerRow`) com `%props`.
+- Conhecer `list $Componente:` para alimentar o drawer com dados dinâmicos.
+
+## Passo a passo
+1. Crie um componente de linha (`CustomerRow`) com CTA que abre o drawer.
+2. Declare o `drawer CustomerDetail` recebendo props como nome, empresa e último contato.
+3. Alimente a lista principal com `list $CustomerRow:` usando valores separados por `|`.
+4. Adicione ações internas (follow-up, fechar) dentro do drawer para manter o fluxo completo.
+
+<DocsCodePreview title="Fluxo completo de lista + drawer de detalhes">
+```dsl
+component InfoRow:
+  row-between:
+    >> %label
+    >>> %value
+
+drawer CustomerDetail:
+  container:
+    # %name
+    >> %company
+    >>> Último contato: %lastContact
+
+    list $InfoRow:
+      - Status | Em negociação
+      - Valor estimado | R$ 180K
+      - Próximo passo | Apresentar proposta final
+
+    card:
+      ## Observações
+      > Atualize o CRM após a reunião.
+
+    row-end:
+      @ghost[Fechar](close)
+      @success[Marcar follow-up](scheduleFollowUp)
+
+component CustomerRow:
+  card-compact:
+    row-between:
+      stack-tight:
+        ## %name
+        >>> %company
+        >>> Último contato: %lastContact
+      @ghost[i-ChevronRight Ver detalhes](CustomerDetail)
+
+screen Accounts:
+  container:
+    # Contas estratégicas
+    list $CustomerRow:
+      - Ana Souza | Proto Labs | Ontem
+      - Bruno Lima | NextWave | 3 dias atrás
+      - Carla Dias | FutureSoft | 7 dias atrás
+```
+</DocsCodePreview>
+Por quê: mantém a lista principal visível enquanto o drawer exibe detalhes e ações contextuais.
+
+## Depuração rápida
+- Drawer não abre → verifique se o CTA aponta para `CustomerDetail` exatamente.
+- Props não aparecem → valide a ordem dos valores nas linhas da lista.
+- Ações internas não fecham → use `@ghost[Fechar](close)` ou `@ghost[Cancelar](close)`.
+- Overflow de conteúdo → aplique `container` ou `stack` dentro do drawer para controlar espaçamento.
+- Lista com ações inline → mova botões para dentro do componente ou para `row-end`.
+
+## Próximos passos
+- Reforce fundamentos em [`Drawer`](./drawer) e [`List`](./list).
+- Explore [`Component List`](./component-list) para catálogos maiores.
+- Estude [`Modal`](./modal) caso precise confirmar ações iniciadas no drawer.
+- Avalie [`Component Composition`](./component-composition) para dividir o drawer em subcomponentes.

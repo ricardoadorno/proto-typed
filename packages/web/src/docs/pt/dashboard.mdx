@@ -1,0 +1,86 @@
+# Dashboard
+## Pré-requisitos
+- Conhecer `container`, `grid` e `card` para estruturar conteúdo.
+- Ter componentes básicos como `MetricCard` ou `TaskRow` definidos.
+- Entender acionadores de `drawer` e `modal` para filtros e entrada de dados.
+
+## Passo a passo
+1. Defina o cabeçalho da tela com título e ações de atualização ou filtro.
+2. Estruture a área principal com `container-wide` e `grid-3` para métricas críticas.
+3. Adicione seções auxiliares em `grid-2` ou `container-narrow` para listas e tarefas.
+4. Crie overlays auxiliares (`drawer` para filtros, `modal` para criação rápida) e vincule-os ao FAB.
+
+<DocsCodePreview title="Estrutura completa do dashboard">
+```dsl
+component MetricCard:
+  card:
+    >>> %label
+    # %value
+    >> %trend
+
+screen Dashboard:
+  header:
+    # Painel de Operações
+    row-end:
+      @ghost[i-RefreshCcw Atualizar](refresh)
+      @ghost[i-Filter Filtros](FilterDrawer)
+
+  container-wide:
+    grid-3:
+      $MetricCard:
+        - Receita MRR | R$ 92K | +8%
+      $MetricCard:
+        - Usuários ativos | 12.304 | +12%
+      $MetricCard:
+        - Churn | 3.2% | -0.6%
+
+    grid-2:
+      card:
+        ## Pipeline
+        
+          - Descoberta | 12 deals
+          - Negociação | 5 deals
+          - Fechamento | 3 deals
+      card:
+        ## Últimas atualizações
+        
+          - Deploy 1.2 liberado
+          - Sprint 34 finalizada
+          - Bug crítico resolvido
+
+  fab:
+    - i-Plus | NewMetric
+
+drawer FilterDrawer:
+  container:
+    # Filtros do painel
+    ___[Intervalo][7 dias | 14 dias | 30 dias]
+    ___[Equipe][Todos | Produto | Engenharia | Suporte]
+    row-end:
+      @ghost[Cancelar](close)
+      @primary[Aplicar](applyFilters)
+
+modal NewMetric:
+  card:
+    # Registrar métrica manual
+    ___[Título][Nome da métrica]
+    ___number[Valor][0]
+    row-end:
+      @ghost[Cancelar](close)
+      @[Salvar](saveMetric)
+```
+</DocsCodePreview>
+Por quê: combina header, métricas, listas de apoio e overlays para um painel completo.
+
+## Depuração rápida
+- Métricas desalinhadas → verifique se todos os cards estão dentro do mesmo `grid-*`.
+- Filtros não fecham → confirme que o drawer usa `@ghost[Cancelar](close)` ou ação equivalente.
+- FAB não abre modal → valide o slug `NewMetric` em ambos os pontos.
+- Listas com ações inline → mova botões para `row-end` e mantenha `list` apenas com texto.
+- Cards muito largos → ajuste o container para `container-wide` ou reduza para `grid-2`.
+
+## Próximos passos
+- Consulte [`Grid`](./grid) para ajustar layouts responsivos.
+- Revise [`Drawer`](./drawer) e [`Modal`](./modal) ao aprimorar overlays.
+- Explore [`Component Composition`](./component-composition) para modularizar seções.
+- Estude [`Themes`](./themes) caso precise adequar paleta ao branding.

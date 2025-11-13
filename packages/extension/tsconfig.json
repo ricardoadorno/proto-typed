@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "Node16",
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM"],
+    "outDir": "dist",
+    "rootDir": "src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "node16",
+    "types": ["vscode", "node", "mocha"]
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", ".vscode-test"]
+}

@@ -1,0 +1,144 @@
+# Screen
+## Why it matters
+`screen Name:` is the navigable unit of the DSL. Each screen organizes content, connects flows, and serves as a destination for buttons, links, or navigators. Structuring screens correctly ensures predictable navigation and simple maintenance.
+
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Screen with main container">
+```dsl
+screen Home:
+  container:
+    # Welcome
+    > Choose an action to start.
+```
+</DocsCodePreview>
+Why: defines a screen with a centralized layout and basic textual hierarchy.
+
+## Usage patterns
+<DocsCodePreview title="Screen with complementary flows">
+```dsl
+screen Tasks:
+  container:
+    # Tasks
+    
+      - Review backlog
+      - Prepare demo
+    row-end:
+      @[Create task](TaskForm)
+
+modal TaskForm:
+  card:
+    ## New task
+    ___[Title][Task name]
+    row-end:
+      @ghost[Cancel](close)
+      @[Save](saveTask)
+```
+</DocsCodePreview>
+When to use: trigger modals from the main screen without losing context.
+Why: keeps the focus on the current task while resolving complementary actions.
+
+<DocsCodePreview title="Screen with multiple containers">
+```dsl
+screen Dashboard:
+  container-wide:
+    # Indicators
+    grid-3:
+      card:
+        ## Leads
+        # 1,240
+      card:
+        ## Conversions
+        # 134
+      card:
+        ## Satisfaction
+        # 92%
+
+  container-narrow:
+    card:
+      ## Next actions
+      
+        - Review backlog
+        - Schedule retrospective
+```
+</DocsCodePreview>
+When to use: combine different columns on the same screen while maintaining consistent alignment.
+Why: distributes content into clear zones (wide view vs. complementary actions).
+
+<DocsCodePreview title="Screen with persistent navigator">
+```dsl
+screen Settings:
+  container-narrow:
+    # Settings
+    ___email[E-mail][name@company.com]
+    row-end:
+      @ghost[Cancel](-1)
+      @[Save changes](saveSettings)
+
+  navigator:
+    - Home | Home
+    - Dashboard | Dashboard
+    - Settings | Settings
+```
+</DocsCodePreview>
+When to use: replicate the bottom menu on all screens of the group.
+Why: promotes predictable navigation between sibling sections.
+
+## Common errors (Do/Don’t)
+**Don't — declare screens with the same name**
+```dsl
+screen Dashboard:
+  container:
+    # Metrics
+
+screen Dashboard:
+  container:
+    # Settings
+```
+
+Do — choose unique names
+<DocsCodePreview title="✅ Correct — Distinct names">
+```dsl
+screen Dashboard:
+  container:
+    # Metrics
+
+screen Settings:
+  container:
+    # Settings
+```
+</DocsCodePreview>
+Why: duplicate slugs break navigation and confuse triggers.
+<DoDont
+  dont={{
+    title: "Loose content",
+    code: `
+screen Home:
+  # Welcome
+  > Choose an option.
+    `,
+  }}
+  do={{
+    title: "Use of container",
+    code: `
+screen Home:
+  container:
+    # Welcome
+    > Choose an option.
+    `,
+  }}
+>
+  Why: layouts (`container`, `stack`, `card`) control width, spacing, and responsiveness.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Navigator`](./navigator): organizes menus that point to different screens.
+- [`Modal`](./modal): complements screens with confirmations and quick forms.
+- [`Drawer`](./drawer): offers side panels within the same screen.
+- [`Container`](./container): the main layout applied within screens.
+
+### Recommended compositions
+- **Screen + Container** → basis for any navigable content.
+- **Screen + Modal/Drawer** → complementary flows without changing screens.
+- **Screen + Navigator** → persistent navigation between main sections.

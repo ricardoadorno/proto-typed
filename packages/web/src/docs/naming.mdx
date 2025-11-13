@@ -1,0 +1,162 @@
+# Naming and Consistency
+
+## Why it matters
+Consistent names anchor screens, components, and actions. Without a standard, flows break, props become ambiguous, and maintenance increases. A clear convention facilitates reading the DSL and ensures that the team can quickly find each element.
+
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Naming conventions for screens and components">
+```dsl
+screen AccountSettings:
+  container:
+    # Preferences
+
+component AccountCard:
+  card:
+    ## %title
+    > %description
+```
+</DocsCodePreview>
+Why: shows the use of PascalCase for screens and components, facilitating references and reuse.
+
+## Usage patterns
+<DocsCodePreview title="Descriptively named props">
+```dsl
+component BillingSummary:
+  card:
+    ## %planName
+    # %monthlyValue
+    >>> Next billing on %renewalDate
+
+screen Default:
+  container:
+    $BillingSummary:
+      - Pro | $89 | 09/30
+```
+</DocsCodePreview>
+When to use: represent specific domain values without obscure abbreviations.
+Why: explicit names avoid doubts when feeding data into the component.
+
+<DocsCodePreview title="Actions with infinitive verbs">
+```dsl
+screen Default:
+  container:
+    row-end:
+      @ghost[Cancel](close)
+      @[Send invite](SendInvite)
+```
+</DocsCodePreview>
+When to use: clearly instruct what happens when the button is triggered.
+Why: consistent verbs reinforce flow expectations.
+
+<DocsCodePreview title="Lists with semantic components">
+```dsl
+component CustomerRow:
+  row-between:
+    > %customerName
+    >>> %lastContact
+
+list $CustomerRow:
+  - Ana Souza | Yesterday
+  - Bruno Lima | Today
+```
+</DocsCodePreview>
+When to use: name list components with a focus on the represented domain.
+Why: helps to quickly map the structure when navigating the file.
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Abbreviation without context",
+    code: `
+screen Cfg:
+  container:
+    # Config
+    `,
+  }}
+  do={{
+    title: "Explicit name",
+    code: `
+screen Settings:
+  container:
+    # Settings
+    `,
+  }}
+>
+  Why: full names facilitate searching and reduce ambiguities.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Same slug for different screens",
+    code: `
+screen Dashboard:
+  container:
+    # Metrics
+
+screen Dashboard:
+  container:
+    # Settings
+    `,
+  }}
+  do={{
+    title: "Distinct slugs",
+    code: `
+screen Dashboard:
+  container:
+    # Metrics
+
+screen DashboardSettings:
+  container:
+    # Settings
+    `,
+  }}
+>
+  Why: duplicate slugs prevent correct navigation and confuse references.
+</DoDont>
+<DoDont
+  dont={{
+    title: "English and Portuguese together",
+    code: `
+screen Billing:
+  container:
+    @[Gerar invoice](InvoiceModal)
+    `,
+  }}
+  do={{
+    title: "Consistent language",
+    code: `
+screen Faturamento:
+  container:
+    @[Gerar fatura](InvoiceModal)
+    `,
+  }}
+>
+  Why: linguistic consistency strengthens understanding and avoids improvised translations.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Basic Syntax`](./syntax): basis for declaring valid names in the DSL.
+- [`Component Definition`](./component-definition): reuses well-defined component names.
+- [`Component Props`](./component-props): depends on consistent keys to fill in data.
+- [`Flow`](./flow): ensures that links point to correct slugs.
+
+### Recommended compositions
+- **Naming and Consistency + Flow** → connects routes using predictable slugs.
+- **Naming and Consistency + Component Composition** → organizes subcomponents without conflicts.
+- **Naming and Consistency + Error Patterns** → reduces the chances of creating anti-patterns due to confusing names.
+
+<DocsCodePreview title="Cohesively named flow">
+```dsl
+screen AccountOverview:
+  container:
+    # Account overview
+    @[Edit account](AccountEdit)
+
+screen AccountEdit:
+  container:
+    # Edit account
+    @[Back](AccountOverview)
+```
+</DocsCodePreview>
+Why: explicit and related names make the flow easy to follow and document.

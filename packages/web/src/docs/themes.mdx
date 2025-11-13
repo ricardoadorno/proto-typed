@@ -1,0 +1,173 @@
+# Themes
+## Why it matters
+Themes adapt the product to the brand's visual identity, ensuring adequate contrast and a consistent experience across all screens. Adjusting core tokens avoids manual intervention in each component.
+
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Custom theme in the styles block">
+```dsl
+styles:
+  --primary: oklch(0.68 0.15 210);
+  --primary-foreground: oklch(0.98 0 0);
+  --background: oklch(0.14 0.01 240);
+  --foreground: oklch(0.95 0 0);
+
+screen Default:
+  container:
+    # Example using the theme
+```
+</DocsCodePreview>
+Why: defines the main and text colors, the basis for any thematic variation.
+
+## Usage patterns
+<DocsCodePreview title="Brand palette applied to subscription plans">
+```dsl
+styles:
+  --primary: oklch(0.7 0.15 220);
+  --accent: oklch(0.68 0.18 250);
+  --radius: 0.75rem;
+
+screen Pricing:
+  container:
+    # Choose your plan
+    grid-3:
+      card:
+        ## Starter
+        @[Start for free](Signup)
+      card-feature:
+        ## Business
+        @[Subscribe to Business](upgrade)
+      card:
+        ## Enterprise
+        @[Talk to sales](contact)
+```
+</DocsCodePreview>
+When to use: align buttons, cards, and radius with brand guidelines.
+Why: ensures that critical elements follow the approved branding.
+
+<DocsCodePreview title="Dark theme with guaranteed contrast">
+```dsl
+styles:
+  --background: oklch(0.13 0.02 250);
+  --foreground: oklch(0.95 0 0);
+  --card: oklch(0.18 0.03 250);
+  --muted: oklch(0.32 0.04 250);
+
+screen DarkDashboard:
+  container-wide:
+    # Nightly metrics
+    grid-3:
+      card:
+        ## Leads
+        # 1,240
+      card:
+        ## Conversions
+        # 134
+      card:
+        ## Satisfaction
+        # 92%
+```
+</DocsCodePreview>
+When to use: offer dark or high-contrast mode without changing each component.
+Why: improves accessibility and visual fatigue with few changes.
+
+<DocsCodePreview title="Custom tokens combined with components">
+```dsl
+styles:
+  --brand-header: #0b132b;
+  --brand-subtitle: #5bc0be;
+
+component Hero:
+  card:
+    ## %title
+    > %subtitle
+    @[Get started now](%destination)
+
+screen Landing:
+  container:
+    $Hero:
+      - Proto-Typed | Adjust the theme with CSS variables | Signup
+```
+</DocsCodePreview>
+When to use: create specific tokens and reference them within composite components.
+Why: facilitates reuse of the same values in different blocks.
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Local style without a theme",
+    code: `
+card:
+  ## Settings
+  --primary: #2563eb;
+  > Quick adjustments.
+    `,
+  }}
+  do={{
+    title: "Global token applied",
+    code: `
+styles:
+  --primary: #2563eb;
+
+card:
+  ## Settings
+  > Quick adjustments.
+    `,
+  }}
+>
+  Why: global tokens avoid discrepancies between screens.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Low contrast",
+    code: `
+styles:
+  --background: oklch(0.9 0.01 240);
+  --foreground: oklch(0.88 0.01 240);
+    `,
+  }}
+  do={{
+    title: "Strong contrast",
+    code: `
+styles:
+  --background: oklch(0.14 0.01 240);
+  --foreground: oklch(0.95 0 0);
+    `,
+  }}
+>
+  Why: insufficient contrast compromises reading and accessibility.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Styles Block`](./styles-block): where the tokens are declared.
+- [`Button`](./button): responds directly to the color and radius variables.
+- [`Card`](./card): uses background and radius tokens from the theme.
+- [`Dashboard`](./dashboard): demonstrates the application of themes on analytical screens.
+
+### Recommended compositions
+- **Themes + Styles Block** → separates standard tokens and specific variations.
+- **Themes + Component Composition** → ensures consistency in complex components.
+- **Themes + Modal** → controls contrast in overlays.
+
+<DocsCodePreview title="Theme applied along with a composite component">
+```dsl
+styles:
+  --primary: #1f2937;
+  --primary-foreground: #f8fafc;
+
+component HeroBanner:
+  card:
+    ## %title
+    > %subtitle
+    @[Get started now](%action)
+
+screen Home:
+  container:
+    $HeroBanner:
+      - Launch of the new theme
+      - Adjust tokens to align with the brand.
+      - ThemeGuide
+```
+</DocsCodePreview>
+Why: the global theme defines the appearance while the component composes reusable content.

@@ -1,0 +1,146 @@
+# Component Definition
+## Why it matters
+Components defined with `component Name:` concentrate structure, style, and visual behavior in one place. They avoid duplication, facilitate maintenance, and ensure consistency across complex screens.
+
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Basic definition and instance">
+```dsl
+component HeroBanner:
+  card:
+    ## %title
+    > %subtitle
+    @[Learn more](%destination)
+
+screen Home:
+  container:
+    $HeroBanner:
+      - Prototype faster | Build screens in minutes | Guides
+```
+</DocsCodePreview>
+Why: demonstrates the full cycle — declaring the component and instantiating it with data via a list.
+
+## Usage patterns
+<DocsCodePreview title="Components for metric showcases">
+```dsl
+component MetricCard:
+  card:
+    ## %label
+    # %value
+    >>> %trend
+
+screen Dashboard:
+  container-wide:
+    grid-3:
+      $MetricCard:
+        - Leads captured | 1,240 | +8%
+      $MetricCard:
+        - Conversions | 134 | +5%
+      $MetricCard:
+        - Satisfaction | 92% | +3%
+```
+</DocsCodePreview>
+When to use: replicate the same layout with different data in dashboards and reports.
+Why: reduces maintenance by changing only the values, not the markup.
+
+<DocsCodePreview title="Component for list rows">
+```dsl
+component TaskRow:
+  row-between:
+    stack-tight:
+      > %title
+      >>> %due
+    @[Details](%action)
+screen Default:
+  list $TaskRow:
+    - Update roadmap | By 22/09 | show:roadmap
+    - Review backlog | By 24/09 | show:backlog
+```
+</DocsCodePreview>
+When to use: standardize list rows that require multiple fields and actions.
+Why: encapsulates display logic and maintains consistency throughout the list.
+
+<DocsCodePreview title="Component with internal fallback">
+```dsl
+component EmptyState:
+  card:
+    ## %title
+    > %message
+    row-center:
+      @[Create first item](%action)
+
+screen Leads:
+  container:
+    $EmptyState:
+      - No leads yet
+      - Start by registering contacts from the sales team.
+      - LeadForm
+```
+</DocsCodePreview>
+When to use: offer a default empty state for different contexts without rewriting the layout.
+Why: standardizes empty states with a consistent message, action, and visual appearance.
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Instance without definition",
+    code: `
+screen Home:
+  container:
+    $HeroBanner:
+      - Welcome | Explore features | Dashboard
+    `,
+  }}
+  do={{
+    title: "Declaration + usage",
+    code: `
+component HeroBanner:
+  card:
+    ## %title
+    > %subtitle
+
+screen Home:
+  container:
+    $HeroBanner:
+      - Welcome | Explore features
+    `,
+  }}
+>
+  Why: the instance needs to know the structure to interpolate `%props`.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Missing props",
+    code: `
+component PlanCard:
+  card:
+    ## %title
+    > %description
+    >> %price
+
+$PlanCard:
+  - Pro Plan | Full experience
+    `,
+  }}
+  do={{
+    title: "Complete props",
+    code: `
+$PlanCard:
+  - Pro Plan | Full experience | $89/month
+    `,
+  }}
+>
+  Why: the order of values must correspond to each declared `%prop`.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Component Props`](./component-props): details interpolation and handling of `%props`.
+- [`Component List`](./component-list): generates collections from components.
+- [`Component Composition`](./component-composition): guides on how to combine components with each other.
+- [`List`](./list): feeds components with tabular data.
+
+### Recommended compositions
+- **Component Definition + List** → repeats a layout for each data item.
+- **Component Definition + Grid** → builds reusable showcases and dashboards.
+- **Component Definition + Modal** → creates standardized modals for confirmation or forms.

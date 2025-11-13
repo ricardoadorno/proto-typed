@@ -1,0 +1,201 @@
+# Navigator
+Navigators assemble fixed menus to quickly switch between related screens, keeping the experience aligned.
+
+## When to use
+- Build bottom navigation in mobile apps.
+- Switch between main sections that share a base layout.
+- Highlight up to five destinations that need to be always accessible.
+- Complement simple headers when tabs or a drawer don't make sense.
+
+## Basic example
+<DocsCodePreview title="Navigator replicated on screens of the same flow">
+```dsl
+screen Home:
+  container:
+    # Home
+    > Track indicators and news.
+
+  navigator:
+    - i-Home| Home
+    - i-List| Tasks
+    - i-Settings| Settings
+
+screen Tasks:
+  container:
+    # Tasks
+    - Review backlog
+    - Prepare demo
+
+  navigator:
+    - i-Home
+    - i-List
+    - i-Settings
+```
+</DocsCodePreview>
+Why: replicates the same menu on each screen of the group to ensure consistency.
+
+## Variants
+<DocsCodePreview title="Navigator without icons">
+```dsl
+screen Default:
+  container:
+    # Screen content
+  navigator:
+    - Home | Home
+    - Metrics | Dashboard
+    - Settings | Settings
+```
+</DocsCodePreview>
+When to use: prioritize short texts when icons do not add context.
+Why: reduces visual noise and favors quick reading of labels.
+
+<DocsCodePreview title="Navigator with Lucide icons">
+```dsl
+screen Default:
+  container:
+    # Screen content
+  navigator:
+    - i-Home Home | Home
+    - i-List Tasks | Tasks
+    - i-BarChart Metrics | Dashboard
+```
+</DocsCodePreview>
+When to use: accelerate visual recognition of main destinations.
+Why: helps to locate frequent screens just by the symbol.
+
+<DocsCodePreview title="Navigator highlighting three screens">
+```dsl
+screen Default:
+  container:
+    # Screen content
+  navigator:
+    - i-Home Overview | Dashboard
+    - i-Users Team | Team
+    - i-Settings Adjustments | Settings
+```
+</DocsCodePreview>
+When to use: highlight the most relevant screens of a reduced flow.
+Why: three items keep the focus on the essential without overloading the menu.
+
+## Composition (using with others)
+- **Navigator + Container** — keeps content aligned with fixed navigation.
+- **Navigator + Screen** — applied to each screen of the group for consistency.
+- **Navigator + Fab** — combines persistent navigation with a global action.
+
+<DocsCodePreview title="Navigator with complementary FAB">
+```dsl
+screen Dashboard:
+  container:
+    # Overview
+    > Use the bottom menu to navigate between sections.
+
+  fab:
+    - i-Plus | TaskForm
+
+  navigator:
+    - i-Home Dashboard | Dashboard
+    - i-List Tasks | Tasks
+    - i-Settings Settings | Settings
+```
+</DocsCodePreview>
+Why: maintains fixed navigation while the FAB offers action shortcuts.
+
+## Slots & Props
+| Name | Type | Default | Description | Required |
+| --- | --- | --- | --- | --- |
+| `navigator` | block | — | Declares a menu with items line by line. | Yes |
+| `items` | `- label | Destination` | — | Each entry points to an existing screen. | Yes |
+| `icons` | token `i-` | — | Optional to reinforce visual identification. | No |
+| `name` | identifier | — | Optional after `navigator` to document the menu. | No |
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Inconsistent menu",
+    code: `
+screen Home:
+  navigator:
+    - Home | Home
+    - Tasks | Tasks
+
+screen Tasks:
+  navigator:
+    - Home | Home
+    - Config | Settings
+    `,
+  }}
+  do={{
+    title: "Aligned items",
+    code: `
+screen Home:
+  navigator:
+    - Home | Home
+    - Tasks | Tasks
+    - Config | Settings
+
+screen Tasks:
+  navigator:
+    - Home | Home
+    - Tasks | Tasks
+    - Config | Settings
+    `,
+  }}
+>
+  Why: consistency prevents the person from losing destinations when switching screens.
+</DoDont>
+<DoDont
+  dont={{
+    title: "List used as a menu",
+    code: `
+  - Dashboard
+  - Tasks
+  - Settings
+    `,
+  }}
+  do={{
+    title: "Menu with navigator",
+    code: `
+navigator:
+  - Dashboard | Dashboard
+  - Tasks | Tasks
+  - Settings | Settings
+    `,
+  }}
+>
+  Why: `navigator` applies appropriate semantics and behavior for menus.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Screen`](./screen): the main destination of each menu item.
+- [`Button`](./button): local actions that complement navigation.
+- [`Fab`](./fab): a global shortcut coexisting with fixed menus.
+- [`Drawer`](./drawer): a side alternative for contextual navigation.
+
+### Recommended compositions
+- **Navigator + Fab** → persistent navigation with a global action.
+- **Navigator + Container** → central content aligned with the bottom menu.
+- **Navigator + Drawer** → bottom menu + side panel for extra context.
+
+<DocsCodePreview title="Navigator and drawer combined">
+```dsl
+screen Projects:
+  container:
+    # Projects
+    - New website
+    - Mobile application
+
+  navigator:
+    - Projects | Projects
+    - Team | Team
+    - Settings | Settings
+
+  drawer Filters:
+    container:
+      # Filter projects
+      ___[Status][All | Active | Completed]
+      @[Apply filters](applyFilters)
+```
+</DocsCodePreview>
+Why: navigator handles global navigation while the drawer filters the current content.

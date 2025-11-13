@@ -1,0 +1,155 @@
+# Component Props
+## Why it matters
+Props connect dynamic data to the component's structure, allowing the same layout to be reused with different content. Consistent positioning avoids duplication and errors in collections.
+
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Template with two `%props`">
+```dsl
+component UserCard:
+  card:
+    ## %name
+    >> %email
+
+screen Default:
+  container:
+    $UserCard:
+      - Ana Souza | ana@company.com
+```
+</DocsCodePreview>
+Why: demonstrates how each value separated by `|` fills the corresponding `%prop`.
+
+## Usage patterns
+<DocsCodePreview title="Props in lists">
+```dsl
+component TaskRow:
+  row-between:
+    > %title
+    >>> %due
+screen Default:
+  list $TaskRow:
+    - Review backlog | 22/09
+    - Prepare demo | 25/09
+```
+</DocsCodePreview>
+When to use: generate repeated rows with data that changes for each item.
+Why: creates extensible collections without manually duplicating the structure.
+
+<DocsCodePreview title="Props with actions">
+```dsl
+component ActionCard:
+  card:
+    ## %title
+    > %description
+    row-end:
+      @[Open](%action)
+
+screen Default:
+  container:
+    $ActionCard:
+      - Configure integrations | Adjust connected APIs | Integrations
+```
+</DocsCodePreview>
+When to use: parameterize button destinations and texts in the same component.
+Why: facilitates future flow adjustments by changing only the values used in the props.
+
+<DocsCodePreview title="Props with percentages and trends">
+```dsl
+component MetricCard:
+  card:
+    >>> %label
+    # %value
+    >> %trend
+
+screen Default:
+  container:
+    grid-3:
+      $MetricCard:
+        - Leads captured | 1,240 | +8%
+      $MetricCard:
+        - Conversions | 134 | +5%
+      $MetricCard:
+        - Satisfaction | 92% | +3%
+```
+</DocsCodePreview>
+When to use: update metrics with multiple fields without changing the layout.
+Why: keeps the presentation of metrics aligned even with new data.
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Extra value without placeholder",
+    code: `
+component HeroBanner:
+  card:
+    ## %title
+    > %subtitle
+
+$HeroBanner:
+  - Prototype fast | Build screens in minutes | Dashboard
+    `,
+  }}
+  do={{
+    title: "Aligned props",
+    code: `
+$HeroBanner:
+  - Prototype fast | Build screens in minutes
+    `,
+  }}
+>
+  Why: extra values are left without a destination, leading to rendering inconsistencies.
+</DoDont>
+<DoDont
+  dont={{
+    title: "`%title` used as label and action",
+    code: `
+component QuickLink:
+  card:
+    ## %title
+    @[Open %title](%title)
+    `,
+  }}
+  do={{
+    title: "Separate props",
+    code: `
+component QuickLink:
+  card:
+    ## %label
+    @[Open %label](%action)
+    `,
+  }}
+>
+  Why: separating props maintains semantic clarity and facilitates future adjustments.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Component Definition`](./component-definition): teaches how to structure the component that will receive props.
+- [`Component List`](./component-list): renders collections of components with tabular data.
+- [`Component Composition`](./component-composition): combines parameterized components with each other.
+- [`List`](./list): provides data in `- value | value` format to feed props.
+
+### Recommended compositions
+- **Component Props + List** → dynamic collections without duplicating layout.
+- **Component Props + Grid** → dashboards with parameterized metrics.
+- **Component Props + Modal** → reused forms or confirmations.
+
+<DocsCodePreview title="Props applied in a reusable modal">
+```dsl
+component ConfirmationModal:
+  card:
+    ## %title
+    > %message
+    row-end:
+      @ghost[Cancel](close)
+      @success[%cta](%action)
+
+modal ConfirmInvite:
+  $ConfirmationModal:
+    - Confirm invitation
+    - Confirm to send the invitation to the team.
+    - Send invitation
+    - sendInvite
+```
+</DocsCodePreview>
+Why: parameterizes title, message, and actions while maintaining a single modal structure.

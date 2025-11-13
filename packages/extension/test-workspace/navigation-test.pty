@@ -1,0 +1,147 @@
+component Header:
+  header:
+    # %appName
+    @ghost[icon:menu](MainMenu)
+
+component ContactCard:
+  card:
+    ## %name
+    > %email
+    >>> %phone
+    row-end:
+      @outline-small[Edit](%editAction)
+      @ghost-icon[icon:trash-2](DeleteConfirm)
+
+modal DeleteConfirm:
+  card:
+    # Delete Contact?
+    > All contact data will be permanently removed.
+    *> This action cannot be undone.
+    
+    row-end:
+      @ghost[Cancel](close)
+      @destructive[Delete](Contacts)
+
+drawer MainMenu:
+  list:
+    - icon:users Contacts | Contacts
+    - icon:user-plus New Contact | NewContact
+    - icon:settings Settings | Settings
+    - [icon:help-circle Help](https://help.example.com)
+
+screen Contacts:
+  $Header:
+    - My Contacts | MainMenu
+
+  container:
+    stack:
+      card:
+        ## Welcome
+        > Keep your contacts organized in one place
+        >>> Total contacts: 3
+
+      list $ContactCard:
+        - John Silva | john@email.com | +55 11 99999-0001 | EditContact
+        - Maria Santos | maria@email.com | +55 11 99999-0002 | EditContact
+        - Pedro Costa | pedro@email.com | +55 11 99999-0003 | EditContact
+
+      @[icon:user-plus Add Contact](NewContact)
+
+  navigator:
+    - icon:users Contacts | Contacts
+    - icon:user-plus New | NewContact
+    - icon:settings Settings | Settings
+
+screen NewContact:
+  $Header:
+    - New Contact | MainMenu
+
+  container:
+    card:
+      ## New Contact
+      > Fill contact information
+
+      ___[Full Name][Enter name]
+      ___email[Email Address][Enter your email]
+      ___[Phone][Enter phone number]
+      
+      ___[Category][Select category[Personal | Work | Family | Other]]
+
+      [X] Add to favorites
+      [ ] Sync with cloud
+
+      row-between:
+        @ghost[icon:arrow-left Cancel](-1)
+        @[icon:save Save](Contacts)
+
+  navigator:
+    - icon:users Contacts | Contacts
+    - icon:user-plus New | NewContact
+    - icon:settings Settings | Settings
+
+screen EditContact:
+  $Header:
+    - Edit Contact | MainMenu
+
+  container:
+    card:
+      ## Edit Contact
+      > Update contact information
+
+      ___[Full Name][John Silva]
+      ___email[Email Address][john@email.com]
+      ___[Phone][+55 11 99999-0001]
+      
+      ___[Category][Select category[Personal | Work | Family | Other]]
+
+      ### Options
+      [X] Add to favorites
+      [X] Sync with cloud
+
+      ---
+
+      row-between:
+        @ghost[icon:arrow-left Back](-1)
+        @destructive[icon:trash-2 Delete](DeleteConfirm)
+        @[icon:save Save](Contacts)
+
+  navigator:
+    - icon:users Contacts | Contacts
+    - icon:user-plus New | NewContact
+    - icon:settings Settings | Settings
+
+screen Settings:
+  $Header:
+    - Settings | MainMenu
+
+  container:
+    stack:
+      card:
+        ## General Settings
+        
+        ___[App Name][My Contacts]
+        ___email[Email][user@example.com]
+
+      card:
+        ## Preferences
+        [X] Enable notifications
+        [X] Dark mode
+        [ ] Auto backup
+        [ ] Sound effects
+
+      card:
+        ## Category
+        (X) Personal
+        ( ) Work
+        ( ) Family
+
+      row-end:
+        @ghost[Cancel](-1)
+        @[icon:save Save](saveSettings)
+
+  navigator:
+    - icon:users Contacts | Contacts
+    - icon:user-plus New | NewContact
+    - icon:settings Settings | Settings
+
+

@@ -1,0 +1,16 @@
+screen NestedTest:
+  header:
+    # Nested Layout Test
+
+  container:
+    ## Outer Container
+    card:
+      ### Card in Container
+      > Card content here
+      stack:
+        > Stack item 1
+        > Stack item 2
+    
+    row:
+      > Left column | > Right column
+

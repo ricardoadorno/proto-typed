@@ -1,0 +1,73 @@
+# ===============================
+# VCS / IDE / Sistema
+# ===============================
+.git/**
+.github/**
+.vscode/**
+**/.DS_Store
+**/Thumbs.db
+
+# ===============================
+# Fontes / Desenvolvimento
+# ===============================
+src/**
+webview/**
+packages/**
+**/*.map
+**/*.tsbuildinfo
+
+# ===============================
+# Testes e relatórios
+# ===============================
+coverage/**
+playwright-report/**
+**/tests/**
+**/test-results/**
+**/.vscode-test/**
+test-workspace/**
+
+# ===============================
+# Node / PNPM / tooling
+# ===============================
+node_modules/**
+webview/node_modules/**
+pnpm-lock.yaml
+pnpm-workspace.yaml
+package-lock.json
+yarn.lock
+.npmrc
+eslint.config.js
+vite.config.*
+rollup.config.*
+babel.config.*
+playwright.config.*
+tsconfig*.json
+
+# ===============================
+# Excluir todos os package.json aninhados
+# (mantém apenas o principal da extensão)
+# ===============================
+**/package.json
+!package.json
+
+# ===============================
+# Mantém apenas arquivos necessários
+# (o que realmente precisa ir pro VSIX)
+# ===============================
+!dist/**
+!themes/**
+!syntaxes/**
+!snippets/**
+!language-configuration.json
+!icons/**
+!logo.svg
+!README.*
+!CHANGELOG.*
+!LICENSE*
+
+# ===============================
+# Opcional: manter docs ou assets extras
+# (descomente se precisar)
+# !docs/**
+# !assets/**
+# ===============================

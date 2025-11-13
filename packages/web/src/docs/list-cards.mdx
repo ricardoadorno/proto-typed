@@ -1,0 +1,49 @@
+# Card Listing
+
+## Prerequisites
+- Understand `card`, `card-compact`, and `card-feature` to choose the correct variant.
+- Have reusable components (e.g., `MetricCard`, `PlanCard`) defined beforehand.
+- Know `grid` and `list` to organize card collections in different layouts.
+
+## Step-by-step
+1. Choose the main layout (`grid` or `stack`) considering the available space.
+2. Define a card component that receives the necessary data via `%props`.
+3. Feed the component through `list $Component:` or multiple `$Component:` instances.
+4. Add support actions in `row-end` or `fab` to complement the listing.
+
+<DocsCodePreview title="Card collection with dynamic data">
+```dsl
+component PlanCard:
+  card:
+    ## %planName
+    >> %description
+    row-end:
+      @ghost[Details](%details)
+      @[Subscribe](%cta)
+
+screen Plans:
+  container-wide:
+    # Choose a plan
+    grid-3:
+      $PlanCard:
+        - Starter | Ideal for small teams | PlanStarter | CheckoutStarter
+      $PlanCard:
+        - Pro | Advanced features and priority support | PlanPro | CheckoutPro
+      $PlanCard:
+        - Enterprise | Dedicated support | PlanEnterprise | ContactSales
+```
+</DocsCodePreview>
+Why: demonstrates how to replicate cards with varied data while keeping CTAs consistent.
+
+## Quick debugging
+- Misaligned cards → confirm that all are within the same `grid-*` with the correct number of columns.
+- Truncated text → use `card-compact` only when the content is really short.
+- Duplicate actions → move common CTAs to a shared `row-end` or to a `fab`.
+- Components without enough props → review the order of values in the `-` lines and in the `%props`.
+- Cards without spacing → wrap the listing in `container` or `stack-loose` to ensure breathing room.
+
+## Next steps
+- Consult [`Card`](./card) to review variants and footer usage.
+- Review [`Grid`](./grid) when adjusting responsive columns.
+- Study [`Component List`](./component-list) to synchronize tabular data with cards.
+- Explore [`Dashboard`](./dashboard) as a reference for a complete layout with multiple listings.

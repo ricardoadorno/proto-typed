@@ -1,0 +1,198 @@
+# Composition Guidelines
+
+## Why it matters
+Composing elements correctly ensures coherent experiences: blocks become understandable, CTAs have a clear hierarchy, and layouts remain responsive. The guidelines reduce rework and prevent visual conflicts when combining components.
+
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Composition between container, stack, and row">
+```dsl
+screen Overview:
+  container:
+    stack-loose:
+      card:
+        ## Next meeting
+        > Details of the weekly meeting.
+      row-end:
+        @ghost[Cancel](close)
+        @[Confirm attendance](ConfirmAttendance)
+```
+</DocsCodePreview>
+Why: illustrates the basic combination of vertical and horizontal layouts while maintaining spacing and hierarchy.
+
+<Attention title="Layouts do not use a hyphen as a marker">
+When generating DSL — manually or via LLM — keep children of layouts (`stack`, `row`, `card`, `container`) only by indentation. The `-` prefix is reserved for `list`, `navigator`, and `fab`; using a hyphen in other blocks creates invalid nodes and confuses those who maintain the code.
+</Attention>
+
+## Usage patterns
+<DocsCodePreview title="Row-between + Stack for rich headers">
+```dsl
+screen Default:
+  container:
+    row-between:
+      stack-tight:
+        ## Pro Plan
+        >>> Renewal on 09/30
+      @[Update plan](UpdatePlan)
+```
+</DocsCodePreview>
+When to use: present textual context and the main CTA in the same band.
+Why: distributes responsibilities between blocks without creating unnecessary nesting.
+
+<DocsCodePreview title="List + Component Definition for collections">
+```dsl
+component TaskRow:
+  row-between:
+    > %title
+    >>> %due
+screen Default:
+  list $TaskRow:
+    - Review backlog | 22/09
+    - Prepare demo | 25/09
+```
+</DocsCodePreview>
+When to use: repeat an item structure with variable data.
+Why: ensures visual consistency and facilitates future compositions (e.g., placing in cards).
+
+<DocsCodePreview title="Card + Row-end for action footers">
+```dsl
+screen Default:
+  container:
+    card:
+      ## Review delivery
+      > Confirm the status with the team.
+      row-end:
+        @ghost[Cancel](close)
+        @[Mark as completed](CompleteTask)
+```
+</DocsCodePreview>
+When to use: close blocks with organized exit and advance options.
+Why: the separate footer avoids confusion with the main content of the card.
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Card inside a card",
+    code: `
+card:
+  card:
+    ## Duplicate content
+    `,
+  }}
+  do={{
+    title: "Stack inside the card",
+    code: `
+card:
+  stack:
+    ## First block
+    ## Second block
+    `,
+  }}
+>
+  Why: avoids repeated borders and keeps the visual hierarchy clean.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Stack with list syntax",
+    code: `
+stack:
+  - ## Title
+  - > Description
+    `,
+  }}
+  do={{
+    title: "Stack with aligned items",
+    code: `
+stack:
+  ## Title
+  > Description
+    `,
+  }}
+>
+  Why: only `list`, `navigator`, and `fab` use `-`; layouts consider children by indentation.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Buttons inside a list",
+    code: `
+
+  - Review backlog @[Open](Backlog)
+    `,
+  }}
+  do={{
+    title: "Actions in the footer",
+    code: `
+
+  - Review backlog
+row-end:
+  @[Open backlog](Backlog)
+    `,
+  }}
+>
+  Why: respects the textual function of the list and preserves accessibility.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Flow without an exit",
+    code: `
+screen Dashboard:
+  container:
+    @[Open modal](StatsModal)
+
+modal StatsModal:
+  card:
+    ## Statistics
+    @[Continue](StatsModal)
+    `,
+  }}
+  do={{
+    title: "Closed flow",
+    code: `
+modal StatsModal:
+  card:
+    ## Statistics
+    row-end:
+      @ghost[Close](close)
+      @[Go to metrics](Dashboard)
+    `,
+  }}
+>
+  Why: avoids dead ends and ensures that the composition supports the expected flow.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Component Composition`](./component-composition): delves into combinations between components.
+- [`Row`](./row): basis for aligning horizontal actions.
+- [`Stack`](./stack): stacks content while maintaining controlled spacing.
+- [`List`](./list): textual catalog used in various compositions.
+
+### Recommended compositions
+- **Composition Guidelines + Component Composition** → scalable structures with helper components.
+- **Composition Guidelines + Screen** → coherent screens with a clear hierarchy.
+- **Composition Guidelines + Drawer Detail** → side details aligned with main lists.
+
+<DocsCodePreview title="Screen applying multiple guidelines">
+```dsl
+screen Projects:
+  container-wide:
+    row-between:
+      stack-tight:
+        # Active projects
+        >>> Updated today at 10am
+      @[Create project](ProjectForm)
+
+    
+      - Mobile prototype
+      - Backend migration
+
+  drawer ProjectDetail:
+    card:
+      ## Mobile prototype
+      > Status in development
+      row-end:
+        @ghost[Close](close)
+        @[Open tasks](Dashboard)
+```
+</DocsCodePreview>
+Why: combines row-between, list, and drawer following the described best practices.

@@ -1,0 +1,168 @@
+# Modal
+Modals overlay the current screen to confirm actions, display critical messages, or collect quick data without leaving the flow.
+
+## When to use
+- Confirm destructive operations before proceeding.
+- Capture short information, such as invitations, comments, or approvals.
+- Display important messages that require immediate attention.
+- Continue a flow initiated by a button, drawer, or FAB.
+
+## Basic example
+<DocsCodePreview title="Confirmation modal">
+```dsl
+modal ConfirmDelete:
+  # Confirm deletion
+  > This action cannot be undone.
+  row-end:
+    @ghost[Cancel](close)
+    @destructive[Delete now](deleteItem)
+
+screen DangerZone:
+  container:
+    # Advanced settings
+    @destructive[Delete account](ConfirmDelete)
+```
+</DocsCodePreview>
+Why: blocks the flow until the person confirms or cancels the sensitive operation.
+
+## Variants
+<DocsCodePreview title="Modal with a short form">
+```dsl
+screen Default:
+  container:
+    @[Invite](InviteMember)
+
+modal InviteMember:
+    ## Invite new person
+    ___email[E-mail][name@company.com] | required
+    row-end:
+      @ghost[Cancel](close)
+      @success[Send invite](sendInvite)
+```
+</DocsCodePreview>
+When to use: collect little data without redirecting to another screen.
+Why: keeps the form quick and focused on the atomic task.
+
+<DocsCodePreview title="Informational modal">
+```dsl
+modal ReleaseNotes:
+  card:
+    ## What's new in the version
+    
+      - New metrics dashboard
+      - Improvements in the onboarding flow
+    row-end:
+      @[Got it](close)
+```
+</DocsCodePreview>
+When to use: communicate updates or brief notices with explicit confirmation.
+Why: ensures mandatory reading before closing the message.
+
+## Composition (using with others)
+- **Modal + Button** — main trigger for confirmations.
+- **Modal + Drawer** — two-step flows with a side panel and confirmation.
+- **Modal + Component Definition** — reuses message or form layouts.
+
+<DocsCodePreview title="Approval flow in a modal">
+```dsl
+component ApprovalModal:
+  card:
+    ## %title
+    > %message
+    row-end:
+      @ghost[Cancel](close)
+      @success[Approve](%action)
+
+modal ApproveBudget:
+  $ApprovalModal:
+    - Approve budget
+    - Confirm the budget to proceed with the hiring.
+    - approveBudget
+```
+</DocsCodePreview>
+Why: encapsulates the modal's structure and reuses it with different data.
+
+## Slots & Props
+| Name | Type | Default | Description | Required |
+| --- | --- | --- | --- | --- |
+| `name` | identifier | — | Modal's slug (PascalCase recommended). | Yes |
+| `internal content` | DSL blocks | — | Usually involves `card` to ensure padding. | Yes |
+| `actions` | buttons | — | Must include a close option (`close` or `-1`). | Yes |
+| `triggers` | buttons/links/FAB | — | Elements that open the modal (`@[Open](ModalName)`). | Yes |
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "No close button",
+    code: `
+modal InfoModal:
+  card:
+    # Important notice
+    > Read carefully before continuing.
+    `,
+  }}
+  do={{
+    title: "Close button present",
+    code: `
+modal InfoModal:
+  card:
+    # Important notice
+    > Read carefully before continuing.
+    row-end:
+      @[Got it](close)
+    `,
+  }}
+>
+  Why: modals need a clear action that returns control to the user.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Inconsistent closings",
+    code: `
+modal ConfirmAction:
+  row-end:
+    @ghost[Cancel](-1)
+    @[Confirm](close)
+    `,
+  }}
+  do={{
+    title: "Consistent closing",
+    code: `
+modal ConfirmAction:
+  row-end:
+    @ghost[Cancel](close)
+    @[Confirm](applyAction)
+    `,
+  }}
+>
+  Why: adopting a single pattern avoids unpredictable behavior when closing the modal.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Drawer`](./drawer): a side alternative for complementary flows.
+- [`Button`](./button): the most common element for opening modals.
+- [`Modal Flow`](./modal-flow): a complete guide to chaining multiple modals.
+- [`Fab`](./fab): a global trigger that can open modals.
+
+### Recommended compositions
+- **Modal + Destructive button** → confirms critical actions before executing them.
+- **Modal + Drawer** → final step after adjustments in a side panel.
+- **Modal + Component Definition** → reusable standardized messages.
+
+<DocsCodePreview title="Modal confirmed by destructive button">
+```dsl
+row-end:
+  @destructive[Delete account](ConfirmDelete)
+
+modal ConfirmDelete:
+  card:
+    ## Confirm deletion
+    > This action cannot be undone.
+    row-end:
+      @ghost[Cancel](close)
+      @destructive[Delete now](deleteTenant)
+```
+</DocsCodePreview>
+Why: a destructive CTA opens a modal that reinforces the risk before execution.

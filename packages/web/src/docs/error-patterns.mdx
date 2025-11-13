@@ -1,0 +1,163 @@
+# Common Errors
+
+## Why it matters
+Knowing the most recurrent anti-patterns avoids rework, reduces navigation bugs, and maintains a coherent experience across all screens. A clear catalog speeds up reviews and provides confidence to evolve the DSL without breaking existing flows.
+
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Separate textual items from actions">
+```dsl
+screen Default:
+  container:
+    card:
+      ## Next steps
+      - Review backlog
+      - Prepare release
+      row-end:
+        @ghost[Cancel](close)
+        @[Open planning](Planning)
+```
+</DocsCodePreview>
+Why: highlights that `` only holds text, while actions are in dedicated blocks like `row-end`.
+
+## Usage patterns
+<DocsCodePreview title="Highlight destructive actions">
+```dsl
+screen Default:
+  container:
+    row-end:
+      @ghost[Cancel](close)
+      @destructive[Delete account](ConfirmDelete)
+```
+</DocsCodePreview>
+When to use: any operation that removes data or interrupts critical flows.
+Why: the destructive variant communicates risk and helps prevent accidental clicks.
+
+<DocsCodePreview title="Consistent navigator between sibling screens">
+```dsl
+screen Home:
+  navigator:
+    - Home | Home
+    - Tasks | Tasks
+    - Settings | Settings
+
+screen Tasks:
+  navigator:
+    - Home | Home
+    - Tasks | Tasks
+    - Settings | Settings
+```
+</DocsCodePreview>
+When to use: groups of screens that share the same persistent menu.
+Why: keeping identical items avoids hidden destinations and reduces confusion when switching screens.
+
+<DocsCodePreview title="Overlays with a clear exit path">
+```dsl
+drawer Filters:
+  card:
+    ## Adjust filters
+    row-end:
+      @ghost[Cancel](close)
+      @[Apply](applyFilters)
+```
+</DocsCodePreview>
+When to use: whenever a drawer or modal takes over the interaction focus.
+Why: the close button ensures an immediate return to the original context.
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Links in the list",
+    code: `
+card:
+  ## Tasks
+  
+    - Review backlog [Open](Backlog)
+    `,
+  }}
+  do={{
+    title: "Actions outside the list",
+    code: `
+card:
+  ## Tasks
+  
+    - Review backlog
+  row-end:
+    @[Open backlog](Backlog)
+    `,
+  }}
+>
+  Why: `` only accepts text; buttons and links should be in rows or navigator.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Drawer without an exit",
+    code: `
+drawer Filters:
+  card:
+    ## Filters
+    @[Apply](applyFilters)
+    `,
+  }}
+  do={{
+    title: "Drawer with a return",
+    code: `
+drawer Filters:
+  card:
+    ## Filters
+    row-end:
+      @ghost[Cancel](close)
+      @[Apply](applyFilters)
+    `,
+  }}
+>
+  Why: offering an explicit exit avoids dead ends and keeps the flow predictable.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Mixed closings",
+    code: `
+modal ConfirmAction:
+  row-end:
+    @ghost[Cancel](-1)
+    @[Confirm](close)
+    `,
+  }}
+  do={{
+    title: "Consistent closing",
+    code: `
+modal ConfirmAction:
+  row-end:
+    @ghost[Cancel](close)
+    @[Confirm](applyAction)
+    `,
+  }}
+>
+  Why: consistency reduces doubts about the result of each button.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Basic Syntax`](./syntax): reinforces structure rules that avoid anti-patterns.
+- [`Composition Guidelines`](./composition-guidelines): guides safe combinations between blocks.
+- [`Component Composition`](./component-composition): shows how to reuse layouts without introducing errors.
+- [`Flow`](./flow): ensures coherent navigation when applying corrections.
+
+### Recommended compositions
+- **Common Errors + Component Definition** → reused components already arrive corrected.
+- **Common Errors + Navigator** → validates persistent menus before publication.
+- **Common Errors + Modal Flow** → reviews chained confirmations to avoid dead ends.
+
+<DocsCodePreview title="Final review checklist">
+```dsl
+screen Default:
+  container:
+    card:
+      ## Before publishing
+      - Check list without inline actions.
+      - Ensure overlays with close buttons.
+      - Verify consistency of navigation destinations.
+```
+</DocsCodePreview>
+Why: standardizes inspection and prevents anti-patterns from being sent to production.
+

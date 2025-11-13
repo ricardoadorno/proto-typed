@@ -1,14 +1,160 @@
-# Syntax
+# Basic Syntax
 
-Learn the Proto-Typed syntax.
+## Why it matters
+The Proto-Typed DSL defines screens declaratively: indentation, colons, and named blocks control hierarchy and flow. Mastering the syntax avoids structural errors and ensures that components, containers, and actions behave as expected at runtime.
 
-## Basic Structure
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Screen structure with nested blocks">
+```dsl
+screen Home:
+  container:
+    # Main title
+    > Introductory paragraph.
+    row-end:
+      @[Primary action](NextStep)
+```
+</DocsCodePreview>
+Why: illustrates mandatory indentation, use of colons, and named blocks to organize content.
 
-All Proto-Typed files start with an `app` declaration.
 
-## Elements
 
-- `heading` - Display headings
-- `text` - Display text
-- `button` - Interactive buttons
-- `layout` - Container layouts
+## Usage patterns
+<DocsCodePreview title="Declare multiple top-level blocks">
+```dsl
+screen Home:
+  container:
+    # Overview
+    > Initial context.
+
+modal HelpModal:
+  card:
+    ## Need help?
+    > Review the available guides.
+    @[Close](close)
+```
+</DocsCodePreview>
+When to use: group the main screen and related overlays in the same file.
+Why: keeps navigation context close and facilitates maintenance of complete flows.
+
+<DocsCodePreview title="Reusable components with consistent indentation">
+```dsl
+component MetricCard:
+  card:
+    ## %title
+    # %value
+
+screen Dashboard:
+  container-wide:
+    grid-3:
+      $MetricCard:
+        - Leads | 1,240
+      $MetricCard:
+        - Conversions | 134
+```
+</DocsCodePreview>
+When to use: separate the generic layout from the data that varies.
+Why: the component + instance syntax reduces duplication while maintaining correct alignment.
+
+<DocsCodePreview title="Textual lists without inline actions">
+```dsl
+screen Default:
+  container:
+    - Plan release
+    - Review backlog
+    - Update metrics
+    row-end:
+      @[Open planning](Planning)
+```
+</DocsCodePreview>
+When to use: present text-only items and group actions in appropriate blocks.
+Why: respects the DSL rule that restricts `list` to pure textual content.
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Block without a colon",
+    code: `
+screen Home
+  container:
+    # Overview
+    `,
+  }}
+  do={{
+    title: "Mandatory colon",
+    code: `
+screen Home:
+  container:
+    # Overview
+    `,
+  }}
+>
+  Why: the parser depends on the `:` to recognize the beginning of the block.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Inconsistent indentation",
+    code: `
+screen Home:
+<TAB>container:
+    # Overview
+    `,
+  }}
+  do={{
+    title: "Uniform indentation",
+    code: `
+screen Home:
+  container:
+    # Overview
+    `,
+  }}
+>
+  Why: inconsistent indentation generates misaligned nodes and rendering errors.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Non-standard name",
+    code: `
+screen homeDashboard:
+  container:
+    # Content
+    `,
+  }}
+  do={{
+    title: "Standard screen name",
+    code: `
+screen HomeDashboard:
+  container:
+    # Content
+    `,
+  }}
+>
+  Why: the engine connects actions using exact names; following TitleCase avoids broken references.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Screen`](./screen): defines the main container of the hierarchy.
+- [`Flow`](./flow): organizes navigation between declared screens.
+- [`Component Definition`](./component-definition): details the creation of reusable blocks.
+- [`Text`](./text): describes the typographic hierarchy within the blocks.
+
+### Recommended compositions
+- **Basic Syntax + Screen** → ensures valid screens before thinking about style.
+- **Basic Syntax + Component Definition** → applies consistent patterns in collections.
+- **Basic Syntax + Flow** → connects screens respecting names and indentation.
+
+<DocsCodePreview title="Screen with correct navigation">
+```dsl
+screen Home:
+  container:
+    # Home
+    @[Go to details](Detail)
+
+screen Detail:
+  container:
+    # Details
+    @[Back to home](Home)
+```
+</DocsCodePreview>
+Why: shows the correct use of TitleCase names and indentation for bidirectional navigation.

@@ -1,0 +1,174 @@
+# Container
+Containers define width, center content, and provide safe padding to structure Proto-Typed screens.
+
+## When to use
+- Define the main column of a screen before adding components.
+- Switch between focused reading (`container-narrow`) and wide dashboards (`container-wide`).
+- Ensure consistent horizontal spacing on responsive pages.
+- Combine multiple layouts (grid, stack, cards) while maintaining predictable alignment.
+
+## Basic example
+<DocsCodePreview title="Standard container on an informational screen">
+```dsl
+screen Overview:
+  container:
+    # Overview
+    > Track the main indicators of the week.
+    @[Open dashboard](Dashboard)
+```
+</DocsCodePreview>
+Why: establishes the central column and prepares the space for complementary content.
+
+## Variants
+<DocsCodePreview title="Narrow container for focus">
+```dsl
+screen Default:
+  container-narrow:
+    card:
+      ## Request access
+      ___email[E-mail][person@company.com]
+      row-end:
+        @ghost[Cancel](-1)
+        @[Send invite](Invite)
+```
+</DocsCodePreview>
+When to use: concentrate attention on forms or long reading.
+Why: the reduced width guides the eye to fields and instructions.
+
+<DocsCodePreview title="Wide container for dashboards">
+```dsl
+screen Default:
+  container-wide:
+    grid-3:
+      card:
+        ## Total leads
+        # 1,240
+      card:
+        ## Conversions
+        # 134
+      card:
+        ## Revenue
+        # $87K
+```
+</DocsCodePreview>
+When to use: provide multiple columns of content in a balanced way.
+Why: avoids card compression by distributing metrics in wide columns.
+
+<DocsCodePreview title="Full width with controlled layout">
+```dsl
+screen Default:
+  container-full:
+    stack-tight:
+      # Release Notes
+      > Updates and fixes for the version.
+      row-end:
+        @[View details](Changelog)
+        @secondary[Share](ShareModal)
+```
+</DocsCodePreview>
+When to use: occupy the entire width, delegating spacing to the internal layout.
+Why: allows for heroes and panels that control padding within the layout itself.
+
+## Composition (using with others)
+- **Container + Stack** — structures vertical sections with predictable spacing.
+- **Container + Grid** — aligns dashboards and card collections.
+- **Container + Navigator** — groups header, tabs, and main content on the same screen.
+
+<DocsCodePreview title="Container with header and content">
+```dsl
+screen Settings:
+  navigator:
+    - Profile | Profile
+    - Security | Security
+
+  container:
+    # Security
+    > Adjust authentication and trusted devices.
+    stack:
+      card:
+        ## Change password
+        @[Update](UpdatePassword)
+      card:
+        ## Recognized devices
+          - MacBook | Last access yesterday
+          - iPhone | Last access today
+```
+</DocsCodePreview>
+Why: separates navigation and content while maintaining central alignment.
+
+## Slots & Props
+| Name | Type | Default | Description | Required |
+| --- | --- | --- | --- | --- |
+| `variant` | enum (`container`, `container-narrow`, `container-wide`, `container-full`) | `container` | Defines maximum width and side gutters. | No |
+| `internal content` | DSL blocks | — | Elements, components, stacks, and grids rendered inside the container. | Yes |
+| `multiple containers` | sequence | — | Allows combining different widths on the same screen. | No |
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Duplicate container",
+    code: `
+container:
+  container:
+    # Weekly report
+    `,
+  }}
+  do={{
+    title: "Stack inside the container",
+    code: `
+container:
+  stack-loose:
+    # Weekly report
+    > Update data every Monday.
+    `,
+  }}
+>
+  Why: stacks organize internal sections without duplicating width controls.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Content aligned to the border",
+    code: `
+container-full:
+  # Updates
+  > Text stuck to the side.
+    `,
+  }}
+  do={{
+    title: "Stack controls the spacing",
+    code: `
+container-full:
+  stack-loose:
+    # Updates
+    > Text with comfortable margins.
+    `,
+  }}
+>
+  Why: `container-full` occupies the entire width and depends on the internal layout to apply padding.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Screen`](./screen): defines the main structure before containers.
+- [`Stack`](./stack): organizes content vertically within the container.
+- [`Grid`](./grid): distributes cards and metrics into multiple columns.
+- [`Dashboard`](./dashboard): complete guide on assembling analytical screens.
+
+### Recommended compositions
+- **Container + Stack** → sequence of sections with fluid reading.
+- **Container + Grid** → responsive dashboards with aligned cards.
+- **Container + Drawer** → keeps main content visible when there are side panels.
+
+<DocsCodePreview title="Container with side panel">
+```dsl
+screen Accounts:
+  container-wide:
+    grid-2:
+      card:
+        ## Active accounts
+        - Pro Plan
+        - Enterprise Plan
+```
+</DocsCodePreview>
+Why: combines a wider width with a drawer for secondary context.

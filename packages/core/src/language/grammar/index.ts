@@ -1,20 +1,13 @@
-import { readFileSync } from 'fs'
-import { dirname, join } from 'path'
-import { fileURLToPath } from 'url'
+import grammar from './proto-typed.tmLanguage.json' with { type: 'json' }
+import configuration from './language-configuration.json' with { type: 'json' }
 
-const __dirname = typeof __filename !== 'undefined'
-  ? dirname(__filename)
-  : dirname(fileURLToPath(import.meta.url))
-
-export type TextMateGrammar = any
-export type LanguageConfiguration = any
+export type TextMateGrammar = typeof grammar
+export type LanguageConfiguration = typeof configuration
 
 export function getTextMateGrammar(): TextMateGrammar {
-  const grammarPath = join(__dirname, 'proto-typed.tmLanguage.json')
-  return JSON.parse(readFileSync(grammarPath, 'utf-8'))
+  return grammar
 }
 
 export function getLanguageConfiguration(): LanguageConfiguration {
-  const configPath = join(__dirname, 'language-configuration.json')
-  return JSON.parse(readFileSync(configPath, 'utf-8'))
+  return configuration
 }

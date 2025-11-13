@@ -1,0 +1,176 @@
+# Card
+Cards group related content into self-contained blocks with consistent spacing and visual focus.
+
+## When to use
+- Highlight a set of information that needs to be read as a group.
+- Create showcases for metrics, plans, or priority actions.
+- Organize short entries (quick forms, filters) while maintaining borders and padding.
+- Serve as a basis for reusable components presenting the same layout.
+
+## Basic example
+<DocsCodePreview title="Card with information and action">
+```dsl
+screen Default:
+  container:
+    card:
+      ## Pro Plan
+      > Full features for growing teams.
+      row-end:
+        @[Subscribe now](Checkout)
+```
+</DocsCodePreview>
+Why: highlights a block of content with a direct CTA and balanced spacing.
+
+## Variants
+<DocsCodePreview title="Standard card for general blocks">
+```dsl
+screen Default:
+  container:
+    card:
+      ## Weekly update
+      >> Consolidated team metrics.
+```
+</DocsCodePreview>
+When to use: communicate recurring content with comfortable reading.
+Why: the default spacing balances text and visual breathing room.
+
+<DocsCodePreview title="Compact card for dense lists">
+```dsl
+screen Default:
+  container:
+    card-compact:
+      ## Next tasks
+      
+        - Validate prototype
+        - Review email copy
+```
+</DocsCodePreview>
+When to use: group short items in a small space.
+Why: the variant reduces padding without compromising readability.
+
+<DocsCodePreview title="Feature card with a focus on conversion">
+```dsl
+screen Default:
+  container:
+    card-feature:
+      ## Enterprise
+      *> Dedicated support and custom SLA.
+      @[Talk to sales](ContactSales)
+```
+</DocsCodePreview>
+When to use: direct attention to premium offers or critical actions.
+Why: the enhanced style creates immediate focus for strategic CTAs.
+
+## Composition (using with others)
+- **Card + Stack** — combines multiple vertical sections without losing spacing.
+- **Card + Grid** — creates showcases with repeated cards for metrics or plans.
+- **Card + Component Definition** — establishes a reusable layout with variable data.
+
+<DocsCodePreview title="Grid of reusable cards">
+```dsl
+component MetricCard:
+  card:
+    ## %title
+    # %value
+    >> %description
+
+screen Dashboard:
+  container:
+    grid-3:
+      $MetricCard:
+        - Leads | 1,240 | Last 24h
+      $MetricCard:
+        - Conversions | 134 | Current week
+      $MetricCard:
+        - Satisfaction | 92% | Post-release survey
+```
+</DocsCodePreview>
+Why: reuses a consistent layout across different data without duplication.
+
+## Slots & Props
+| Name | Type | Default | Description | Required |
+| --- | --- | --- | --- | --- |
+| `variant` | enum (`card`, `card-compact`, `card-feature`) | `card` | Adjusts padding, contrast, and visual hierarchy. | No |
+| `internal content` | DSL blocks | — | Receives texts, lists, buttons, components. | Yes |
+| `internal stack/row` | layout | — | Controls item distribution within the card. | No |
+| `component` wrapper | reference | — | Allows transforming the card into a reusable component (`component`/`$`). | No |
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Card inside a card",
+    code: `
+card:
+  ## Alerts
+  card:
+    > Low stock
+    `,
+  }}
+  do={{
+    title: "Stack inside the card",
+    code: `
+card:
+  ## Alerts
+  stack:
+    > Low stock
+    > Pending payments
+    `,
+  }}
+>
+  Why: `stack` maintains vertical spacing without breaking the card's visual pattern.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Actions inside a list",
+    code: `
+card:
+  ## Next steps
+  
+    - [Review backlog](Backlog)
+    - [Plan sprint](Planning)
+    `,
+  }}
+  do={{
+    title: "List + aligned actions",
+    code: `
+card:
+  ## Next steps
+  
+    - Review backlog
+    - Plan sprint
+  row-end:
+    @[Open backlog](Backlog)
+    @secondary[Plan sprint](Planning)
+    `,
+  }}
+>
+  Why: lists only accept text; buttons and links should be in dedicated action blocks.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Container`](./container): defines the width before stacking cards.
+- [`Stack`](./stack): organizes content vertically within the card.
+- [`Grid`](./grid): distributes multiple cards in responsive layouts.
+- [`Component Definition`](./component-definition): transforms cards into reusable components.
+
+### Recommended compositions
+- **Card + Grid** → showcase of metrics or plans with uniform spacing.
+- **Card + Row-end** → groups actions in consistent footers.
+- **Card + Component List** → renders dynamic cards with collection data.
+
+<DocsCodePreview title="Card with aligned actions">
+```dsl
+screen Default:
+  container:
+    card:
+      ## Order status
+      > Update the progress and notify customers.
+      row-end:
+        @ghost[Cancel](-1)
+        @[Update status](UpdateStatus)
+```
+</DocsCodePreview>
+Why: keeps the main CTA and exit option in a predictable position.
+

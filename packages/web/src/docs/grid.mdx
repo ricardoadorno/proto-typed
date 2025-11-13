@@ -1,0 +1,212 @@
+# Grid
+Grids distribute elements into balanced columns, ensuring consistent alignment and responsive reading.
+
+## When to use
+- Display multiple cards or components with similar width.
+- Assemble dashboards with metrics organized by columns.
+- Offer side-by-side comparisons without resorting to complex tables.
+- Automatically switch the number of columns according to the available width.
+
+## Basic example
+<DocsCodePreview title="Grid with metrics in three columns">
+```dsl
+screen Analytics:
+  container-wide:
+    # Main indicators
+    grid-3:
+      card:
+        ## Active users
+        # 12,304
+      card:
+        ## Conversion
+        # 23.5%
+      card:
+        ## NPS
+        # 72
+```
+</DocsCodePreview>
+Why: presents balanced metrics with predictable alignment.
+
+## Variants
+<DocsCodePreview title="Grid-2 for comparisons">
+```dsl
+screen Default:
+  container:
+    grid-2:
+      card:
+        ## Starter Plan
+        > Ideal for small teams.
+      card:
+        ## Pro Plan
+        > Advanced features and priority support.
+```
+</DocsCodePreview>
+When to use: compare content in two columns with balanced focus.
+Why: two slots maintain a balance between reading and visual breathing room.
+
+<DocsCodePreview title="Grid-responsive for flexible collections">
+```dsl
+screen Default:
+  container:
+    grid-responsive:
+      card:
+        ## Highlight 1
+        > Automatically adjusts the width.
+      card:
+        ## Highlight 2
+        > Adapts to the remaining space.
+      card:
+        ## Highlight 3
+        > Wraps to the next line as needed.
+```
+</DocsCodePreview>
+When to use: distribute items with dynamic width without defining a fixed number of columns.
+Why: automatic adjustment avoids broken columns on smaller screens.
+<Tip title="Legacy alias">
+`grid-auto` remains available as an alias for `grid-responsive` to preserve older snippets.
+</Tip>
+
+<DocsCodePreview title="Grid-4 on wide screens">
+```dsl
+screen Default:
+  container:
+    grid-4:
+      card:
+        ## Insight 1
+      card:
+        ## Insight 2
+      card:
+        ## Insight 3
+      card:
+        ## Insight 4
+```
+</DocsCodePreview>
+When to use: extensive dashboards on desktop that call for four aligned columns.
+Why: takes advantage of the maximum available width while maintaining equal proportions.
+
+## Composition (using with others)
+- **Grid + Card** — each cell maintains consistent internal spacing.
+- **Grid + Component Definition** — renders dynamic collections with variable data.
+- **Grid + Container-wide** — ensures side space for multiple columns.
+
+<DocsCodePreview title="Grid with reusable components">
+```dsl
+component MetricCard:
+  card:
+    ## %title
+    # %value
+    >> %description
+
+screen Dashboard:
+  container-wide:
+    grid-3:
+      $MetricCard:
+        - Leads | 1,240 | Last 24h
+      $MetricCard:
+        - Conversions | 134 | Current week
+      $MetricCard:
+        - Revenue | $87K | Monthly basis
+```
+</DocsCodePreview>
+Why: standardizes the layout of metrics, reducing code repetition.
+
+## Slots & Props
+| Name | Type | Default | Description | Required |
+| --- | --- | --- | --- | --- |
+| `variant` | enum (`grid-2`, `grid-3`, `grid-4`, `grid-responsive`) | `grid-3` | Defines the number of columns or automatic adjustment. | No |
+| `internal content` | DSL blocks | — | Cards, components, and layouts rendered in the cells. | Yes |
+| `container` support | layout | — | It is recommended to wrap the grid in `container` or `container-wide`. | No |
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Four squeezed columns",
+    code: `
+container-narrow:
+  grid-4:
+    card:
+      ## Item 1
+    card:
+      ## Item 2
+    card:
+      ## Item 3
+    card:
+      ## Item 4
+    `,
+  }}
+  do={{
+    title: "Proportional grid",
+    code: `
+container-narrow:
+  grid-2:
+    card:
+      ## Item 1
+    card:
+      ## Item 2
+    `,
+  }}
+>
+  Why: the number of columns should respect the container's width to preserve readability.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Checklist in a grid",
+    code: `
+grid-3:
+  card:
+    ## Step 1
+  card:
+    ## Step 2
+  card:
+    ## Step 3
+    `,
+  }}
+  do={{
+    title: "Sequence in a stack",
+    code: `
+stack-loose:
+  card:
+    ## Step 1
+  card:
+    ## Step 2
+  card:
+    ## Step 3
+    `,
+  }}
+>
+  Why: sequential flows require top-to-bottom reading to avoid confusion.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Container`](./container): defines the width before applying the grid.
+- [`Card`](./card): the most common element in grid cells.
+- [`Component List`](./component-list): generates dynamic grids with data from collections.
+- [`Dashboard`](./dashboard): a guide that explores grids on analytical screens.
+
+### Recommended compositions
+- **Grid + Container-wide** → dashboards with multiple columns and side breathing room.
+- **Grid + Internal stack** → cells with vertically aligned sub-elements.
+- **Grid + Component Definition** → reusable layouts with variable data.
+
+<DocsCodePreview title="Grid with internal stack">
+```dsl
+screen Default:
+  container:
+    grid-3:
+      card:
+        stack-tight:
+          ## Backlog
+          > Pending tasks
+      card:
+        stack-tight:
+          ## Current sprint
+          > Emphasis on critical bugs
+      card:
+        stack-tight:
+          ## Roadmap
+          > Upcoming releases
+```
+</DocsCodePreview>
+Why: stacks inside the card maintain vertical alignment without breaking the grid layout.

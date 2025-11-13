@@ -1,0 +1,58 @@
+# Modal Flow
+## Prerequisites
+- Master the creation of `modal` with consistent closing actions.
+- Map the slug of each step (`ConfirmInvite`, `SuccessInvite`) to ensure chaining.
+- Have trigger elements (buttons, FAB, or list) pointing to the first modal.
+
+## Step-by-step
+1. Declare the confirmation modal with clear context and options to proceed or cancel.
+2. Create the feedback modal (success or error) that will be opened after confirmation.
+3. Ensure that the CTA of the first modal opens the second (`@[Confirm](SuccessInvite)`).
+4. Add buttons or FABs on the main screen pointing to the initial step of the flow.
+
+<DocsCodePreview title="Complete flow with two chained modals">
+```dsl
+modal ConfirmInvite:
+  card:
+    # Send invitation?
+    > Confirm sending to the selected person.
+    row-end:
+      @ghost[Cancel](close)
+      @[Send invite](SuccessInvite)
+
+modal SuccessInvite:
+  card:
+    # Invitation sent!
+    > The user will receive an email with access instructions.
+    row-end:
+      @[Close](close)
+
+screen Team:
+  container:
+    # Team
+    card:
+      ## Recent invitations
+      
+        - Thiago Martins | Sent on 09/16
+        - Laura Mendes | Pending
+    row-end:
+      @[Invite member](ConfirmInvite)
+
+  fab:
+    - i-Plus | ConfirmInvite
+```
+</DocsCodePreview>
+Why: the screen starts the flow, the first modal confirms the action, and the second delivers immediate feedback.
+
+## Quick debugging
+- Second modal does not open → check if the CTA of the first modal uses the correct slug (`SuccessInvite`).
+- Flow does not close → ensure `@[Close](close)` on all exits of the last modal.
+- FAB does not trigger → confirm that the triggered slug is the first modal in the chain.
+- Repeated message → consolidate texts in the success modal and avoid duplicating in the card.
+- User stuck on confirmation → always offer a return button (`@ghost[Cancel](close)`).
+
+## Next steps
+- Delve into [`Modal`](./modal) to explore content variants.
+- Combine with [`Drawer`](./drawer) when the flow starts in a side panel.
+- Use [`Fab`](./fab) for global actions that start the modal flow.
+- Consult [`Component Composition`](./component-composition) if you need to reuse modal structure.

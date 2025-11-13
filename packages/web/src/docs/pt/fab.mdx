@@ -1,0 +1,168 @@
+# Floating Action Button (FAB)
+O FAB mantém uma ação global sempre disponível, flutuando sobre o conteúdo para acelerar tarefas recorrentes.
+
+## Quando usar
+- Destacar a ação mais frequente da tela em cenários mobile ou responsivos.
+- Oferecer atalhos globais, como criar registros ou abrir filtros relevantes.
+- Complementar dashboards e listas quando o CTA principal não cabe no cabeçalho.
+- Ativar drawers ou modais rápidos sem perder o contexto atual.
+
+## Exemplo básico
+<DocsCodePreview title="FAB com ação principal única">
+```dsl
+screen Tasks:
+  container:
+    # Tarefas
+    - Revisar backlog
+    - Preparar release
+
+  fab:
+    - i-Plus | TaskForm
+```
+</DocsCodePreview>
+Por quê: mantém a criação de tarefas ao alcance sem competir com o conteúdo da tela.
+
+<DocsCodePreview title="FAB acionando modal de confirmação">
+```dsl
+screen Default:
+  container:
+    # Role para baixa para ver
+    fab:
+      - i-Check | ConfirmRelease
+
+modal ConfirmRelease:
+    ## Publicar release?
+    # Confirme para notificar o time.
+    row-end:
+      @ghost[Cancelar](close)
+      @success[Publicar](publishRelease)
+```
+</DocsCodePreview>
+Quando usar: reforçar ações globais que precisam de confirmação antes de executar.
+Por quê: evita execuções irreversíveis ao intercalar feedback imediato.
+
+<DocsCodePreview title="FAB abrindo drawer contextual">
+```dsl
+screen Default:
+  container:
+    > Role para baixa para ver
+    fab:
+      - i-Filter | FilterDrawer
+
+drawer FilterDrawer:
+  container:
+    # Filtros avançados
+    ___[Status][Todos | Em andamento | Concluído]
+    row-end:
+      @ghost[Cancelar](close)
+      @[Aplicar](applyFilters)
+```
+</DocsCodePreview>
+Quando usar: expor ajustes rápidos mantendo os dados principais visíveis.
+Por quê: o drawer permite ajustes inline sem mudar de tela.
+
+## Composição (usando com outros)
+- **FAB + Button principal** — CTA fixo convive com ações locais em cards.
+- **FAB + Drawer** — abre filtros ou detalhes sem redirecionar.
+- **FAB + Modal** — valida comandos críticos antes de prosseguir.
+
+
+## Slots & Props
+| Nome | Tipo | Padrão | Descrição | Obrigatório |
+| --- | --- | --- | --- | --- |
+| `itens` | lista `- i-Icon | Destino` | — | Cada linha define ação com ícone e destino alvo. | Sim |
+| `ícone` | token `i-` | — | Ícone exibido no botão flutuante. | Sim |
+| `destino` | slug/ação | — | Tela, modal ou drawer aberto ao tocar. | Sim |
+| `ordem` | prioridade | — | Primeira linha é a ação principal; demais seguem ordem decrescente. | Não |
+
+## Erros comuns (Do/Don’t)
+<DoDont
+  dont={{
+    title: "CTA duplicado",
+    code: `
+screen Tasks:
+  header:
+    @[Nova tarefa](TaskForm)
+
+  fab:
+    - i-Plus | TaskForm
+    `,
+  }}
+  do={{
+    title: "CTA complementar",
+    code: `
+screen Tasks:
+  header:
+    @[Nova tarefa](TaskForm)
+
+  fab:
+    - i-Filter | FilterDrawer
+    `,
+  }}
+>
+  Por quê: o FAB deve adicionar valor extra, não duplicar o CTA já disponível.
+</DoDont>
+<DoDont
+  dont={{
+    title: "FAB com ações desconexas",
+    code: `
+fab:
+  - i-Plus | TaskForm
+  - i-Settings | ThemeDrawer
+  - i-Download | ExportModal
+    `,
+  }}
+  do={{
+    title: "Foco em filtros e criação",
+    code: `
+fab:
+  - i-Plus | TaskForm
+  - i-Filter | FilterDrawer
+    `,
+  }}
+>
+  Por quê: ações relacionadas reduzem dúvida sobre o objetivo do FAB.
+</DoDont>
+
+## Referências cruzadas
+
+### Relacionados
+- [`Button`](./button): ações locais dentro do conteúdo.
+- [`Drawer`](./drawer): painéis laterais acionados pelo FAB.
+- [`Modal`](./modal): confirmações ou formulários rápidos.
+- [`Dashboard`](./dashboard): guia com uso frequente de FAB em telas analíticas.
+
+### Composições recomendadas
+- **FAB + Drawer** → filtros e detalhes avançados sem sair da tela.
+- **FAB + Modal** → confirmação rápida de ações globais.
+- **FAB + List** → mantém criação acessível enquanto percorre itens.
+
+<DocsCodePreview title="FAB abrindo filtros no dashboard">
+```dsl
+screen Dashboard:
+  container-wide:
+    # Visão Geral
+    grid-3:
+      card:
+        ## Leads
+        # 1.240
+      card:
+        ## Conversões
+        # 134
+      card:
+        ## Receita
+        # R$ 87K
+
+  fab:
+    - i-Filter | FilterDrawer
+
+drawer FilterDrawer:
+  container:
+    # Ajustar filtros
+    ___[Período][7 dias | 30 dias | 90 dias]
+    row-end:
+      @ghost[Cancelar](close)
+      @[Aplicar](applyFilters)
+```
+</DocsCodePreview>
+Por quê: facilita ajustes enquanto mantém os indicadores à vista.

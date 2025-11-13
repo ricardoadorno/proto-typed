@@ -1,0 +1,156 @@
+# Icon
+Icons (`i-Name`) reinforce the visual meaning of actions, lists, and titles without breaking the textual flow.
+
+## When to use
+- Complement buttons and links with an immediate visual cue.
+- Differentiate items in lists or navigators with consistent visual clues.
+- Indicate status in cards and messages without adding redundant text.
+- Support FABs and highlighted actions on responsive screens.
+
+## Basic example
+<DocsCodePreview title="Icons in buttons and list">
+```dsl
+screen Shortcuts:
+  container:
+    # Quick shortcuts
+    
+      - i-Home Dashboard | Dashboard
+      - i-Calendar Agenda | Agenda
+
+    row-start:
+      @[i-Plus New task](TaskForm)
+      @outline[i-Download Export CSV](ExportCSV)
+```
+</DocsCodePreview>
+Why: combines visual cues and text to speed up action recognition.
+
+## Variants
+<DocsCodePreview title="Icon in an informational paragraph">
+```dsl
+screen Default:
+  container:
+    card:
+      *> i-Info The deployment is in progress.
+```
+</DocsCodePreview>
+When to use: highlight warnings without resorting to additional blocks.
+Why: adds visual emphasis without needing extra layouts.
+
+<DocsCodePreview title="Icon in navigator">
+```dsl
+screen Default:
+  container:
+    # Screen content
+  navigator:
+    - i-Home Home | Home
+    - i-Server Deploys | Deploys
+    - i-AlertCircle Logs | Logs
+```
+</DocsCodePreview>
+When to use: guide navigation with immediate clues about each tab.
+Why: speeds up the identification of destinations when browsing the menu.
+
+<DocsCodePreview title="Icon in FAB">
+```dsl
+screen Default:
+  container:
+    # Screen content
+  fab:
+    - i-Plus | TaskForm
+    - i-Filter | FilterDrawer
+```
+</DocsCodePreview>
+When to use: differentiate global actions in the FAB while keeping the layout clean.
+Why: the icon summarizes the purpose of each action without additional text.
+
+## Composition (using with others)
+- **Icon + Button** — reinforces the CTA's intention.
+- **Icon + List** — transforms lists into visual shortcuts.
+- **Icon + Card** — signals status without polluting titles.
+
+<DocsCodePreview title="Card with status icons">
+```dsl
+screen Default:
+  container:
+    card:
+      ## Deployment status
+      stack-tight:
+        > i-Check Build completed
+        > i-Check Tests finished
+        > i-AlertCircle Monitor logs
+```
+</DocsCodePreview>
+Why: allows tracking states quickly within a summary block.
+
+## Slots & Props
+| Name | Type | Default | Description | Required |
+| --- | --- | --- | --- | --- |
+| `token` | string `i-Name` | — | Name of the icon available in the Lucide library. | Yes |
+| `position` | inline | — | Inserted before the text of the button, list, or title. | No |
+| `semantics` | context | — | Choose icons that reinforce the message without ambiguity. | Yes |
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Incomplete token",
+    code: `
+@[Download Export CSV](ExportCSV)
+    `,
+  }}
+  do={{
+    title: "Valid token",
+    code: `
+@[i-Download Export CSV](ExportCSV)
+    `,
+  }}
+>
+  Why: the `i-` prefix identifies the resource in the icon library.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Isolated icons",
+    code: `
+row:
+  > i-AlertTriangle
+  > i-AlertTriangle
+  > i-AlertTriangle
+    `,
+  }}
+  do={{
+    title: "Explicit context",
+    code: `
+row:
+  > i-AlertTriangle Critical alerts
+    `,
+  }}
+>
+  Why: the text ensures accessibility and avoids ambiguous interpretations.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Button`](./button): uses icons to reinforce the purpose of actions.
+- [`List`](./list): incorporates icons as visual markers.
+- [`Navigator`](./navigator): supplies menus and tabs with icons.
+- [`Fab`](./fab): relies on icons to differentiate floating actions.
+
+### Recommended compositions
+- **Icon + Button** → CTA with immediate visual signaling.
+- **Icon + List** → shortcuts with quick reading.
+- **Icon + Navigator** → menus contextualized by icons.
+
+<DocsCodePreview title="Navigator with icons and content">
+```dsl
+screen Settings:
+  navigator:
+    - i-User Profile | Profile
+    - i-Shield Security | Security
+    - i-Bell Notifications | Notifications
+
+  container:
+    # Profile
+    > Update personal data and preferences.
+```
+</DocsCodePreview>
+Why: associates icons with the corresponding section and speeds up user orientation.

@@ -1,0 +1,198 @@
+{
+  "playground": {
+    "title": "Playground",
+    "editorTitle": "Editor",
+    "editorDescription": "Escreva componentes, telas e fluxos usando a sintaxe declarativa.",
+    "viewDocumentation": "Ver documentação",
+    "exportHtml": "Exportar HTML",
+    "themePreset": "Preset de tema",
+    "livePreview": "Preview ao vivo",
+    "livePreviewDescription": "Interaja com a interface renderizada. Clique nos botões para trocar de tela mais rápido.",
+    "screensDetected": "telas detectadas:",
+    "noScreensDetected": "Nenhuma tela detectada"
+  },
+  "docs": {
+    "title": "Documentação enxuta para prototipar rápido no universo proto-typed",
+    "description": "Aprenda a usar a DSL, componentes e tokens oficiais para construir experiências navegáveis em minutos. Tudo pensado para um fluxo coeso entre design e desenvolvimento.",
+    "startNow": "Começar agora",
+    "goToPlayground": "Ir para o playground",
+    "highlights": "Destaques",
+    "highlightsDescription": "Os pontos essenciais para dominar o proto-typed do zero ao avançado.",
+    "highlightItems": [
+      "Fluxo passo a passo para sair da ideia ao protótipo clicável.",
+      "Playgrounds integrados e blocos de código com copy instantâneo.",
+      "Guia de tokens, layouts e padrões visuais do proto-typed."
+    ],
+    "exploreByChapters": "Explorar por capítulos",
+    "exploreByChaptersDescription": "A documentação é organizada em capítulos temáticos. Avance conforme a sua necessidade, sem perder o contexto do fluxo completo.",
+    "openFirstTopic": "Abrir primeiro tópico"
+  },
+  "changelog": {
+    "versionRegistry": "Registro de versões",
+    "title": "Change Log do Proto-Typed",
+    "description": "Histórico de lançamentos, correções e melhorias contínuas do sistema de prototipagem textual.",
+    "initialRelease": "Lançamento inicial do Proto-Typed!",
+    "initialDslVersion": "Versão inicial da DSL textual para prototipagem.",
+    "integratedPlayground": "Playground integrado com preview ao vivo.",
+    "features": "Novidades",
+    "improvements": "Melhorias",
+    "fixes": "Correções",
+    "internalChanges": "Alterações internas",
+    "trackDevelopment": "Acompanhe o desenvolvimento",
+    "trackDevelopmentDescription": "Veja o histórico completo de commits e releases do Proto-Typed no repositório oficial.",
+    "viewOnGitHub": "Ver no GitHub"
+  },
+  "known_errors": {
+    "title": "Lista de bugs e limitações identificadas",
+    "description": "Aqui estão os problemas conhecidos nas versões atuais do Proto-Typed. Acompanhe seu status e soluções sugeridas.",
+    "indentationError": "Erro de Indentação",
+    "indentationErrorDescription": "Quando existe uma linha em branco é entendido como fim da identação do componente pai, causando falha na renderização correta dos estilos no tema escuro.",
+    "indentationErrorCause": "Problema no parser que entende linhas em branco como término de bloco",
+    "status": "Status",
+    "inProgress": "Correção em andamento",
+    "cause": "Causa",
+    "fix": "Correção",
+    "foundNewIssue": "Encontrou um novo problema?",
+    "foundNewIssueDescription": "Relate um bug ou comportamento inesperado para que possamos investigar e corrigir o mais rápido possível.",
+    "openIssueOnGitHub": "Abrir issue no GitHub"
+  },
+  "principles": {
+    "title": "Proto-Typed — descreva interfaces, veja protótipos, itere com IA.",
+    "description": "Um formato textual de prototipação: você escreve o que a interface é (telas, listas, botões, navegação) e o sistema cuida do resto — sem arrastar blocos, sem JSX, sem fricção."
+  },
+  "principles_page": {
+    "hero": {
+      "title": "Proto-Typed — descreva interfaces, veja protótipos, itere com IA.",
+      "description": "Um formato textual de prototipação: você escreve o que a interface é (telas, listas, botões, navegação) e o sistema cuida do resto — sem arrastar blocos, sem JSX, sem fricção.",
+      "cta_experiment": "Experimentar",
+      "cta_examples": "Ver exemplos",
+      "cta_philosophy": "Ler a filosofia",
+      "highlight1_title": "Sem arrastar blocos",
+      "highlight1_description": "Você descreve a interface e o sistema cuida do resto.",
+      "highlight2_title": "Padrões prontos",
+      "highlight2_description": "Cards, listas e fluxos com boas decisões visuais por padrão.",
+      "highlight3_title": "Feito com IA em mente",
+      "highlight3_description": "Sintaxe estável para humanos e modelos iterarem com confiança.",
+      "magic_value_label": "Valor mágico",
+      "magic_value_text": "Do conceito ao protótipo em minutos. Em vez de \"pedir uma mudança\" na UI, você descreve a mudança. Em vez de ajustar pixel a pixel, você reescrever a seção ou pede para uma IA fazer. O rascunho está sempre atualizável e compartilhável.",
+      "flow_describe": "Descrever",
+      "flow_describe_desc": "Capture telas, listas e ações em texto legível e versionável.",
+      "flow_visualize": "Visualizar",
+      "flow_visualize_desc": "Gere protótipos navegáveis com padrões coerentes imediatamente.",
+      "flow_iterate": "Iterar",
+      "flow_iterate_desc": "Peça ajustes em linguagem natural e deixe a IA reescrever trechos.",
+      "flow_export": "Exportar",
+      "flow_export_desc": "Leve HTML hoje e abra portas para outros runtimes amanhã."
+    },
+    "context": {
+      "eyebrow": "Contexto",
+      "title": "O problema e o formato textual",
+      "problem_title": "O problema",
+      "problem_text1": "Criar UI ainda é pesado: ferramentas gráficas são ótimas para desenhar, mas lentas para iterar; código é preciso, porém verborrágico. E as IAs entendem intenções, mas não \"editam\" arquivos visuais com fluidez.",
+      "problem_text2": "Proto-Typed nasce para ser o idioma comum de prototipação entre pessoas e IAs — rápido de escrever, fácil de ler e simples de versionar.",
+      "what_is_title": "O que é",
+      "what_is_text1": "Proto-Typed é um formato textual de interface. Você descreve conteúdo, estrutura e ações; ele gera um protótipo navegável.",
+      "what_is_text2": "Pensamento-chave: você foca na intenção (o que é um \"card\", um \"header\", uma \"lista\"), e o sistema decide como renderizar com bons padrões. É a lógica de \"conteúdo primeiro, aparência depois\" — como em editores de texto científicos — aplicada à UI."
+    },
+    "audience": {
+      "eyebrow": "Para quem é",
+      "title": "Quando interface vira texto, todo mundo ganha velocidade",
+      "description": "Três perfis que ganham velocidade quando interface vira texto.",
+      "card1_title": "PMs e Gestores",
+      "card1_description": "Alinhe rapidamente fluxo e comportamento visual — sem abrir ferramenta de design.",
+      "card2_title": "Devs backend e full-stack",
+      "card2_description": "Monte telas de protótipo sem mergulhar em CSS/JSX.",
+      "card3_title": "LLMs e agentes",
+      "card3_description": "Edite com humanos em um formato textual estável, seguro e versionável."
+    },
+    "process": {
+      "eyebrow": "Processo",
+      "title": "Como funciona",
+      "subtitle": "Descrever → Visualizar → Iterar → Exportar.",
+      "description": "Por baixo, há uma representação semântica da interface (uma \"árvore\" que entende o que é tela, card, lista). Hoje renderizamos em HTML; amanhã, React Native/Flutter e outros alvos. O destino de renderização é coadjuvante: prioridade à fluidez de edição e à velocidade de iteração."
+    },
+    "principles": {
+      "title": "Princípios que guiam o Proto-Typed",
+      "description": "As decisões fundamentais por trás do formato textual.",
+      "principle1": "Simplicidade acima da customização extrema. Boas decisões por padrão.",
+      "principle2": "Semântica antes de aparência. Você descreve \"o que é\"; o sistema escolhe \"como parece\".",
+      "principle3": "Amigável para IA. Sintaxe curta, previsível e fácil de gerar por modelos.",
+      "principle4": "Portável por design. Um único modelo semântico, múltiplos renderizadores.",
+      "principle5": "Cobrir ~90% dos casos. Foco no que destrava prototipagem."
+    },
+    "influences": {
+      "eyebrow": "Influências",
+      "title": "Influências e escolhas de design",
+      "influence1_heading": "Resposta instantânea, atualização em segundo plano.",
+      "influence1_body": "Inspirado por padrões do TanStack Query: mostre algo agora e refine em seguida. Em protótipos, isso vira \"veja rápido, melhore logo depois\".",
+      "influence2_heading": "Aproveitar a plataforma, degradar graciosamente.",
+      "influence2_body": "A filosofia de progressive enhancement do Remix guia nossa robustez: conteúdo e comportamento essenciais funcionam primeiro, o resto é melhoria incremental.",
+      "influence3_heading": "Híbrido por natureza, escolha o melhor lugar para executar.",
+      "influence3_body": "Do Next.js, herdamos a ideia de múltiplas estratégias de renderização. Em Proto-Typed, significa emitir a mesma intenção para diferentes runtimes sem reescrever."
+    },
+    "example": {
+      "eyebrow": "Exemplo",
+      "title": "O que você escreve (exemplo curto)",
+      "result_text": "O que você recebe: um protótipo navegável com padrões de layout e estilo; peça à IA para \"duplicar a card de métricas\" ou \"trocar o botão para secundário grande\" e veja a mudança em segundos."
+    },
+    "manifesto": {
+      "eyebrow": "Manifesto",
+      "title": "Manifesto de visão (resumo)",
+      "point1": "Por que existe: prototipar interfaces não deveria exigir arrastar caixas, decorar frameworks ou traduzir intenções para pixels. A maioria das UIs repete padrões previsíveis; o que muda é conteúdo, fluxo e intenção.",
+      "point2": "O que faz: transforma esses padrões em descrições claras, legíveis por humanos e IAs, encurtando o caminho entre ideia e interface navegável.",
+      "point3": "Como faz: cobre ~90% dos casos com layouts canônicos e componentes semânticos, favorecendo edição fluida e natural, com um modelo desacoplado do destino de renderização.",
+      "point4": "Para onde vai: co-criação humano-IA realmente fluida — descrever, visualizar, pedir ajustes, versionar e exportar para múltiplos alvos sem fricção."
+    },
+    "architecture": {
+      "eyebrow": "Arquitetura",
+      "title": "Texto de interface → Representação semântica → Renderizador(es).",
+      "description": "A \"árvore\" representa interface, não HTML. Isso permite adicionar novos destinos (ex.: mobile) sem alterar a descrição original — a mesma separação entre intenção e execução que vemos em frameworks modernos.",
+      "item1_title": "Texto de interface",
+      "item1_description": "Tudo começa descrevendo a experiência em linguagem natural estruturada.",
+      "item2_title": "Representação semântica",
+      "item2_description": "Transformamos o texto em uma \"árvore\" que entende telas, cards e listas — interface, não HTML.",
+      "item3_title": "Renderizadores",
+      "item3_description": "Hoje renderizamos em HTML; amanhã, React Native/Flutter e outros alvos, sem alterar a descrição original."
+    },
+    "future": {
+      "eyebrow": "O futuro",
+      "title": "Para onde o Proto-Typed está indo",
+      "item1": "Co-criação humano-IA cada vez mais fluida: descrever, visualizar, ajustar por conversa.",
+      "item2": "Renderização multi-alvo: HTML hoje; React Native/Flutter amanhã — uma única fonte de verdade.",
+      "item3": "Padrões de interação mais ricos: listas dinâmicas, estados de carregamento, fluxos e validações — no mesmo idioma."
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "FAQ (filosofia rápida)",
+      "q1": "Isso substitui ferramentas de design?",
+      "a1": "Não. Cobrimos o espaço de prototipação textual rápida e comunicação de intenção. Ferramentas visuais continuam ótimas para refinamento e pixel-perfection.",
+      "q2": "Por que texto?",
+      "a2": "Porque é editável, versionável e conversável — por pessoas e IAs. A iteração vira linguagem, não cliques.",
+      "q3": "Onde entram dados reais?",
+      "a3": "Quando necessário, você pode simular dados ou conectar fontes externas nos renderizadores — mantendo o foco na intenção da UI. A filosofia geral é \"mostre algo agora, refine depois\"."
+    },
+    "cta_final": {
+      "badge": "Experimente Já",
+      "title": "Comece a prototipar em segundos.",
+      "description": "Abra o editor, descreva uma tela e veja o protótipo surgir. Depois, itere com sua equipe — e com sua IA."
+    }
+  },
+  "nav": {
+    "playground": "Playground",
+    "docs": "Docs",
+    "philosophy": "Filosofia",
+    "knownErrors": "Problemas Conhecidos"
+  },
+  "footer": {
+    "getStarted": "Comece rápido",
+    "introduction": "Introdução",
+    "philosophy": "Filosofia do proto-typed",
+    "explore": "Explorar",
+    "playground": "Playground",
+    "knownErrors": "Erros Conhecidos",
+    "community": "Comunidade",
+    "github": "GitHub",
+    "status": "Status",
+    "changelog": "Changelog"
+  }
+}

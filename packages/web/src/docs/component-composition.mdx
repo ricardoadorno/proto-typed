@@ -1,0 +1,197 @@
+# Component Composition
+## Why it matters
+Composing components allows you to create complex layouts from smaller blocks, maintaining visual cohesion and facilitating maintenance. The pattern ensures that structural changes are applied in a single place and reflected throughout the system.
+
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Larger component reusing a helper">
+```dsl
+component HeaderBar:
+  row-between:
+    > %title
+    @[Main action](%action)
+
+component Section:
+  container:
+    $HeaderBar:
+      - Active projects | NewProject
+    stack-loose:
+      > %description
+
+screen Dashboard:
+  $Section:
+    - Weekly review of initiatives
+```
+</DocsCodePreview>
+Why: shows how a main component reuses another component by passing specific data.
+
+## Usage patterns
+<DocsCodePreview title="Section with header and grid of cards">
+```dsl
+component ProjectCard:
+  card:
+    ## %name
+    >>> %owner
+    > %status
+    @[Open](%destination)
+
+component ProjectSection:
+  container:
+    row-between:
+      # %title
+      @[Create project](%action)
+    grid-3 $ProjectCard:
+      - New platform | Ana Souza | In QA | ProjectDetail
+      - User research | Carla Dias | In discovery | ResearchBoard
+
+screen Dashboard:
+  $ProjectSection:
+    - Active projects
+    - ProjectForm
+```
+</DocsCodePreview>
+When to use: group header, actions, and a collection of cards into a single reusable unit.
+Why: a single change is reflected on all screens that use the composite section.
+
+<DocsCodePreview title="Helper components for complex slots">
+```dsl
+component EmptyState:
+  card:
+    ## %title
+    > %message
+    row-center:
+      @[Create item](%action)
+
+component Module:
+  container:
+    # %moduleTitle
+    stack:
+      $EmptyState:
+        - No leads
+        - Start by registering contacts.
+        - LeadForm
+
+screen Leads:
+  $Module:
+    - Leads
+```
+</DocsCodePreview>
+When to use: encapsulate empty states and reuse them in different modules.
+Why: maintains a consistent empty state language throughout the product.
+
+<DocsCodePreview title="Composite component within a list">
+```dsl
+component TaskRow:
+  row-between:
+    stack-tight:
+      > %title
+      >>> %due
+    @[Details](%action)
+
+component TaskSection:
+  container:
+    # %title
+    list $TaskRow:
+      - Review backlog | 22/09 | show:backlog
+      - Prepare demo | 25/09 | show:demo
+
+screen Tasks:
+  $TaskSection:
+    - Tasks of the week
+```
+</DocsCodePreview>
+When to use: separate responsibilities between the section component and the row component.
+Why: facilitates isolated layout evolutions without breaking the main list.
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Replicated headers",
+    code: `
+component DashboardHeader:
+  row-between:
+    # Active projects
+    @[Create project](ProjectForm)
+
+component ProjectsHeader:
+  row-between:
+    # Active projects
+    @[Create project](ProjectForm)
+    `,
+  }}
+  do={{
+    title: "Reusable header",
+    code: `
+component SectionHeader:
+  row-between:
+    # %title
+    @[Create project](%action)
+    `,
+  }}
+>
+  Why: centralizing identical structures reduces discrepancies and maintenance effort.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Ignored value",
+    code: `
+component Section:
+  container:
+    $SectionHeader:
+      - %title
+      - %action
+    `,
+  }}
+  do={{
+    title: "Chained props",
+    code: `
+component Section:
+  container:
+    $SectionHeader:
+      - %title
+      - %action
+
+screen Dashboard:
+  $Section:
+    - Active projects
+    - ProjectForm
+    `,
+  }}
+>
+  Why: intermediate components need to pass on the data expected by the utilities they encapsulate.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Component Definition`](./component-definition): the basis of each reusable block.
+- [`Component Props`](./component-props): management of data passed between components.
+- [`Component List`](./component-list): lists powered by composite components.
+- [`Dashboard`](./dashboard): guide demonstrating advanced compositions.
+
+### Recommended compositions
+- **Component Composition + Grid** → complete sections with reusable showcases.
+- **Component Composition + Modal** → reuses headers and content in overlays.
+- **Component Composition + Drawer** → complex side panels with subcomponents.
+
+<DocsCodePreview title="Composite component applied in a drawer">
+```dsl
+component DrawerHeader:
+  row-between:
+    ## %title
+    @ghost[Close](close)
+
+component DetailsDrawer:
+  card:
+    $DrawerHeader:
+      - Customer details
+    stack-loose:
+      > %summary
+      @[Open profile](%action)
+
+drawer CustomerDetails:
+  $DetailsDrawer:
+    - Review the information before proceeding.
+    - CustomerProfile
+```
+</DocsCodePreview>
+Why: combines a reusable header and custom content within the drawer.

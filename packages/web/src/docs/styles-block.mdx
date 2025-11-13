@@ -1,0 +1,144 @@
+# Styles Block
+## Why it matters
+The `styles:` block centralizes color, typography, and spacing tokens. Adjustments made here propagate throughout the entire DSL, ensuring a consistent visual identity and facilitating theme maintenance.
+
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Basic styles block">
+```dsl
+styles:
+  --primary: oklch(0.70 0.15 220);
+  --primary-foreground: oklch(0.98 0 0);
+
+screen Default:
+  container:
+    # Example using the styles
+```
+</DocsCodePreview>
+Why: defines the minimum set of variables to control the primary color and its contrast.
+
+## Usage patterns
+<DocsCodePreview title="Customization of colors and radius">
+```dsl
+styles:
+  --primary: oklch(0.68 0.15 210);
+  --primary-foreground: oklch(0.98 0 0);
+  --accent: oklch(0.74 0.14 280);
+  --radius: 0.75rem;
+
+screen CustomTheme:
+  container:
+    # Adapted theme
+    > Buttons and cards reflect the configured tokens.
+    row:
+      @[Main action](Action)
+      @secondary[Secondary](Secondary)
+```
+</DocsCodePreview>
+When to use: align the interface with the brand identity by adjusting global tokens.
+Why: all screens immediately reflect the new colors and radii.
+
+<DocsCodePreview title="Reusable custom tokens">
+```dsl
+styles:
+  --brand-color: #0f172a;
+  --brand-subtitle: #cbd5f5;
+
+component Hero:
+  card:
+    ## %title
+    > %subtitle
+    row-end:
+      @[Get started now](%destination)
+```
+</DocsCodePreview>
+When to use: create specific variables that will be used in multiple components.
+Why: custom tokens avoid repeating hexadecimal values or local measurements.
+
+<DocsCodePreview title="Combination with themes">
+```dsl
+styles:
+  --primary: var(--theme-primary);
+  --secondary: var(--theme-secondary);
+
+screen ThemedDashboard:
+  container:
+    # Themed dashboard
+    > The colors respond to the active theme.
+```
+</DocsCodePreview>
+When to use: integrate the styles block with strategies defined in `themes`.
+Why: allows switching complete palettes just by changing the theme values.
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Token outside the block",
+    code: `
+component Hero:
+  card:
+    --brand-color: #0f172a;
+    ## %title
+    `,
+  }}
+  do={{
+    title: "Global token",
+    code: `
+styles:
+  --brand-color: #0f172a;
+
+component Hero:
+  card:
+    ## %title
+    >>> Uses var(--brand-color) in the theme.
+    `,
+  }}
+>
+  Why: keeping tokens in `styles:` avoids discrepancies and facilitates auditing.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Incomplete syntax",
+    code: `
+styles:
+  --primary: #1f2937
+    `,
+  }}
+  do={{
+    title: "Terminated line",
+    code: `
+styles:
+  --primary: #1f2937;
+    `,
+  }}
+>
+  Why: the parser requires `;` to recognize each declaration.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Themes`](./themes): expands customization with multiple sets of tokens.
+- [`Button`](./button): responds directly to colors and radii defined in the block.
+- [`Card`](./card): uses global spacing and color variables.
+- [`Dashboard`](./dashboard): demonstrates the practical application of custom themes.
+
+### Recommended compositions
+- **Styles Block + Themes** → controls brand variations in different environments.
+- **Styles Block + Component Composition** → uses custom tokens in complex components.
+- **Styles Block + Modal** → ensures adequate contrast in overlays.
+
+<DocsCodePreview title="Styles applied in a modal">
+```dsl
+styles:
+  --modal-background: #0f172a;
+  --modal-foreground: #f8fafc;
+
+modal DarkModal:
+  card:
+    ## Attention
+    > Overlays use custom tokens defined in the block.
+    row-end:
+      @[Got it](close)
+```
+</DocsCodePreview>
+Why: the block ensures the right contrast between the modal's background and text.

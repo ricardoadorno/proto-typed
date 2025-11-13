@@ -1,0 +1,72 @@
+styles:
+  --primary: #8b5cf6;
+  --accent: #6366f1;
+
+
+screen Home:
+  header:
+    >> Modal Test
+    @ghost[Menu](MainMenu)
+
+  container:
+    # Modal Test Screen
+
+    > Click the button below to open a modal
+
+    stack:
+      @primary[Open Simple Modal](SimpleModal)
+      @secondary[Open Card Modal](CardModal)
+      @outline[Open Form Modal](FormModal)
+
+
+modal SimpleModal:
+  ## Simple Modal
+  > This is a simple modal without a card container
+  
+  @ghost[Close](close)
+
+
+modal CardModal:
+  card:
+    ## Card Modal
+    > This modal has a card container
+    
+    row-end:
+      @ghost[Cancel](close)
+      @primary[OK](Home)
+
+
+modal FormModal:
+  card:
+    ## Form Modal
+    >>> Fill the form below
+    
+    ___[Name][Enter your name]
+    ___email[Email][your@email.com]
+    
+    [X] Subscribe to newsletter
+    [ ] Receive updates
+    
+    row-between:
+      @ghost[Cancel](close)
+      @primary[Submit](Home)
+
+
+drawer MainMenu:
+  stack:
+    ## Menu
+    @[Home](Home)
+    @[About](About)
+
+
+screen About:
+  header:
+    >> About
+    @ghost[Back](Home)
+
+  container:
+    # About Screen
+    > This is the about screen
+
+    @[Go Home](Home)
+

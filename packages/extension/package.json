@@ -1,35 +1,130 @@
 {
-  "name": "@proto-typed/extension",
-  "version": "0.1.0",
-  "description": "VS Code extension for Proto-Typed DSL",
-  "private": true,
-  "main": "./out/extension.js",
-  "engines": {
-    "vscode": "^1.80.0"
+  "name": "proto-typed-vscode-extension",
+  "displayName": "proto-typed",
+  "description": "VSCode extension for the Proto-Typed.",
+  "version": "0.0.1",
+  "publisher": "proto-typed",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ricardoadorno/proto-typed"
   },
+  "icon": "icons/icon-128.png",
+  "engines": {
+    "vscode": "^1.83.0"
+  },
+  "license": "Apache-2.0",
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "main": "./dist/extension.js",
   "activationEvents": [
-    "onLanguage:proto-typed"
+    "onLanguage:proto-typed",
+    "onCommand:proto-typed.showPreview"
   ],
   "contributes": {
     "languages": [
       {
         "id": "proto-typed",
-        "aliases": ["Proto-Typed", "proto-typed"],
-        "extensions": [".dsl"],
-        "configuration": "./language-configuration.json"
+        "aliases": [
+          "Proto-Typed",
+          "proto-typed"
+        ],
+        "extensions": [
+          ".pty"
+        ],
+        "configuration": "./syntaxes/language-configuration.json",
+        "icon": {
+          "light": "./icons/icon-32.png",
+          "dark": "./icons/icon-32.png"
+        }
       }
-    ]
+    ],
+    "grammars": [
+      {
+        "language": "proto-typed",
+        "scopeName": "source.pty",
+        "path": "./syntaxes/proto-typed.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "proto-typed",
+        "path": "./snippets/snippets.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "proto-typed.showPreview",
+        "title": "Open Preview to the Side",
+        "category": "Proto-Typed",
+        "icon": {
+          "light": "./icons/icon-24.png",
+          "dark": "./icons/icon-24.png"
+        }
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "proto-typed.showPreview",
+          "when": "editorLangId == proto-typed",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "proto-typed.showPreview",
+          "when": "editorLangId == proto-typed"
+        }
+      ]
+    }
   },
   "scripts": {
-    "build": "echo 'Extension build not implemented yet'",
-    "watch": "echo 'Extension watch not implemented yet'"
-  },
-  "dependencies": {
-    "@proto-typed/core": "workspace:*"
+    "vscode:prepublish": "pnpm run compile",
+    "sync:grammar": "node ./scripts/sync-grammar.mjs",
+    "compile": "pnpm run sync:grammar && pnpm run build:webview && pnpm --workspace-root run compile:core && node ./scripts/build.mjs",
+    "build:webview": "cd webview && pnpm install && pnpm run build",
+    "dev:webview": "cd webview && pnpm run dev",
+    "watch": "node ./scripts/build.mjs --watch",
+    "watch:webview": "cd webview && pnpm run dev",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "pretest:extension:e2e": "pnpm run compile && pnpm exec tsc -p ./tests/tsconfig.json",
+    "test:extension:e2e": "node ./dist/tests/run-simple.js",
+    "test:extension:e2e:headed": "pnpm run pretest:extension:e2e && node ./dist/tests/run-simple.js",
+    "vsce:login": "npx @vscode/vsce login proto-typed",
+    "vsce:package": "npx @vscode/vsce package",
+    "vsce:publish": "npx @vscode/vsce publish",
+    "vsce:publish:patch": "npx @vscode/vsce publish patch",
+    "vsce:publish:minor": "npx @vscode/vsce publish minor",
+    "vsce:publish:major": "npx @vscode/vsce publish major",
+    "ovsx:publish": "npx ovsx publish --pat $OVSX_TOKEN"
   },
   "devDependencies": {
-    "@types/node": "24.8.1",
-    "@types/vscode": "^1.80.0",
-    "typescript": "~5.7.2"
+    "@proto-typed/core": "workspace:*",
+    "@types/chai": "^4.3.11",
+    "@types/glob": "^9.0.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^18.19.130",
+    "@types/vscode": "^1.83.0",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.3.8",
+    "@vscode/vsce": "^3.6.2",
+    "chai": "^4.3.10",
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.27.0",
+    "glob": "^11.0.3",
+    "http-server": "^14.1.1",
+    "mocha": "^10.8.2",
+    "pixelmatch": "^5.3.0",
+    "playwright-core": "^1.56.1",
+    "pngjs": "^7.0.0",
+    "typescript": "^5.2.2",
+    "vscode-languageserver-protocol": "^3.17.5",
+    "vscode-languageserver-textdocument": "^1.0.12",
+    "vscode-languageserver-types": "^3.17.5",
+    "vscode-uri": "^3.1.0"
   }
 }

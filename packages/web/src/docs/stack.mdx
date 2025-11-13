@@ -1,0 +1,175 @@
+# Stack
+Stacks pile elements vertically, controlling the spacing between content blocks.
+
+## When to use
+- Organize titles, texts, and actions in a logical sequence.
+- Assemble forms with multiple fields and aligned buttons.
+- Alternate reading density with `tight`, `loose`, and `none` (legacy `flush`) variants.
+- Group reusable components while maintaining a cohesive visual hierarchy.
+
+## Basic example
+<DocsCodePreview title="Stack in a guidance card">
+```dsl
+screen Default:
+  container:
+    card:
+      ## Next steps
+      stack-loose:
+        > Review the backlog with the team.
+        > Confirm the sprint plan.
+        @[Open planning](Planning)
+```
+</DocsCodePreview>
+Why: combines texts and action in vertical blocks with comfortable spacing.
+
+<Attention title="Avoid automatic hyphens in layouts">
+Even if an LLM suggests `-` before each line, `stack`, `row`, `card`, and other layouts expect only indented children. Use a hyphen only in `list`, `navigator`, and `fab` to prevent the syntax from generating invalid nodes.
+</Attention>
+
+## Variants
+<DocsCodePreview title="Default stack">
+```dsl
+screen Default:
+  container:
+    stack:
+      > Validate requirements
+      > Adjust schedule
+      @[Open checklist](Checklist)
+```
+</DocsCodePreview>
+When to use: organize varied content with medium spacing.
+Why: balances texts, inputs, and actions without creating loose blocks.
+
+<DocsCodePreview title="Stack-tight for short items">
+```dsl
+screen Default:
+  container:
+    stack-tight:
+      [X] Define objective
+      [ ] Validate prototype
+      [ ] Prepare release
+```
+</DocsCodePreview>
+When to use: group short items or checklists without losing readability.
+Why: the reduced gap brings related content closer and speeds up reading.
+
+<DocsCodePreview title="Stack-none for compact cards">
+```dsl
+screen Default:
+  container:
+    stack-none:
+      card-compact:
+        > Last update on 09/18.
+      card-compact:
+        > Meeting scheduled for tomorrow.
+```
+</DocsCodePreview>
+When to use: stack elements that already have their own padding.
+Why: avoids double spacing when the internal components already bring a margin.
+<Tip title="Backward compatibility">
+`stack-flush` continues to work as an alias for `stack-none` so older snippets remain valid.
+</Tip>
+
+## Composition (using with others)
+- **Stack + Card** — places sequential content within a structured block.
+- **Stack + Row** — mixes vertical and horizontal distribution in the same area.
+- **Stack + Component Definition** — reuses standardized blocks on various screens.
+
+<DocsCodePreview title="Form with stack and row">
+```dsl
+screen Default:
+  container:
+    card:
+      ## Update profile
+      stack-loose:
+        ___[Full name][Enter your name]
+        ___email[E-mail][name@company.com]
+        ___textarea[Bio][Tell us about your work]
+      row-end:
+        @ghost[Cancel](close)
+        @[Save changes](saveProfile)
+```
+</DocsCodePreview>
+Why: separates fields vertically and aligns actions in the footer.
+
+## Slots & Props
+| Name | Type | Default | Description | Required |
+| --- | --- | --- | --- | --- |
+| `stack` | vertical layout | `stack` | Stacks elements with default spacing. | No |
+| `stack-tight`, `stack-loose`, `stack-none` (`stack-flush`) | variations | — | Adjust density between items (compact, wide, no gap). | No |
+| `internal content` | DSL blocks | — | Stacked items, such as texts, inputs, and components. | Yes |
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Stack with side-by-side buttons",
+    code: `
+stack:
+  @[Cancel](close)
+  @[Save](saveForm)
+    `,
+  }}
+  do={{
+    title: "Horizontal actions",
+    code: `
+stack:
+  > Adjust preferences before saving.
+  row-end:
+    @ghost[Cancel](close)
+    @[Save](saveForm)
+    `,
+  }}
+>
+  Why: stacks handle the vertical order; rows take care of horizontal alignment.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Long texts without breathing room",
+    code: `
+stack-tight:
+  > Update reports from all squads with full details.
+  > Document learnings in a comprehensive report for the entire team.
+    `,
+  }}
+  do={{
+    title: "Adequate space",
+    code: `
+stack-loose:
+  > Update reports from all squads with full details.
+  > Document learnings in a comprehensive report for the entire team.
+    `,
+  }}
+>
+  Why: ample content needs more spacing to maintain comfortable reading.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Row`](./row): complements stacks when it is necessary to align actions horizontally.
+- [`Card`](./card): wraps stacks with a title and context.
+- [`Container`](./container): main structure before including stacks.
+- [`Component Definition`](./component-definition): creates reusable stacked blocks.
+
+### Recommended compositions
+- **Stack + Row-end** → forms with aligned actions.
+- **Stack + Card + List** → content sections with textual summaries.
+- **Stack + Component Definition** → reusable layouts with variable data.
+
+<DocsCodePreview title="Stack with reusable component">
+```dsl
+component Insight:
+  card:
+    ## %title
+    > %description
+
+screen Default:
+  container:
+    stack-loose:
+      $Insight:
+        - Roadmap updated | Plan deliveries for the next quarter.
+      $Insight:
+        - Weekly metrics | Review KPIs before the status meeting.
+```
+</DocsCodePreview>
+Why: avoids duplication by stacking components with different data.

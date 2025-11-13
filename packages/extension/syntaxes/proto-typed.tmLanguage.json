@@ -1,0 +1,139 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Proto-Typed DSL",
+  "scopeName": "source.pty",
+  "fileTypes": [".pty"],
+  "patterns": [
+    { "include": "#views" },
+    { "include": "#components" },
+    { "include": "#styles" },
+    { "include": "#typography" },
+    { "include": "#buttons" },
+    { "include": "#linksAndImages" },
+    { "include": "#forms" },
+    { "include": "#layouts" },
+    { "include": "#structures" },
+    { "include": "#delimiters" }
+  ],
+  "repository": {
+    "views": {
+      "patterns": [
+        {
+          "name": "meta.section.view.pty",
+          "match": "^\\s*(screen|modal|drawer)\\s+(\\w+)\\s*(:)",
+          "captures": {
+            "1": { "name": "keyword.control.pty" },
+            "2": { "name": "entity.name.class.pty" },
+            "3": { "name": "punctuation.separator.pty" }
+          }
+        }
+      ]
+    },
+
+    "components": {
+      "patterns": [
+        {
+          "name": "meta.section.component.pty",
+          "match": "^\\s*(component)\\s+(\\w+)\\s*(:)",
+          "captures": {
+            "1": { "name": "keyword.control.pty" },
+            "2": { "name": "entity.name.function.pty" },
+            "3": { "name": "punctuation.separator.pty" }
+          }
+        },
+        { "match": "\\$[A-Z]\\w*", "name": "entity.name.function.pty" },
+        { "match": "%\\w+", "name": "variable.parameter.pty" }
+      ]
+    },
+
+    "styles": {
+      "patterns": [
+        { "match": "^\\s*styles\\s*:", "name": "keyword.other.pty" },
+        { "match": "--[\\w-]+", "name": "support.constant.property-name.pty" }
+      ]
+    },
+
+    "typography": {
+      "patterns": [
+        { "match": "^\\s*(#{1,4})(?=\\s)", "name": "entity.name.function.pty" },
+        {
+          "match": "^\\s*(\\*\\*>)(?=\\s)",
+          "name": "entity.name.function.pty"
+        },
+        {
+          "match": "^\\s*(\\*(?!\\*)>)(?=\\s)",
+          "name": "entity.name.function.pty"
+        },
+        { "match": "^\\s*(>>>)(?=\\s)", "name": "entity.name.function.pty" },
+        { "match": "^\\s*(>>)(?=\\s)", "name": "entity.name.function.pty" },
+        { "match": "^\\s*(>)(?=\\s)", "name": "entity.name.function.pty" }
+      ]
+    },
+    "buttons": {
+      "patterns": [
+        {
+          "match": "@(primary|secondary|outline|ghost|destructive|link|success|warning)(?:-(small|icon|large))?(?=\\[)",
+          "name": "variable.other.constant.pty"
+        },
+        { "match": "@(?=\\[)", "name": "variable.other.constant.pty" }
+      ]
+    },
+
+    "linksAndImages": {
+      "patterns": [
+        { "match": "#(?=\\[)", "name": "variable.other.constant.pty" },
+        {
+          "match": "!(?:rounded|circle)(?:-\\d+x\\d+)?(?=\\[)",
+          "name": "variable.other.constant.pty"
+        },
+        { "match": "!(?=\\[)", "name": "variable.other.constant.pty" },
+        { "match": "\\bi-[A-Z]\\w*\\b", "name": "variable.other.constant.pty" },
+        {
+          "match": "(?<=\\]\\()[A-Z]\\w*(?=\\))",
+          "name": "entity.name.type.pty"
+        },
+        {
+          "match": "(?<=\\()\\s*https?:\\/\\/[^\\s)]+(?=\\))",
+          "name": "entity.name.type.pty"
+        }
+      ]
+    },
+
+    "forms": {
+      "patterns": [
+        {
+          "match": "(?i:___(?:email|password|date|number|textarea|text|select)?)(?=\\s*\\[)",
+          "name": "string.pty"
+        },
+        { "match": "\\[[X\\s]\\]", "name": "constant.language.boolean.pty" },
+        {
+          "match": "^\\s*\\([X\\s]\\)",
+          "name": "constant.language.boolean.pty"
+        }
+      ]
+    },
+
+    "layouts": {
+      "patterns": [
+        {
+          "match": "\\b(header|container-narrow|container-wide|container-full|container|stack-none|stack-flush|stack-tight|stack-loose|stack|row-start|row-center|row-between|row-end|row|grid-2|grid-3|grid-4|grid-responsive|grid-auto|grid|layer-overlay|layer-sticky|layer-fixed|layer-absolute|layer-relative|layer-static|scroll-x|scroll-y|scroll-auto|scroll-hidden|card-compact|card-feature|card|sidebar|navigator|list|fab)\\b",
+          "name": "storage.type.pty"
+        }
+      ]
+    },
+
+    "structures": {
+      "patterns": [
+        { "match": "^\\s*---+\\s*$", "name": "keyword.operator.symbol.pty" },
+        { "match": "^\\s*-\\s+", "name": "keyword.operator.symbol.pty" }
+      ]
+    },
+
+    "delimiters": {
+      "patterns": [
+        { "match": "\\|", "name": "keyword.operator.symbol.pty" },
+        { "match": ":", "name": "keyword.operator.symbol.pty" }
+      ]
+    }
+  }
+}

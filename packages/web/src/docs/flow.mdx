@@ -1,0 +1,174 @@
+# Navigation Flow
+
+## Why it matters
+The navigation flow determines how people move between screens, drawers, and modals. A well-defined structure avoids dead ends, ensures quick context resumption, and keeps the product coherent across different devices.
+
+## Canonical form (minimum syntax)
+<DocsCodePreview title="Basic flow between two screens">
+```dsl
+screen Home:
+  container:
+    # Home
+    @[Go to details](Detail)
+
+screen Detail:
+  container:
+    # Details
+    @[Back](Home)
+```
+</DocsCodePreview>
+Why: displays simple bidirectional routes using buttons that reference valid slugs.
+
+## Usage patterns
+<DocsCodePreview title="Use navigator for sibling sections">
+```dsl
+screen Dashboard:
+  container:
+    # Metrics
+
+  navigator:
+    - i-Home Home | Home
+    - i-BarChart Metrics | Dashboard
+    - i-Settings Settings | Settings
+```
+</DocsCodePreview>
+When to use: offer persistent menus on screens with equivalent status.
+Why: the navigator keeps destinations always accessible and reduces dependence on scattered buttons.
+
+<DocsCodePreview title="Open drawer for complementary context">
+```dsl
+screen Accounts:
+  container:
+    # Accounts
+    stack:
+      > North Group
+      @[View details](AccountDrawer)
+
+drawer AccountDrawer:
+  card:
+    ## Details
+    > Update data before confirming changes.
+    row-end:
+      @ghost[Close](close)
+      @[Edit account](EditAccount)
+```
+</DocsCodePreview>
+When to use: display details without leaving the main screen.
+Why: drawers expand the flow laterally, keeping the origin and destination visible.
+
+<DocsCodePreview title="Chain confirmation modal">
+```dsl
+screen Default:
+  container:
+    row-end:
+      @destructive[Delete account](ConfirmDelete)
+
+modal ConfirmDelete:
+  card:
+    ## Confirm deletion
+    > This action is permanent.
+    row-end:
+      @ghost[Cancel](close)
+      @destructive[Delete now](deleteTenant)
+```
+</DocsCodePreview>
+When to use: require explicit confirmation before executing critical actions.
+Why: modals block the current navigation until the person makes a decision.
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Invalid destination",
+    code: `
+@[View report](ReportsDashboard)
+    `,
+  }}
+  do={{
+    title: "Registered destination",
+    code: `
+@[View report](Dashboard)
+    `,
+  }}
+>
+  Why: incorrect names lead to navigation failures and broken experiences.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Inconsistent closing",
+    code: `
+modal Confirm:
+  row-end:
+    @ghost[Cancel](-1)
+    @[Confirm](close)
+    `,
+  }}
+  do={{
+    title: "Closing consistency",
+    code: `
+modal Confirm:
+  row-end:
+    @ghost[Cancel](close)
+    @[Confirm](applyAction)
+    `,
+  }}
+>
+  Why: predictability reduces errors and reinforces users' mental model.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Drawer without closing",
+    code: `
+drawer Filters:
+  card:
+    ## Filters
+    @[Apply](applyFilters)
+    `,
+  }}
+  do={{
+    title: "Drawer with exit buttons",
+    code: `
+drawer Filters:
+  card:
+    ## Filters
+    row-end:
+      @ghost[Cancel](close)
+      @[Apply](applyFilters)
+    `,
+  }}
+>
+  Why: overlays need clear paths to return to the previous state.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Screen`](./screen): the main unit where the flow happens.
+- [`Navigator`](./navigator): persistent menus between sibling screens.
+- [`Modal`](./modal): critical confirmations in the flow.
+- [`Drawer`](./drawer): side details without losing context.
+
+### Recommended compositions
+- **Navigation Flow + Navigator** → structures pages of the same level.
+- **Navigation Flow + Modal Flow** → ensures complete handling of confirmations.
+- **Navigation Flow + Drawer Detail** → combines the main list with parallel details.
+
+<DocsCodePreview title="Flow with navigator and modal">
+```dsl
+screen Home:
+  container:
+    # Home
+    @[Add item](ConfirmAdd)
+
+  navigator:
+    - Home | Home
+    - Metrics | Dashboard
+
+modal ConfirmAdd:
+  card:
+    ## Add item?
+    row-end:
+      @ghost[Cancel](close)
+      @[Confirm](Dashboard)
+```
+</DocsCodePreview>
+Why: integrates persistent navigation with modal confirmation before redirecting.

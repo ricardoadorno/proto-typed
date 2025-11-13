@@ -1,0 +1,152 @@
+# List
+Lists organize textual items in a vertical sequence, serving as a starting point for summaries and catalogs.
+
+## When to use
+- Display collections of short items for quick reading.
+- Structure summaries, agendas, or checklists without complex formatting.
+- Feed repeated components (`list $Component`) with tabular data.
+- Group content in drawers, modals, or cards while maintaining a vertical rhythm.
+
+<Attention title="Indentation first, hyphen only in lists">
+LLMs often insert `-` to list children of any block, but the DSL only accepts this marker in `list`, `navigator`, and `fab`. For layouts and components, use only indentation; this avoids ghost nodes and keeps the reading clear for those who maintain the code.
+</Attention>
+
+## Basic example
+<DocsCodePreview title="List with separate actions">
+```dsl
+screen Default:
+  container:
+    card:
+      ## Tasks of the week
+      - Review backlog
+      - Prepare demo
+      - Update documentation
+      row-end:
+        @[Create new task](TaskForm)
+        @ghost[View calendar](Calendar)
+```
+</DocsCodePreview>
+Why: keeps items exclusively textual and positions actions in a dedicated block.
+
+## Variants
+<DocsCodePreview title="Simple list">
+```dsl
+screen Default:
+  container:
+    - Configure metrics
+    - Validate integrations
+    - Review deploy
+```
+</DocsCodePreview>
+When to use: enumerate short items without additional properties.
+Why: presents simple content without requiring complex components.
+
+<DocsCodePreview title="Component-based list">
+```dsl
+screen Todo:
+  container:
+    list $TaskRow:
+      - Update roadmap | By 22/09 | show:roadmap
+      - Review backlog | By 24/09 | show:backlog
+
+component TaskRow:
+  row-between:
+    stack-tight:
+      > %title
+      >>> %due
+    @outline[Details](%action)
+```
+</DocsCodePreview>
+When to use: render repeated items with multiple fields following the same structure.
+Why: avoids markup duplication while maintaining a consistent layout.
+
+## Composition (using with others)
+- **List + Card** — groups context and keeps items aligned.
+- **List + Component Definition** — transforms tabular data into rich layouts.
+- **List + Drawer** — exposes support lists without leaving the main screen.
+
+<DocsCodePreview title="List with reusable component">
+```dsl
+screen Metrics:
+  container:
+    card:
+      ## Indicators
+      list $MetricItem:
+        - Leads captured | 1,240
+        - Conversions | 134
+        - Revenue | $87K
+
+component MetricItem:
+    row-between:
+      > %label
+      >> %value
+```
+</DocsCodePreview>
+Why: maintains consistency in the presentation of recurring metrics.
+
+## Slots & Props
+| Name | Type | Default | Description | Required |
+| --- | --- | --- | --- | --- |
+| `-` | block | — | Renders textual items with a `-` marker. | Yes |
+| `list $Component` | block | — | Uses a previously declared component for each line. | No |
+| `items` | text or data separated by `|` | — | Data passed to each item or component. | Yes |
+| `%props` | interpolation | — | Variables within the component associated with the list. | No |
+
+## Common errors (Do/Don’t)
+<DoDont
+  dont={{
+    title: "Actions in ``",
+    code: `
+
+  - Review backlog @[Edit](TaskForm)
+    `,
+  }}
+  do={{
+    title: "Separate actions",
+    code: `
+
+  - Review backlog
+  - Prepare demo
+row-end:
+  @[Edit task](TaskForm)
+    `,
+  }}
+>
+  Why: `list` only accepts text; actions should be in rows, cards, or navigator.
+</DoDont>
+<DoDont
+  dont={{
+    title: "Pipes without `list $Component`",
+    code: `
+
+  - Pro Plan | $89
+    `,
+  }}
+  do={{
+    title: "List with component",
+    code: `
+component PlanRow:
+  row-between:
+    > %title
+    >> %price
+
+list $PlanRow:
+  - Pro Plan | $89
+    `,
+  }}
+>
+  Why: `|` indicates multiple values, and only components can interpolate `%props`.
+</DoDont>
+
+## Cross-references
+
+### Related
+- [`Component Definition`](./component-definition): defines templates used in `list $`.
+- [`Component List`](./component-list): extends lists with dynamic data.
+- [`Row`](./row): positions actions related to the list.
+- [`Card`](./card): defines context and provides a title to the list.
+
+### Recommended compositions
+- **List + Card + Row-end** → textual summary with actions in the footer.
+- **List + Component Definition** → rich collections based on data.
+- **List + Drawer** → quick notes without navigating from the screen.
