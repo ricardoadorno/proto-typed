@@ -1,6 +1,6 @@
 import { CstParser } from 'chevrotain'
-import { allTokens } from '../lexer/tokens'
-import { Indent, Outdent } from '../lexer/lexer'
+import { allTokens } from '../lexer/tokens/index.js'
+import { Indent, Outdent } from '../lexer/lexer.js'
 import {
   defineViewRules,
   defineComponentRules,
@@ -11,8 +11,8 @@ import {
   defineMetaRules,
   defineCoreRules,
   defineHelperMethods,
-} from './rules'
-import type { ParserRule } from '../types/parser'
+} from './rules/index.js'
+import type { ParserRule } from '../types/parser.js'
 
 /**
  * @class UiDslParser

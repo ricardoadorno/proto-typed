@@ -1,6 +1,6 @@
 import { TextDocument } from 'vscode-languageserver-textdocument'
 import type { Diagnostic } from 'vscode-languageserver-protocol'
-import type { ProtoError } from '../../types/errors'
+import type { ProtoError } from '../../types/errors.js'
 
 export interface DocumentState {
   document: TextDocument

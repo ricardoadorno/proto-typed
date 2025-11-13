@@ -3,4 +3,4 @@ export {
   generateDeterministicIds,
   validateAstIds,
   getAllIds,
-} from './deterministic-ids'
+} from './deterministic-ids.js'

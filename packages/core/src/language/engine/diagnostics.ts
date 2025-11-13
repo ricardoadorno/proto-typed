@@ -1,4 +1,4 @@
-import { ERROR_CODES, type ProtoError } from '../../types/errors'
+import { ERROR_CODES, type ProtoError } from '../../types/errors.js'
 import type { Diagnostic, Range } from 'vscode-languageserver-protocol'
 import { DiagnosticSeverity } from 'vscode-languageserver-types'
 import { TextDocument } from 'vscode-languageserver-textdocument'

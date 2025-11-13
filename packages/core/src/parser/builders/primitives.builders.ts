@@ -8,9 +8,9 @@ import {
   validateButtonVariant,
   validateButtonSize,
   validateRequiredProps,
-} from './builder-validation'
-import type { CstContext, CstVisitor } from '../../types/parser'
-import type { TextKind } from '../../types/ast-node'
+} from './builder-validation.js'
+import type { CstContext, CstVisitor } from '../../types/parser.js'
+import type { TextKind } from '../../types/ast-node.js'
 
 /**
  * @function buildHeadingElement

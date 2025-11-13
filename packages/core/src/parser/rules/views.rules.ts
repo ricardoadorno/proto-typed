@@ -3,8 +3,8 @@
  * Defines parsing rules for Screen, Modal, and Drawer elements
  */
 
-import { Screen, Modal, Drawer, Identifier, Colon } from '../../lexer/tokens'
-import type { IParser, RuleDefinitionFunction } from '../../types/parser'
+import { Screen, Modal, Drawer, Identifier, Colon } from '../../lexer/tokens/index'
+import type { IParser, RuleDefinitionFunction } from '../../types/parser.js'
 
 /**
  * Define view container parsing rules for Screen, Modal, and Drawer

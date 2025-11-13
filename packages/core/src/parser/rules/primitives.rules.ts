@@ -26,8 +26,8 @@ import {
   MutedText,
   Blockquote,
   Note,
-} from '../../lexer/tokens'
-import type { IParser, RuleDefinitionFunction } from '../../types/parser'
+} from '../../lexer/tokens/index'
+import type { IParser, RuleDefinitionFunction } from '../../types/parser.js'
 
 /**
  * Define primitive element parsing rules

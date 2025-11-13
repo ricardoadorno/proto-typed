@@ -1,0 +1,63 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/extension",
+        "--disable-extensions"
+      ],
+      "outFiles": ["${workspaceFolder}/packages/extension/dist/**/*.js"],
+      "preLaunchTask": "${defaultBuildTask}"
+    },
+    {
+      "name": "Extension Tests",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/extension",
+        "--extensionTestsPath=${workspaceFolder}/packages/extension/dist/tests/suite/index",
+        "${workspaceFolder}/packages/extension/tests/fixtures",
+        "--disable-extensions",
+        "--disable-workspace-trust"
+      ],
+      "outFiles": ["${workspaceFolder}/packages/extension/dist/**/*.js"],
+      "preLaunchTask": "npm: test:compile"
+    },
+    {
+      "name": "Extension Tests (Headed)",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/extension",
+        "--extensionTestsPath=${workspaceFolder}/packages/extension/dist/tests/suite/index",
+        "${workspaceFolder}/packages/extension/tests/fixtures",
+        "--disable-extensions",
+        "--disable-workspace-trust",
+        "--new-window"
+      ],
+      "outFiles": ["${workspaceFolder}/packages/extension/dist/**/*.js"],
+      "preLaunchTask": "npm: test:compile",
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "name": "Extension Tests (Current File)",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}/packages/extension",
+        "--extensionTestsPath=${workspaceFolder}/packages/extension/dist/tests/suite/index",
+        "${workspaceFolder}/packages/extension/tests/fixtures",
+        "--disable-extensions",
+        "--disable-workspace-trust"
+      ],
+      "outFiles": ["${workspaceFolder}/packages/extension/dist/**/*.js"],
+      "preLaunchTask": "npm: test:compile",
+      "env": {
+        "TEST_FILE": "${file}"
+      }
+    }
+  ]
+}

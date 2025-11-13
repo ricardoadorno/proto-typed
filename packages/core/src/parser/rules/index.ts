@@ -3,11 +3,11 @@
  * Exports all parsing rule definition functions
  */
 
-export { defineViewRules } from './views.rules'
-export { defineComponentRules } from './components.rules'
-export { definePrimitiveRules } from './primitives.rules'
-export { defineLayoutRules } from './layouts.rules'
-export { defineInputRules } from './inputs.rules'
-export { defineHeadRules } from './head.rules'
-export { defineMetaRules } from './meta.rules'
-export { defineCoreRules, defineHelperMethods } from './core.rules'
+export { defineViewRules } from './views.rules.js'
+export { defineComponentRules } from './components.rules.js'
+export { definePrimitiveRules } from './primitives.rules.js'
+export { defineLayoutRules } from './layouts.rules.js'
+export { defineInputRules } from './inputs.rules.js'
+export { defineHeadRules } from './head.rules.js'
+export { defineMetaRules } from './meta.rules.js'
+export { defineCoreRules, defineHelperMethods } from './core.rules.js'

@@ -1,13 +1,13 @@
-import { tokenize } from '../lexer/lexer'
-import { getParser } from './parser'
-import { createAstBuilder } from './ast-builder'
-import { generateDeterministicIds } from '../utils/deterministic-ids'
-import { ERROR_CODES, ProtoError } from '../types/errors'
+import { tokenize } from '../lexer/lexer.js'
+import { getParser } from './parser.js'
+import { createAstBuilder } from './ast-builder.js'
+import { generateDeterministicIds } from '../utils/deterministic-ids.js'
+import { ERROR_CODES, ProtoError } from '../types/errors.js'
 import type {
   AstNode,
   AstWithErrors,
   BuilderWithErrors,
-} from '../types/ast-node'
+} from '../types/ast-node.js'
 
 function normalizeDeprecatedLinkSyntax(source: string): {
   text: string

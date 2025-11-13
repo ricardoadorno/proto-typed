@@ -1,4 +1,4 @@
-import { AstNode } from '../types/ast-node'
+import { AstNode } from '../types/ast-node.js'
 
 /**
  * Generate a deterministic hash from a string

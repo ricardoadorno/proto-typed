@@ -1,4 +1,0 @@
-
-> tcc@1.0.0 compile:core /home/user/proto-typed
-> pnpm exec tsc -p packages/core/tsconfig.json
-

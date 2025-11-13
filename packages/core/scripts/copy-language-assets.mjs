@@ -10,7 +10,9 @@ const destination = join(__dirname, '..', 'dist', 'language', 'grammar')
 
 async function main() {
   await mkdir(destination, { recursive: true })
-  await cp(source, destination, { recursive: true })
+  // Only copy JSON files, not TypeScript source files
+  await cp(join(source, 'proto-typed.tmLanguage.json'), join(destination, 'proto-typed.tmLanguage.json'))
+  await cp(join(source, 'language-configuration.json'), join(destination, 'language-configuration.json'))
   console.log(`Copied language grammar assets to ${destination}`)
 }
 

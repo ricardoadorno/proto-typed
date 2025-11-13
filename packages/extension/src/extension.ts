@@ -4,29 +4,34 @@
  */
 
 import * as vscode from 'vscode'
-import {
-  activateVSCodeAdapter,
-  type LanguageHost,
-} from '@proto-typed/core/language'
-import {
-  parseAndBuildAst,
-  ErrorBus,
-  ERROR_CODES,
-  sanitizeErrorMessage,
-  type ProtoError,
-  type AstWithErrors,
-} from '@proto-typed/core'
-import { MessageRouter } from './messaging/message-router'
-import { TextDocumentSynchronizer } from './utils/text-document-synchronizer'
-import { PlaygroundPanel } from './panels/playground/playground-panel'
-import { createMessage } from './messaging/message-types'
+import type { LanguageHost } from '@proto-typed/core/language' with { 'resolution-mode': 'import' }
+import type {
+  ProtoError,
+  AstWithErrors,
+} from '@proto-typed/core' with { 'resolution-mode': 'import' }
+import { MessageRouter } from './messaging/message-router.js'
+import { TextDocumentSynchronizer } from './utils/text-document-synchronizer.js'
+import { PlaygroundPanel } from './panels/playground/playground-panel.js'
+import { createMessage } from './messaging/message-types.js'
 import type {
   RequestExportMessage,
   RequestSetTextMessage,
   LogEventMessage,
   NavigationUpdateMessage,
   RenderCompleteMessage,
-} from './messaging/message-types'
+} from './messaging/message-types.js'
+
+// Dynamic imports for ESM core package (loaded in activate())
+let coreLanguage:
+  | typeof import('@proto-typed/core/language', {
+      with: { 'resolution-mode': 'import' }
+    })
+  | null = null
+let core:
+  | typeof import('@proto-typed/core', {
+      with: { 'resolution-mode': 'import' }
+    })
+  | null = null
 
 let currentPanel: PlaygroundPanel | undefined = undefined
 let messageRouter: MessageRouter | undefined = undefined
@@ -45,16 +50,24 @@ function createLanguageHost(): {
   clear: (uri: string) => void
   dispose: () => void
 } {
-  const bus = ErrorBus.get()
+  if (!core) {
+    throw new Error('Core module not loaded')
+  }
+
+  const bus = core.ErrorBus.get()
   const errorCache = new Map<string, ProtoError[]>()
 
   const host: LanguageHost = {
     parse(text: string, uri: string) {
+      if (!core) {
+        throw new Error('Core module not loaded')
+      }
+
       let ast: unknown = null
       let errors: ProtoError[] = []
 
       try {
-        const parsed = parseAndBuildAst(text)
+        const parsed = core.parseAndBuildAst(text)
         const astWithErrors = parsed as AstWithErrors
         if (
           '__errors' in astWithErrors &&
@@ -65,12 +78,12 @@ function createLanguageHost(): {
         }
         ast = parsed
       } catch (error) {
-        const message = sanitizeErrorMessage(error)
+        const message = core.sanitizeErrorMessage(error)
         errors = [
           {
             stage: 'editor',
             severity: 'fatal',
-            code: ERROR_CODES.EDIT_FATAL_ERROR,
+            code: core.ERROR_CODES.EDIT_FATAL_ERROR,
             message,
           },
         ]
@@ -102,7 +115,7 @@ function createLanguageHost(): {
   }
 }
 
-function rebuildErrorBus(bus: ErrorBus, cache: Map<string, ProtoError[]>) {
+function rebuildErrorBus(bus: any, cache: Map<string, ProtoError[]>) {
   bus.clear()
   for (const errors of cache.values()) {
     if (errors.length) {
@@ -111,11 +124,22 @@ function rebuildErrorBus(bus: ErrorBus, cache: Map<string, ProtoError[]>) {
   }
 }
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
   console.log('🚀 [Proto-Typed] Extension activating...')
 
+  // Dynamically import ESM core modules
+  try {
+    coreLanguage = await import('@proto-typed/core/language')
+    core = await import('@proto-typed/core')
+    console.log('✅ [Proto-Typed] Core modules loaded')
+  } catch (error) {
+    console.error('❌ [Proto-Typed] Failed to load core modules:', error)
+    vscode.window.showErrorMessage('Failed to load Proto-Typed core modules')
+    return
+  }
+
   const languageIntegration = createLanguageHost()
-  activateVSCodeAdapter(vscode, context, languageIntegration.host)
+  coreLanguage.activateVSCodeAdapter(vscode, context, languageIntegration.host)
 
   // Initialize message router
   messageRouter = new MessageRouter({

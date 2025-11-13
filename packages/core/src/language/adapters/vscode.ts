@@ -3,7 +3,7 @@ import {
   createEngine,
   TRIGGER_CHARACTERS,
   type LanguageHost,
-} from '../engine/engine'
+} from '../engine/engine.js'
 import type {
   CodeAction,
   CodeActionParams,

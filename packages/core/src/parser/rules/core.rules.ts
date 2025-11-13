@@ -3,9 +3,9 @@
  * Defines the main program rule and element dispatcher
  */
 
-import { Colon, UnorderedListItem } from '../../lexer/tokens'
-import { Indent, Outdent } from '../../lexer/lexer'
-import type { IParser, RuleDefinitionFunction } from '../../types/parser'
+import { Colon, UnorderedListItem } from '../../lexer/tokens/index'
+import { Indent, Outdent } from '../../lexer/lexer.js'
+import type { IParser, RuleDefinitionFunction } from '../../types/parser.js'
 
 /**
  * Define core parsing rules

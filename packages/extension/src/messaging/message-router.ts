@@ -11,7 +11,7 @@ import {
   isMessageEnvelope,
   isValidVersion,
   MESSAGE_VERSION,
-} from './message-types'
+} from './message-types.js'
 
 type MessageHandler<T extends WebviewToHostMessage = WebviewToHostMessage> = (
   message: T,

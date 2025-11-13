@@ -1,4 +1,4 @@
-import { ERROR_CODES, type ProtoError } from '../../types/errors'
+import { ERROR_CODES, type ProtoError } from '../../types/errors.js'
 import {
   type CodeAction,
   type CodeActionParams,
@@ -13,12 +13,12 @@ import {
   type TextEdit,
 } from 'vscode-languageserver-protocol'
 import { TextDocument } from 'vscode-languageserver-textdocument'
-import { getCodeActions } from './code-actions'
-import { getCompletions, TRIGGER_CHARACTERS } from './completions'
-import { mapCoreErrorsToDiagnostics } from './diagnostics'
-import { getHover } from './hover'
-import { getSemanticTokens } from './semantic-tokens'
-import { TextDocumentStore } from './textdoc-store'
+import { getCodeActions } from './code-actions.js'
+import { getCompletions, TRIGGER_CHARACTERS } from './completions.js'
+import { mapCoreErrorsToDiagnostics } from './diagnostics.js'
+import { getHover } from './hover.js'
+import { getSemanticTokens } from './semantic-tokens.js'
+import { TextDocumentStore } from './textdoc-store.js'
 
 export interface LanguageHost {
   parse(text: string, uri: string): { ast: unknown; errors: ProtoError[] }

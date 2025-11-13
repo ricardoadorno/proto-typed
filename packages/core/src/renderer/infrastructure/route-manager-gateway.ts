@@ -3,19 +3,19 @@
  * Simplified API gateway for SPA clients to interact with the Route Manager
  */
 
-import { AstNode } from '../../types/ast-node'
+import { AstNode } from '../../types/ast-node.js'
 import {
   RouteCollection,
   RouteMetadata,
   RouteProcessingOptions,
   RouteRenderContext,
   RouteContext,
-} from '../../types/routing'
+} from '../../types/routing.js'
 import {
   RouteManager,
   routeManager as defaultRouteManager,
-} from '../core/route-manager'
-import type { MouseEvent } from '../../types/dom'
+} from '../core/route-manager.js'
+import type { MouseEvent } from '../../types/dom.js'
 
 export interface NavigationHandlers {
   onScreenNavigation: (screenName: string) => void

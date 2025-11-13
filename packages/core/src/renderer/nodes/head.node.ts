@@ -3,7 +3,7 @@
  * Renders head configuration nodes (no-op as head is processed by theme-manager)
  */
 
-import { AstNode } from '../../types/ast-node'
+import { AstNode } from '../../types/ast-node.js'
 
 /**
  * @function renderHead

@@ -4,8 +4,8 @@
  */
 
 import { type CstNode, type IToken } from 'chevrotain'
-import { AstNode } from '../../types/ast-node'
-import type { CstContext } from '../../types/parser'
+import { AstNode } from '../../types/ast-node.js'
+import type { CstContext } from '../../types/parser.js'
 
 /**
  * @function buildMeta

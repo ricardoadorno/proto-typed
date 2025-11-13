@@ -4,8 +4,8 @@ import {
   createEngine,
   type LanguageHost,
   TRIGGER_CHARACTERS,
-} from '../engine/engine'
-import { getLanguageConfiguration, getTextMateGrammar } from '../grammar/index'
+} from '../engine/engine.js'
+import { getLanguageConfiguration, getTextMateGrammar } from '../grammar/index.js'
 import type {
   CodeAction,
   CodeActionParams,

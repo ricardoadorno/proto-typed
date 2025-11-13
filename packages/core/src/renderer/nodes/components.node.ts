@@ -3,7 +3,7 @@ import type {
   ComponentProps,
   ComponentInstanceProps,
   LayoutProps,
-} from '../../types/ast-node'
+} from '../../types/ast-node.js'
 
 // Global variable to store component definitions
 let globalComponentDefinitions: AstNode[] = []

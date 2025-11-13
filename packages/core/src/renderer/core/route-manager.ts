@@ -3,7 +3,7 @@
  * Central service for managing all application routes (screens, modals, drawers)
  */
 
-import { AstNode, ViewProps, ComponentProps } from '../../types/ast-node'
+import { AstNode, ViewProps, ComponentProps } from '../../types/ast-node.js'
 import {
   RouteCollection,
   ScreenRoute,
@@ -13,7 +13,7 @@ import {
   RouteMetadata,
   RouteInfo,
   RouteContext,
-} from '../../types/routing'
+} from '../../types/routing.js'
 
 /**
  * Central route management service

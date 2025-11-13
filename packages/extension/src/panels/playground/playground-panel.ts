@@ -4,15 +4,15 @@
  */
 
 import * as vscode from 'vscode'
-import { MessageRouter } from '../../messaging/message-router'
-import { TextDocumentSynchronizer } from '../../utils/text-document-synchronizer'
-import { createMessage } from '../../messaging/message-types'
+import { MessageRouter } from '../../messaging/message-router.js'
+import { TextDocumentSynchronizer } from '../../utils/text-document-synchronizer.js'
+import { createMessage } from '../../messaging/message-types.js'
 import type {
   DslUpdatePayload,
   StateRestorePayload,
   ThemeSyncPayload,
   HandshakeInitPayload,
-} from '../../messaging/message-types'
+} from '../../messaging/message-types.js'
 
 export interface PlaygroundPanelOptions {
   extensionContext: vscode.ExtensionContext

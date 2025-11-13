@@ -8,12 +8,12 @@ import {
   ViewProps,
   LayoutProps,
   ComponentInstanceProps,
-} from '../../types/ast-node'
-import { ScreenRenderConfig } from '../../types/render'
-import { renderNode } from '../core/node-renderer'
-import { RouteManager } from '../core/route-manager'
-import { customPropertiesManager } from '../core/theme-manager'
-import { isHeaderComponentName } from '../nodes/components.node'
+} from '../../types/ast-node.js'
+import { ScreenRenderConfig } from '../../types/render.js'
+import { renderNode } from '../core/node-renderer.js'
+import { RouteManager } from '../core/route-manager.js'
+import { customPropertiesManager } from '../core/theme-manager.js'
+import { isHeaderComponentName } from '../nodes/components.node.js'
 
 /**
  * Render a single screen to HTML with full configuration

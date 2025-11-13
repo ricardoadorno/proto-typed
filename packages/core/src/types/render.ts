@@ -2,8 +2,8 @@
  * Render-related types and interfaces for the renderer pipeline
  * Consolidates all rendering options, configurations, and data structures
  */
-import { AstNode } from './ast-node'
-import { RouteMetadata } from './routing'
+import { AstNode } from './ast-node.js'
+import { RouteMetadata } from './routing.js'
 
 /**
  * Options for rendering AST to HTML

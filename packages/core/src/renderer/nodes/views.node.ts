@@ -1,11 +1,11 @@
-import type { AstNode, ViewProps } from '../../types/ast-node'
+import type { AstNode, ViewProps } from '../../types/ast-node.js'
 import {
   elementStyles,
   getScreenClasses,
   getModalContentInlineStyles,
   getModalCloseInlineStyles,
   getDrawerInlineStyles,
-} from './styles/styles'
+} from './styles/styles.js'
 
 /**
  * @function renderScreen

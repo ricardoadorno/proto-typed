@@ -1,7 +1,7 @@
 import { type CstNode } from 'chevrotain'
-import { UiDslParser } from './parser'
-import { type ProtoError } from '../types/errors'
-import { type CstContext } from '../types/parser'
+import { UiDslParser } from './parser.js'
+import { type ProtoError } from '../types/errors.js'
+import { type CstContext } from '../types/parser.js'
 import {
   // Primitive builders
   buildHeadingElement,
@@ -30,7 +30,7 @@ import {
   buildHead,
   // Meta configuration builders
   buildMeta,
-} from './builders'
+} from './builders/index.js'
 
 // Type alias for backward compatibility
 type Context = CstContext

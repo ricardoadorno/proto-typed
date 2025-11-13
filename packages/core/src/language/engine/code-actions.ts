@@ -5,7 +5,7 @@ import type {
 } from 'vscode-languageserver-protocol'
 import { CodeActionKind, TextEdit } from 'vscode-languageserver-types'
 import { TextDocument } from 'vscode-languageserver-textdocument'
-import type { DiagnosticWithData } from './diagnostics'
+import type { DiagnosticWithData } from './diagnostics.js'
 
 export function getCodeActions(
   params: CodeActionParams,

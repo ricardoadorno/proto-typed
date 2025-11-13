@@ -3,8 +3,8 @@
  * Defines parsing rules for form input elements (Input, Radio, Checkbox)
  */
 
-import { Input, RadioOption, Checkbox } from '../../lexer/tokens'
-import type { IParser, RuleDefinitionFunction } from '../../types/parser'
+import { Input, RadioOption, Checkbox } from '../../lexer/tokens/index'
+import type { IParser, RuleDefinitionFunction } from '../../types/parser.js'
 
 /**
  * Define input element parsing rules

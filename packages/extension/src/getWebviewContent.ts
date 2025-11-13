@@ -5,7 +5,7 @@
 import {
   getDeviceMockupStyles,
   renderIphoneMockup,
-} from './webview/deviceMockup'
+} from './webview/deviceMockup.js'
 
 export function getWebviewContent(
   previewHtml: string,

@@ -1,18 +1,18 @@
 import {
   RouteManager,
   routeManager as defaultRouteManager,
-} from './core/route-manager'
-import { customPropertiesManager } from './core/theme-manager'
-import { resetRenderErrors, getRenderErrors } from './core/node-renderer'
-import { setComponentDefinitions } from './nodes/components.node'
+} from './core/route-manager.js'
+import { customPropertiesManager } from './core/theme-manager.js'
+import { resetRenderErrors, getRenderErrors } from './core/node-renderer.js'
+import { setComponentDefinitions } from './nodes/components.node.js'
 import {
   renderAllScreens,
   renderGlobalElements,
-} from './infrastructure/html-render-helper'
-import { NavigationMediator } from './infrastructure/navigation-mediator'
-import { ProtoError } from '../types/errors'
-import { AstNode } from '../types/ast-node'
-import { RenderOptions } from '../types/render'
+} from './infrastructure/html-render-helper.js'
+import { NavigationMediator } from './infrastructure/navigation-mediator.js'
+import { ProtoError } from '../types/errors.js'
+import { AstNode } from '../types/ast-node.js'
+import { RenderOptions } from '../types/render.js'
 
 /**
  * Result of rendering with errors collected

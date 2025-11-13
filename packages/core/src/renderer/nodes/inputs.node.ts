@@ -4,7 +4,7 @@ import type {
   SelectProps,
   CheckboxProps,
   RadioProps,
-} from '../../types/ast-node'
+} from '../../types/ast-node.js'
 import {
   elementStyles,
   getFormControlClasses,
@@ -13,7 +13,7 @@ import {
   getSelectInlineStyles,
   getCheckboxInlineStyles,
   getRadioInlineStyles,
-} from './styles/styles'
+} from './styles/styles.js'
 
 /**
  * @function renderInput

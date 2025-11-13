@@ -3,7 +3,7 @@
  * Contains helper methods for parsing and processing DSL elements
  */
 
-import type { AstNode } from '../../types/ast-node'
+import type { AstNode } from '../../types/ast-node.js'
 
 interface LayoutModifiers {
   width?: string

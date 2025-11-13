@@ -5,8 +5,8 @@
  * Collects errors instead of throwing to enable partial AST construction.
  */
 
-import { ERROR_CODES, ProtoError } from '../../types/errors'
-import type { CstVisitor } from '../../types/parser'
+import { ERROR_CODES, ProtoError } from '../../types/errors.js'
+import type { CstVisitor } from '../../types/parser.js'
 
 /**
  * Get error collection array from builder visitor instance

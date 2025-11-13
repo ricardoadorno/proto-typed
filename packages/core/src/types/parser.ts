@@ -9,7 +9,7 @@ import type {
   IToken,
   TokenType,
 } from 'chevrotain'
-import type { AstNode } from './ast-node'
+import type { AstNode } from './ast-node.js'
 
 // Re-export commonly used Chevrotain types
 export type { CstNode, IToken, TokenType, CstChildrenDictionary }

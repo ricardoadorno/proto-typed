@@ -1,5 +1,5 @@
 import { createToken, createTokenInstance, Lexer } from 'chevrotain'
-import { allTokens } from './tokens/index'
+import { allTokens } from './tokens/index.js'
 import { IToken, CustomPatternMatcherReturn } from 'chevrotain'
 
 // State required for matching the indentations

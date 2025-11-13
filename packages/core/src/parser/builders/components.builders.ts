@@ -4,8 +4,8 @@
  */
 
 import type { CstNode } from 'chevrotain'
-import { validateComponentName } from './builder-validation'
-import type { CstContext, CstVisitor } from '../../types/parser'
+import { validateComponentName } from './builder-validation.js'
+import type { CstContext, CstVisitor } from '../../types/parser.js'
 
 /**
  * @function buildComponent

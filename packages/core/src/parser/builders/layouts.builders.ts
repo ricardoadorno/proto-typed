@@ -4,10 +4,10 @@
  * Also includes structural elements: List, Navigator, FAB, Separator
  */
 
-import { parseNavigatorItem } from './core.builders'
-import type { CstContext, CstVisitor, IToken } from '../../types/parser'
+import { parseNavigatorItem } from './core.builders.js'
+import type { CstContext, CstVisitor, IToken } from '../../types/parser.js'
 import type { CstNode } from 'chevrotain'
-import type { AstNode } from '../../types/ast-node'
+import type { AstNode } from '../../types/ast-node.js'
 
 /**
  * @function buildLayoutElement

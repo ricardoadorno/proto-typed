@@ -3,7 +3,7 @@
  * Defines the unified route system for screens and global elements
  */
 
-import { AstNode } from './ast-node'
+import { AstNode } from './ast-node.js'
 
 /**
  * Base route interface for all navigation elements

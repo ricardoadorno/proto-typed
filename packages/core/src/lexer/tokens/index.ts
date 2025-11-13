@@ -5,8 +5,8 @@ import {
   BlankLine,
   Colon,
   Identifier,
-} from './core.tokens'
-import { Screen, Modal, Drawer } from './views.tokens'
+} from './core.tokens.js'
+import { Screen, Modal, Drawer } from './views.tokens.js'
 import {
   ButtonPrimary,
   ButtonSecondary,
@@ -28,7 +28,7 @@ import {
   MutedText,
   SmallText,
   Paragraph,
-} from './primitives.tokens'
+} from './primitives.tokens.js'
 import {
   ContainerNarrow,
   ContainerWide,
@@ -68,9 +68,9 @@ import {
   UnorderedListItem,
   Fab,
   Separator,
-} from './layouts.tokens'
-import { Input, RadioOption, Checkbox } from './inputs.tokens'
-import { Component, ComponentInstance, PropVariable } from './components.tokens'
+} from './layouts.tokens.js'
+import { Input, RadioOption, Checkbox } from './inputs.tokens.js'
+import { Component, ComponentInstance, PropVariable } from './components.tokens.js'
 import {
   Head,
   HeadColor,
@@ -84,8 +84,8 @@ import {
   FontFamily,
   TemplateDefault,
   PropertyValue,
-} from './head.tokens'
-import { Meta, MetaVersion, MetaTitle, MetaValue } from './meta.tokens'
+} from './head.tokens.js'
+import { Meta, MetaVersion, MetaTitle, MetaValue } from './meta.tokens.js'
 
 // Export all tokens - Organized by Category
 export {

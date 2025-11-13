@@ -4,24 +4,24 @@ import {
   getUnorderedListInlineStyles,
   getFabInlineStyles,
   getNavigatorInlineStyles,
-} from './styles/styles'
+} from './styles/styles.js'
 import {
   findComponentDefinitions,
   substitutePropsInElement,
-} from './components.node'
-import { NavigationMediator } from '../infrastructure/navigation-mediator'
+} from './components.node.js'
+import { NavigationMediator } from '../infrastructure/navigation-mediator.js'
 import type {
   AstNode,
   LayoutProps,
   ListProps,
   ComponentProps,
   FabProps,
-} from '../../types/ast-node'
+} from '../../types/ast-node.js'
 import {
   getLucideSvg,
   isLucideIcon,
   renderInlineContent,
-} from '../../utils/icon-utils'
+} from '../../utils/icon-utils.js'
 
 /**
  * @const LAYOUT_PRESETS

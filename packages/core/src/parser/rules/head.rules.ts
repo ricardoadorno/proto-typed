@@ -19,9 +19,9 @@ import {
   ComponentInstance,
   Identifier,
   Colon,
-} from '../../lexer/tokens'
-import { Indent, Outdent } from '../../lexer/lexer'
-import type { IParser, RuleDefinitionFunction } from '../../types/parser'
+} from '../../lexer/tokens/index'
+import { Indent, Outdent } from '../../lexer/lexer.js'
+import type { IParser, RuleDefinitionFunction } from '../../types/parser.js'
 
 /**
  * Define head parsing rules

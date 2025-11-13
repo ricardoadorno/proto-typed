@@ -1,8 +1,8 @@
-import { safeRender } from './safe-render'
+import { safeRender } from './safe-render.js'
 
 // Import all node renderers from the modular organization
-import { renderScreen, renderModal, renderDrawer } from '../nodes/views.node'
-import { renderButton, renderImage, renderText } from '../nodes/primitives.node'
+import { renderScreen, renderModal, renderDrawer } from '../nodes/views.node.js'
+import { renderButton, renderImage, renderText } from '../nodes/primitives.node.js'
 import {
   renderLayout,
   renderList,
@@ -10,19 +10,19 @@ import {
   renderSeparator,
   renderFAB,
   renderNavigator,
-} from '../nodes/layouts.node'
+} from '../nodes/layouts.node.js'
 import {
   renderInput,
   renderRadioGroup,
   renderCheckbox,
   renderSelect,
-} from '../nodes/inputs.node'
+} from '../nodes/inputs.node.js'
 import {
   renderComponent,
   renderComponentInstance,
-} from '../nodes/components.node'
-import { ProtoError } from '../../types/errors'
-import { AstNode, NodeType } from '../../types/ast-node'
+} from '../nodes/components.node.js'
+import { ProtoError } from '../../types/errors.js'
+import { AstNode, NodeType } from '../../types/ast-node.js'
 
 /**
  * Global error collection for rendering phase

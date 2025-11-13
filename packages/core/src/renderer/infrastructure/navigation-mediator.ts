@@ -2,11 +2,11 @@
  * Navigation Mediator
  * Mediates between route manager and node renderer for navigation-related operations
  */
-import { NavigationTarget, RouteContext } from '../../types/routing'
+import { NavigationTarget, RouteContext } from '../../types/routing.js'
 import {
   RouteManager,
   routeManager as defaultRouteManager,
-} from '../core/route-manager'
+} from '../core/route-manager.js'
 
 /**
  * Navigation Mediator - Central hub for navigation analysis and attribute generation

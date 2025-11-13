@@ -2,11 +2,11 @@
  * Utility functions for handling Lucide icons
  */
 import { icons } from 'lucide'
-import { NavigationMediator } from '../renderer/infrastructure/navigation-mediator'
+import { NavigationMediator } from '../renderer/infrastructure/navigation-mediator.js'
 import {
   elementStyles,
   getLinkInlineStyles,
-} from '../renderer/nodes/styles/styles'
+} from '../renderer/nodes/styles/styles.js'
 
 // Cache para melhorar performance
 let lucideIconsCache: Set<string> | null = null

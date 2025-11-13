@@ -1,0 +1,39 @@
+screen Dashboard:
+  header:
+    # Welcome
+    > Proto-Typed Playground
+
+  container:
+    card:
+      ## Quick Start
+      >>> Get started with Proto-Typed
+
+      row-center:
+        @primary[Get Started](GetStarted)
+        @secondary[Learn More](LearnMore)
+
+    stack:
+      ### Features
+      - Fast prototyping
+      - Real-time preview
+      - Component system
+
+screen GetStarted:
+  container:
+    # Getting Started
+    > This is a test screen
+
+modal ConfirmModal:
+  card:
+    # Are you sure?
+    > This action cannot be undone
+
+    row-center:
+      @destructive[Delete](delete)
+      @ghost[Cancel](ConfirmModal)
+
+component UserCard:
+  card:
+    ## %name
+    > Email: %email
+    >>> Role: %role

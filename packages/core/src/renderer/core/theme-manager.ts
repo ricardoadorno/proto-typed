@@ -3,8 +3,8 @@ import {
   generateThemeCssVariables,
   getThemeByName,
   Theme,
-} from '../../themes/theme-definitions'
-import { AstNode } from '../../types/ast-node'
+} from '../../themes/theme-definitions.js'
+import { AstNode } from '../../types/ast-node.js'
 
 interface HeadColorConfig {
   primary?: string

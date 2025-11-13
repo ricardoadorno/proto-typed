@@ -1,11 +1,11 @@
-export { parseAndBuildAst } from './parser/parse-and-build-ast'
-export { astToHtmlStringPreview } from './renderer/ast-to-html-string-preview'
-export { createRouteManagerGateway } from './renderer/infrastructure/route-manager-gateway'
-export { ErrorBus } from './error-bus'
-export { RouteManager } from './renderer/core/route-manager'
-export { astToHtmlDocument } from './renderer/ast-to-html-document'
-export { availableThemes } from './themes/theme-definitions'
-export { customPropertiesManager } from './renderer/core/theme-manager'
+export { parseAndBuildAst } from './parser/parse-and-build-ast.js'
+export { astToHtmlStringPreview } from './renderer/ast-to-html-string-preview.js'
+export { createRouteManagerGateway } from './renderer/infrastructure/route-manager-gateway.js'
+export { ErrorBus } from './error-bus.js'
+export { RouteManager } from './renderer/core/route-manager.js'
+export { astToHtmlDocument } from './renderer/ast-to-html-document.js'
+export { availableThemes } from './themes/theme-definitions.js'
+export { customPropertiesManager } from './renderer/core/theme-manager.js'
 export {
   ERROR_CODES,
   type ProtoError,
@@ -15,7 +15,7 @@ export {
   type Stage,
   isMoreSevere,
   sanitizeErrorMessage,
-} from './types/errors'
+} from './types/errors.js'
 export {
   type AstNode,
   type AstWithErrors,
@@ -25,7 +25,7 @@ export {
   type TextProps,
   type TextKind,
   type MobileProps,
-} from './types/ast-node'
+} from './types/ast-node.js'
 export {
   type RouteMetadata,
   type BaseRoute,
@@ -37,7 +37,7 @@ export {
   type RouteInfo,
   type RouteContext,
   type NavigationTarget,
-} from './types/routing'
+} from './types/routing.js'
 export {
   type ElementState,
   type RenderContext,
@@ -45,5 +45,5 @@ export {
   type ProcessedAstData,
   type ScreenRenderConfig,
   type NodeRenderer,
-} from './types/render'
-export { type MouseEvent } from './types/dom'
+} from './types/render.js'
+export { type MouseEvent } from './types/dom.js'

@@ -1,10 +1,10 @@
 // Export all node renderers organized by token families
 
 // Core tokens
-export {} from './core.node'
+export {} from './core.node.js'
 
 // View tokens
-export { renderScreen, renderModal, renderDrawer } from './views.node'
+export { renderScreen, renderModal, renderDrawer } from './views.node.js'
 
 // Primitive tokens
 export {
@@ -12,7 +12,7 @@ export {
   renderImage,
   renderText,
   TYPO_CLASSES,
-} from './primitives.node'
+} from './primitives.node.js'
 
 // Layout tokens (includes all layout & structural elements)
 export {
@@ -22,7 +22,7 @@ export {
   renderSeparator,
   renderFAB,
   renderNavigator,
-} from './layouts.node'
+} from './layouts.node.js'
 
 // Input tokens
 export {
@@ -30,7 +30,7 @@ export {
   renderRadioGroup,
   renderSelect,
   renderCheckbox,
-} from './inputs.node'
+} from './inputs.node.js'
 
 // Component tokens
 export {
@@ -38,7 +38,7 @@ export {
   renderComponentInstance,
   setComponentDefinitions,
   findComponentDefinitions,
-} from './components.node'
+} from './components.node.js'
 
 // Head configuration tokens (processed by theme-manager, no HTML output)
-export { renderHead } from './head.node'
+export { renderHead } from './head.node.js'

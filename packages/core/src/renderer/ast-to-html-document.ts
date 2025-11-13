@@ -1,14 +1,14 @@
 /* eslint-disable no-useless-escape */
 
-import { routeManager } from './core/route-manager'
-import { customPropertiesManager } from './core/theme-manager'
-import { setComponentDefinitions } from './nodes/components.node'
+import { routeManager } from './core/route-manager.js'
+import { customPropertiesManager } from './core/theme-manager.js'
+import { setComponentDefinitions } from './nodes/components.node.js'
 import {
   renderGlobalElements,
   renderScreenForDocument,
-} from './infrastructure/html-render-helper'
-import { AstNode } from '../types/ast-node'
-import { RenderOptions } from '../types/render'
+} from './infrastructure/html-render-helper.js'
+import { AstNode } from '../types/ast-node.js'
+import { RenderOptions } from '../types/render.js'
 
 /**
  * @function astToHtmlDocument

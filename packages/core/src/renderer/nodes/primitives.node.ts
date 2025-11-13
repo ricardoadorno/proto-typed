@@ -2,20 +2,20 @@ import {
   elementStyles,
   getButtonClasses,
   getButtonInlineStyles,
-} from './styles/styles'
-import { NavigationMediator } from '../infrastructure/navigation-mediator'
+} from './styles/styles.js'
+import { NavigationMediator } from '../infrastructure/navigation-mediator.js'
 import {
   getLucideSvg,
   isLucideIcon,
   renderInlineContent,
-} from '../../utils/icon-utils'
+} from '../../utils/icon-utils.js'
 import type {
   AstNode,
   ButtonProps,
   ImageProps,
   TextProps,
   TextKind,
-} from '../../types/ast-node'
+} from '../../types/ast-node.js'
 
 /**
  * @function renderButton
