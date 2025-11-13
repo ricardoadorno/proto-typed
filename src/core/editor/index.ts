@@ -28,6 +28,7 @@ import { EditorProps, Monaco } from '@monaco-editor/react';
 import { registerDSLCompletionProvider } from './completion/dsl-completion';
 import { registerDSLLanguage } from './language/dsl-language';
 import { registerDSLTheme } from './theme/dsl-theme';
+import { registerFormattingProvider } from '../formatter';
 
 // Re-export components and hooks
 export { DSLEditor } from './components/dsl-editor';
@@ -35,16 +36,17 @@ export { useMonacoDSL } from './hooks/use-monaco-dsl';
 
 /**
  * Initialize Monaco DSL language and features
- * 
+ *
  * This function should be called once when Monaco is loaded.
- * It registers the DSL language, theme, and completion provider.
- * 
+ * It registers the DSL language, theme, completion provider, and formatting provider.
+ *
  * @param monaco - Monaco instance from @monaco-editor/react
  */
 export function initializeMonacoDSL(monaco: Monaco) {
   registerDSLLanguage(monaco);
   registerDSLTheme(monaco);
   registerDSLCompletionProvider(monaco);
+  registerFormattingProvider(monaco);
 }
 
 /**

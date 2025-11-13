@@ -2,6 +2,7 @@ import { tokenize } from '../lexer/lexer';
 import { parser } from './parser';
 import { createAstBuilder } from './ast-builder';
 import { generateDeterministicIds } from '../utils/deterministic-ids';
+import { lintDocument, getAllDiagnostics } from '../linter';
 import type { ProtoError } from '../../types/errors';
 import { ERROR_CODES } from '../../types/errors';
 
@@ -111,6 +112,25 @@ export function parseAndBuildAst(text: string, previousAst?: any) {
     // ID GENERATION: Generate deterministic IDs
     // ========================================================
     const astWithIds = generateDeterministicIds(ast, previousAst);
+
+    // ========================================================
+    // LINTING PHASE: Run semantic and structural validation
+    // ========================================================
+    // Only run linter if we have a valid AST (no fatal errors)
+    const hasFatalErrors = collectedErrors.some((e) => e.severity === 'fatal');
+
+    if (!hasFatalErrors && Array.isArray(astWithIds)) {
+        try {
+            const lintResult = lintDocument(astWithIds);
+            const lintDiagnostics = getAllDiagnostics(lintResult);
+
+            // Add lint diagnostics to collected errors
+            collectedErrors.push(...lintDiagnostics);
+        } catch (lintError) {
+            console.warn('Linter failed, skipping lint diagnostics:', lintError);
+            // Don't break parsing if linter fails
+        }
+    }
 
     // ========================================================
     // RETURN: AST + Errors for ErrorBus
