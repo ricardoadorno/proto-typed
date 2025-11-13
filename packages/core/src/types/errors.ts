@@ -1,3 +1,10 @@
+import type {
+  Range,
+  CodeDescription,
+  DiagnosticTag,
+  DiagnosticRelatedInformation
+} from './diagnostics'
+
 export type Severity = 'info' | 'warning' | 'error' | 'fatal'
 
 export const SEVERITY_RANK: Record<Severity, number> = {
@@ -15,9 +22,20 @@ export interface ProtoErrorBase {
   severity: Severity
   message: string
   hint?: string
+
+  // Legacy position (deprecated, use range instead)
   line?: number
   column?: number
   length?: number
+
+  // LSP v3.17 fields (Phase 1)
+  range?: Range
+  codeDescription?: CodeDescription
+  tags?: DiagnosticTag[]
+  relatedInformation?: DiagnosticRelatedInformation[]
+  data?: any
+
+  // Other fields
   nodeId?: string
   sourceSnippet?: string
   fatal?: boolean
