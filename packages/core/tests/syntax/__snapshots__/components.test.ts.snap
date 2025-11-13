@@ -1,0 +1,575 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Component Definitions > complex definition > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "ProductCard",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Component Definitions > definition with props > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "ProfileCard",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Component Definitions > nested definition > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "ComplexCard",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Component Definitions > simple definition > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "UserCard",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Component Instances > instance in layout > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "List",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Item",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Component Instances > instance in layout > HTML-Screen-0 1`] = `
+"<div class="screen container List" data-screen="List"><div class="grid grid-cols-1 md:grid-cols-2 gap-6" style=""><div class="component-instance" data-component="Item"><div class="border rounded-lg p-4" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><p class="text-base leading-7 text-[var(--fg-secondary)]">First</p></div></div>
+<div class="component-instance" data-component="Item"><div class="border rounded-lg p-4" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><p class="text-base leading-7 text-[var(--fg-secondary)]">Second</p></div></div>
+<div class="component-instance" data-component="Item"><div class="border rounded-lg p-4" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><p class="text-base leading-7 text-[var(--fg-secondary)]">Third</p></div></div>
+<div class="component-instance" data-component="Item"><div class="border rounded-lg p-4" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><p class="text-base leading-7 text-[var(--fg-secondary)]">Fourth</p></div></div></div></div>"
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Component Instances > instance with multiple props > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "List",
+      ],
+      "props": {
+        "name": "Profile",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Text",
+        "Text",
+      ],
+      "props": {
+        "name": "UserInfo",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Component Instances > instance with multiple props > HTML-Screen-0 1`] = `
+"<div class="screen container Profile" data-screen="Profile"><div class="list-disc list-inside space-y-2 mb-4" style="color: var(--foreground);"><h2 class="scroll-m-20 text-3xl font-semibold tracking-tight text-[var(--fg-primary)]">Alice</h2>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Email: alice@example.com</p></div></div>"
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Component Instances > multiple instances > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Badge",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Component Instances > multiple instances > HTML-Screen-0 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="flex flex-col gap-6" style=""><div class="component-instance" data-component="Badge"><p class="text-base leading-7 text-[var(--fg-secondary)]">New</p></div>
+<div class="component-instance" data-component="Badge"><p class="text-base leading-7 text-[var(--fg-secondary)]">Featured</p></div>
+<div class="component-instance" data-component="Badge"><p class="text-base leading-7 text-[var(--fg-secondary)]">Sale</p></div></div></div>"
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Component Instances > simple instance > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "ComponentInstance",
+      ],
+      "props": {
+        "name": "Home",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Greeting",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Component Instances > simple instance > HTML-Screen-0 1`] = `"<div class="screen container Home" data-screen="Home"><div class="component-instance" data-component="Greeting"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Hello, John!</h1></div></div>"`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Edge Cases > component not found > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "ComponentInstance",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Edge Cases > component not found > HTML-Screen-0 1`] = `"<div class="screen container Test" data-screen="Test"><!-- Component not found: NonExistent --></div>"`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Edge Cases > empty props > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "ComponentInstance",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Empty",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Edge Cases > empty props > HTML-Screen-0 1`] = `"<div class="screen container Test" data-screen="Test"><div class="component-instance" data-component="Empty"><p class="text-base leading-7 text-[var(--fg-secondary)]">User: </p></div></div>"`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Edge Cases > missing props > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "ComponentInstance",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Text",
+        "Text",
+      ],
+      "props": {
+        "name": "Template",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Edge Cases > missing props > HTML-Screen-0 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="component-instance" data-component="Template"><p class="text-base leading-7 text-[var(--fg-secondary)]">Name: OnlyName</p>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Email: </p></div></div>"
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Lists with Components > complex component list > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "List",
+      ],
+      "props": {
+        "name": "Products",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "ProductCard",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Lists with Components > complex component list > HTML-Screen-0 1`] = `
+"<div class="screen container Products" data-screen="Products"><div class="list-disc list-inside space-y-2 mb-4" style="color: var(--foreground);"><div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h3 class="scroll-m-20 text-2xl font-semibold tracking-tight text-[var(--fg-primary)]">Laptop</h3>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Price: $999</p>
+<p class="text-sm leading-6 text-[var(--fg-secondary)]">Electronics</p>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="cart" data-nav-type="internal">Add to Cart</button></div>
+<div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h3 class="scroll-m-20 text-2xl font-semibold tracking-tight text-[var(--fg-primary)]">Desk</h3>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Price: $299</p>
+<p class="text-sm leading-6 text-[var(--fg-secondary)]">Furniture</p>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="cart" data-nav-type="internal">Add to Cart</button></div>
+<div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h3 class="scroll-m-20 text-2xl font-semibold tracking-tight text-[var(--fg-primary)]">Chair</h3>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Price: $149</p>
+<p class="text-sm leading-6 text-[var(--fg-secondary)]">Furniture</p>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="cart" data-nav-type="internal">Add to Cart</button></div></div></div>"
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Lists with Components > nested component list > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Tasks",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "TaskCard",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Lists with Components > nested component list > HTML-Screen-0 1`] = `
+"<div class="screen container Tasks" data-screen="Tasks"><div class="container mx-auto max-w-4xl px-6" style=""><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">My Tasks</h1>
+<div class="list-disc list-inside space-y-2 mb-4" style="color: var(--foreground);"><div class="border rounded-lg p-4" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><div class="flex flex-row items-center justify-between gap-4" style=""><div class="flex flex-col gap-3" style=""><h2 class="scroll-m-20 text-3xl font-semibold tracking-tight text-[var(--fg-primary)]">Fix bug</h2>
+<p class="text-sm leading-6 text-muted-foreground">In Progress</p></div>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: transparent; color: var(--foreground);" data-nav="done" data-nav-type="internal">i-check Done</button></div></div>
+<div class="border rounded-lg p-4" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><div class="flex flex-row items-center justify-between gap-4" style=""><div class="flex flex-col gap-3" style=""><h2 class="scroll-m-20 text-3xl font-semibold tracking-tight text-[var(--fg-primary)]">Write tests</h2>
+<p class="text-sm leading-6 text-muted-foreground">Todo</p></div>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: transparent; color: var(--foreground);" data-nav="done" data-nav-type="internal">i-check Done</button></div></div>
+<div class="border rounded-lg p-4" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><div class="flex flex-row items-center justify-between gap-4" style=""><div class="flex flex-col gap-3" style=""><h2 class="scroll-m-20 text-3xl font-semibold tracking-tight text-[var(--fg-primary)]">Deploy</h2>
+<p class="text-sm leading-6 text-muted-foreground">Done</p></div>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: transparent; color: var(--foreground);" data-nav="done" data-nav-type="internal">i-check Done</button></div></div></div></div></div>"
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Lists with Components > simple component list > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "List",
+      ],
+      "props": {
+        "name": "Users",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "UserCard",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Lists with Components > simple component list > HTML-Screen-0 1`] = `
+"<div class="screen container Users" data-screen="Users"><div class="list-disc list-inside space-y-2 mb-4" style="color: var(--foreground);"><div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h2 class="scroll-m-20 text-3xl font-semibold tracking-tight text-[var(--fg-primary)]">John</h2>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Email: john@example.com</p></div>
+<div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h2 class="scroll-m-20 text-3xl font-semibold tracking-tight text-[var(--fg-primary)]">Jane</h2>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Email: jane@example.com</p></div>
+<div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h2 class="scroll-m-20 text-3xl font-semibold tracking-tight text-[var(--fg-primary)]">Bob</h2>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Email: bob@example.com</p></div></div></div>"
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Multiple Components > component library > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "ComponentInstance",
+        "Layout",
+        "ComponentInstance",
+      ],
+      "props": {
+        "name": "Demo",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Button",
+      ],
+      "props": {
+        "name": "Button",
+      },
+      "type": "Component",
+    },
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "Card",
+      },
+      "type": "Component",
+    },
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Badge",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Multiple Components > component library > HTML-Screen-0 1`] = `
+"<div class="screen container Demo" data-screen="Demo"><div class="component-instance" data-component="Card"><div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h2 class="scroll-m-20 text-3xl font-semibold tracking-tight text-[var(--fg-primary)]">DemoCard</h2></div></div>
+<div class="flex flex-row items-center gap-6" style=""><div class="component-instance" data-component="Button"><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="Cancel" data-nav-type="internal"></button></div>
+<div class="component-instance" data-component="Button"><button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="Submit" data-nav-type="internal"></button></div></div>
+<div class="component-instance" data-component="Badge"><p class="text-sm leading-6 text-muted-foreground">Beta</p></div></div>"
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Multiple Components > header and footer components > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "ComponentInstance",
+        "Text",
+        "ComponentInstance",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Header",
+      },
+      "type": "Component",
+    },
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Footer",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Multiple Components > header and footer components > HTML-Screen-0 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="component-instance" data-component="Header"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Welcome</h1></div>
+<p class="text-base leading-7 text-[var(--fg-secondary)]">Content here</p>
+<div class="component-instance" data-component="Footer"><p class="text-sm leading-6 text-[var(--fg-secondary)]">Copyright</p></div></div>"
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Prop Substitution > multiple props > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "List",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "InfoCard",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Prop Substitution > multiple props > HTML-Screen-0 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="list-disc list-inside space-y-2 mb-4" style="color: var(--foreground);"><div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Great Article</h1></div>
+<div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Tech News</h1></div>
+<div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">Amazing content</h1></div></div></div>"
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Prop Substitution > props in action > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "List",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Layout",
+      ],
+      "props": {
+        "name": "ActionCard",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Prop Substitution > props in action > HTML-Screen-0 1`] = `
+"<div class="screen container Test" data-screen="Test"><div class="list-disc list-inside space-y-2 mb-4" style="color: var(--foreground);"><div class="border rounded-lg p-6" style="background-color: var(--card); color: var(--card-foreground); border-color: var(--border);"><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">My Action</h1>
+<button class="inline-flex items-center justify-center   focus:outline-none focus:ring-2 transition-colors duration-200 h-10 px-5 text-sm" style="border-radius: var(--radius); focus-ring-color: var(--ring); background-color: var(--primary); color: var(--primary-foreground);" data-nav="action-123" data-nav-type="internal">Click</button></div></div></div>"
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Prop Substitution > props in text > AST 1`] = `
+{
+  "children": [
+    {
+      "childrenTypes": [
+        "List",
+      ],
+      "props": {
+        "name": "Test",
+      },
+      "type": "Screen",
+    },
+    {
+      "childrenTypes": [
+        "Text",
+      ],
+      "props": {
+        "name": "Message",
+      },
+      "type": "Component",
+    },
+  ],
+  "type": "Screen",
+}
+`;
+
+exports[`Components Domain - Syntax Tests > Snapshot Tests > Prop Substitution > props in text > HTML-Screen-0 1`] = `"<div class="screen container Test" data-screen="Test"><div class="list-disc list-inside space-y-2 mb-4" style="color: var(--foreground);"><p class="text-base leading-7 text-[var(--fg-secondary)]">Hello Alice, your code is ABC123</p></div></div>"`;

@@ -11,6 +11,8 @@
     "build:extension": "pnpm --filter @proto-typed/extension build",
     "build:web": "pnpm --filter @proto-typed/web build",
     "test": "pnpm --filter @proto-typed/core test",
+    "test:run": "pnpm --filter @proto-typed/core test:run",
+    "test:coverage": "pnpm --filter @proto-typed/core test:coverage",
     "clean": "pnpm -r clean && rm -rf node_modules"
   },
   "devDependencies": {

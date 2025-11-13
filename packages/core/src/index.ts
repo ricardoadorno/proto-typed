@@ -1,27 +1,49 @@
-/**
- * @proto-typed/core
- *
- * Core features of the Proto-Typed DSL:
- * - Lexer: Tokenization
- * - Parser: AST generation
- * - Renderer: AST to HTML
- * - Formatter: Code formatting
- * - Linter: Static analysis
- * - Diagnostics: LSP-compliant error handling (Phases 1-4)
- */
-
-// Re-export all modules
-export * from './core/lexer/index.js'
-export * from './core/parser/index.js'
-export * from './core/renderer/index.js'
-export * from './core/themes/index.js'
-export * from './core/formatter/index.js'
-export * from './core/linter/index.js'
-export * from './core/diagnostics/index.js'
-
-// Export ErrorBus separately to avoid conflicts
-export { ErrorBus, errorBus } from './core/error-bus.js'
-export { ErrorBus as ErrorBusV2, errorBus as errorBusV2 } from './core/error-bus-v2.js'
-
-// Re-export types
-export * from './types/index.js'
+export { parseAndBuildAst } from './parser/parse-and-build-ast.js'
+export { astToHtmlStringPreview } from './renderer/ast-to-html-string-preview.js'
+export { createRouteManagerGateway } from './renderer/infrastructure/route-manager-gateway.js'
+export { ErrorBus } from './error-bus.js'
+export { RouteManager } from './renderer/core/route-manager.js'
+export { astToHtmlDocument } from './renderer/ast-to-html-document.js'
+export { availableThemes } from './themes/theme-definitions.js'
+export { customPropertiesManager } from './renderer/core/theme-manager.js'
+export {
+  ERROR_CODES,
+  type ProtoError,
+  type Severity,
+  type ProtoErrorBase,
+  SEVERITY_RANK,
+  type Stage,
+  isMoreSevere,
+  sanitizeErrorMessage,
+} from './types/errors.js'
+export {
+  type AstNode,
+  type AstWithErrors,
+  type NodeType,
+  type NodeProps,
+  type LayoutProps,
+  type TextProps,
+  type TextKind,
+  type MobileProps,
+} from './types/ast-node.js'
+export {
+  type RouteMetadata,
+  type BaseRoute,
+  type ScreenRoute,
+  type GlobalRoute,
+  type RouteCollection,
+  type RouteProcessingOptions,
+  type RouteRenderContext,
+  type RouteInfo,
+  type RouteContext,
+  type NavigationTarget,
+} from './types/routing.js'
+export {
+  type ElementState,
+  type RenderContext,
+  type RenderOptions,
+  type ProcessedAstData,
+  type ScreenRenderConfig,
+  type NodeRenderer,
+} from './types/render.js'
+export { type MouseEvent } from './types/dom.js'
