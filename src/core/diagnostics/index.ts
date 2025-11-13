@@ -2,18 +2,22 @@
  * Diagnostics Module - LSP-Aligned Error Handling
  *
  * This module provides:
- * - Error registry with documentation
- * - Diagnostic factory functions
+ * - Error registry with documentation (Phase 1)
+ * - Diagnostic factory functions (Phase 1)
+ * - Document-scoped diagnostic storage (Phase 2)
+ * - Enhanced ErrorBus with backward compatibility (Phase 2)
  * - Helper utilities for working with diagnostics
  *
- * **Phase 1 of LSP Evolution**: This module adds LSP-compliant fields
- * to Proto-Typed's diagnostic system while maintaining full backward
- * compatibility.
+ * **Phase 1**: LSP-compliant fields and error catalog
+ * **Phase 2**: Document-scoped diagnostics and publishDiagnostics API
  *
  * @see DIAGNOSTICS_EVOLUTION.md for architecture details
  */
 
-// Error Registry
+// ==========================================================
+// Phase 1: Error Registry
+// ==========================================================
+
 export {
   ERROR_REGISTRY,
   getErrorInfo,
@@ -25,7 +29,10 @@ export {
   type ErrorCatalogEntry
 } from './error-registry'
 
-// Diagnostic Factory
+// ==========================================================
+// Phase 1: Diagnostic Factory
+// ==========================================================
+
 export {
   createDiagnostic,
   createLegacyDiagnostic,
@@ -36,7 +43,31 @@ export {
   type CreateDiagnosticOptions
 } from './diagnostic-factory'
 
-// Re-export LSP types for convenience
+// ==========================================================
+// Phase 2: Document-Scoped Storage (New!)
+// ==========================================================
+
+export {
+  DiagnosticStore,
+  diagnosticStore,
+  type DiagnosticEntry,
+  type DiagnosticListener,
+  type GlobalDiagnosticListener
+} from './diagnostic-store'
+
+// ==========================================================
+// Phase 2: Enhanced ErrorBus (New!)
+// ==========================================================
+
+// Note: The original ErrorBus at src/core/error-bus.ts remains unchanged
+// for backward compatibility. This is an enhanced version with document-scoped
+// support. Import from here for new code, or migrate gradually.
+export { ErrorBus as ErrorBusV2, errorBus as errorBusV2 } from '../error-bus-v2'
+
+// ==========================================================
+// LSP Types (Re-exports)
+// ==========================================================
+
 export type {
   Position,
   Range,
