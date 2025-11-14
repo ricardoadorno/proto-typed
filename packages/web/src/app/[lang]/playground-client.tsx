@@ -119,7 +119,7 @@ export default function PlaygroundPage() {
               <Button
                 onClick={handleExport}
                 variant="ghost"
-                className="gap-2 border border-[var(--border-muted)] text-[var(--fg-secondary)] hover:border-[var(--brand-400)] hover:text-[var(--accent)]"
+                className="gap-2 border border-border-muted text-fg-secondary hover:border-brand-400 hover:text-accent"
               >
                 <DownloadIcon className="h-4 w-4" />{' '}
                 {dict?.playground?.exportHtml ?? 'Export HTML'}
@@ -128,7 +128,7 @@ export default function PlaygroundPage() {
               <Button
                 onClick={handleExportShadcn}
                 variant="ghost"
-                className="gap-2 border border-[var(--border-muted)] text-[var(--fg-secondary)] hover:border-[var(--brand-400)] hover:text-[var(--accent)]"
+                className="gap-2 border border-border-muted text-fg-secondary hover:border-brand-400 hover:text-accent"
               >
                 <DownloadIcon className="h-4 w-4" />{' '}
                 {dict?.playground?.exportShadcn ?? 'Export Shadcn'}
@@ -196,7 +196,7 @@ export default function PlaygroundPage() {
             <CardContent className="p-0">
               <PreviewDevice deviceType="iphone-x" zoom={110}>
                 <div
-                  className="h-full min-h-[320px] md:min-h-[560px] overflow-auto w-full"
+                  className="h-full w-full"
                   style={{ containerType: 'inline-size' }}
                   dangerouslySetInnerHTML={{ __html: renderedHtml }}
                   onClick={createClickHandler()}

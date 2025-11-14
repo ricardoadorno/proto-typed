@@ -8,19 +8,19 @@ component ContactCard:
   card:
     row-between:
       stack-tight:
-        >> %name
-        >>> %email
+        >> $name
+        >>> $email
       @outline-small[i-Edit](EditContact)
 
 
 component MenuItem:
-  > [%label](%destination)
+  > [$label]($destination)
 
 
 component GroupItem:
   stack-tight:
-    > [%name](Contacts)
-    >>> %count members
+    > [$name](Contacts)
+    >>> $count members
 
 
 screen Contacts:

@@ -27,9 +27,9 @@ component GlobalLayout:
 component FeatureCard:
   card:
     stack-tight:
-      ## %title
-      > %description
-      @primary-small[%action](Details)
+      ## $title
+      > $description
+      @primary-small[$action](Details)
 
 
 screen Dashboard:

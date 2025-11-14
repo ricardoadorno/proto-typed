@@ -65,6 +65,24 @@ button {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  /* Custom design system variables */
+  --color-bg-main: var(--bg-main);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-raised: var(--bg-raised);
+  --color-fg-primary: var(--fg-primary);
+  --color-fg-secondary: var(--fg-secondary);
+  --color-border-muted: var(--border-muted);
+  --color-brand-300: var(--brand-300);
+  --color-brand-400: var(--brand-400);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+  --color-accent-light: var(--accent-light);
+  --color-warning: var(--warning);
+  --color-attention: var(--attention);
+  --color-danger: var(--danger);
+  --color-info: var(--info);
+  --color-success: var(--success);
 }
 
 :root {
@@ -378,5 +396,32 @@ button {
   .landing-spotlight > * {
     position: relative;
     z-index: 1;
+  }
+
+  /* Container Query based Prose - responsive to preview container size */
+  .prose-container {
+    @apply prose prose-sm;
+  }
+
+  @container (min-width: 24rem) {
+    .prose-container {
+      @apply prose-base;
+    }
+  }
+
+  @container (min-width: 42rem) {
+    .prose-container {
+      @apply prose-lg;
+    }
+  }
+
+  .prose-container-sm {
+    @apply prose prose-sm;
+  }
+
+  @container (min-width: 28rem) {
+    .prose-container-sm {
+      @apply prose-base;
+    }
   }
 }

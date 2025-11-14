@@ -41,14 +41,25 @@ function renderScreen(config: ScreenRenderConfig): string {
       .map((element: AstNode) => renderNode(element))
       .join('\n') || ''
 
+  // Determine padding based on fixed elements
+  const hasHeader = headerElements.length > 0
+  const hasNavigator = navigatorElements.length > 0
+  const hasFab = fabElements.length > 0
+
+  let paddingClasses = 'h-full'
+  if (hasHeader) paddingClasses += ' pt-24' // 4rem for header
+  if (hasNavigator)
+    paddingClasses += ' pb-16' // 4rem for navigator
+  else if (hasFab) paddingClasses += ' pb-24' // 6rem for FAB
+
   // Apply global template if configured in head
   const headConfig = customPropertiesManager.getHeadConfig()
   const globalTemplate = headConfig.template?.default
 
   let screenContent = `
-  <div id="${screenName}-screen" class="relative overflow-hidden h-full" ${style}>
+  <div id="${screenName}-screen" class="relative h-full" ${style}>
       ${headerHtml}
-      <div class="h-full overflow-auto">
+      <div class="${paddingClasses}">
       ${contentHtml}
       </div>
       ${fabHtml}

@@ -168,9 +168,9 @@ ${headOverrides ? headOverrides : ''}
 
   // Return wrapped HTML for preview with only theme-based styling
   return `
-  <div data-preview-container="true" class="h-full w-full">
+  <div data-preview-container="true" class="relative h-full w-full">
     ${scopedStyles}
-    <div class="preview-scroll">
+    <div class="preview-scroll h-full">
       ${screensHtml}
       ${globalElementsHtml}
     </div>

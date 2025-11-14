@@ -21,11 +21,24 @@ export function renderScreen(
 ): string {
   const screenName = (node.props as ViewProps).name || 'default'
   const screenClasses = getScreenClasses([screenName])
+
+  // Check if screen has header or navigator to add appropriate padding
+  const hasHeader = node.children?.some(child =>
+    child.type === 'Layout' && (child.props as any)?.layoutType === 'header'
+  )
+  const hasNavigator = node.children?.some(child => child.type === 'Navigator')
+  const hasFab = node.children?.some(child => child.type === 'Fab')
+
+  let paddingClasses = ''
+  if (hasHeader) paddingClasses += ' pt-16' // Add top padding for header
+  if (hasNavigator) paddingClasses += ' pb-16' // Add bottom padding for navigator
+  else if (hasFab) paddingClasses += ' pb-24' // Add more bottom padding for FAB
+
   const screenElements = node.children
     ? node.children.map((child) => nodeRenderer(child, 'screen')).join('\n')
     : ''
 
-  return `<div class="${screenClasses}" data-screen="${screenName}">${screenElements}</div>`
+  return `<div class="${screenClasses}${paddingClasses}" data-screen="${screenName}">${screenElements}</div>`
 }
 
 /**

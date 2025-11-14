@@ -54,7 +54,7 @@ export const elementStyles = {
     'flex justify-between items-center p-3 shadow-sm hover:shadow-md transition-shadow duration-200',
 
   navigator:
-    'sticky bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border flex flex-row justify-around py-2 z-20 w-full shadow-2xl',
+    'fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border flex flex-row justify-around py-2 z-20 w-full shadow-2xl',
   navItem:
     'flex flex-col items-center justify-center py-2 px-3 text-xs font-medium text-muted-foreground hover:text-primary active:text-primary/80 transition-all duration-200 rounded-[--radius] hover:bg-accent min-w-[60px]',
   navItemIcon: 'mb-1 text-lg',
@@ -63,7 +63,7 @@ export const elementStyles = {
   // FAB using CSS variables
   fab: 'absolute w-14 h-14 rounded-full bg-primary shadow-2xl flex items-center justify-center text-xl font-bold text-primary-foreground z-20',
   fabContainer:
-    'sticky bottom-20 mr-5 z-20 flex flex-col items-end justify-end p-0  ml-auto w-auto',
+    'fixed bottom-20 right-5 z-20 flex flex-col items-end justify-end p-0',
   fabItemsList:
     'mb-8 space-y-6 opacity-0 transform translate-y-4 pointer-events-none',
   fabItem: 'flex items-center justify-end',

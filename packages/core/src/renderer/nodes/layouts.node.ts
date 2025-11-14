@@ -79,7 +79,7 @@ const LAYOUT_PRESETS: Record<string, string> = {
 
   // Special
   header:
-    'sticky top-0 left-0 right-0 z-10 bg-background px-6  flex items-center justify-between min-h-[4rem] border-b border-border',
+    'fixed top-0 left-0 right-0 z-10 bg-background px-6 pt-6 flex items-center justify-between min-h-[4rem] border-b border-border',
   sidebar: 'h-full fixed border-r p-4 pt-8',
 }
 
