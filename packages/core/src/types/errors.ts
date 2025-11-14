@@ -23,6 +23,8 @@ export interface ProtoErrorBase {
   fatal?: boolean
   messageKey?: string
   messageParams?: Record<string, string | number>
+  range?: { start: { line: number; character: number }; end: { line: number; character: number } }
+  data?: any
 }
 
 export type ProtoError =

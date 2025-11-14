@@ -1,0 +1,794 @@
+
+> @web/app@1.0.0 test:e2e:all C:\Dev\proto-typed\packages\web
+> cd ../.. && playwright test packages/web/tests/e2e/ --reporter=list
+
+
+Running 315 tests using 1 worker
+
+  ✓    1 [chromium] › packages\web\tests\e2e\playground-basic.spec.ts:13:3 › Playground - Basic Functionality › should load playground page successfully (832ms)
+  ✓    2 [chromium] › packages\web\tests\e2e\playground-basic.spec.ts:18:3 › Playground - Basic Functionality › should initialize Monaco editor without errors (2.6s)
+  ✓    3 [chromium] › packages\web\tests\e2e\playground-basic.spec.ts:23:3 › Playground - Basic Functionality › should display default example code on load (2.0s)
+  ✓    4 [chromium] › packages\web\tests\e2e\playground-basic.spec.ts:29:3 › Playground - Basic Functionality › should have functional View Documentation button (626ms)
+  ✓    5 [chromium] › packages\web\tests\e2e\playground-basic.spec.ts:36:3 › Playground - Basic Functionality › should have functional Export HTML button (571ms)
+  ✓    6 [chromium] › packages\web\tests\e2e\playground-basic.spec.ts:42:3 › Playground - Basic Functionality › should render preview inside device frame (542ms)
+  ✓    7 [chromium] › packages\web\tests\e2e\playground-completion.spec.ts:14:3 › Playground - Editor Interaction › should have Monaco editor ready (2.4s)
+  ✓    8 [chromium] › packages\web\tests\e2e\playground-completion.spec.ts:19:3 › Playground - Editor Interaction › should handle keyboard input without crashing (3.6s)
+  ✓    9 [chromium] › packages\web\tests\e2e\playground-completion.spec.ts:32:3 › Playground - Editor Interaction › should respond to keyboard shortcuts (3.2s)
+  ✘   10 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:24:3 › Playground - Error Handling › should detect syntax errors (21.8s)
+  ✘   11 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:36:3 › Playground - Error Handling › should recover from errors when fixed (21.8s)
+  ✘   12 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:50:3 › Playground - Error Handling › should handle missing screen name (22.4s)
+  ✘   13 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:62:3 › Playground - Error Handling › should handle missing colon (22.4s)
+  ✘   14 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:74:3 › Playground - Error Handling › should handle invalid indentation (21.9s)
+  ✘   15 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:86:3 › Playground - Error Handling › should handle incomplete button syntax (21.9s)
+  ✘   16 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:98:3 › Playground - Error Handling › should handle malformed image syntax (22.3s)
+  ✘   17 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:110:3 › Playground - Error Handling › should handle undefined component (21.9s)
+  ✘   18 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:122:3 › Playground - Error Handling › should handle component without props (22.4s)
+  ✘   19 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:138:3 › Playground - Error Handling › should handle invalid navigator syntax (22.5s)
+  ✘   20 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:150:3 › Playground - Error Handling › should handle mixed valid and invalid content (22.3s)
+  ✘   21 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:166:3 › Playground - Error Handling › should not crash on extremely long lines (23.0s)
+  ✘   22 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:179:3 › Playground - Error Handling › should handle deeply nested structures (27.1s)
+  ✘   23 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:199:3 › Playground - Error Handling › should handle rapid invalid input changes (9ms)
+  ✘   24 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:218:3 › Playground - Error Handling › should handle special characters in text (0ms)
+  -   25 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:236:3 › Playground - Error Handling › should handle emoji and unicode characters
+  -   26 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:252:3 › Playground - Error Handling › should handle empty screen content
+  -   27 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:262:3 › Playground - Error Handling › should handle multiple errors simultaneously
+  -   28 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:277:3 › Playground - Error Handling › should preserve valid state when encountering errors
+  -   29 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:293:3 › Playground - Error Handling › should not show JavaScript errors in console
+  -   30 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:311:3 › Playground - Error Handling › should handle malformed list syntax
+  -   31 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:326:3 › Playground - Error Handling › should handle invalid modal/drawer references
+  -   32 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:339:3 › Playground - Error Handling › should handle form input with missing attributes
+  -   33 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:353:3 › Playground - Error Handling › should handle circular navigation references
+  -   34 [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:374:3 › Playground - Error Handling › should handle very large DSL files
+  ✘   35 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:28:3 › Playground - Export and Features › should have export button visible and enabled (0ms)
+  -   36 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:37:3 › Playground - Export and Features › should disable export button when no content
+  -   37 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:47:3 › Playground - Export and Features › should have theme selector visible
+  -   38 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:52:3 › Playground - Export and Features › should have example buttons visible
+  -   39 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:61:3 › Playground - Export and Features › should load example when clicking example button
+  -   40 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:82:3 › Playground - Export and Features › should load multiple different examples
+  -   41 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:102:3 › Playground - Export and Features › should have View Documentation link working
+  -   42 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:114:3 › Playground - Export and Features › should render custom theme styles
+  -   43 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:124:3 › Playground - Export and Features › should maintain state between theme changes
+  -   44 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:140:3 › Playground - Export and Features › should preserve content when navigating examples
+  -   45 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:159:3 › Playground - Export and Features › should have proper page layout structure
+  -   46 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:169:3 › Playground - Export and Features › should display editor title and description
+  -   47 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:179:3 › Playground - Export and Features › should show screen count label
+  -   48 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:188:3 › Playground - Export and Features › should show no screens message when empty
+  -   49 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:199:3 › Playground - Export and Features › should handle browser back/forward navigation
+  -   50 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:218:3 › Playground - Export and Features › should work in different languages
+  -   51 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:229:3 › Playground - Export and Features › should handle window resize gracefully
+  -   52 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:249:3 › Playground - Export and Features › should not have layout shift issues
+  -   53 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:266:3 › Playground - Export and Features › should have accessible keyboard navigation
+  -   54 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:279:3 › Playground - Export and Features › should have proper focus management in editor
+  -   55 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:293:3 › Playground - Export and Features › should persist editor content during tab visibility changes
+  -   56 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:314:3 › Playground - Export and Features › should handle network interruptions gracefully
+  -   57 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:329:3 › Playground - Export and Features › should work with component instantiation
+  -   58 [chromium] › packages\web\tests\e2e\playground-export.spec.ts:340:3 › Playground - Export and Features › should maintain performance with large previews
+  ✘   59 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:29:3 › Playground - Navigation › should detect multiple screens (0ms)
+  -   60 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:38:3 › Playground - Navigation › should display screen navigation buttons
+  -   61 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:52:3 › Playground - Navigation › should navigate between screens via metadata buttons
+  -   62 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:68:3 › Playground - Navigation › should navigate via buttons in preview
+  -   63 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:90:3 › Playground - Navigation › should show default screen on first render
+  -   64 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:100:3 › Playground - Navigation › should handle modal toggling
+  -   65 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:114:3 › Playground - Navigation › should handle drawer toggling
+  -   66 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:127:3 › Playground - Navigation › should update screen count when adding/removing screens
+  -   67 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:145:3 › Playground - Navigation › should maintain current screen when editing other parts of DSL
+  -   68 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:174:3 › Playground - Navigation › should reset to default screen when current screen is deleted
+  -   69 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:196:3 › Playground - Navigation › should work with bottom navigator
+  -   70 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:220:3 › Playground - Navigation › should handle navigation to non-existent screen gracefully
+  -   71 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:239:3 › Playground - Navigation › should show screen metadata immediately after parse
+  -   72 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:249:3 › Playground - Navigation › should handle external links correctly
+  -   73 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:264:3 › Playground - Navigation › should support back navigation via (-1)
+  -   74 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:288:3 › Playground - Navigation › should handle multiple modals and drawers
+  -   75 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:315:3 › Playground - Navigation › should preserve navigation state during editor updates
+  -   76 [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:334:3 › Playground - Navigation › should update navigation buttons when screen names change
+  ✘   77 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:31:3 › Playground - Preview Rendering › should render headings correctly (0ms)
+  -   78 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:48:3 › Playground - Preview Rendering › should render paragraphs and text elements
+  -   79 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:63:3 › Playground - Preview Rendering › should render buttons with different variants
+  -   80 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:77:3 › Playground - Preview Rendering › should render layout elements correctly
+  -   81 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:111:3 › Playground - Preview Rendering › should render form inputs correctly
+  -   82 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:132:3 › Playground - Preview Rendering › should render components with props
+  -   83 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:146:3 › Playground - Preview Rendering › should render nested structures correctly
+  -   84 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:164:3 › Playground - Preview Rendering › should render images correctly
+  -   85 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:179:3 › Playground - Preview Rendering › should render links correctly
+  -   86 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:194:3 › Playground - Preview Rendering › should update preview incrementally as user types
+  -   87 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:211:3 › Playground - Preview Rendering › should render separator correctly
+  -   88 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:227:3 › Playground - Preview Rendering › should render blockquote and note correctly
+  -   89 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:241:3 › Playground - Preview Rendering › should render grid layout correctly
+  -   90 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:261:3 › Playground - Preview Rendering › should render navigator (bottom navigation)
+  -   91 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:278:3 › Playground - Preview Rendering › should render FAB (floating action button)
+  -   92 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:293:3 › Playground - Preview Rendering › should preserve preview styling across updates
+  -   93 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:322:3 › Playground - Preview Rendering › should render preview without JavaScript errors
+  -   94 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:342:3 › Playground - Preview Rendering › should handle rapid editor changes gracefully
+  -   95 [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:360:3 › Playground - Preview Rendering › should render content inside device frame properly
+  ✘   96 [chromium] › packages\web\tests\e2e\smoke.spec.ts:11:3 › Playground Smoke Tests › should load playground page (0ms)
+  -   97 [chromium] › packages\web\tests\e2e\smoke.spec.ts:22:3 › Playground Smoke Tests › should have Monaco editor
+  -   98 [chromium] › packages\web\tests\e2e\smoke.spec.ts:30:3 › Playground Smoke Tests › should have preview panel
+  -   99 [chromium] › packages\web\tests\e2e\smoke.spec.ts:38:3 › Playground Smoke Tests › should render default example
+  -  100 [chromium] › packages\web\tests\e2e\smoke.spec.ts:52:3 › Playground Smoke Tests › should have Export HTML button
+  -  101 [chromium] › packages\web\tests\e2e\smoke.spec.ts:59:3 › Playground Smoke Tests › should have View Documentation link
+  -  102 [chromium] › packages\web\tests\e2e\smoke.spec.ts:66:3 › Playground Smoke Tests › should have example buttons
+  -  103 [chromium] › packages\web\tests\e2e\smoke.spec.ts:84:3 › Playground Smoke Tests › should update preview when example is clicked
+  -  104 [chromium] › packages\web\tests\e2e\smoke.spec.ts:99:3 › Playground Smoke Tests › should show screen count when DSL has screens
+  -  105 [chromium] › packages\web\tests\e2e\smoke.spec.ts:110:3 › Playground Smoke Tests › should not crash with invalid DSL
+  ✘  106 [firefox] › packages\web\tests\e2e\playground-basic.spec.ts:13:3 › Playground - Basic Functionality › should load playground page successfully (0ms)
+  -  107 [firefox] › packages\web\tests\e2e\playground-basic.spec.ts:18:3 › Playground - Basic Functionality › should initialize Monaco editor without errors
+  -  108 [firefox] › packages\web\tests\e2e\playground-basic.spec.ts:23:3 › Playground - Basic Functionality › should display default example code on load
+  -  109 [firefox] › packages\web\tests\e2e\playground-basic.spec.ts:29:3 › Playground - Basic Functionality › should have functional View Documentation button
+  -  110 [firefox] › packages\web\tests\e2e\playground-basic.spec.ts:36:3 › Playground - Basic Functionality › should have functional Export HTML button
+  -  111 [firefox] › packages\web\tests\e2e\playground-basic.spec.ts:42:3 › Playground - Basic Functionality › should render preview inside device frame
+  ✘  112 [firefox] › packages\web\tests\e2e\playground-completion.spec.ts:14:3 › Playground - Editor Interaction › should have Monaco editor ready (0ms)
+  -  113 [firefox] › packages\web\tests\e2e\playground-completion.spec.ts:19:3 › Playground - Editor Interaction › should handle keyboard input without crashing
+  -  114 [firefox] › packages\web\tests\e2e\playground-completion.spec.ts:32:3 › Playground - Editor Interaction › should respond to keyboard shortcuts
+  ✘  115 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:24:3 › Playground - Error Handling › should detect syntax errors (0ms)
+  -  116 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:36:3 › Playground - Error Handling › should recover from errors when fixed
+  -  117 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:50:3 › Playground - Error Handling › should handle missing screen name
+  -  118 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:62:3 › Playground - Error Handling › should handle missing colon
+  -  119 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:74:3 › Playground - Error Handling › should handle invalid indentation
+  -  120 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:86:3 › Playground - Error Handling › should handle incomplete button syntax
+  -  121 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:98:3 › Playground - Error Handling › should handle malformed image syntax
+  -  122 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:110:3 › Playground - Error Handling › should handle undefined component
+  -  123 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:122:3 › Playground - Error Handling › should handle component without props
+  -  124 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:138:3 › Playground - Error Handling › should handle invalid navigator syntax
+  -  125 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:150:3 › Playground - Error Handling › should handle mixed valid and invalid content
+  -  126 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:166:3 › Playground - Error Handling › should not crash on extremely long lines
+  -  127 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:179:3 › Playground - Error Handling › should handle deeply nested structures
+  -  128 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:199:3 › Playground - Error Handling › should handle rapid invalid input changes
+  -  129 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:218:3 › Playground - Error Handling › should handle special characters in text
+  -  130 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:236:3 › Playground - Error Handling › should handle emoji and unicode characters
+  -  131 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:252:3 › Playground - Error Handling › should handle empty screen content
+  -  132 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:262:3 › Playground - Error Handling › should handle multiple errors simultaneously
+  -  133 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:277:3 › Playground - Error Handling › should preserve valid state when encountering errors
+  -  134 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:293:3 › Playground - Error Handling › should not show JavaScript errors in console
+  -  135 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:311:3 › Playground - Error Handling › should handle malformed list syntax
+  -  136 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:326:3 › Playground - Error Handling › should handle invalid modal/drawer references
+  -  137 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:339:3 › Playground - Error Handling › should handle form input with missing attributes
+  -  138 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:353:3 › Playground - Error Handling › should handle circular navigation references
+  -  139 [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:374:3 › Playground - Error Handling › should handle very large DSL files
+  ✘  140 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:28:3 › Playground - Export and Features › should have export button visible and enabled (0ms)
+  -  141 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:37:3 › Playground - Export and Features › should disable export button when no content
+  -  142 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:47:3 › Playground - Export and Features › should have theme selector visible
+  -  143 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:52:3 › Playground - Export and Features › should have example buttons visible
+  -  144 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:61:3 › Playground - Export and Features › should load example when clicking example button
+  -  145 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:82:3 › Playground - Export and Features › should load multiple different examples
+  -  146 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:102:3 › Playground - Export and Features › should have View Documentation link working
+  -  147 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:114:3 › Playground - Export and Features › should render custom theme styles
+  -  148 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:124:3 › Playground - Export and Features › should maintain state between theme changes
+  -  149 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:140:3 › Playground - Export and Features › should preserve content when navigating examples
+  -  150 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:159:3 › Playground - Export and Features › should have proper page layout structure
+  -  151 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:169:3 › Playground - Export and Features › should display editor title and description
+  -  152 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:179:3 › Playground - Export and Features › should show screen count label
+  -  153 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:188:3 › Playground - Export and Features › should show no screens message when empty
+  -  154 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:199:3 › Playground - Export and Features › should handle browser back/forward navigation
+  -  155 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:218:3 › Playground - Export and Features › should work in different languages
+  -  156 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:229:3 › Playground - Export and Features › should handle window resize gracefully
+  -  157 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:249:3 › Playground - Export and Features › should not have layout shift issues
+  -  158 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:266:3 › Playground - Export and Features › should have accessible keyboard navigation
+  -  159 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:279:3 › Playground - Export and Features › should have proper focus management in editor
+  -  160 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:293:3 › Playground - Export and Features › should persist editor content during tab visibility changes
+  -  161 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:314:3 › Playground - Export and Features › should handle network interruptions gracefully
+  -  162 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:329:3 › Playground - Export and Features › should work with component instantiation
+  -  163 [firefox] › packages\web\tests\e2e\playground-export.spec.ts:340:3 › Playground - Export and Features › should maintain performance with large previews
+  ✘  164 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:29:3 › Playground - Navigation › should detect multiple screens (0ms)
+  -  165 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:38:3 › Playground - Navigation › should display screen navigation buttons
+  -  166 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:52:3 › Playground - Navigation › should navigate between screens via metadata buttons
+  -  167 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:68:3 › Playground - Navigation › should navigate via buttons in preview
+  -  168 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:90:3 › Playground - Navigation › should show default screen on first render
+  -  169 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:100:3 › Playground - Navigation › should handle modal toggling
+  -  170 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:114:3 › Playground - Navigation › should handle drawer toggling
+  -  171 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:127:3 › Playground - Navigation › should update screen count when adding/removing screens
+  -  172 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:145:3 › Playground - Navigation › should maintain current screen when editing other parts of DSL
+  -  173 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:174:3 › Playground - Navigation › should reset to default screen when current screen is deleted
+  -  174 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:196:3 › Playground - Navigation › should work with bottom navigator
+  -  175 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:220:3 › Playground - Navigation › should handle navigation to non-existent screen gracefully
+  -  176 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:239:3 › Playground - Navigation › should show screen metadata immediately after parse
+  -  177 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:249:3 › Playground - Navigation › should handle external links correctly
+  -  178 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:264:3 › Playground - Navigation › should support back navigation via (-1)
+  -  179 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:288:3 › Playground - Navigation › should handle multiple modals and drawers
+  -  180 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:315:3 › Playground - Navigation › should preserve navigation state during editor updates
+  -  181 [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:334:3 › Playground - Navigation › should update navigation buttons when screen names change
+  ✘  182 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:31:3 › Playground - Preview Rendering › should render headings correctly (0ms)
+  -  183 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:48:3 › Playground - Preview Rendering › should render paragraphs and text elements
+  -  184 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:63:3 › Playground - Preview Rendering › should render buttons with different variants
+  -  185 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:77:3 › Playground - Preview Rendering › should render layout elements correctly
+  -  186 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:111:3 › Playground - Preview Rendering › should render form inputs correctly
+  -  187 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:132:3 › Playground - Preview Rendering › should render components with props
+  -  188 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:146:3 › Playground - Preview Rendering › should render nested structures correctly
+  -  189 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:164:3 › Playground - Preview Rendering › should render images correctly
+  -  190 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:179:3 › Playground - Preview Rendering › should render links correctly
+  -  191 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:194:3 › Playground - Preview Rendering › should update preview incrementally as user types
+  -  192 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:211:3 › Playground - Preview Rendering › should render separator correctly
+  -  193 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:227:3 › Playground - Preview Rendering › should render blockquote and note correctly
+  -  194 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:241:3 › Playground - Preview Rendering › should render grid layout correctly
+  -  195 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:261:3 › Playground - Preview Rendering › should render navigator (bottom navigation)
+  -  196 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:278:3 › Playground - Preview Rendering › should render FAB (floating action button)
+  -  197 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:293:3 › Playground - Preview Rendering › should preserve preview styling across updates
+  -  198 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:322:3 › Playground - Preview Rendering › should render preview without JavaScript errors
+  -  199 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:342:3 › Playground - Preview Rendering › should handle rapid editor changes gracefully
+  -  200 [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:360:3 › Playground - Preview Rendering › should render content inside device frame properly
+  ✘  201 [firefox] › packages\web\tests\e2e\smoke.spec.ts:11:3 › Playground Smoke Tests › should load playground page (0ms)
+  -  202 [firefox] › packages\web\tests\e2e\smoke.spec.ts:22:3 › Playground Smoke Tests › should have Monaco editor
+  -  203 [firefox] › packages\web\tests\e2e\smoke.spec.ts:30:3 › Playground Smoke Tests › should have preview panel
+  -  204 [firefox] › packages\web\tests\e2e\smoke.spec.ts:38:3 › Playground Smoke Tests › should render default example
+  -  205 [firefox] › packages\web\tests\e2e\smoke.spec.ts:52:3 › Playground Smoke Tests › should have Export HTML button
+  -  206 [firefox] › packages\web\tests\e2e\smoke.spec.ts:59:3 › Playground Smoke Tests › should have View Documentation link
+  -  207 [firefox] › packages\web\tests\e2e\smoke.spec.ts:66:3 › Playground Smoke Tests › should have example buttons
+  -  208 [firefox] › packages\web\tests\e2e\smoke.spec.ts:84:3 › Playground Smoke Tests › should update preview when example is clicked
+  -  209 [firefox] › packages\web\tests\e2e\smoke.spec.ts:99:3 › Playground Smoke Tests › should show screen count when DSL has screens
+  -  210 [firefox] › packages\web\tests\e2e\smoke.spec.ts:110:3 › Playground Smoke Tests › should not crash with invalid DSL
+  ✘  211 [webkit] › packages\web\tests\e2e\playground-basic.spec.ts:13:3 › Playground - Basic Functionality › should load playground page successfully (0ms)
+  -  212 [webkit] › packages\web\tests\e2e\playground-basic.spec.ts:18:3 › Playground - Basic Functionality › should initialize Monaco editor without errors
+  -  213 [webkit] › packages\web\tests\e2e\playground-basic.spec.ts:23:3 › Playground - Basic Functionality › should display default example code on load
+  -  214 [webkit] › packages\web\tests\e2e\playground-basic.spec.ts:29:3 › Playground - Basic Functionality › should have functional View Documentation button
+  -  215 [webkit] › packages\web\tests\e2e\playground-basic.spec.ts:36:3 › Playground - Basic Functionality › should have functional Export HTML button
+  -  216 [webkit] › packages\web\tests\e2e\playground-basic.spec.ts:42:3 › Playground - Basic Functionality › should render preview inside device frame
+  ✘  217 [webkit] › packages\web\tests\e2e\playground-completion.spec.ts:14:3 › Playground - Editor Interaction › should have Monaco editor ready (0ms)
+  -  218 [webkit] › packages\web\tests\e2e\playground-completion.spec.ts:19:3 › Playground - Editor Interaction › should handle keyboard input without crashing
+  -  219 [webkit] › packages\web\tests\e2e\playground-completion.spec.ts:32:3 › Playground - Editor Interaction › should respond to keyboard shortcuts
+  ✘  220 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:24:3 › Playground - Error Handling › should detect syntax errors (0ms)
+  -  221 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:36:3 › Playground - Error Handling › should recover from errors when fixed
+  -  222 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:50:3 › Playground - Error Handling › should handle missing screen name
+  -  223 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:62:3 › Playground - Error Handling › should handle missing colon
+  -  224 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:74:3 › Playground - Error Handling › should handle invalid indentation
+  -  225 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:86:3 › Playground - Error Handling › should handle incomplete button syntax
+  -  226 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:98:3 › Playground - Error Handling › should handle malformed image syntax
+  -  227 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:110:3 › Playground - Error Handling › should handle undefined component
+  -  228 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:122:3 › Playground - Error Handling › should handle component without props
+  -  229 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:138:3 › Playground - Error Handling › should handle invalid navigator syntax
+  -  230 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:150:3 › Playground - Error Handling › should handle mixed valid and invalid content
+  -  231 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:166:3 › Playground - Error Handling › should not crash on extremely long lines
+  -  232 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:179:3 › Playground - Error Handling › should handle deeply nested structures
+  -  233 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:199:3 › Playground - Error Handling › should handle rapid invalid input changes
+  -  234 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:218:3 › Playground - Error Handling › should handle special characters in text
+  -  235 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:236:3 › Playground - Error Handling › should handle emoji and unicode characters
+  -  236 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:252:3 › Playground - Error Handling › should handle empty screen content
+  -  237 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:262:3 › Playground - Error Handling › should handle multiple errors simultaneously
+  -  238 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:277:3 › Playground - Error Handling › should preserve valid state when encountering errors
+  -  239 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:293:3 › Playground - Error Handling › should not show JavaScript errors in console
+  -  240 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:311:3 › Playground - Error Handling › should handle malformed list syntax
+  -  241 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:326:3 › Playground - Error Handling › should handle invalid modal/drawer references
+  -  242 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:339:3 › Playground - Error Handling › should handle form input with missing attributes
+  -  243 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:353:3 › Playground - Error Handling › should handle circular navigation references
+  -  244 [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:374:3 › Playground - Error Handling › should handle very large DSL files
+  ✘  245 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:28:3 › Playground - Export and Features › should have export button visible and enabled (0ms)
+  -  246 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:37:3 › Playground - Export and Features › should disable export button when no content
+  -  247 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:47:3 › Playground - Export and Features › should have theme selector visible
+  -  248 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:52:3 › Playground - Export and Features › should have example buttons visible
+  -  249 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:61:3 › Playground - Export and Features › should load example when clicking example button
+  -  250 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:82:3 › Playground - Export and Features › should load multiple different examples
+  -  251 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:102:3 › Playground - Export and Features › should have View Documentation link working
+  -  252 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:114:3 › Playground - Export and Features › should render custom theme styles
+  -  253 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:124:3 › Playground - Export and Features › should maintain state between theme changes
+  -  254 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:140:3 › Playground - Export and Features › should preserve content when navigating examples
+  -  255 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:159:3 › Playground - Export and Features › should have proper page layout structure
+  -  256 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:169:3 › Playground - Export and Features › should display editor title and description
+  -  257 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:179:3 › Playground - Export and Features › should show screen count label
+  -  258 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:188:3 › Playground - Export and Features › should show no screens message when empty
+  -  259 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:199:3 › Playground - Export and Features › should handle browser back/forward navigation
+  -  260 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:218:3 › Playground - Export and Features › should work in different languages
+  -  261 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:229:3 › Playground - Export and Features › should handle window resize gracefully
+  -  262 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:249:3 › Playground - Export and Features › should not have layout shift issues
+  -  263 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:266:3 › Playground - Export and Features › should have accessible keyboard navigation
+  -  264 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:279:3 › Playground - Export and Features › should have proper focus management in editor
+  -  265 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:293:3 › Playground - Export and Features › should persist editor content during tab visibility changes
+  -  266 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:314:3 › Playground - Export and Features › should handle network interruptions gracefully
+  -  267 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:329:3 › Playground - Export and Features › should work with component instantiation
+  -  268 [webkit] › packages\web\tests\e2e\playground-export.spec.ts:340:3 › Playground - Export and Features › should maintain performance with large previews
+  ✘  269 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:29:3 › Playground - Navigation › should detect multiple screens (0ms)
+  -  270 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:38:3 › Playground - Navigation › should display screen navigation buttons
+  -  271 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:52:3 › Playground - Navigation › should navigate between screens via metadata buttons
+  -  272 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:68:3 › Playground - Navigation › should navigate via buttons in preview
+  -  273 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:90:3 › Playground - Navigation › should show default screen on first render
+  -  274 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:100:3 › Playground - Navigation › should handle modal toggling
+  -  275 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:114:3 › Playground - Navigation › should handle drawer toggling
+  -  276 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:127:3 › Playground - Navigation › should update screen count when adding/removing screens
+  -  277 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:145:3 › Playground - Navigation › should maintain current screen when editing other parts of DSL
+  -  278 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:174:3 › Playground - Navigation › should reset to default screen when current screen is deleted
+  -  279 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:196:3 › Playground - Navigation › should work with bottom navigator
+  -  280 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:220:3 › Playground - Navigation › should handle navigation to non-existent screen gracefully
+  -  281 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:239:3 › Playground - Navigation › should show screen metadata immediately after parse
+  -  282 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:249:3 › Playground - Navigation › should handle external links correctly
+  -  283 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:264:3 › Playground - Navigation › should support back navigation via (-1)
+  -  284 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:288:3 › Playground - Navigation › should handle multiple modals and drawers
+  -  285 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:315:3 › Playground - Navigation › should preserve navigation state during editor updates
+  -  286 [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:334:3 › Playground - Navigation › should update navigation buttons when screen names change
+  ✘  287 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:31:3 › Playground - Preview Rendering › should render headings correctly (0ms)
+  -  288 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:48:3 › Playground - Preview Rendering › should render paragraphs and text elements
+  -  289 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:63:3 › Playground - Preview Rendering › should render buttons with different variants
+  -  290 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:77:3 › Playground - Preview Rendering › should render layout elements correctly
+  -  291 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:111:3 › Playground - Preview Rendering › should render form inputs correctly
+  -  292 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:132:3 › Playground - Preview Rendering › should render components with props
+  -  293 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:146:3 › Playground - Preview Rendering › should render nested structures correctly
+  -  294 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:164:3 › Playground - Preview Rendering › should render images correctly
+  -  295 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:179:3 › Playground - Preview Rendering › should render links correctly
+  -  296 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:194:3 › Playground - Preview Rendering › should update preview incrementally as user types
+  -  297 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:211:3 › Playground - Preview Rendering › should render separator correctly
+  -  298 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:227:3 › Playground - Preview Rendering › should render blockquote and note correctly
+  -  299 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:241:3 › Playground - Preview Rendering › should render grid layout correctly
+  -  300 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:261:3 › Playground - Preview Rendering › should render navigator (bottom navigation)
+  -  301 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:278:3 › Playground - Preview Rendering › should render FAB (floating action button)
+  -  302 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:293:3 › Playground - Preview Rendering › should preserve preview styling across updates
+  -  303 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:322:3 › Playground - Preview Rendering › should render preview without JavaScript errors
+  -  304 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:342:3 › Playground - Preview Rendering › should handle rapid editor changes gracefully
+  -  305 [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:360:3 › Playground - Preview Rendering › should render content inside device frame properly
+  ✘  306 [webkit] › packages\web\tests\e2e\smoke.spec.ts:11:3 › Playground Smoke Tests › should load playground page (0ms)
+  -  307 [webkit] › packages\web\tests\e2e\smoke.spec.ts:22:3 › Playground Smoke Tests › should have Monaco editor
+  -  308 [webkit] › packages\web\tests\e2e\smoke.spec.ts:30:3 › Playground Smoke Tests › should have preview panel
+  -  309 [webkit] › packages\web\tests\e2e\smoke.spec.ts:38:3 › Playground Smoke Tests › should render default example
+  -  310 [webkit] › packages\web\tests\e2e\smoke.spec.ts:52:3 › Playground Smoke Tests › should have Export HTML button
+  -  311 [webkit] › packages\web\tests\e2e\smoke.spec.ts:59:3 › Playground Smoke Tests › should have View Documentation link
+  -  312 [webkit] › packages\web\tests\e2e\smoke.spec.ts:66:3 › Playground Smoke Tests › should have example buttons
+  -  313 [webkit] › packages\web\tests\e2e\smoke.spec.ts:84:3 › Playground Smoke Tests › should update preview when example is clicked
+  -  314 [webkit] › packages\web\tests\e2e\smoke.spec.ts:99:3 › Playground Smoke Tests › should show screen count when DSL has screens
+  -  315 [webkit] › packages\web\tests\e2e\smoke.spec.ts:110:3 › Playground Smoke Tests › should not crash with invalid DSL
+
+
+  1) [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:24:3 › Playground - Error Handling › should detect syntax errors 
+
+    TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('.monaco-editor textarea.inputarea') to be visible[22m
+
+
+       at packages\web\tests\e2e\helpers\playground-helpers.ts:42
+
+      40 |
+      41 |     // Also wait for the textarea to be ready
+    > 42 |     await this.page.waitForSelector('.monaco-editor textarea.inputarea', {
+         |                     ^
+      43 |       timeout: 20000, // Should be quick if container is there
+      44 |       state: 'visible',
+      45 |     })
+        at PlaygroundPage.waitForEditorReady (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:42:21)
+        at PlaygroundPage.goto (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:22:5)
+        at C:\Dev\proto-typed\packages\web\tests\e2e\playground-errors.spec.ts:21:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\packages-web-tests-e2e-pla-29d6b-should-detect-syntax-errors-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\packages-web-tests-e2e-pla-29d6b-should-detect-syntax-errors-chromium\error-context.md
+
+  2) [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:36:3 › Playground - Error Handling › should recover from errors when fixed 
+
+    TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('.monaco-editor textarea.inputarea') to be visible[22m
+
+
+       at packages\web\tests\e2e\helpers\playground-helpers.ts:42
+
+      40 |
+      41 |     // Also wait for the textarea to be ready
+    > 42 |     await this.page.waitForSelector('.monaco-editor textarea.inputarea', {
+         |                     ^
+      43 |       timeout: 20000, // Should be quick if container is there
+      44 |       state: 'visible',
+      45 |     })
+        at PlaygroundPage.waitForEditorReady (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:42:21)
+        at PlaygroundPage.goto (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:22:5)
+        at C:\Dev\proto-typed\packages\web\tests\e2e\playground-errors.spec.ts:21:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\packages-web-tests-e2e-pla-e183f-over-from-errors-when-fixed-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\packages-web-tests-e2e-pla-e183f-over-from-errors-when-fixed-chromium\error-context.md
+
+  3) [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:50:3 › Playground - Error Handling › should handle missing screen name 
+
+    TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('.monaco-editor textarea.inputarea') to be visible[22m
+
+
+       at packages\web\tests\e2e\helpers\playground-helpers.ts:42
+
+      40 |
+      41 |     // Also wait for the textarea to be ready
+    > 42 |     await this.page.waitForSelector('.monaco-editor textarea.inputarea', {
+         |                     ^
+      43 |       timeout: 20000, // Should be quick if container is there
+      44 |       state: 'visible',
+      45 |     })
+        at PlaygroundPage.waitForEditorReady (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:42:21)
+        at PlaygroundPage.goto (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:22:5)
+        at C:\Dev\proto-typed\packages\web\tests\e2e\playground-errors.spec.ts:21:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\packages-web-tests-e2e-pla-a974d--handle-missing-screen-name-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\packages-web-tests-e2e-pla-a974d--handle-missing-screen-name-chromium\error-context.md
+
+  4) [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:62:3 › Playground - Error Handling › should handle missing colon 
+
+    TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('.monaco-editor textarea.inputarea') to be visible[22m
+
+
+       at packages\web\tests\e2e\helpers\playground-helpers.ts:42
+
+      40 |
+      41 |     // Also wait for the textarea to be ready
+    > 42 |     await this.page.waitForSelector('.monaco-editor textarea.inputarea', {
+         |                     ^
+      43 |       timeout: 20000, // Should be quick if container is there
+      44 |       state: 'visible',
+      45 |     })
+        at PlaygroundPage.waitForEditorReady (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:42:21)
+        at PlaygroundPage.goto (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:22:5)
+        at C:\Dev\proto-typed\packages\web\tests\e2e\playground-errors.spec.ts:21:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\packages-web-tests-e2e-pla-ba00f-should-handle-missing-colon-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\packages-web-tests-e2e-pla-ba00f-should-handle-missing-colon-chromium\error-context.md
+
+  5) [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:74:3 › Playground - Error Handling › should handle invalid indentation 
+
+    TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('.monaco-editor textarea.inputarea') to be visible[22m
+
+
+       at packages\web\tests\e2e\helpers\playground-helpers.ts:42
+
+      40 |
+      41 |     // Also wait for the textarea to be ready
+    > 42 |     await this.page.waitForSelector('.monaco-editor textarea.inputarea', {
+         |                     ^
+      43 |       timeout: 20000, // Should be quick if container is there
+      44 |       state: 'visible',
+      45 |     })
+        at PlaygroundPage.waitForEditorReady (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:42:21)
+        at PlaygroundPage.goto (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:22:5)
+        at C:\Dev\proto-typed\packages\web\tests\e2e\playground-errors.spec.ts:21:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\packages-web-tests-e2e-pla-74258--handle-invalid-indentation-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\packages-web-tests-e2e-pla-74258--handle-invalid-indentation-chromium\error-context.md
+
+  6) [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:86:3 › Playground - Error Handling › should handle incomplete button syntax 
+
+    TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('.monaco-editor textarea.inputarea') to be visible[22m
+
+
+       at packages\web\tests\e2e\helpers\playground-helpers.ts:42
+
+      40 |
+      41 |     // Also wait for the textarea to be ready
+    > 42 |     await this.page.waitForSelector('.monaco-editor textarea.inputarea', {
+         |                     ^
+      43 |       timeout: 20000, // Should be quick if container is there
+      44 |       state: 'visible',
+      45 |     })
+        at PlaygroundPage.waitForEditorReady (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:42:21)
+        at PlaygroundPage.goto (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:22:5)
+        at C:\Dev\proto-typed\packages\web\tests\e2e\playground-errors.spec.ts:21:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\packages-web-tests-e2e-pla-08cc5-le-incomplete-button-syntax-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\packages-web-tests-e2e-pla-08cc5-le-incomplete-button-syntax-chromium\error-context.md
+
+  7) [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:98:3 › Playground - Error Handling › should handle malformed image syntax 
+
+    TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('.monaco-editor textarea.inputarea') to be visible[22m
+
+
+       at packages\web\tests\e2e\helpers\playground-helpers.ts:42
+
+      40 |
+      41 |     // Also wait for the textarea to be ready
+    > 42 |     await this.page.waitForSelector('.monaco-editor textarea.inputarea', {
+         |                     ^
+      43 |       timeout: 20000, // Should be quick if container is there
+      44 |       state: 'visible',
+      45 |     })
+        at PlaygroundPage.waitForEditorReady (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:42:21)
+        at PlaygroundPage.goto (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:22:5)
+        at C:\Dev\proto-typed\packages\web\tests\e2e\playground-errors.spec.ts:21:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\packages-web-tests-e2e-pla-953a1-ndle-malformed-image-syntax-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\packages-web-tests-e2e-pla-953a1-ndle-malformed-image-syntax-chromium\error-context.md
+
+  8) [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:110:3 › Playground - Error Handling › should handle undefined component 
+
+    TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('.monaco-editor textarea.inputarea') to be visible[22m
+
+
+       at packages\web\tests\e2e\helpers\playground-helpers.ts:42
+
+      40 |
+      41 |     // Also wait for the textarea to be ready
+    > 42 |     await this.page.waitForSelector('.monaco-editor textarea.inputarea', {
+         |                     ^
+      43 |       timeout: 20000, // Should be quick if container is there
+      44 |       state: 'visible',
+      45 |     })
+        at PlaygroundPage.waitForEditorReady (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:42:21)
+        at PlaygroundPage.goto (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:22:5)
+        at C:\Dev\proto-typed\packages\web\tests\e2e\playground-errors.spec.ts:21:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\packages-web-tests-e2e-pla-ebf4f--handle-undefined-component-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\packages-web-tests-e2e-pla-ebf4f--handle-undefined-component-chromium\error-context.md
+
+  9) [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:122:3 › Playground - Error Handling › should handle component without props 
+
+    TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('.monaco-editor textarea.inputarea') to be visible[22m
+
+
+       at packages\web\tests\e2e\helpers\playground-helpers.ts:42
+
+      40 |
+      41 |     // Also wait for the textarea to be ready
+    > 42 |     await this.page.waitForSelector('.monaco-editor textarea.inputarea', {
+         |                     ^
+      43 |       timeout: 20000, // Should be quick if container is there
+      44 |       state: 'visible',
+      45 |     })
+        at PlaygroundPage.waitForEditorReady (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:42:21)
+        at PlaygroundPage.goto (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:22:5)
+        at C:\Dev\proto-typed\packages\web\tests\e2e\playground-errors.spec.ts:21:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\packages-web-tests-e2e-pla-f2ae5-dle-component-without-props-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\packages-web-tests-e2e-pla-f2ae5-dle-component-without-props-chromium\error-context.md
+
+  10) [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:138:3 › Playground - Error Handling › should handle invalid navigator syntax 
+
+    TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('.monaco-editor textarea.inputarea') to be visible[22m
+
+
+       at packages\web\tests\e2e\helpers\playground-helpers.ts:42
+
+      40 |
+      41 |     // Also wait for the textarea to be ready
+    > 42 |     await this.page.waitForSelector('.monaco-editor textarea.inputarea', {
+         |                     ^
+      43 |       timeout: 20000, // Should be quick if container is there
+      44 |       state: 'visible',
+      45 |     })
+        at PlaygroundPage.waitForEditorReady (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:42:21)
+        at PlaygroundPage.goto (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:22:5)
+        at C:\Dev\proto-typed\packages\web\tests\e2e\playground-errors.spec.ts:21:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\packages-web-tests-e2e-pla-b8f7a-le-invalid-navigator-syntax-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\packages-web-tests-e2e-pla-b8f7a-le-invalid-navigator-syntax-chromium\error-context.md
+
+  11) [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:150:3 › Playground - Error Handling › should handle mixed valid and invalid content 
+
+    TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('.monaco-editor textarea.inputarea') to be visible[22m
+
+
+       at packages\web\tests\e2e\helpers\playground-helpers.ts:42
+
+      40 |
+      41 |     // Also wait for the textarea to be ready
+    > 42 |     await this.page.waitForSelector('.monaco-editor textarea.inputarea', {
+         |                     ^
+      43 |       timeout: 20000, // Should be quick if container is there
+      44 |       state: 'visible',
+      45 |     })
+        at PlaygroundPage.waitForEditorReady (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:42:21)
+        at PlaygroundPage.goto (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:22:5)
+        at C:\Dev\proto-typed\packages\web\tests\e2e\playground-errors.spec.ts:21:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\packages-web-tests-e2e-pla-bd446-d-valid-and-invalid-content-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\packages-web-tests-e2e-pla-bd446-d-valid-and-invalid-content-chromium\error-context.md
+
+  12) [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:166:3 › Playground - Error Handling › should not crash on extremely long lines 
+
+    TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('.monaco-editor textarea.inputarea') to be visible[22m
+
+
+       at packages\web\tests\e2e\helpers\playground-helpers.ts:42
+
+      40 |
+      41 |     // Also wait for the textarea to be ready
+    > 42 |     await this.page.waitForSelector('.monaco-editor textarea.inputarea', {
+         |                     ^
+      43 |       timeout: 20000, // Should be quick if container is there
+      44 |       state: 'visible',
+      45 |     })
+        at PlaygroundPage.waitForEditorReady (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:42:21)
+        at PlaygroundPage.goto (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:22:5)
+        at C:\Dev\proto-typed\packages\web\tests\e2e\playground-errors.spec.ts:21:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\packages-web-tests-e2e-pla-41c25-ash-on-extremely-long-lines-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\packages-web-tests-e2e-pla-41c25-ash-on-extremely-long-lines-chromium\error-context.md
+
+  13) [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:179:3 › Playground - Error Handling › should handle deeply nested structures 
+
+    TimeoutError: page.waitForSelector: Timeout 20000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('.monaco-editor textarea.inputarea') to be visible[22m
+
+
+       at packages\web\tests\e2e\helpers\playground-helpers.ts:42
+
+      40 |
+      41 |     // Also wait for the textarea to be ready
+    > 42 |     await this.page.waitForSelector('.monaco-editor textarea.inputarea', {
+         |                     ^
+      43 |       timeout: 20000, // Should be quick if container is there
+      44 |       state: 'visible',
+      45 |     })
+        at PlaygroundPage.waitForEditorReady (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:42:21)
+        at PlaygroundPage.goto (C:\Dev\proto-typed\packages\web\tests\e2e\helpers\playground-helpers.ts:22:5)
+        at C:\Dev\proto-typed\packages\web\tests\e2e\playground-errors.spec.ts:21:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\packages-web-tests-e2e-pla-beb56-le-deeply-nested-structures-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\packages-web-tests-e2e-pla-beb56-le-deeply-nested-structures-chromium\error-context.md
+
+  14) [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:199:3 › Playground - Error Handling › should handle rapid invalid input changes 
+
+    Error: browserType.launch: Target page, context or browser has been closed
+    Browser logs:
+
+    <launching> C:\Users\Ricardo\AppData\Local\ms-playwright\chromium_headless_shell-1194\chrome-win\headless_shell.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=C:\Users\Ricardo\AppData\Local\Temp\playwright_chromiumdev_profile-8WNgyE --remote-debugging-pipe --no-startup-window
+    <launched> pid=92712
+    Call log:
+    [2m  - <launching> C:\Users\Ricardo\AppData\Local\ms-playwright\chromium_headless_shell-1194\chrome-win\headless_shell.exe --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --user-data-dir=C:\Users\Ricardo\AppData\Local\Temp\playwright_chromiumdev_profile-8WNgyE --remote-debugging-pipe --no-startup-window[22m
+    [2m  - <launched> pid=92712[22m
+    [2m  - [pid=92712] <gracefully close start>[22m
+    [2m  - [pid=92712] <kill>[22m
+    [2m  - [pid=92712] <will force kill>[22m
+    [2m  - [pid=92712] <process did exit: exitCode=3221225794, signal=null>[22m
+    [2m  - [pid=92712] starting temporary directories cleanup[22m
+    [2m  - [pid=92712] finished temporary directories cleanup[22m
+    [2m  - [pid=92712] <gracefully close end>[22m
+
+
+  15) [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:218:3 › Playground - Error Handling › should handle special characters in text 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  16) [chromium] › packages\web\tests\e2e\playground-export.spec.ts:28:3 › Playground - Export and Features › should have export button visible and enabled 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  17) [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:29:3 › Playground - Navigation › should detect multiple screens 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  18) [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:31:3 › Playground - Preview Rendering › should render headings correctly 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  19) [chromium] › packages\web\tests\e2e\smoke.spec.ts:11:3 › Playground Smoke Tests › should load playground page 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  20) [firefox] › packages\web\tests\e2e\playground-basic.spec.ts:13:3 › Playground - Basic Functionality › should load playground page successfully 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  21) [firefox] › packages\web\tests\e2e\playground-completion.spec.ts:14:3 › Playground - Editor Interaction › should have Monaco editor ready 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  22) [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:24:3 › Playground - Error Handling › should detect syntax errors 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  23) [firefox] › packages\web\tests\e2e\playground-export.spec.ts:28:3 › Playground - Export and Features › should have export button visible and enabled 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  24) [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:29:3 › Playground - Navigation › should detect multiple screens 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  25) [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:31:3 › Playground - Preview Rendering › should render headings correctly 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  26) [firefox] › packages\web\tests\e2e\smoke.spec.ts:11:3 › Playground Smoke Tests › should load playground page 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  27) [webkit] › packages\web\tests\e2e\playground-basic.spec.ts:13:3 › Playground - Basic Functionality › should load playground page successfully 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  28) [webkit] › packages\web\tests\e2e\playground-completion.spec.ts:14:3 › Playground - Editor Interaction › should have Monaco editor ready 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  29) [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:24:3 › Playground - Error Handling › should detect syntax errors 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  30) [webkit] › packages\web\tests\e2e\playground-export.spec.ts:28:3 › Playground - Export and Features › should have export button visible and enabled 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  31) [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:29:3 › Playground - Navigation › should detect multiple screens 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  32) [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:31:3 › Playground - Preview Rendering › should render headings correctly 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  33) [webkit] › packages\web\tests\e2e\smoke.spec.ts:11:3 › Playground Smoke Tests › should load playground page 
+
+    Error: worker process exited unexpectedly (code=3221225794, signal=null)
+
+  33 failed
+    [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:24:3 › Playground - Error Handling › should detect syntax errors 
+    [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:36:3 › Playground - Error Handling › should recover from errors when fixed 
+    [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:50:3 › Playground - Error Handling › should handle missing screen name 
+    [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:62:3 › Playground - Error Handling › should handle missing colon 
+    [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:74:3 › Playground - Error Handling › should handle invalid indentation 
+    [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:86:3 › Playground - Error Handling › should handle incomplete button syntax 
+    [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:98:3 › Playground - Error Handling › should handle malformed image syntax 
+    [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:110:3 › Playground - Error Handling › should handle undefined component 
+    [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:122:3 › Playground - Error Handling › should handle component without props 
+    [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:138:3 › Playground - Error Handling › should handle invalid navigator syntax 
+    [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:150:3 › Playground - Error Handling › should handle mixed valid and invalid content 
+    [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:166:3 › Playground - Error Handling › should not crash on extremely long lines 
+    [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:179:3 › Playground - Error Handling › should handle deeply nested structures 
+    [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:199:3 › Playground - Error Handling › should handle rapid invalid input changes 
+    [chromium] › packages\web\tests\e2e\playground-errors.spec.ts:218:3 › Playground - Error Handling › should handle special characters in text 
+    [chromium] › packages\web\tests\e2e\playground-export.spec.ts:28:3 › Playground - Export and Features › should have export button visible and enabled 
+    [chromium] › packages\web\tests\e2e\playground-navigation.spec.ts:29:3 › Playground - Navigation › should detect multiple screens 
+    [chromium] › packages\web\tests\e2e\playground-preview.spec.ts:31:3 › Playground - Preview Rendering › should render headings correctly 
+    [chromium] › packages\web\tests\e2e\smoke.spec.ts:11:3 › Playground Smoke Tests › should load playground page 
+    [firefox] › packages\web\tests\e2e\playground-basic.spec.ts:13:3 › Playground - Basic Functionality › should load playground page successfully 
+    [firefox] › packages\web\tests\e2e\playground-completion.spec.ts:14:3 › Playground - Editor Interaction › should have Monaco editor ready 
+    [firefox] › packages\web\tests\e2e\playground-errors.spec.ts:24:3 › Playground - Error Handling › should detect syntax errors 
+    [firefox] › packages\web\tests\e2e\playground-export.spec.ts:28:3 › Playground - Export and Features › should have export button visible and enabled 
+    [firefox] › packages\web\tests\e2e\playground-navigation.spec.ts:29:3 › Playground - Navigation › should detect multiple screens 
+    [firefox] › packages\web\tests\e2e\playground-preview.spec.ts:31:3 › Playground - Preview Rendering › should render headings correctly 
+    [firefox] › packages\web\tests\e2e\smoke.spec.ts:11:3 › Playground Smoke Tests › should load playground page 
+    [webkit] › packages\web\tests\e2e\playground-basic.spec.ts:13:3 › Playground - Basic Functionality › should load playground page successfully 
+    [webkit] › packages\web\tests\e2e\playground-completion.spec.ts:14:3 › Playground - Editor Interaction › should have Monaco editor ready 
+    [webkit] › packages\web\tests\e2e\playground-errors.spec.ts:24:3 › Playground - Error Handling › should detect syntax errors 
+    [webkit] › packages\web\tests\e2e\playground-export.spec.ts:28:3 › Playground - Export and Features › should have export button visible and enabled 
+    [webkit] › packages\web\tests\e2e\playground-navigation.spec.ts:29:3 › Playground - Navigation › should detect multiple screens 
+    [webkit] › packages\web\tests\e2e\playground-preview.spec.ts:31:3 › Playground - Preview Rendering › should render headings correctly 
+    [webkit] › packages\web\tests\e2e\smoke.spec.ts:11:3 › Playground Smoke Tests › should load playground page 
+  273 did not run
+  9 passed (5.6m)
+ ELIFECYCLE  Command failed with exit code 1.

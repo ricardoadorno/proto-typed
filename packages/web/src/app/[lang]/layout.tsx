@@ -1,8 +1,8 @@
 import type { Locale } from '@/utils/types'
 
 export async function generateStaticParams(): Promise<{ lang: Locale }[]> {
-  // Only generate param for 'pt', 'en' is the default without prefix
-  return [{ lang: 'pt' }]
+  // Generate params for all supported languages
+  return [{ lang: 'pt' }, { lang: 'en' }]
 }
 
 export default async function LangLayout({

@@ -23,7 +23,20 @@
       "Bash(pnpm --filter @proto-typed/core build:*)",
       "Bash(tee:*)",
       "Bash(timeout 180 pnpm run test:extension:e2e:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(pnpm exec playwright:*)",
+      "Bash(timeout 180 pnpm test:e2e:*)",
+      "Bash(timeout 180 pnpm exec playwright test:*)",
+      "Bash(pnpm test:e2e:*)",
+      "Bash(curl:*)",
+      "Bash(timeout 300 pnpm test:e2e:all:*)",
+      "Bash(pnpm test:e2e:all:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(pnpm dev)",
+      "Bash(set PORT=3002)",
+      "Bash(PORT=3002 pnpm dev:*)",
+      "Bash(timeout 180 pnpm test:e2e:all:*)"
     ],
     "deny": [],
     "ask": []

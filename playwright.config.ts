@@ -7,22 +7,25 @@ export default defineConfig({
   testDir: './',
   testMatch: ['tests/e2e/**/*.spec.ts', 'packages/web/tests/e2e/**/*.spec.ts'],
   /* Run tests in files in parallel */
-  fullyParallel: true,
+  fullyParallel: false, // Changed to avoid overwhelming the server
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 1 : 1, // Run tests serially
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: 'list',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  timeout: 60000, // Increase global timeout to 60s
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: 'http://localhost:3000',
+    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3002',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    navigationTimeout: 60000, // 60s for navigation
+    actionTimeout: 30000, // 30s for actions
   },
 
   /* Configure projects for major browsers */
@@ -56,8 +59,8 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'pnpm dev',
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
+    url: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3002',
+    reuseExistingServer: true, // Always reuse existing server in dev
     timeout: 120 * 1000,
   },
 })

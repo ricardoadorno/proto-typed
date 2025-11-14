@@ -10,7 +10,12 @@
     "start": "next start",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:e2e": "cd ../.. && playwright test --reporter=list --project=chromium",
+    "test:e2e:ui": "cd ../.. && playwright test --ui",
+    "test:e2e:all": "cd ../.. && playwright test packages/web/tests/e2e/ --reporter=list",
+    "test:e2e:headed": "cd ../.. && playwright test packages/web/tests/e2e/smoke.spec.ts --headed --reporter=list",
+    "test:e2e:debug": "cd ../.. && playwright test packages/web/tests/e2e/smoke.spec.ts --debug"
   },
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
