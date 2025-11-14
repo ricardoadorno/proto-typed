@@ -1,7 +1,9 @@
 /**
  * Export shadcn project as ZIP file
+ * Client-side only - uses browser APIs
  */
 
+import JSZip from "jszip";
 import { ShadcnExportResult } from "@proto-typed/core";
 
 /**
@@ -13,8 +15,6 @@ export async function exportShadcnProject(
   projectName: string = "proto-typed-export"
 ): Promise<void> {
   try {
-    // Dynamically import JSZip
-    const JSZip = (await import("jszip")).default;
     const zip = new JSZip();
 
     // Add all files to the zip
