@@ -5,6 +5,7 @@
     "editorDescription": "Escreva componentes, telas e fluxos usando a sintaxe declarativa.",
     "viewDocumentation": "Ver documentação",
     "exportHtml": "Exportar HTML",
+    "exportShadcn": "Exportar Shadcn",
     "themePreset": "Preset de tema",
     "livePreview": "Preview ao vivo",
     "livePreviewDescription": "Interaja com a interface renderizada. Clique nos botões para trocar de tela mais rápido.",

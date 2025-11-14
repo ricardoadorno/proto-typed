@@ -7,8 +7,14 @@ export type NodeType =
 
   // Primitives (from primitives.tokens.ts)
   | 'Button'
+  | 'Link'
   | 'Image'
   | 'Text'
+  | 'Heading'
+  | 'Paragraph'
+  | 'MutedText'
+  | 'Note'
+  | 'Quote'
 
   // Layouts (from layouts.tokens.ts - canonical presets + structural elements)
   | 'Layout' // Canonical layout presets (container-narrow, stack, row-center, grid-3, card, header, etc.)
@@ -137,6 +143,13 @@ export interface ButtonProps extends LayoutProps {
   size?: string
 }
 
+// Define link properties
+export interface LinkProps extends LayoutProps {
+  text?: string
+  destination?: string
+  external?: boolean
+}
+
 // Define image properties
 export interface ImageProps extends LayoutProps {
   src?: string
@@ -227,6 +240,7 @@ export type NodeProps =
   | LayoutProps
   | TextProps
   | ButtonProps
+  | LinkProps
   | ImageProps
   | InputProps
   | SelectProps

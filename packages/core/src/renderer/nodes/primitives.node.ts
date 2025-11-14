@@ -150,3 +150,101 @@ export function renderText(node: AstNode): string {
 
   return `<${tag} class="${classes}">${renderedContent}</${tag}>`
 }
+
+/**
+ * @function renderLink
+ * @description Renders a 'Link' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Link' AST node.
+ * @returns {string} The HTML string for the link.
+ */
+export function renderLink(node: AstNode): string {
+  const linkProps = node.props as any
+  const text = linkProps?.text || node.value || 'Link'
+  const destination = linkProps?.destination || '#'
+  const external = linkProps?.external || destination.startsWith('http') || destination.startsWith('mailto:')
+
+  if (external) {
+    return `<a href="${destination}" target="_blank" rel="noopener noreferrer" class="text-primary underline-offset-4 hover:underline">${text}</a>`
+  } else {
+    return `<a href="${destination}" class="text-primary underline-offset-4 hover:underline">${text}</a>`
+  }
+}
+
+/**
+ * @function renderHeading
+ * @description Renders a 'Heading' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Heading' AST node.
+ * @returns {string} The HTML string for the heading.
+ */
+export function renderHeading(node: AstNode): string {
+  const textProps = node.props as TextProps
+  const kind = (node.kind || textProps?.kind || 'h2') as TextKind
+  const value = textProps?.value || node.value || ''
+  const classes = TYPO_CLASSES[kind] || TYPO_CLASSES.h2
+  const level = kind === 'h1' ? '1' : kind === 'h2' ? '2' : kind === 'h3' ? '3' : kind === 'h4' ? '4' : '2'
+
+  const renderedContent = renderInlineContent(value)
+  return `<h${level} class="${classes}">${renderedContent}</h${level}>`
+}
+
+/**
+ * @function renderParagraph
+ * @description Renders a 'Paragraph' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Paragraph' AST node.
+ * @returns {string} The HTML string for the paragraph.
+ */
+export function renderParagraph(node: AstNode): string {
+  const textProps = node.props as TextProps
+  const value = textProps?.value || node.value || ''
+  const classes = TYPO_CLASSES.p
+  const renderedContent = renderInlineContent(value)
+  return `<p class="${classes}">${renderedContent}</p>`
+}
+
+/**
+ * @function renderMutedText
+ * @description Renders a 'MutedText' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'MutedText' AST node.
+ * @returns {string} The HTML string for the muted text.
+ */
+export function renderMutedText(node: AstNode): string {
+  const textProps = node.props as TextProps
+  const value = textProps?.value || node.value || ''
+  const classes = TYPO_CLASSES.muted
+  const renderedContent = renderInlineContent(value)
+  return `<p class="${classes}">${renderedContent}</p>`
+}
+
+/**
+ * @function renderNote
+ * @description Renders a 'Note' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Note' AST node.
+ * @returns {string} The HTML string for the note.
+ */
+export function renderNote(node: AstNode): string {
+  const textProps = node.props as TextProps
+  const value = textProps?.value || node.value || ''
+  const classes = TYPO_CLASSES.note
+  const renderedContent = renderInlineContent(value)
+  return `<div class="${classes}" role="note">${renderedContent}</div>`
+}
+
+/**
+ * @function renderQuote
+ * @description Renders a 'Quote' AST node to its HTML representation.
+ *
+ * @param {AstNode} node - The 'Quote' AST node.
+ * @returns {string} The HTML string for the quote.
+ */
+export function renderQuote(node: AstNode): string {
+  const textProps = node.props as TextProps
+  const value = textProps?.value || node.value || ''
+  const classes = TYPO_CLASSES.blockquote
+  const renderedContent = renderInlineContent(value)
+  return `<blockquote class="${classes}">${renderedContent}</blockquote>`
+}

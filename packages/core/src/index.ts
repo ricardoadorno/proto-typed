@@ -4,6 +4,7 @@ export { createRouteManagerGateway } from './renderer/infrastructure/route-manag
 export { ErrorBus } from './error-bus.js'
 export { RouteManager } from './renderer/core/route-manager.js'
 export { astToHtmlDocument } from './renderer/ast-to-html-document.js'
+export { astToShadcnComponents } from './renderer/ast-to-shadcn-components.js'
 export { availableThemes } from './themes/theme-definitions.js'
 export { customPropertiesManager } from './renderer/core/theme-manager.js'
 export {
@@ -47,3 +48,9 @@ export {
   type NodeRenderer,
 } from './types/render.js'
 export { type MouseEvent } from './types/dom.js'
+export {
+  type ShadcnExportResult,
+  type ShadcnFile,
+  type RouteConfig as ShadcnRouteConfig,
+  type NavigationConfig,
+} from './renderer/shadcn/types.js'

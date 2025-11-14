@@ -1,3 +1,5 @@
+import type { Range } from './diagnostics.js'
+
 export type Severity = 'info' | 'warning' | 'error' | 'fatal'
 
 export const SEVERITY_RANK: Record<Severity, number> = {
@@ -23,7 +25,7 @@ export interface ProtoErrorBase {
   fatal?: boolean
   messageKey?: string
   messageParams?: Record<string, string | number>
-  range?: { start: { line: number; character: number }; end: { line: number; character: number } }
+  range?: Range
   data?: any
 }
 

@@ -5,6 +5,7 @@
     "editorDescription": "Write components, screens, and flows using the declarative syntax.",
     "viewDocumentation": "View documentation",
     "exportHtml": "Export HTML",
+    "exportShadcn": "Export Shadcn",
     "themePreset": "Theme preset",
     "livePreview": "Live Preview",
     "livePreviewDescription": "Interact with the rendered interface. Click the buttons to switch screens faster.",

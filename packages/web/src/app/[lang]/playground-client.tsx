@@ -20,12 +20,14 @@ import {
 } from '@/components/ui'
 import {
   astToHtmlDocument,
+  astToShadcnComponents,
   availableThemes,
   customPropertiesManager,
 } from '@proto-typed/core'
 import { useParse } from '@/hooks/use-parse'
 import { exampleConfigs } from '@/examples'
 import { exportDocument } from '@/utils/export-document'
+import { exportShadcnProject } from '@/utils/export-shadcn-project'
 import { SimpleSelect } from '@/components/ui/select'
 import { DSLEditor } from '@/components/editor'
 import { getDictionary, type Dictionary } from '@/lib/get-dictionary'
@@ -62,6 +64,22 @@ export default function PlaygroundPage() {
     }
     const documentResult = astToHtmlDocument(ast)
     exportDocument(documentResult, 'playground-export.html')
+  }
+
+  const handleExportShadcn = async () => {
+    if (!ast || (Array.isArray(ast) && ast.length === 0)) {
+      return
+    }
+    try {
+      const astArray = Array.isArray(ast) ? ast : [ast]
+      const result = astToShadcnComponents(astArray, {
+        themeName: customPropertiesManager.getCurrentThemeName(),
+      })
+      await exportShadcnProject(result, 'proto-typed-shadcn')
+    } catch (error) {
+      console.error('Error exporting shadcn project:', error)
+      alert('Error exporting shadcn project. Check console for details.')
+    }
   }
 
   return (
@@ -105,6 +123,15 @@ export default function PlaygroundPage() {
               >
                 <DownloadIcon className="h-4 w-4" />{' '}
                 {dict?.playground?.exportHtml ?? 'Export HTML'}
+              </Button>
+
+              <Button
+                onClick={handleExportShadcn}
+                variant="ghost"
+                className="gap-2 border border-[var(--border-muted)] text-[var(--fg-secondary)] hover:border-[var(--brand-400)] hover:text-[var(--accent)]"
+              >
+                <DownloadIcon className="h-4 w-4" />{' '}
+                {dict?.playground?.exportShadcn ?? 'Export Shadcn'}
               </Button>
               <SimpleSelect
                 label={dict?.playground?.themePreset ?? 'Theme preset'}
