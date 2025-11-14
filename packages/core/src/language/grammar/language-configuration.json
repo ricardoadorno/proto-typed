@@ -1,4 +1,7 @@
 {
+  "comments": {
+    "lineComment": "//"
+  },
   "brackets": [
     ["{", "}"],
     ["[", "]"],
@@ -17,5 +20,30 @@
     { "open": "(", "close": ")" },
     { "open": "'", "close": "'" },
     { "open": "\"", "close": "\"" }
+  ],
+  "folding": {
+    "markers": {
+      "start": "^\\s*(screen|modal|drawer|component|meta|head|container|stack|row|grid|card|header|sidebar|list|navigator).*:",
+      "end": "^\\s*$"
+    }
+  },
+  "wordPattern": "(-?\\d*\\.\\d\\w*)|([^\\`\\~\\!\\@\\#\\%\\^\\&\\*\\(\\)\\=\\+\\[\\{\\]\\}\\\\\\|\\;\\:\\'\\\"\\,\\.\\<\\>\\/\\?\\s]+)",
+  "indentationRules": {
+    "increaseIndentPattern": "^\\s*(screen|modal|drawer|component|meta|head|container|stack|row|grid|card|header|sidebar|list|navigator|color|font|template).*:$",
+    "decreaseIndentPattern": "^\\s*$"
+  },
+  "onEnterRules": [
+    {
+      "beforeText": "^\\s*(screen|modal|drawer|component|meta|head|container|stack|row|grid|card|header|sidebar|list|navigator|color|font|template).*:$",
+      "action": {
+        "indent": "indent"
+      }
+    },
+    {
+      "beforeText": "^\\s*(version|title|primary|secondary|neutral|accent|base|family|default)\\s*:",
+      "action": {
+        "indent": "none"
+      }
+    }
   ]
 }

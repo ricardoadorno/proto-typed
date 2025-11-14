@@ -5,6 +5,10 @@ export {
   type LanguageHost,
 } from './engine/engine.js'
 export {
+  SEMANTIC_TOKENS_LEGEND,
+  getSemanticTokens,
+} from './engine/semantic-tokens.js'
+export {
   getTextMateGrammar,
   getLanguageConfiguration,
 } from './grammar/index.js'

@@ -166,7 +166,7 @@ export function createEngine(host: LanguageHost): LanguageEngine {
       if (!state) {
         return null
       }
-      return getSemanticTokens(params)
+      return getSemanticTokens(params, state.document)
     },
 
     format(_params) {

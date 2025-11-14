@@ -63,7 +63,7 @@ export const elementStyles = {
   // FAB using CSS variables
   fab: 'absolute w-14 h-14 rounded-full bg-primary shadow-2xl flex items-center justify-center text-xl font-bold text-primary-foreground z-20',
   fabContainer:
-    'fixed bottom-20 right-5 z-20 flex flex-col items-end justify-end p-0',
+    'sticky bottom-20 mr-5 z-20 flex flex-col items-end justify-end p-0  ml-auto w-auto',
   fabItemsList:
     'mb-8 space-y-6 opacity-0 transform translate-y-4 pointer-events-none',
   fabItem: 'flex items-center justify-end',

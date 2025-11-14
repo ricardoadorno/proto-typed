@@ -672,7 +672,7 @@ exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > fab 
 `;
 
 exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > fab > HTML 1`] = `
-"<div class="screen container Test" data-screen="Test">
+"<div class="screen container Test pb-24" data-screen="Test">
     <div class="sticky bottom-20 mr-5 z-20 flex flex-col items-end justify-end p-0  ml-auto w-auto">
       <button class="absolute w-14 h-14 rounded-full bg-primary shadow-2xl flex items-center justify-center text-xl font-bold text-primary-foreground z-20" style="background-color: var(--primary); color: var(--primary-foreground);" >
         plus
@@ -699,7 +699,7 @@ exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > fab 
 `;
 
 exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > fab with icon > HTML 1`] = `
-"<div class="screen container Test" data-screen="Test">
+"<div class="screen container Test pb-24" data-screen="Test">
     <div class="sticky bottom-20 mr-5 z-20 flex flex-col items-end justify-end p-0  ml-auto w-auto">
       <button class="absolute w-14 h-14 rounded-full bg-primary shadow-2xl flex items-center justify-center text-xl font-bold text-primary-foreground z-20" style="background-color: var(--primary); color: var(--primary-foreground);" >
         plus
@@ -726,7 +726,7 @@ exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > head
 `;
 
 exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > header > HTML 1`] = `
-"<div class="screen container Test" data-screen="Test"><header class="sticky top-0 left-0 right-0 z-10 bg-background px-6  flex items-center justify-between min-h-[4rem] border-b border-border" style=""><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">App Title</h1>
+"<div class="screen container Test pt-16" data-screen="Test"><header class="sticky top-0 left-0 right-0 z-10 bg-background px-6  flex items-center justify-between min-h-[4rem] border-b border-border" style=""><h1 class="scroll-m-20 text-4xl font-extrabold tracking-tight text-[var(--fg-primary)]">App Title</h1>
 <p class="text-base leading-7 text-[var(--fg-secondary)]">Subtitle</p></header></div>"
 `;
 
@@ -748,8 +748,8 @@ exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > navi
 `;
 
 exports[`Layouts Domain - Syntax Tests > Snapshot Tests > Special Layouts > navigator > HTML 1`] = `
-"<div class="screen container Test" data-screen="Test">
-    <nav class="sticky bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border flex flex-row justify-around py-2 z-20 w-full shadow-2xl" style="background-color: var(--background); border-top-color: var(--border);">
+"<div class="screen container Test pb-16" data-screen="Test">
+    <nav class="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border flex flex-row justify-around py-2 z-20 w-full shadow-2xl" style="background-color: var(--background); border-top-color: var(--border);">
       
       <button class="flex flex-col items-center justify-center py-2 px-3 text-xs font-medium text-muted-foreground hover:text-primary active:text-primary/80 transition-all duration-200 rounded-[--radius] hover:bg-accent min-w-[60px]" style="background-color: var(--background); border-top-color: var(--border);" data-nav="Home" data-nav-type="internal">
         <div class="text-xs font-medium" style="margin-top: 0;">home</div>

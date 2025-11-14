@@ -36,7 +36,9 @@
       "Bash(pnpm dev)",
       "Bash(set PORT=3002)",
       "Bash(PORT=3002 pnpm dev:*)",
-      "Bash(timeout 180 pnpm test:e2e:all:*)"
+      "Bash(timeout 180 pnpm test:e2e:all:*)",
+      "Bash(pnpm --filter @proto-typed/core test:run)",
+      "Bash(pnpm --filter @proto-typed/core exec vitest:*)"
     ],
     "deny": [],
     "ask": []

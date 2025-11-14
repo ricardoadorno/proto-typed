@@ -4,6 +4,7 @@ import {
   TRIGGER_CHARACTERS,
   type LanguageHost,
 } from '../engine/engine.js'
+import { SEMANTIC_TOKENS_LEGEND } from '../engine/semantic-tokens.js'
 import type {
   CodeAction,
   CodeActionParams,
@@ -139,7 +140,10 @@ export function activateVSCodeAdapter(
   )
 
   if (engine.provideSemanticTokens) {
-    const legend = new vscodeApi.SemanticTokensLegend([], [])
+    const legend = new vscodeApi.SemanticTokensLegend(
+      SEMANTIC_TOKENS_LEGEND.tokenTypes,
+      SEMANTIC_TOKENS_LEGEND.tokenModifiers
+    )
     context.subscriptions.push(
       vscodeApi.languages.registerDocumentSemanticTokensProvider(
         { language: 'proto-typed' },

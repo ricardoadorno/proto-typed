@@ -206,8 +206,7 @@ export async function attachToMonaco(
 }
 
 function registerLanguage(monaco: typeof monacoEditor, languageId: string) {
-  const configuration =
-    getLanguageConfiguration() as monacoEditor.languages.LanguageConfiguration
+  const configuration = getLanguageConfiguration() as any
   monaco.languages.register({
     id: languageId,
     aliases: ['Proto-Typed', 'proto-typed'],
