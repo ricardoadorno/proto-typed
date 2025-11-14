@@ -1,6 +1,6 @@
 'use client'
 
-import {
+import React, {
   createContext,
   useCallback,
   useContext,
@@ -33,7 +33,7 @@ interface HeadingRegistryContextValue {
 const HeadingRegistryContext =
   createContext<HeadingRegistryContextValue | null>(null)
 
-export function DocHeadingProvider({ children }: { children: ReactNode }) {
+export function DocHeadingProvider({ children }: { children: React.ReactNode }) {
   const registry = useRef<Map<string, number>>(new Map())
 
   const registerSlug = useCallback((base: string) => {
