@@ -59,9 +59,10 @@ Por quê: a sintaxe de componente + instância reduz duplicação mantendo alinh
 ```dsl
 screen Default:
   container:
-    - Planejar release
-    - Revisar backlog
-    - Atualizar métricas
+    list:
+      - Planejar release
+      - Revisar backlog
+      - Atualizar métricas
     row-end:
       @[Abrir planejamento](Planning)
 ```
