@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useAnimation } from 'framer-motion'
-import { ChevronLeft, ChevronRight, Download, Zap, Code2, Smartphone, GitBranch, Package, ArrowRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Download, Zap, Code2, Smartphone, GitBranch, Package, ArrowRight, PackageX, Palette, Clock, Layers } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 
@@ -211,26 +211,36 @@ const slides = [
           animate="visible"
           className="text-5xl font-bold"
         >
-          Prototipar rápido é difícil.
+          O Problema
         </motion.h2>
+
+        <motion.p
+          variants={fadeIn}
+          initial="hidden"
+          animate="visible"
+          custom={1}
+          className="text-2xl text-[var(--fg-secondary)]"
+        >
+          Prototipar rápido é difícil
+        </motion.p>
 
         <div className="grid grid-cols-3 gap-6">
           {[
-            { icon: '🐌', text: 'Ferramentas pesadas' },
-            { icon: '🎨', text: 'Muito visual' },
-            { icon: '⏱️', text: 'Lento para iterar' },
+            { Icon: PackageX, text: 'Ferramentas pesadas' },
+            { Icon: Palette, text: 'Foco no visual' },
+            { Icon: Clock, text: 'Lento para iterar' },
           ].map((item, i) => (
             <motion.div
               key={i}
-              custom={i}
+              custom={i + 2}
               variants={fadeIn}
               initial="hidden"
               animate="visible"
-              whileHover={{ scale: 1.1 }}
-              className="rounded-lg border border-[var(--border)] bg-[var(--card)] p-8"
+              whileHover={{ scale: 1.05, y: -5 }}
+              className="rounded-lg border-2 border-[var(--border)] bg-gradient-to-br from-[var(--card)] to-transparent p-8 transition-all hover:border-[var(--accent)]/30 hover:shadow-lg"
             >
-              <div className="mb-4 text-5xl">{item.icon}</div>
-              <p className="text-lg text-[var(--fg-secondary)]">{item.text}</p>
+              <item.Icon className="mx-auto mb-4 h-12 w-12 text-[var(--fg-secondary)]" />
+              <p className="text-lg font-medium text-[var(--foreground)]">{item.text}</p>
             </motion.div>
           ))}
         </div>
@@ -242,29 +252,38 @@ const slides = [
   () => (
     <div className="flex h-screen w-full items-center justify-center">
       <div className="max-w-4xl space-y-16 px-8 text-center">
+        <motion.h2
+          variants={fadeIn}
+          initial="hidden"
+          animate="visible"
+          className="text-4xl font-bold text-[var(--fg-secondary)]"
+        >
+          A Solução
+        </motion.h2>
+
         <motion.div variants={scaleIn} initial="hidden" animate="visible" className="space-y-8">
-          <h2 className="text-6xl font-bold">Escreva.</h2>
+          <h3 className="text-5xl font-bold">Escreva.</h3>
           <div className="flex items-center justify-center gap-8">
             <motion.div
               animate={{ scale: [1, 1.2, 1] }}
               transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
             >
-              <Code2 className="h-24 w-24 text-[var(--accent)]" />
+              <Code2 className="h-20 w-20 text-[var(--accent)]" />
             </motion.div>
             <motion.div
               animate={{ x: [0, 10, 0] }}
               transition={{ duration: 1.5, repeat: Infinity }}
             >
-              <ArrowRight className="h-16 w-16 text-[var(--fg-secondary)]" />
+              <ArrowRight className="h-12 w-12 text-[var(--fg-secondary)]" />
             </motion.div>
             <motion.div
               animate={{ scale: [1, 1.2, 1] }}
               transition={{ duration: 2, repeat: Infinity, repeatDelay: 1, delay: 0.5 }}
             >
-              <Smartphone className="h-24 w-24 text-[var(--accent)]" />
+              <Smartphone className="h-20 w-20 text-[var(--accent)]" />
             </motion.div>
           </div>
-          <h2 className="text-6xl font-bold">Veja.</h2>
+          <h3 className="text-5xl font-bold">Veja.</h3>
         </motion.div>
 
         <motion.p
@@ -520,9 +539,9 @@ list $Card:
           variants={scaleIn}
           initial="hidden"
           animate="visible"
-          className="text-6xl font-bold"
+          className="text-5xl font-bold"
         >
-          HTML Export
+          Export
         </motion.h2>
 
         <motion.div
@@ -533,21 +552,31 @@ list $Card:
         >
           <motion.div
             animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="rounded-2xl border-2 border-[var(--accent)] bg-gradient-to-br from-[var(--accent)]/20 to-transparent p-12"
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="relative rounded-2xl border-2 border-[var(--accent)] bg-gradient-to-br from-[var(--accent)]/20 to-transparent p-12 shadow-lg"
           >
-            <Download className="h-24 w-24 text-[var(--accent)]" />
+            <Download className="h-20 w-20 text-[var(--accent)]" />
+            <motion.div
+              className="absolute inset-0 rounded-2xl bg-[var(--accent)]/10"
+              animate={{ opacity: [0, 0.5, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
           </motion.div>
         </motion.div>
 
-        <motion.p
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
-          className="text-2xl text-[var(--fg-secondary)]"
+          className="space-y-3"
         >
-          Protótipo standalone
-        </motion.p>
+          <p className="text-2xl font-semibold">
+            Protótipo standalone
+          </p>
+          <p className="text-lg text-[var(--fg-secondary)]">
+            HTML completo, sem dependências
+          </p>
+        </motion.div>
       </div>
     </div>
   ),
@@ -555,58 +584,61 @@ list $Card:
   // Slide 10: Encerramento
   () => (
     <div className="flex h-screen w-full items-center justify-center">
-      <div className="max-w-4xl space-y-12 px-8 text-center">
+      <div className="max-w-4xl space-y-16 px-8 text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
-          className="space-y-8"
+          className="space-y-6"
         >
-          <h2 className="text-6xl font-bold">Itere mais rápido.</h2>
-          <p className="text-3xl font-light text-[var(--fg-secondary)]">
+          <h2 className="text-6xl font-bold">Itere mais rápido</h2>
+          <p className="text-2xl font-light text-[var(--fg-secondary)]">
             Text-first prototyping
           </p>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="pt-8"
-        >
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button
-              size="lg"
-              className="h-16 px-12 text-xl font-semibold shadow-2xl"
-            >
-              <Zap className="mr-2 h-6 w-6" />
-              Try Proto-Typed
-            </Button>
-          </motion.div>
-        </motion.div>
-
-        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="flex justify-center gap-12 pt-8"
+          transition={{ delay: 0.6 }}
+          className="flex justify-center gap-16"
         >
           {[
-            { icon: Code2, label: 'DSL' },
-            { icon: Zap, label: 'Fast' },
-            { icon: Package, label: 'Export' },
+            { Icon: Code2, label: 'DSL Simples', color: 'text-[var(--accent)]' },
+            { Icon: Zap, label: 'Preview Rápido', color: 'text-[var(--accent)]' },
+            { Icon: Package, label: 'HTML Export', color: 'text-[var(--accent)]' },
           ].map((item, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2 + i * 0.1 }}
-              className="flex flex-col items-center gap-2 text-[var(--fg-secondary)]"
+              transition={{ delay: 0.8 + i * 0.15 }}
+              whileHover={{ scale: 1.1, y: -5 }}
+              className="flex flex-col items-center gap-3"
             >
-              <item.icon className="h-8 w-8" />
-              <span className="text-sm">{item.label}</span>
+              <div className="rounded-full border-2 border-[var(--accent)] bg-[var(--accent)]/10 p-4">
+                <item.Icon className={`h-8 w-8 ${item.color}`} />
+              </div>
+              <span className="text-sm font-medium text-[var(--foreground)]">{item.label}</span>
             </motion.div>
           ))}
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.2 }}
+          className="pt-4"
+        >
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              size="lg"
+              className="h-14 px-10 text-lg font-semibold shadow-xl"
+            >
+              <Zap className="mr-2 h-5 w-5" />
+              Experimente Proto-Typed
+            </Button>
+          </motion.div>
         </motion.div>
       </div>
     </div>
@@ -655,18 +687,18 @@ export default function SlidesPage() {
       </AnimatePresence>
 
       {/* Navigation */}
-      <div className="fixed bottom-8 left-1/2 z-50 flex -translate-x-1/2 items-center gap-4">
+      <div className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3">
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => paginate(-1)}
           disabled={currentSlide === 0}
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--card)] text-[var(--foreground)] shadow-lg transition-opacity disabled:opacity-30"
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--card)]/90 text-[var(--foreground)] shadow-md backdrop-blur-sm transition-opacity disabled:opacity-20"
         >
-          <ChevronLeft className="h-6 w-6" />
+          <ChevronLeft className="h-4 w-4" />
         </motion.button>
 
-        <div className="flex gap-2">
+        <div className="flex gap-1.5">
           {slides.map((_, i) => (
             <motion.button
               key={i}
@@ -674,11 +706,11 @@ export default function SlidesPage() {
                 setDirection(i > currentSlide ? 1 : -1)
                 setCurrentSlide(i)
               }}
-              whileHover={{ scale: 1.2 }}
-              className={`h-2 rounded-full transition-all ${
+              whileHover={{ scale: 1.3 }}
+              className={`h-1.5 rounded-full transition-all ${
                 i === currentSlide
-                  ? 'w-8 bg-[var(--accent)]'
-                  : 'w-2 bg-[var(--border)] hover:bg-[var(--accent)]/50'
+                  ? 'w-6 bg-[var(--accent)]'
+                  : 'w-1.5 bg-[var(--border)] hover:bg-[var(--accent)]/50'
               }`}
             />
           ))}
@@ -689,9 +721,9 @@ export default function SlidesPage() {
           whileTap={{ scale: 0.9 }}
           onClick={() => paginate(1)}
           disabled={currentSlide === slides.length - 1}
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--card)] text-[var(--foreground)] shadow-lg transition-opacity disabled:opacity-30"
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--card)]/90 text-[var(--foreground)] shadow-md backdrop-blur-sm transition-opacity disabled:opacity-20"
         >
-          <ChevronRight className="h-6 w-6" />
+          <ChevronRight className="h-4 w-4" />
         </motion.button>
       </div>
 
