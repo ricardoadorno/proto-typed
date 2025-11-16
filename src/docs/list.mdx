@@ -95,16 +95,16 @@ Por quê: mantém consistência na apresentação de métricas recorrentes.
 ## Erros comuns (Do/Don’t)
 <DoDont
   dont={{
-    title: "Ações em ``",
+    title: "Ações inline em lista",
     code: `
-
+list:
   - Revisar backlog @[Editar](TaskForm)
     `,
   }}
   do={{
     title: "Ações separadas",
     code: `
-
+list:
   - Revisar backlog
   - Preparar demo
 row-end:
@@ -118,7 +118,7 @@ row-end:
   dont={{
     title: "Pipes sem `list $Componente`",
     code: `
-
+list:
   - Plano Pro | R$ 89
     `,
   }}
