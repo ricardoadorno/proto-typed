@@ -10,8 +10,9 @@ screen Default:
   container:
     card:
       ## Próximos passos
-      - Revisar backlog
-      - Preparar release
+      list:
+        - Revisar backlog
+        - Preparar release
       row-end:
         @ghost[Cancelar](close)
         @[Abrir planejamento](Planning)
@@ -154,9 +155,10 @@ screen Default:
   container:
     card:
       ## Antes de publicar
-      - Conferir lista sem ações inline.
-      - Garantir overlays com botões de fechamento.
-      - Verificar consistência dos destinos de navegação.
+      list:
+        - Conferir lista sem ações inline.
+        - Garantir overlays com botões de fechamento.
+        - Verificar consistência dos destinos de navegação.
 ```
 </DocsCodePreview>
 Por quê: padroniza a inspeção e evita que anti-padrões sejam enviados para produção.
