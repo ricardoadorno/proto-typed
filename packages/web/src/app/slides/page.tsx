@@ -27,7 +27,7 @@ import { Card } from '@/components/ui/card'
 // ==================== STATIC BACKGROUND ====================
 
 const StaticBackground = () => (
-  <div className="fixed inset-0 -z-10 overflow-hidden bg-gradient-to-br from-slate-950 via-purple-950/30 to-slate-900">
+  <div className="fixed inset-0 bg-gradient-to-br from-slate-950 via-purple-950/30 to-slate-900">
     {/* Geometric patterns */}
     <div className="absolute inset-0 opacity-[0.05]">
       <div
@@ -282,11 +282,11 @@ const AnimatedCard = ({ title, subtitle, icon: Icon, delay = 0 }: any) => (
 // ==================== SLIDES ====================
 
 const slides = [
-  // Slide 0: Cover/Title Slide
+  // Slide 0: Capa
   () => (
     <div className="flex h-screen w-full items-center justify-center p-8">
       <div className="max-w-6xl space-y-16 px-12 text-center">
-        {/* Logo/Icon */}
+        {/* Logo */}
         <motion.div
           initial={{ scale: 0, rotate: -180 }}
           animate={{ scale: 1, rotate: 0 }}
@@ -301,39 +301,40 @@ const slides = [
           </div>
         </motion.div>
 
-        {/* Title */}
+        {/* Título */}
         <motion.div
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.8, delay: 0.3, ease: [0.32, 0.72, 0, 1] }}
           className="space-y-6"
         >
-          <h1 className="bg-gradient-to-r from-[var(--accent)] via-purple-500 to-pink-500 bg-clip-text text-9xl font-bold text-transparent">
+          <h1 className="bg-gradient-to-r from-[var(--accent)] via-purple-500 to-pink-500 bg-clip-text text-7xl sm:text-8xl md:text-9xl font-bold text-transparent">
             Proto-Typed
           </h1>
-          <div className="flex items-center justify-center gap-4 text-4xl font-light text-[var(--fg-secondary)]">
-            <span>Text-First</span>
+          <div className="flex items-center justify-center gap-4 text-2xl sm:text-3xl md:text-4xl font-light text-[var(--fg-secondary)]">
+            <span>Text first</span>
             <ArrowRight className="h-8 w-8" />
-            <span>Prototyping</span>
+            <span>UI prototyping</span>
           </div>
         </motion.div>
 
-        {/* Tagline */}
+        {/* Linha extra da capa (mantida como frase, não como subtítulo de seção) */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-2xl text-[var(--foreground)]/70"
+          className="text-lg sm:text-2xl text-[var(--foreground)]/70"
         >
-          Transforme ideias em protótipos interativos com uma simples linguagem
+          Uma linguagem textual para prototipar interfaces navegáveis em
+          segundos
         </motion.p>
 
-        {/* DSL Preview */}
+        {/* DSL Preview chips */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.9 }}
-          className="flex justify-center gap-5"
+          className="flex flex-wrap items-center justify-center gap-3 sm:gap-5"
         >
           {['screen', 'container:', '## Title', '@[Button]'].map((word, i) => (
             <motion.span
@@ -341,14 +342,14 @@ const slides = [
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 1.1 + i * 0.1 }}
-              className="rounded-lg border-2 border-[var(--accent)]/30 bg-[var(--accent)]/10 px-5 py-3 font-mono text-base backdrop-blur-sm"
+              className="rounded-lg border-2 border-[var(--accent)]/30 bg-[var(--accent)]/10 px-4 sm:px-5 py-2.5 sm:py-3 font-mono text-sm sm:text-base backdrop-blur-sm"
             >
               {word}
             </motion.span>
           ))}
         </motion.div>
 
-        {/* CTA hint */}
+        {/* Hint para navegação */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -359,37 +360,42 @@ const slides = [
           <kbd className="rounded border border-[var(--border)] bg-[var(--card)] px-2 py-1 font-mono">
             →
           </kbd>
-          <span>para começar</span>
+          <span>para avançar</span>
         </motion.div>
       </div>
     </div>
   ),
 
-  // Slide 1: Introdução
+  // Slide 1: Contexto e motivação
   () => (
     <div className="flex h-screen w-full items-center justify-center p-8">
-      <div className="max-w-6xl space-y-12 px-12 text-center">
-        <motion.div
-          initial={{ scale: 0.5, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
+      <div className="max-w-6xl space-y-12 px-8 text-center">
+        {/* Título padronizado */}
+        <motion.h2
+          variants={fadeIn}
+          initial="hidden"
+          animate="visible"
+          className="text-5xl sm:text-6xl font-bold"
         >
-          <h1 className="bg-gradient-to-r from-[var(--accent)] to-purple-600 bg-clip-text text-8xl font-bold text-transparent">
-            Proto-Typed
-          </h1>
-        </motion.div>
+          <span className="bg-gradient-to-r from-[var(--accent)] to-purple-600 bg-clip-text text-transparent">
+            Contexto
+          </span>
+        </motion.h2>
 
+        {/* Conteúdo */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="space-y-4"
+          className="space-y-6"
         >
-          <div className="text-4xl font-light text-[var(--fg-secondary)]">
-            Text → Prototype
+          <div className="text-2xl sm:text-3xl font-light text-[var(--fg-secondary)]">
+            Prototipagem de interfaces ainda é centrada em editores visuais
           </div>
-          <p className="text-xl text-[var(--foreground)]/70">
-            Uma ferramenta que transforma texto em protótipos interativos
+          <p className="text-base sm:text-xl text-[var(--foreground)]/70">
+            Figma, ferramentas de design e código boilerplate funcionam bem para
+            alta fidelidade, mas criam atrito para explorar ideias rápidas de
+            fluxo e navegação.
           </p>
         </motion.div>
 
@@ -397,16 +403,16 @@ const slides = [
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.6 }}
-          className="space-y-6 pt-8"
+          className="space-y-6 pt-4 sm:pt-8"
         >
-          <div className="flex justify-center gap-6">
-            {['screen', 'Home:', 'container:', '## Welcome'].map((word, i) => (
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+            {['mockups', 'fluxos', 'rótulos', 'navegação'].map((word, i) => (
               <motion.span
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 0.8 + i * 0.1 }}
-                className="rounded-lg border-2 border-[var(--accent)] bg-[var(--accent)]/10 px-4 py-2 font-mono text-base"
+                className="rounded-lg border-2 border-[var(--accent)] bg-[var(--accent)]/10 px-4 py-2 font-mono text-sm sm:text-base"
               >
                 {word}
               </motion.span>
@@ -417,49 +423,41 @@ const slides = [
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.4 }}
-            className="text-lg text-[var(--fg-secondary)]"
+            className="text-base sm:text-lg text-[var(--fg-secondary)]"
           >
-            Ideal para designers, desenvolvedores e product managers que
-            precisam validar ideias rapidamente
+            Proto-Typed entra antes da alta fidelidade, para iterar rótulos,
+            fluxos e navegação em texto.
           </motion.p>
         </motion.div>
       </div>
     </div>
   ),
 
-  // Slide 2: O Problema
+  // Slide 2: Problema
   () => (
     <div className="flex h-screen w-full items-center justify-center p-8">
-      <div className="max-w-7xl space-y-14 px-12">
-        <div className="space-y-4">
-          <motion.h2
-            variants={fadeIn}
-            initial="hidden"
-            animate="visible"
-            className="text-center text-6xl font-bold"
-          >
-            O Problema
-          </motion.h2>
+      <div className="max-w-6xl w-full space-y-12 px-8">
+        {/* Título padronizado */}
+        <motion.h2
+          variants={fadeIn}
+          initial="hidden"
+          animate="visible"
+          className="text-center text-5xl sm:text-6xl font-bold"
+        >
+          <span className="bg-gradient-to-r from-[var(--accent)] to-purple-500 bg-clip-text text-transparent">
+            Problema
+          </span>
+        </motion.h2>
 
-          <motion.p
-            variants={fadeIn}
-            initial="hidden"
-            animate="visible"
-            custom={1}
-            className="text-center text-2xl text-[var(--fg-secondary)]"
-          >
-            Prototipar rápido é difícil com ferramentas tradicionais
-          </motion.p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-16">
-          {/* Visual Cards */}
+        {/* Conteúdo principal */}
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
+          {/* Cartões visuais */}
           <div className="grid grid-cols-2 gap-6">
             {[
               { Icon: PackageX, text: 'Ferramentas pesadas' },
-              { Icon: Palette, text: 'Foco no visual' },
-              { Icon: Clock, text: 'Lento para iterar' },
-              { Icon: Layers, text: 'Curva de aprendizado' },
+              { Icon: Palette, text: 'Foco no visual, não no fluxo' },
+              { Icon: Clock, text: 'Iterações lentas' },
+              { Icon: Layers, text: 'Curva de aprendizado alta' },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -467,17 +465,17 @@ const slides = [
                 variants={fadeIn}
                 initial="hidden"
                 animate="visible"
-                className="flex flex-col items-center justify-center rounded-lg border-2 border-[var(--border)] bg-gradient-to-br from-[var(--card)] to-transparent p-8"
+                className="flex flex-col items-center justify-center rounded-lg border-2 border-[var(--border)] bg-gradient-to-br from-[var(--card)] to-transparent p-6 sm:p-8"
               >
-                <item.Icon className="mb-4 h-14 w-14 text-[var(--fg-secondary)]" />
-                <p className="text-center text-base font-medium text-[var(--foreground)]">
+                <item.Icon className="mb-4 h-10 w-10 sm:h-14 sm:w-14 text-[var(--fg-secondary)]" />
+                <p className="text-center text-sm sm:text-base font-medium text-[var(--foreground)]">
                   {item.text}
                 </p>
               </motion.div>
             ))}
           </div>
 
-          {/* Text Topics */}
+          {/* Tópicos de texto */}
           <motion.div
             variants={fadeIn}
             initial="hidden"
@@ -485,41 +483,43 @@ const slides = [
             custom={3}
             className="flex flex-col justify-center space-y-6"
           >
-            <h3 className="mb-2 text-3xl font-semibold text-[var(--accent)]">
-              Desafios comuns:
+            <h3 className="mb-2 text-2xl sm:text-3xl font-semibold text-[var(--accent)]">
+              Desafios observados
             </h3>
             {[
               {
-                title: 'Setup complexo',
-                desc: 'Instalar dependências, configurar ambiente',
+                title: 'Setup e ferramentas',
+                desc: 'Ambientes complexos para algo que será descartável.',
               },
               {
                 title: 'Foco dividido',
-                desc: 'Tempo gasto com design em vez de UX',
+                desc: 'Decisões de layout competem com decisões de fluxo.',
               },
               {
-                title: 'Difícil compartilhar',
-                desc: 'Ideias ficam presas em mockups estáticos',
+                title: 'Compartilhamento limitado',
+                desc: 'Ideias ficam presas em mockups estáticos.',
               },
               {
-                title: 'Alto overhead',
-                desc: 'Muito esforço para protótipos descartáveis',
+                title: 'Baixo reaproveitamento',
+                desc: 'Prototipar de novo para cada variação de fluxo.',
               },
             ].map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8 + i * 0.1 }}
+                transition={{ delay: 0.4 + i * 0.1 }}
                 className="space-y-1"
               >
                 <div className="flex items-center gap-3">
                   <div className="h-2 w-2 flex-shrink-0 rounded-full bg-[var(--accent)]" />
-                  <h4 className="text-lg font-semibold text-[var(--foreground)]">
+                  <h4 className="text-base sm:text-lg font-semibold text-[var(--foreground)]">
                     {item.title}
                   </h4>
                 </div>
-                <p className="pl-5 text-[var(--fg-secondary)]">{item.desc}</p>
+                <p className="pl-5 text-sm sm:text-base text-[var(--fg-secondary)]">
+                  {item.desc}
+                </p>
               </motion.div>
             ))}
           </motion.div>
@@ -528,98 +528,154 @@ const slides = [
     </div>
   ),
 
-  // Slide 3: A Solução
+  // Slide 3: Proposta
   () => (
     <div className="flex h-screen w-full items-center justify-center p-8">
-      <div className="max-w-7xl space-y-16 px-12">
-        <div className="space-y-4">
-          <motion.h2
-            variants={fadeIn}
-            initial="hidden"
-            animate="visible"
-            className="text-center text-6xl font-bold"
-          >
-            <span className="bg-gradient-to-r from-[var(--accent)] to-purple-500 bg-clip-text text-transparent">
-              A Solução
-            </span>
-          </motion.h2>
+      <div className="max-w-6xl w-full space-y-12 px-6 lg:px-8">
+        {/* Título padronizado */}
+        <motion.h2
+          variants={fadeIn}
+          initial="hidden"
+          animate="visible"
+          className="text-center text-5xl sm:text-6xl font-bold"
+        >
+          <span className="bg-gradient-to-r from-[var(--accent)] to-purple-500 bg-clip-text text-transparent">
+            Proposta
+          </span>
+        </motion.h2>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-center text-xl text-[var(--fg-secondary)]"
-          >
-            Foque no que importa: a experiência do usuário
-          </motion.p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-16">
-          {/* Visual Flow */}
+        {/* Conteúdo principal */}
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
+          {/* Fluxo visual em card */}
           <motion.div
             variants={scaleIn}
             initial="hidden"
             animate="visible"
-            className="flex flex-col items-center justify-center space-y-16"
+            className="relative"
           >
-            <div className="space-y-6 text-center">
-              <h3 className="text-5xl font-bold">Escreva</h3>
-              <Code2 className="mx-auto h-32 w-32 text-[var(--accent)]" />
-            </div>
+            <div className="pointer-events-none absolute -inset-8 rounded-3xl bg-[radial-gradient(circle_at_top,_rgba(139,92,246,0.15),_transparent_55%)]" />
 
-            <ArrowRight className="h-20 w-20 text-[var(--fg-secondary)]" />
+            <div className="relative rounded-3xl border border-[var(--border)] bg-[var(--card)]/80 backdrop-blur-xl p-6 sm:p-8 shadow-2xl">
+              <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--fg-secondary)]">
+                  Fluxo da solução
+                </span>
+                <span className="rounded-full border border-[var(--accent)]/40 bg-[var(--accent)]/10 px-3 py-1 text-xs font-medium text-[var(--accent)]">
+                  DSL → AST → Preview
+                </span>
+              </div>
 
-            <div className="space-y-6 text-center">
-              <h3 className="text-5xl font-bold">Veja</h3>
-              <Smartphone className="mx-auto h-32 w-32 text-[var(--accent)]" />
+              <div className="flex flex-col items-center gap-10 py-4 lg:flex-row lg:justify-between">
+                {/* Escreva */}
+                <div className="flex flex-col items-center gap-4 text-center">
+                  <div className="rounded-2xl border border-[var(--accent)]/40 bg-[var(--accent)]/10 p-4 sm:p-5 shadow-md">
+                    <Code2 className="h-12 w-12 sm:h-16 sm:w-16 text-[var(--accent)]" />
+                  </div>
+                  <div className="space-y-1">
+                    <h3 className="text-xl sm:text-2xl font-bold">Escreva</h3>
+                    <p className="text-sm text-[var(--fg-secondary)]">
+                      Definição em texto das telas e ações.
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap justify-center gap-2 pt-2">
+                    {['screen', 'container:', '@[Next](Details)'].map(
+                      (token) => (
+                        <span
+                          key={token}
+                          className="rounded-md border border-[var(--accent)]/40 bg-[var(--accent)]/10 px-3 py-1 text-xs font-mono"
+                        >
+                          {token}
+                        </span>
+                      )
+                    )}
+                  </div>
+                </div>
+
+                {/* Conector */}
+                <div className="hidden h-24 w-px bg-gradient-to-b from-[var(--accent)]/30 via-[var(--accent)] to-[var(--accent)]/30 lg:block" />
+                <ArrowRight className="block h-10 w-10 text-[var(--fg-secondary)] lg:hidden" />
+
+                {/* Navegue */}
+                <div className="flex flex-col items-center gap-4 text-center">
+                  <div className="rounded-2xl border border-[var(--accent)]/40 bg-[var(--accent)]/10 p-4 sm:p-5 shadow-md">
+                    <Smartphone className="h-12 w-12 sm:h-16 sm:w-16 text-[var(--accent)]" />
+                  </div>
+                  <div className="space-y-1">
+                    <h3 className="text-xl sm:text-2xl font-bold">Navegue</h3>
+                    <p className="text-sm text-[var(--fg-secondary)]">
+                      Protótipo navegável gerado a partir da AST.
+                    </p>
+                  </div>
+                  <div className="mt-2 flex h-20 w-32 items-center justify-center rounded-2xl border border-[var(--border)] bg-gradient-to-b from-white to-neutral-100 text-xs text-neutral-700 shadow-inner">
+                    Telas ligadas por ações.
+                  </div>
+                </div>
+              </div>
             </div>
           </motion.div>
 
-          {/* Text Content */}
+          {/* Texto resumido em card */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5 }}
-            className="flex flex-col justify-center space-y-6"
+            transition={{ delay: 0.4 }}
+            className="flex items-stretch"
           >
-            <h3 className="text-2xl font-semibold">
-              Simplifique seu workflow:
-            </h3>
-
-            <div className="space-y-5">
-              <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <div className="h-2 w-2 rounded-full bg-[var(--accent)]" />
-                  <h4 className="text-lg font-semibold">Foco no conteúdo</h4>
-                </div>
-                <p className="pl-5 text-[var(--fg-secondary)]">
-                  Escreva a estrutura e fluxo em texto puro, sem se preocupar
-                  com design ou código
-                </p>
+            <div className="relative w-full rounded-3xl border border-[var(--border)] bg-[var(--card)]/80 p-6 sm:p-8 shadow-2xl">
+              <div className="mb-4 flex items-center justify-between gap-4">
+                <h3 className="text-lg sm:text-xl font-semibold text-[var(--foreground)]">
+                  Objetivo do trabalho
+                </h3>
+                <span className="rounded-full bg-[var(--accent)]/10 px-3 py-1 text-xs font-medium text-[var(--accent)]">
+                  Visão geral
+                </span>
               </div>
 
-              <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <div className="h-2 w-2 rounded-full bg-[var(--accent)]" />
-                  <h4 className="text-lg font-semibold">
-                    Feedback instantâneo
-                  </h4>
+              <div className="space-y-5 text-sm sm:text-base">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <div className="h-2 w-2 rounded-full bg-[var(--accent)]" />
+                    <h4 className="font-semibold">Text first</h4>
+                  </div>
+                  <p className="pl-5 text-[var(--fg-secondary)]">
+                    Definir interfaces em texto puro, com foco em telas,
+                    navegação e rótulos.
+                  </p>
                 </div>
-                <p className="pl-5 text-[var(--fg-secondary)]">
-                  Cada mudança no código reflete imediatamente no preview,
-                  acelerando iterações
-                </p>
+
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <div className="h-2 w-2 rounded-full bg-[var(--accent)]" />
+                    <h4 className="font-semibold">Preview em tempo real</h4>
+                  </div>
+                  <p className="pl-5 text-[var(--fg-secondary)]">
+                    Atualização instantânea do protótipo a cada alteração na
+                    DSL.
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <div className="h-2 w-2 rounded-full bg-[var(--accent)]" />
+                    <h4 className="font-semibold">Export HTML</h4>
+                  </div>
+                  <p className="pl-5 text-[var(--fg-secondary)]">
+                    Geração de um protótipo navegável standalone em HTML para
+                    compartilhamento.
+                  </p>
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <div className="h-2 w-2 rounded-full bg-[var(--accent)]" />
-                  <h4 className="text-lg font-semibold">Menos fricção</h4>
-                </div>
-                <p className="pl-5 text-[var(--fg-secondary)]">
-                  Zero setup, zero dependências. Abra e comece a prototipar em
-                  segundos
-                </p>
+              <div className="mt-6 flex flex-wrap gap-2 text-xs text-[var(--fg-secondary)]">
+                <span className="rounded-full bg-[var(--accent)]/10 px-3 py-1">
+                  Baixa fidelidade
+                </span>
+                <span className="rounded-full bg-[var(--accent)]/10 px-3 py-1">
+                  Foco em fluxo
+                </span>
+                <span className="rounded-full bg-[var(--accent)]/10 px-3 py-1">
+                  Complementar a editores visuais
+                </span>
               </div>
             </div>
           </motion.div>
@@ -628,31 +684,23 @@ const slides = [
     </div>
   ),
 
-  // Slide 4: A DSL
+  // Slide 4: DSL
   () => (
     <div className="flex h-screen w-full items-center justify-center p-8">
-      <div className="max-w-7xl space-y-12 px-12">
-        <div className="space-y-4">
-          <motion.h2
-            variants={fadeIn}
-            initial="hidden"
-            animate="visible"
-            className="text-center text-6xl font-bold"
-          >
+      <div className="max-w-6xl space-y-10 px-8">
+        {/* Título padronizado */}
+        <motion.h2
+          variants={fadeIn}
+          initial="hidden"
+          animate="visible"
+          className="text-center text-5xl sm:text-6xl font-bold"
+        >
+          <span className="bg-gradient-to-r from-[var(--accent)] to-purple-500 bg-clip-text text-transparent">
             A DSL
-          </motion.h2>
+          </span>
+        </motion.h2>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="text-center text-2xl text-[var(--fg-secondary)]"
-          >
-            Domain-Specific Language otimizada para criar protótipos rapidamente
-          </motion.p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-12">
           <div>
             <motion.div
               initial={{ opacity: 0, x: -50 }}
@@ -677,13 +725,22 @@ const slides = [
             className="flex flex-col justify-center space-y-6"
           >
             <div className="space-y-3">
-              <h3 className="text-xl font-semibold text-[var(--accent)]">
-                Características:
+              <h3 className="text-lg sm:text-xl font-semibold text-[var(--accent)]">
+                Características
               </h3>
               {[
-                { title: 'Simples', desc: 'Sintaxe minimalista e intuitiva' },
-                { title: 'Legível', desc: 'Código que parece documentação' },
-                { title: 'Rápido', desc: 'Escreva menos, faça mais' },
+                {
+                  title: 'Sintaxe mínima',
+                  desc: 'Poucos conceitos centrais, inspirados em Markdown.',
+                },
+                {
+                  title: 'Legível',
+                  desc: 'Código próximo de documentação funcional da interface.',
+                },
+                {
+                  title: 'Focado em fluxo',
+                  desc: 'Telas, ações e alvos de navegação primeiro.',
+                },
               ].map((item, i) => (
                 <motion.div
                   key={item.title}
@@ -708,15 +765,16 @@ const slides = [
     </div>
   ),
 
-  // Slide 5: Preview em Tempo Real
+  // Slide 5: Preview em tempo real
   () => (
     <div className="flex h-screen w-full items-center justify-center p-8">
       <div className="max-w-6xl space-y-8 px-8">
+        {/* Título padronizado */}
         <motion.h2
           variants={fadeIn}
           initial="hidden"
           animate="visible"
-          className="text-center text-5xl font-bold"
+          className="text-center text-5xl sm:text-6xl font-bold"
         >
           <span className="bg-gradient-to-r from-[var(--accent)] to-purple-500 bg-clip-text text-transparent">
             Preview em tempo real
@@ -727,71 +785,75 @@ const slides = [
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="text-center text-lg text-[var(--fg-secondary)]"
+          className="text-center text-base sm:text-lg text-[var(--fg-secondary)]"
         >
-          Veja suas mudanças instantaneamente
+          Editor de texto e protótipo navegável lado a lado, com atualização
+          instantânea.
         </motion.p>
 
-        <RenderedPreview
-          title="DSL Code"
-          dslCode={`screen Home:
+        <div className="mx-auto w-full max-w-5xl">
+          <RenderedPreview
+            title="DSL Code"
+            dslCode={`screen Home:
   container:
     ## Welcome to Proto-Typed
     > Your text-first prototyping tool
 
     @primary[Get Started]
     @outline[Learn More]`}
-        >
-          <div className="flex h-full flex-col items-center justify-center gap-6 p-4">
-            <div className="space-y-3 text-center">
-              <h2 className="text-3xl font-bold text-neutral-900">
-                Welcome to Proto-Typed
-              </h2>
-              <p className="text-neutral-600">
-                Your text-first prototyping tool
-              </p>
-            </div>
+          >
+            <div className="flex h-full flex-col items-center justify-center gap-6 p-4">
+              <div className="space-y-3 text-center">
+                <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900">
+                  Welcome to Proto-Typed
+                </h2>
+                <p className="text-sm sm:text-base text-neutral-600">
+                  Your text first prototyping tool
+                </p>
+              </div>
 
-            <div className="flex flex-col gap-3 pt-4">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="rounded-lg bg-[var(--accent)] px-8 py-3 font-semibold text-white shadow-lg"
-              >
-                Get Started
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="rounded-lg border-2 border-[var(--accent)] bg-transparent px-8 py-3 font-semibold text-[var(--accent)]"
-              >
-                Learn More
-              </motion.button>
+              <div className="flex flex-col gap-3 pt-4 w-full max-w-xs">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="rounded-lg bg-[var(--accent)] px-6 py-3 text-sm sm:text-base font-semibold text-white shadow-lg"
+                >
+                  Get Started
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="rounded-lg border-2 border-[var(--accent)] bg-transparent px-6 py-3 text-sm sm:text-base font-semibold text-[var(--accent)]"
+                >
+                  Learn More
+                </motion.button>
+              </div>
             </div>
-          </div>
-        </RenderedPreview>
+          </RenderedPreview>
+        </div>
       </div>
     </div>
   ),
 
-  // Slide 6: AST e Pipeline
+  // Slide 6: Pipeline de processamento
   () => (
     <div className="flex h-screen w-full items-center justify-center p-8">
-      <div className="max-w-6xl space-y-12 px-8">
+      <div className="max-w-6xl space-y-10 px-8">
+        {/* Título padronizado */}
         <motion.h2
           variants={fadeIn}
           initial="hidden"
           animate="visible"
-          className="text-center text-5xl font-bold"
+          className="text-center text-5xl sm:text-6xl font-bold"
         >
           <span className="bg-gradient-to-r from-[var(--accent)] to-purple-500 bg-clip-text text-transparent">
-            Pipeline de Processamento
+            Arquitetura e pipeline
           </span>
         </motion.h2>
 
         <FlowDiagram />
 
-        <div className="grid grid-cols-2 gap-8 pt-4">
+        <div className="grid grid-cols-1 gap-8 pt-2 sm:pt-4 md:grid-cols-2">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -799,13 +861,13 @@ const slides = [
             className="space-y-3"
           >
             <h3 className="text-lg font-semibold text-[var(--accent)]">
-              Como funciona:
+              Pipeline
             </h3>
             {[
-              'Parser robusto processa DSL',
-              'Gera AST (Abstract Syntax Tree)',
-              'Renderer transforma em componentes',
-              'Protótipo interativo final',
+              'Lexer e parser processam a DSL.',
+              'Geração de AST semântica mínima.',
+              'Renderer mapeia AST para componentes React.',
+              'HTML final para preview e export.',
             ].map((text, i) => (
               <motion.div
                 key={i}
@@ -815,7 +877,9 @@ const slides = [
                 className="flex items-start gap-3"
               >
                 <div className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-[var(--accent)]" />
-                <p className="text-[var(--foreground)]">{text}</p>
+                <p className="text-sm sm:text-base text-[var(--foreground)]">
+                  {text}
+                </p>
               </motion.div>
             ))}
           </motion.div>
@@ -827,23 +891,25 @@ const slides = [
             className="space-y-3"
           >
             <h3 className="text-lg font-semibold text-[var(--accent)]">
-              Benefícios:
+              Benefícios da AST
             </h3>
             {[
-              'Validação automática de sintaxe',
-              'Estrutura de dados consistente',
-              'Fácil manutenção e extensão',
-              'Otimização no build',
+              'Validação de sintaxe antes da renderização.',
+              'Estrutura de dados única para múltiplos renderers.',
+              'Facilidade para extensões futuras da linguagem.',
+              'Portabilidade do protótipo para outros alvos.',
             ].map((text, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 2.0 + i * 0.1 }}
+                transition={{ delay: 2 + i * 0.1 }}
                 className="flex items-start gap-3"
               >
                 <div className="mt-1.5 h-2 w-2 flex-shrink-0 rounded-full bg-purple-500" />
-                <p className="text-[var(--foreground)]">{text}</p>
+                <p className="text-sm sm:text-base text-[var(--foreground)]">
+                  {text}
+                </p>
               </motion.div>
             ))}
           </motion.div>
@@ -852,35 +918,33 @@ const slides = [
     </div>
   ),
 
-  // Slide 7: Múltiplas Telas e Navegação
+  // Slide 7: Navegação entre telas
   () => (
     <div className="flex h-screen w-full items-center justify-center p-8">
-      <div className="max-w-7xl space-y-10 px-12">
-        <div className="space-y-4">
-          <motion.h2
-            variants={fadeIn}
-            initial="hidden"
-            animate="visible"
-            className="text-center text-5xl font-bold"
-          >
-            <span className="bg-gradient-to-r from-[var(--accent)] to-purple-500 bg-clip-text text-transparent">
-              Navegação entre telas
-            </span>
-          </motion.h2>
+      <div className="max-w-6xl space-y-8 px-8">
+        {/* Título padronizado */}
+        <motion.h2
+          variants={fadeIn}
+          initial="hidden"
+          animate="visible"
+          className="text-center text-5xl sm:text-6xl font-bold"
+        >
+          <span className="bg-gradient-to-r from-[var(--accent)] to-purple-500 bg-clip-text text-transparent">
+            Navegação entre telas
+          </span>
+        </motion.h2>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="text-center text-lg text-[var(--fg-secondary)]"
-          >
-            Modele fluxos completos de usuário com múltiplas telas e navegação
-            interativa
-          </motion.p>
-        </div>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="text-center text-base sm:text-lg text-[var(--fg-secondary)]"
+        >
+          Modelagem de fluxos multitelas com links explícitos na DSL.
+        </motion.p>
 
-        <div className="grid grid-cols-2 gap-12">
-          {/* DSL Code */}
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-12">
+          {/* Código DSL */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -888,9 +952,9 @@ const slides = [
             className="space-y-6"
           >
             <div className="space-y-3">
-              <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-[var(--accent)]">
+              <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold uppercase tracking-wider text-[var(--accent)]">
                 <Code2 className="h-4 w-4" />
-                Multiple Screens
+                Multiple screens
               </div>
               <CodeBlock highlight>
                 {`screen Home:
@@ -910,74 +974,73 @@ screen Details:
             </div>
           </motion.div>
 
-          {/* Preview - Multiple Phones */}
+          {/* Preview multi tela */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.7 }}
-            className="flex items-center justify-center gap-6"
+            className="flex items-center justify-center"
           >
-            {/* Home Screen */}
-            <div className="flex flex-col items-center gap-3">
-              <div className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-secondary)]">
-                Home
-              </div>
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.9 }}
-                className="relative"
-              >
-                <div className="relative mx-auto h-[400px] w-[200px] rounded-[1.5rem] border-8 border-neutral-900 bg-neutral-900 shadow-xl">
-                  <div className="h-full w-full overflow-hidden rounded-[0.8rem] bg-white p-3">
-                    <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
-                      <h3 className="text-xl font-bold text-neutral-900">
-                        Home Screen
-                      </h3>
-                      <p className="text-xs text-neutral-600">
-                        Welcome to the app
-                      </p>
-                      <button className="mt-2 rounded-lg bg-[var(--accent)] px-4 py-2 text-xs font-semibold text-white">
-                        Go to Details
-                      </button>
+            <div className="flex items-center justify-center gap-6 overflow-x-auto pb-2">
+              {/* Home */}
+              <div className="flex flex-col items-center gap-3">
+                <div className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-secondary)]">
+                  Home
+                </div>
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 0.9 }}
+                  className="relative"
+                >
+                  <div className="relative mx-auto h-[360px] w-[180px] sm:h-[400px] sm:w-[200px] rounded-[1.5rem] border-8 border-neutral-900 bg-neutral-900 shadow-xl">
+                    <div className="h-full w-full overflow-hidden rounded-[0.8rem] bg-white p-3">
+                      <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
+                        <h3 className="text-lg sm:text-xl font-bold text-neutral-900">
+                          Home Screen
+                        </h3>
+                        <p className="text-xs text-neutral-600">
+                          Welcome to the app
+                        </p>
+                        <button className="mt-2 rounded-lg bg-[var(--accent)] px-4 py-2 text-xs font-semibold text-white">
+                          Go to Details
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Arrow */}
-            <div>
-              <ArrowRight className="h-8 w-8 text-[var(--accent)]" />
-            </div>
-
-            {/* Details Screen */}
-            <div className="flex flex-col items-center gap-3">
-              <div className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-secondary)]">
-                Details
+                </motion.div>
               </div>
-              <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 1.1 }}
-                className="relative"
-              >
-                <div className="relative mx-auto h-[400px] w-[200px] rounded-[1.5rem] border-8 border-neutral-900 bg-neutral-900 shadow-xl">
-                  <div className="h-full w-full overflow-hidden rounded-[0.8rem] bg-white p-3">
-                    <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
-                      <h3 className="text-xl font-bold text-neutral-900">
-                        Details
-                      </h3>
-                      <p className="text-xs text-neutral-600">
-                        More information here
-                      </p>
-                      <button className="mt-2 rounded-lg border-2 border-[var(--accent)] bg-transparent px-4 py-2 text-xs font-semibold text-[var(--accent)]">
-                        Back
-                      </button>
+
+              <ArrowRight className="hidden sm:block h-8 w-8 text-[var(--accent)]" />
+
+              {/* Details */}
+              <div className="flex flex-col items-center gap-3">
+                <div className="text-xs font-semibold uppercase tracking-wider text-[var(--fg-secondary)]">
+                  Details
+                </div>
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: 1.1 }}
+                  className="relative"
+                >
+                  <div className="relative mx-auto h-[360px] w-[180px] sm:h-[400px] sm:w-[200px] rounded-[1.5rem] border-8 border-neutral-900 bg-neutral-900 shadow-xl">
+                    <div className="h-full w-full overflow-hidden rounded-[0.8rem] bg-white p-3">
+                      <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
+                        <h3 className="text-lg sm:text-xl font-bold text-neutral-900">
+                          Details
+                        </h3>
+                        <p className="text-xs text-neutral-600">
+                          More information here
+                        </p>
+                        <button className="mt-2 rounded-lg border-2 border-[var(--accent)] bg-transparent px-4 py-2 text-xs font-semibold text-[var(--accent)]">
+                          Back
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
+                </motion.div>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -988,33 +1051,32 @@ screen Details:
   // Slide 8: Componentização
   () => (
     <div className="flex h-screen w-full items-center justify-center p-8">
-      <div className="max-w-7xl space-y-8 px-12">
-        <div className="space-y-3">
-          <motion.h2
-            variants={fadeIn}
-            initial="hidden"
-            animate="visible"
-            className="text-center text-5xl font-bold"
-          >
-            <span className="bg-gradient-to-r from-[var(--accent)] to-purple-500 bg-clip-text text-transparent">
-              Componentes reutilizáveis
-            </span>
-          </motion.h2>
+      <div className="max-w-6xl space-y-8 px-8">
+        {/* Título padronizado */}
+        <motion.h2
+          variants={fadeIn}
+          initial="hidden"
+          animate="visible"
+          className="text-center text-5xl sm:text-6xl font-bold"
+        >
+          <span className="bg-gradient-to-r from-[var(--accent)] to-purple-500 bg-clip-text text-transparent">
+            Componentes reutilizáveis
+          </span>
+        </motion.h2>
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="text-center text-lg text-[var(--fg-secondary)]"
-          >
-            Defina uma vez, use em qualquer lugar. Crie bibliotecas de
-            componentes para seus protótipos.
-          </motion.p>
-        </div>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="text-center text-base sm:text-lg text-[var(--fg-secondary)]"
+        >
+          Definição de componentes na DSL e instanciação em listas e telas.
+        </motion.p>
 
-        <RenderedPreview
-          title="Component Definition"
-          dslCode={`component ProductCard:
+        <div className="mx-auto w-full max-w-5xl">
+          <RenderedPreview
+            title="Component Definition"
+            dslCode={`component ProductCard:
   card:
     >> %title
     >>> %description
@@ -1028,40 +1090,43 @@ screen Shop:
     - Laptop | Powerful machine | $999
     - Phone | Latest model | $699
     - Tablet | Portable device | $499`}
-        >
-          <div className="flex h-full flex-col gap-3 overflow-y-auto p-2">
-            {[
-              { title: 'Laptop', desc: 'Powerful machine', price: '$999' },
-              { title: 'Phone', desc: 'Latest model', price: '$699' },
-              { title: 'Tablet', desc: 'Portable device', price: '$499' },
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1 + i * 0.15 }}
-              >
-                <div className="rounded-lg border-2 border-neutral-200 bg-white p-4 shadow-sm">
-                  <h3 className="text-lg font-bold text-neutral-900">
-                    {item.title}
-                  </h3>
-                  <p className="text-sm text-neutral-600">{item.desc}</p>
-                  <p className="mt-1 text-sm text-neutral-500">
-                    Price: {item.price}
-                  </p>
-                  <div className="mt-3 flex gap-2">
-                    <button className="flex-1 rounded-md bg-[var(--accent)] px-3 py-1.5 text-xs font-semibold text-white">
-                      Buy Now
-                    </button>
-                    <button className="flex-1 rounded-md border border-neutral-300 px-3 py-1.5 text-xs font-semibold text-neutral-700">
-                      Details
-                    </button>
+          >
+            <div className="flex h-full flex-col gap-3 overflow-y-auto p-2">
+              {[
+                { title: 'Laptop', desc: 'Powerful machine', price: '$999' },
+                { title: 'Phone', desc: 'Latest model', price: '$699' },
+                { title: 'Tablet', desc: 'Portable device', price: '$499' },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1 + i * 0.15 }}
+                >
+                  <div className="rounded-lg border-2 border-neutral-200 bg-white p-4 shadow-sm">
+                    <h3 className="text-base sm:text-lg font-bold text-neutral-900">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-neutral-600">
+                      {item.desc}
+                    </p>
+                    <p className="mt-1 text-xs sm:text-sm text-neutral-500">
+                      Price: {item.price}
+                    </p>
+                    <div className="mt-3 flex gap-2">
+                      <button className="flex-1 rounded-md bg-[var(--accent)] px-3 py-1.5 text-xs font-semibold text-white">
+                        Buy Now
+                      </button>
+                      <button className="flex-1 rounded-md border border-neutral-300 px-3 py-1.5 text-xs font-semibold text-neutral-700">
+                        Details
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </RenderedPreview>
+                </motion.div>
+              ))}
+            </div>
+          </RenderedPreview>
+        </div>
       </div>
     </div>
   ),
@@ -1069,19 +1134,20 @@ screen Shop:
   // Slide 9: Export
   () => (
     <div className="flex h-screen w-full items-center justify-center p-8">
-      <div className="max-w-5xl space-y-12 px-8">
+      <div className="max-w-6xl space-y-10 px-8">
+        {/* Título padronizado */}
         <motion.h2
           variants={scaleIn}
           initial="hidden"
           animate="visible"
-          className="text-center text-5xl font-bold"
+          className="text-center text-5xl sm:text-6xl font-bold"
         >
           <span className="bg-gradient-to-r from-[var(--accent)] to-purple-500 bg-clip-text text-transparent">
-            Export & Compartilhamento
+            Export e compartilhamento
           </span>
         </motion.h2>
 
-        <div className="grid grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-12">
           {/* Visual */}
           <motion.div
             initial={{ scale: 0 }}
@@ -1094,19 +1160,19 @@ screen Shop:
             }}
             className="flex flex-col items-center justify-center"
           >
-            <div className="relative rounded-2xl border-2 border-[var(--accent)] bg-gradient-to-br from-[var(--accent)]/20 to-transparent p-12 shadow-lg">
-              <Download className="h-20 w-20 text-[var(--accent)]" />
-              <div className="absolute inset-0 rounded-2xl bg-[var(--accent)]/10" />
+            <div className="relative rounded-2xl border-2 border-[var(--accent)] bg-gradient-to-br from-[var(--accent)]/20 to-transparent p-10 sm:p-12 shadow-lg">
+              <Download className="h-16 w-16 sm:h-20 sm:w-20 text-[var(--accent)]" />
+              <div className="pointer-events-none absolute inset-0 rounded-2xl bg-[var(--accent)]/10" />
             </div>
             <p className="mt-6 text-center text-xl font-semibold">
               Protótipo standalone
             </p>
-            <p className="text-center text-[var(--fg-secondary)]">
-              HTML completo, sem dependências
+            <p className="text-center text-sm sm:text-base text-[var(--fg-secondary)]">
+              Arquivo HTML único, pronto para enviar ou hospedar.
             </p>
           </motion.div>
 
-          {/* Topics */}
+          {/* Tópicos */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -1114,25 +1180,25 @@ screen Shop:
             className="flex flex-col justify-center space-y-6"
           >
             <div className="space-y-3">
-              <h3 className="text-xl font-semibold text-[var(--accent)]">
-                Recursos:
+              <h3 className="text-lg sm:text-xl font-semibold text-[var(--accent)]">
+                Recursos
               </h3>
               {[
                 {
-                  title: 'HTML Self-contained',
-                  desc: 'Tudo em um único arquivo',
+                  title: 'HTML self-contained',
+                  desc: 'CSS e JavaScript embutidos, nenhum build externo.',
                 },
                 {
-                  title: 'Zero Dependências',
-                  desc: 'Funciona em qualquer navegador',
+                  title: 'Zero dependências',
+                  desc: 'Abre em qualquer navegador moderno.',
                 },
                 {
-                  title: 'Compartilhamento Fácil',
-                  desc: 'Email, Slack, ou hospede online',
+                  title: 'Compartilhamento simples',
+                  desc: 'Anexe em e-mail, Slack ou publique em páginas estáticas.',
                 },
                 {
-                  title: 'Interativo',
-                  desc: 'Navegação entre telas funcional',
+                  title: 'Navegação funcional',
+                  desc: 'Links e botões seguem os alvos definidos na DSL.',
                 },
               ].map((item, i) => (
                 <motion.div
@@ -1158,35 +1224,40 @@ screen Shop:
     </div>
   ),
 
-  // Slide 10: Encerramento
+  // Slide 10: Conclusões e próximos passos
   () => (
     <div className="flex h-screen w-full items-center justify-center p-8">
-      <div className="max-w-6xl space-y-12 px-8">
-        <motion.div
+      <div className="max-w-6xl space-y-10 px-8">
+        {/* Título padronizado */}
+        <motion.h2
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
-          className="space-y-4 text-center"
+          className="text-center text-5xl sm:text-6xl font-bold"
         >
-          <h2 className="text-6xl font-bold">Itere mais rápido</h2>
-          <p className="text-2xl font-light text-[var(--fg-secondary)]">
-            Text-first prototyping para desenvolvedores
-          </p>
-        </motion.div>
+          <span className="bg-gradient-to-r from-[var(--accent)] to-purple-500 bg-clip-text text-transparent">
+            Conclusões
+          </span>
+        </motion.h2>
 
-        <div className="grid grid-cols-2 gap-12">
-          {/* Icons */}
+        <p className="text-center text-lg sm:text-2xl font-light text-[var(--fg-secondary)]">
+          Proto-Typed como caminho rápido para iterar rótulos, fluxos e
+          navegação em texto.
+        </p>
+
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-12">
+          {/* Ícones de features chave */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
             className="flex flex-col items-center justify-center gap-8"
           >
-            <div className="flex gap-8">
+            <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8">
               {[
-                { Icon: Code2, label: 'DSL Simples' },
-                { Icon: Zap, label: 'Preview Rápido' },
-                { Icon: Package, label: 'HTML Export' },
+                { Icon: Code2, label: 'DSL textual' },
+                { Icon: Zap, label: 'Preview em tempo real' },
+                { Icon: Package, label: 'Export HTML' },
               ].map((item, i) => (
                 <motion.div
                   key={i}
@@ -1196,7 +1267,7 @@ screen Shop:
                   className="flex flex-col items-center gap-3"
                 >
                   <div className="rounded-full border-2 border-[var(--accent)] bg-[var(--accent)]/10 p-4">
-                    <item.Icon className="h-8 w-8 text-[var(--accent)]" />
+                    <item.Icon className="h-7 w-7 sm:h-8 sm:w-8 text-[var(--accent)]" />
                   </div>
                   <span className="text-sm font-medium text-[var(--foreground)]">
                     {item.label}
@@ -1216,7 +1287,7 @@ screen Shop:
               >
                 <Button
                   size="lg"
-                  className="h-14 px-10 text-lg font-semibold shadow-xl"
+                  className="h-12 sm:h-14 px-8 sm:px-10 text-base sm:text-lg font-semibold shadow-xl"
                 >
                   <Zap className="mr-2 h-5 w-5" />
                   Experimente Proto-Typed
@@ -1225,35 +1296,33 @@ screen Shop:
             </motion.div>
           </motion.div>
 
-          {/* Recap */}
+          {/* Recap mais acadêmico */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.8 }}
             className="flex flex-col justify-center space-y-6"
           >
-            <h3 className="text-2xl font-semibold text-[var(--accent)]">
-              Recapitulando:
+            <h3 className="text-xl sm:text-2xl font-semibold text-[var(--accent)]">
+              Resumo do trabalho
             </h3>
-            <div className="space-y-4">
-              {[
-                '✓ Sintaxe simples e intuitiva',
-                '✓ Preview instantâneo em tempo real',
-                '✓ Navegação entre múltiplas telas',
-                '✓ Componentes reutilizáveis',
-                '✓ Export standalone sem dependências',
-                '✓ Perfeito para validação rápida de ideias',
-              ].map((text, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 1.0 + i * 0.1 }}
-                  className="text-lg text-[var(--foreground)]"
-                >
-                  {text}
-                </motion.div>
-              ))}
+            <div className="space-y-3 text-sm sm:text-lg text-[var(--foreground)]">
+              <div>
+                ✓ DSL textual para descrever telas, componentes e navegação.
+              </div>
+              <div>
+                ✓ Pipeline Lexer Parser AST Renderer para HTML interativo.
+              </div>
+              <div>✓ Preview em tempo real no navegador.</div>
+              <div>✓ Suporte a múltiplas telas, componentes e listas.</div>
+              <div>
+                ✓ Export de protótipo standalone para validação com
+                stakeholders.
+              </div>
+              <div className="pt-3 sm:pt-4">
+                Próximos passos: novos renderers, linting da DSL e integração
+                mais profunda com LLMs.
+              </div>
             </div>
           </motion.div>
         </div>
