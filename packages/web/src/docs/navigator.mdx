@@ -16,26 +16,27 @@ screen Home:
     > Track indicators and news.
 
   navigator:
-    - i-Home| Home
-    - i-List| Tasks
-    - i-Settings| Settings
+    - Home | Home
+    - Tasks | Tasks
+    - Settings | Settings
 
 screen Tasks:
   container:
     # Tasks
-    - Review backlog
-    - Prepare demo
+    list:
+      - Review backlog
+      - Prepare demo
 
   navigator:
-    - i-Home
-    - i-List
-    - i-Settings
+    - Home | Home
+    - Tasks | Tasks
+    - Settings | Settings
 ```
 </DocsCodePreview>
 Why: replicates the same menu on each screen of the group to ensure consistency.
 
 ## Variants
-<DocsCodePreview title="Navigator without icons">
+<DocsCodePreview title="Navigator with short labels">
 ```dsl
 screen Default:
   container:
@@ -46,32 +47,32 @@ screen Default:
     - Settings | Settings
 ```
 </DocsCodePreview>
-When to use: prioritize short texts when icons do not add context.
+When to use: use short, clear labels for quick navigation.
 Why: reduces visual noise and favors quick reading of labels.
 
-<DocsCodePreview title="Navigator with Lucide icons">
+<DocsCodePreview title="Navigator with descriptive labels">
 ```dsl
 screen Default:
   container:
     # Screen content
   navigator:
-    - i-Home Home | Home
-    - i-List Tasks | Tasks
-    - i-BarChart Metrics | Dashboard
+    - Overview | Dashboard
+    - Team | Team
+    - Adjustments | Settings
 ```
 </DocsCodePreview>
-When to use: accelerate visual recognition of main destinations.
-Why: helps to locate frequent screens just by the symbol.
+When to use: provide more context with descriptive labels.
+Why: helps users understand the purpose of each section.
 
-<DocsCodePreview title="Navigator highlighting three screens">
+<DocsCodePreview title="Navigator with three main sections">
 ```dsl
 screen Default:
   container:
     # Screen content
   navigator:
-    - i-Home Overview | Dashboard
-    - i-Users Team | Team
-    - i-Settings Adjustments | Settings
+    - Dashboard | Dashboard
+    - Tasks | Tasks
+    - Settings | Settings
 ```
 </DocsCodePreview>
 When to use: highlight the most relevant screens of a reduced flow.
@@ -89,13 +90,12 @@ screen Dashboard:
     # Overview
     > Use the bottom menu to navigate between sections.
 
-  fab:
-    - i-Plus | TaskForm
+  fab{plus}(TaskForm)
 
   navigator:
-    - i-Home Dashboard | Dashboard
-    - i-List Tasks | Tasks
-    - i-Settings Settings | Settings
+    - Dashboard | Dashboard
+    - Tasks | Tasks
+    - Settings | Settings
 ```
 </DocsCodePreview>
 Why: maintains fixed navigation while the FAB offers action shortcuts.
@@ -104,9 +104,7 @@ Why: maintains fixed navigation while the FAB offers action shortcuts.
 | Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
 | `navigator` | block | — | Declares a menu with items line by line. | Yes |
-| `items` | `- label | Destination` | — | Each entry points to an existing screen. | Yes |
-| `icons` | token `i-` | — | Optional to reinforce visual identification. | No |
-| `name` | identifier | — | Optional after `navigator` to document the menu. | No |
+| `items` | `- Label | Destination` | — | Each entry points to an existing screen. | Yes |
 
 ## Common errors (Do/Don’t)
 <DoDont
@@ -183,18 +181,20 @@ navigator:
 screen Projects:
   container:
     # Projects
-    - New website
-    - Mobile application
+    list:
+      - New website
+      - Mobile application
 
   navigator:
     - Projects | Projects
     - Team | Team
     - Settings | Settings
 
-  drawer Filters:
-    container:
-      # Filter projects
-      ___[Status][All | Active | Completed]
+drawer Filters:
+  container:
+    # Filter projects
+    ___[Status][Select status[All | Active | Completed]]
+    row-end:
       @[Apply filters](applyFilters)
 ```
 </DocsCodePreview>

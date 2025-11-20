@@ -13,11 +13,11 @@ The FAB keeps a global action always available, floating above the content to sp
 screen Tasks:
   container:
     # Tasks
-    - Review backlog
-    - Prepare release
+    list:
+      - Review backlog
+      - Prepare release
 
-  fab:
-    - i-Plus | TaskForm
+  fab{plus}(TaskForm)
 ```
 </DocsCodePreview>
 Why: keeps task creation within reach without competing with the screen content.
@@ -27,12 +27,13 @@ Why: keeps task creation within reach without competing with the screen content.
 screen Default:
   container:
     # Scroll down to see
-    fab:
-      - i-Check | ConfirmRelease
+
+  fab{check}(ConfirmRelease)
 
 modal ConfirmRelease:
+  card:
     ## Publish release?
-    # Confirm to notify the team.
+    > Confirm to notify the team.
     row-end:
       @ghost[Cancel](close)
       @success[Publish](publishRelease)
@@ -46,13 +47,13 @@ Why: avoids irreversible executions by interspersing immediate feedback.
 screen Default:
   container:
     > Scroll down to see
-    fab:
-      - i-Filter | FilterDrawer
+
+  fab{filter}(FilterDrawer)
 
 drawer FilterDrawer:
   container:
     # Advanced filters
-    ___[Status][All | In progress | Completed]
+    ___[Status][Select status[All | In progress | Completed]]
     row-end:
       @ghost[Cancel](close)
       @[Apply](applyFilters)
@@ -70,12 +71,10 @@ Why: the drawer allows inline adjustments without changing the screen.
 ## Slots & Props
 | Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `items` | list `- i-Icon | Destination` | — | Each line defines an action with an icon and target destination. | Yes |
-| `icon` | token `i-` | — | Icon displayed on the floating button. | Yes |
+| `icon` | string `{iconname}` | — | Icon displayed on the floating button. | Yes |
 | `destination` | slug/action | — | Screen, modal, or drawer opened on touch. | Yes |
-| `order` | priority | — | The first line is the main action; others follow in descending order. | No |
 
-## Common errors (Do/Don’t)
+## Common errors (Do/Don't)
 <DoDont
   dont={{
     title: "Duplicate CTA",
@@ -84,8 +83,7 @@ screen Tasks:
   header:
     @[New task](TaskForm)
 
-  fab:
-    - i-Plus | TaskForm
+  fab{plus}(TaskForm)
     `,
   }}
   do={{
@@ -95,8 +93,7 @@ screen Tasks:
   header:
     @[New task](TaskForm)
 
-  fab:
-    - i-Filter | FilterDrawer
+  fab{filter}(FilterDrawer)
     `,
   }}
 >
@@ -104,24 +101,27 @@ screen Tasks:
 </DoDont>
 <DoDont
   dont={{
-    title: "FAB with disconnected actions",
+    title: "FAB for unrelated action",
     code: `
-fab:
-  - i-Plus | TaskForm
-  - i-Settings | ThemeDrawer
-  - i-Download | ExportModal
+screen Tasks:
+  container:
+    # Task list
+
+  fab{settings}(ThemeDrawer)
     `,
   }}
   do={{
-    title: "Focus on filters and creation",
+    title: "FAB for main screen action",
     code: `
-fab:
-  - i-Plus | TaskForm
-  - i-Filter | FilterDrawer
+screen Tasks:
+  container:
+    # Task list
+
+  fab{plus}(TaskForm)
     `,
   }}
 >
-  Why: related actions reduce doubt about the FAB's purpose.
+  Why: the FAB should provide the most relevant action for the screen context.
 </DoDont>
 
 ## Cross-references
@@ -153,13 +153,12 @@ screen Dashboard:
         ## Revenue
         # $87K
 
-  fab:
-    - i-Filter | FilterDrawer
+  fab{filter}(FilterDrawer)
 
 drawer FilterDrawer:
   container:
     # Adjust filters
-    ___[Period][7 days | 30 days | 90 days]
+    ___[Period][Select period[7 days | 30 days | 90 days]]
     row-end:
       @ghost[Cancel](close)
       @[Apply](applyFilters)

@@ -32,14 +32,13 @@ screen Team:
     # Equipe
     card:
       ## Convites recentes
-      
+      list:
         - Thiago Martins | Enviado em 16/09
         - Laura Mendes | Pendente
     row-end:
       @[Convidar membro](ConfirmInvite)
 
-  fab:
-    - i-Plus | ConfirmInvite
+  fab{plus}(ConfirmInvite)
 ```
 </DocsCodePreview>
 Por quê: a tela inicia o fluxo, o primeiro modal confirma a ação e o segundo entrega feedback imediato.

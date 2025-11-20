@@ -33,7 +33,7 @@ Por quê: reúne diferentes tipos de entrada em um fluxo compacto e completo.
 ```dsl
 screen Default:
   container:
-    ___[Status][Em análise | Aprovado | Reprovado]
+    ___[Status][Selecione status[Em análise | Aprovado | Reprovado]]
 ```
 </DocsCodePreview>
 Quando usar: limitar a escolha a um conjunto predeterminado.
@@ -71,7 +71,7 @@ component BillingForm:
   card:
     ## Configurar plano
     stack-loose:
-      ___[Plano][Starter | Pro | Enterprise]
+      ___[Plano][Selecione plano[Starter | Pro | Enterprise]]
       ___number[Assentos][5] | min="1"
       ___textarea[Observações][Detalhes adicionais]
     row-end:

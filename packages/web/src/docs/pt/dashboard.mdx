@@ -22,8 +22,8 @@ screen Dashboard:
   header:
     # Painel de Operações
     row-end:
-      @ghost[i-RefreshCcw Atualizar](refresh)
-      @ghost[i-Filter Filtros](FilterDrawer)
+      @ghost[Atualizar]{refresh-ccw}(refresh)
+      @ghost[Filtros]{filter}(FilterDrawer)
 
   container-wide:
     grid-3:
@@ -37,25 +37,24 @@ screen Dashboard:
     grid-2:
       card:
         ## Pipeline
-        
+        list:
           - Descoberta | 12 deals
           - Negociação | 5 deals
           - Fechamento | 3 deals
       card:
         ## Últimas atualizações
-        
+        list:
           - Deploy 1.2 liberado
           - Sprint 34 finalizada
           - Bug crítico resolvido
 
-  fab:
-    - i-Plus | NewMetric
+  fab{plus}(NewMetric)
 
 drawer FilterDrawer:
   container:
     # Filtros do painel
-    ___[Intervalo][7 dias | 14 dias | 30 dias]
-    ___[Equipe][Todos | Produto | Engenharia | Suporte]
+    ___[Intervalo][Selecione intervalo[7 dias | 14 dias | 30 dias]]
+    ___[Equipe][Selecione equipe[Todos | Produto | Engenharia | Suporte]]
     row-end:
       @ghost[Cancelar](close)
       @primary[Aplicar](applyFilters)

@@ -33,7 +33,7 @@ Why: gathers different types of input in a compact and complete flow.
 ```dsl
 screen Default:
   container:
-    ___[Status][Under review | Approved | Rejected]
+    ___[Status][Select status[Under review | Approved | Rejected]]
 ```
 </DocsCodePreview>
 When to use: limit the choice to a predetermined set.
@@ -71,7 +71,7 @@ component BillingForm:
   card:
     ## Configure plan
     stack-loose:
-      ___[Plan][Starter | Pro | Enterprise]
+      ___[Plan][Select plan[Starter | Pro | Enterprise]]
       ___number[Seats][5] | min="1"
       ___textarea[Notes][Additional details]
     row-end:

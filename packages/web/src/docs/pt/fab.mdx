@@ -16,8 +16,7 @@ screen Tasks:
     - Revisar backlog
     - Preparar release
 
-  fab:
-    - i-Plus | TaskForm
+  fab{plus}(TaskForm)
 ```
 </DocsCodePreview>
 Por quê: mantém a criação de tarefas ao alcance sem competir com o conteúdo da tela.
@@ -27,8 +26,7 @@ Por quê: mantém a criação de tarefas ao alcance sem competir com o conteúdo
 screen Default:
   container:
     # Role para baixa para ver
-    fab:
-      - i-Check | ConfirmRelease
+    fab{check}(ConfirmRelease)
 
 modal ConfirmRelease:
     ## Publicar release?
@@ -46,13 +44,12 @@ Por quê: evita execuções irreversíveis ao intercalar feedback imediato.
 screen Default:
   container:
     > Role para baixa para ver
-    fab:
-      - i-Filter | FilterDrawer
+    fab{filter}(FilterDrawer)
 
 drawer FilterDrawer:
   container:
     # Filtros avançados
-    ___[Status][Todos | Em andamento | Concluído]
+    ___[Status][Selecione status[Todos | Em andamento | Concluído]]
     row-end:
       @ghost[Cancelar](close)
       @[Aplicar](applyFilters)
@@ -84,8 +81,7 @@ screen Tasks:
   header:
     @[Nova tarefa](TaskForm)
 
-  fab:
-    - i-Plus | TaskForm
+  fab{filter}(FilterDrawer)
     `,
   }}
   do={{
@@ -95,8 +91,7 @@ screen Tasks:
   header:
     @[Nova tarefa](TaskForm)
 
-  fab:
-    - i-Filter | FilterDrawer
+  fab{filter}(FilterDrawer)
     `,
   }}
 >
@@ -106,18 +101,13 @@ screen Tasks:
   dont={{
     title: "FAB com ações desconexas",
     code: `
-fab:
-  - i-Plus | TaskForm
-  - i-Settings | ThemeDrawer
-  - i-Download | ExportModal
+fab{plus}(TaskForm)
     `,
   }}
   do={{
     title: "Foco em filtros e criação",
     code: `
-fab:
-  - i-Plus | TaskForm
-  - i-Filter | FilterDrawer
+fab{plus}(TaskForm)
     `,
   }}
 >
@@ -153,13 +143,12 @@ screen Dashboard:
         ## Receita
         # R$ 87K
 
-  fab:
-    - i-Filter | FilterDrawer
+  fab{filter}(FilterDrawer)
 
 drawer FilterDrawer:
   container:
     # Ajustar filtros
-    ___[Período][7 dias | 30 dias | 90 dias]
+    ___[Período][Selecione período[7 dias | 30 dias | 90 dias]]
     row-end:
       @ghost[Cancelar](close)
       @[Aplicar](applyFilters)

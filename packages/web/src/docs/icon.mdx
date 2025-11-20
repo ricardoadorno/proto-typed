@@ -1,5 +1,5 @@
 # Icon
-Icons (`i-Name`) reinforce the visual meaning of actions, lists, and titles without breaking the textual flow.
+Icons (`{iconname}`) reinforce the visual meaning of actions, lists, and titles without breaking the textual flow.
 
 ## When to use
 - Complement buttons and links with an immediate visual cue.
@@ -8,43 +8,28 @@ Icons (`i-Name`) reinforce the visual meaning of actions, lists, and titles with
 - Support FABs and highlighted actions on responsive screens.
 
 ## Basic example
-<DocsCodePreview title="Icons in buttons and list">
+<DocsCodePreview title="Icons in buttons">
 ```dsl
 screen Shortcuts:
   container:
     # Quick shortcuts
-    
-      - i-Home Dashboard | Dashboard
-      - i-Calendar Agenda | Agenda
-
     row-start:
-      @[i-Plus New task](TaskForm)
-      @outline[i-Download Export CSV](ExportCSV)
+      @[New task]{plus}(TaskForm)
+      @outline[Export CSV]{download}(ExportCSV)
 ```
 </DocsCodePreview>
 Why: combines visual cues and text to speed up action recognition.
 
 ## Variants
-<DocsCodePreview title="Icon in an informational paragraph">
-```dsl
-screen Default:
-  container:
-    card:
-      *> i-Info The deployment is in progress.
-```
-</DocsCodePreview>
-When to use: highlight warnings without resorting to additional blocks.
-Why: adds visual emphasis without needing extra layouts.
-
 <DocsCodePreview title="Icon in navigator">
 ```dsl
 screen Default:
   container:
     # Screen content
   navigator:
-    - i-Home Home | Home
-    - i-Server Deploys | Deploys
-    - i-AlertCircle Logs | Logs
+    - Home | Home
+    - Deploys | Deploys
+    - Logs | Logs
 ```
 </DocsCodePreview>
 When to use: guide navigation with immediate clues about each tab.
@@ -55,9 +40,7 @@ Why: speeds up the identification of destinations when browsing the menu.
 screen Default:
   container:
     # Screen content
-  fab:
-    - i-Plus | TaskForm
-    - i-Filter | FilterDrawer
+  fab{plus}(TaskForm)
 ```
 </DocsCodePreview>
 When to use: differentiate global actions in the FAB while keeping the layout clean.
@@ -65,92 +48,87 @@ Why: the icon summarizes the purpose of each action without additional text.
 
 ## Composition (using with others)
 - **Icon + Button** — reinforces the CTA's intention.
-- **Icon + List** — transforms lists into visual shortcuts.
-- **Icon + Card** — signals status without polluting titles.
+- **Icon + FAB** — provides visual context for floating actions.
+- **Icon + Navigator** — enhances navigation clarity.
 
-<DocsCodePreview title="Card with status icons">
+<DocsCodePreview title="Button with icon and action">
 ```dsl
 screen Default:
   container:
     card:
       ## Deployment status
       stack-tight:
-        > i-Check Build completed
-        > i-Check Tests finished
-        > i-AlertCircle Monitor logs
+        > Build completed
+        > Tests finished
+        > Monitor logs
+      row-end:
+        @[View logs]{eye}(ViewLogs)
 ```
 </DocsCodePreview>
-Why: allows tracking states quickly within a summary block.
+Why: buttons with icons provide clear visual cues for actions.
 
 ## Slots & Props
 | Name | Type | Default | Description | Required |
 | --- | --- | --- | --- | --- |
-| `token` | string `i-Name` | — | Name of the icon available in the Lucide library. | Yes |
-| `position` | inline | — | Inserted before the text of the button, list, or title. | No |
+| `icon` | string `{iconname}` | — | Name of the icon available in the Lucide library. | Yes |
+| `position` | inline | — | Inserted in buttons using `{icon}` syntax. | No |
 | `semantics` | context | — | Choose icons that reinforce the message without ambiguity. | Yes |
 
-## Common errors (Do/Don’t)
+## Common errors (Do/Don't)
 <DoDont
   dont={{
-    title: "Incomplete token",
+    title: "Missing icon syntax",
     code: `
-@[Download Export CSV](ExportCSV)
+@[Export CSV](ExportCSV)
     `,
   }}
   do={{
-    title: "Valid token",
+    title: "Icon with curly braces",
     code: `
-@[i-Download Export CSV](ExportCSV)
+@[Export CSV]{download}(ExportCSV)
     `,
   }}
 >
-  Why: the `i-` prefix identifies the resource in the icon library.
+  Why: the `{iconname}` syntax adds the Lucide icon to the button.
 </DoDont>
 <DoDont
   dont={{
-    title: "Isolated icons",
+    title: "Icon without label",
     code: `
-row:
-  > i-AlertTriangle
-  > i-AlertTriangle
-  > i-AlertTriangle
+@[]{download}(Export)
     `,
   }}
   do={{
-    title: "Explicit context",
+    title: "Icon with clear label",
     code: `
-row:
-  > i-AlertTriangle Critical alerts
+@[Export]{download}(Export)
     `,
   }}
 >
-  Why: the text ensures accessibility and avoids ambiguous interpretations.
+  Why: the text ensures accessibility and clear communication.
 </DoDont>
 
 ## Cross-references
 
 ### Related
 - [`Button`](./button): uses icons to reinforce the purpose of actions.
-- [`List`](./list): incorporates icons as visual markers.
-- [`Navigator`](./navigator): supplies menus and tabs with icons.
+- [`Navigator`](./navigator): supplies menus and tabs for navigation.
 - [`Fab`](./fab): relies on icons to differentiate floating actions.
 
 ### Recommended compositions
 - **Icon + Button** → CTA with immediate visual signaling.
-- **Icon + List** → shortcuts with quick reading.
-- **Icon + Navigator** → menus contextualized by icons.
+- **Icon + FAB** → floating actions with clear icons.
+- **Icon + Navigator** → navigation with contextual tabs.
 
-<DocsCodePreview title="Navigator with icons and content">
+<DocsCodePreview title="Button with icon">
 ```dsl
 screen Settings:
-  navigator:
-    - i-User Profile | Profile
-    - i-Shield Security | Security
-    - i-Bell Notifications | Notifications
-
   container:
-    # Profile
+    # Profile settings
     > Update personal data and preferences.
+    row-end:
+      @ghost[Cancel](-1)
+      @[Save changes]{save}(SaveProfile)
 ```
 </DocsCodePreview>
-Why: associates icons with the corresponding section and speeds up user orientation.
+Why: icons in buttons provide immediate visual context for actions.

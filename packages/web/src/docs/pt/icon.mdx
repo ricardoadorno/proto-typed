@@ -13,13 +13,13 @@
 screen Shortcuts:
   container:
     # Atalhos rápidos
-    
-      - i-Home Dashboard | Dashboard
-      - i-Calendar Agenda | Agenda
+    list:
+      - Dashboard | Dashboard
+      - Agenda | Agenda
 
     row-start:
-      @[i-Plus Nova tarefa](TaskForm)
-      @outline[i-Download Exportar CSV](ExportCSV)
+      @[Nova tarefa]{plus}(TaskForm)
+      @outline[Exportar CSV]{download}(ExportCSV)
 ```
 </DocsCodePreview>
 Por quê: combina pistas visuais e texto para acelerar o reconhecimento da ação.
@@ -42,9 +42,9 @@ screen Default:
   container:
     # Conteúdo da tela
   navigator:
-    - i-Home Início | Home
-    - i-Server Deploys | Deploys
-    - i-AlertCircle Logs | Logs
+    - Início | Home
+    - Deploys | Deploys
+    - Logs | Logs
 ```
 </DocsCodePreview>
 Quando usar: guiar navegação com pistas imediatas sobre cada aba.
@@ -55,9 +55,7 @@ Por quê: acelera a identificação dos destinos ao percorrer o menu.
 screen Default:
   container:
     # Conteúdo da tela
-  fab:
-    - i-Plus | TaskForm
-    - i-Filter | FilterDrawer
+  fab{plus}(TaskForm)
 ```
 </DocsCodePreview>
 Quando usar: diferenciar ações globais no FAB mantendo o layout limpo.
@@ -74,10 +72,10 @@ screen Default:
   container:
     card:
       ## Status da implantação
-      stack-tight:
-        > i-Check Build concluída
-        > i-Check Testes finalizados
-        > i-AlertCircle Acompanhar logs
+      list:
+        - i-Check Build concluída
+        - i-Check Testes finalizados
+        - i-AlertCircle Acompanhar logs
 ```
 </DocsCodePreview>
 Por quê: permite acompanhar estados rapidamente dentro de um bloco resumido.
@@ -94,13 +92,13 @@ Por quê: permite acompanhar estados rapidamente dentro de um bloco resumido.
   dont={{
     title: "Token incompleto",
     code: `
-@[Download Exportar CSV](ExportCSV)
+@[Exportar CSV]{download}(ExportCSV)
     `,
   }}
   do={{
     title: "Token válido",
     code: `
-@[i-Download Exportar CSV](ExportCSV)
+@[Exportar CSV]{download}(ExportCSV)
     `,
   }}
 >
@@ -144,9 +142,9 @@ row:
 ```dsl
 screen Settings:
   navigator:
-    - i-User Perfil | Profile
-    - i-Shield Segurança | Security
-    - i-Bell Notificações | Notifications
+    - Perfil | Profile
+    - Segurança | Security
+    - Notificações | Notifications
 
   container:
     # Perfil
